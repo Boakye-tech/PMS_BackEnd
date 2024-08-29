@@ -89,7 +89,7 @@ public interface IUnitOfWork : IDisposable
     IApartmentCategoryRepository ApartmentCategory { get; }
 
     //30 June, 2025
-    IPlotFeatures PlotFeatures { get; }
+    IPlotFeaturesRepository PlotFeatures { get; }
 
     //24 July, 2025
     IPropertyTypeRepository PropertyType { get; }

@@ -50,7 +50,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [Required]
         public int CurrencyId { get; private set; }
 
-        public virtual CurrencyExchangeRate? Currency { get; private set; }
+        public virtual CurrencyExchangeRate? CurrencyExchangeRate { get; private set; }
 
         [Required]
         [StringLength(100)]
@@ -65,6 +65,8 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             RentalCategoryId = rentalCategoryId;
             RentalTypeId = rentalTypeId;
             Features = features;
+            Price = price;
+            CurrencyId = currencyId;
             Notes = notes;
         }
 

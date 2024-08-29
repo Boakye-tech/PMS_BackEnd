@@ -42,7 +42,7 @@ namespace Modules.Estates.Infrastructure.Configuration
                    .OnDelete(DeleteBehavior.Restrict);
 
             // Configure the one-to-many relationship with currency
-            builder.HasOne(t => t.Currency)
+            builder.HasOne(t => t.CurrencyExchangeRate)
                    .WithMany()
                    .HasForeignKey(t => t.CurrencyId)
                    .OnDelete(DeleteBehavior.Restrict);

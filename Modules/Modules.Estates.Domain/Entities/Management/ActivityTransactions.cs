@@ -32,6 +32,8 @@ namespace Modules.Estates.Domain.Entities.Management
 
 		public string? Comments { get; set; }
 
+		public string[] FileNames { get; set; }
+
 
 		public ActivityTransactions()
 		{

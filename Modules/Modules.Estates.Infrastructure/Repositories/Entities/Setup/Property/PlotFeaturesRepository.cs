@@ -12,7 +12,7 @@
 using System;
 namespace Modules.Estates.Infrastructure.Repositories.Entities.Setup.Property
 {
-	public class PlotFeaturesRepository : Repository<PlotFeatures>, IPlotFeatures
+	public class PlotFeaturesRepository : Repository<PlotFeatures>, IPlotFeaturesRepository
 	{
 		public PlotFeaturesRepository(ApplicationDbContext dbContext) : base(dbContext)
         {

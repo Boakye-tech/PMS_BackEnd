@@ -12,7 +12,7 @@
 using System;
 namespace Modules.Estates.Domain.Interfaces.Entities.Setup.Property
 {
-	public interface IPlotFeatures : IRepository<PlotFeatures>
+	public interface IPlotFeaturesRepository : IRepository<PlotFeatures>
 	{
 	}
 }

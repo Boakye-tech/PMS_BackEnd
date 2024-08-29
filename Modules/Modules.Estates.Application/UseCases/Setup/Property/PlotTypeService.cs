@@ -95,16 +95,20 @@ public class PlotTypeService : IPlotTypeService
                 };
             }
 
-            var existingType = await _unitOfWork.PlotType.Get(p => p.PlotTypes == values.PlotTypes);
-            if (existingType != null)
+            if (!string.Equals(PlotType.PlotTypes, values.PlotTypes, StringComparison.OrdinalIgnoreCase))
             {
-                return new ReturnResponsesDto
+                var existingType = await _unitOfWork.PlotType.Get(p => p.PlotTypes == values.PlotTypes);
+                if (existingType != null)
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Property Type already exists." },
-                    SuccessResponse = null
-                };
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Property Type already exists." },
+                        SuccessResponse = null
+                    };
+                }
             }
+
 
             PlotType.Update(values.PlotTypeId, values.PlotTypes!, values.SellingPrice,values.CurrencyId);
             PlotType.ModifiedBy = values.ModifiedBy;

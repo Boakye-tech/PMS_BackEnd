@@ -4,6 +4,29 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ReleaseVersion>1.0.1</ReleaseVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules.Documents.Domain\Modules.Documents.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Dtos\" />
+    <None Remove="Interfaces\" />
+    <None Remove="UseCases\" />
+    <None Remove="Validations\" />
+    <None Remove="Dtos\FormTemplates\" />
+    <None Remove="Dtos\FormFields\" />
+    <None Remove="MapperExtensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="UseCases\" />
+    <Folder Include="Validations\" />
+    <Folder Include="Dtos\FormTemplates\" />
+    <Folder Include="Dtos\FormFields\" />
+    <Folder Include="MapperExtensions\" />
+  </ItemGroup>
 </Project>

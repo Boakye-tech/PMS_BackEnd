@@ -160,15 +160,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                 principalColumn: "CurrencyId",
                 onDelete: ReferentialAction.Restrict);
 
-            //migrationBuilder.AddForeignKey(
-            //    name: "FK_Types_CurrencyExchangeRate_CurrencyId",
-            //    schema: "est",
-            //    table: "Types",
-            //    column: "CurrencyId",
-            //    principalSchema: "est",
-            //    principalTable: "CurrencyExchangeRate",
-            //    principalColumn: "CurrencyId",
-            //    onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
@@ -178,11 +169,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                 name: "FK_PlotType_CurrencyExchangeRate_CurrencyId",
                 schema: "est",
                 table: "PlotType");
-
-            //migrationBuilder.DropForeignKey(
-            //    name: "FK_Types_CurrencyExchangeRate_CurrencyId",
-            //    schema: "est",
-            //    table: "Types");
 
             migrationBuilder.DropIndex(
                 name: "IX_Types_CurrencyId",

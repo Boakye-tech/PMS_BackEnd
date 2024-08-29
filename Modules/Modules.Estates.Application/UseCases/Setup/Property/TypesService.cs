@@ -139,7 +139,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
 
         public async Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync(string? searchTerm)
         {
-            var types = await _unitOfWork.Types.GetAll(includes: new List<string> { "RentalCategory", "RentalType", "Currency" });
+            var types = await _unitOfWork.Types.GetAll(includes: new List<string> { "RentalCategory", "RentalType", "CurrencyExchangeRate" });
 
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -160,8 +160,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                         ParseFeatures(t.Features),
                                         t.Price,
                                         t.CurrencyId,
-                                        t.Currency!.CurrencyInitial!,
-                                        t.Currency!.CurrencyName!,
+                                        t.CurrencyExchangeRate!.CurrencyInitial!,
+                                        t.CurrencyExchangeRate!.CurrencyName!,
                                         t.Notes
                                     )).ToList();
 
@@ -204,8 +204,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                     ParseFeatures(t.Features),
                                     t.Price,
                                     t.CurrencyId,
-                                    t.Currency!.CurrencyInitial!,
-                                    t.Currency!.CurrencyName!,
+                                    t.CurrencyExchangeRate!.CurrencyInitial!,
+                                    t.CurrencyExchangeRate!.CurrencyName!,
                                     t.Notes
                                 )).ToList()
                             )).ToList();
@@ -238,8 +238,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                         ParseFeatures(t.Features),
                                         t.Price,
                                         t.CurrencyId,
-                                        t.Currency!.CurrencyInitial!,
-                                        t.Currency!.CurrencyName!,
+                                        t.CurrencyExchangeRate!.CurrencyInitial!,
+                                        t.CurrencyExchangeRate!.CurrencyName!,
                                         t.Notes
                                     )).ToList()
                                 );
@@ -261,8 +261,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                     ParseFeatures(t.Features),
                                     t.Price,
                                     t.CurrencyId,
-                                    t.Currency!.CurrencyInitial!,
-                                    t.Currency!.CurrencyName!,
+                                    t.CurrencyExchangeRate!.CurrencyInitial!,
+                                    t.CurrencyExchangeRate!.CurrencyName!,
                                     t.Notes
                                 ))
                                 .ToList();
@@ -332,7 +332,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             try
             {
                 // Step 1: Fetch all Types only (no includes for RentalCategory or RentalType)
-                var types = await _unitOfWork.Types.GetAll(t => t.RentalTypeId == rentalTypeId);
+                var types = await _unitOfWork.Types.GetAll(t => t.RentalTypeId == rentalTypeId, includes: new List<string> { "RentalCategory", "RentalType", "CurrencyExchangeRate" });
 
                 // Step 2: Project directly into AllTypesReadDto
                 var result = types.Select(t =>
@@ -368,8 +368,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                         featureDtos,
                         t.Price,
                         t.CurrencyId,
-                        t.Currency!.CurrencyInitial!,
-                        t.Currency.CurrencyName!,
+                        t.CurrencyExchangeRate!.CurrencyInitial!,
+                        t.CurrencyExchangeRate.CurrencyName!,
                         t.Notes
                     );
                 }).ToList();
@@ -398,27 +398,34 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
-                var existingCode = await _unitOfWork.Types.Get(h => h.Code == values.Code);
-                if (existingCode != null)
+                if (!string.Equals(types.Code, values.Code, StringComparison.OrdinalIgnoreCase))
                 {
-                    return new ReturnResponsesDto
+                    var existingCode = await _unitOfWork.Types.Get(h => h.Code == values.Code);
+                    if (existingCode != null)
                     {
-                        IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Type Code already exists." },
-                        SuccessResponse = null
-                    };
+                        return new ReturnResponsesDto
+                        {
+                            IsSuccess = false,
+                            ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Type Code already exists." },
+                            SuccessResponse = null
+                        };
+                    }
                 }
 
-                var existingType = await _unitOfWork.Types.Get(h => h.TypeName == values.TypeName);
-                if (existingType != null)
+                if(!string.Equals(types.TypeName, values.TypeName, StringComparison.OrdinalIgnoreCase))
                 {
-                    return new ReturnResponsesDto
+                    var existingType = await _unitOfWork.Types.Get(h => h.TypeName == values.TypeName);
+                    if (existingType != null)
                     {
-                        IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Type Name already exists." },
-                        SuccessResponse = null
-                    };
+                        return new ReturnResponsesDto
+                        {
+                            IsSuccess = false,
+                            ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Type Name already exists." },
+                            SuccessResponse = null
+                        };
+                    }
                 }
+
 
                 List<string> featureNames = new List<string>();
 

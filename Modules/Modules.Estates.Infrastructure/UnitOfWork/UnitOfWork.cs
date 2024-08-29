@@ -219,7 +219,7 @@ public class UnitOfWork: IUnitOfWork
     public IApartmentCategoryRepository ApartmentCategory { get; private set; }
 
     //June 30 '25
-    public IPlotFeatures PlotFeatures { get; private set; }
+    public IPlotFeaturesRepository PlotFeatures { get; private set; }
 
     //July 24 '25
     public IPropertyTypeRepository PropertyType { get; private set; }
