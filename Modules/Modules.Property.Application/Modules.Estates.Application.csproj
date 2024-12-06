@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Interfaces\" />
+    <None Remove="DTO\" />
+    <None Remove="DTO\Setup\" />
+    <None Remove="Profiles\" />
+    <None Remove="Interfaces\Entities\Setup\Customer\" />
+    <None Remove="Interfaces\Entities\Setup\Property\" />
+    <None Remove="DTO\Setup\Property\" />
+    <None Remove="DTO\Setup\Customer\" />
+    <None Remove="Profiles\Property\" />
+    <None Remove="Profiles\Customer\" />
+    <None Remove="Services\Setups\" />
+    <None Remove="Services\Setups\Customer\" />
+    <None Remove="Repositories\" />
+    <None Remove="Repositories\Setup\" />
+    <None Remove="Repositories\Setup\Property\" />
+    <None Remove="Repositories\Setup\Customer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="DTO\" />
+    <Folder Include="DTO\Setup\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="Interfaces\Entities\Setup\Customer\" />
+    <Folder Include="Interfaces\Entities\Setup\Property\" />
+    <Folder Include="DTO\Setup\Property\" />
+    <Folder Include="DTO\Setup\Customer\" />
+    <Folder Include="Profiles\Property\" />
+    <Folder Include="Profiles\Customer\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Repositories\Setup\" />
+    <Folder Include="Repositories\Setup\Property\" />
+    <Folder Include="Repositories\Setup\Customer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Property.Domain\Modules.Estates.Domain.csproj" />
+  </ItemGroup>
+</Project>

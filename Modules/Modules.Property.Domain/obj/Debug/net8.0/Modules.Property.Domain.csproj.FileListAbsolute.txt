@@ -1,0 +1,12 @@
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/bin/Debug/net8.0/Modules.Property.Domain.deps.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/bin/Debug/net8.0/Modules.Property.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/bin/Debug/net8.0/Modules.Property.Domain.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/Modules.Property.Domain.csproj.AssemblyReference.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/Modules.Property.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/Modules.Property.Domain.AssemblyInfoInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/Modules.Property.Domain.AssemblyInfo.cs
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/Modules.Property.Domain.csproj.CoreCompileInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/Modules.Property.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/refint/Modules.Property.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/Modules.Property.Domain.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Domain/obj/Debug/net8.0/ref/Modules.Property.Domain.dll

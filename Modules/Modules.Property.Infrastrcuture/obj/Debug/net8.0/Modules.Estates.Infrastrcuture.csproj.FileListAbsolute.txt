@@ -1,0 +1,5 @@
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Infrastrcuture/obj/Debug/net8.0/Modules.Estates.Infrastrcuture.csproj.AssemblyReference.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Infrastrcuture/obj/Debug/net8.0/Modules.Estates.Infrastrcuture.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Infrastrcuture/obj/Debug/net8.0/Modules.Estates.Infrastrcuture.AssemblyInfoInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Infrastrcuture/obj/Debug/net8.0/Modules.Estates.Infrastrcuture.AssemblyInfo.cs
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Infrastrcuture/obj/Debug/net8.0/Modules.Estates.Infrastrcuture.csproj.CoreCompileInputs.cache

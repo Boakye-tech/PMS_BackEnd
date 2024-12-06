@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Entities\" />
+    <None Remove="Entities\Setup\" />
+    <None Remove="Interfaces\" />
+    <None Remove="Interfaces\Entities\" />
+    <None Remove="Interfaces\Entities\Setup\" />
+    <None Remove="DomainEvents\" />
+    <None Remove="Exceptions\" />
+    <None Remove="ValueObjects\" />
+    <None Remove="Shared\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Entities\Setup\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Interfaces\Entities\" />
+    <Folder Include="Interfaces\Entities\Setup\" />
+    <Folder Include="DomainEvents\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="ValueObjects\" />
+    <Folder Include="Shared\" />
+  </ItemGroup>
+</Project>

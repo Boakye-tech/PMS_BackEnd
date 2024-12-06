@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="BackgroundJobs\" />
+    <None Remove="Services\" />
+    <None Remove="Services\Email\" />
+    <None Remove="Services\Messaging\" />
+    <None Remove="Persistence\" />
+    <None Remove="Persistence\EntityConfigurations\" />
+    <None Remove="Persistence\Migrations\" />
+    <None Remove="Persistence\Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BackgroundJobs\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\Email\" />
+    <Folder Include="Services\Messaging\" />
+    <Folder Include="Persistence\" />
+    <Folder Include="Persistence\EntityConfigurations\" />
+    <Folder Include="Persistence\Migrations\" />
+    <Folder Include="Persistence\Repositories\" />
+  </ItemGroup>
+</Project>

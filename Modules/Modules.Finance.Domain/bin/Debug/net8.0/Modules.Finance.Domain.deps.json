@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Modules.Finance.Domain/1.0.0": {
+        "runtime": {
+          "Modules.Finance.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Modules.Finance.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

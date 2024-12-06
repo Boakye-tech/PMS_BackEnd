@@ -1,0 +1,11 @@
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/bin/Debug/net8.0/Modules.Customers.Infrastructure.deps.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/bin/Debug/net8.0/Modules.Customers.Infrastructure.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/bin/Debug/net8.0/Modules.Customers.Infrastructure.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/Debug/net8.0/Modules.Customers.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/Debug/net8.0/Modules.Customers.Infrastructure.AssemblyInfoInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/Debug/net8.0/Modules.Customers.Infrastructure.AssemblyInfo.cs
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/Debug/net8.0/Modules.Customers.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/Debug/net8.0/Modules.Customers.Infrastructure.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/Debug/net8.0/refint/Modules.Customers.Infrastructure.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/Debug/net8.0/Modules.Customers.Infrastructure.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/Debug/net8.0/ref/Modules.Customers.Infrastructure.dll

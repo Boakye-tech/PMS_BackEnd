@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Entities\" />
+    <None Remove="Entities\Setup\" />
+    <None Remove="Entities\Setup\Customer\" />
+    <None Remove="Entities\Setup\Property\" />
+    <None Remove="Interfaces\" />
+    <None Remove="Interfaces\Entities\" />
+    <None Remove="Interfaces\Entities\Setup\" />
+    <None Remove="Interfaces\Entities\Setup\Customer\" />
+    <None Remove="Interfaces\Entities\Setup\Property\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Entities\Setup\" />
+    <Folder Include="Entities\Setup\Customer\" />
+    <Folder Include="Entities\Setup\Property\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Interfaces\Entities\" />
+    <Folder Include="Interfaces\Entities\Setup\" />
+    <Folder Include="Interfaces\Entities\Setup\Customer\" />
+    <Folder Include="Interfaces\Entities\Setup\Property\" />
+  </ItemGroup>
+</Project>

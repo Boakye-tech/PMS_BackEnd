@@ -1,0 +1,15 @@
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/bin/Debug/net8.0/Modules.Estates.Application.deps.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/bin/Debug/net8.0/Modules.Estates.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/bin/Debug/net8.0/Modules.Estates.Application.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/bin/Debug/net8.0/Modules.Estates.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/bin/Debug/net8.0/Modules.Estates.Domain.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/Modules.Estates.Application.csproj.AssemblyReference.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/Modules.Estates.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/Modules.Estates.Application.AssemblyInfoInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/Modules.Estates.Application.AssemblyInfo.cs
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/Modules.Estates.Application.csproj.CoreCompileInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/Modules..333F76F7.Up2Date
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/Modules.Estates.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/refint/Modules.Estates.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/Modules.Estates.Application.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Property.Application/obj/Debug/net8.0/ref/Modules.Estates.Application.dll

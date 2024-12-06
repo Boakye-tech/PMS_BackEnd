@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/Modules.Users.Presentation.props" />
+</Project>
