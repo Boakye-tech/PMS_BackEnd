@@ -13,7 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Entities\" />
-    <None Remove="Entities\Setup\" />
     <None Remove="Interfaces\" />
     <None Remove="Interfaces\Entities\" />
     <None Remove="Interfaces\Entities\Setup\" />
@@ -24,7 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
-    <Folder Include="Entities\Setup\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Interfaces\Entities\" />
     <Folder Include="Interfaces\Entities\Setup\" />

@@ -6,6 +6,7 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/obj/Debug/net8.0/Modules.Common.Domain.AssemblyInfoInputs.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/obj/Debug/net8.0/Modules.Common.Domain.AssemblyInfo.cs
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/obj/Debug/net8.0/Modules.Common.Domain.csproj.CoreCompileInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/obj/Debug/net8.0/Modules.Common.Domain.sourcelink.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/obj/Debug/net8.0/Modules.Common.Domain.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/obj/Debug/net8.0/refint/Modules.Common.Domain.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/obj/Debug/net8.0/Modules.Common.Domain.pdb

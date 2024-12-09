@@ -5,6 +5,7 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/Modules.Finance.Domain.AssemblyInfoInputs.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/Modules.Finance.Domain.AssemblyInfo.cs
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/Modules.Finance.Domain.csproj.CoreCompileInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/Modules.Finance.Domain.sourcelink.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/Modules.Finance.Domain.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/refint/Modules.Finance.Domain.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/Modules.Finance.Domain.pdb

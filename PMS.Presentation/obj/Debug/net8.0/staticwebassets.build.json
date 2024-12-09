@@ -1,11 +1,45 @@
 {
   "Version": 1,
-  "Hash": "MOFhzFUyDux8vReY6a18/wOaV9/uvFBgQ1h5gzU+A0I=",
+  "Hash": "xKRIATgfdplcvc58lkvoZMiOmudjMUNCXIALPCkZOHQ=",
   "Source": "PMS.Presentation",
   "BasePath": "_content/PMS.Presentation",
   "Mode": "Default",
   "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/Modules.Customers.Presentation.csproj",
+      "Version": 2,
+      "Source": "Modules.Customers.Presentation",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "TargetFramework"
+    },
+    {
+      "Identity": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/Modules.Estates.Presentation.csproj",
+      "Version": 2,
+      "Source": "Modules.Estates.Presentation",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "TargetFramework"
+    },
+    {
+      "Identity": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/Modules.Users.Presentation.csproj",
+      "Version": 2,
+      "Source": "Modules.Users.Presentation",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "TargetFramework"
+    }
+  ],
   "DiscoveryPatterns": [],
   "Assets": []
 }
