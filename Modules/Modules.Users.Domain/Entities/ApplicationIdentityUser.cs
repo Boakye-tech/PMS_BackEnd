@@ -7,21 +7,23 @@ namespace Modules.Users.Domain.Entities
 	public class ApplicationIdentityUser : IdentityUser
 	{
         [StringLength(10)]
-        public required string IdentificationNumber { get; set; }
+        public string? IdentificationNumber { get; set; }
 
         [StringLength(50)]
-        public required string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [StringLength(50)]
         public string? MiddleName { get; set; }
 
         [StringLength(100)]
-        public required string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [StringLength(256)]
         public string? PartnerName { get; set; }
 
         public int DepartmentId { get; set; }
+
+        public int UnitId { get; set; }
 
         [StringLength(256)]
         public string? ProfilePicture { get; set; }
@@ -30,7 +32,10 @@ namespace Modules.Users.Domain.Entities
         public string? LastReceiptNumber { get; set; }
 
         [StringLength(256)]
-        public string? LastReceiptNumberImage { get; set; }
+        public string? LastReceiptImage { get; set; }
+
+        public int IdentificationTypeId { get; set; }
+
 
         [StringLength(50)]
         public string? GhanaCardNumber { get; set; }
@@ -53,6 +58,18 @@ namespace Modules.Users.Domain.Entities
         public DateTime RegistrationDate { get; set; }
 
         public int Status { get; set; }
+
+        [StringLength(150)]
+        public string? ContactPerson_FullName { get; set; }
+
+        [StringLength(100)]
+        public string? ContactPerson_Email { get; set; }
+
+        [StringLength(25)]
+        public string? ContactPerson_PhoneNumber { get; set; }
+
+        [StringLength(50)]
+        public string? ContactPerson_Position { get; set; }
 
         public string? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

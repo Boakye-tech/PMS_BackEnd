@@ -16,6 +16,7 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/obj/Debug/net8.0/Modules.Customers.Presentation.csproj.CoreCompileInputs.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/obj/Debug/net8.0/Modules.Customers.Presentation.MvcApplicationPartsAssemblyInfo.cs
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/obj/Debug/net8.0/Modules.Customers.Presentation.MvcApplicationPartsAssemblyInfo.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/obj/Debug/net8.0/Modules.Customers.Presentation.sourcelink.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/obj/Debug/net8.0/staticwebassets.build.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/obj/Debug/net8.0/staticwebassets.development.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/obj/Debug/net8.0/staticwebassets/msbuild.Modules.Customers.Presentation.Microsoft.AspNetCore.StaticWebAssets.props

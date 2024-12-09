@@ -33,13 +33,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Users.Presentation"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Users.Domain", "Modules\Modules.Users.Domain\Modules.Users.Domain.csproj", "{D886B370-2CDD-4D4E-8CB5-BDE18E7581A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Estates.Application", "Modules\Modules.Property.Application\Modules.Estates.Application.csproj", "{2ED47173-1174-49F9-88EC-96FDA284847B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Estates.Application", "Modules\Modules.Estates.Application\Modules.Estates.Application.csproj", "{2ED47173-1174-49F9-88EC-96FDA284847B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Estates.Domain", "Modules\Modules.Property.Domain\Modules.Estates.Domain.csproj", "{47896882-86C7-4FF1-A6AF-4FC6C1E1EE3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Estates.Domain", "Modules\Modules.Estates.Domain\Modules.Estates.Domain.csproj", "{47896882-86C7-4FF1-A6AF-4FC6C1E1EE3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Estates.Infrastructure", "Modules\Modules.Property.Infrastrcuture\Modules.Estates.Infrastructure.csproj", "{96547DB9-7841-4B37-8C2D-BEBA6E0E8F1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Estates.Infrastructure", "Modules\Modules.Estates.Infrastrcuture\Modules.Estates.Infrastructure.csproj", "{96547DB9-7841-4B37-8C2D-BEBA6E0E8F1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Estates.Presentation", "Modules\Modules.Property.Presentation\Modules.Estates.Presentation.csproj", "{9CB531A3-A821-4E54-BBFA-CC448A9A933A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Estates.Presentation", "Modules\Modules.Estates.Presentation\Modules.Estates.Presentation.csproj", "{9CB531A3-A821-4E54-BBFA-CC448A9A933A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Customers.Presentation", "Modules\Modules.Customers.Presntation\Modules.Customers.Presentation.csproj", "{707A4678-CB60-4EE8-9845-F9A986C36E71}"
 EndProject
@@ -54,6 +54,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Common.Domain", "Modules\Modules.Common.Domain\Modules.Common.Domain.csproj", "{D98A82C1-FE26-4450-A32B-C563439428DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Finance.Domain", "Modules\Modules.Finance.Domain\Modules.Finance.Domain.csproj", "{481F3B0D-358C-41E9-82C8-2B07183B1B81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Common.Infrastructure", "Modules\Modules.Common.Domain\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj", "{BAE9B506-D7A0-4C7E-A80C-93A0813EDA93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{481F3B0D-358C-41E9-82C8-2B07183B1B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{481F3B0D-358C-41E9-82C8-2B07183B1B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{481F3B0D-358C-41E9-82C8-2B07183B1B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAE9B506-D7A0-4C7E-A80C-93A0813EDA93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAE9B506-D7A0-4C7E-A80C-93A0813EDA93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAE9B506-D7A0-4C7E-A80C-93A0813EDA93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAE9B506-D7A0-4C7E-A80C-93A0813EDA93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,5 +159,6 @@ Global
 		{1DCE1D2F-8E6D-4B31-B1C6-37047D27664F} = {A254B1AC-3650-436E-AB3B-84FCB39AFE0E}
 		{D98A82C1-FE26-4450-A32B-C563439428DE} = {1DCE1D2F-8E6D-4B31-B1C6-37047D27664F}
 		{481F3B0D-358C-41E9-82C8-2B07183B1B81} = {496ABA25-030D-48E5-B5B5-2C093D98F1B6}
+		{BAE9B506-D7A0-4C7E-A80C-93A0813EDA93} = {1DCE1D2F-8E6D-4B31-B1C6-37047D27664F}
 	EndGlobalSection
 EndGlobal

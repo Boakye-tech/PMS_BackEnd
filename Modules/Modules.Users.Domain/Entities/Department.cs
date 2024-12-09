@@ -1,10 +1,12 @@
-﻿namespace Modules.Users.Domain;
-
-public class Department
+﻿namespace Modules.Users.Domain.Entities
 {
-    public required int DepartmentId { get; set; }
+    public class Department
+    {
+        public required int DepartmentId { get; set; }
 
-    public required string DepartmentName { get; set; }
+        public required string DepartmentName { get; set; }
 
+    }
 }
+
 
