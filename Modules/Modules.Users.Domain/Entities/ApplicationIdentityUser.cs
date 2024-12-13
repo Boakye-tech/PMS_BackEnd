@@ -36,15 +36,14 @@ namespace Modules.Users.Domain.Entities
 
         public int IdentificationTypeId { get; set; }
 
-
         [StringLength(50)]
-        public string? GhanaCardNumber { get; set; }
+        public string? IdentificationUniqueNumber { get; set; }
 
         [StringLength(256)]
-        public string? GhanaCardFrontImage { get; set; }
+        public string? IdentificationImage { get; set; }
 
         [StringLength(256)]
-        public string? GhanaCardBackImage { get; set; }
+        public string? IdentificationImageOne { get; set; }
 
         [StringLength(256)]
         public string? SelfieImage { get; set; }

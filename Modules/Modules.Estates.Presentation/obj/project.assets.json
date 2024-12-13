@@ -8831,8 +8831,8 @@
     },
     "Modules.Estates.Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj",
-      "msbuildProject": "../Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj"
+      "path": "../Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj",
+      "msbuildProject": "../Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -8879,8 +8879,8 @@
             "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Application/Modules.Estates.Application.csproj": {
               "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Application/Modules.Estates.Application.csproj"
             },
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj"
+            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj": {
+              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj"
             }
           }
         }
@@ -8889,6 +8889,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {

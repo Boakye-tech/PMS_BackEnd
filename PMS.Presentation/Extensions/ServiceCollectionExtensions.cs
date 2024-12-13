@@ -17,9 +17,6 @@ public static class ServiceCollectionExtensions
                 manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
             });
 
-        //services.AddScoped<IUnitOfWork, UnitOfWork>();
-        //services.AddScoped<IAllocationTypeService, AllocationTypeService>();
-
         return services;
     }
 }

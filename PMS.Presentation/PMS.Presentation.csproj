@@ -32,7 +32,7 @@
     <ProjectReference Include="..\Modules\Modules.Customers.Presntation\Modules.Customers.Presentation.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\Modules\Modules.Finance.Domain\Modules.Finance.Presentation\Modules.Finance.Presentation.csproj">
+    <ProjectReference Include="..\Modules\Modules.Finance.Presentation\Modules.Finance.Presentation.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>

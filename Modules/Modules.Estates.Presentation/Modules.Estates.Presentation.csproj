@@ -30,7 +30,7 @@
     <ProjectReference Include="..\Modules.Estates.Application\Modules.Estates.Application.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\Modules.Estates.Infrastrcuture\Modules.Estates.Infrastructure.csproj">
+    <ProjectReference Include="..\Modules.Estates.Infrastructure\Modules.Estates.Infrastructure.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>

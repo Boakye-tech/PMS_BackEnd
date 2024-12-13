@@ -8,8 +8,24 @@
 
   <ItemGroup>
     <None Remove="Dtos\" />
+    <None Remove="Interfaces\" />
+    <None Remove="Profiles\" />
+    <None Remove="Validations\" />
+    <None Remove="UseCases\" />
+    <None Remove="Dtos\CustomerRegistration\" />
+    <None Remove="Dtos\StaffRegistration\" />
+    <None Remove="Dtos\PartnerBankRegistration\" />
+    <None Remove="Dtos\Entities\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="Validations\" />
+    <Folder Include="UseCases\" />
+    <Folder Include="Dtos\CustomerRegistration\" />
+    <Folder Include="Dtos\StaffRegistration\" />
+    <Folder Include="Dtos\PartnerBankRegistration\" />
+    <Folder Include="Dtos\Entities\" />
   </ItemGroup>
 </Project>
