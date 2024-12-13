@@ -210,14 +210,14 @@
         }
       }
     },
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj": {
+    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj",
+        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj",
         "projectName": "Modules.Estates.Infrastructure",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj",
+        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj",
         "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastrcuture/obj/",
+        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/macbook/.nuget/NuGet/NuGet.Config"
@@ -322,8 +322,8 @@
               "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Application/Modules.Estates.Application.csproj": {
                 "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Application/Modules.Estates.Application.csproj"
               },
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastrcuture/Modules.Estates.Infrastructure.csproj"
+              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj": {
+                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Infrastructure/Modules.Estates.Infrastructure.csproj"
               }
             }
           }

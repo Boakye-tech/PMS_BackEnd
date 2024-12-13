@@ -1,0 +1,16 @@
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/bin/Debug/net8.0/Modules.Finance.Application.deps.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/bin/Debug/net8.0/Modules.Finance.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/bin/Debug/net8.0/Modules.Finance.Application.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules.Finance.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules.Finance.Application.AssemblyInfoInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules.Finance.Application.AssemblyInfo.cs
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules.Finance.Application.csproj.CoreCompileInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules.Finance.Application.sourcelink.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules.Finance.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/refint/Modules.Finance.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules.Finance.Application.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/ref/Modules.Finance.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/bin/Debug/net8.0/Modules.Finance.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/bin/Debug/net8.0/Modules.Finance.Domain.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules.Finance.Application.csproj.AssemblyReference.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Application/obj/Debug/net8.0/Modules..4709F986.Up2Date

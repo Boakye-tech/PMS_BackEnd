@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Modules.Estates.Infrastructure;
 using Modules.Estates.Presentation;
+using Modules.Finance.Presentation;
 using PMS.Presentation.Extensions;
 using Serilog;
 
@@ -15,7 +16,12 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 
 builder.Services.AddEstateModule(builder.Configuration);
+
+builder.Services.AddFinanceModule(builder.Configuration);
+
 builder.Services.AddSharedInfrastructure(builder.Configuration);
+
+
 
 
 builder.Services.AddControllers();

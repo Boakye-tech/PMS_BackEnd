@@ -16,7 +16,7 @@ namespace Modules.Users.Infrastructure
         public DbSet<IdentityRole> roles { get; set; }
         public DbSet<IdentityUserRole<string>> userRoles { get; set; }
 
-        public DbSet<Department> Department { get; set; }
+        public DbSet<Department> Department { get; set; } 
         public DbSet<DepartmentUnit> DepartmentUnit { get; set; }
         public DbSet<TokenStore> TokenStore { get; set; }
 

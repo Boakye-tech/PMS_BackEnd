@@ -10,3 +10,4 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/refint/Modules.Finance.Domain.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/Modules.Finance.Domain.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/ref/Modules.Finance.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/obj/Debug/net8.0/Modules.Finance.Domain.csproj.AssemblyReference.cache

@@ -22,9 +22,9 @@ namespace Modules.Users.Domain.Entities
         public bool IsVerified { get; set; } = false;
         public DateTime VerifiedDate { get; set; }
 
-        public TokenStore()
-		{
-		}
+  //      public TokenStore()
+		//{
+		//}
 	}
 }
 

@@ -6,10 +6,34 @@ public class ChartOfAccounts : AuditableEntity
 {
     [Key]
     [Required]
-    public required int AccountCode { get; set; }
+    public int AccountCode { get; set; }
 
     [StringLength(50)]
     [Required]
-    public required string AccountName { get; set; }
+    public string? AccountName { get; set; }
+
+    public ChartOfAccounts(int accountCode, string accountName)
+    {
+        AccountCode = accountCode;
+        AccountName = accountName;
+    }
+
+
+    public static ChartOfAccounts CreateUpdate(int accountCode, string accountName)
+    {
+        if (string.IsNullOrWhiteSpace(accountName) || accountCode < 0)
+        {
+            throw new ArgumentException("Invalid chart of accounts data.");
+        }
+
+        if (accountCode <= 0)
+            throw new ArgumentException("The chart of account code must be greater than zero.");
+
+        if (string.IsNullOrWhiteSpace(accountName) || accountName.Length > 50)
+            throw new ArgumentException("The chart of account name must not be null or exceed 50 characters.");
+
+
+        return new ChartOfAccounts(accountCode, accountName);
+    }
 }
 
