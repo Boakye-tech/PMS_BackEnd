@@ -1,11 +1,13 @@
 ﻿using System;
+using Modules.Users.Domain.Interfaces.Entities;
+
 namespace Modules.Users.Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        //IBankRepository Bank { get; }s
-        
-
+        IDepartmentRepository Department { get; }
+        IDepartmentUnitRepository DepartmentUnit { get; }
+        ITokenStoreRepository TokenStore { get; }
 
         Task<int> Complete();
     }

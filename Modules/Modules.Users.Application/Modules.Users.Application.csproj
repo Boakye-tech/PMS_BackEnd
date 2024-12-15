@@ -12,10 +12,12 @@
     <None Remove="Profiles\" />
     <None Remove="Validations\" />
     <None Remove="UseCases\" />
-    <None Remove="Dtos\CustomerRegistration\" />
-    <None Remove="Dtos\StaffRegistration\" />
-    <None Remove="Dtos\PartnerBankRegistration\" />
     <None Remove="Dtos\Entities\" />
+    <None Remove="Validations\Registrations\" />
+    <None Remove="Shared\" />
+    <None Remove="Dtos\UserAccounts\" />
+    <None Remove="Interfaces\UserAccounts\" />
+    <None Remove="UseCases\UserAccounts\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -23,9 +25,18 @@
     <Folder Include="Profiles\" />
     <Folder Include="Validations\" />
     <Folder Include="UseCases\" />
-    <Folder Include="Dtos\CustomerRegistration\" />
-    <Folder Include="Dtos\StaffRegistration\" />
-    <Folder Include="Dtos\PartnerBankRegistration\" />
     <Folder Include="Dtos\Entities\" />
+    <Folder Include="Validations\Registrations\" />
+    <Folder Include="Shared\" />
+    <Folder Include="Dtos\UserAccounts\" />
+    <Folder Include="Interfaces\UserAccounts\" />
+    <Folder Include="UseCases\UserAccounts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Users.Domain\Modules.Users.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
   </ItemGroup>
 </Project>
