@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Mr1grcNw+m4=",
+  "dgSpecHash": "8/oSB8O7H5RTCa3F62TIRnjbarJMuCjVTtTduWYMDJctm88hCBQ6/4iiH3ull/KL9HsZjF7A0UvrMloo0zbxSQ==",
   "success": true,
   "projectFilePath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/Modules.Users.Presentation.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,9 @@
     "/Users/macbook/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "/Users/macbook/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/fluentvalidation/11.5.1/fluentvalidation.11.5.1.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.5.1/fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "/Users/macbook/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/macbook/.nuget/packages/microsoft.aspnetcore.cryptography.internal/8.0.6/microsoft.aspnetcore.cryptography.internal.8.0.6.nupkg.sha512",
     "/Users/macbook/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/8.0.6/microsoft.aspnetcore.cryptography.keyderivation.8.0.6.nupkg.sha512",

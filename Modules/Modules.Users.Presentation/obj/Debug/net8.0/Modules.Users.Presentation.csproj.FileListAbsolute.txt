@@ -9,6 +9,9 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Azure.Core.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Azure.Identity.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/FluentValidation.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Humanizer.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll

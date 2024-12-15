@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Modules.Users.Infrastructure;
-using Serilog;
-
+﻿
 var builder = WebApplication.CreateBuilder(args);
 
 //Add Serilog Configuration
@@ -37,8 +34,23 @@ if (builder.Environment.IsProduction())
 }
 
 
+builder.Services.AddUserModule(builder.Configuration);
+
+
+
+//register global exception handler
+builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<DepartmentDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<DepartmentUnitDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<TokenStoreDtoValidator>();
+
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

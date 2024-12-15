@@ -345,9 +345,28 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("DepartmentName")
                         .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("DepartmentId");
 
@@ -362,12 +381,31 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UnitId"));
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UnitName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("UnitId");
 

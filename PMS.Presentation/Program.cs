@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using Modules.Estates.Infrastructure;
 using Modules.Estates.Presentation;
 using Modules.Finance.Presentation;
+using Modules.Users.Presentation;
 using PMS.Presentation.Extensions;
 using Serilog;
 
@@ -13,11 +14,11 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 
 // Add services to the container.
-
-
 builder.Services.AddEstateModule(builder.Configuration);
 
 builder.Services.AddFinanceModule(builder.Configuration);
+
+builder.Services.AddUserModule(builder.Configuration);
 
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 
