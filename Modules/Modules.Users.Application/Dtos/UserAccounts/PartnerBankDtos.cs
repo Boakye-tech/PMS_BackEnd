@@ -5,7 +5,9 @@ namespace Modules.Users.Application.Dtos.UserAccounts
 {
 	public record PartnerBankRegistrationRequestDto(
         string PartnerName,
+        [EmailAddress]
         string EmailAddress,
+        [Phone]
         string PhoneNumber,
         string Password,
         string ConfirmPassword,
@@ -16,10 +18,15 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         );
 
 
-    public record PartnerBankResetPasswordRequestDto(string EmailAddress, int Token, string NewPassword, string ConfirmNewPassword);
+    public record PartnerBankResetPasswordRequestDto : ResetPasswordRequest;
 
-    public record PartnerBankLoginRequestDto() : LoginRequest;
+    public record PartnerBankLoginRequestDto : LoginRequest;
 
-    public record PartnerBankTokenRequestDto(string EmailAddress);
+    public record PartnerBankTokenRequestDto
+    {
+        [EmailAddress]
+        public string? EmailAddress { get; set; }
+    };
 }
 
+ 

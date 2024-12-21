@@ -134,7 +134,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public async Task<ResetPasswordResponse> ResetPassword(ResetCustomerPasswordRequestDto resetPassword)
+        public async Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetCustomerPasswordEmailRequestDto resetPassword)
         {
             //throw new NotImplementedException();
             if (resetPassword is null)
@@ -155,7 +155,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             {
                 //remember to check for the validity of the token
 
-                var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.EmailAddress_OR_PhoneNumber || u.PhoneNumber == resetPassword.EmailAddress_OR_PhoneNumber);
+                var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.EmailAddress);
                 var user = await _userManager.FindByIdAsync(appUser.Id);
                 //var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress_OR_PhoneNumber);
 
@@ -218,7 +218,111 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public async Task<CustomerLoginResponseDto> UserLogin(CustomerLoginRequestDto userLoginDetails)
+        public async Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetCustomerPasswordPhoneRequestDto resetPassword)
+        {
+            //throw new NotImplementedException();
+            if (resetPassword is null)
+            {
+                _logger.LogWarning("Reset password request is null.");
+                return new ResetPasswordResponse
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ResetPasswordErrorResponse
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        StatusMessage = "Invalid request data."
+                    }
+                };
+            }
+
+            try
+            {
+                //remember to check for the validity of the token
+
+                var appUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == resetPassword.MobilePhoneNumber);
+                var user = await _userManager.FindByIdAsync(appUser.Id);
+                //var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress_OR_PhoneNumber);
+
+                if (user is null)
+                {
+                    _logger.LogWarning($"Customer with mobile phone number {resetPassword.MobilePhoneNumber} not found.", resetPassword.MobilePhoneNumber);
+                    return new ResetPasswordResponse
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"Customer with mobile phone number {resetPassword.MobilePhoneNumber} not found."
+                        }
+                    };
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, resetPassword.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"Password successfully reset for staff with mobile phone number {resetPassword.MobilePhoneNumber}.", resetPassword.MobilePhoneNumber);
+                    return new ResetPasswordResponse
+                    {
+                        IsSuccess = true,
+                        SuccessResponse = new ResetPasswordSuccessResponse
+                        {
+                            StatusCode = StatusCodes.Status200OK,
+                            StatusMessage = $"Password reset {result.ToString()}"
+                        }
+                    };
+
+                }
+
+
+                _logger.LogWarning($"Password reset failed for staff with mobile phone number {resetPassword.MobilePhoneNumber}. Errors: {result.Errors}", resetPassword.MobilePhoneNumber, string.Join(", ", result.Errors.Select(e => e.Description)));
+                return new ResetPasswordResponse
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ResetPasswordErrorResponse
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        StatusMessage = $"Password reset failed. - {result.Errors}"
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while resetting the password for customer with mobile phone number {resetPassword.MobilePhoneNumber}.", resetPassword.MobilePhoneNumber);
+                return new ResetPasswordResponse
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ResetPasswordErrorResponse
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError,
+                        StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.InnerException!.Message}"
+                    }
+                };
+            }
+        }
+
+        public async Task<CustomerLoginResponseDto> LoginWithEmailAddress(CustomerEmailLoginRequestDto userLoginDetails)
+        {
+            throw new NotImplementedException();
+
+            //var appUser = await _unitOfWork.Users.Get(u => u.Email == userLoginDetails.EmailAddress_OR_PhoneNumber || u.PhoneNumber == userLoginDetails.EmailAddress_OR_PhoneNumber);
+            //var user = await _userManager.FindByEmailAsync(appUser.Email!);
+            //if(user is not null)
+            //{
+            //    var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
+
+            //    if (result.Succeeded)
+            //    {
+            //    }
+            //    else
+            //    {
+            //    }
+            //}
+
+        }
+
+        public async Task<CustomerLoginResponseDto> LoginWithMobilePhoneNumber(CustomerPhoneLoginRequestDto userLoginDetails)
         {
             throw new NotImplementedException();
 

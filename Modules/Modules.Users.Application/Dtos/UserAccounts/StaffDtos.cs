@@ -10,7 +10,9 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string FirstName,
         string MiddleName,
         string LastName,
+        [EmailAddress]
         string EmailAddress,
+        [EmailAddress]
         string UserName,
         string PhoneNumber,
         string Channel,

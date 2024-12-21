@@ -754,6 +754,14 @@
           }
         }
       },
+      "StringRandomizer/1.1.0": {
+        "runtime": {
+          "lib/netstandard2.0/StringRandomizer.dll": {
+            "assemblyVersion": "1.0.1.0",
+            "fileVersion": "1.0.1.0"
+          }
+        }
+      },
       "System.ClientModel/1.0.0": {
         "dependencies": {
           "System.Memory.Data": "1.0.2",
@@ -1036,7 +1044,8 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "FluentValidation.AspNetCore": "11.3.0",
-          "Modules.Users.Domain": "1.0.0"
+          "Modules.Users.Domain": "1.0.0",
+          "StringRandomizer": "1.1.0"
         },
         "runtime": {
           "Modules.Users.Application.dll": {}
@@ -1424,6 +1433,13 @@
       "sha512": "sha512-KZYeKBET/2Z0gY1WlTAK7+RHTl7GSbtvTLDXEZZojUdAPqpQNDL6tHv7VUpqfX5VEOh+uRGKaZXkuD253nEOBQ==",
       "path": "mono.texttemplating/2.2.1",
       "hashPath": "mono.texttemplating.2.2.1.nupkg.sha512"
+    },
+    "StringRandomizer/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0lj7DqLNZ2m4Yfz5KQ5yCwV/ZVbcHMHD4MfWg0119IjDRmbeaYnBMgsVIvJrxPb2EwCXgbu9GfBb3J/NEWh8mQ==",
+      "path": "stringrandomizer/1.1.0",
+      "hashPath": "stringrandomizer.1.1.0.nupkg.sha512"
     },
     "System.ClientModel/1.0.0": {
       "type": "package",

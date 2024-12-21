@@ -4,9 +4,13 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 	public interface ICustomerAccountService
     {
         Task<RegistrationResponse> UserRegistration(CustomerRegistrationRequestDto details);
-        Task<ResetPasswordResponse> ResetPassword(ResetCustomerPasswordRequestDto resetPassword);
         Task<ChangePasswordResponse> ChangePassword(ChangeCustomerPasswordRequestDto changePassword);
-        Task<CustomerLoginResponseDto> UserLogin(CustomerLoginRequestDto userLoginDetails);
+
+        Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetCustomerPasswordEmailRequestDto resetPassword);
+        Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetCustomerPasswordPhoneRequestDto resetPassword);
+
+        Task<CustomerLoginResponseDto> LoginWithEmailAddress(CustomerEmailLoginRequestDto emailLoginDetails);
+        Task<CustomerLoginResponseDto> LoginWithMobilePhoneNumber(CustomerPhoneLoginRequestDto phoneLoginDetails);
 
 
         //string SendSmsToken(UserRequestParameter mobileNumber); //OTPRequest
