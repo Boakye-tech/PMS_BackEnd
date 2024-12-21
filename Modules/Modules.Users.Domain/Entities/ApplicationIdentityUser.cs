@@ -70,18 +70,39 @@ namespace Modules.Users.Domain.Entities
         [StringLength(50)]
         public string? ContactPerson_Position { get; set; }
 
+        [StringLength(50)]
         public string? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
 
+        [StringLength(50)]
         public string? ModifiedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
 
+        [StringLength(50)]
+        public string? DeletedBy { get; set; }
+        public DateTime DeletedDate { get; set; }
+
+        [StringLength(50)]
+        public string? VerifiedBy { get; set; }
+        public DateTime VerifiedDate { get; set; }
+
+        [StringLength(50)]
+        public string? RejectedBy { get; set; }
+        public DateTime RejectedDate { get; set; }
+
+        [StringLength(50)]
         public string? ApprovedBy { get; set; }
         public DateTime ApprovedDate { get; set; }
 
+        [StringLength(50)]
+        public string? DisapprovedBy { get; set; }
+        public DateTime DisapprovedDate { get; set; }
+
+        [StringLength(50)]
         public string? ActivatedBy { get; set; }
         public DateTime ActivatedDate { get; set; }
 
+        [StringLength(50)]
         public string? DeactivatedBy { get; set; }
         public DateTime DeactivatedDate { get; set; }
 

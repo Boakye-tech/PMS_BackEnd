@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "W+e6RlSGY8fv6XMMf/MR2H2wBY7wdl0Zg8b3JMOVOeLSbpYCgvodPuAAI6afeZfF9di4jMpoir0SLDN0sGl5vQ==",
+  "dgSpecHash": "QSpwQrhUy3Bmjf3Cs/POPyLiG+KqxYGXqvxZQrC8ewnXsFz0RG3OWKU/FDpxXsvTL582yQH/l3DvY/AREPYHqw==",
   "success": true,
   "projectFilePath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Infrastructure/Modules.Users.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -56,6 +56,7 @@
     "/Users/macbook/.nuget/packages/microsoft.sqlserver.server/1.0.0/microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/stringrandomizer/1.1.0/stringrandomizer.1.1.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/system.clientmodel/1.0.0/system.clientmodel.1.0.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/system.codedom/4.4.0/system.codedom.4.4.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/system.collections.immutable/6.0.0/system.collections.immutable.6.0.0.nupkg.sha512",

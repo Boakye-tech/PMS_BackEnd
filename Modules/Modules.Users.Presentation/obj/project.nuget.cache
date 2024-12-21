@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "8/oSB8O7H5RTCa3F62TIRnjbarJMuCjVTtTduWYMDJctm88hCBQ6/4iiH3ull/KL9HsZjF7A0UvrMloo0zbxSQ==",
+  "dgSpecHash": "aQbf2r3ZFYOZVuw4w703TmWRF2XUs5OAHsnfguplrUC7rXF7mS+qGVPNsHL+ckV4ZKgh13Pv0s8ttlfMLKvVsA==",
   "success": true,
   "projectFilePath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/Modules.Users.Presentation.csproj",
   "expectedPackageFiles": [
@@ -70,6 +70,7 @@
     "/Users/macbook/.nuget/packages/serilog.sinks.console/5.0.0/serilog.sinks.console.5.0.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/serilog.sinks.debug/2.0.0/serilog.sinks.debug.2.0.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/serilog.sinks.file/5.0.0/serilog.sinks.file.5.0.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/stringrandomizer/1.1.0/stringrandomizer.1.1.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",

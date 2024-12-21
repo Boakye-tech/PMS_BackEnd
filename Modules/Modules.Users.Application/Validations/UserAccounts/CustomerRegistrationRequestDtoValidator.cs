@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Modules.Users.Application.Validations.Registrations
+namespace Modules.Users.Application.Validations.UserAccounts
 {
 	public class CustomerRegistrationRequestDtoValidator : AbstractValidator<CustomerRegistrationRequestDto>
     {

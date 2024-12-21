@@ -792,6 +792,10 @@
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.3.0, )"
+            },
+            "StringRandomizer": {
+              "target": "Package",
+              "version": "[1.1.0, )"
             }
           },
           "imports": [

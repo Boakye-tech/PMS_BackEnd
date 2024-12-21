@@ -405,6 +405,19 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
+      "StringRandomizer/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/StringRandomizer.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/StringRandomizer.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.ComponentModel.Annotations/5.0.0": {
         "type": "package",
         "compile": {
@@ -1082,6 +1095,19 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "StringRandomizer/1.1.0": {
+      "sha512": "0lj7DqLNZ2m4Yfz5KQ5yCwV/ZVbcHMHD4MfWg0119IjDRmbeaYnBMgsVIvJrxPb2EwCXgbu9GfBb3J/NEWh8mQ==",
+      "type": "package",
+      "path": "stringrandomizer/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/StringRandomizer.dll",
+        "lib/netstandard2.0/StringRandomizer.xml",
+        "stringrandomizer.1.1.0.nupkg.sha512",
+        "stringrandomizer.nuspec"
+      ]
+    },
     "System.ComponentModel.Annotations/5.0.0": {
       "sha512": "dMkqfy2el8A8/I76n2Hi1oBFEbG1SfxD2l5nhwXV3XjlnOmwxJlQbYpJH4W51odnU9sARCSAgv7S3CyAFMkpYg==",
       "type": "package",
@@ -1182,7 +1208,8 @@
     "net8.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "FluentValidation.AspNetCore >= 11.3.0",
-      "Modules.Users.Domain >= 1.0.0"
+      "Modules.Users.Domain >= 1.0.0",
+      "StringRandomizer >= 1.1.0"
     ]
   },
   "packageFolders": {
@@ -1221,11 +1248,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -1239,6 +1261,10 @@
           "FluentValidation.AspNetCore": {
             "target": "Package",
             "version": "[11.3.0, )"
+          },
+          "StringRandomizer": {
+            "target": "Package",
+            "version": "[1.1.0, )"
           }
         },
         "imports": [

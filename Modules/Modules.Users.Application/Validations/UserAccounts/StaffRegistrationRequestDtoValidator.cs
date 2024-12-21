@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace Modules.Users.Application.Validations.Registrations
+namespace Modules.Users.Application.Validations.UserAccounts
 {
 	public class StaffRegistrationRequestDtoValidator : AbstractValidator<StaffRegistrationRequestDto>
     {

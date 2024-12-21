@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Modules.Users.Infrastructure
 {
-	public class UserDbContext : IdentityDbContext<ApplicationIdentityUser>
+	public class UserDbContext : IdentityDbContext<ApplicationIdentityUser, ApplicationIdentityRole, string, IdentityUserClaim<string>, ApplicationIdentityUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
 	{
 		public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
         {
@@ -13,8 +13,9 @@ namespace Modules.Users.Infrastructure
 
 
         public DbSet<ApplicationIdentityUser> UserDetails { get; set; }
-        public DbSet<IdentityRole> roles { get; set; }
-        public DbSet<IdentityUserRole<string>> userRoles { get; set; }
+        public DbSet<ApplicationIdentityRole> roles { get; set; }
+        //public DbSet<IdentityUserRole<string>> userRoles { get; set; }
+        public DbSet<ApplicationIdentityUserRole> userRoles { get; set; }
 
         public DbSet<Department> Department { get; set; } 
         public DbSet<DepartmentUnit> DepartmentUnit { get; set; }
