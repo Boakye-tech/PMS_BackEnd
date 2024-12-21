@@ -68,8 +68,58 @@ public class CustomerController : ControllerBase
         {
             return StatusCode(500, ex.Message);
         }
-
     }
+
+    /// <summary>
+    /// reset the password for a forgotten registered user account via their registered email address
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/ResetPasswordViaEmailAddress")]
+    public async Task<IActionResult> ResetPasswordViaEmailAddress([FromBody] ResetCustomerPasswordEmailRequestDto resetPasswordRequest)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var changeResult = await _customerAccountService.ResetPasswordViaEmailAddress(resetPasswordRequest);
+                return Ok(changeResult);
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// reset the password for a forgotten registered user account via their registered mobile phone number
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/ResetPasswordViaPhoneNumber")]
+    public async Task<IActionResult> ResetPasswordViaPhoneNumber([FromBody] ResetCustomerPasswordPhoneRequestDto resetPasswordRequest)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var changeResult = await _customerAccountService.ResetPasswordViaMobilePhoneNumber(resetPasswordRequest);
+                return Ok(changeResult);
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+
+
 
 }
 

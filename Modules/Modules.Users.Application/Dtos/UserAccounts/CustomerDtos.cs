@@ -10,6 +10,7 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string MiddleName,
         string LastName,
         string PhoneNumber,
+        [EmailAddress]
         string EmailAddress,
         string LastReceiptNumber,
         string LastReceiptImage,
@@ -26,6 +27,18 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string ConfirmPassword
         );
 
+    public record CustomerLoginResponseDto() : LoginResponse;
+    public record ChangeCustomerPasswordRequestDto() : ChangePasswordRequest;
+
+    public record ResetCustomerPasswordEmailRequestDto : ResetPasswordRequest;
+    public record ResetCustomerPasswordPhoneRequestDto( string MobilePhoneNumber, int Token, string NewPassword, string ConfirmNewPassword);
+
+
+    public record CustomerEmailLoginRequestDto : LoginRequest;
+    public record CustomerPhoneLoginRequestDto(string MobilePhoneNumber, string Password);
+
+
+    /*
     public record ResetCustomerPasswordRequestDto : ResetPasswordRequest
     {
         [JsonIgnore]
@@ -38,7 +51,7 @@ namespace Modules.Users.Application.Dtos.UserAccounts
             set => base.EmailAddress = value;
         }
     }
-    public record ChangeCustomerPasswordRequestDto() : ChangePasswordRequest;
+    
     public record CustomerLoginRequestDto : LoginRequest
     {
         [JsonIgnore]
@@ -53,9 +66,8 @@ namespace Modules.Users.Application.Dtos.UserAccounts
             get => base.EmailAddress!;
             set => base.EmailAddress = value;
         }
-    };
-
-    public record CustomerLoginResponseDto() : LoginResponse;
+    }
+    */
 
 }
 

@@ -10,7 +10,8 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "FluentValidation.AspNetCore": "11.3.0",
-          "Modules.Users.Domain": "1.0.0"
+          "Modules.Users.Domain": "1.0.0",
+          "StringRandomizer": "1.1.0"
         },
         "runtime": {
           "Modules.Users.Application.dll": {}
@@ -214,6 +215,14 @@
         }
       },
       "Microsoft.Extensions.Primitives/8.0.0": {},
+      "StringRandomizer/1.1.0": {
+        "runtime": {
+          "lib/netstandard2.0/StringRandomizer.dll": {
+            "assemblyVersion": "1.0.1.0",
+            "fileVersion": "1.0.1.0"
+          }
+        }
+      },
       "System.ComponentModel.Annotations/5.0.0": {},
       "Modules.Users.Domain/1.0.0": {
         "dependencies": {
@@ -401,6 +410,13 @@
       "sha512": "sha512-bXJEZrW9ny8vjMF1JV253WeLhpEVzFo1lyaZu1vQ4ZxWUlVvknZ/+ftFgVheLubb4eZPSwwxBeqS1JkCOjxd8g==",
       "path": "microsoft.extensions.primitives/8.0.0",
       "hashPath": "microsoft.extensions.primitives.8.0.0.nupkg.sha512"
+    },
+    "StringRandomizer/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0lj7DqLNZ2m4Yfz5KQ5yCwV/ZVbcHMHD4MfWg0119IjDRmbeaYnBMgsVIvJrxPb2EwCXgbu9GfBb3J/NEWh8mQ==",
+      "path": "stringrandomizer/1.1.0",
+      "hashPath": "stringrandomizer.1.1.0.nupkg.sha512"
     },
     "System.ComponentModel.Annotations/5.0.0": {
       "type": "package",

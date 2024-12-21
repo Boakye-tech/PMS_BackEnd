@@ -67,7 +67,30 @@ public class StaffController : ControllerBase
         {
             return StatusCode(500, ex.Message);
         }
+    }
 
+    /// <summary>
+    /// reset the password for a forgotten registered user account
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/ResetPassword")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetStaffPasswordRequestDto resetPasswordRequest)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var changeResult = await _staffAccountService.ResetPassword(resetPasswordRequest);
+                return Ok(changeResult);
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
     }
 
     //----------------------DEPARTMENT------------
