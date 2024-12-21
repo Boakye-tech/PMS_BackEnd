@@ -5,8 +5,9 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 	public interface IPartnerBankAccountService
 	{
         Task<RegistrationResponse> UserRegistration(PartnerBankRegistrationRequestDto details);
-        //Task<bool> ResetPassword(ResetUserPasswordRequest resetUserPassword);
-        //Task<string> UserBearerToken(UserLoginRequest userLoginDetails);
+        Task<string> SendVerificationToken(PartnerBankTokenRequestDto value);
+        Task<RegistrationResponse> ResetPassword(PartnerBankResetPasswordRequestDto resetUserPassword);
+        Task<string> GetBearerToken(PartnerBankLoginRequestDto userLoginDetails);
 
 
         ////Task<bool> ApprovePartnerAccount(UserRequestParameter mobileNumber);

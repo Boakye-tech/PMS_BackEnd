@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Modules.Users.Application.Dtos.Entities;
 using Modules.Users.Application.Dtos.UserAccounts;
 using Modules.Users.Application.Interfaces;
@@ -13,33 +14,155 @@ namespace Modules.Users.Presentation.Controllers;
 [Route("api/[controller]")]
 public class StaffController : ControllerBase
 {
-    IStaffAccouuntService _staffAccountService;
+    IStaffAccountService _staffAccountService;
+    IDepartmentService _departmentService;
+    IDepartmentUnitService _departmentUnitService;
 
-    public StaffController(IStaffAccouuntService staffAccountService)
+    public StaffController(IStaffAccountService staffAccountService, IDepartmentService departmentService, IDepartmentUnitService departmentUnitService)
     {
         _staffAccountService = staffAccountService;
+        _departmentService = departmentService;
+        _departmentUnitService = departmentUnitService;
     }
 
     [HttpPost]
     [Route("Account/Register")]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] StaffRegistrationRequestDto values)
     {
-        if (!ModelState.IsValid)
-        {
-            return Ok(await _staffAccountService.UserRegistration(values));
-        }
 
-        return BadRequest();
-        //try
-        //{
-        //    return Ok(await _partnerBankAccountService.UserRegistration(values));
-        //}
-        //catch (Exception ex)
-        //{
-        //    return StatusCode(500, ex.InnerException!.Message);
-        //}
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(await _staffAccountService.UserRegistration(values));
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
     }
 
+    /// <summary>
+    /// Changes the password of a registered user account
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/ChangePassword")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangeStaffPasswordRequestDto changeUserPasswordRequest)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var changeResult = await _staffAccountService.ChangePassword(changeUserPasswordRequest);
+                return Ok(changeResult);
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+
+    }
+
+    //----------------------DEPARTMENT------------
+    [HttpGet]
+    [Route("Setup/GetDepartments")]
+    public async Task<ActionResult<IEnumerable<DepartmentReadDto>>> GetDepartments()
+    {
+        return Ok(await _departmentService.GetDepartmentAsync());
+    }
+
+    [HttpGet]
+    [Route("Setup/GetDepartment/{value}")]
+    public async Task<ActionResult<DepartmentReadDto>> GetDepartment(string value)
+    {
+        return Ok(await _departmentService.GetDepartmentAsync(value));
+    }
+
+    [HttpGet]
+    [Route("Setup/GetDepartmentById/{departmentId}")]
+    public async Task<ActionResult<DepartmentReadDto>> GetDepartmentById(int departmentId)
+    {
+        return Ok(await _departmentService.GetDepartmentAsync(departmentId));
+    }
+
+    [HttpPost]
+    [Route("CreateDepartment")]
+    public async Task<ActionResult<DepartmentReadDto>> CreateDepartment([FromBody] DepartmentCreateDto values)
+    {
+        try
+        {
+            return Ok(await _departmentService.AddDepartmentAsync(values));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdateDepartment")]
+    public async Task<ActionResult<DepartmentReadDto>> UpdateDepartment([FromBody] DepartmentUpdateDto values)
+    {
+        return Ok(await _departmentService.UpdateDepartmentAsync(values));
+    }
+
+    [HttpDelete("DeleteDepartment/{departmentId}")]
+    public void DeleteDepartment(int departmentId)
+    { }
+
+    //----------------------DEPARTMENT UNIT------------
+    [HttpGet]
+    [Route("Setup/GetDepartmentUnits")]
+    public async Task<ActionResult<IEnumerable<DepartmentUnitReadDto>>> GetDepartmentUnits()
+    {
+        return Ok(await _departmentUnitService.GetDepartmentUnitAsync());
+    }
+
+    [HttpGet]
+    [Route("Setup/GetDepartmentUnit/{value}")]
+    public async Task<ActionResult<DepartmentReadDto>> GetDepartmentUnit(string value)
+    {
+        return Ok(await _departmentUnitService.GetDepartmentUnitAsync(value));
+    }
+
+    [HttpGet]
+    [Route("Setup/GetDepartmentUnitById/{departmentUnitId}")]
+    public async Task<ActionResult<DepartmentReadDto>> GetDepartmentUnitById(int departmentUnitId)
+    {
+        return Ok(await _departmentUnitService.GetDepartmentUnitAsync(departmentUnitId));
+    }
+
+    [HttpPost]
+    [Route("CreateDepartmentUnit")]
+    public async Task<ActionResult<DepartmentUnitReadDto>> CreateDepartmentUnit([FromBody] DepartmentUnitCreateDto values)
+    {
+        try
+        {
+            return Ok(await _departmentUnitService.AddDepartmentUnitAsync(values));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdateDepartmentUnit")]
+    public async Task<ActionResult<DepartmentReadDto>> UpdateDepartmentUnit([FromBody] DepartmentUnitUpdateDto values)
+    {
+        return Ok(await _departmentUnitService.UpdateDepartmentUnitAsync(values));
+    }
+
+    [HttpDelete("DeleteDepartment/{departmentUnitId}")]
+    public void DeleteDepartmentUnit(int departmentUnitId)
+    { }
 
 
 }

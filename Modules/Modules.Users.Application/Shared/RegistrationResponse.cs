@@ -3,18 +3,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Users.Application.Shared
 {
-	public class RegistrationResponse
+
+	public record RegistrationSuccessResponse : BaseResponse
 	{
-        [Required]
-        public int StatusCode { get; set; }
+        public required string UserId { get; set; }
 
-        [Required]
-        public string? StatusMessage { get; set; }
-
-        //[Required]
-        public string? UserId { get; set; }
-
-        public string? UserEmailAddress { get; set; }
+        public required string UserEmailAddress { get; set; }
     }
+
+    public record RegistrationErrorResponse : BaseResponse
+    {
+    }
+
+    public record RegistrationResponse
+    {
+        public bool IsSuccess { get; set; }
+        public RegistrationSuccessResponse? SuccessResponse { get; set; }
+        public RegistrationErrorResponse? ErrorResponse { get; set; }
+    }
+
 }
 

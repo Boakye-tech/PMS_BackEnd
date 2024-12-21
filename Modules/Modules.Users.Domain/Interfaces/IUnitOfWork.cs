@@ -8,6 +8,7 @@ namespace Modules.Users.Domain.Interfaces
         IDepartmentRepository Department { get; }
         IDepartmentUnitRepository DepartmentUnit { get; }
         ITokenStoreRepository TokenStore { get; }
+        IUserRepository Users { get; }
 
         Task<int> Complete();
     }

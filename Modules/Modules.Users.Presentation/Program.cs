@@ -1,4 +1,8 @@
 ﻿
+
+using Microsoft.AspNetCore.Identity;
+using Modules.Users.Domain.Entities;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Add Serilog Configuration
@@ -36,6 +40,22 @@ if (builder.Environment.IsProduction())
 
 builder.Services.AddUserModule(builder.Configuration);
 
+builder.Services.AddIdentity<ApplicationIdentityUser, ApplicationIdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+}).AddEntityFrameworkStores<UserDbContext>()
+  .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<ValidationService>();
+builder.Services.AddScoped<IAdministrationService, AdministrationService>();
+builder.Services.AddScoped<IStaffAccountService, StaffAccountService>();
+builder.Services.AddScoped<IPartnerBankAccountService, PartnerBankAccountService>();
+builder.Services.AddScoped<ICustomerAccountService, CustomerAccountService>();
+
 
 
 //register global exception handler
@@ -49,7 +69,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<DepartmentDtoValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<DepartmentUnitDtoValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<TokenStoreDtoValidator>();
 
-
+builder.Services.AddValidatorsFromAssemblyContaining<RolesDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RolesUpdateDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RolesDeleteDtoValidator>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -15,13 +15,14 @@ namespace Modules.Users.Infrastructure.Repositories
             Department = new DepartmentRepository(dbContext);
             DepartmentUnit = new DepartmentUnitRepository(dbContext);
             TokenStore = new TokenStoreRepository(dbContext);
+            Users = new UserRepository(dbContext);
         }
 
 
         public IDepartmentRepository Department { get; private set; }
         public IDepartmentUnitRepository DepartmentUnit { get; private set; }
         public ITokenStoreRepository TokenStore { get; private set; }
-
+        public IUserRepository Users { get; private set; }
 
         public Task<int> Complete()
         {

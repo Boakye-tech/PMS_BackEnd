@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/aWZIcTpN1UBV3xPLZcqJ1qfN41zxD6aPAi3VhUl3aOAZlgf9/WNTMZjXkbdOQwvsHNzJ8Fpzh9vVN+xN+nYyg==",
+  "dgSpecHash": "5sFYXGNRczYcJYEqSV2aCTU+FIcrOHH+UJ5isLfXIsgaYDuEsGTec5MhNlNBMwcuSXnJtoyaEZaHoM+2AFa6mA==",
   "success": true,
   "projectFilePath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Application/Modules.Users.Application.csproj",
   "expectedPackageFiles": [
@@ -28,6 +28,7 @@
     "/Users/macbook/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/microsoft.extensions.options/8.0.2/microsoft.extensions.options.8.0.2.nupkg.sha512",
     "/Users/macbook/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/stringrandomizer/1.1.0/stringrandomizer.1.1.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512"
   ],
   "logs": []

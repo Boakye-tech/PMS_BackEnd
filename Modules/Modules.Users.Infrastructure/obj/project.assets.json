@@ -1049,6 +1049,19 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
+      "StringRandomizer/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/StringRandomizer.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/StringRandomizer.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.ClientModel/1.0.0": {
         "type": "package",
         "dependencies": {
@@ -1690,7 +1703,8 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "FluentValidation.AspNetCore": "11.3.0",
-          "Modules.Users.Domain": "1.0.0"
+          "Modules.Users.Domain": "1.0.0",
+          "StringRandomizer": "1.1.0"
         },
         "compile": {
           "bin/placeholder/Modules.Users.Application.dll": {}
@@ -3300,6 +3314,19 @@
         "mono.texttemplating.nuspec"
       ]
     },
+    "StringRandomizer/1.1.0": {
+      "sha512": "0lj7DqLNZ2m4Yfz5KQ5yCwV/ZVbcHMHD4MfWg0119IjDRmbeaYnBMgsVIvJrxPb2EwCXgbu9GfBb3J/NEWh8mQ==",
+      "type": "package",
+      "path": "stringrandomizer/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/StringRandomizer.dll",
+        "lib/netstandard2.0/StringRandomizer.xml",
+        "stringrandomizer.1.1.0.nupkg.sha512",
+        "stringrandomizer.nuspec"
+      ]
+    },
     "System.ClientModel/1.0.0": {
       "sha512": "I3CVkvxeqFYjIVEP59DnjbeoGNfo/+SZrCLpRz2v/g0gpCHaEMPtWSY0s9k/7jR1rAsLNg2z2u1JRB76tPjnIw==",
       "type": "package",
@@ -4556,11 +4583,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {

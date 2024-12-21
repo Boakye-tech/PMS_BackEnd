@@ -24,7 +24,7 @@ public class PartnerBankController : ControllerBase
     [Route("Account/Register")]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] PartnerBankRegistrationRequestDto values)
     {
-        if (!ModelState.IsValid)
+        if (ModelState.IsValid)
         {
             return Ok(await _partnerBankAccountService.UserRegistration(values));
         }
