@@ -1,14 +1,17 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Modules.Users.Application.Dtos.Administration
 {
 	public abstract record ConfirmUserAccountDto
 	{
-		public ConfirmUserAccountDto(){ }
+        public int UserAccountType { get; set; }
 
-		int UserAccountType;
-		string? EmailAddress;
-		int status;
-	};
+		[EmailAddress]
+        public string? EmailAddress { get; set; }
+
+        public int status { get; set; }
+    };
 	
 }
 

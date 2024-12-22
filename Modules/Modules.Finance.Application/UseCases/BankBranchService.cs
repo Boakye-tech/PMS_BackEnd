@@ -13,7 +13,7 @@ namespace Modules.Finance.Application.UseCases
             _mapper = mapper;
         }
 
-        public async Task<BankBranchReadDto> AddBankBranchAsync(BankBranchCreateDto values)
+        public async Task<BankBranchReadDto> CreateBankBranchAsync(BankBranchCreateDto values)
         {
             BankBranch branch = new(values.BankId, values.BranchId, values.BranchName!)
             {

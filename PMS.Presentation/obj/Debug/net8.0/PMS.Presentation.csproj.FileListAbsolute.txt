@@ -317,3 +317,4 @@
 /Users/macbook/Projects/PropertyManagementSolution/PMS.Presentation/bin/Debug/net8.0/Modules.Users.Application.pdb
 /Users/macbook/Projects/PropertyManagementSolution/PMS.Presentation/bin/Debug/net8.0/Modules.Users.Domain.pdb
 /Users/macbook/Projects/PropertyManagementSolution/PMS.Presentation/bin/Debug/net8.0/Modules.Users.Infrastructure.pdb
+/Users/macbook/Projects/PropertyManagementSolution/PMS.Presentation/bin/Debug/net8.0/StringRandomizer.dll
