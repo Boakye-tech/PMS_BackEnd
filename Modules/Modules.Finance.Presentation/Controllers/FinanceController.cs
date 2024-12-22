@@ -103,7 +103,7 @@ namespace Modules.Finance.Presentation.Controllers
         {
             try
             {
-                return Ok(await _bankBranchService.AddBankBranchAsync(values));
+                return Ok(await _bankBranchService.CreateBankBranchAsync(values));
             }
             catch (Exception ex)
             {

@@ -393,10 +393,10 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<DateTime>("ApprovedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
+                    b.Property<string>("AssignedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime>("AssignedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedBy")
@@ -445,6 +445,9 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasKey("DepartmentId");
 
+                    b.HasIndex("DepartmentName")
+                        .IsUnique();
+
                     b.ToTable("Department");
                 });
 
@@ -484,7 +487,164 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasKey("UnitId");
 
+                    b.HasIndex("UnitName")
+                        .IsUnique();
+
                     b.ToTable("DepartmentUnit");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.MenuActions", b =>
+                {
+                    b.Property<int>("ActionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActionId"));
+
+                    b.Property<string>("ActionName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("ActionId");
+
+                    b.HasIndex("ActionName")
+                        .IsUnique();
+
+                    b.ToTable("MenuActions");
+
+                    b.HasData(
+                        new
+                        {
+                            ActionId = 1,
+                            ActionName = "No Access",
+                            Description = ""
+                        },
+                        new
+                        {
+                            ActionId = 2,
+                            ActionName = "Create",
+                            Description = ""
+                        },
+                        new
+                        {
+                            ActionId = 3,
+                            ActionName = "Read",
+                            Description = ""
+                        },
+                        new
+                        {
+                            ActionId = 4,
+                            ActionName = "Update",
+                            Description = ""
+                        },
+                        new
+                        {
+                            ActionId = 5,
+                            ActionName = "Delete",
+                            Description = ""
+                        },
+                        new
+                        {
+                            ActionId = 6,
+                            ActionName = "Approve",
+                            Description = ""
+                        },
+                        new
+                        {
+                            ActionId = 7,
+                            ActionName = "Access",
+                            Description = ""
+                        });
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.Menus", b =>
+                {
+                    b.Property<int>("MenuId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("MenuName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("MenuId");
+
+                    b.HasIndex("MenuName")
+                        .IsUnique();
+
+                    b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.RoleMenuActions", b =>
+                {
+                    b.Property<int>("RoleMenuActionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleMenuActionId"));
+
+                    b.Property<int>("ActionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("SubMenuId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleMenuActionId");
+
+                    b.HasIndex("RoleId", "MenuId", "ActionId")
+                        .IsUnique();
+
+                    b.ToTable("RoleMenuActions");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.SubMenus", b =>
+                {
+                    b.Property<int>("SubMenuId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubMenuId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubMenuName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("SubMenuId");
+
+                    b.HasIndex("SubMenuName")
+                        .IsUnique();
+
+                    b.ToTable("SubMenus");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.TokenStore", b =>
@@ -520,6 +680,10 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("TokenStoreId");
+
+                    b.HasIndex("Token")
+                        .IsUnique()
+                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("TokenStore");
                 });
