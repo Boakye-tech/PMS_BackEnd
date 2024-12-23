@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Modules.Users.Application.Dtos.Administration;
-using Modules.Users.Application.Dtos.UserAccounts;
-using Modules.Users.Application.Interfaces.UserAccounts;
-using Modules.Users.Application.Shared;
+﻿// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Modules.Users.Presentation.Controllers
 {
@@ -19,12 +7,58 @@ namespace Modules.Users.Presentation.Controllers
     [Route("api/[controller]")]
     public class AdministrationController : ControllerBase
     {
-        IAdministrationService _adminService;
+        readonly IAdministrationService _adminService;
+        readonly IMenuService _menuService;
 
-        public AdministrationController(IAdministrationService adminService)
+        public AdministrationController(IAdministrationService adminService, IMenuService menuService)
         {
             _adminService = adminService;
+            _menuService = menuService;
         }
+
+        //-----MENUS----
+
+        [HttpGet]
+        [Route("GetMenuActions")]
+        public async Task<IEnumerable<MenuActionsDto>> GetMenuActions()
+        {
+            return await _menuService.GetActions();
+        }
+
+        [HttpGet]
+        [Route("GetMenus")]
+        public async Task<IEnumerable<MenusDto>> GetMenus()
+        {
+            return await _menuService.GetMenus();
+        }
+
+        [HttpPost]
+        [Route("CreateMenus")]
+        public async Task<ActionResult> CreateMenus([FromBody] MenusDto values)
+        {
+            var result = await _menuService.CreateMenu(values);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetSubMenus")]
+        public async Task<IEnumerable<SubMenusDto>> GetSubMenus()
+        {
+            return await _menuService.GetSubMenus();
+        }
+
+        [HttpPost]
+        [Route("CreateSubMenus")]
+        public async Task<ActionResult> CreateSubMenus([FromBody] SubMenusCreateDto values)
+        {
+            var result = await _menuService.CreateSubMenu(values);
+            return Ok(result);
+        }
+        //----
+
+
+
+
 
         /// <summary>
         /// Returns all system user roles
@@ -32,14 +66,15 @@ namespace Modules.Users.Presentation.Controllers
         // GET: api/values
         [HttpGet]
         [Route("GetUserRoles")]
-        public IEnumerable<IdentityRole> GetUserRoles()
+        //public IEnumerable<IdentityRole> GetUserRoles()
+        public IEnumerable<RolesDto> GetUserRoles()
         {
             return _adminService.GetUserRoles();
         }
 
         [HttpPost]
         [Route("CreateUserRole")]
-        public async Task<ActionResult> CreateUserRole([FromBody] RolesDto values)
+        public async Task<ActionResult> CreateUserRole([FromBody] RolesCreateDto values)
         {
             var result = await _adminService.CreateUserRole(values);
             

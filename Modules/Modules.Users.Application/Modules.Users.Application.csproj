@@ -20,6 +20,7 @@
     <None Remove="Validations\UserAccounts\" />
     <None Remove="Dtos\Administration\" />
     <None Remove="Helpers\" />
+    <None Remove="Dtos\Entities\Menu\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -35,6 +36,7 @@
     <Folder Include="Validations\UserAccounts\" />
     <Folder Include="Dtos\Administration\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Dtos\Entities\Menu\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Users.Domain\Modules.Users.Domain.csproj" />

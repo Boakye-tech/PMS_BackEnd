@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Modules.Users.Domain.Interfaces.Entities.Menu;
+using Modules.Users.Infrastructure.Repositories.Entities.Menu;
 
 namespace Modules.Users.Infrastructure.Repositories
 {
@@ -16,6 +18,11 @@ namespace Modules.Users.Infrastructure.Repositories
             DepartmentUnit = new DepartmentUnitRepository(dbContext);
             TokenStore = new TokenStoreRepository(dbContext);
             Users = new UserRepository(dbContext);
+
+            MenuActions = new MenuActionsRepository(dbContext);
+            RoleMenuActions = new RoleMenuActionsRepository(dbContext);
+            Menus = new MenusRepository(dbContext);
+            SubMenus = new SubMenusRepository(dbContext);
         }
 
 
@@ -23,6 +30,11 @@ namespace Modules.Users.Infrastructure.Repositories
         public IDepartmentUnitRepository DepartmentUnit { get; private set; }
         public ITokenStoreRepository TokenStore { get; private set; }
         public IUserRepository Users { get; private set; }
+
+        public IMenuActionsRepository MenuActions { get; private set; }
+        public IRoleMenuActionsRepository RoleMenuActions { get; private set; }
+        public IMenusRepository Menus { get; private set; }
+        public ISubMenusRepository SubMenus { get; private set; }
 
         public Task<int> Complete()
         {

@@ -1,9 +1,4 @@
-﻿
-
-using Microsoft.AspNetCore.Identity;
-using Modules.Users.Domain.Entities;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 //Add Serilog Configuration
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
@@ -40,38 +35,43 @@ if (builder.Environment.IsProduction())
 
 builder.Services.AddUserModule(builder.Configuration);
 
-builder.Services.AddIdentity<ApplicationIdentityUser, ApplicationIdentityRole>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = true;
-    options.User.RequireUniqueEmail = true;
-    options.Password.RequiredLength = 8;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = true;
-}).AddEntityFrameworkStores<UserDbContext>()
-  .AddDefaultTokenProviders();
+//builder.Services.AddIdentity<ApplicationIdentityUser, ApplicationIdentityRole>(options =>
+//{
+//    options.SignIn.RequireConfirmedAccount = true;
+//    options.User.RequireUniqueEmail = true;
+//    options.Password.RequiredLength = 8;
+//    options.Password.RequireNonAlphanumeric = true;
+//    options.Password.RequireUppercase = true;
+//}).AddEntityFrameworkStores<UserDbContext>()
+//  .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<ValidationService>();
-builder.Services.AddScoped<IAdministrationService, AdministrationService>();
-builder.Services.AddScoped<IStaffAccountService, StaffAccountService>();
-builder.Services.AddScoped<IPartnerBankAccountService, PartnerBankAccountService>();
-builder.Services.AddScoped<ICustomerAccountService, CustomerAccountService>();
+//builder.Services.AddScoped<ValidationService>();
+
+//builder.Services.AddScoped<IAdministrationService, AdministrationService>();
+//builder.Services.AddScoped<IStaffAccountService, StaffAccountService>();
+//builder.Services.AddScoped<IPartnerBankAccountService, PartnerBankAccountService>();
+//builder.Services.AddScoped<ICustomerAccountService, CustomerAccountService>();
+//builder.Services.AddScoped<IMenuService, MenuService>();
 
 
-
-//register global exception handler
-builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
-builder.Services.AddProblemDetails();
+////register global exception handler
+//builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
+//builder.Services.AddProblemDetails();
 
 builder.Services.AddControllers();
 
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<DepartmentDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<DepartmentUnitDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<TokenStoreDtoValidator>();
+//builder.Services.AddFluentValidationAutoValidation();
+//builder.Services.AddValidatorsFromAssemblyContaining<DepartmentDtoValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<DepartmentUnitDtoValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<TokenStoreDtoValidator>();
 
-builder.Services.AddValidatorsFromAssemblyContaining<RolesDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<RolesUpdateDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<RolesDeleteDtoValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<RolesDtoValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<RolesUpdateDtoValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<RolesDeleteDtoValidator>();
+
+//builder.Services.AddValidatorsFromAssemblyContaining<RoleMenuActionsDtoValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<MenusDtoValidator>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

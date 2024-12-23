@@ -1,9 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Validations;
 
@@ -34,7 +29,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             //_deleteValidator = deleteValidator;
         }
 
-        public async Task<IdentityResult> CreateUserRole(RolesDto role)
+        public async Task<IdentityResult> CreateUserRole(RolesCreateDto role)
         {
             //throw new NotImplementedException();
             //ValidationResult validationResult = await _validator.ValidateAsync(role);
@@ -46,9 +41,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 ApplicationIdentityRole identityRole = new ApplicationIdentityRole
                 {
                     Name = role.RoleName,
-                    CreatedBy = "",
-                    CreatedOn = DateTime.UtcNow
-                    
+                    CreatedBy = role.CreatedBy,
+                    CreatedOn = DateTime.UtcNow,
+                    Status = 0
                 };
 
                 IdentityResult result = await _roleManager.CreateAsync(identityRole);
@@ -90,6 +85,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 identityRole!.Name = role.RoleName;
                 identityRole.NormalizedName = role.RoleName!.ToUpper();
+                identityRole.ModifiedBy = role.ModifiedBy;
 
                 IdentityResult result = await _roleManager.UpdateAsync(identityRole);
 
@@ -99,9 +95,12 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return null!;
         }
 
-        public IEnumerable<IdentityRole> GetUserRoles()
+        //public IEnumerable<IdentityRole> GetUserRoles()
+        public IEnumerable<RolesDto> GetUserRoles()
         {
-            return _roleManager.Roles;
+            //var result = _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!)).ToList();
+
+            return _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!,role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, role.Status)).ToList();
         }
 
         public void VerifyUserAccount(VerifyUserAccountDto accountVerification)
