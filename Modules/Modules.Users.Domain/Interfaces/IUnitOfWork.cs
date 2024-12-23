@@ -1,5 +1,6 @@
 ﻿using System;
 using Modules.Users.Domain.Interfaces.Entities;
+using Modules.Users.Domain.Interfaces.Entities.Menu;
 
 namespace Modules.Users.Domain.Interfaces
 {
@@ -9,6 +10,11 @@ namespace Modules.Users.Domain.Interfaces
         IDepartmentUnitRepository DepartmentUnit { get; }
         ITokenStoreRepository TokenStore { get; }
         IUserRepository Users { get; }
+
+        IMenuActionsRepository MenuActions {get; }
+        IRoleMenuActionsRepository RoleMenuActions { get; }
+        IMenusRepository Menus { get; }
+        ISubMenusRepository SubMenus { get; }
 
         Task<int> Complete();
     }

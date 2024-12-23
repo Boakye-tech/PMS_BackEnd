@@ -28,11 +28,13 @@
     <None Remove="Repositories\Entities\" />
     <None Remove="Configuration\" />
     <None Remove="Extensions\" />
+    <None Remove="Repositories\Entities\Menu\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Entities\" />
     <Folder Include="Configuration\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Repositories\Entities\Menu\" />
   </ItemGroup>
 </Project>

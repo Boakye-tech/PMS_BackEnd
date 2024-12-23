@@ -17,11 +17,13 @@
     <None Remove="Interfaces\" />
     <None Remove="Interfaces\Entities\" />
     <None Remove="Entities\Menu\" />
+    <None Remove="Interfaces\Entities\Menu\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Interfaces\Entities\" />
     <Folder Include="Entities\Menu\" />
+    <Folder Include="Interfaces\Entities\Menu\" />
   </ItemGroup>
 </Project>
