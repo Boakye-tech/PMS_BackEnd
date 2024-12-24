@@ -2,6 +2,8 @@
 using System.Data;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Dtos.Entities.Menu;
 using Modules.Users.Application.Validations;
 using Modules.Users.Domain.Entities.Menu;
@@ -12,6 +14,8 @@ namespace Modules.Users.Application.UseCases
     {
         readonly IUnitOfWork _unitOfWork;
         readonly IMapper _mapper;
+
+        readonly UserManager<ApplicationIdentityUser> _userManager;
 
         private readonly ValidationService _validationService;
 
@@ -26,6 +30,21 @@ namespace Modules.Users.Application.UseCases
         public void AssignMenuActionsToRole()
         {
             throw new NotImplementedException();
+        }
+
+        public async void AssignUserRole(AssignUserRoleDto assignUserRole)
+        {
+            //throw new NotImplementedException();
+            var resultUser = _userManager.FindByEmailAsync(assignUserRole.EmailAddress).Result;
+            if (resultUser != null)
+            {
+                var resultRole = await _userManager.AddToRoleAsync(resultUser, assignUserRole.RoleName);
+
+                if (resultRole.Succeeded)
+                    return Ok(new { Status = resultRole.ToString() });
+                else
+                    return BadRequest(new { Status = resultRole.Errors });
+            }
         }
 
         public async Task<MenusDto> CreateMenu(MenusDto menus)
@@ -77,9 +96,44 @@ namespace Modules.Users.Application.UseCases
             return _mapper.Map<IEnumerable<MenuActionsDto>>(response);
         }
 
-        public Task<IEnumerable<MenusWithActionsDto>> GetMenuActions()
+        public async Task<IEnumerable<MenusWithActionsDto>> GetMenuActions()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var _actions = await _unitOfWork.MenuActions!.GetAll();
+
+            var result =
+                (from menu in await _unitOfWork.Menus.GetAll()
+                 join submenu in await _unitOfWork.SubMenus.GetAll()
+                 on menu.MenuId equals submenu.MenuId into submenuGroup
+                 from submenu in submenuGroup.DefaultIfEmpty() // LEFT JOIN
+                 from action in _actions  // CROSS JOIN
+                 group new { menu, submenu, action }
+                 by new { menu.MenuName, SubmenuName = submenu != null ? submenu.SubMenuName : null } into grouped
+                 select new MenusWithActionsDto
+                 (0,
+                  grouped.Key.MenuName,
+                  grouped.Key.SubmenuName,
+                  grouped.Any(g => g.action.ActionName == "No Access") ? "" : null!,
+                  grouped.Any(g => g.action.ActionName == "Create") ? "" : null!,
+                  grouped.Any(g => g.action.ActionName == "Read") ? "" : null!,
+                  grouped.Any(g => g.action.ActionName == "Update") ? "" : null!,
+                  grouped.Any(g => g.action.ActionName == "Delete") ? "" : null!,
+                  grouped.Any(g => g.action.ActionName == "Approve") ? "" : null!
+                 )).ToList();
+            //select new MenusWithActionsDto
+            //{
+            //    MenuId = 0,
+            //    MenuName = grouped.Key.MenuName,
+            //    SubmenuName = grouped.Key.SubmenuName,
+            //    NoAccess = grouped.Any(g => g.action.ActionName == "No Access") ? "" : null,
+            //    Create = grouped.Any(g => g.action.ActionName == "Create") ? "" : null,
+            //    Read = grouped.Any(g => g.action.ActionName == "Read") ? "" : null,
+            //    Update = grouped.Any(g => g.action.ActionName == "Update") ? "" : null,
+            //    Delete = grouped.Any(g => g.action.ActionName == "Delete") ? "" : null,
+            //    Approve = grouped.Any(g => g.action.ActionName == "Approve") ? "" : null
+            //}).ToList();
+
+            return result!;
         }
 
         public async Task<IEnumerable<MenusDto>> GetMenus()
