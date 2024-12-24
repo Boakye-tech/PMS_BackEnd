@@ -1,4 +1,5 @@
 ﻿using System;
+using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Dtos.Entities.Menu;
 
 namespace Modules.Users.Application.Interfaces
@@ -24,6 +25,7 @@ namespace Modules.Users.Application.Interfaces
         void GetRolesMenusActions();
 
         void AssignMenuActionsToRole();
+        void AssignUserRole(AssignUserRoleDto assignUserRole);
     }
 }
 

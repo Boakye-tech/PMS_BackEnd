@@ -171,3 +171,4 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/obj/Debug/net8.0/Modules.Users.Presentation.genruntimeconfig.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/obj/Debug/net8.0/ref/Modules.Users.Presentation.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/StringRandomizer.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

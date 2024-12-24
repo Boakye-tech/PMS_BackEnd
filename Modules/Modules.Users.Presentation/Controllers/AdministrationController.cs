@@ -1,6 +1,8 @@
 ﻿// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 
+using Modules.Users.Application.Dtos.Entities.Menu;
+
 namespace Modules.Users.Presentation.Controllers
 {
     [ApiController]
@@ -17,10 +19,17 @@ namespace Modules.Users.Presentation.Controllers
         }
 
         //-----MENUS----
-
         [HttpGet]
         [Route("GetMenuActions")]
-        public async Task<IEnumerable<MenuActionsDto>> GetMenuActions()
+        public async Task<IEnumerable<MenusWithActionsDto>> GetMenuActions()
+        {
+            return await _menuService.GetMenuActions();
+        }
+
+
+        [HttpGet]
+        [Route("GetUserActions")]
+        public async Task<IEnumerable<MenuActionsDto>> GetUserActions()
         {
             return await _menuService.GetActions();
         }
@@ -129,9 +138,33 @@ namespace Modules.Users.Presentation.Controllers
             return BadRequest(result);
         }
 
+        /// <summary>
+        /// assigns an existing role to an existing user
+        /// </summary>
         [HttpPost]
         [Route("AssignRoleToUser")]
         public async Task<ActionResult> AssignRoleToUser([FromBody] AssignUserRoleDto values)
+        {
+            //var result = await _adminService.CreateUserRole(values);
+
+            //if (result.Succeeded)
+            //{
+            //    return Ok(result.ToString());
+            //}
+
+            //if (!result.Succeeded)
+            //{
+            //    return BadRequest(result.Errors);
+            //}
+
+            //return BadRequest(result);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("AssignPermissionsToRole")]
+        public async Task<ActionResult> AssignPermissionsToRole([FromBody] RolesPermissionsDto values)
         {
             //var result = await _adminService.CreateUserRole(values);
 
