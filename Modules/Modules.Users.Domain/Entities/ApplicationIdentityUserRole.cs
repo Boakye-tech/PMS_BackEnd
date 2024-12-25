@@ -11,6 +11,7 @@ namespace Modules.Users.Domain.Entities
         public string? ModifiedBy { get; set; }
         public DateTime ApprovedOn { get; set; }
         public string? ApprovedBy { get; set; }
+        public short Status { get; set; }
 
         public ApplicationIdentityUserRole() : base()
 		{

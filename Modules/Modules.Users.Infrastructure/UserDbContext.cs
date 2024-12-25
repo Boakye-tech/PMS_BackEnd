@@ -55,7 +55,7 @@ namespace Modules.Users.Infrastructure
                 .IsUnique(true);
 
             builder.Entity<RoleMenuActions>()
-               .HasIndex(rma => new { rma.RoleId, rma.MenuId, rma.ActionId })
+               .HasIndex(rma => new { rma.RoleId, rma.SubMenuId })
                .IsUnique(true);
 
             builder.ApplyConfiguration(new MenuActionConfiguration());

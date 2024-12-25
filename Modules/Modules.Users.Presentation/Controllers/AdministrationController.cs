@@ -145,42 +145,46 @@ namespace Modules.Users.Presentation.Controllers
         [Route("AssignRoleToUser")]
         public async Task<ActionResult> AssignRoleToUser([FromBody] AssignUserRoleDto values)
         {
-            //var result = await _adminService.CreateUserRole(values);
+            var result = await _menuService.AssignUserRole(values);
 
-            //if (result.Succeeded)
-            //{
-            //    return Ok(result.ToString());
-            //}
+            if(result is null)
+            {
+                return BadRequest($"Email Address {values.EmailAddress} provided does not exist");
+            }
 
-            //if (!result.Succeeded)
-            //{
-            //    return BadRequest(result.Errors);
-            //}
+            if (result!.Succeeded)
+            {
+                return Ok(result);
+            }
 
-            //return BadRequest(result);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
 
-            return Ok();
+            return BadRequest(result);
         }
+
 
         [HttpPost]
         [Route("AssignPermissionsToRole")]
         public async Task<ActionResult> AssignPermissionsToRole([FromBody] RolesPermissionsDto values)
         {
-            //var result = await _adminService.CreateUserRole(values);
+            return Ok(await _menuService.AssignPermissionToRole(values));
+        }
 
-            //if (result.Succeeded)
-            //{
-            //    return Ok(result.ToString());
-            //}
+        [HttpGet]
+        [Route("GetUserPermissions/{userId}")]
+        public async Task<IEnumerable<RolesPermissionsResponseDto>> GetUserPermissions(string userId)
+        {
+            return await _menuService.GetUserRolePermissions(userId);
+        }
 
-            //if (!result.Succeeded)
-            //{
-            //    return BadRequest(result.Errors);
-            //}
-
-            //return BadRequest(result);
-
-            return Ok();
+        [HttpGet]
+        [Route("GetRolePermissions/{roleId}")]
+        public async Task<IEnumerable<RolesPermissionsResponseDto>> GetRolePermissions(string roleId)
+        {
+            return await _menuService.GetRolesPermissions(roleId);
         }
 
         [HttpPost]

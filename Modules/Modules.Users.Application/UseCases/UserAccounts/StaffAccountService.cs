@@ -119,7 +119,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             try
             {
 
-                var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress);
+                var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress!);
                 if (user is null)
                 {
                     _logger.LogWarning($"Staff with email address {resetPassword.EmailAddress} not found.", resetPassword.EmailAddress);
@@ -211,7 +211,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 {
                     var new_user = new ApplicationIdentityUser
                     {
-                        IdentificationUniqueNumber = details.StaffIdentificationNumber,
+                        IdentificationNumber = details.StaffIdentificationNumber,
                         DepartmentId = details.DepartmentId,
                         UnitId = details.UnitId,
                         FirstName = details.FirstName,

@@ -12,7 +12,7 @@ namespace Modules.Users.Domain.Interfaces
         IUserRepository Users { get; }
 
         IMenuActionsRepository MenuActions {get; }
-        IRoleMenuActionsRepository RoleMenuActions { get; }
+        IRoleMenuActionsRepository RolePermissions { get; }
         IMenusRepository Menus { get; }
         ISubMenusRepository SubMenus { get; }
 
