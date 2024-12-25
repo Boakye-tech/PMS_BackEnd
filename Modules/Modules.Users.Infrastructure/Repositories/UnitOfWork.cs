@@ -20,9 +20,10 @@ namespace Modules.Users.Infrastructure.Repositories
             Users = new UserRepository(dbContext);
 
             MenuActions = new MenuActionsRepository(dbContext);
-            RoleMenuActions = new RoleMenuActionsRepository(dbContext);
+            //RoleMenuActions = new RoleMenuActionsRepository(dbContext);
             Menus = new MenusRepository(dbContext);
             SubMenus = new SubMenusRepository(dbContext);
+            RolePermissions = new RoleMenuActionsRepository(dbContext);
         }
 
 
@@ -32,9 +33,12 @@ namespace Modules.Users.Infrastructure.Repositories
         public IUserRepository Users { get; private set; }
 
         public IMenuActionsRepository MenuActions { get; private set; }
-        public IRoleMenuActionsRepository RoleMenuActions { get; private set; }
+        //public IRoleMenuActionsRepository RoleMenuActions { get; private set; }
         public IMenusRepository Menus { get; private set; }
         public ISubMenusRepository SubMenus { get; private set; }
+
+        public IRoleMenuActionsRepository RolePermissions { get; private set; }
+
 
         public Task<int> Complete()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
 using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Dtos.Entities.Menu;
 
@@ -22,10 +23,14 @@ namespace Modules.Users.Application.Interfaces
 
         Task<IEnumerable<MenusWithActionsDto>> GetMenuActions();
         Task<IEnumerable<MenuActionsDto>> GetActions();
-        void GetRolesMenusActions();
+        
+        //void AssignMenuActionsToRole(RolesPermissionsDto rolesPermissions);
+        Task<AssignPermissionToRoleResponseDto> AssignPermissionToRole(RolesPermissionsDto rolesPermissions);
+        Task<IdentityResult> AssignUserRole(AssignUserRoleDto assignUserRole);
 
-        void AssignMenuActionsToRole();
-        void AssignUserRole(AssignUserRoleDto assignUserRole);
+        Task<IEnumerable<RolesPermissionsResponseDto>> GetRolesPermissions(string roleId);
+
+        Task<IEnumerable<RolesPermissionsResponseDto>> GetUserRolePermissions(string userId);
     }
 }
 

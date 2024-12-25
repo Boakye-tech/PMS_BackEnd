@@ -5,10 +5,12 @@ namespace Modules.Users.Application.Dtos.Administration
 {
 	public record RolesPermissionsDto
 	{
-		public string? RoldId { get; set; }
-		public IEnumerable<MenusWithActionsDto>? Permissions { get; set; }
+		public string? RoleName { get; set; }
+		public IEnumerable<RolesWithActionsDto>? Permissions { get; set; }
 	}
 
-    //public record MenusWithActionsDto(int MenuId, string MenuName, string SubmenuName, string NoAccess, string Create, string Read, string Update, string Delete, string Approve);
+    public record RolesWithActionsDto(int MenuId, int SubMenuId, string NoAccess, string Create, string Read, string Update, string Delete, string Approve);
+
+    public record AssignPermissionToRoleResponseDto(string response);
 }
 

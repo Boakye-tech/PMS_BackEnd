@@ -103,9 +103,24 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!,role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, role.Status)).ToList();
         }
 
-        public void VerifyUserAccount(VerifyUserAccountDto accountVerification)
+        public async void VerifyUserAccount(VerifyUserAccountDto accountVerification)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var user = _userManager.FindByEmailAsync(accountVerification.EmailAddress!);
+            if(user is null)
+            {
+            }
+
+            var staff = _userManager.FindByEmailAsync(accountVerification.verifiedBy);
+            if(staff is null) { }
+
+            var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountVerification.EmailAddress);
+            userAccount.Status = accountVerification.status;  //1 //verified
+            userAccount.VerifiedBy = accountVerification.verifiedBy;
+            userAccount.VerifiedDate = DateTime.UtcNow;
+
+            _unitOfWork.Users.Update(userAccount);
+            await _unitOfWork.Complete();
         }
 
         public void ApproveUserAccount(ApproveUserAccountDto accountApproval)

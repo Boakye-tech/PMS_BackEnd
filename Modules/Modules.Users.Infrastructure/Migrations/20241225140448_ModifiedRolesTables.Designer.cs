@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Modules.Users.Infrastructure;
 
@@ -11,9 +12,11 @@ using Modules.Users.Infrastructure;
 namespace Modules.Users.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241225140448_ModifiedRolesTables")]
+    partial class ModifiedRolesTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -408,9 +411,6 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<short>("Status")
-                        .HasColumnType("smallint");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
@@ -632,7 +632,7 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("RoleId")
+                    b.Property<string>("RoleName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -648,7 +648,7 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasKey("RoleMenuActionId");
 
-                    b.HasIndex("RoleId", "SubMenuId")
+                    b.HasIndex("RoleName", "MenuId")
                         .IsUnique();
 
                     b.ToTable("RoleMenuActions");

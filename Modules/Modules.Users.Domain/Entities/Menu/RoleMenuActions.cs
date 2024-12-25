@@ -6,37 +6,63 @@ namespace Modules.Users.Domain.Entities.Menu
 	public class RoleMenuActions
 	{
         [Key]
-        [Required]
+        //[Required]
         public int RoleMenuActionId { get; set; }
 
         [Required]
+        [StringLength(50)]
         public string RoleId { get; set; }
       
         [Required]
+        [StringLength(150)]
         public int MenuId { get; set; }
 
-        public int SubMenuId { get; set; }
-        
         [Required]
-        public int ActionId { get; set; }
+        [StringLength(255)]
+        public int SubMenuId { get; set; }
 
-		public RoleMenuActions(int roleMenuActionId, string roleId, int menuId, int subMenuId, int actionId)
+        [StringLength(255)]
+        public string NoAccess { get; set; }
+
+        [StringLength(255)]
+        public string Create { get; set; }
+
+        [StringLength(255)]
+        public string Read { get; set; }
+
+        [StringLength(255)]
+        public string Update { get; set; }
+
+        [StringLength(255)]
+        public string Delete { get; set; }
+
+        [StringLength(255)]
+        public string Approve { get; set; }
+
+
+        public RoleMenuActions(string roleId, int menuId, int subMenuId, string noAccess, string create, string read, string update, string delete, string approve)
 		{
-			RoleMenuActionId = roleMenuActionId;
-			RoleId = roleId;
+			//RoleMenuActionId = 0;
+            RoleId = roleId;
 			MenuId = menuId;
 			SubMenuId = subMenuId;
-			ActionId = actionId;
-		}
+            NoAccess = noAccess;
+            Create = create;
+            Read = read;
+            Update = update;
+            Delete = delete;
+            Approve = approve;
 
-        public static RoleMenuActions AssignToRoles(int roleMenuActionId, string roleId, int menuId, int subMenuId, int actionId)
+        }
+
+        public static RoleMenuActions AssignToRoles( string roleId, int menuId, int subMenuId, string noAccess, string create, string read, string update, string delete, string approve)
         {
-            if (string.IsNullOrWhiteSpace(roleId) || menuId < 0 || actionId < 0)
+            if (string.IsNullOrWhiteSpace(roleId) || menuId < 0 || subMenuId < 0)
             {
                 throw new ArgumentException("Invalid role and menus data.");
             }
 
-            return new RoleMenuActions(roleMenuActionId, roleId, menuId, subMenuId, actionId);
+            return new RoleMenuActions(roleId, menuId, subMenuId, noAccess, create, read, update, delete, approve);
         }
     }
 }

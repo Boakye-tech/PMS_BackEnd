@@ -11,12 +11,22 @@ namespace Modules.Users.Application.Validations.UserAccounts
         }
 	}
 
+    public class RolesCreateDtoValidator : AbstractValidator<RolesCreateDto>
+    {
+        public RolesCreateDtoValidator()
+        {
+            RuleFor(x => x.RoleName).NotEmpty();
+            RuleFor(x => x. CreatedBy).NotEmpty();
+        }
+    }
+
     public class RolesUpdateDtoValidator : AbstractValidator<RolesUpdateDto>
     {
         public RolesUpdateDtoValidator()
         {
             RuleFor(x => x.RoleId).NotEmpty();
             RuleFor(x => x.RoleName).NotEmpty();
+            RuleFor(x => x.ModifiedBy).NotEmpty();
 
         }
     }
