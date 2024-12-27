@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Modules.Users.Application.Dtos.Entities.Menu;
 
 namespace Modules.Users.Application.Enums
 {
@@ -39,11 +40,30 @@ namespace Modules.Users.Application.Enums
             }
             else
             {
-                throw new ArgumentException("Invalid input for payment methods.");
+                throw new ArgumentException("Invalid input for menu actions.");
             }
         }
 
+        public static List<MenuActionsDto> ToMenuActionsDtoList()
+        {
+            return Enum.GetValues(typeof(ClaimsMenuActions))
+                .Cast<ClaimsMenuActions>()
+                .Select(action =>
+                {
+                    var description = action.GetEnumDescription();
+                    return new MenuActionsDto((int)action, action.ToString(), description);
+                })
+                .ToList();
+        }
 
+        private static string GetEnumDescription(this Enum enumValue)
+        {
+            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+            var descriptionAttribute = fieldInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false)
+                                                 .FirstOrDefault() as DescriptionAttribute;
+
+            return descriptionAttribute?.Description ?? enumValue.ToString();
+        }
 
 
 

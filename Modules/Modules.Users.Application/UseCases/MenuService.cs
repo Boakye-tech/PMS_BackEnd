@@ -134,16 +134,19 @@ namespace Modules.Users.Application.UseCases
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<MenuActionsDto>> GetActions()
+        //public async Task<IEnumerable<MenuActionsDto>> GetActions()
+        public IEnumerable<MenuActionsDto> GetActions()
         {
-            var response = await _unitOfWork.MenuActions.GetAll();
+            //var response = await _unitOfWork.MenuActions.GetAll();
+            var response = ClaimsMenuActionsEnumDescription.ToMenuActionsDtoList();
             return _mapper.Map<IEnumerable<MenuActionsDto>>(response);
         }
 
         public async Task<IEnumerable<MenusWithActionsDto>> GetMenuActions()
         {
             //throw new NotImplementedException();
-            var _actions = await _unitOfWork.MenuActions!.GetAll();
+            //var _actions = await _unitOfWork.MenuActions!.GetAll();
+            var _actions = ClaimsMenuActionsEnumDescription.ToMenuActionsDtoList();
 
             var result =
                 (from menu in await _unitOfWork.Menus.GetAll()
@@ -157,12 +160,12 @@ namespace Modules.Users.Application.UseCases
                  (0,
                   grouped.Key.MenuName,
                   grouped.Key.SubmenuName,
-                  grouped.Any(g => g.action.ActionName == "No Access") ? "" : null!,
-                  grouped.Any(g => g.action.ActionName == "Create") ? "" : null!,
-                  grouped.Any(g => g.action.ActionName == "Read") ? "" : null!,
-                  grouped.Any(g => g.action.ActionName == "Update") ? "" : null!,
-                  grouped.Any(g => g.action.ActionName == "Delete") ? "" : null!,
-                  grouped.Any(g => g.action.ActionName == "Approve") ? "" : null!
+                  grouped.Any(g => g.action.actionName == "No Access") ? "" : null!,
+                  grouped.Any(g => g.action.actionName == "Create") ? "" : null!,
+                  grouped.Any(g => g.action.actionName == "Read") ? "" : null!,
+                  grouped.Any(g => g.action.actionName == "Update") ? "" : null!,
+                  grouped.Any(g => g.action.actionName == "Delete") ? "" : null!,
+                  grouped.Any(g => g.action.actionName == "Approve") ? "" : null!
                  )).ToList();
             //select new MenusWithActionsDto
             //{

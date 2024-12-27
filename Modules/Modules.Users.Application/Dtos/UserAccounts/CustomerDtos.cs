@@ -38,6 +38,7 @@ namespace Modules.Users.Application.Dtos.UserAccounts
     public record CustomerPhoneLoginRequestDto(string MobilePhoneNumber, string Password);
 
 
+
     /*
     public record ResetCustomerPasswordRequestDto : ResetPasswordRequest
     {

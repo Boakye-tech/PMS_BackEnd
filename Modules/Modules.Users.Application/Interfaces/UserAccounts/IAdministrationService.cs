@@ -12,9 +12,15 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         Task<IdentityResult> UpdateUserRole(RolesUpdateDto role);
         Task<IdentityResult> DeleteUserRole(RolesDeleteDto roleId);
 
-        void VerifyUserAccount(VerifyUserAccountDto accountVerification);
-        void ApproveUserAccount(ApproveUserAccountDto accountApproval);
-        void ActivateUserAccount(ActivateUserAccountDto accountActivation);
+        Task<CustomerVerificationResponseDto> VerifyCustomerAccount(VerifyUserAccountDto accountVerification);
+        Task<CustomerRejectionResponseDto> RejectCustomerAccount(RejectUserAccountDto accountRejection);
+
+        Task<ApproveUserAccountResponseDto> ApproveUserAccount(ApproveUserAccountDto accountApproval);
+        Task<DisapprovedUserAccountResponseDto> DisapproveUserAccount(DisapprovedUserAccountDto accountDisapproval);
+
+        Task<ActivateUserAccountResponseDto> ActivateUserAccount(ActivateUserAccountDto accountActivation);
+        Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation);
+
 
     }
 }

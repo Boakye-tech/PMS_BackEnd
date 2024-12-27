@@ -90,6 +90,9 @@ namespace Modules.Users.Domain.Entities
         public string? RejectedBy { get; set; }
         public DateTime RejectedDate { get; set; }
 
+        [StringLength(256)]
+        public string? RejectedReasons { get; set; }
+
         [StringLength(50)]
         public string? ApprovedBy { get; set; }
         public DateTime ApprovedDate { get; set; }
@@ -98,6 +101,9 @@ namespace Modules.Users.Domain.Entities
         public string? DisapprovedBy { get; set; }
         public DateTime DisapprovedDate { get; set; }
 
+        [StringLength(256)]
+        public string? DisapprovedReasons { get; set; }
+
         [StringLength(50)]
         public string? ActivatedBy { get; set; }
         public DateTime ActivatedDate { get; set; }
@@ -105,6 +111,9 @@ namespace Modules.Users.Domain.Entities
         [StringLength(50)]
         public string? DeactivatedBy { get; set; }
         public DateTime DeactivatedDate { get; set; }
+
+        [StringLength(256)]
+        public string? DeactivatedReasons { get; set; }
 
 
     }
