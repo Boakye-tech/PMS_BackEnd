@@ -10,7 +10,7 @@ namespace Modules.Users.Application.Dtos.Administration
 		[EmailAddress]
         public string? EmailAddress { get; set; }
 
-        public int status { get; set; }
+        //public int status { get; set; }
     };
 	
 }

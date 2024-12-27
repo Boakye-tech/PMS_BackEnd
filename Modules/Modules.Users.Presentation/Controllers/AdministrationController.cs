@@ -29,9 +29,9 @@ namespace Modules.Users.Presentation.Controllers
 
         [HttpGet]
         [Route("GetUserActions")]
-        public async Task<IEnumerable<MenuActionsDto>> GetUserActions()
+        public IEnumerable<MenuActionsDto> GetUserActions()
         {
-            return await _menuService.GetActions();
+            return _menuService.GetActions();
         }
 
         [HttpGet]
@@ -157,12 +157,8 @@ namespace Modules.Users.Presentation.Controllers
                 return Ok(result);
             }
 
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
+            return BadRequest(result.Errors);
 
-            return BadRequest(result);
         }
 
 
@@ -187,64 +183,88 @@ namespace Modules.Users.Presentation.Controllers
             return await _menuService.GetRolesPermissions(roleId);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("VerifyUserAccount")]
         public async Task<ActionResult> VerifyUserAccount([FromBody] VerifyUserAccountDto values)
         {
-            //var result = await _adminService.CreateUserRole(values);
+            var result = await _adminService.VerifyCustomerAccount(values);
 
-            //if (result.Succeeded)
-            //{
-            //    return Ok(result.ToString());
-            //}
+            if(result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
 
-            //if (!result.Succeeded)
-            //{
-            //    return BadRequest(result.Errors);
-            //}
-
-            //return BadRequest(result);
-            return Ok();
+            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
         }
 
-        [HttpPost]
+        [HttpPut]
+        [Route("RejectUserAccount")]
+        public async Task<ActionResult> RejectUserAccount([FromBody] RejectUserAccountDto values)
+        {
+            var result = await _adminService.RejectCustomerAccount(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+        }
+
+        [HttpPut]
         [Route("ApproveUserAccount")]
         public async Task<ActionResult> ApproveUserAccount([FromBody] ApproveUserAccountDto values)
         {
-            //var result = await _adminService.CreateUserRole(values);
+            var result = await _adminService.ApproveUserAccount(values);
 
-            //if (result.Succeeded)
-            //{
-            //    return Ok(result.ToString());
-            //}
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
 
-            //if (!result.Succeeded)
-            //{
-            //    return BadRequest(result.Errors);
-            //}
-
-            //return BadRequest(result);
-            return Ok();
+            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
         }
 
-        [HttpPost]
+        [HttpPut]
+        [Route("DisapproveUserAccount")]
+        public async Task<ActionResult> DisapproveUserAccount([FromBody] DisapprovedUserAccountDto values)
+        {
+            var result = await _adminService.DisapproveUserAccount(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+        }
+
+        [HttpPut]
         [Route("ActivateUserAccount")]
         public async Task<ActionResult> ActivateUserAccount([FromBody] ActivateUserAccountDto values)
         {
-            //var result = await _adminService.CreateUserRole(values);
+            var result = await _adminService.ActivateUserAccount(values);
 
-            //if (result.Succeeded)
-            //{
-            //    return Ok(result.ToString());
-            //}
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
 
-            //if (!result.Succeeded)
-            //{
-            //    return BadRequest(result.Errors);
-            //}
+            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+        }
 
-            //return BadRequest(result);
-            return Ok();
+        [HttpPut]
+        [Route("DeactivateUserAccount")]
+        public async Task<ActionResult> DectivateUserAccount([FromBody] DeactivateUserAccountDto values)
+        {
+            var result = await _adminService.DeactivateUserAccount(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
         }
 
 

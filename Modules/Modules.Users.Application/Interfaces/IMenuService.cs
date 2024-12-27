@@ -23,8 +23,9 @@ namespace Modules.Users.Application.Interfaces
         //void GetSubMenus(SubMenusDto subMenus);
 
         Task<IEnumerable<MenusWithActionsDto>> GetMenuActions();
-        Task<IEnumerable<MenuActionsDto>> GetActions();
-        
+        //Task<IEnumerable<MenuActionsDto>> GetActions();
+        IEnumerable<MenuActionsDto> GetActions();
+
         //void AssignMenuActionsToRole(RolesPermissionsDto rolesPermissions);
         Task<AssignPermissionToRoleResponseDto> AssignPermissionToRole(RolesPermissionsDto rolesPermissions);
         Task<IdentityResult> AssignUserRole(AssignUserRoleDto assignUserRole);
