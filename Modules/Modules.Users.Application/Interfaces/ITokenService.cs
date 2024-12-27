@@ -7,8 +7,8 @@ namespace Modules.Users.Application.Interfaces
 
         Task<bool> VerifyToken(string mobilePhoneNumber, string tokenCode);
 
-        Task<JwTokenResponseDto> GetJwToken(ApplicationIdentityUser user, string password);
-
+        //Task<JwTokenResponseDto> GetJwToken(ApplicationIdentityUser user, string password, int validityInHours);
+        Task<string> GetJwToken(ApplicationIdentityUser user, int validityInHours);
         //string RandomSixDigitNumber();
     }
 }

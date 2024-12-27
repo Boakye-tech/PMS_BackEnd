@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Modules.Users.Application.Shared
 {
-    public record LoginResponse
+    public abstract record LoginResponse
     {
         public required string UserId { get; set; }
         public required string FullName { get; set; }

@@ -26,8 +26,22 @@ namespace Modules.Users.Application.Dtos.UserAccounts
     public record ResetStaffPasswordRequestDto() : ResetPasswordRequest;
     public record ChangeStaffPasswordRequestDto() : ChangePasswordRequest;
     public record StaffLoginRequestDto() : LoginRequest;
-    
 
-    public record StaffLoginResponseDto(string DepartmentName, string UnitName, string ProfilePictureFileName) : LoginResponse;
+
+    public record StaffLoginResponseDto
+    {
+        public bool LoginStatus { get; set; }
+        public StaffLoginSuccessResponseDto? staffLoginSuccessResponseDto { get; set; }
+        public StaffLoginErrorResponseDto? staffLoginErrorResponseDto { get; set; }
+    }
+
+    public record StaffLoginSuccessResponseDto : LoginResponse
+    {
+        public required string DepartmentName { get; set; }
+        public required string UnitName { get; set; }
+        public required string ProfilePictureFileName { get; set; }
+    }
+
+    public record StaffLoginErrorResponseDto() : BaseResponse;
+
 }
-
