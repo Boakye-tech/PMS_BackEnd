@@ -21,6 +21,7 @@
     <None Remove="Dtos\Administration\" />
     <None Remove="Helpers\" />
     <None Remove="Dtos\Entities\Menu\" />
+    <None Remove="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -37,6 +38,7 @@
     <Folder Include="Dtos\Administration\" />
     <Folder Include="Helpers\" />
     <Folder Include="Dtos\Entities\Menu\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Users.Domain\Modules.Users.Domain.csproj" />

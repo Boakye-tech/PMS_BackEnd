@@ -13,56 +13,55 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private IConfiguration _configuration { get; }
 
         readonly IUnitOfWork _unitOfWork;
+        readonly IMenuService _menuService;
 
         readonly UserManager<ApplicationIdentityUser> _userManager;
-        readonly SignInManager<ApplicationIdentityUser> _signInManager;
+        //readonly SignInManager<ApplicationIdentityUser> _signInManager;
 
-        public TokenService(IUnitOfWork unitOfWork, UserManager<ApplicationIdentityUser> userManager, IConfiguration configuration, SignInManager<ApplicationIdentityUser> signInManager)
-		{
+        public TokenService(IUnitOfWork unitOfWork, IMenuService menuService ,UserManager<ApplicationIdentityUser> userManager, IConfiguration configuration) //, SignInManager<ApplicationIdentityUser> signInManager)
+
+        {
             _unitOfWork = unitOfWork;
+            _menuService = menuService;
             _userManager = userManager;
-            _signInManager = signInManager;
+            //_signInManager = signInManager;
             _configuration = configuration;
 
         }
 
-        public async Task<JwTokenResponseDto> GetJwToken(ApplicationIdentityUser user, string password)
+
+        //public async Task<JwTokenResponseDto> GetJwToken(ApplicationIdentityUser user, string password, int validityInHours)
+        public async Task<string> GetJwToken(ApplicationIdentityUser user, int validityInHours)
         {
-            //throw new NotImplementedException();
-            if (user is not null)
-            {
-                var userRoles = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
-                var result = await _signInManager.PasswordSignInAsync(user, password, true, false);
+            var userRoles = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
 
-                if (result.Succeeded)
-                {
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var key = Encoding.ASCII.GetBytes(_configuration.GetSection("ApiTokenKey").GetSection("TokenKey").Value!);
+            var claims = await _menuService.GetUserRoleClaims(user.Id);
 
-                    var tokenDescriptor = new SecurityTokenDescriptor
+            var allClaims = new List<Claim>
                     {
-                        Subject = new ClaimsIdentity(new Claim[]
-                        {
-                                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                                new Claim(ClaimTypes.Role, userRoles!),
-                                new Claim(ClaimTypes.Email, user.Email!),
-                                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!)
-                        }),
-
-                        Expires = DateTime.UtcNow.AddHours(24),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(ClaimTypes.Role, userRoles!),
+                        new Claim(ClaimTypes.Email, user.Email!),
+                        new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!)
                     };
-                    var token = tokenHandler.CreateToken(tokenDescriptor);
-                    var tokenString = tokenHandler.WriteToken(token);
 
-                    return new JwTokenResponseDto { Token = tokenString.ToString(), UserType = userRoles };
-                }
+            allClaims.AddRange(claims);
 
-                return new JwTokenResponseDto { Token = result.ToString(), UserType = userRoles };
-            }
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("JwTokenKey").GetSection("TokenKey").Value!);
 
-            return new JwTokenResponseDto { Token = "Not Found", UserType = string.Empty }; ;
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(allClaims),
+                Expires = DateTime.UtcNow.AddHours(validityInHours),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            return tokenString.ToString();
         }
+
 
         public async Task<string> GetToken(string mobilePhoneNumber_OR_emailAddress, int ExpiryMinutes)
         {
@@ -100,7 +99,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<bool> VerifyToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode)
         {
-            //throw new NotImplementedException();
             var result = await _unitOfWork.TokenStore.Get(t => t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress && t.Token == tokenCode && t.IsVerified == false);
 
             if(result is null)
@@ -117,10 +115,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return true;
         }
 
-        //public string RandomSixDigitNumber()
-        //{
-        //    throw new NotImplementedException();
-        //}
 
     }
 }

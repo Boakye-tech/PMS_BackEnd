@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Dtos.Entities.Menu;
@@ -31,6 +32,8 @@ namespace Modules.Users.Application.Interfaces
         Task<IEnumerable<RolesPermissionsResponseDto>> GetRolesPermissions(string roleId);
 
         Task<IEnumerable<RolesPermissionsResponseDto>> GetUserRolePermissions(string userId);
+
+        Task<IEnumerable<Claim>> GetUserRoleClaims(string userId); //remove
     }
 }
 

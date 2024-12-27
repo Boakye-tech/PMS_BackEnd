@@ -11,12 +11,16 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly ILogger<StaffAccountService> _logger;
 
+        private readonly ITokenService _tokenService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public StaffAccountService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, ILogger<StaffAccountService> logger)
+        public StaffAccountService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, ILogger<StaffAccountService> logger, ITokenService tokenService, IUnitOfWork unitOfWork)
 		{
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _tokenService = tokenService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ChangePasswordResponse> ChangePassword(ChangeStaffPasswordRequestDto changePassword)
@@ -185,22 +189,75 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<StaffLoginResponseDto> UserLogin(StaffLoginRequestDto userLoginDetails)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var user = await _userManager.FindByEmailAsync(userLoginDetails.EmailAddress!);
-            //    if(user is not null)
-            //    {
-            //        var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(userLoginDetails.EmailAddress!);
 
-            //        if (result.Succeeded) { } else { }
-            //    }
+                if(user is null)
+                {
+                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} not found.", userLoginDetails.EmailAddress);
+                    return new StaffLoginResponseDto
+                    {
+                        LoginStatus = false,
+                        staffLoginErrorResponseDto = new StaffLoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"Staff with {userLoginDetails.EmailAddress} not found."
+                        }
+                    };
+                }
 
-            //}
-            //catch (Exception ex)
-            //{
+                var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
 
-            //}
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"Staff with email address {userLoginDetails.EmailAddress} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.EmailAddress);
+                    return new StaffLoginResponseDto
+                    {
+                        LoginStatus = true,
+                        staffLoginSuccessResponseDto = new StaffLoginSuccessResponseDto
+                        {
+                            UserId = user.Id,
+                            FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName,string.Empty, user.LastName),
+                            EmailAddress = user.Email!,
+                            BearerToken = await _tokenService.GetJwToken(user, 8),
+                            DepartmentName = _unitOfWork.Department.Get(user.DepartmentId).Result.DepartmentName,
+                            UnitName = _unitOfWork.DepartmentUnit.Get(user.UnitId).Result.UnitName,
+                            ProfilePictureFileName = user.ProfilePicture!
+                        }
+                    };
+                }
+
+                if (!result.Succeeded)
+                {
+                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
+                    return new StaffLoginResponseDto
+                    {
+                        LoginStatus = false,
+                        staffLoginErrorResponseDto = new StaffLoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"Staff login {result.ToString()}"
+                        }
+                    };
+                }
+
+                return null!;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.EmailAddress} tried to log in.", userLoginDetails.EmailAddress);
+                return new StaffLoginResponseDto
+                {
+                    LoginStatus = false,
+                    staffLoginErrorResponseDto = new StaffLoginErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError,
+                        StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.InnerException!.Message}"
+                    }
+                };
+            }
         }
 
         public async Task<RegistrationResponse> UserRegistration(StaffRegistrationRequestDto details)

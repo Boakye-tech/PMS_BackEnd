@@ -34,6 +34,8 @@ namespace Modules.Users.Presentation
             services.AddScoped<IPartnerBankAccountService, PartnerBankAccountService>();
             services.AddScoped<ICustomerAccountService, CustomerAccountService>();
             services.AddScoped<IMenuService, MenuService>();
+            services.AddScoped<ITokenService, TokenService>();
+
 
             //register global exception handler
             services.AddExceptionHandler<HttpGlobalExceptionFilter>();

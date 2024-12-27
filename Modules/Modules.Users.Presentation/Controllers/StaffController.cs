@@ -93,6 +93,38 @@ public class StaffController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Returns user details after a successful login
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/Login")]
+    [ProducesResponseType(200, Type = typeof(StaffLoginResponseDto))]
+    public async Task<IActionResult> UserLogin([FromBody] StaffLoginRequestDto loginModel)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _staffAccountService.UserLogin(loginModel);
+
+                switch (result.LoginStatus)
+                {
+                    case true:
+                        return Ok(result.staffLoginSuccessResponseDto);
+                    case false:
+                        return Problem(result.staffLoginErrorResponseDto!.StatusMessage);
+                }
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
     //----------------------DEPARTMENT------------
     [HttpGet]
     [Route("Setup/GetDepartments")]

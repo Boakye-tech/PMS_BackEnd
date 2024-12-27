@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Dtos.Entities.Menu;
+using Modules.Users.Application.Enums;
 using Modules.Users.Application.Validations;
 using Modules.Users.Domain.Entities.Menu;
 
@@ -280,25 +281,38 @@ namespace Modules.Users.Application.UseCases
             throw new NotImplementedException();
         }
 
+        //private string GetColumnName<T>(string propertyName) where T : class
+        //{
+        //    var dbContext = _unitOfWork
+        //}
+
         public async Task<IEnumerable<Claim>> GetUserRoleClaims(string userId)
         {
             //throw new NotImplementedException();
             var user = await _userManager.FindByIdAsync(userId);
             var userrole = _userManager.GetRolesAsync(user!).Result.FirstOrDefault();
+            if (string.IsNullOrEmpty(userrole))
+            {
+                return Enumerable.Empty<Claim>();
+            }
             var roles = _roleManager.Roles;
 
+            var rolePermissions = await _unitOfWork.RolePermissions.GetAll();
+            var menus = await _unitOfWork.Menus.GetAll();
+            var subMenus = await _unitOfWork.SubMenus.GetAll();
 
-            var result = from roleAction in await _unitOfWork.RolePermissions.GetAll()
-                         join menu in await _unitOfWork.Menus.GetAll()
+
+            var results = from roleAction in rolePermissions
+                         join menu in menus
                          on roleAction.MenuId equals menu.MenuId
-                         join subMenu in await _unitOfWork.SubMenus.GetAll()
+                         join subMenu in subMenus
                          on roleAction.SubMenuId equals subMenu.SubMenuId
                          join role in roles
                          on roleAction.RoleId equals role.Id
                          where role.Name == userrole
                          //group new { roleAction, menu, subMenu, role } by role.Name into roleGroup
-                         select new Claim
-                         (
+                         select new
+                         {
                              menu.MenuName,
                              subMenu.SubMenuName,
                              roleAction.NoAccess,
@@ -307,9 +321,24 @@ namespace Modules.Users.Application.UseCases
                              roleAction.Update,
                              roleAction.Delete,
                              roleAction.Approve
-                         );
+                         };
 
-            return result.ToList();
+            var claims = new List<Claim>();
+
+            foreach (var item in results)
+            {
+                //var ts = ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.NoAccess)).ToString();
+                //var rs = $"{item.MenuName}{item.SubMenuName}/{ts}:";
+                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.NoAccess)).ToString()}", item.NoAccess));
+                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Create)).ToString()}", item.Create));
+                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Read)).ToString()}", item.Read));
+                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Update)).ToString()}", item.Update));
+                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Delete)).ToString()}", item.Delete));
+                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Approve)).ToString()}", item.Approve));
+
+            }
+
+            return claims;
         }
 
 
