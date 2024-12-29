@@ -27,6 +27,8 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         [EmailAddress]
         public string? EmailAddress { get; set; }
     };
+
+    public record PartnerBankLoginResponseDto(string token);
+
 }
 
- 
