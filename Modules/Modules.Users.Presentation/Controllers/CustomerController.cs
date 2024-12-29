@@ -118,7 +118,69 @@ public class CustomerController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Returns user details after a successful login
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/LoginWithEmailAddress")]
+    [ProducesResponseType(200, Type = typeof(CustomerLoginResponseDto))]
+    public async Task<IActionResult> UserLogin([FromBody] CustomerEmailLoginRequestDto loginModel)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _customerAccountService.LoginWithEmailAddress(loginModel);
 
+                switch (result.LoginStatus)
+                {
+                    case true:
+                        return Ok(result.successResponseDto);
+                    case false:
+                        return Problem(result.errorResponseDto!.StatusMessage);
+                }
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Returns user details after a successful login
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/LoginWithPhoneNumber")]
+    [ProducesResponseType(200, Type = typeof(CustomerLoginResponseDto))]
+    public async Task<IActionResult> UserLogin([FromBody] CustomerPhoneLoginRequestDto loginModel)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _customerAccountService.LoginWithMobilePhoneNumber(loginModel);
+
+                switch (result.LoginStatus)
+                {
+                    case true:
+                        return Ok(result.successResponseDto);
+                    case false:
+                        return Problem(result.errorResponseDto!.StatusMessage);
+                }
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
 
 
 }

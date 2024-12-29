@@ -27,7 +27,20 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string ConfirmPassword
         );
 
-    public record CustomerLoginResponseDto() : LoginResponse;
+    public record CustomerLoginResponseDto
+    {
+        public bool LoginStatus { get; set; }
+        public CustomerLoginSucessResponseDto? successResponseDto { get; set; }
+        public CustomerLoginErrorResponseDto? errorResponseDto { get; set; }
+    }
+
+    public record CustomerLoginSucessResponseDto : LoginResponse
+    {
+        public required string MobilePhoneNumber { get; set; }
+    } 
+    public record CustomerLoginErrorResponseDto() : BaseResponse;
+
+
     public record ChangeCustomerPasswordRequestDto() : ChangePasswordRequest;
 
     public record ResetCustomerPasswordEmailRequestDto : ResetPasswordRequest;

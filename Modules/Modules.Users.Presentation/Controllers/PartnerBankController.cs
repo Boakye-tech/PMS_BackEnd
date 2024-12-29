@@ -68,5 +68,30 @@ public class PartnerBankController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Returns user details after a successful login
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/GetBearerToken")]
+    //[ProducesResponseType(200, Type = typeof(PartnerBankLoginRequestDto))]
+    public async Task<IActionResult> GetBearerToken([FromBody] PartnerBankLoginRequestDto loginModel)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _partnerBankAccountService.GetBearerToken(loginModel);
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
 }
 

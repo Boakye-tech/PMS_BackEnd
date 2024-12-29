@@ -12,15 +12,17 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly UserManager<ApplicationIdentityUser> _userManager;
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly ILogger<CustomerAccountService> _logger;
-
+        private readonly ITokenService _tokenService;
         readonly IUnitOfWork _unitOfWork;
 
-        public CustomerAccountService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, IUnitOfWork unitOfWork, ILogger<CustomerAccountService> logger)
+        public CustomerAccountService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, IUnitOfWork unitOfWork, ILogger<CustomerAccountService> logger,
+                                      ITokenService tokenService)
 		{
             _userManager = userManager;
             _signInManager = signInManager;
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _tokenService = tokenService;
         }
 
         public async Task<ChangePasswordResponse> ChangePassword(ChangeCustomerPasswordRequestDto changePassword)
@@ -304,41 +306,145 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<CustomerLoginResponseDto> LoginWithEmailAddress(CustomerEmailLoginRequestDto userLoginDetails)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(userLoginDetails.EmailAddress!);
 
-            //var appUser = await _unitOfWork.Users.Get(u => u.Email == userLoginDetails.EmailAddress_OR_PhoneNumber || u.PhoneNumber == userLoginDetails.EmailAddress_OR_PhoneNumber);
-            //var user = await _userManager.FindByEmailAsync(appUser.Email!);
-            //if(user is not null)
-            //{
-            //    var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
+                if (user is null)
+                {
+                    _logger.LogWarning($"Customer with email address {userLoginDetails.EmailAddress} not found.", userLoginDetails.EmailAddress);
+                    return new CustomerLoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponseDto = new CustomerLoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"Customer with {userLoginDetails.EmailAddress} not found."
+                        }
+                    };
+                }
 
-            //    if (result.Succeeded)
-            //    {
-            //    }
-            //    else
-            //    {
-            //    }
-            //}
+                var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"Customer with email address {userLoginDetails.EmailAddress} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.EmailAddress);
+                    return new CustomerLoginResponseDto
+                    {
+                        LoginStatus = true,
+                        successResponseDto = new CustomerLoginSucessResponseDto
+                        {
+                            UserId = user.Id,
+                            FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName, string.Empty, user.LastName),
+                            EmailAddress = user.Email!,
+                            MobilePhoneNumber = user.PhoneNumber!,
+                            BearerToken = await _tokenService.GetJwToken(user, 8),
+                        }
+                    };
+                }
+
+                if (!result.Succeeded)
+                {
+                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
+                    return new CustomerLoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponseDto = new CustomerLoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"Staff login {result.ToString()}"
+                        }
+                    };
+                }
+
+                return null!;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.EmailAddress} tried to log in.", userLoginDetails.EmailAddress);
+                return new CustomerLoginResponseDto
+                {
+                    LoginStatus = false,
+                    errorResponseDto = new CustomerLoginErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError,
+                        StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.InnerException!.Message}"
+                    }
+                };
+            }
 
         }
 
         public async Task<CustomerLoginResponseDto> LoginWithMobilePhoneNumber(CustomerPhoneLoginRequestDto userLoginDetails)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var phoneUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == userLoginDetails.MobilePhoneNumber);
+                if (phoneUser is null)
+                {
+                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} not found.", userLoginDetails.MobilePhoneNumber);
+                    return new CustomerLoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponseDto = new CustomerLoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"Customer with {userLoginDetails.MobilePhoneNumber} not found."
+                        }
+                    };
+                }
 
-            //var appUser = await _unitOfWork.Users.Get(u => u.Email == userLoginDetails.EmailAddress_OR_PhoneNumber || u.PhoneNumber == userLoginDetails.EmailAddress_OR_PhoneNumber);
-            //var user = await _userManager.FindByEmailAsync(appUser.Email!);
-            //if(user is not null)
-            //{
-            //    var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
+                var user = await _userManager.FindByEmailAsync(phoneUser.Email!);
+                var result = await _signInManager.PasswordSignInAsync(user!, userLoginDetails.Password!, true, false);
 
-            //    if (result.Succeeded)
-            //    {
-            //    }
-            //    else
-            //    {
-            //    }
-            //}
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.MobilePhoneNumber);
+                    return new CustomerLoginResponseDto
+                    {
+                        LoginStatus = true,
+                        successResponseDto = new CustomerLoginSucessResponseDto
+                        {
+                            UserId = user!.Id,
+                            FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName, string.Empty, user.LastName),
+                            EmailAddress = user.Email!,
+                            MobilePhoneNumber = user.PhoneNumber!,
+                            BearerToken = await _tokenService.GetJwToken(user, 8),
+                        }
+                    };
+                }
+
+                if (!result.Succeeded)
+                {
+                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} log in attempt {result.ToString()}", userLoginDetails.MobilePhoneNumber);
+                    return new CustomerLoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponseDto = new CustomerLoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"Staff login {result.ToString()}"
+                        }
+                    };
+                }
+
+                return null!;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while customer with mobile phone number {userLoginDetails.MobilePhoneNumber} tried to log in.", userLoginDetails.MobilePhoneNumber);
+                return new CustomerLoginResponseDto
+                {
+                    LoginStatus = false,
+                    errorResponseDto = new CustomerLoginErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError,
+                        StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.InnerException!.Message}"
+                    }
+                };
+            }
 
         }
 

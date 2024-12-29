@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Modules.Users.Application.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Modules.Users.Application.UseCases.UserAccounts
 {
@@ -12,12 +14,18 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly UserManager<ApplicationIdentityUser> _userManager;
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         readonly IValidator<PartnerBankRegistrationRequestDto> _validator;
+        private readonly ILogger<PartnerBankAccountService> _logger;
+        private readonly ITokenService _tokenService;
 
-        public PartnerBankAccountService(UserManager<ApplicationIdentityUser> userManager,SignInManager<ApplicationIdentityUser> signInManager, IValidator<PartnerBankRegistrationRequestDto> validator)
+
+        public PartnerBankAccountService(UserManager<ApplicationIdentityUser> userManager,SignInManager<ApplicationIdentityUser> signInManager, IValidator<PartnerBankRegistrationRequestDto> validator,
+                                         ILogger<PartnerBankAccountService> logger, ITokenService tokenService)
 		{
             _userManager = userManager;
             _signInManager = signInManager;
             _validator = validator;
+            _logger = logger;
+            _tokenService = tokenService;
         }
 
 
@@ -81,7 +89,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         {
             if(resetPassword is not null)
             {
-                var userResult = await _userManager.FindByEmailAsync(resetPassword.EmailAddress);
+                var userResult = await _userManager.FindByEmailAsync(resetPassword.EmailAddress!);
                 if(userResult is not null)
                 {
                     var resetToken = await _userManager.GeneratePasswordResetTokenAsync(userResult);
@@ -107,19 +115,41 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         }
 
-        public Task<string> GetBearerToken(PartnerBankLoginRequestDto userLoginDetails)
+        public async Task<string> GetBearerToken(PartnerBankLoginRequestDto userLoginDetails)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var user = await _userManager.FindByEmailAsync(userLoginDetails.EmailAddress);
-            //    if (user is null) { }
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(userLoginDetails.EmailAddress!);
 
-            //}
-            //catch (Exception ex)
-            //{
+                if (user is null)
+                {
+                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} not found.", userLoginDetails.EmailAddress);
+                    return new string($"{StatusCodes.Status404NotFound} - partner with {userLoginDetails.EmailAddress} not found.");
+                }
 
-            //}
+                var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"Staff with email address {userLoginDetails.EmailAddress} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.EmailAddress);
+                    return new string(await _tokenService.GetJwToken(user, 24));
+                }
+
+                if (!result.Succeeded)
+                {
+                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
+                    return new string($"{StatusCodes.Status404NotFound} - Staff login {result.ToString()}.");
+                }
+
+                return null!;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.EmailAddress} tried to log in.", userLoginDetails.EmailAddress);
+                return new string($"{StatusCodes.Status500InternalServerError} - {ex.Message}.");
+
+            }
         }
 
 
