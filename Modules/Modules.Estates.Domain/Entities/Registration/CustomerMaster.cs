@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Modules.Estates.Domain.Entities.Registration
 {
-	public class CustomerMaster : AuditableEntity
+	public class CustomerMaster : BaseEntity
 	{
         [Key]
 		public int CustomerMasterId { get; set; }

@@ -12,9 +12,10 @@ public class PropertyTypeConfiguration: IEntityTypeConfiguration<PropertyType>
             new PropertyType(2, "PARTIALLY SERVICED PLOT" ),
             new PropertyType(3, "UNSERVICED PLOT" ),
             new PropertyType(4, "H.O.S HOUSE" ),
-            new PropertyType(5, "SHOPS/OFFICES" ),
-            new PropertyType(6, "RENTAL HOUSE" ),
-            new PropertyType(7,"APARTMENTS" )
+            new PropertyType(5, "H.O.S APARTMENT"),
+            new PropertyType(6, "SHOP/OFFICE" ),
+            new PropertyType(7, "RENTAL HOUSE" ),
+            new PropertyType(8, "APARTMENT" )
             );
     }
 }

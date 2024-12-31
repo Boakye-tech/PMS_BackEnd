@@ -10,7 +10,11 @@ public class AuditableEntity
     public DateTime DeletedOn { get; set; }
     public string? DeletedBy { get; set; }
 
+}
+
+
+public class BaseEntity : AuditableEntity
+{
     public DateTime ApprovedOn { get; set; }
     public string? ApprovedBy { get; set; }
 }
-
