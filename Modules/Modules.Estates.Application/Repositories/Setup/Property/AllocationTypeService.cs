@@ -1,4 +1,6 @@
-﻿namespace Modules.Estates.Application.Repositories.Setup.Property;
+﻿using Modules.Estates.Application.DTO.Setup.Property;
+
+namespace Modules.Estates.Application.Repositories.Setup.Property;
 
 public class AllocationTypeService : IAllocationTypeService
 {
@@ -13,11 +15,9 @@ public class AllocationTypeService : IAllocationTypeService
 
     public async Task<AllocationTypeReadDto> AddAllocationTypeAsync(AllocationTypeCreateDto values)
     {
-        AllocationType allocationType = new(values.AllocationTypeId, values.AllocationTypeInitial!, values.AllocationTypes!)
-        {
-            CreatedBy = values.CreatedBy,
-            CreatedOn = DateTime.Now
-        };
+        AllocationType allocationType = AllocationType.Create(values.AllocationTypeId, values.AllocationTypeInitial!, values.AllocationTypes!);
+        allocationType.CreatedBy = values.CreatedBy;
+        allocationType.CreatedOn = DateTime.Now;
 
         _unitOfWork.AllocationType.Insert(allocationType);
         await _unitOfWork.Complete();

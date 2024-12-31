@@ -78,8 +78,8 @@ public class PropertyController : ControllerBase
     }
 
     [HttpPost]
-    [Route("AddAllocationType")]
-    public async Task<ActionResult<AllocationTypeReadDto>> AddLandUse([FromBody] AllocationTypeCreateDto values)
+    [Route("CreateAllocationType")]
+    public async Task<ActionResult<AllocationTypeReadDto>> CreateAllocationType([FromBody] AllocationTypeCreateDto values)
     {
         try
         {
@@ -87,7 +87,7 @@ public class PropertyController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(500, new { detail = ex.Message });
         }
     }
 

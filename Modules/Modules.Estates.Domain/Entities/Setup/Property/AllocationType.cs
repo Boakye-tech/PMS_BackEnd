@@ -14,6 +14,9 @@ public class AllocationType : AuditableEntity
     [Required]
     public string? AllocationTypes { get; private  set; }
 
+    public AllocationType()
+    {
+    }
 
     public AllocationType(int allocationTypeId, string? allocationTypeInitial, string? allocationTypes)
     {

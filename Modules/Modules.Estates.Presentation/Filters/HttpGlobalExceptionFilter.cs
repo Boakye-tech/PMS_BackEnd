@@ -21,7 +21,7 @@ public class HttpGlobalExceptionFilter : IExceptionHandler
         {
             Status = StatusCodes.Status500InternalServerError,
             Title = "Server Error",
-            Detail = exception.InnerException!.Message
+            Detail = exception.Message
         };
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
