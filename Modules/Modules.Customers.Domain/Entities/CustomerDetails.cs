@@ -1,16 +1,20 @@
 ﻿using System;
-namespace Modules.Estates.Domain.Entities.Registration
+using System.ComponentModel.DataAnnotations;
+
+namespace Modules.Customers.Domain.Entities
 {
-	public class CustomerMaster : AuditableEntity
+	public class CustomerDetails
 	{
         [Key]
-		public int CustomerMasterId { get; set; }
-        public int CustomerTypeId { get; set; }
-        public int ResidentTypeId { get; set; }
+        public int CustomerMasterId { get; set; }
+        [StringLength(50)]
+        public string CustomerType { get; set; }
+        [StringLength(50)]
+        public string ResidentType { get; set; }
         [StringLength(10)]
         [Required]
         public string CustomerCode { get; set; }
-        public int TitleId { get; set; }
+        public string Title { get; set; }
         [StringLength(150)]
         public string LastName { get; set; }
         [StringLength(50)]
@@ -24,8 +28,10 @@ namespace Modules.Estates.Domain.Entities.Registration
         public string TinNumber { get; set; }
         [StringLength(255)]
         public string Picture { get; set; }
-        public int GenderId { get; set; }
-        public int NationalityId { get; set; }
+        [StringLength(50)]
+        public string Gender { get; set; }
+        [StringLength(50)]
+        public string Nationality { get; set; }
         [StringLength(255)]
         public string PostalAddress { get; set; }
         [StringLength(255)]
@@ -50,10 +56,11 @@ namespace Modules.Estates.Domain.Entities.Registration
         public string ContactPerson { get; set; }
         [StringLength(12)]
         public string ContactPersonPhoneNumber { get; set; }
-        public int SocialMediaTypeId { get; set; }
+        [StringLength(50)]
+        public string SocialMediaType { get; set; }
         [StringLength(50)]
         public string SocialMediaAccount { get; set; }
-        public int IdentificationTypeId { get; set; }
+        public string IdentificationType { get; set; }
         [StringLength(20)]
         public string IdentificationTypeNumber { get; set; }
         [StringLength(255)]
@@ -69,8 +76,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         public string ParentCode { get; set; }
         public bool IsDeleted { get; set; }
 
-
-        public CustomerMaster()
+        public CustomerDetails()
 		{
 		}
 	}
