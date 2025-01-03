@@ -1,5 +1,6 @@
 ﻿using System;
 using Modules.Estates.Application.DTO.Management;
+using Modules.Estates.Application.DTO.Management.Property;
 using Modules.Estates.Domain.Entities.Registration;
 
 namespace Modules.Estates.Application.Profiles.Management
@@ -8,9 +9,9 @@ namespace Modules.Estates.Application.Profiles.Management
 	{
 		public PropertyMasterProfile()
 		{
-            //CreateMap<PropertyMaster, PropertyMasterReadDto>();
-
+            CreateMap<PropertyMaster, PropertyMasterCreatePlotResponseDto>();
             CreateMap<PropertyMasterCreatePlotDto, PropertyMaster>();
+
 
             CreateMap<PropertyMasterUpdateDto, PropertyMaster>();
             CreateMap<PropertyMasterUpdateLeaseDetailsDto, PropertyMaster>();

@@ -27,6 +27,7 @@
     <None Remove="Interfaces\Management\" />
     <None Remove="DTO\Management\" />
     <None Remove="Profiles\Management\" />
+    <None Remove="DTO\Management\Property\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -47,6 +48,7 @@
     <Folder Include="Interfaces\Management\" />
     <Folder Include="DTO\Management\" />
     <Folder Include="Profiles\Management\" />
+    <Folder Include="DTO\Management\Property\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />

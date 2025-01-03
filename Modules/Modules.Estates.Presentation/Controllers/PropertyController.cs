@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Application.DTO.Management.Property;
+using Modules.Estates.Application.Interfaces.Management.Property;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,12 +35,14 @@ public class PropertyController : ControllerBase
     readonly IActivityService _activityService;
     readonly IActivityTypeService _activityTypeService;
 
+    readonly IPropertyMasterService _propertyMasterService;
+
 
 
     public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotSizeService plotSizeService,
                               IApartmentTypeService apartmentTypeService, IFacilitiesService facilitiesService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
                               IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService,
-                              IActivityService activityService, IActivityTypeService activityTypeService)
+                              IActivityService activityService, IActivityTypeService activityTypeService, IPropertyMasterService propertyMasterService)
     {
         _allocationTypeService = allocationTypeService;
         _apartmentTypeService = apartmentTypeService;
@@ -59,6 +63,8 @@ public class PropertyController : ControllerBase
 
         _activityService = activityService;
         _activityTypeService = activityTypeService;
+
+        _propertyMasterService = propertyMasterService;
     }
 
     //--------------------ACTIVITY----------------
@@ -706,7 +712,19 @@ public class PropertyController : ControllerBase
     { }
 
     //----------------------------------
-
+    [HttpPost]
+    [Route("CreateProperty")]
+    public async Task<ActionResult<PropertyTypeReadDto>> CreateProperty([FromBody] PropertyMasterCreatePlotDto values)
+    {
+        try
+        {
+            return Ok(await _propertyMasterService.CreateProperty(values));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
 
 }
 
