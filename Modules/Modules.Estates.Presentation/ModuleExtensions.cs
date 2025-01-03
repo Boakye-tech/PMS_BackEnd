@@ -1,4 +1,6 @@
 ﻿using System;
+using Modules.Estates.Application.Interfaces.Management.Property;
+using Modules.Estates.Application.Repositories.Management;
 using Modules.Estates.Infrastructure.Extensions;
 
 namespace Modules.Estates.Presentation;
@@ -30,6 +32,8 @@ public static class ModuleExtensions
 
         services.AddScoped<IActivityService, ActivityService>();
         services.AddScoped<IActivityTypeService, ActivityTypeService>();
+
+        services.AddScoped<IPropertyMasterService, PropertyMasterService>();
 
 
         services.AddScoped<ICustomerTypeService, CustomerTypeService>();

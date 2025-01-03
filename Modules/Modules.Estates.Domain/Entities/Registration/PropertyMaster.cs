@@ -132,8 +132,8 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public static PropertyMaster Create(int propertyMasterId, int propertyTypeId, string landUseInitial, int landUseId, string landUseTypeInitial, int landUseTypeId, string localityInitial, int localityId, string allocationTypeInitial, int allocationTypeId, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, int propertyHeightId, int plotSizeId, string sitePlanNumber, bool isLargeScale = false)
         {
-            if (string.IsNullOrWhiteSpace(landUseInitial) || string.IsNullOrWhiteSpace(landUseTypeInitial) || string.IsNullOrWhiteSpace(localityInitial) || string.IsNullOrWhiteSpace(allocationTypeInitial) ||
-                string.IsNullOrWhiteSpace(plotNumber) || landUseId <= 0 || landUseTypeId <= 0 || localityId <= 0 || allocationTypeId <= 0) //string.IsNullOrWhiteSpace(blockNumber) || 
+            if (string.IsNullOrWhiteSpace(landUseInitial)  || string.IsNullOrWhiteSpace(localityInitial) || string.IsNullOrWhiteSpace(allocationTypeInitial) ||
+                string.IsNullOrWhiteSpace(plotNumber) || landUseId <= 0 || landUseTypeId <= 0 || localityId <= 0 || allocationTypeId <= 0) //string.IsNullOrWhiteSpace(blockNumber) || || string.IsNullOrWhiteSpace(landUseTypeInitial)
             {
                 throw new ArgumentException("Invalid property registration data.");
             }
@@ -163,10 +163,10 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Land use initial must not be null or exceed 3 characters.");
             }
 
-            if (string.IsNullOrWhiteSpace(landUseTypeInitial) || landUseTypeInitial.Length > 3)
-            {
-                throw new ArgumentException("Land use type initial must not be null or exceed 3 characters.");
-            }
+            //if (string.IsNullOrWhiteSpace(landUseTypeInitial) || landUseTypeInitial.Length > 3)
+            //{
+            //    throw new ArgumentException("Land use type initial must not be null or exceed 3 characters.");
+            //}
 
             if (string.IsNullOrWhiteSpace(localityInitial) || localityInitial.Length > 3)
             {

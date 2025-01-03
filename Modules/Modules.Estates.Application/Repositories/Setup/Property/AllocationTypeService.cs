@@ -1,4 +1,5 @@
-﻿using Modules.Estates.Application.DTO.Setup.Property;
+﻿
+using Modules.Estates.Application.DTO.Setup.Property;
 
 namespace Modules.Estates.Application.Repositories.Setup.Property;
 
