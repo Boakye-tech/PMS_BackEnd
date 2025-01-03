@@ -28,6 +28,7 @@
     <None Remove="Repositories\Entities\Setup\Customer\" />
     <None Remove="Repositories\Entities\Setup\Property\" />
     <None Remove="Extensions\" />
+    <None Remove="Repositories\Registration\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitOfWork\" />
@@ -39,6 +40,7 @@
     <Folder Include="Repositories\Entities\Setup\Customer\" />
     <Folder Include="Repositories\Entities\Setup\Property\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Repositories\Registration\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Estates.Application\Modules.Estates.Application.csproj" />

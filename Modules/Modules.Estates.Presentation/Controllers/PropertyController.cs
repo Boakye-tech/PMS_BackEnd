@@ -29,11 +29,16 @@ public class PropertyController : ControllerBase
     readonly IPlotSizeService _plotSizeService;
     readonly IPropertyHeightService _propertyHeightService;
     readonly IPropertyTypeService _propertyTypeService;
-   
+
+    readonly IActivityService _activityService;
+    readonly IActivityTypeService _activityTypeService;
+
+
 
     public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotSizeService plotSizeService,
                               IApartmentTypeService apartmentTypeService, IFacilitiesService facilitiesService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
-                              IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService)
+                              IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService,
+                              IActivityService activityService, IActivityTypeService activityTypeService)
     {
         _allocationTypeService = allocationTypeService;
         _apartmentTypeService = apartmentTypeService;
@@ -51,8 +56,78 @@ public class PropertyController : ControllerBase
         _plotSizeService = plotSizeService;
         _propertyHeightService = propertyHeightService;
         _propertyTypeService = propertyTypeService;
+
+        _activityService = activityService;
+        _activityTypeService = activityTypeService;
     }
 
+    //--------------------ACTIVITY----------------
+    [HttpGet]
+    [Route("Setup/GetActivities")]
+    public async Task<ActionResult<IEnumerable<ActivityReadDto>>> GetActivities()
+    {
+        return Ok(await _activityService.GetActivitiesAsync());
+    }
+
+    [HttpPost]
+    [Route("CreateActivity")]
+    public async Task<ActionResult<ActivityReadDto>> CreateActivity([FromBody] ActivityCreateDto values)
+    {
+        try
+        {
+            return Ok(await _activityService.CreateActivityAsync(values));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdateActivity")]
+    public async Task<ActionResult<ActivityReadDto>> UpdateActivity([FromBody] ActivityUpdateDto values)
+    {
+        return Ok(await _activityService.UpdateActivityAsync(values));
+    }
+    // DELETE api/values/5
+    [HttpDelete("DeleteActivity/{activityId}")]
+    public void DeleteActivity(int activityId)
+    {
+    }
+
+    //--------------------ACTIVITY TYPES----------------
+    [HttpGet]
+    [Route("Setup/GetActivityTypes")]
+    public async Task<ActionResult<IEnumerable<ActivityTypeReadDto>>> GetActivityTypes()
+    {
+        return Ok(await _activityTypeService.GetActivityTypeAsync());
+    }
+
+    [HttpPost]
+    [Route("CreateActivityType")]
+    public async Task<ActionResult<ActivityTypeReadDto>> CreateActivityType([FromBody] ActivityTypeCreateDto values)
+    {
+        try
+        {
+            return Ok(await _activityTypeService.CreateActivityTypeAsync(values));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdateActivityType")]
+    public async Task<ActionResult<ActivityTypeReadDto>> UpdateActivityType([FromBody] ActivityTypeUpdateDto values)
+    {
+        return Ok(await _activityTypeService.UpdateActivityTypeAsync(values));
+    }
+    // DELETE api/values/5
+    [HttpDelete("DeleteActivityType/{activityTypeId}")]
+    public void DeleteActivityType(int activityTypeId)
+    {
+    }
 
 
     //-------------------ALLOCATION TYPE-----------------

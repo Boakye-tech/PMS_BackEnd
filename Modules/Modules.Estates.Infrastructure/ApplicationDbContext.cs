@@ -1,16 +1,16 @@
 ﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using Modules.Common.Infrastructure;
-using Modules.Estates.Infrastructure.Configuration;
 
 namespace Modules.Estates.Infrastructure;
 
 public class ApplicationDbContext : ModuleDbContext
 {
+
+
     protected override string Schema => "est";
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
+
     }
 
     //----customer related tables
@@ -40,12 +40,27 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<PropertyHeight> PropertyHeight { get; set; }
     public DbSet<PropertyType> PropertyType { get; set; }
 
+    public DbSet<Activity> Activity { get; set; }
+    public DbSet<ActivityType> ActivityType { get; set; }
+
+    public DbSet<CustomerMaster> CustomerMaster { get; set; }
+    public DbSet<PropertyMaster> PropertyMaster { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
         base.OnModelCreating(modelBuilder);
 
         //set custom schema
-        //modelBuilder.HasDefaultSchema("est");
+        modelBuilder.HasDefaultSchema("est");
+
+        modelBuilder.Entity<PropertyMaster>()
+            .HasIndex(pm => pm.PropertyNumber)
+            .IsUnique(true);
+
+        modelBuilder.Entity<CustomerMaster>()
+            .HasIndex(cm => cm.CustomerCode)
+            .IsUnique(true);
 
         //modelBuilder.Entity<ApartmentTypes>
 
@@ -55,8 +70,18 @@ public class ApplicationDbContext : ModuleDbContext
         //modelBuilder.ApplyConfiguration(new LandUseTypeConfiguration());
         //modelBuilder.ApplyConfiguration(new LocalityConfiguration());
         //modelBuilder.ApplyConfiguration(new PropertyTypeConfiguration());
+        //modelBuilder.ApplyConfiguration(new ApartmentTypesConfiguration());
+
+        //modelBuilder.ApplyConfiguration(new ActivityConfiguration());
+        //modelBuilder.ApplyConfiguration(new ActivityTypeConfiguration());
 
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.EnableSensitiveDataLogging();
+    }
+
 }
 
 

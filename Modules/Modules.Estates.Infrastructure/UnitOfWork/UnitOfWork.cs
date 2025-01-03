@@ -1,6 +1,4 @@
-﻿using Modules.Estates.Infrastructure.Repositories.Entities.Setup.Customer;
-
-namespace Modules.Estates.Infrastructure.UnitOfWork;
+﻿namespace Modules.Estates.Infrastructure.UnitOfWork;
 
 public class UnitOfWork: IUnitOfWork
 {
@@ -52,6 +50,14 @@ public class UnitOfWork: IUnitOfWork
         FloorNumbering = new FloorNumberingRepository(_dbContext);
 
         PropertyHeight = new PropertyHeightRepository(_dbContext);
+
+        CustomerMaster = new CustomerMasterRepository(_dbContext);
+
+        PropertyMaster = new PropertyMasterRepository(_dbContext);
+
+        Activity = new ActivityRepository(_dbContext);
+        ActivityType = new ActivityTypeRepository(_dbContext);
+
     }
 
 
@@ -97,6 +103,13 @@ public class UnitOfWork: IUnitOfWork
 
     public IPropertyHeightRepository PropertyHeight { get; private set; }
 
+    public ICustomerMasterRepository CustomerMaster { get; private set; }
+
+    public IPropertyMasterRepository PropertyMaster { get; private set; }
+
+    //jan 2 '25
+    public IActivityRepository Activity { get; private set; }
+    public IActivityTypeRepository ActivityType { get; private set; }
 
 
     public Task<int> Complete()
