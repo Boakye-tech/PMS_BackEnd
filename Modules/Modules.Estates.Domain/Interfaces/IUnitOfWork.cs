@@ -1,4 +1,6 @@
 ﻿
+using Modules.Estates.Domain.Interfaces.Registration;
+
 namespace Modules.Estates.Domain;
 
 public interface IUnitOfWork : IDisposable
@@ -28,6 +30,13 @@ public interface IUnitOfWork : IDisposable
     IPropertyHeightRepository PropertyHeight { get; }
     IPropertyTypeRepository PropertyType { get; }
 
+    //Jan 1 '25
+    ICustomerMasterRepository CustomerMaster { get; }
+    IPropertyMasterRepository PropertyMaster { get; }
+
+    //Jan 2 '25
+    IActivityRepository Activity { get; }
+    IActivityTypeRepository ActivityType { get; }
 
     Task<int> Complete();
 }

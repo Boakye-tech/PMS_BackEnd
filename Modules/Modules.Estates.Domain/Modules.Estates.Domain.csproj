@@ -22,6 +22,7 @@
     <None Remove="Interfaces\Entities\Setup\Customer\" />
     <None Remove="Interfaces\Entities\Setup\Property\" />
     <None Remove="Entities\Registration\" />
+    <None Remove="Interfaces\Registration\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -34,5 +35,6 @@
     <Folder Include="Interfaces\Entities\Setup\Customer\" />
     <Folder Include="Interfaces\Entities\Setup\Property\" />
     <Folder Include="Entities\Registration\" />
+    <Folder Include="Interfaces\Registration\" />
   </ItemGroup>
 </Project>

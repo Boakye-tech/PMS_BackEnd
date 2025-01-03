@@ -124,13 +124,13 @@ namespace Modules.Estates.Domain.Entities.Registration
         {
         }
 
-        public PropertyMaster(int propertyTypeId, int landUseId, int landUseTypeId, int localityId, int allocationTypeId, string blockNumber, string plotNumber, double acreageOne, string sitePlanNumber, bool isLargeScale = false)
+        public PropertyMaster(int propertyTypeId, int landUseId, int landUseTypeId, int localityId, int allocationTypeId, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, int propertyHeightId, int plotSizeId, string sitePlanNumber, bool isLargeScale = false)
         {
 
         }
 
 
-        public static PropertyMaster Create(int propertyTypeId, string landUseInitial, int landUseId, string landUseTypeInitial, int landUseTypeId, string localityInitial, int localityId, string allocationTypeInitial, int allocationTypeId, string blockNumber, string plotNumber, double acreageOne, string sitePlanNumber, bool isLargeScale = false)
+        public static PropertyMaster Create(int propertyMasterId, int propertyTypeId, string landUseInitial, int landUseId, string landUseTypeInitial, int landUseTypeId, string localityInitial, int localityId, string allocationTypeInitial, int allocationTypeId, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, int propertyHeightId, int plotSizeId, string sitePlanNumber, bool isLargeScale = false)
         {
             if (string.IsNullOrWhiteSpace(landUseInitial) || string.IsNullOrWhiteSpace(landUseTypeInitial) || string.IsNullOrWhiteSpace(localityInitial) || string.IsNullOrWhiteSpace(allocationTypeInitial) ||
                 string.IsNullOrWhiteSpace(plotNumber) || landUseId <= 0 || landUseTypeId <= 0 || localityId <= 0 || allocationTypeId <= 0) //string.IsNullOrWhiteSpace(blockNumber) || 
@@ -222,7 +222,25 @@ namespace Modules.Estates.Domain.Entities.Registration
                     break;
             }
 
-            return new PropertyMaster();
+            return new PropertyMaster
+            {
+                PropertyMasterId = propertyMasterId,
+                PropertyNumber = strPropertyNumber,
+                PropertyTypeId = propertyTypeId,
+                LocalityId = localityId,
+                LandUseId = landUseId,
+                LandUseTypeId = landUseTypeId,
+                AllocationTypeId = allocationTypeId,
+                BlockNumber = blockNumber,
+                PlotNumber = plotNumber,
+                AcreageOne = acreageOne,
+                AcreageTwo = acreageTwo,
+                PropertyHeightId = propertyHeightId,
+                PlotSizeId = plotSizeId,
+                SitePlanNumber = sitePlanNumber,
+                IsLargeScale = isLargeScale,
+                IsDeleted = false
+            };
 
         }
 

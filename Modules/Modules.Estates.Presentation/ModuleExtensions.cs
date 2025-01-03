@@ -28,6 +28,10 @@ public static class ModuleExtensions
         services.AddScoped<IPropertyHeightService, PropertyHeightService>();
         services.AddScoped<IPropertyTypeService, PropertyTypeService>();
 
+        services.AddScoped<IActivityService, ActivityService>();
+        services.AddScoped<IActivityTypeService, ActivityTypeService>();
+
+
         services.AddScoped<ICustomerTypeService, CustomerTypeService>();
         services.AddScoped<IGenderService, GenderService>();
         services.AddScoped<IIdentificationTypeService, IdentificationTypeService>();
