@@ -23,10 +23,10 @@
     <None Remove="Repositories\Setup\" />
     <None Remove="Repositories\Setup\Property\" />
     <None Remove="Repositories\Setup\Customer\" />
-    <None Remove="DTO\Registration\" />
-    <None Remove="Interfaces\Registration\" />
-    <None Remove="Interfaces\Registration\Customer\" />
-    <None Remove="Interfaces\Registration\Property\" />
+    <None Remove="Repositories\Management\" />
+    <None Remove="Interfaces\Management\" />
+    <None Remove="DTO\Management\" />
+    <None Remove="Profiles\Management\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -43,10 +43,10 @@
     <Folder Include="Repositories\Setup\" />
     <Folder Include="Repositories\Setup\Property\" />
     <Folder Include="Repositories\Setup\Customer\" />
-    <Folder Include="DTO\Registration\" />
-    <Folder Include="Interfaces\Registration\" />
-    <Folder Include="Interfaces\Registration\Customer\" />
-    <Folder Include="Interfaces\Registration\Property\" />
+    <Folder Include="Repositories\Management\" />
+    <Folder Include="Interfaces\Management\" />
+    <Folder Include="DTO\Management\" />
+    <Folder Include="Profiles\Management\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />

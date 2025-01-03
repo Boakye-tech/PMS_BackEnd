@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Registration
+namespace Modules.Estates.Application.DTO.Management
 {
 	public record PropertyMasterDto
 	{
