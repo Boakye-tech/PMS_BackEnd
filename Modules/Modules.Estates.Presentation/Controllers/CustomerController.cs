@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Application.DTO.Management.Customer;
 using Modules.Estates.Application.DTO.Setup.Customer;
 using Modules.Estates.Application.Interfaces.Entities.Setup.Customer;
+using Modules.Estates.Application.Interfaces.Management.Customer;
 using Modules.Estates.Application.Repositories.Setup.Customer;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -23,8 +25,10 @@ namespace Modules.Estates.Presentation.Controllers
         readonly ISocialMediaService _socialMediaService;
         readonly ITitleService _titleService;
 
+        readonly ICustomerMasterService _customerMasterService;
+
         public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService,
-                                  IResidentTypeService residentTypeService, ISocialMediaService socialMediaService, ITitleService titleService)
+                                  IResidentTypeService residentTypeService, ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService)
         {
             _customerTypeService = customerTypeService;
             _genderService = genderService;
@@ -33,6 +37,8 @@ namespace Modules.Estates.Presentation.Controllers
             _residentTypeService = residentTypeService;
             _socialMediaService = socialMediaService;
             _titleService = titleService;
+
+            _customerMasterService = customerMasterService;
         }
 
         //----------------------CUSTOMER TYPES------------
@@ -299,6 +305,34 @@ namespace Modules.Estates.Presentation.Controllers
         public void DeleteTitle(int titleId)
         { }
 
+        //------------------
+        [HttpPost]
+        [Route("AddProspectiveCustomer")]
+        public async Task<ActionResult<ProspectiveCustomerResponseDto>> AddProspectiveCustomer([FromBody] ProspectiveCustomerDto values)
+        {
+            try
+            {
+                return Ok(await _customerMasterService.CreateCustomer(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("AddCompanyCustomer")]
+        public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CompanyCustomerDto values)
+        {
+            try
+            {
+                return Ok(await _customerMasterService.CreateCustomer(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
 
 
     }

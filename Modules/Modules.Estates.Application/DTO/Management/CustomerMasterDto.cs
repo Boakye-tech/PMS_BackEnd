@@ -9,6 +9,7 @@ namespace Modules.Estates.Application.DTO.Management
         public int CustomerMasterId { get; set; }
         public int CustomerTypeId { get; set; }
         public int ResidentTypeId { get; set; }
+        public int LocalityId { get; set; }
         [StringLength(10)]
         [Required]
         public string? CustomerCode { get; set; }
