@@ -1,0 +1,16 @@
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/bin/Debug/net8.0/Modules.Billing.Application.deps.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/bin/Debug/net8.0/Modules.Billing.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/bin/Debug/net8.0/Modules.Billing.Application.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/bin/Debug/net8.0/Modules.Billing.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/bin/Debug/net8.0/Modules.Billing.Domain.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules.Billing.Application.csproj.AssemblyReference.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules.Billing.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules.Billing.Application.AssemblyInfoInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules.Billing.Application.AssemblyInfo.cs
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules.Billing.Application.csproj.CoreCompileInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules.Billing.Application.sourcelink.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules..5866EC96.Up2Date
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules.Billing.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/refint/Modules.Billing.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/Modules.Billing.Application.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Application/obj/Debug/net8.0/ref/Modules.Billing.Application.dll

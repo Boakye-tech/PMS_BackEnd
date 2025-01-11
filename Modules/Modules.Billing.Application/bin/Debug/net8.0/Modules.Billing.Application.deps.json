@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Modules.Billing.Application/1.0.0": {
+        "dependencies": {
+          "Modules.Billing.Domain": "1.0.0"
+        },
+        "runtime": {
+          "Modules.Billing.Application.dll": {}
+        }
+      },
+      "Modules.Billing.Domain/1.0.0": {
+        "runtime": {
+          "Modules.Billing.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Modules.Billing.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Modules.Billing.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

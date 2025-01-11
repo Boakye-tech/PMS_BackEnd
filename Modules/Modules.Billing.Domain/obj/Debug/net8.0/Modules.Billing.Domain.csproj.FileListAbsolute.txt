@@ -1,0 +1,12 @@
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/bin/Debug/net8.0/Modules.Billing.Domain.deps.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/bin/Debug/net8.0/Modules.Billing.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/bin/Debug/net8.0/Modules.Billing.Domain.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/Modules.Billing.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/Modules.Billing.Domain.AssemblyInfoInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/Modules.Billing.Domain.AssemblyInfo.cs
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/Modules.Billing.Domain.csproj.CoreCompileInputs.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/Modules.Billing.Domain.sourcelink.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/Modules.Billing.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/refint/Modules.Billing.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/Modules.Billing.Domain.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/Debug/net8.0/ref/Modules.Billing.Domain.dll

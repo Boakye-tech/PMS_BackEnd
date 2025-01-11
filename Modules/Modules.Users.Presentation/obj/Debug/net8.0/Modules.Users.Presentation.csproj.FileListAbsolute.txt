@@ -13,6 +13,7 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Humanizer.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
@@ -57,6 +58,7 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Serilog.Sinks.Console.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Serilog.Sinks.Debug.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Serilog.Sinks.File.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/StringRandomizer.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -170,5 +172,3 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/obj/Debug/net8.0/Modules.Users.Presentation.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/obj/Debug/net8.0/Modules.Users.Presentation.genruntimeconfig.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/obj/Debug/net8.0/ref/Modules.Users.Presentation.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/StringRandomizer.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

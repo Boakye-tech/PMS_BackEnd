@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "9jh9lpOprTnGE1g84zGfu12TEP/biGFnvwLUhlxfxsE=",
+  "Source": "Modules.Billing.Presentation",
+  "BasePath": "_content/Modules.Billing.Presentation",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/Modules.Estates.Presentation.props" />
-</Project>

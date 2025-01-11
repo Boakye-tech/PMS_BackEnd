@@ -1,4 +1,5 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/bin/Debug/net8.0/Modules.Finance.Infrastructure.deps.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/bin/Debug/net8.0/Modules.Finance.Infrastructure.runtimeconfig.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/bin/Debug/net8.0/Modules.Finance.Infrastructure.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/bin/Debug/net8.0/Modules.Finance.Infrastructure.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/bin/Debug/net8.0/Modules.Common.Infrastructure.dll
@@ -15,6 +16,5 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/obj/Debug/net8.0/Modules.Finance.Infrastructure.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/obj/Debug/net8.0/refint/Modules.Finance.Infrastructure.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/obj/Debug/net8.0/Modules.Finance.Infrastructure.pdb
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/obj/Debug/net8.0/ref/Modules.Finance.Infrastructure.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/bin/Debug/net8.0/Modules.Finance.Infrastructure.runtimeconfig.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/obj/Debug/net8.0/Modules.Finance.Infrastructure.genruntimeconfig.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/obj/Debug/net8.0/ref/Modules.Finance.Infrastructure.dll
