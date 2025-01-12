@@ -13,8 +13,9 @@
     <None Remove="Services\Messaging\" />
     <None Remove="Persistence\" />
     <None Remove="Persistence\EntityConfigurations\" />
-    <None Remove="Persistence\Migrations\" />
     <None Remove="Persistence\Repositories\" />
+    <None Remove="Persistence\Repositories\Entities\" />
+    <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BackgroundJobs\" />
@@ -23,7 +24,25 @@
     <Folder Include="Services\Messaging\" />
     <Folder Include="Persistence\" />
     <Folder Include="Persistence\EntityConfigurations\" />
-    <Folder Include="Persistence\Migrations\" />
     <Folder Include="Persistence\Repositories\" />
+    <Folder Include="Persistence\Repositories\Entities\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Customers.Domain\Modules.Customers.Domain.csproj" />
+    <ProjectReference Include="..\Modules.Customers.Application\Modules.Customers.Application.csproj" />
+    <ProjectReference Include="..\Modules.Common.Domain\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

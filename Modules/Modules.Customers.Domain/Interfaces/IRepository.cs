@@ -6,29 +6,31 @@ namespace Modules.Customers.Domain.Interfaces
 	public interface IRepository<TEntity> where TEntity : class
     {
 
-        TEntity Get(int id);
+        Task<TEntity> Get(int id);
 
-        TEntity Get(string name);
+        Task<TEntity> Get(string name);
 
         Task<IList<TEntity>> GetAll(
-                   Expression<Func<TEntity, bool>>? expression = null,
-                   Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-                   List<string>? includes = null
-                   );
+                    Expression<Func<TEntity, bool>>? expression = null,
+                    Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+                    List<string>? includes = null
+                    );
+
+        Task<IList<TEntity>> GetAll();
 
         Task<TEntity> Get(Expression<Func<TEntity, bool>> expression, List<string>? includes = null);
 
-        Task Insert(TEntity entity);
+        void Insert(TEntity entity);
 
-        Task InsertRange(IEnumerable<TEntity> entities);
+        void InsertRange(IEnumerable<TEntity> entities);
 
-        Task Delete(TEntity entity);
+        void Delete(TEntity entity);
 
-        Task DeleteRange(IEnumerable<TEntity> entities);
+        void DeleteRange(IEnumerable<TEntity> entities);
 
-        Task Update(TEntity entity);
+        void Update(TEntity entity);
 
-        Task UpdateRange(IEnumerable<TEntity> entities);
+        void UpdateRange(IEnumerable<TEntity> entities);
     }
 }
 

@@ -8,21 +8,52 @@ namespace Modules.Customers.Domain.Entities
 		[Key]
 		public int ComplaintId { get; set; }
 
-		public string CustomerCode { get; set; }
-		public string ClientName { get; set; }
-		public string ContactInformation { get; set; }
-		public string PropertyNumber { get; set; }
-		public string Locality { get; set; }
-		public string DetailsOfComplaint { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string? ComplaintNumber { get; set; }
+
+        [Required]
+        [StringLength(25)]
+        public string? PropertyNumber { get; set; }
+
+        [Required]
+        [StringLength(250)]
+        public string? CustomerCode { get; set; }
+
+		public string? CustomerName { get; set; }
+
+        [Required]
+        [StringLength(12)]
+        public string? PhoneNumber { get; set; }
+
+        [Required]
+        [StringLength(75)]
+        public string? EmailAddress { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        public string? Locality { get; set; }
+
+        [Required]
+        public string? DetailsOfComplaint { get; set; }
+
 		public bool IsTheMatterInCourt { get; set; }
+
 		public DateTime ComplaintDate { get; set; }
-		public string SubmittedBy { get; set; }
 
-        public string DocumentOne { get; set; }
-        public string DocumentTwo { get; set; }
-        public string DocumentThree { get; set; }
+		public string? SubmittedBy { get; set; }
 
-		public string CreatedBy { get; set; }
+        [StringLength(255)]
+        public string? DocumentOne { get; set; }
+
+        [StringLength(255)]
+        public string? DocumentTwo { get; set; }
+
+        [StringLength(255)]
+        public string? DocumentThree { get; set; }
+
+        [StringLength(50)]
+        public string ?CreatedBy { get; set; }
 
 	}
 }

@@ -10,34 +10,40 @@ namespace Modules.Customers.Domain.Entities
 
         [Required]
         [StringLength(50)]
-        public string VoucherNumber { get; set; }
+        public required string VoucherNumber { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string PropertyNumber { get; set; }
+        public required string PropertyNumber { get; set; }
 
         [Required]
         [StringLength(10)]
-        public string CustomerCode { get; set; }
+        public required string CustomerCode { get; set; }
 
         [Required]
-        public DateTime TransactionDate { get; set; }
+        public required DateTime TransactionDate { get; set; }
 
         [StringLength(50)]
-        public string ReferenceNumber { get; set; }
+        public string? ReferenceNumber { get; set; }
 
         [StringLength(10)]
-        public string ChequeNumber { get; set; }
+        public string? ChequeNumber { get; set; }
 
         [Required]
-        public double Amount { get; set; }
+        public required double Amount { get; set; }
+
+        public required int AccountCode { get; set; }
 
         [Required]
-        public int AccountCode { get; set; }
+        [StringLength(2)]
+        public required string TransactionType { get; set; }
 
-        public CustomerTransactions()
-		{
-		}
+        [Required]
+        [StringLength(3)]
+        public required string VoucherType { get; set; }
 	}
+
+
+
 }
 

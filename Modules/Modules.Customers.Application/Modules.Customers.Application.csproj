@@ -7,27 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Abstractions\" />
-    <None Remove="Abstractions\Data\" />
-    <None Remove="Abstractions\Email\" />
-    <None Remove="Abstractions\Messaging\" />
-    <None Remove="Behavious\" />
-    <None Remove="Contracts\" />
-    <None Remove="Entities\" />
-    <None Remove="Entities\Commands\" />
-    <None Remove="Entities\Events\" />
-    <None Remove="Entities\Queries\" />
+    <None Remove="Dtos\" />
+    <None Remove="Interfaces\" />
+    <None Remove="UseCases\" />
+    <None Remove="Profiles\" />
+    <None Remove="Validations\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstractions\" />
-    <Folder Include="Abstractions\Data\" />
-    <Folder Include="Abstractions\Email\" />
-    <Folder Include="Abstractions\Messaging\" />
-    <Folder Include="Behavious\" />
-    <Folder Include="Contracts\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Entities\Commands\" />
-    <Folder Include="Entities\Events\" />
-    <Folder Include="Entities\Queries\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="UseCases\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="Validations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Customers.Domain\Modules.Customers.Domain.csproj" />
   </ItemGroup>
 </Project>

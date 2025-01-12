@@ -3177,22 +3177,6 @@
           "bin/placeholder/Modules.Common.Infrastructure.dll": {}
         }
       },
-      "Modules.Customers.Presentation/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "Swashbuckle.AspNetCore": "6.4.0"
-        },
-        "compile": {
-          "bin/placeholder/Modules.Customers.Presentation.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Modules.Customers.Presentation.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
-      },
       "Modules.Estates.Application/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -9019,11 +9003,6 @@
       "path": "../Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
       "msbuildProject": "../Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
     },
-    "Modules.Customers.Presentation/1.0.0": {
-      "type": "project",
-      "path": "../Modules/Modules.Customers.Presntation/Modules.Customers.Presentation.csproj",
-      "msbuildProject": "../Modules/Modules.Customers.Presntation/Modules.Customers.Presentation.csproj"
-    },
     "Modules.Estates.Application/1.0.0": {
       "type": "project",
       "path": "../Modules/Modules.Estates.Application/Modules.Estates.Application.csproj",
@@ -9087,7 +9066,6 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Modules.Customers.Presentation >= 1.0.0",
       "Modules.Estates.Presentation >= 1.0.0",
       "Modules.Finance.Presentation >= 1.0.0",
       "Modules.Users.Presentation >= 1.0.0",
@@ -9120,9 +9098,6 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/Modules.Customers.Presentation.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presntation/Modules.Customers.Presentation.csproj"
-            },
             "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/Modules.Estates.Presentation.csproj": {
               "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/Modules.Estates.Presentation.csproj"
             },
