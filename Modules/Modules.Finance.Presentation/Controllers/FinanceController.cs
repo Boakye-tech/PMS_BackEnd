@@ -24,10 +24,11 @@ namespace Modules.Finance.Presentation.Controllers
         public readonly IPaymentModeService _paymentModeService;
         public readonly IPaymentTypeService _paymentTypeService;
         public readonly IPayPointsService _payPointsService;
+        public readonly IInvoiceTypesService _invoiceTypesService;
 
         public FinanceController(IBankBranchService bankBranchService, IBankService bankService, IBankSortCodesService bankSortCodesService, IChartOfAccountsService chartOfAccountsService,
                                  ICurrencyAndExchangeRateService currencyAndExchangeRateService, IFormsService formsService, IPaymentModeService paymentModeService, IPaymentTypeService paymentTypeService,
-                                 IPayPointsService payPointsService)
+                                 IPayPointsService payPointsService, IInvoiceTypesService invoiceTypesService)
         {
             _bankService = bankService;
             _bankBranchService = bankBranchService;
@@ -38,6 +39,7 @@ namespace Modules.Finance.Presentation.Controllers
             _paymentModeService = paymentModeService;
             _paymentTypeService = paymentTypeService;
             _payPointsService = payPointsService;
+            _invoiceTypesService = invoiceTypesService;
         }
 
         //---------BANKS-----------
@@ -196,6 +198,28 @@ namespace Modules.Finance.Presentation.Controllers
             try
             {
                 return Ok(await _currencyAndExchangeRateService.AddCurrencyAndExchangeRateAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        //----INVOICE TYPES-----
+        [HttpGet]
+        [Route("Setup/GetInvoiceTypes")]
+        public async Task<ActionResult<IEnumerable<InvoiceTypesReadDto>>> GetInvoiceTypes()
+        {
+            return Ok(await _invoiceTypesService.GetInvoiceTypesAsync());
+        }
+
+        [HttpPost]
+        [Route("AddInvoiceTypes")]
+        public async Task<ActionResult<InvoiceTypesReadDto>> AddInvoiceTypes([FromBody] InvoiceTypesCreateDto values)
+        {
+            try
+            {
+                return Ok(await _invoiceTypesService.AddInvoiceTypesAsync(values));
             }
             catch (Exception ex)
             {

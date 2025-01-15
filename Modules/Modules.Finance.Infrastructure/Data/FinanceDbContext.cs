@@ -23,6 +23,7 @@ public class FinanceDbContext : ModuleDbContext
     public DbSet<PaymentType> PaymentType { get; set; }
     public DbSet<Paypoints> Paypoints { get; set; }
     public DbSet<Services> Services { get; set; }
+    public DbSet<InvoiceTypes> InvoiceTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

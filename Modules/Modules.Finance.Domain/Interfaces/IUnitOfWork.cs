@@ -13,6 +13,7 @@ namespace Modules.Finance.Domain.Interfaces
         IPaymentModeRepository PaymentMode { get; }
         IPaymentTypeRepository PaymentType { get; }
         IPaypointsRespository Paypoints { get; }
+        IInvoiceTypesRepository InvoiceTypes { get; }
 
 
         Task<int> Complete();

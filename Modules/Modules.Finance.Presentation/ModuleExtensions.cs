@@ -18,6 +18,7 @@ namespace Modules.Finance.Presentation
             services.AddScoped<IPaymentModeService, PaymentModeService>();
             services.AddScoped<IPaymentTypeService, PaymentTypeService>();
             services.AddScoped<IPayPointsService, PayPointsService>();
+            services.AddScoped<IInvoiceTypesService, InvoiceTypesService>();
 
 
             //// Dependency Injection - Register AutoMapper 

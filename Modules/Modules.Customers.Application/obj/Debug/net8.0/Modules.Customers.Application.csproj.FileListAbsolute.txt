@@ -1,16 +1,6 @@
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/bin/Debug/net8.0/Modules.Customers.Application.deps.json
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/bin/Debug/net8.0/Modules.Customers.Application.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/bin/Debug/net8.0/Modules.Customers.Application.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.csproj.AssemblyReference.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.GeneratedMSBuildEditorConfig.editorconfig
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.AssemblyInfoInputs.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.AssemblyInfo.cs
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.csproj.CoreCompileInputs.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.sourcelink.json
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/refint/Modules.Customers.Application.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.pdb
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/ref/Modules.Customers.Application.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/bin/Debug/net8.0/Modules.Customers.Domain.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/bin/Debug/net8.0/Modules.Customers.Domain.pdb
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules.Customers.Application.csproj.AssemblyReference.cache
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/Debug/net8.0/Modules..8D194B87.Up2Date

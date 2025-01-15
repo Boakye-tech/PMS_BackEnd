@@ -17,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
         PaymentMode = new PaymentModeRepository(dbContext);
         PaymentType = new PaymentTypeRepository(dbContext);
         Paypoints = new PaypointsRespository(dbContext);
+        InvoiceTypes = new InvoiceTypesRepository(dbContext);
     }
 
     public IBankRepository Bank { get; private set; }
@@ -36,6 +37,8 @@ public class UnitOfWork : IUnitOfWork
     public IPaymentTypeRepository PaymentType { get; private set; }
 
     public IPaypointsRespository Paypoints { get; private set; }
+
+    public IInvoiceTypesRepository InvoiceTypes { get; private set; }
 
     public Task<int> Complete()
     {
