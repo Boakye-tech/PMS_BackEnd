@@ -5228,8 +5228,8 @@
     },
     "Modules.Common.Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
-      "msbuildProject": "../Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+      "path": "../Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
+      "msbuildProject": "../Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
     },
     "Modules.Customers.Application/1.0.0": {
       "type": "project",

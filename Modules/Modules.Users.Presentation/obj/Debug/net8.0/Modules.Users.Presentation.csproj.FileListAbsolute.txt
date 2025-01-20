@@ -1,5 +1,5 @@
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/appsettings.Development.json
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/appsettings.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/appsettings.users.Development.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/appsettings.users.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Modules.Users.Presentation
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Modules.Users.Presentation.deps.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Presentation/bin/Debug/net8.0/Modules.Users.Presentation.runtimeconfig.json

@@ -36,8 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Filters\" />
+    <None Remove="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 </Project>

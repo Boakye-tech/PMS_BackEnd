@@ -34,7 +34,7 @@ namespace Modules.Customers.Application.Dtos
 
         public required double InvoiceAmount { get; set; }
 
-        public required IEnumerable<InvoiceDetailsDto> InvoiceDetails { get; set; }
+        public required IEnumerable<CustomerInvoiceDetailsDto> InvoiceDetails { get; set; }
     }
 }
 

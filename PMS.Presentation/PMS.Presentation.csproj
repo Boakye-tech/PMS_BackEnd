@@ -18,9 +18,13 @@
 
   <ItemGroup>
     <None Remove="Extensions\" />
+    <None Remove="Properties\PublishProfiles\" />
+    <None Remove="Logs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules\Modules.Estates.Presentation\Modules.Estates.Presentation.csproj">
@@ -29,10 +33,13 @@
     <ProjectReference Include="..\Modules\Modules.Users.Presentation\Modules.Users.Presentation.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\Modules\Modules.Customers.Presntation\Modules.Customers.Presentation.csproj">
+    <ProjectReference Include="..\Modules\Modules.Finance.Presentation\Modules.Finance.Presentation.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\Modules\Modules.Finance.Presentation\Modules.Finance.Presentation.csproj">
+    <ProjectReference Include="..\Modules\Modules.Billing.Presentation\Modules.Billing.Presentation.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\Modules\Modules.Customers.Presentation\Modules.Customers.Presentation.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>

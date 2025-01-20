@@ -1,5 +1,5 @@
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/appsettings.Development.json
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/appsettings.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/appsettings.finance.Development.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/appsettings.finance.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Modules.Finance.Presentation
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Modules.Finance.Presentation.deps.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Modules.Finance.Presentation.runtimeconfig.json

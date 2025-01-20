@@ -28,75 +28,75 @@ namespace Modules.Estates.Presentation.Controllers
 
 
         //------------------
-        [HttpPost]
-        [Route("AddProspectiveCustomer")]
-        public async Task<ActionResult<ProspectiveCustomerResponseDto>> AddProspectiveCustomer([FromBody] ProspectiveCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
+        //[HttpPost]
+        //[Route("AddProspectiveCustomer")]
+        //public async Task<ActionResult<ProspectiveCustomerResponseDto>> AddProspectiveCustomer([FromBody] ProspectiveCustomerDto values)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _customerMasterService.CreateCustomer(values));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.InnerException!.Message);
+        //    }
+        //}
 
-        [HttpPost]
-        [Route("AddCompanyCustomer")]
-        public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CompanyCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
+        //[HttpPost]
+        //[Route("AddCompanyCustomer")]
+        //public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CompanyCustomerDto values)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _customerMasterService.CreateCustomer(values));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.InnerException!.Message);
+        //    }
+        //}
 
-        [HttpPost]
-        [Route("AddIndividualCustomer")]
-        public async Task<ActionResult<IndividualCustomerResponseDto>> AddIndividualCustomer([FromBody] IndividualCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
+        //[HttpPost]
+        //[Route("AddIndividualCustomer")]
+        //public async Task<ActionResult<IndividualCustomerResponseDto>> AddIndividualCustomer([FromBody] IndividualCustomerDto values)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _customerMasterService.CreateCustomer(values));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.InnerException!.Message);
+        //    }
+        //}
 
-        [HttpPost]
-        [Route("AddJointCustomer")]
-        public async Task<ActionResult<IndividualCustomerResponseDto>> AddJointCustomer([FromBody] JointOwnershipCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
+        //[HttpPost]
+        //[Route("AddJointCustomer")]
+        //public async Task<ActionResult<IndividualCustomerResponseDto>> AddJointCustomer([FromBody] JointOwnershipCustomerDto values)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _customerMasterService.CreateCustomer(values));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.InnerException!.Message);
+        //    }
+        //}
 
-        [HttpPost]
-        [Route("AddMultiCustomer")]
-        public async Task<ActionResult<IndividualCustomerResponseDto>> AddMultiCustomer([FromBody] MultiOwnershipCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
+        //[HttpPost]
+        //[Route("AddMultiCustomer")]
+        //public async Task<ActionResult<IndividualCustomerResponseDto>> AddMultiCustomer([FromBody] MultiOwnershipCustomerDto values)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _customerMasterService.CreateCustomer(values));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.InnerException!.Message);
+        //    }
+        //}
 
 
 

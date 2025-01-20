@@ -1,5 +1,5 @@
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/appsettings.Development.json
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/appsettings.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/appsettings.billing.Development.json
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/appsettings.billing.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Modules.Billing.Presentation
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Modules.Billing.Presentation.deps.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Modules.Billing.Presentation.runtimeconfig.json

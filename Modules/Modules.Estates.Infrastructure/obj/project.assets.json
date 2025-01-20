@@ -4205,8 +4205,8 @@
     },
     "Modules.Common.Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
-      "msbuildProject": "../Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+      "path": "../Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
+      "msbuildProject": "../Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
     },
     "Modules.Estates.Application/1.0.0": {
       "type": "project",
@@ -4256,8 +4256,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
+              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
             },
             "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Application/Modules.Estates.Application.csproj": {
               "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Application/Modules.Estates.Application.csproj"
@@ -4323,13 +4323,5 @@
         "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
-    }
-  ]
+  }
 }

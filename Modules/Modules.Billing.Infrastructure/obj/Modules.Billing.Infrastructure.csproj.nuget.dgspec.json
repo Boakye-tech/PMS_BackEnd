@@ -145,8 +145,8 @@
               "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj": {
                 "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj"
               },
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
+                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
               }
             }
           }
@@ -180,14 +180,14 @@
         }
       }
     },
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
+    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
+        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
         "projectName": "Modules.Common.Infrastructure",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
+        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
         "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/obj/",
+        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/macbook/.nuget/NuGet/NuGet.Config"

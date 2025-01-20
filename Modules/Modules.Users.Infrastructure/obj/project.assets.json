@@ -4313,8 +4313,8 @@
     },
     "Modules.Common.Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
-      "msbuildProject": "../Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+      "path": "../Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
+      "msbuildProject": "../Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
     },
     "Modules.Users.Application/1.0.0": {
       "type": "project",
@@ -4364,8 +4364,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
+              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
             },
             "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Application/Modules.Users.Application.csproj": {
               "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Application/Modules.Users.Application.csproj"

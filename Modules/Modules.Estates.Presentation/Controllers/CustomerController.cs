@@ -15,7 +15,7 @@ namespace Modules.Estates.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CustomerController : ControllerBase
+    public partial class CustomerController : ControllerBase
     {
         readonly ICustomerTypeService _customerTypeService;
         readonly IGenderService _genderService;

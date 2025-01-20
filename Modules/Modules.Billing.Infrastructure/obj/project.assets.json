@@ -2757,8 +2757,8 @@
     },
     "Modules.Common.Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
-      "msbuildProject": "../Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+      "path": "../Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
+      "msbuildProject": "../Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2800,8 +2800,8 @@
             "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj": {
               "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj"
             },
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
+              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
             }
           }
         }
@@ -2810,6 +2810,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {

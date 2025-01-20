@@ -14,13 +14,15 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 
 // Add services to the container.
+
+builder.Services.AddSharedInfrastructure(builder.Configuration);
+
 builder.Services.AddEstateModule(builder.Configuration);
 
 builder.Services.AddFinanceModule(builder.Configuration);
 
 builder.Services.AddUserModule(builder.Configuration);
 
-builder.Services.AddSharedInfrastructure(builder.Configuration);
 
 
 
@@ -41,6 +43,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+if (app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

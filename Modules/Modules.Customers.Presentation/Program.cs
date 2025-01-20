@@ -20,6 +20,7 @@ if (builder.Environment.IsDevelopment())
             break;
         case "MsSQLServer":
             builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection")));
+            Console.WriteLine(builder.Configuration.GetConnectionString("MsSQLConnection"));
             break;
     }
 
