@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Customers.Application.Dtos
+namespace Modules.Customers.Application.Dtos.PropertyDetails
 {
 	public record PropertyDetailsDto
 	{

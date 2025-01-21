@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Customers.Application.Dtos
+namespace Modules.Customers.Application.Dtos.CustomerDetails
 {
     public record CustomerDetailsDto
     {
@@ -13,16 +13,7 @@ namespace Modules.Customers.Application.Dtos
 
         public required string CustomerCode { get; set; }
 
-        public string? Title { get; set; }
-
-        [StringLength(150)]
-        public string? SurName { get; set; }
-
-        [StringLength(75)]
-        public string? OtherNames { get; set; }
-
-        [StringLength(100)]
-        public string? CompanyName { get; set; }
+        public required string CustomerName { get; set; }
 
         [StringLength(255)]
         public string? Picture { get; set; }

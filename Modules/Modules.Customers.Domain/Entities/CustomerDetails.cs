@@ -21,16 +21,9 @@ namespace Modules.Customers.Domain.Entities
         [StringLength(10)]
         public string CustomerCode { get; set; }
 
-        public string Title { get; set; }
-
-        [StringLength(150)]
-        public string SurName { get; set; }
-
-        [StringLength(75)]
-        public string OtherNames { get; set; }
-
-        [StringLength(100)]
-        public string CompanyName { get; set; }
+        [Required]
+        [StringLength(200)]
+        public string CustomerName { get; set; }
 
         [StringLength(255)]
         public string Picture { get; set; }

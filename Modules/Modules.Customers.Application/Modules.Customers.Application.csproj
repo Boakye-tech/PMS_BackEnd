@@ -12,6 +12,8 @@
     <None Remove="UseCases\" />
     <None Remove="Profiles\" />
     <None Remove="Validations\" />
+    <None Remove="Dtos\CustomerDetails\" />
+    <None Remove="Dtos\PropertyDetails\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -19,6 +21,8 @@
     <Folder Include="UseCases\" />
     <Folder Include="Profiles\" />
     <Folder Include="Validations\" />
+    <Folder Include="Dtos\CustomerDetails\" />
+    <Folder Include="Dtos\PropertyDetails\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Customers.Domain\Modules.Customers.Domain.csproj" />

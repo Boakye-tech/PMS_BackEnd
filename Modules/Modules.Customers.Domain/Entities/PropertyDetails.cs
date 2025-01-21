@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Customers.Domain.Entities
 {
-	public class PropertyDetails
-	{
+    public class PropertyDetails
+    {
 
         [Key]
         public int PropertyMasterId { get; set; }
@@ -122,8 +122,74 @@ namespace Modules.Customers.Domain.Entities
 
 
         public PropertyDetails()
-		{
-		}
-	}
+        {
+        }
+
+
+        public PropertyDetails(string propertyType, string landUse, string landUseType, string locality, string allocationType, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, string propertyHeight, string plotSize, string sitePlanNumber, bool isLargeScale = false)
+        {
+
+        }
+
+        public static PropertyDetails AddPropertyDetails(int propertyMasterId, string propertyNumber, string propertyType, string landUse, string landUseType, string locality, string allocationType, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, string propertyHeight, string plotSize, string sitePlanNumber, bool isLargeScale = false)
+        {
+            if (string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(propertyType) || string.IsNullOrWhiteSpace(landUse) || string.IsNullOrWhiteSpace(landUseType) || string.IsNullOrWhiteSpace(locality) || string.IsNullOrWhiteSpace(allocationType) || string.IsNullOrWhiteSpace(plotNumber) )
+            {
+                throw new ArgumentException("Invalid property details data.");
+            }
+
+            if (string.IsNullOrWhiteSpace(propertyNumber))
+            {
+                throw new ArgumentException("Property Number must not be null or empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(propertyType))
+            {
+                throw new ArgumentException("Property Type must not be null or empty.");
+            }
+
+
+            if (string.IsNullOrWhiteSpace(landUse))
+            {
+                throw new ArgumentException("Land use must not be null or empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(landUseType))
+            {
+                throw new ArgumentException("Land use type must not be null or empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(locality))
+            {
+                throw new ArgumentException("Locality must not be null or empty.");
+            }
+
+            if (string.IsNullOrWhiteSpace(allocationType))
+            {
+                throw new ArgumentException("Allocation Type must not be null or empty.");
+            }
+
+           
+            return new PropertyDetails
+            {
+                PropertyMasterId = propertyMasterId,
+                PropertyNumber = propertyNumber,
+                PropertyType = propertyType,
+                Locality = locality,
+                LandUse = landUse,
+                LandUseType = landUseType,
+                AllocationType = allocationType,
+                BlockNumber = blockNumber,
+                PlotNumber = plotNumber,
+                AcreageOne = acreageOne,
+                AcreageTwo = acreageTwo,
+                PropertyHeight = propertyHeight,
+                PlotSize = plotSize,
+                SitePlanNumber = sitePlanNumber,
+                IsLargeScale = isLargeScale
+            };
+        }
+
+    }
 }
 
