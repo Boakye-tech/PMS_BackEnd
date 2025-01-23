@@ -106,18 +106,19 @@ namespace Modules.Customers.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerMasterId"));
 
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("CustomerCode")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int>("CustomerTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("CustomerType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DigitalAddress")
                         .IsRequired()
@@ -129,24 +130,22 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("GenderId")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LocalityId")
-                        .HasColumnType("int");
+                    b.Property<string>("Locality")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NationalityId")
-                        .HasColumnType("int");
+                    b.Property<string>("Nationality")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OfficeNumber")
                         .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
-
-                    b.Property<string>("OtherNames")
-                        .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("Picture")
                         .IsRequired()
@@ -163,8 +162,9 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
-                    b.Property<int>("ResidentTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("ResidentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ResidentialAddress")
                         .IsRequired()
@@ -181,16 +181,9 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("SocialMediaTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SurName")
+                    b.Property<string>("SocialMediaType")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("TitleId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WhatsAppNumber")
                         .IsRequired()
@@ -413,16 +406,20 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("VoucherNumber")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("VoucherType")
-                        .HasColumnType("int");
+                    b.Property<string>("VoucherType")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.HasKey("CustomerTransactionId");
 
@@ -449,27 +446,34 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<double>("AcreageTwo")
                         .HasColumnType("float");
 
-                    b.Property<int>("AllocationTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("AllocationType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ApartmentBlockNumberId")
-                        .HasColumnType("int");
+                    b.Property<string>("ApartmentBlockNumber")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("ApartmentTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("ApartmentType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("BlockNumber")
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("BlockSideId")
-                        .HasColumnType("int");
+                    b.Property<string>("BlockSide")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("BlockTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("BlockType")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("BlockUnitId")
-                        .HasColumnType("int");
+                    b.Property<string>("BlockUnit")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("CadastralPlanNumber")
                         .HasMaxLength(30)
@@ -499,8 +503,10 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("CustomerCode")
                         .HasMaxLength(10)
@@ -510,17 +516,22 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int>("FloorNumberId")
-                        .HasColumnType("int");
+                    b.Property<string>("FloorNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("IsLargeScale")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LandUseId")
-                        .HasColumnType("int");
+                    b.Property<string>("LandUse")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("LandUseTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("LandUseType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("LeaseExpiryDate")
                         .HasColumnType("datetime2");
@@ -528,26 +539,33 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<int>("LeaseTerm")
                         .HasColumnType("int");
 
-                    b.Property<int>("LocalityId")
-                        .HasColumnType("int");
+                    b.Property<string>("Locality")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PlotNumber")
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("PlotSizeId")
-                        .HasColumnType("int");
+                    b.Property<string>("PlotSize")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
-                    b.Property<int>("PropertyHeightId")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyHeight")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PropertyNumber")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("PropertyTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("RentalType")
                         .HasMaxLength(50)
@@ -562,8 +580,9 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<int>("RoomsOccupied")
                         .HasColumnType("int");
 
-                    b.Property<int>("SchemeTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("SchemeType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<double>("SellingPrice")
                         .HasColumnType("float");

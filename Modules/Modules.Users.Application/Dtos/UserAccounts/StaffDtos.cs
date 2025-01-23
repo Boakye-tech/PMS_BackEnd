@@ -23,9 +23,17 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string ConfirmPassword
         );
 
-    public record ResetStaffPasswordRequestDto() : ResetPasswordRequest;
+    public record ResetStaffPasswordRequestDto : ResetPasswordRequest
+    {
+        [EmailAddress]
+        public required string EmailAddress { get; set; }
+    }
     public record ChangeStaffPasswordRequestDto() : ChangePasswordRequest;
-    public record StaffLoginRequestDto() : LoginRequest;
+    public record StaffLoginRequestDto : LoginRequest
+    {
+        [EmailAddress]
+        public required string EmailAddress { get; set; }
+    }
 
 
     public record StaffLoginResponseDto

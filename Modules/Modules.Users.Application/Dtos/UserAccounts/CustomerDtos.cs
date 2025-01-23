@@ -43,8 +43,11 @@ namespace Modules.Users.Application.Dtos.UserAccounts
 
     public record ChangeCustomerPasswordRequestDto() : ChangePasswordRequest;
 
-    public record ResetCustomerPasswordEmailRequestDto : ResetPasswordRequest;
-    public record ResetCustomerPasswordPhoneRequestDto( string MobilePhoneNumber, int Token, string NewPassword, string ConfirmNewPassword);
+    public record ResetCustomerPasswordEmailRequestDto : ResetPasswordRequest
+    {
+        public string? EmailAddress { get; set; }
+    }
+    public record ResetCustomerPasswordPhoneRequestDto(string MobilePhoneNumber, int Token, string NewPassword, string ConfirmNewPassword);
 
 
     public record CustomerEmailLoginRequestDto : LoginRequest;

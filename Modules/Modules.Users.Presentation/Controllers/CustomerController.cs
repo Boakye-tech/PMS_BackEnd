@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Users.Application.Dtos.Entities;
 using Modules.Users.Application.Dtos.UserAccounts;
@@ -71,43 +72,35 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// reset the password for a forgotten registered user account via their registered email address
+    /// reset the password for a forgotten registered user account via their registered email address or registered mobile phone number
     /// </summary>
     [HttpPost]
     [AllowAnonymous]
-    [Route("Account/ResetPasswordViaEmailAddress")]
-    public async Task<IActionResult> ResetPasswordViaEmailAddress([FromBody] ResetCustomerPasswordEmailRequestDto resetPasswordRequest)
+    [Route("Account/ResetPassword")]
+    public async Task<IActionResult> ResetPasswordViaEmailAddress([FromBody] ResetPasswordRequest resetPasswordRequest)
     {
+        var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        var phoneRegex = new Regex(@"^\+?\d{10,15}$");
+
         try
         {
             if (ModelState.IsValid)
             {
-                var changeResult = await _customerAccountService.ResetPasswordViaEmailAddress(resetPasswordRequest);
-                return Ok(changeResult);
-            }
 
-            return BadRequest();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ex.Message);
-        }
-    }
+                if (emailRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
+                {
+                    var changeResult = await _customerAccountService.ResetPasswordViaEmailAddress(resetPasswordRequest);
+                    return Ok(changeResult);
 
-    /// <summary>
-    /// reset the password for a forgotten registered user account via their registered mobile phone number
-    /// </summary>
-    [HttpPost]
-    [AllowAnonymous]
-    [Route("Account/ResetPasswordViaPhoneNumber")]
-    public async Task<IActionResult> ResetPasswordViaPhoneNumber([FromBody] ResetCustomerPasswordPhoneRequestDto resetPasswordRequest)
-    {
-        try
-        {
-            if (ModelState.IsValid)
-            {
-                var changeResult = await _customerAccountService.ResetPasswordViaMobilePhoneNumber(resetPasswordRequest);
-                return Ok(changeResult);
+                }
+
+                if (phoneRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
+                {
+                    var changeResult = await _customerAccountService.ResetPasswordViaMobilePhoneNumber(resetPasswordRequest);
+                    return Ok(changeResult);
+
+                }
+
             }
 
             return BadRequest();

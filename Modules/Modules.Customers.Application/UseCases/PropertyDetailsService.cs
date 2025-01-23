@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Modules.Customers.Application.UseCases
 {
@@ -16,9 +17,18 @@ namespace Modules.Customers.Application.UseCases
         }
 
 
-        public Task<GenericResponseDto> AddNewPropertyDetails(PropertyDetailsDto values)
+        public async Task<GenericResponseDto> AddNewPropertyDetails(PropertyDetailsDto values)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
+            PropertyDetails property = PropertyDetails.AddPropertyDetails(values.PropertyMasterId, values.PropertyNumber, values.PropertyType, values.LandUse, values.LandUseType, values.Locality, values.AllocationType,
+                                                                          values.BlockNumber!, values.PlotNumber, values.AcreageOne, values.AcreageTwo, values.PropertyHeight!, values.PlotSize!,values.SellingPrice,values.Currency,
+                                                                          values.CustomerCode!, false);
+
+            _unitOfWork.PropertyDetails.Insert(property);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto { response = "200" };
         }
 
         public Task<GenericResponseDto> DeletePropertyDetails(string value)
@@ -26,19 +36,40 @@ namespace Modules.Customers.Application.UseCases
             throw new NotImplementedException();
         }
 
-        public Task<PropertyDetailsReadDto> GetPropertyDetails(string propertyNumber)
+        public async Task<PropertyDetailsReadDto> GetPropertyDetails(string propertyNumber)
         {
-            throw new NotImplementedException();
+            
+            var propertydetails = await _unitOfWork.PropertyDetails.Get(pd => pd.PropertyNumber == propertyNumber);
+            return _mapper.Map<PropertyDetailsReadDto>(propertydetails);
+
         }
 
-        public Task<PropertySummaryMobileViewDto> GetPropertySummaryMobile(string customerCode)
+        public  async Task<IEnumerable<PropertySummaryMobileViewDto>> GetPropertySummaryMobile(string customerCode)
         {
-            throw new NotImplementedException();
+            var propertyDetails = await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode);
+            var summary = propertyDetails.Select(pd => new PropertySummaryMobileViewDto
+            {
+                PropertyNumber = pd.PropertyNumber,
+                LandUse = pd.LandUse
+            }).ToList();
+
+
+            return summary;
         }
 
-        public Task<PropertySummaryWebViewDto> GetPropertySummaryWeb(string customerCode)
+        public async Task<IEnumerable<PropertySummaryWebViewDto>> GetPropertySummaryWeb(string customerCode)
         {
-            throw new NotImplementedException();
+            var propertyDetails = await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode);
+            var summary = propertyDetails.Select(pd => new PropertySummaryWebViewDto
+            {
+                PropertyNumber = pd.PropertyNumber,
+                LandUse = pd.LandUse,
+                Address = pd.Locality
+            }).ToList();
+
+            
+            return summary;
+
         }
 
         public Task<GenericResponseDto> UpdatePropertyDetails(PropertyDetailsDto values)

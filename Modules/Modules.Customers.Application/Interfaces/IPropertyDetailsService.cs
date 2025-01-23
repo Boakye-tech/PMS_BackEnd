@@ -10,8 +10,8 @@ namespace Modules.Customers.Application.Interfaces
         Task<GenericResponseDto> DeletePropertyDetails(string value);
         //Task<GenericResponseDto> DeletePropertyDetails(string cus);
 
-        Task<PropertySummaryMobileViewDto> GetPropertySummaryMobile(string customerCode);
-        Task<PropertySummaryWebViewDto> GetPropertySummaryWeb(string customerCode);
+        Task<IEnumerable<PropertySummaryMobileViewDto>> GetPropertySummaryMobile(string customerCode);
+        Task<IEnumerable<PropertySummaryWebViewDto>> GetPropertySummaryWeb(string customerCode);
 
         Task<PropertyDetailsReadDto> GetPropertyDetails(string propertyNumber);
         

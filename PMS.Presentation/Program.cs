@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Modules.Estates.Infrastructure;
 using Modules.Estates.Presentation;
@@ -23,11 +25,12 @@ builder.Services.AddFinanceModule(builder.Configuration);
 
 builder.Services.AddUserModule(builder.Configuration);
 
+var module = "Modules.Estates.Presentation";
+var user_module = "Modules.Users.Presentation";
 
 
 
-
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -37,9 +40,15 @@ builder.Services.AddSwaggerGen(c =>
 
     // Use the full type name (namespace + class name) as the schemaId
     c.CustomSchemaIds(type => type.FullName);
+
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{module}.xml"));
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{user_module}.xml"));
+
 });
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

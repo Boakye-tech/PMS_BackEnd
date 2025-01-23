@@ -42,6 +42,9 @@ namespace Modules.Estates.Presentation.Controllers
         }
 
         //----------------------CUSTOMER TYPES------------
+        /// <summary>
+        /// Returns a list of exisitng customer types
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetCustomerTypes")]
         public async Task<ActionResult<IEnumerable<CustomerTypeReadDto>>> GetCustomerTypes()
@@ -76,6 +79,9 @@ namespace Modules.Estates.Presentation.Controllers
         }
 
         //----------------------GENDER------------
+        /// <summary>
+        /// Returns a list of existing genders
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetGenders")]
         public async Task<ActionResult<IEnumerable<GenderReadDto>>> GetGender()
@@ -123,6 +129,9 @@ namespace Modules.Estates.Presentation.Controllers
         { }
 
         //----------------------IDENTIFICATION TYPES------------
+        /// <summary>
+        /// Returns a list of exisitng identification types
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetIdentificationTypes")]
         public async Task<ActionResult<IEnumerable<IdentificationTypeReadDto>>> GetIdentificationTypes()
@@ -157,6 +166,9 @@ namespace Modules.Estates.Presentation.Controllers
         }
 
         //----------------------NATIONALITY------------
+        /// <summary>
+        /// Returns a list of exisitng nationalities
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetNationality")]
         public async Task<ActionResult<IEnumerable<NationalityReadDto>>> GetNationality()
@@ -191,6 +203,9 @@ namespace Modules.Estates.Presentation.Controllers
         }
 
         //----------------------RESIDENT TYPES------------
+        /// <summary>
+        /// Returns a list of exisitng resident types
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetResidentTypes")]
         public async Task<ActionResult<IEnumerable<ResidentTypeReadDto>>> GetResidentTypes()
@@ -225,6 +240,9 @@ namespace Modules.Estates.Presentation.Controllers
         }
 
         //----------------------SOCIAL MEDIA------------
+        /// <summary>
+        /// Returns a list of exisitng social media platforms
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetSocialMedia")]
         public async Task<ActionResult<IEnumerable<SocialMediaReadDto>>> GetSocialMedia()
@@ -259,6 +277,9 @@ namespace Modules.Estates.Presentation.Controllers
         }
 
         //----------------------TITLE------------
+        /// <summary>
+        /// Returns a list of exisitng titles
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetTitles")]
         public async Task<ActionResult<IEnumerable<TitleReadDto>>> GetTitles()

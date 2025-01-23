@@ -1,7 +1,4 @@
 ﻿using System;
-using Modules.Customers.Domain.Interfaces;
-using Modules.Customers.Infrastructure.Extensions;
-using Modules.Customers.Infrastructure.Persistence.Repositories;
 
 namespace Modules.Customers.Presentation
 {
@@ -15,12 +12,12 @@ namespace Modules.Customers.Presentation
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            //services.AddScoped<IAllocationTypeService, AllocationTypeService>();
-            //services.AddScoped<IApartmentTypeService, ApartmentTypeService>();
-            //services.AddScoped<IBlockNumberService, BlockNumberService>();
-            //services.AddScoped<IBlockSideService, BlockSideService>();
-            //services.AddScoped<IBlockTypeService, BlockTypeService>();
-            //services.AddScoped<IBlockUnitService, BlockUnitService>();
+            services.AddScoped<IPropertyDetailsService, PropertyDetailsService>();
+            services.AddScoped<ICustomerDetailsService, CustomerDetailsService>();
+            //services.AddScoped<ICustomerTransactionsService, CustomerTransactionsService>();
+            //services.AddScoped<ICustomerPaymentsService, CustomerPaymentsService>();
+            //services.AddScoped<ICustomerInvoiceService, CustomerInvoiceService>();
+            //services.AddScoped<ICustomerInvoiceItemsService, CustomerInvoiceItemsService>();
          
 
             // Dependency Injection - Register AutoMapper 

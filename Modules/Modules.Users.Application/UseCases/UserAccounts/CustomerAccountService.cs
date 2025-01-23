@@ -136,7 +136,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public async Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetCustomerPasswordEmailRequestDto resetPassword)
+        public async Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetPasswordRequest resetPassword)
         {
             //throw new NotImplementedException();
             if (resetPassword is null)
@@ -157,20 +157,20 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             {
                 //remember to check for the validity of the token
 
-                var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.EmailAddress);
+                var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.Phone_OR_Email);
                 var user = await _userManager.FindByIdAsync(appUser.Id);
                 //var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress_OR_PhoneNumber);
 
                 if (user is null)
                 {
-                    _logger.LogWarning($"Staff with email address or  {resetPassword.EmailAddress} not found.", resetPassword.EmailAddress);
+                    _logger.LogWarning($"Staff with email address or  {resetPassword.Phone_OR_Email} not found.", resetPassword.Phone_OR_Email);
                     return new ResetPasswordResponse
                     {
                         IsSuccess = false,
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Staff with email address {resetPassword.EmailAddress} not found."
+                            StatusMessage = $"Staff with email address {resetPassword.Phone_OR_Email} not found."
                         }
                     };
                 }
@@ -180,7 +180,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Password successfully reset for staff with email address {resetPassword.EmailAddress}.", resetPassword.EmailAddress);
+                    _logger.LogInformation($"Password successfully reset for staff with email address {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
                     return new ResetPasswordResponse
                     {
                         IsSuccess = true,
@@ -194,7 +194,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 }
 
 
-                _logger.LogWarning($"Password reset failed for staff with email address {resetPassword.EmailAddress}. Errors: {result.Errors}", resetPassword.EmailAddress, string.Join(", ", result.Errors.Select(e => e.Description)));
+                _logger.LogWarning($"Password reset failed for staff with email address {resetPassword.Phone_OR_Email}. Errors: {result.Errors}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
                 return new ResetPasswordResponse
                 {
                     IsSuccess = false,
@@ -207,7 +207,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while resetting the password for staff with email address {resetPassword.EmailAddress}.", resetPassword.EmailAddress);
+                _logger.LogError(ex, $"An error occurred while resetting the password for staff with email address {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
                 return new ResetPasswordResponse
                 {
                     IsSuccess = false,
@@ -220,7 +220,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public async Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetCustomerPasswordPhoneRequestDto resetPassword)
+        public async Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetPasswordRequest resetPassword)
         {
             //throw new NotImplementedException();
             if (resetPassword is null)
@@ -304,22 +304,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public async Task<CustomerLoginResponseDto> LoginWithEmailAddress(CustomerEmailLoginRequestDto userLoginDetails)
+        public async Task<CustomerLoginResponseDto> LoginWithEmailAddress(LoginRequest userLoginDetails)
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(userLoginDetails.EmailAddress!);
+                var user = await _userManager.FindByEmailAsync(userLoginDetails.Phone_OR_Email!);
 
                 if (user is null)
                 {
-                    _logger.LogWarning($"Customer with email address {userLoginDetails.EmailAddress} not found.", userLoginDetails.EmailAddress);
+                    _logger.LogWarning($"Customer with email address {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
                         errorResponseDto = new CustomerLoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Customer with {userLoginDetails.EmailAddress} not found."
+                            StatusMessage = $"Customer with {userLoginDetails.Phone_OR_Email} not found."
                         }
                     };
                 }
@@ -328,7 +328,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Customer with email address {userLoginDetails.EmailAddress} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.EmailAddress);
+                    _logger.LogInformation($"Customer with email address {userLoginDetails.Phone_OR_Email} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.Phone_OR_Email);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = true,
@@ -345,7 +345,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (!result.Succeeded)
                 {
-                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
+                    _logger.LogWarning($"Staff with email address {userLoginDetails.Phone_OR_Email} log in attempt {result.ToString()}", userLoginDetails.Phone_OR_Email);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
@@ -362,7 +362,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.EmailAddress} tried to log in.", userLoginDetails.EmailAddress);
+                _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.Phone_OR_Email} tried to log in.", userLoginDetails.Phone_OR_Email);
                 return new CustomerLoginResponseDto
                 {
                     LoginStatus = false,
@@ -376,21 +376,21 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         }
 
-        public async Task<CustomerLoginResponseDto> LoginWithMobilePhoneNumber(CustomerPhoneLoginRequestDto userLoginDetails)
+        public async Task<CustomerLoginResponseDto> LoginWithMobilePhoneNumber(LoginRequest userLoginDetails)
         {
             try
             {
-                var phoneUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == userLoginDetails.MobilePhoneNumber);
+                var phoneUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == userLoginDetails.Phone_OR_Email);
                 if (phoneUser is null)
                 {
-                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} not found.", userLoginDetails.MobilePhoneNumber);
+                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
                         errorResponseDto = new CustomerLoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Customer with {userLoginDetails.MobilePhoneNumber} not found."
+                            StatusMessage = $"Customer with {userLoginDetails.Phone_OR_Email} not found."
                         }
                     };
                 }
@@ -400,7 +400,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.MobilePhoneNumber);
+                    _logger.LogInformation($"Customer with mobile phone number {userLoginDetails.Phone_OR_Email} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.Phone_OR_Email);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = true,
@@ -417,7 +417,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (!result.Succeeded)
                 {
-                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} log in attempt {result.ToString()}", userLoginDetails.MobilePhoneNumber);
+                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.Phone_OR_Email} log in attempt {result.ToString()}", userLoginDetails.Phone_OR_Email);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
@@ -434,14 +434,14 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while customer with mobile phone number {userLoginDetails.MobilePhoneNumber} tried to log in.", userLoginDetails.MobilePhoneNumber);
+                _logger.LogError(ex, $"An error occurred while customer with mobile phone number {userLoginDetails.Phone_OR_Email} tried to log in.", userLoginDetails.Phone_OR_Email);
                 return new CustomerLoginResponseDto
                 {
                     LoginStatus = false,
                     errorResponseDto = new CustomerLoginErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status500InternalServerError,
-                        StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.InnerException!.Message}"
+                        StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.Message}"
                     }
                 };
             }

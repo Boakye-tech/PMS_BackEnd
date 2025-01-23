@@ -5,6 +5,8 @@ namespace Modules.Customers.Application.Dtos.PropertyDetails
 {
 	public record PropertyDetailsDto
 	{
+        public int PropertyMasterId { get; set; }
+
         [StringLength(25)]
         public required string PropertyNumber { get; set; }
 

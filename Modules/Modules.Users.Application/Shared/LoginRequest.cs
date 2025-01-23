@@ -5,9 +5,8 @@ namespace Modules.Users.Application.Shared
 {
 	public record LoginRequest
     {
-        [EmailAddress]
-        public string? EmailAddress { get; set; }
-        public string? Password { get; set; }
+        //public required string Phone_OR_Email { get; set; }
+        public required string Password { get; set; }
     }
 }
 

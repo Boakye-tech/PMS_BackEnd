@@ -18,6 +18,9 @@ public abstract class ModuleDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
+
+
+
     //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     //{
     //    return (await base.SaveChangesAsync(true, cancellationToken));

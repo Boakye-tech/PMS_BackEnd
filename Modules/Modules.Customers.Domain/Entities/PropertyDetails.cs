@@ -11,7 +11,7 @@ namespace Modules.Customers.Domain.Entities
 
         [Required]
         [StringLength(25)]
-        public string? PropertyNumber { get; set; }
+        public string PropertyNumber { get; set; }
 
         [StringLength(50)]
         public string PropertyType { get; set; }
@@ -42,7 +42,7 @@ namespace Modules.Customers.Domain.Entities
         public double AcreageTwo { get; set; }
 
         [StringLength(50)]
-        public string PropertyHeight { get; set; }
+        public string? PropertyHeight { get; set; }
 
         [StringLength(10)]
         public string PlotSize { get; set; }
@@ -60,36 +60,36 @@ namespace Modules.Customers.Domain.Entities
         public int RoomsOccupied { get; set; }
 
         [StringLength(50)]
-        public string ApartmentType { get; set; }
+        public string? ApartmentType { get; set; }
 
         [StringLength(50)]
-        public string SchemeType { get; set; }
+        public string? SchemeType { get; set; }
 
         [StringLength(5)]
-        public string ApartmentBlockNumber { get; set; }
+        public string? ApartmentBlockNumber { get; set; }
 
         [StringLength(20)]
-        public string BlockType { get; set; }
+        public string? BlockType { get; set; }
 
         [StringLength(20)]
-        public string FloorNumber { get; set; }
+        public string? FloorNumber { get; set; }
 
         [StringLength(5)]
-        public string BlockUnit { get; set; }
+        public string? BlockUnit { get; set; }
 
         [StringLength(5)]
-        public string BlockSide { get; set; }
+        public string? BlockSide { get; set; }
 
         [StringLength(10)]
         public string? FloorArea { get; set; }
 
         public int RoomNumber { get; set; }
 
-        public DateTime RightOfEntry { get; set; }
+        public DateTime RightOfEntry { get; set; } = Convert.ToDateTime("1900-01-01");
 
         public int LeaseTerm { get; set; }
 
-        public DateTime LeaseExpiryDate { get; set; }
+        public DateTime LeaseExpiryDate { get; set; } = Convert.ToDateTime("1900-01-01");
 
         [StringLength(10)]
         public string? CustomerCode { get; set; }
@@ -118,7 +118,7 @@ namespace Modules.Customers.Domain.Entities
         [StringLength(50)]
         public string? CoordinateSix { get; set; }
 
-        public bool IsLargeScale { get; set; }
+        public bool IsLargeScale { get; set; } = false;
 
 
         public PropertyDetails()
@@ -131,9 +131,9 @@ namespace Modules.Customers.Domain.Entities
 
         }
 
-        public static PropertyDetails AddPropertyDetails(int propertyMasterId, string propertyNumber, string propertyType, string landUse, string landUseType, string locality, string allocationType, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, string propertyHeight, string plotSize, string sitePlanNumber, bool isLargeScale = false)
+        public static PropertyDetails AddPropertyDetails(int propertyMasterId, string propertyNumber, string propertyType, string landUse, string landUseType, string locality, string allocationType, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, string propertyHeight, string plotSize, double sellingPrice ,string currency,string customerCode, bool isLargeScale = false)
         {
-            if (string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(propertyType) || string.IsNullOrWhiteSpace(landUse) || string.IsNullOrWhiteSpace(landUseType) || string.IsNullOrWhiteSpace(locality) || string.IsNullOrWhiteSpace(allocationType) || string.IsNullOrWhiteSpace(plotNumber) )
+            if (string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(propertyType) || string.IsNullOrWhiteSpace(landUse) || string.IsNullOrWhiteSpace(landUseType) || string.IsNullOrWhiteSpace(locality) || string.IsNullOrWhiteSpace(allocationType) || string.IsNullOrWhiteSpace(plotNumber) || string.IsNullOrWhiteSpace(currency) || sellingPrice <= 0 )
             {
                 throw new ArgumentException("Invalid property details data.");
             }
@@ -169,6 +169,15 @@ namespace Modules.Customers.Domain.Entities
                 throw new ArgumentException("Allocation Type must not be null or empty.");
             }
 
+            if (string.IsNullOrWhiteSpace(currency))
+            {
+                throw new ArgumentException("Currency must not be null or empty.");
+            }
+
+            if(sellingPrice <= 0)
+            {
+                throw new ArgumentException("The selling price cannot be zero");
+            }
            
             return new PropertyDetails
             {
@@ -185,7 +194,10 @@ namespace Modules.Customers.Domain.Entities
                 AcreageTwo = acreageTwo,
                 PropertyHeight = propertyHeight,
                 PlotSize = plotSize,
-                SitePlanNumber = sitePlanNumber,
+                SitePlanNumber = string.Empty,
+                Currency = currency,
+                SellingPrice = sellingPrice,
+                CustomerCode = customerCode,
                 IsLargeScale = isLargeScale
             };
         }

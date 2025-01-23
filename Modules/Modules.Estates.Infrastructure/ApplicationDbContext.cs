@@ -4,8 +4,6 @@ namespace Modules.Estates.Infrastructure;
 
 public class ApplicationDbContext : ModuleDbContext
 {
-
-
     protected override string Schema => "est";
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

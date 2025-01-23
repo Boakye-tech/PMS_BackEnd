@@ -126,6 +126,9 @@ public class StaffController : ControllerBase
     }
 
     //----------------------DEPARTMENT------------
+    /// <summary>
+    /// Returns a list of exisitng departments
+    /// </summary>
     [HttpGet]
     [Route("Setup/GetDepartments")]
     public async Task<ActionResult<IEnumerable<DepartmentReadDto>>> GetDepartments()
@@ -173,6 +176,9 @@ public class StaffController : ControllerBase
     { }
 
     //----------------------DEPARTMENT UNIT------------
+    /// <summary>
+    /// Returns a list of exsiting units in department
+    /// </summary>
     [HttpGet]
     [Route("Setup/GetDepartmentUnits")]
     public async Task<ActionResult<IEnumerable<DepartmentUnitReadDto>>> GetDepartmentUnits()
