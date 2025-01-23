@@ -61,6 +61,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
 
                 var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation($"Password successfully changed for customer with user ID {changePassword.UserId}.", changePassword.UserId);
@@ -88,33 +89,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     }
                 };
 
-                //if (changePassword != null)
-                //{
-                //    var user = await _userManager.FindByIdAsync(changePassword.UserId);
-                //    if (user != null)
-                //    {
-                //        var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
-
-                //        if (result.Succeeded)
-                //        {
-                //            var successResponse = new ChangePasswordSuccessResponse { StatusCode = StatusCodes.Status201Created, StatusMessage = result.ToString() };
-                //            var response = new ChangePasswordResponse { IsSuccess = true, SuccessResponse = successResponse };
-                //            return response;
-
-                //        }
-
-                //        if (!result.Succeeded)
-                //        {
-                //            var errResponse = new ChangePasswordErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = result.Errors.ToString()! };
-                //            var response = new ChangePasswordResponse { IsSuccess = false, ErrorResponse = errResponse };
-                //            return response;
-                //        }
-                //    }
-                //}
-                //var err_Response = new ChangePasswordErrorResponse { StatusCode = StatusCodes.Status204NoContent, StatusMessage = StatusCodes.Status204NoContent.ToString()! };
-                //return new ChangePasswordResponse { IsSuccess = false, ErrorResponse = err_Response };
-
-
             }
             catch (Exception ex)
             {
@@ -129,14 +103,10 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     }
                 };
 
-                //_logger.LogError(message: ex.InnerException!.Message, ex);
-                //var errResponse = new ChangePasswordErrorResponse { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.InnerException!.Message! };
-                //return new ChangePasswordResponse { IsSuccess = false, ErrorResponse = errResponse };
-
             }
         }
 
-        public async Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetPasswordRequest resetPassword)
+        public async Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetCustomerPasswordEmailRequestDto resetPassword)
         {
             //throw new NotImplementedException();
             if (resetPassword is null)
@@ -157,20 +127,20 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             {
                 //remember to check for the validity of the token
 
-                var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.Phone_OR_Email);
+                var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.EmailAddress);
                 var user = await _userManager.FindByIdAsync(appUser.Id);
                 //var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress_OR_PhoneNumber);
 
                 if (user is null)
                 {
-                    _logger.LogWarning($"Staff with email address or  {resetPassword.Phone_OR_Email} not found.", resetPassword.Phone_OR_Email);
+                    _logger.LogWarning($"Staff with email address or  {resetPassword.EmailAddress} not found.", resetPassword.EmailAddress);
                     return new ResetPasswordResponse
                     {
                         IsSuccess = false,
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Staff with email address {resetPassword.Phone_OR_Email} not found."
+                            StatusMessage = $"Staff with email address {resetPassword.EmailAddress} not found."
                         }
                     };
                 }
@@ -180,7 +150,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Password successfully reset for staff with email address {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
+                    _logger.LogInformation($"Password successfully reset for staff with email address {resetPassword.EmailAddress}.", resetPassword.EmailAddress);
                     return new ResetPasswordResponse
                     {
                         IsSuccess = true,
@@ -194,7 +164,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 }
 
 
-                _logger.LogWarning($"Password reset failed for staff with email address {resetPassword.Phone_OR_Email}. Errors: {result.Errors}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
+                _logger.LogWarning($"Password reset failed for staff with email address {resetPassword.EmailAddress}. Errors: {result.Errors}", resetPassword.EmailAddress, string.Join(", ", result.Errors.Select(e => e.Description)));
                 return new ResetPasswordResponse
                 {
                     IsSuccess = false,
@@ -207,7 +177,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while resetting the password for staff with email address {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
+                _logger.LogError(ex, $"An error occurred while resetting the password for staff with email address {resetPassword.EmailAddress}.", resetPassword.EmailAddress);
                 return new ResetPasswordResponse
                 {
                     IsSuccess = false,
@@ -220,7 +190,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public async Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetPasswordRequest resetPassword)
+        public async Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetCustomerPasswordPhoneRequestDto resetPassword)
         {
             //throw new NotImplementedException();
             if (resetPassword is null)
@@ -304,22 +274,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public async Task<CustomerLoginResponseDto> LoginWithEmailAddress(LoginRequest userLoginDetails)
+        public async Task<CustomerLoginResponseDto> LoginWithEmailAddress(CustomerEmailLoginRequestDto userLoginDetails)
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(userLoginDetails.Phone_OR_Email!);
+                var user = await _userManager.FindByEmailAsync(userLoginDetails.EmailAddress!);
 
                 if (user is null)
                 {
-                    _logger.LogWarning($"Customer with email address {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
+                    _logger.LogWarning($"Customer with email address {userLoginDetails.EmailAddress} not found.", userLoginDetails.EmailAddress);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
                         errorResponseDto = new CustomerLoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Customer with {userLoginDetails.Phone_OR_Email} not found."
+                            StatusMessage = $"Customer with {userLoginDetails.EmailAddress} not found."
                         }
                     };
                 }
@@ -328,7 +298,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Customer with email address {userLoginDetails.Phone_OR_Email} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.Phone_OR_Email);
+                    _logger.LogInformation($"Customer with email address {userLoginDetails.EmailAddress} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.EmailAddress);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = true,
@@ -345,7 +315,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (!result.Succeeded)
                 {
-                    _logger.LogWarning($"Staff with email address {userLoginDetails.Phone_OR_Email} log in attempt {result.ToString()}", userLoginDetails.Phone_OR_Email);
+                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
@@ -362,7 +332,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.Phone_OR_Email} tried to log in.", userLoginDetails.Phone_OR_Email);
+                _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.EmailAddress} tried to log in.", userLoginDetails.EmailAddress);
                 return new CustomerLoginResponseDto
                 {
                     LoginStatus = false,
@@ -376,21 +346,21 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         }
 
-        public async Task<CustomerLoginResponseDto> LoginWithMobilePhoneNumber(LoginRequest userLoginDetails)
+        public async Task<CustomerLoginResponseDto> LoginWithMobilePhoneNumber(CustomerPhoneLoginRequestDto userLoginDetails)
         {
             try
             {
-                var phoneUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == userLoginDetails.Phone_OR_Email);
+                var phoneUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == userLoginDetails.MobilePhoneNumber);
                 if (phoneUser is null)
                 {
-                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
+                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} not found.", userLoginDetails.MobilePhoneNumber);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
                         errorResponseDto = new CustomerLoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Customer with {userLoginDetails.Phone_OR_Email} not found."
+                            StatusMessage = $"Customer with {userLoginDetails.MobilePhoneNumber} not found."
                         }
                     };
                 }
@@ -400,7 +370,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Customer with mobile phone number {userLoginDetails.Phone_OR_Email} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.Phone_OR_Email);
+                    _logger.LogInformation($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.MobilePhoneNumber);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = true,
@@ -417,7 +387,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (!result.Succeeded)
                 {
-                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.Phone_OR_Email} log in attempt {result.ToString()}", userLoginDetails.Phone_OR_Email);
+                    _logger.LogWarning($"Customer with mobile phone number {userLoginDetails.MobilePhoneNumber} log in attempt {result.ToString()}", userLoginDetails.MobilePhoneNumber);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
@@ -434,7 +404,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while customer with mobile phone number {userLoginDetails.Phone_OR_Email} tried to log in.", userLoginDetails.Phone_OR_Email);
+                _logger.LogError(ex, $"An error occurred while customer with mobile phone number {userLoginDetails.MobilePhoneNumber} tried to log in.", userLoginDetails.MobilePhoneNumber);
                 return new CustomerLoginResponseDto
                 {
                     LoginStatus = false,
@@ -473,13 +443,13 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         SelfieImage = details.SelfieImage,
                         PassportPicture = details.PassportPicture,
                         Channel = details.Channel,
-                        RegistrationDate = details.RegistrationDate,
-                        Status = details.Status,
+                        RegistrationDate = DateTime.UtcNow,
+                        Status = 0,
                         EmailConfirmed = false,
                         PhoneNumberConfirmed = false,
                     };
 
-                    var results = await _userManager.CreateAsync(new_user, details.ConfirmPassword);
+                    var results = await _userManager.CreateAsync(new_user); //, details.ConfirmPassword
 
                     if (results.Succeeded)
                     {

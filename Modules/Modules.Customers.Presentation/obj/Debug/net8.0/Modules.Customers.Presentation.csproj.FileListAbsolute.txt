@@ -195,3 +195,6 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/obj/Debug/net8.0/Modules.Customers.Presentation.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/obj/Debug/net8.0/Modules.Customers.Presentation.genruntimeconfig.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/obj/Debug/net8.0/ref/Modules.Customers.Presentation.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Azure.Storage.Blobs.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Azure.Storage.Common.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/System.IO.Hashing.dll

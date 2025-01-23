@@ -1,13 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Users.Application.Dtos.Entities;
 using Modules.Users.Application.Dtos.UserAccounts;
-using Modules.Users.Application.Interfaces;
-using Modules.Users.Application.Interfaces.UserAccounts;
 using Modules.Users.Application.Shared;
-using Modules.Users.Application.UseCases.UserAccounts;
-using Modules.Users.Domain.Entities;
+using Modules.Users.Domain.Interfaces;
 
 namespace Modules.Users.Presentation.Controllers;
 
@@ -16,10 +14,12 @@ namespace Modules.Users.Presentation.Controllers;
 public class CustomerController : ControllerBase
 {
     ICustomerAccountService _customerAccountService;
+    IUnitOfWork _unitOfWork;
 
-    public CustomerController(ICustomerAccountService customerAccountService)
+    public CustomerController(ICustomerAccountService customerAccountService, IUnitOfWork unitOfWork)
     {
         _customerAccountService = customerAccountService;
+        _unitOfWork = unitOfWork;
     }
 
     /// <summary>
@@ -77,26 +77,44 @@ public class CustomerController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("Account/ResetPassword")]
-    public async Task<IActionResult> ResetPasswordViaEmailAddress([FromBody] ResetPasswordRequest resetPasswordRequest)
+    public async Task<IActionResult> ResetPassword([FromBody] CustomerResetPasswordRequestDto resetPasswordRequest)
     {
-        var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-        var phoneRegex = new Regex(@"^\+?\d{10,15}$");
-
         try
         {
+            var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+            var phoneRegex = new Regex(@"^\+?\d{10,15}$");
+
+
             if (ModelState.IsValid)
             {
 
                 if (emailRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
                 {
-                    var changeResult = await _customerAccountService.ResetPasswordViaEmailAddress(resetPasswordRequest);
+                    ResetCustomerPasswordEmailRequestDto passwordRequest = new ResetCustomerPasswordEmailRequestDto
+                    {
+                        EmailAddress = resetPasswordRequest.Phone_OR_Email,
+                        Token = resetPasswordRequest.Token,
+                        NewPassword = resetPasswordRequest.NewPassword,
+                        ConfirmNewPassword = resetPasswordRequest.ConfirmNewPassword
+                    };
+
+                    var changeResult = await _customerAccountService.ResetPasswordViaEmailAddress(passwordRequest);
                     return Ok(changeResult);
 
                 }
+
 
                 if (phoneRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
                 {
-                    var changeResult = await _customerAccountService.ResetPasswordViaMobilePhoneNumber(resetPasswordRequest);
+                    ResetCustomerPasswordPhoneRequestDto passwordRequest = new ResetCustomerPasswordPhoneRequestDto
+                    (
+                        resetPasswordRequest.Phone_OR_Email,
+                        resetPasswordRequest.Token,
+                        resetPasswordRequest.NewPassword,
+                        resetPasswordRequest.ConfirmNewPassword
+                    );
+
+                    var changeResult = await _customerAccountService.ResetPasswordViaMobilePhoneNumber(passwordRequest);
                     return Ok(changeResult);
 
                 }
@@ -116,23 +134,56 @@ public class CustomerController : ControllerBase
     /// </summary>
     [HttpPost]
     [AllowAnonymous]
-    [Route("Account/LoginWithEmailAddress")]
+    [Route("Account/Login")]
     [ProducesResponseType(200, Type = typeof(CustomerLoginResponseDto))]
-    public async Task<IActionResult> UserLogin([FromBody] CustomerEmailLoginRequestDto loginModel)
+    public async Task<IActionResult> UserLogin([FromBody] CustomerLoginRequestDto loginModel)
     {
         try
         {
+            var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+            var phoneRegex = new Regex(@"^\+?\d{10,15}$");
+
             if (ModelState.IsValid)
             {
-                var result = await _customerAccountService.LoginWithEmailAddress(loginModel);
-
-                switch (result.LoginStatus)
+                if (emailRegex.IsMatch(loginModel.Phone_OR_Email!))
                 {
-                    case true:
-                        return Ok(result.successResponseDto);
-                    case false:
-                        return Problem(result.errorResponseDto!.StatusMessage);
+                    CustomerEmailLoginRequestDto loginRequest = new CustomerEmailLoginRequestDto
+                    {
+                        EmailAddress = loginModel.Phone_OR_Email,
+                        Password = loginModel.Password
+                    };
+
+                    var result = await _customerAccountService.LoginWithEmailAddress(loginRequest);
+
+                    switch (result.LoginStatus)
+                    {
+                        case true:
+                            return Ok(result.successResponseDto);
+                        case false:
+                            return Problem(result.errorResponseDto!.StatusMessage);
+                    }
                 }
+
+                if (phoneRegex.IsMatch(loginModel.Phone_OR_Email!))
+                {
+                    CustomerPhoneLoginRequestDto loginRequest = new CustomerPhoneLoginRequestDto
+                    (
+                        loginModel.Phone_OR_Email,
+                        loginModel.Password
+                    );
+
+                    var result = await _customerAccountService.LoginWithMobilePhoneNumber(loginRequest);
+
+                    switch (result.LoginStatus)
+                    {
+                        case true:
+                            return Ok(result.successResponseDto);
+                        case false:
+                            return Problem(result.errorResponseDto!.StatusMessage);
+                    }
+                }
+
+                    
             }
 
             return BadRequest();
@@ -144,36 +195,55 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// Returns user details after a successful login
+    /// Sends a one time pin to a user's mobile phone number for verification  
     /// </summary>
     [HttpPost]
     [AllowAnonymous]
-    [Route("Account/LoginWithPhoneNumber")]
-    [ProducesResponseType(200, Type = typeof(CustomerLoginResponseDto))]
-    public async Task<IActionResult> UserLogin([FromBody] CustomerPhoneLoginRequestDto loginModel)
+    [Route("SendSMSToken")]
+    //[ProducesResponseType(200, Type = typeof(UserLoginResponse))]
+    public IActionResult SendSMSToken([FromBody] TokenRequestParameterDto value)
     {
         try
         {
             if (ModelState.IsValid)
             {
-                var result = await _customerAccountService.LoginWithMobilePhoneNumber(loginModel);
-
-                switch (result.LoginStatus)
-                {
-                    case true:
-                        return Ok(result.successResponseDto);
-                    case false:
-                        return Problem(result.errorResponseDto!.StatusMessage);
-                }
+                var result = _unitOfWork.TokenStore.GetToken(value.requestParameter!,5);  //.SendSmsToken(requestParameter);
+                return Ok(result);
             }
 
-            return BadRequest();
+            return NotFound();
         }
         catch (Exception ex)
         {
             return StatusCode(500, ex.Message);
         }
     }
+
+    /// <summary>
+    /// Sends a one time pin to a user's email address for verification  
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("SendEmailToken")]
+    //[ProducesResponseType(200, Type = typeof(UserLoginResponse))]
+    public IActionResult SendEmailToken([FromBody] TokenRequestParameterDto value)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var result = _unitOfWork.TokenStore.GetToken(value.requestParameter!,5);
+                return Ok(result);
+            }
+
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
 
 
 }

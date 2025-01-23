@@ -18,9 +18,17 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         );
 
 
-    public record PartnerBankResetPasswordRequestDto : ResetPasswordRequest;
+    public record PartnerBankResetPasswordRequestDto : ResetPasswordRequest
+    {
+        [EmailAddress]
+        public string? EmailAddress { get; set; }
+    };
 
-    public record PartnerBankLoginRequestDto : LoginRequest;
+    public record PartnerBankLoginRequestDto : LoginRequest
+    {
+        [EmailAddress]
+        public string? EmailAddress { get; set; }
+    };
 
     public record PartnerBankTokenRequestDto
     {

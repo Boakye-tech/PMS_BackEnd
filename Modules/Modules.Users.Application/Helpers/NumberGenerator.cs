@@ -6,7 +6,7 @@ namespace Modules.Users.Application.Helpers
 {
 	public static class NumberGenerator
 	{
-        //public static string TokenGenerator()
+        //public static string OTPGenerator()
         //{
         //    return Generator(6);
         //}
@@ -17,6 +17,8 @@ namespace Modules.Users.Application.Helpers
             string result = randomizer.Next();
             return result;
         }
+
+
     }
 }
 

@@ -20,11 +20,11 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string IdentificationImageOne,
         string SelfieImage,
         string PassportPicture,
-        string Channel,
-        DateTime RegistrationDate,
-        int Status,
-        string Password,
-        string ConfirmPassword
+        string Channel
+        //DateTime RegistrationDate,
+        //int Status,
+        //string Password,
+        //string ConfirmPassword
         );
 
     public record CustomerLoginResponseDto
@@ -37,7 +37,8 @@ namespace Modules.Users.Application.Dtos.UserAccounts
     public record CustomerLoginSucessResponseDto : LoginResponse
     {
         public required string MobilePhoneNumber { get; set; }
-    } 
+    }
+
     public record CustomerLoginErrorResponseDto() : BaseResponse;
 
 
@@ -45,14 +46,25 @@ namespace Modules.Users.Application.Dtos.UserAccounts
 
     public record ResetCustomerPasswordEmailRequestDto : ResetPasswordRequest
     {
+        [EmailAddress]
         public string? EmailAddress { get; set; }
     }
     public record ResetCustomerPasswordPhoneRequestDto(string MobilePhoneNumber, int Token, string NewPassword, string ConfirmNewPassword);
 
 
-    public record CustomerEmailLoginRequestDto : LoginRequest;
+    public record CustomerEmailLoginRequestDto : LoginRequest
+    {
+        [EmailAddress]
+        public string? EmailAddress { get; set; }
+    }
+
     public record CustomerPhoneLoginRequestDto(string MobilePhoneNumber, string Password);
 
+
+    //---
+
+    public record CustomerResetPasswordRequestDto(string Phone_OR_Email) : ResetPasswordRequest;
+    public record CustomerLoginRequestDto(string Phone_OR_Email) : LoginRequest;
 
 
     /*

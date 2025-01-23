@@ -16,6 +16,7 @@
     <None Remove="Persistence\Repositories\" />
     <None Remove="Persistence\Repositories\Entities\" />
     <None Remove="Extensions\" />
+    <None Remove="Services\Azure\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BackgroundJobs\" />
@@ -27,6 +28,7 @@
     <Folder Include="Persistence\Repositories\" />
     <Folder Include="Persistence\Repositories\Entities\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Services\Azure\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Customers.Domain\Modules.Customers.Domain.csproj" />
@@ -44,5 +46,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
   </ItemGroup>
 </Project>

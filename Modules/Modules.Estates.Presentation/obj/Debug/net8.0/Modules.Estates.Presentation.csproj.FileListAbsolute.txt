@@ -279,6 +279,7 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/appsettings.estates.Development.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/appsettings.estates.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Modules.Estates.Presentation
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Modules.Estates.Presentation.xml
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Modules.Estates.Presentation.deps.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Modules.Estates.Presentation.runtimeconfig.json
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Modules.Estates.Presentation.dll
@@ -556,4 +557,3 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/Modules.Estates.Presentation.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/Modules.Estates.Presentation.genruntimeconfig.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/ref/Modules.Estates.Presentation.dll
-/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Modules.Estates.Presentation.xml
