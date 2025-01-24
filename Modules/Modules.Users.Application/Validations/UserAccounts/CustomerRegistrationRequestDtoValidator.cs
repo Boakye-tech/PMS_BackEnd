@@ -20,11 +20,11 @@ namespace Modules.Users.Application.Validations.UserAccounts
             RuleFor(x => x.IdentificationImage).NotEmpty().WithMessage("Image of identification type required.");
             RuleFor(x => x.Channel).NotEmpty().WithMessage("The channel is required.");
             //RuleFor(x => x.RegistrationDate).NotEmpty().WithMessage("Registration date is required.").GreaterThan(DateTime.Now).WithMessage("");
-            RuleFor(x => x.Status).GreaterThanOrEqualTo(0);
+            //RuleFor(x => x.Status).GreaterThanOrEqualTo(0);
 
 
-            RuleFor(x => x.Password).NotEmpty().MinimumLength(6);
-            RuleFor(x => x.ConfirmPassword).NotEmpty().Equal(x => x.Password).WithMessage("Password and confirmation password do not match.");
+            //RuleFor(x => x.Password).NotEmpty().MinimumLength(6);
+            //RuleFor(x => x.ConfirmPassword).NotEmpty().Equal(x => x.Password).WithMessage("Password and confirmation password do not match.");
 
         }
     }
