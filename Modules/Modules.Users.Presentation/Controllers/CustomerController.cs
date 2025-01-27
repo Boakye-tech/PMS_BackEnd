@@ -195,6 +195,33 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
+    /// reset the password for a forgotten registered user account via their registered email address or registered mobile phone number
+    /// </summary>
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("Account/Refresh")]
+    [ProducesResponseType(200, Type = typeof(RefreshTokenResponseDto))]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto request)
+    {
+        try
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                var newTokens = await _customerAccountService.RefreshBearerToken(request);
+                return Ok(newTokens);
+            }
+
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    /// <summary>
     /// Sends a one time pin to a user's mobile phone number for verification  
     /// </summary>
     [HttpPost]

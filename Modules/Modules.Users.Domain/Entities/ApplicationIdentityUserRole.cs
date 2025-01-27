@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Modules.Users.Domain.Entities
 {
+    //[Keyless]
 	public class ApplicationIdentityUserRole : IdentityUserRole<string>
     {
         public DateTime AssignedOn { get; set; }

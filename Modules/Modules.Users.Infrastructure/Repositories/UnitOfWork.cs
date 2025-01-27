@@ -14,19 +14,19 @@ namespace Modules.Users.Infrastructure.Repositories
         private IConfiguration _configuration { get; }
         private readonly UserDbContext _dbContext;
         readonly UserManager<ApplicationIdentityUser> _userManager;
-        readonly IMenuService _menuService;
+        //readonly IMenuService _menuService;
 
 
-        public UnitOfWork(UserDbContext dbContext, UserManager<ApplicationIdentityUser> userManager, IMenuService menuService, IConfiguration configuration)
-		{
+        public UnitOfWork(UserDbContext dbContext, UserManager<ApplicationIdentityUser> userManager,  IConfiguration configuration) //IMenuService menuService,
+        {
             _dbContext = dbContext;
             _userManager = userManager;
-            _menuService = menuService;
+            //_menuService = menuService;
             _configuration = configuration;
 
             Department = new DepartmentRepository(dbContext);
             DepartmentUnit = new DepartmentUnitRepository(dbContext);
-            TokenStore = new TokenStoreRepository(dbContext, _userManager!, _menuService!,_configuration!);
+            TokenStore = new TokenStoreRepository(dbContext, _userManager!,_configuration!); // _menuService!
             Users = new UserRepository(dbContext);
 
             MenuActions = new MenuActionsRepository(dbContext);

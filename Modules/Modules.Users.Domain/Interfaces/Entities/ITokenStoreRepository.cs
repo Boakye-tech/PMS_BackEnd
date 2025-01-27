@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Claims;
+
 namespace Modules.Users.Domain.Interfaces.Entities
 {
 	public interface ITokenStoreRepository : IRepository<TokenStore>
@@ -7,9 +9,11 @@ namespace Modules.Users.Domain.Interfaces.Entities
 
         Task<bool> VerifyToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode);
 
-        //Task<JwTokenResponseDto> GetJwToken(ApplicationIdentityUser user, string password, int validityInHours);
-        Task<string> GetJwToken(ApplicationIdentityUser user, int validityInHours);
-        //string RandomSixDigitNumber();
+        JwTokenResponse GetJwToken(ApplicationIdentityUser user, int validityInHours);
+        
+        RefreshToken GetJwRefreshToken();
+
+        ClaimsPrincipal GetClaimsPrincipalFromExpiredBearerToken(string bearerToken);
     }
 }
 

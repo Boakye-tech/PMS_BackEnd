@@ -67,7 +67,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             if (validationResult.IsValid)
             {
-                ApplicationIdentityRole identityRole = await _roleManager.FindByIdAsync(roleId.RoleId!);
+                ApplicationIdentityRole? identityRole = await _roleManager.FindByIdAsync(roleId.RoleId!);
                 IdentityResult result = await _roleManager.DeleteAsync(identityRole!);
 
                 return result;
@@ -86,7 +86,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             if (validationResult.IsValid)
             {
-                ApplicationIdentityRole identityRole = await _roleManager.FindByIdAsync(role.RoleId);
+                ApplicationIdentityRole? identityRole = await _roleManager.FindByIdAsync(role.RoleId);
 
                 identityRole!.Name = role.RoleName;
                 identityRole.NormalizedName = role.RoleName!.ToUpper();

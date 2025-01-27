@@ -1,9 +1,12 @@
 ﻿using System;
-using Modules.Users.Application.Interfaces;
-using Modules.Users.Application.UseCases;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Modules.Users.Domain.Interfaces;
 using Modules.Users.Infrastructure.Extensions;
 using Modules.Users.Infrastructure.Repositories;
+using Modules.Users.Domain.Interfaces.Entities;
+using Modules.Users.Infrastructure.Repositories.Entities;
 
 namespace Modules.Users.Presentation
 {
@@ -17,12 +20,58 @@ namespace Modules.Users.Presentation
             services.AddIdentity<ApplicationIdentityUser, ApplicationIdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
-                options.User.RequireUniqueEmail = true;
+
+                //password settings
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredUniqueChars = 1;
+
+                //lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.AllowedForNewUsers = true;
+
+                //user settiings
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
             }).AddEntityFrameworkStores<UserDbContext>()
               .AddDefaultTokenProviders();
+
+
+            var key = Encoding.ASCII.GetBytes(configuration["JwTokenKey:TokenKey"]!); //("JwTokenKey").GetSection("TokenKey").Value!);
+
+            services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = ApplicationDbContext =>
+                    {
+                        //TODO
+                        return Task.CompletedTask;
+                    }
+                };
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+
+            });
+
 
             services.AddScoped<ValidationService>();
 
@@ -34,7 +83,7 @@ namespace Modules.Users.Presentation
             services.AddScoped<IPartnerBankAccountService, PartnerBankAccountService>();
             services.AddScoped<ICustomerAccountService, CustomerAccountService>();
             services.AddScoped<IMenuService, MenuService>();
-            //services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ITokenStoreRepository, TokenStoreRepository>();
 
 
             //register global exception handler

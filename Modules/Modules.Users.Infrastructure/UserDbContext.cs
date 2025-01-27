@@ -14,7 +14,6 @@ namespace Modules.Users.Infrastructure
         {
 		}
 
-
         public DbSet<ApplicationIdentityUser> UserDetails { get; set; }
         public DbSet<ApplicationIdentityRole> roles { get; set; }
         public DbSet<ApplicationIdentityUserRole> userRoles { get; set; }
@@ -32,7 +31,28 @@ namespace Modules.Users.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //foreach (var entity in builder.Model.GetEntityTypes())
+            //{
+            //    entity.SetSchema("dbo");
+            //}
+
+            //builder.HasDefaultSchema("dbo");
+
             base.OnModelCreating(builder);
+
+            builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims", "dbo");
+            builder.Entity<ApplicationIdentityRole>().ToTable("Roles", "dbo");
+            builder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims", "dbo");
+            builder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins", "dbo");
+            builder.Entity<ApplicationIdentityUserRole>().ToTable("UserRoles", "dbo");
+            builder.Entity<ApplicationIdentityUser>().ToTable("Users", "dbo");
+            builder.Entity<IdentityUserToken<string>>().ToTable("UserTokens", "dbo");
+
+            //builder.Entity<ApplicationIdentityUserRole<string>>(entity =>
+            //{
+            //    entity.HasKey(e => new { e.UserId, e.RoleId });
+            //});
+
 
             builder.Entity<Department>()
                 .HasIndex(d => d.DepartmentName)

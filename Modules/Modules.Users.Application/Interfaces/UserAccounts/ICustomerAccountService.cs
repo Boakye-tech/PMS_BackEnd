@@ -12,6 +12,7 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         Task<CustomerLoginResponseDto> LoginWithEmailAddress(CustomerEmailLoginRequestDto emailLoginDetails);
         Task<CustomerLoginResponseDto> LoginWithMobilePhoneNumber(CustomerPhoneLoginRequestDto phoneLoginDetails);
 
+        Task<RefreshTokenResponseDto> RefreshBearerToken(RefreshTokenRequestDto tokens);
 
         //string SendSmsToken(UserRequestParameter mobileNumber); //OTPRequest
         //Task<bool> VerifySmsToken(VerifySmsRequest userVerifySmsToken);

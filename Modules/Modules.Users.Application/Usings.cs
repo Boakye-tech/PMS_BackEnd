@@ -9,3 +9,4 @@ global using Modules.Users.Application.Dtos.UserAccounts;
 global using Modules.Users.Application.Shared;
 global using Modules.Users.Application.Interfaces.UserAccounts;
 
+global using Modules.Users.Domain.Interfaces.Entities;

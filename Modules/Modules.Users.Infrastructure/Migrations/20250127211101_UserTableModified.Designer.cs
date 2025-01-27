@@ -12,8 +12,8 @@ using Modules.Users.Infrastructure;
 namespace Modules.Users.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20241222104439_AddedMenuTables")]
-    partial class AddedMenuTables
+    [Migration("20250127211101_UserTableModified")]
+    partial class UserTableModified
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,7 +47,7 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("RoleClaims", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -72,7 +72,7 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("UserClaims", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -94,7 +94,7 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("UserLogins", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -113,7 +113,7 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.ToTable("UserTokens", "dbo");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.ApplicationIdentityRole", b =>
@@ -157,6 +157,9 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -164,7 +167,7 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Roles", "dbo");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.ApplicationIdentityUser", b =>
@@ -227,6 +230,10 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<DateTime>("DeactivatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DeactivatedReasons")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -244,6 +251,10 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<DateTime>("DisapprovedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DisapprovedReasons")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -251,9 +262,16 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirebaseId")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<string>("FirstName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("ForcePasswordChange")
+                        .HasColumnType("bit");
 
                     b.Property<string>("IdentificationImage")
                         .HasMaxLength(256)
@@ -273,6 +291,9 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<string>("IdentificationUniqueNumber")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsFirstTime")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(100)
@@ -332,6 +353,12 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpires")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
@@ -341,6 +368,10 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.Property<DateTime>("RejectedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("RejectedReasons")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -379,7 +410,7 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("Users", "dbo");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.ApplicationIdentityUserRole", b =>
@@ -408,11 +439,14 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("UserRoles", "dbo");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.Department", b =>
@@ -600,22 +634,52 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleMenuActionId"));
 
-                    b.Property<int>("ActionId")
-                        .HasColumnType("int");
+                    b.Property<string>("Approve")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Create")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Delete")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("MenuId")
+                        .HasMaxLength(150)
                         .HasColumnType("int");
+
+                    b.Property<string>("NoAccess")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Read")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("SubMenuId")
+                        .HasMaxLength(255)
                         .HasColumnType("int");
+
+                    b.Property<string>("Update")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("RoleMenuActionId");
 
-                    b.HasIndex("RoleId", "MenuId", "ActionId")
+                    b.HasIndex("RoleId", "SubMenuId")
                         .IsUnique();
 
                     b.ToTable("RoleMenuActions");

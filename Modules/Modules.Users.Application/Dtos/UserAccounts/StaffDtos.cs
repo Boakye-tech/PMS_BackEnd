@@ -45,9 +45,9 @@ namespace Modules.Users.Application.Dtos.UserAccounts
 
     public record StaffLoginSuccessResponseDto : LoginResponse
     {
-        public required string DepartmentName { get; set; }
-        public required string UnitName { get; set; }
-        public required string ProfilePictureFileName { get; set; }
+        //public required string DepartmentName { get; set; }
+        //public required string UnitName { get; set; }
+        //public required string ProfilePictureFileName { get; set; }
     }
 
     public record StaffLoginErrorResponseDto() : BaseResponse;

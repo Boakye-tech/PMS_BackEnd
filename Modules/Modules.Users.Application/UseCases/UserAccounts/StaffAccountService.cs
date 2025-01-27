@@ -11,10 +11,10 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly ILogger<StaffAccountService> _logger;
 
-        private readonly ITokenService _tokenService;
+        private readonly ITokenStoreRepository _tokenService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public StaffAccountService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, ILogger<StaffAccountService> logger, ITokenService tokenService, IUnitOfWork unitOfWork)
+        public StaffAccountService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, ILogger<StaffAccountService> logger, ITokenStoreRepository tokenService, IUnitOfWork unitOfWork)
 		{
             _userManager = userManager;
             _signInManager = signInManager;
@@ -218,12 +218,16 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         staffLoginSuccessResponseDto = new StaffLoginSuccessResponseDto
                         {
                             UserId = user.Id,
-                            FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName,string.Empty, user.LastName),
-                            EmailAddress = user.Email!,
-                            BearerToken = await _tokenService.GetJwToken(user, 8),
-                            DepartmentName = _unitOfWork.Department.Get(user.DepartmentId).Result.DepartmentName,
-                            UnitName = _unitOfWork.DepartmentUnit.Get(user.UnitId).Result.UnitName,
-                            ProfilePictureFileName = user.ProfilePicture!
+                            IsFirstTime = user.IsFirstTime,
+                            ForcePasswordChange = user.ForcePasswordChange,
+                            //FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName,string.Empty, user.LastName),
+                            //EmailAddress = user.Email!,
+                            BearerToken = _tokenService.GetJwToken(user, 8).Token!,
+                            RefreshToken = _tokenService.GetJwRefreshToken().Token!,
+                            ExpiresAt = _tokenService.GetJwToken(user, 8).ExpiresAt!,
+                            //DepartmentName = _unitOfWork.Department.Get(user.DepartmentId).Result.DepartmentName,
+                            //UnitName = _unitOfWork.DepartmentUnit.Get(user.UnitId).Result.UnitName,
+                            //ProfilePictureFileName = user.ProfilePicture!
                         }
                     };
                 }

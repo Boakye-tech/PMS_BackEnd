@@ -115,6 +115,18 @@ namespace Modules.Users.Domain.Entities
         [StringLength(256)]
         public string? DeactivatedReasons { get; set; }
 
+        [StringLength(150)]
+        public string? FirebaseId { get; set; }
+
+        public bool IsFirstTime { get; set; }
+
+        public bool ForcePasswordChange { get; set; }
+
+        //public List<RefreshToken>? RefreshTokens { get; set; }
+
+        public string? RefreshToken { get; set; }
+
+        public DateTime RefreshTokenExpires { get; set; }
 
     }
 }

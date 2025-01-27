@@ -15,17 +15,17 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         readonly IValidator<PartnerBankRegistrationRequestDto> _validator;
         private readonly ILogger<PartnerBankAccountService> _logger;
-        private readonly ITokenService _tokenService;
+        private readonly ITokenStoreRepository _tokenService;
 
 
         public PartnerBankAccountService(UserManager<ApplicationIdentityUser> userManager,SignInManager<ApplicationIdentityUser> signInManager, IValidator<PartnerBankRegistrationRequestDto> validator,
-                                         ILogger<PartnerBankAccountService> logger, ITokenService tokenService)
+                                         ILogger<PartnerBankAccountService> logger, ITokenStoreRepository tokenRepo)
 		{
             _userManager = userManager;
             _signInManager = signInManager;
             _validator = validator;
             _logger = logger;
-            _tokenService = tokenService;
+            _tokenService = tokenRepo;
         }
 
 
@@ -115,7 +115,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         }
 
-        public async Task<string> GetBearerToken(PartnerBankLoginRequestDto userLoginDetails)
+        public async Task<JwTokenResponse> GetBearerToken(PartnerBankLoginRequestDto userLoginDetails)
         {
             try
             {
@@ -123,22 +123,24 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (user is null)
                 {
-                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} not found.", userLoginDetails.EmailAddress);
-                    return new string($"{StatusCodes.Status404NotFound} - partner with {userLoginDetails.EmailAddress} not found.");
+                    _logger.LogWarning($"Partner bank with email address {userLoginDetails.EmailAddress} not found.", userLoginDetails.EmailAddress);
+                    //return new string($"{StatusCodes.Status404NotFound} - partner with {userLoginDetails.EmailAddress} not found.");
+                    return null!;
                 }
 
                 var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Staff with email address {userLoginDetails.EmailAddress} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.EmailAddress);
-                    return new string(await _tokenService.GetJwToken(user, 24));
+                    _logger.LogInformation($"Partner bank with email address {userLoginDetails.EmailAddress} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.EmailAddress);
+                    return new JwTokenResponse { Token = _tokenService.GetJwToken(user, 24).Token!, ExpiresAt = _tokenService.GetJwToken(user, 24).ExpiresAt };
                 }
 
                 if (!result.Succeeded)
                 {
-                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
-                    return new string($"{StatusCodes.Status404NotFound} - Staff login {result.ToString()}.");
+                    _logger.LogWarning($"Partner bank with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
+                    //return new string($"{StatusCodes.Status404NotFound} - Staff login {result.ToString()}.");
+                    return null!;
                 }
 
                 return null!;
@@ -147,7 +149,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.EmailAddress} tried to log in.", userLoginDetails.EmailAddress);
-                return new string($"{StatusCodes.Status500InternalServerError} - {ex.Message}.");
+                //return new string($"{StatusCodes.Status500InternalServerError} - {ex.Message}.");
+                return null!;
 
             }
         }

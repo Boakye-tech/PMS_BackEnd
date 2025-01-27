@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
+using Modules.Users.Infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile("appsettings.users.json", optional: false, reloadOnChange: true);
 
 //Add Serilog Configuration
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
@@ -14,6 +17,7 @@ if (builder.Environment.IsDevelopment())
         case "Sqlite":
             //builder.Services.AddDbContext<FinanceDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
             break;
+
         case "MsSQLServer":
             builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection")));
             break;
@@ -37,42 +41,7 @@ if (builder.Environment.IsProduction())
 
 builder.Services.AddUserModule(builder.Configuration);
 
-//builder.Services.AddIdentity<ApplicationIdentityUser, ApplicationIdentityRole>(options =>
-//{
-//    options.SignIn.RequireConfirmedAccount = true;
-//    options.User.RequireUniqueEmail = true;
-//    options.Password.RequiredLength = 8;
-//    options.Password.RequireNonAlphanumeric = true;
-//    options.Password.RequireUppercase = true;
-//}).AddEntityFrameworkStores<UserDbContext>()
-//  .AddDefaultTokenProviders();
-
-//builder.Services.AddScoped<ValidationService>();
-
-//builder.Services.AddScoped<IAdministrationService, AdministrationService>();
-//builder.Services.AddScoped<IStaffAccountService, StaffAccountService>();
-//builder.Services.AddScoped<IPartnerBankAccountService, PartnerBankAccountService>();
-//builder.Services.AddScoped<ICustomerAccountService, CustomerAccountService>();
-//builder.Services.AddScoped<IMenuService, MenuService>();
-
-
-////register global exception handler
-//builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
-//builder.Services.AddProblemDetails();
-
 builder.Services.AddControllers();
-
-//builder.Services.AddFluentValidationAutoValidation();
-//builder.Services.AddValidatorsFromAssemblyContaining<DepartmentDtoValidator>();
-//builder.Services.AddValidatorsFromAssemblyContaining<DepartmentUnitDtoValidator>();
-//builder.Services.AddValidatorsFromAssemblyContaining<TokenStoreDtoValidator>();
-
-//builder.Services.AddValidatorsFromAssemblyContaining<RolesDtoValidator>();
-//builder.Services.AddValidatorsFromAssemblyContaining<RolesUpdateDtoValidator>();
-//builder.Services.AddValidatorsFromAssemblyContaining<RolesDeleteDtoValidator>();
-
-//builder.Services.AddValidatorsFromAssemblyContaining<RoleMenuActionsDtoValidator>();
-//builder.Services.AddValidatorsFromAssemblyContaining<MenusDtoValidator>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -84,6 +53,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+UserAndRolesConfiguration.SeedUserAndRoles(app.Services).Wait();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

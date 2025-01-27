@@ -12,17 +12,17 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly UserManager<ApplicationIdentityUser> _userManager;
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly ILogger<CustomerAccountService> _logger;
-        private readonly ITokenService _tokenService;
+        private readonly ITokenStoreRepository _tokenService;
         readonly IUnitOfWork _unitOfWork;
 
         public CustomerAccountService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, IUnitOfWork unitOfWork, ILogger<CustomerAccountService> logger,
-                                      ITokenService tokenService)
+                                      ITokenStoreRepository tokenRepo)
 		{
             _userManager = userManager;
             _signInManager = signInManager;
             _unitOfWork = unitOfWork;
             _logger = logger;
-            _tokenService = tokenService;
+            _tokenService = tokenRepo;
         }
 
         public async Task<ChangePasswordResponse> ChangePassword(ChangeCustomerPasswordRequestDto changePassword)
@@ -299,30 +299,48 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 if (result.Succeeded)
                 {
                     _logger.LogInformation($"Customer with email address {userLoginDetails.EmailAddress} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.EmailAddress);
+
+                    //update user info with refresh token details
+                    //List<RefreshToken> refreshTokens = new List<RefreshToken>
+                    //{
+                        
+                    //};
+
+                    user.RefreshToken = _tokenService.GetJwRefreshToken().Token;
+                    user.RefreshTokenExpires = _tokenService.GetJwRefreshToken().Expires;
+
+                    _unitOfWork.Users.Update(user);
+                    await _unitOfWork.Complete();
+
+
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = true,
                         successResponseDto = new CustomerLoginSucessResponseDto
                         {
                             UserId = user.Id,
-                            FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName, string.Empty, user.LastName),
-                            EmailAddress = user.Email!,
+                            IsFirstTime = user.IsFirstTime,
+                            ForcePasswordChange = user.ForcePasswordChange,
+                            //FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName, string.Empty, user.LastName),
+                            //EmailAddress = user.Email!,
                             MobilePhoneNumber = user.PhoneNumber!,
-                            BearerToken = await _tokenService.GetJwToken(user, 8),
+                            BearerToken = _tokenService.GetJwToken(user, 3).Token!,
+                            RefreshToken = _tokenService.GetJwRefreshToken().Token!,
+                            ExpiresAt = _tokenService.GetJwRefreshToken().Expires //_tokenService.GetJwToken(user, 3).ExpiresAt!
                         }
                     };
                 }
 
                 if (!result.Succeeded)
                 {
-                    _logger.LogWarning($"Staff with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
+                    _logger.LogWarning($"Customer with email address {userLoginDetails.EmailAddress} log in attempt {result.ToString()}", userLoginDetails.EmailAddress);
                     return new CustomerLoginResponseDto
                     {
                         LoginStatus = false,
                         errorResponseDto = new CustomerLoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Staff login {result.ToString()}"
+                            StatusMessage = $"Customer login {result.ToString()}"
                         }
                     };
                 }
@@ -332,7 +350,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while staff with email address {userLoginDetails.EmailAddress} tried to log in.", userLoginDetails.EmailAddress);
+                _logger.LogError(ex, $"An error occurred while customer with email address {userLoginDetails.EmailAddress} tried to log in.", userLoginDetails.EmailAddress);
                 return new CustomerLoginResponseDto
                 {
                     LoginStatus = false,
@@ -376,11 +394,15 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         LoginStatus = true,
                         successResponseDto = new CustomerLoginSucessResponseDto
                         {
-                            UserId = user!.Id,
-                            FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName, string.Empty, user.LastName),
-                            EmailAddress = user.Email!,
+                            UserId = user.Id,
+                            IsFirstTime = user.IsFirstTime,
+                            ForcePasswordChange = user.ForcePasswordChange,
+                            //FullName = string.Concat(user.FirstName, string.Empty, user.MiddleName, string.Empty, user.LastName),
+                            //EmailAddress = user.Email!,
                             MobilePhoneNumber = user.PhoneNumber!,
-                            BearerToken = await _tokenService.GetJwToken(user, 8),
+                            BearerToken = _tokenService.GetJwToken(user, 3).Token!,
+                            RefreshToken = _tokenService.GetJwRefreshToken().Token!,
+                            ExpiresAt = _tokenService.GetJwToken(user, 3).ExpiresAt!
                         }
                     };
                 }
@@ -447,6 +469,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         Status = 0,
                         EmailConfirmed = false,
                         PhoneNumberConfirmed = false,
+                        IsFirstTime = true,
+                        ForcePasswordChange = true
                     };
 
                     var results = await _userManager.CreateAsync(new_user); //, details.ConfirmPassword
@@ -480,6 +504,44 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 return new RegistrationResponse { IsSuccess = false , ErrorResponse = errResponse };
             }
         }
+
+        public async Task<RefreshTokenResponseDto> RefreshBearerToken(RefreshTokenRequestDto tokens)
+        {
+            //throw new NotImplementedException();
+            if(tokens is null)
+            {
+            }
+
+            string oldAccessToken = tokens!.BearerToken;
+            string oldRefreshToken = tokens.RefreshToken;
+
+            var principal = _tokenService.GetClaimsPrincipalFromExpiredBearerToken(oldAccessToken);
+            var userId = principal.Identity!.Name;
+
+            var user = await _unitOfWork.Users.Get(u => u.Id == userId);
+
+            if(user is null || user.RefreshToken != tokens.RefreshToken || user.RefreshTokenExpires <= DateTime.UtcNow)
+            {
+            }
+
+            string? newBearerToken = _tokenService.GetJwToken(user!, 3).Token;
+            string newRefreshToken = _tokenService.GetJwRefreshToken().Token!;
+            DateTime refreshTokenExpiresAt = _tokenService.GetJwRefreshToken().Expires;
+
+            user!.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpires = refreshTokenExpiresAt;
+
+            return new RefreshTokenResponseDto
+            {
+                UserId = user.Id,
+                BearerToken = newBearerToken,
+                RefreshToken = newRefreshToken,
+                ExpiresAt = refreshTokenExpiresAt
+            };
+        }
+
+
+
     }
 }
 
