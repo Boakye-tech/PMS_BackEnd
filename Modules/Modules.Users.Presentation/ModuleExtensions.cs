@@ -41,7 +41,8 @@ namespace Modules.Users.Presentation
               .AddDefaultTokenProviders();
 
 
-            var key = Encoding.ASCII.GetBytes(configuration["JwTokenKey:TokenKey"]!); //("JwTokenKey").GetSection("TokenKey").Value!);
+            //var key = Encoding.ASCII.GetBytes(configuration["JwTokenKey:TokenKey"]); 
+            var key = Encoding.ASCII.GetBytes(configuration.GetSection("JwTokenKey").GetSection("TokenKey").Value!);
 
             services.AddAuthentication(a =>
             {
