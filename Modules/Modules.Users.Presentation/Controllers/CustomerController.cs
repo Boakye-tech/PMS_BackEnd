@@ -37,14 +37,7 @@ public class CustomerController : ControllerBase
         }
 
         return BadRequest();
-        //try
-        //{
-        //    return Ok(await _partnerBankAccountService.UserRegistration(values));
-        //}
-        //catch (Exception ex)
-        //{
-        //    return StatusCode(500, ex.InnerException!.Message);
-        //}
+      
     }
 
     /// <summary>
