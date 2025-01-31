@@ -1,7 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Modules.Notification.Domain.Enums;
-using Modules.Notification.Domain.Interfaces;
 
 namespace Modules.Notification.Infrastructure.Repositories
 {
