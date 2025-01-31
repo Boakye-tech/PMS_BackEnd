@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payments", "Payments", "{1D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Finance", "Finance", "{496ABA25-030D-48E5-B5B5-2C093D98F1B6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{BD959F9A-1A52-422C-82A9-1AC9352AFC1A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notification", "{BD959F9A-1A52-422C-82A9-1AC9352AFC1A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Facilities", "Facilities", "{7567BDF7-7DB7-4C9D-A729-C2306ADF435D}"
 EndProject
@@ -72,6 +72,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Common.Infrastructure", "Modules\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj", "{9842F69D-ECFE-449C-BFBE-4F995BC8A87B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Common.Presentation", "Modules\Modules.Common.Presentation\Modules.Common.Presentation.csproj", "{7AE4B78A-C2EB-4F3F-9863-0B728647CB6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Notification.Domain", "Modules\Modules.Notification.Domain\Modules.Notification.Domain.csproj", "{1B88F298-E166-44A7-AB48-B2A8BF4887FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Notification.Application", "Modules\Modules.Notification.Application\Modules.Notification.Application.csproj", "{64A9670E-4F5D-49F5-98E1-12243342C8A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Notification.Infrastructure", "Modules\Modules.Notification.Infrastructure\Modules.Notification.Infrastructure.csproj", "{D8C2C58D-16DD-410C-8F5B-C260D81A1634}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Notification.Presentation", "Modules\Modules.Notification.Presentation\Modules.Notification.Presentation.csproj", "{D9255BE7-A0CE-4507-81E7-6E79A7F18D98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +183,22 @@ Global
 		{7AE4B78A-C2EB-4F3F-9863-0B728647CB6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AE4B78A-C2EB-4F3F-9863-0B728647CB6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AE4B78A-C2EB-4F3F-9863-0B728647CB6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B88F298-E166-44A7-AB48-B2A8BF4887FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B88F298-E166-44A7-AB48-B2A8BF4887FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B88F298-E166-44A7-AB48-B2A8BF4887FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B88F298-E166-44A7-AB48-B2A8BF4887FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A9670E-4F5D-49F5-98E1-12243342C8A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A9670E-4F5D-49F5-98E1-12243342C8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A9670E-4F5D-49F5-98E1-12243342C8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A9670E-4F5D-49F5-98E1-12243342C8A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8C2C58D-16DD-410C-8F5B-C260D81A1634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8C2C58D-16DD-410C-8F5B-C260D81A1634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8C2C58D-16DD-410C-8F5B-C260D81A1634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8C2C58D-16DD-410C-8F5B-C260D81A1634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9255BE7-A0CE-4507-81E7-6E79A7F18D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9255BE7-A0CE-4507-81E7-6E79A7F18D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9255BE7-A0CE-4507-81E7-6E79A7F18D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9255BE7-A0CE-4507-81E7-6E79A7F18D98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -216,5 +240,9 @@ Global
 		{DD48B736-BD8E-40F1-97C6-1006FD38A535} = {33F34623-6A46-4AD7-9F06-311F3B1E7B0F}
 		{9842F69D-ECFE-449C-BFBE-4F995BC8A87B} = {1DCE1D2F-8E6D-4B31-B1C6-37047D27664F}
 		{7AE4B78A-C2EB-4F3F-9863-0B728647CB6C} = {1DCE1D2F-8E6D-4B31-B1C6-37047D27664F}
+		{1B88F298-E166-44A7-AB48-B2A8BF4887FE} = {BD959F9A-1A52-422C-82A9-1AC9352AFC1A}
+		{64A9670E-4F5D-49F5-98E1-12243342C8A2} = {BD959F9A-1A52-422C-82A9-1AC9352AFC1A}
+		{D8C2C58D-16DD-410C-8F5B-C260D81A1634} = {BD959F9A-1A52-422C-82A9-1AC9352AFC1A}
+		{D9255BE7-A0CE-4507-81E7-6E79A7F18D98} = {BD959F9A-1A52-422C-82A9-1AC9352AFC1A}
 	EndGlobalSection
 EndGlobal

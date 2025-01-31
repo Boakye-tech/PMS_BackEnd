@@ -13,7 +13,7 @@ namespace Modules.Users.Application.Helpers
 
         public static string Generator(int length)
         {
-            var randomizer = new Randomizer(length, new DefaultRandomizerOptions(hasNumbers: true, hasLowerAlphabets: false, hasUpperAlphabets: true, hasSpecialChars: false));
+            var randomizer = new Randomizer(length, new DefaultRandomizerOptions(hasNumbers: true, hasLowerAlphabets: false, hasUpperAlphabets: false, hasSpecialChars: false));
             string result = randomizer.Next();
             return result;
         }

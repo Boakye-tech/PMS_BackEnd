@@ -7,5 +7,10 @@ namespace Modules.Users.Application.Dtos.Entities
     //public record TokenStoreDto(int TokenStoreId);
 
     public record TokenRequestParameterDto(string requestParameter);
+    public record TokenResponseDto(string token);
+
+
+    public record VerifyTokenRequestDto(string requestParameter, string token);
+    
 }
 

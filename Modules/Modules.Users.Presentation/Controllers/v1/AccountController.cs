@@ -20,7 +20,7 @@ public class AccountController : ControllerBase
     IUserAccountsService _userAccountsService;
     IUnitOfWork _unitOfWork;
 
-    public AccountController(IUserAccountsService userAccountsService, IUnitOfWork unitOfWork) 
+    public AccountController(IUserAccountsService userAccountsService, IUnitOfWork unitOfWork)
     {
         _userAccountsService = userAccountsService;
         _unitOfWork = unitOfWork;
@@ -43,7 +43,7 @@ public class AccountController : ControllerBase
         }
 
         return BadRequest();
-      
+
     }
 
     /// <summary>
@@ -210,7 +210,7 @@ public class AccountController : ControllerBase
                     }
                 }
 
-                    
+
             }
 
             return BadRequest();
@@ -259,20 +259,20 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// Sends a one time pin to a user's mobile phone number for verification  
+    /// Sends a one time pin to a user's email address or mobile phone number for verification  
     /// </summary>
     [HttpPost]
     [AllowAnonymous]
-    [Route("SendSMSToken")]
-    //[ProducesResponseType(200, Type = typeof(UserLoginResponse))]
-    public IActionResult SendSMSToken([FromBody] TokenRequestParameterDto value)
+    [Route("SendOTPToken")]
+    [ProducesResponseType(200, Type = typeof(TokenResponseDto))]
+    public async Task<IActionResult> SendOTPToken([FromBody] TokenRequestParameterDto value)
     {
         try
         {
             if (ModelState.IsValid)
             {
-                var result = _unitOfWork.TokenStore.GetToken(value.requestParameter!,5);  //.SendSmsToken(requestParameter);
-                return Ok(result);
+                var result = await _unitOfWork.TokenStore.GetToken(value.requestParameter!, 5);
+                return Ok(new TokenResponseDto(result));
             }
 
             return NotFound();
@@ -284,19 +284,19 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// Sends a one time pin to a user's email address for verification  
+    /// Verifies one time pin sent to user's email address or mobile phone number
     /// </summary>
     [HttpPost]
     [AllowAnonymous]
-    [Route("SendEmailToken")]
+    [Route("VerifyOTPToken")]
     //[ProducesResponseType(200, Type = typeof(UserLoginResponse))]
-    public IActionResult SendEmailToken([FromBody] TokenRequestParameterDto value)
+    public async Task<IActionResult> VerifyOTPToken([FromBody] VerifyTokenRequestDto verifyTokenRequest)
     {
         try
         {
             if (ModelState.IsValid)
             {
-                var result = _unitOfWork.TokenStore.GetToken(value.requestParameter!,5);
+                var result = await _unitOfWork.TokenStore.VerifyToken(verifyTokenRequest.requestParameter, verifyTokenRequest.token);
                 return Ok(result);
             }
 
@@ -306,11 +306,9 @@ public class AccountController : ControllerBase
         {
             return StatusCode(500, ex.Message);
         }
+
     }
 
 
 
-
-
 }
-

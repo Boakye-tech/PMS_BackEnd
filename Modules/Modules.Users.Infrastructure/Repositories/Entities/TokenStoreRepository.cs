@@ -50,14 +50,6 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                 mobilePhoneNumber = mobilePhoneNumber_OR_emailAddress;
             }
 
-            //if (mobilePhoneNumber_OR_emailAddress.Contains("@") == true)
-            //{
-            //    emailAddress = mobilePhoneNumber_OR_emailAddress;
-            //}
-            //else
-            //{
-            //    mobilePhoneNumber = mobilePhoneNumber_OR_emailAddress;
-            //}
 
             TokenStore tokenStore = new TokenStore()
             {
@@ -70,7 +62,7 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                 IsVerified = false
             };
 
-            await _userDbContext.TokenStore.AddAsync(tokenStore);
+            _userDbContext.TokenStore.Add(tokenStore);
             await _userDbContext.SaveChangesAsync();
 
             return token;

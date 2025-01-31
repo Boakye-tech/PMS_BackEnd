@@ -1,0 +1,7 @@
+﻿@Modules.Notification.Presentation_HostAddress = http://localhost:5219
+
+GET {{Modules.Notification.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
