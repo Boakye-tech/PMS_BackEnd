@@ -1,6 +1,4 @@
 ﻿using System;
-using Modules.Users.Domain.Interfaces.Entities;
-using Modules.Users.Domain.Interfaces.Entities.Menu;
 
 namespace Modules.Users.Domain.Interfaces
 {
@@ -10,6 +8,7 @@ namespace Modules.Users.Domain.Interfaces
         IDepartmentUnitRepository DepartmentUnit { get; }
         ITokenStoreRepository TokenStore { get; }
         IUserRepository Users { get; }
+        IChannelsRepository Channels { get; }
 
         IMenuActionsRepository MenuActions {get; }
         IRoleMenuActionsRepository RolePermissions { get; }

@@ -26,6 +26,7 @@ namespace Modules.Users.Infrastructure.Repositories
 
             Department = new DepartmentRepository(dbContext);
             DepartmentUnit = new DepartmentUnitRepository(dbContext);
+            Channels = new ChannelsRepository(dbContext);
             TokenStore = new TokenStoreRepository(dbContext, _userManager!,_configuration!); // _menuService!
             Users = new UserRepository(dbContext);
 
@@ -49,6 +50,7 @@ namespace Modules.Users.Infrastructure.Repositories
 
         public IRoleMenuActionsRepository RolePermissions { get; private set; }
 
+        public IChannelsRepository Channels { get; private set; }
 
         public Task<int> Complete()
         {

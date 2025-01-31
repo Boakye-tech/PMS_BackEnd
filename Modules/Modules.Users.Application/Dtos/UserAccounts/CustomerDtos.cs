@@ -9,6 +9,7 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string FirstName,
         string MiddleName,
         string LastName,
+        [Phone]
         string PhoneNumber,
         [EmailAddress]
         string EmailAddress,
@@ -27,76 +28,8 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         //string ConfirmPassword
         );
 
-    public record CustomerLoginResponseDto
-    {
-        public bool LoginStatus { get; set; }
-        public CustomerLoginSucessResponseDto? successResponseDto { get; set; }
-        public CustomerLoginErrorResponseDto? errorResponseDto { get; set; }
-    }
-
-    public record CustomerLoginSucessResponseDto : LoginResponse
-    {
-        public required string MobilePhoneNumber { get; set; }
-    }
-
-    public record CustomerLoginErrorResponseDto() : BaseResponse;
-
-
-    public record ChangeCustomerPasswordRequestDto() : ChangePasswordRequest;
-
-    public record ResetCustomerPasswordEmailRequestDto : ResetPasswordRequest
-    {
-        [EmailAddress]
-        public string? EmailAddress { get; set; }
-    }
-    public record ResetCustomerPasswordPhoneRequestDto(string MobilePhoneNumber, int Token, string NewPassword, string ConfirmNewPassword);
-
-
-    public record CustomerEmailLoginRequestDto : LoginRequest
-    {
-        [EmailAddress]
-        public string? EmailAddress { get; set; }
-    }
-
-    public record CustomerPhoneLoginRequestDto(string MobilePhoneNumber, string Password);
-
-
-    //---
-
-    public record CustomerResetPasswordRequestDto(string Phone_OR_Email) : ResetPasswordRequest;
-    public record CustomerLoginRequestDto(string Phone_OR_Email) : LoginRequest;
-
-
-    /*
-    public record ResetCustomerPasswordRequestDto : ResetPasswordRequest
-    {
-        [JsonIgnore]
-        public new string EmailAddress => base.EmailAddress!;
-
-        [JsonPropertyName("EmailAddress_OR_PhoneNumber")]
-        public string EmailAddress_OR_PhoneNumber
-        {
-            get => base.EmailAddress!;
-            set => base.EmailAddress = value;
-        }
-    }
     
-    public record CustomerLoginRequestDto : LoginRequest
-    {
-        [JsonIgnore]
-        public new string EmailAddress => base.EmailAddress!;
-
-        //[JsonPropertyName("EmailAddress_OR_PhoneNumber")]
-        //public override required string EmailAddress { get; set; }
-
-        [JsonPropertyName("EmailAddress_OR_PhoneNumber")]
-        public string EmailAddress_OR_PhoneNumber
-        {
-            get => base.EmailAddress!;
-            set => base.EmailAddress = value;
-        }
-    }
-    */
+    
 
 }
 

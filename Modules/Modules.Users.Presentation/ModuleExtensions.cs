@@ -77,12 +77,11 @@ namespace Modules.Users.Presentation
             services.AddScoped<ValidationService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IChannelService, ChannelService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IDepartmentUnitService, DepartmentUnitService>();
             services.AddScoped<IAdministrationService, AdministrationService>();
-            services.AddScoped<IStaffAccountService, StaffAccountService>();
-            services.AddScoped<IPartnerBankAccountService, PartnerBankAccountService>();
-            services.AddScoped<ICustomerAccountService, CustomerAccountService>();
+            services.AddScoped<IUserAccountsService, UserAccountsService>();
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<ITokenStoreRepository, TokenStoreRepository>();
 

@@ -2,7 +2,7 @@
 
 namespace Modules.Users.Application.Validations
 {
-	public class DepartmentDtoValidator : AbstractValidator<Department>
+	public class DepartmentDtoValidator : AbstractValidator<DepartmentCreateDto>
     {
 		public DepartmentDtoValidator()
 		{

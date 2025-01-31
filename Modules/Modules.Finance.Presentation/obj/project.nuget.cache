@@ -1,9 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "jKfmNUczJ9BUM1eqDP+K863gdvXINVomArGUB2d4AyMczFumacWp8OekYMfLxE2VJp1stkMFl486nPXnan+uDA==",
+  "dgSpecHash": "dxVLnU0ma/zgvaGzCqZhODKtkEz9meQLEyPnkrrj3XiGR/Rok1D5ug5pkgFHI/JK30L8rLsN3ii16uBoLXMcnQ==",
   "success": true,
   "projectFilePath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/Modules.Finance.Presentation.csproj",
   "expectedPackageFiles": [
+    "/Users/macbook/.nuget/packages/asp.versioning.abstractions/8.1.0/asp.versioning.abstractions.8.1.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/asp.versioning.http/8.1.0/asp.versioning.http.8.1.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/asp.versioning.mvc/8.1.0/asp.versioning.mvc.8.1.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/asp.versioning.mvc.apiexplorer/8.1.0/asp.versioning.mvc.apiexplorer.8.1.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/Users/macbook/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "/Users/macbook/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",

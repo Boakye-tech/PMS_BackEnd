@@ -165,3 +165,8 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/Modules.Finance.Presentation.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/Modules.Finance.Presentation.genruntimeconfig.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/ref/Modules.Finance.Presentation.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Asp.Versioning.Abstractions.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Asp.Versioning.Http.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Asp.Versioning.Mvc.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Asp.Versioning.Mvc.ApiExplorer.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Modules.Finance.Presentation.xml

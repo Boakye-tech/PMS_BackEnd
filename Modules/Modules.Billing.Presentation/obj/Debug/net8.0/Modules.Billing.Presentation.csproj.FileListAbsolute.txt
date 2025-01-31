@@ -85,3 +85,8 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/Modules.Billing.Presentation.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/Modules.Billing.Presentation.genruntimeconfig.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/ref/Modules.Billing.Presentation.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Asp.Versioning.Abstractions.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Asp.Versioning.Http.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Asp.Versioning.Mvc.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Asp.Versioning.Mvc.ApiExplorer.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Modules.Billing.Presentation.xml

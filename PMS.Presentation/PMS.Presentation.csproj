@@ -14,8 +14,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
-    <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+    <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
   </ItemGroup>
 
  <!-- <ItemGroup>
@@ -27,16 +27,12 @@
     <None Remove="Properties\PublishProfiles\" />
     <None Remove="Logs\" />
     <None Remove="OpenAPI\" />
-    <None Remove="Controllers\v1\" />
-    <None Remove="Controllers\v2\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Logs\" />
     <Folder Include="OpenAPI\" />
-    <Folder Include="Controllers\v1\" />
-    <Folder Include="Controllers\v2\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules\Modules.Estates.Presentation\Modules.Estates.Presentation.csproj">

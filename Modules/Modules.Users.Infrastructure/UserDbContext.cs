@@ -18,6 +18,7 @@ namespace Modules.Users.Infrastructure
         public DbSet<ApplicationIdentityRole> roles { get; set; }
         public DbSet<ApplicationIdentityUserRole> userRoles { get; set; }
 
+        public DbSet<Channels> Channels { get; set; }
         public DbSet<Department> Department { get; set; } 
         public DbSet<DepartmentUnit> DepartmentUnit { get; set; }
         public DbSet<TokenStore> TokenStore { get; set; }
@@ -31,12 +32,6 @@ namespace Modules.Users.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //foreach (var entity in builder.Model.GetEntityTypes())
-            //{
-            //    entity.SetSchema("dbo");
-            //}
-
-            //builder.HasDefaultSchema("dbo");
 
             base.OnModelCreating(builder);
 
@@ -48,11 +43,9 @@ namespace Modules.Users.Infrastructure
             builder.Entity<ApplicationIdentityUser>().ToTable("Users", "dbo");
             builder.Entity<IdentityUserToken<string>>().ToTable("UserTokens", "dbo");
 
-            //builder.Entity<ApplicationIdentityUserRole<string>>(entity =>
-            //{
-            //    entity.HasKey(e => new { e.UserId, e.RoleId });
-            //});
-
+            builder.Entity<Channels>()
+                .HasIndex(c => c.ChannelName)
+                .IsUnique(true);
 
             builder.Entity<Department>()
                 .HasIndex(d => d.DepartmentName)
@@ -79,6 +72,10 @@ namespace Modules.Users.Infrastructure
                .IsUnique(true);
 
             builder.ApplyConfiguration(new MenuActionConfiguration());
+            builder.ApplyConfiguration(new ChannelConfiguration());
+            builder.ApplyConfiguration(new DepartmentsConfiguration());
+            builder.ApplyConfiguration(new DepartmentsUnitsConfiguration());
+
 
         }
     }

@@ -198,3 +198,8 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Azure.Storage.Blobs.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Azure.Storage.Common.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/System.IO.Hashing.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Asp.Versioning.Abstractions.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Asp.Versioning.Http.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Asp.Versioning.Mvc.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Asp.Versioning.Mvc.ApiExplorer.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Modules.Customers.Presentation.xml

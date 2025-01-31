@@ -1,9 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "l4tvk9bH2PW5m4o3T4OXArBH/5fxmZF7Rrms8w7Ta7DpT57a0Fmue3t/n5LNbW/83OT+N6XO/hKmgIxWEUw6/g==",
+  "dgSpecHash": "NzzWDV+kQ47PYaxjxl7uaxc0IQNSvSOORA1vBv7kiLgyhXtPdHwRv6XBKltOYffMgGO71fXNUKGxINYy3sJwmg==",
   "success": true,
   "projectFilePath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Presentation/Modules.Billing.Presentation.csproj",
   "expectedPackageFiles": [
+    "/Users/macbook/.nuget/packages/asp.versioning.abstractions/8.1.0/asp.versioning.abstractions.8.1.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/asp.versioning.http/8.1.0/asp.versioning.http.8.1.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/asp.versioning.mvc/8.1.0/asp.versioning.mvc.8.1.0.nupkg.sha512",
+    "/Users/macbook/.nuget/packages/asp.versioning.mvc.apiexplorer/8.1.0/asp.versioning.mvc.apiexplorer.8.1.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/Users/macbook/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",
     "/Users/macbook/.nuget/packages/microsoft.bcl.asyncinterfaces/1.1.1/microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",

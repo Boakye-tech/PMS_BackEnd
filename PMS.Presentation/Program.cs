@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -7,7 +8,9 @@ using Modules.Estates.Presentation;
 using Modules.Finance.Presentation;
 using Modules.Users.Presentation;
 using PMS.Presentation.Extensions;
+using PMS.Presentation.OpenAPI;
 using Serilog;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,8 +37,25 @@ var user_module = "Modules.Users.Presentation";
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigureOptions>();
+
+builder.Services
+    .AddApiVersioning(options =>
+    {
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.ReportApiVersions = true;
+    })
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
 builder.Services.AddSwaggerGen(c =>
 {
+    c.OperationFilter<SwaggerDefaultValues>();
+
     //c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
 
     // Use the full type name (namespace + class name) as the schemaId
@@ -60,7 +80,12 @@ if (app.Environment.IsDevelopment())
             swagger.Servers = new List<OpenApiServer>() { new OpenApiServer() { Url = $"https://{req.Host}" } };
         });
     });
-
+    /*
+     * 
+     */
+    /*
+     * 
+     */
 
     app.UseSwaggerUI(options =>
     {

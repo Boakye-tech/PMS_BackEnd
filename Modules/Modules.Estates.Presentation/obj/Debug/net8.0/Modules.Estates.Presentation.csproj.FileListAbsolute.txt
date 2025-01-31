@@ -557,3 +557,7 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/Modules.Estates.Presentation.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/Modules.Estates.Presentation.genruntimeconfig.cache
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/ref/Modules.Estates.Presentation.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Asp.Versioning.Abstractions.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Asp.Versioning.Http.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Asp.Versioning.Mvc.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Asp.Versioning.Mvc.ApiExplorer.dll

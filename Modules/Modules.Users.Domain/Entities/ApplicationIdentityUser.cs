@@ -120,9 +120,7 @@ namespace Modules.Users.Domain.Entities
 
         public bool IsFirstTime { get; set; }
 
-        public bool ForcePasswordChange { get; set; }
-
-        //public List<RefreshToken>? RefreshTokens { get; set; }
+        public int UserType { get; set; }
 
         public string? RefreshToken { get; set; }
 

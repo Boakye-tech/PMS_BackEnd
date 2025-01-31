@@ -78,7 +78,7 @@ namespace Modules.Users.Infrastructure.Configuration
                     FirebaseId = string.Empty,
                     RegistrationDate = DateTime.UtcNow,
                     IsFirstTime = false,
-                    ForcePasswordChange = false
+                    UserType = 0
                 };
 
 
@@ -90,8 +90,8 @@ namespace Modules.Users.Infrastructure.Configuration
                     FirstName = "Daniel",
                     MiddleName ="",
                     LastName = "Schandorf",
-                    DepartmentId = 1,
-                    UnitId = 1,
+                    DepartmentId = 401,
+                    UnitId = 210,
                     Channel = "Web",
                     Status = 9,
                     CreatedBy = "sys",
@@ -105,7 +105,7 @@ namespace Modules.Users.Infrastructure.Configuration
                     FirebaseId = string.Empty,
                     RegistrationDate = DateTime.UtcNow,
                     IsFirstTime = false,
-                    ForcePasswordChange = false
+                    UserType = 3
                 };
 
                 IdentityResult identityResult = userManager.CreateAsync(_user, "SwordFish@2001").Result;

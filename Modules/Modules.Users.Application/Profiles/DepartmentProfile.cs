@@ -7,7 +7,7 @@ namespace Modules.Users.Application.Profiles
 		public DepartmentProfile()
 		{
 			CreateMap<Department, DepartmentReadDto>();
-            CreateMap<DepartmentUnitCreateDto, Department>();
+            CreateMap<DepartmentCreateDto, Department>();
             CreateMap<DepartmentUpdateDto, Department>();
             CreateMap<DepartmentDeleteDto, Department>();
 

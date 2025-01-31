@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Modules.Users.Application.Validations
 {
-	public class DepartmentUnitDtoValidator : AbstractValidator<DepartmentUnit>
+	public class DepartmentUnitDtoValidator : AbstractValidator<DepartmentUnitCreateDto>
 	{
 		public DepartmentUnitDtoValidator()
 		{
