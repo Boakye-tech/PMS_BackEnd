@@ -514,7 +514,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                     if (!results.Succeeded)
                     {
-                        var errResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = results.Errors.ToString()! };
+                        _logger.LogError($"{details.Channel} - Customer Registration Error: {string.Join("; ", results.Errors.Select(err => err.Description))}");
+                        var errResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errResponse };
                         //return response;
                     }
@@ -568,7 +569,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                     if (!results.Succeeded)
                     {
-                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = results.ToString() };
+                        _logger.LogError($"Partner Bank Registration Error: {string.Join("; ", results.Errors.Select(err => err.Description))}");
+                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
                     }
                 }
@@ -610,7 +612,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         UserType = (int)UserAccountType.Staff
                     };
 
-                    var results = await _userManager.CreateAsync(new_user, details.ConfirmPassword);
+                    var results = await _userManager.CreateAsync(new_user); //, details.ConfirmPassword
 
                     if (results.Succeeded)
                     {
@@ -622,7 +624,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                     if (!results.Succeeded)
                     {
-                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = results.ToString() };
+                        _logger.LogError($"Staff Registration Error: {string.Join("; ", results.Errors.Select(err => err.Description))}");
+                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
                     }
                 }

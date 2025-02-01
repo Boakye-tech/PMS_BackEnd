@@ -18,9 +18,9 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string Channel,
         //DateTime RegistrationDate,
         //int Status,
-        string? ProfilePicture,
-        string Password,
-        string ConfirmPassword
+        string? ProfilePicture
+        //string Password,
+        //string ConfirmPassword
         );
 
 
