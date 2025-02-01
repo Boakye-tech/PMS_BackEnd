@@ -10,3 +10,7 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/obj/Debug/net8.0/refint/Modules.Notification.Application.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/obj/Debug/net8.0/Modules.Notification.Application.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/obj/Debug/net8.0/ref/Modules.Notification.Application.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/bin/Debug/net8.0/Modules.Notification.Domain.dll
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/bin/Debug/net8.0/Modules.Notification.Domain.pdb
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/obj/Debug/net8.0/Modules.Notification.Application.csproj.AssemblyReference.cache
+/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/obj/Debug/net8.0/Modules..F40E36C5.Up2Date

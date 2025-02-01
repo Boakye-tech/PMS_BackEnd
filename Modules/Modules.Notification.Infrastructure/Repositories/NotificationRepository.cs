@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-
+﻿
 namespace Modules.Notification.Infrastructure.Repositories
 {
 	public class NotificationRepository : INotificationRepository

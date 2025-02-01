@@ -24,6 +24,7 @@
     </PackageReference>
     <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,9 +38,13 @@
   <ItemGroup>
     <None Remove="Controllers\v1\" />
     <None Remove="Controllers\v2\" />
+    <None Remove="OpenAPI\" />
+    <None Remove="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\v1\" />
     <Folder Include="Controllers\v2\" />
+    <Folder Include="OpenAPI\" />
+    <Folder Include="Filters\" />
   </ItemGroup>
 </Project>

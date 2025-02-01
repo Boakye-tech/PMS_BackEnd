@@ -43,6 +43,17 @@ if (builder.Environment.IsProduction())
     }
 }
 
+builder.Services.AddCors(o =>
+{
+    o.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+        });
+});
 
 builder.Services.AddUserModule(builder.Configuration);
 
@@ -109,6 +120,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 

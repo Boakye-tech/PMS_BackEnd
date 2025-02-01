@@ -50,5 +50,8 @@
     <ProjectReference Include="..\Modules\Modules.Customers.Presentation\Modules.Customers.Presentation.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Modules\Modules.Notification.Presentation\Modules.Notification.Presentation.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

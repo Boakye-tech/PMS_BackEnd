@@ -425,9 +425,10 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentUnitService.UpdateDepartmentUnitAsync(values));
         }
 
-        [HttpDelete("DeleteDepartment/{departmentUnitId}")]
+        [HttpDelete("DeleteDepartmentUnit/{departmentUnitId}")]
         public void DeleteDepartmentUnit(int departmentUnitId)
-        { }
+        {
+        }
 
     }
 }

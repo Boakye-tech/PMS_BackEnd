@@ -3,9 +3,9 @@ using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using Modules.Estates.Infrastructure;
 using Modules.Estates.Presentation;
 using Modules.Finance.Presentation;
+using Modules.Notification.Presentation;
 using Modules.Users.Presentation;
 using PMS.Presentation.Extensions;
 using PMS.Presentation.OpenAPI;
@@ -28,15 +28,28 @@ builder.Services.AddFinanceModule(builder.Configuration);
 
 builder.Services.AddUserModule(builder.Configuration);
 
+builder.Services.AddNotificationModule(builder.Configuration);
+
 var module = "Modules.Estates.Presentation";
 var user_module = "Modules.Users.Presentation";
+//var finance_module = "Modules.Finance.Presentation";
+//var notification_module = "Modules.Notification.Presentation";
 
-
+builder.Services.AddCors(o =>
+{
+    o.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+                   //.AllowCredentials();
+        });
+});
 
 //builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigureOptions>();
 
 builder.Services
@@ -80,12 +93,7 @@ if (app.Environment.IsDevelopment())
             swagger.Servers = new List<OpenApiServer>() { new OpenApiServer() { Url = $"https://{req.Host}" } };
         });
     });
-    /*
-     * 
-     */
-    /*
-     * 
-     */
+
 
     app.UseSwaggerUI(options =>
     {
@@ -114,6 +122,8 @@ if (app.Environment.IsProduction())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 

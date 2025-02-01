@@ -17,4 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Modules.Notification.Domain\Modules.Notification.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+  </ItemGroup>
 </Project>
