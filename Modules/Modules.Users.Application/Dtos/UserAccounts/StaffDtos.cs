@@ -15,7 +15,7 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         [EmailAddress]
         string UserName,
         string PhoneNumber,
-        string Channel,
+        int ChannelId,
         //DateTime RegistrationDate,
         //int Status,
         string? ProfilePicture

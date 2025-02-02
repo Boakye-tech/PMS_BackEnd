@@ -4,11 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.DTO.Management.Customer;
-using Modules.Estates.Application.DTO.Setup.Customer;
-using Modules.Estates.Application.Interfaces.Entities.Setup.Customer;
-using Modules.Estates.Application.Interfaces.Management.Customer;
-using Modules.Estates.Application.Repositories.Setup.Customer;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -49,15 +44,32 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of exisitng customer types
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetCustomerTypes")]
+        [Route("GetCustomerTypes")]
         public async Task<ActionResult<IEnumerable<CustomerTypeReadDto>>> GetCustomerTypes()
         {
             return Ok(await _customerTypeService.GetCustomerTypeAsync());
         }
 
+        /// <summary>
+        ///  Create a new customer type
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Categories into which various customers are grouped
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateCustomerType
+        /// 
+        /// {
+        ///    "customerTypeId": 0,
+        ///    "customerTypes": "RESIDENT",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPost]
-        [Route("AddCustomerType")]
-        public async Task<ActionResult<CustomerTypeReadDto>> AddCustomerType([FromBody] CustomerTypeCreateDto values)
+        [Route("CreateCustomerType")]
+        public async Task<ActionResult<CustomerTypeReadDto>> CreateCustomerType([FromBody] CustomerTypeCreateDto values)
         {
             try
             {
@@ -69,6 +81,21 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of exisitng customer types
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// PUT /UpdateCustomerType
+        /// 
+        /// {
+        ///    "customerTypeId": 0,
+        ///    "customerTypes": "RESIDENT",
+        ///    "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPut]
         [Route("UpdateCustomerType")]
         public async Task<ActionResult<CustomerTypeReadDto>> UpdateCustomerType([FromBody] CustomerTypeUpdateDto values)
@@ -86,29 +113,44 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of existing genders
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetGenders")]
+        [Route("GetGenders")]
         public async Task<ActionResult<IEnumerable<GenderReadDto>>> GetGender()
         {
             return Ok(await _genderService.GetGenderAsync());
         }
 
         [HttpGet]
-        [Route("Setup/GetGender/{value}")]
-        public async Task<ActionResult<GenderReadDto>> GetGender(string value)
+        [Route("GetGender/{value}")]
+        private async Task<ActionResult<GenderReadDto>> GetGender(string value)
         {
             return Ok(await _genderService.GetGenderAsync(value));
         }
 
         [HttpGet]
-        [Route("Setup/GetGenderById/{genderId}")]
-        public async Task<ActionResult<GenderReadDto>> GetGenderById(int genderId)
+        [Route("GetGender/{genderId}")]
+        public async Task<ActionResult<GenderReadDto>> GetGender(int genderId)
         {
             return Ok(await _genderService.GetGenderAsync(genderId));
         }
 
+        /// <summary>
+        ///  Create a new gender
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateGender
+        /// 
+        /// {
+        ///    "genderId": 0,
+        ///    "genderType": "FE-MALE",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPost]
-        [Route("AddGender")]
-        public async Task<ActionResult<GenderReadDto>> AddGender([FromBody] GenderCreateDto values)
+        [Route("CreateGender")]
+        public async Task<ActionResult<GenderReadDto>> CreateGender([FromBody] GenderCreateDto values)
         {
             try
             {
@@ -120,6 +162,21 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of exisitng genders
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// PUT /UpdateGender
+        /// 
+        /// {
+        ///    "genderId": 1,
+        ///    "genderType": "FEMALE",
+        ///    "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPut]
         [Route("UpdateGender")]
         public async Task<ActionResult<GenderReadDto>> UpdateGender([FromBody] GenderUpdateDto values)
@@ -136,15 +193,31 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of exisitng identification types
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetIdentificationTypes")]
+        [Route("GetIdentificationTypes")]
         public async Task<ActionResult<IEnumerable<IdentificationTypeReadDto>>> GetIdentificationTypes()
         {
             return Ok(await _identificationTypeService.GetIdentificationTypeAsync());
         }
 
+        /// <summary>
+        ///  Create a new identification type
+        /// </summary>
+        /// <remarks>
+        /// The various forms of identification accepted during registration
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateIdentificationType
+        /// 
+        /// {
+        ///    "identificationTypeId": 0,
+        ///    "identificationTypes": "GHANA CARD",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPost]
-        [Route("AddIdentificationType")]
-        public async Task<ActionResult<IdentificationTypeReadDto>> AddIdentificationType([FromBody] IdentificationTypeCreateDto values)
+        [Route("CreateIdentificationType")]
+        public async Task<ActionResult<IdentificationTypeReadDto>> CreateIdentificationType([FromBody] IdentificationTypeCreateDto values)
         {
             try
             {
@@ -156,6 +229,21 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of exisitng identification types
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// PUT /UpdateIdentificationType
+        /// 
+        /// {
+        ///    "identificationTypeId": 2,
+        ///    "identificationTypes": "PASSPORT",
+        ///    "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPut]
         [Route("UpdateIdentificationType")]
         public async Task<ActionResult<IdentificationTypeReadDto>> UpdateCustomerType([FromBody] IdentificationTypeUpdateDto values)
@@ -173,15 +261,30 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of exisitng nationalities
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetNationality")]
+        [Route("GetNationality")]
         public async Task<ActionResult<IEnumerable<NationalityReadDto>>> GetNationality()
         {
             return Ok(await _nationalityService.GetNationalityAsync());
         }
 
+        /// <summary>
+        ///  Create a new nationality
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateNationality
+        /// 
+        /// {
+        ///    "nationalityId": 0,
+        ///    "nationalities": "GHANAIAN",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPost]
-        [Route("AddNationality")]
-        public async Task<ActionResult<NationalityReadDto>> AddNationality([FromBody] NationalityCreateDto values)
+        [Route("CreateNationality")]
+        public async Task<ActionResult<NationalityReadDto>> CreateNationality([FromBody] NationalityCreateDto values)
         {
             try
             {
@@ -193,6 +296,20 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of exisitng nationalities
+        /// </summary>
+        ///
+        /// Sample Request:
+        ///
+        /// PUT /UpdateNationality
+        /// 
+        /// {
+        ///    "nationalityId": 3,
+        ///    "nationalities": "CHINESE",
+        ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPut]
         [Route("UpdateNationality")]
         public async Task<ActionResult<NationalityReadDto>> UpdateNationality([FromBody] NationalityUpdateDto values)
@@ -210,15 +327,30 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of exisitng resident types
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetResidentTypes")]
+        [Route("GetResidentTypes")]
         public async Task<ActionResult<IEnumerable<ResidentTypeReadDto>>> GetResidentTypes()
         {
             return Ok(await _residentTypeService.GetResidentTypeAsync());
         }
 
+        /// <summary>
+        ///  Create a new resident type
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateResidentType
+        /// 
+        /// {
+        ///    "residentTypeId": 0,
+        ///    "residentTypes": "NON-RESIDENT",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPost]
-        [Route("AddResidentType")]
-        public async Task<ActionResult<ResidentTypeReadDto>> AddResidentType([FromBody] ResidentTypeCreateDto values)
+        [Route("CreateResidentType")]
+        public async Task<ActionResult<ResidentTypeReadDto>> CreateResidentType([FromBody] ResidentTypeCreateDto values)
         {
             try
             {
@@ -230,6 +362,21 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of exisitng resident types
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// PUT /UpdateResidentType
+        /// 
+        /// {
+        ///    "residentTypeId": 2,
+        ///    "residentTypes": "EXPATRAITE",
+        ///    "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPut]
         [Route("UpdateResidentType")]
         public async Task<ActionResult<ResidentTypeReadDto>> UpdateResidentType([FromBody] ResidentTypeUpdateDto values)
@@ -247,12 +394,15 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of exisitng social media platforms
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetSocialMedia")]
+        [Route("GetSocialMedia")]
         public async Task<ActionResult<IEnumerable<SocialMediaReadDto>>> GetSocialMedia()
         {
             return Ok(await _socialMediaService.GetSocialMediaAsync());
         }
 
+        /// <summary>
+        ///  Add a new social media platform
+        /// </summary>
         [HttpPost]
         [Route("AddSocialMedia")]
         public async Task<ActionResult<SocialMediaReadDto>> AddSocialMedia([FromBody] SocialMediaCreateDto values)
@@ -267,6 +417,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of exisitng social media platforms
+        /// </summary>
         [HttpPut]
         [Route("UpdateSocialMedia")]
         public async Task<ActionResult<SocialMediaReadDto>> UpdateSocialMedia([FromBody] SocialMediaUpdateDto values)
@@ -284,29 +437,44 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of exisitng titles
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetTitles")]
+        [Route("GetTitles")]
         public async Task<ActionResult<IEnumerable<TitleReadDto>>> GetTitles()
         {
             return Ok(await _titleService.GetTitleAsync());
         }
 
         [HttpGet]
-        [Route("Setup/GetTitle/{value}")]
-        public async Task<ActionResult<TitleReadDto>> GetTitle(string value)
+        [Route("GetTitle/{value}")]
+        private async Task<ActionResult<TitleReadDto>> GetTitle(string value)
         {
             return Ok(await _titleService.GetTitleAsync(value));
         }
 
         [HttpGet]
-        [Route("Setup/GetTitlesById/{titleId}")]
+        [Route("GetTitles/{titleId}")]
         public async Task<ActionResult<TitleReadDto>> GetTitleById(int titleId)
         {
             return Ok(await _titleService.GetTitleAsync(titleId));
         }
 
+        /// <summary>
+        ///  Create a new title
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateTitle
+        /// 
+        /// {
+        ///    "titleId": 0,
+        ///    "titles": "MR. and MRS.",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPost]
-        [Route("AddTitle")]
-        public async Task<ActionResult<TitleReadDto>> AddTitle([FromBody] TitleCreateDto values)
+        [Route("CreateTitle")]
+        public async Task<ActionResult<TitleReadDto>> CreateTitle([FromBody] TitleCreateDto values)
         {
             try
             {
@@ -318,6 +486,21 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of exisitng titles
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /UpdateTitle
+        /// 
+        /// {
+        ///    "titleId": 1,
+        ///    "titles": "MR. & MRS.",
+        ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
         [HttpPut]
         [Route("UpdateTitle")]
         public async Task<ActionResult<TitleReadDto>> UpdateTitle([FromBody] TitleUpdateDto values)

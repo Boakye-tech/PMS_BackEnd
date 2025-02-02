@@ -189,9 +189,8 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<DateTime>("ApprovedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Channel")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int>("ChannelId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

@@ -17,7 +17,7 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 
         Task<RefreshTokenResponseDto> RefreshBearerToken(RefreshTokenRequestDto tokens);
 
-        Task<bool> UserDetails(string userId);
+        Task<UserInformationDto> UserDetails(string userId);
 
 
         //string SendSmsToken(UserRequestParameter mobileNumber); //OTPRequest

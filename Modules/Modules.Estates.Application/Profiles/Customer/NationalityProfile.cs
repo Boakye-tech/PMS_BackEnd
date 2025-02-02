@@ -1,9 +1,9 @@
 ﻿using System;
 namespace Modules.Estates.Application.Profiles.Customer;
 
-public class Nationality : Profile
+public class NationalityProfile : Profile
 {
-	public Nationality()
+	public NationalityProfile()
 	{
         CreateMap<Nationality, NationalityReadDto>();
         CreateMap<NationalityCreateDto, Nationality>();

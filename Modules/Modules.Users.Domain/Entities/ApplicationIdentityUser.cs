@@ -51,8 +51,7 @@ namespace Modules.Users.Domain.Entities
         [StringLength(256)]
         public string? PassportPicture { get; set; }
 
-        [StringLength(10)]
-        public string? Channel { get; set; }
+        public int ChannelId { get; set; }
 
         public DateTime RegistrationDate { get; set; }
 

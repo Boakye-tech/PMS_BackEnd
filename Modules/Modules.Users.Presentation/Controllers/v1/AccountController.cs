@@ -252,10 +252,10 @@ public class AccountController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("Users/{userId}")]
-    public async Task<UserInformation> UserDetails(string userId)
+    public async Task<UserInformationDto> UserDetails(string userId)
     {
         //return await _menuService.GetMenuActions();
-        return null!;
+        return await _userAccountsService.UserDetails(userId);
     }
 
     /// <summary>

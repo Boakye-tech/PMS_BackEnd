@@ -473,6 +473,14 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             {
                 if (details != null)
                 {
+                    var channels = await _unitOfWork.Channels.Get(details.ChannelId);
+
+                    if (channels is null)
+                    {
+                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status404NotFound, StatusMessage = "Channel not found." };
+                        return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
+                    }
+
                     var new_user = new ApplicationIdentityUser
                     {
                         IdentificationNumber = details.CustomerCode,
@@ -490,9 +498,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         IdentificationImageOne = details.IdentificationImageOne,
                         SelfieImage = details.SelfieImage,
                         PassportPicture = details.PassportPicture,
-                        Channel = details.Channel,
+                        ChannelId = details.ChannelId,
                         RegistrationDate = DateTime.UtcNow,
-                        Status = 0,
+                        Status = (int)RegistrationStatus.Pending,
                         EmailConfirmed = false,
                         PhoneNumberConfirmed = false,
                         IsFirstTime = true,
@@ -514,7 +522,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                     if (!results.Succeeded)
                     {
-                        _logger.LogError($"{details.Channel} - Customer Registration Error: {string.Join("; ", results.Errors.Select(err => err.Description))}");
+                        _logger.LogError($"Customer Registration Error: {string.Join("; ", results.Errors.Select(err => err.Description))}");
                         var errResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errResponse };
                         //return response;
@@ -552,7 +560,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         ContactPerson_Position = details.ContactPerson_Position,
                         EmailConfirmed = false,
                         PhoneNumberConfirmed = false,
-                        Status = 1,
+                        Status = (int)RegistrationStatus.Pending,
                         UserType = (int)UserAccountType.Partners
                     };
 
@@ -592,6 +600,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             {
                 if (details != null)
                 {
+                    //var department = await _unitOfWork.Department.Get(details.DepartmentId);
+                    var unit = await _unitOfWork.DepartmentUnit.Get(du => du.DepartmentId == details.DepartmentId && du.UnitId == details.UnitId);
+                    var channels = await _unitOfWork.Channels.Get(details.ChannelId);
+
+                    if(unit is null)
+                    {
+                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status404NotFound, StatusMessage = "Department and unit not found." };
+                        return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
+                    }
+
+                    if(channels is null)
+                    {
+                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status404NotFound, StatusMessage = "Channel not found." };
+                        return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
+                    }
+
                     var new_user = new ApplicationIdentityUser
                     {
                         IdentificationNumber = details.StaffIdentificationNumber,
@@ -603,7 +627,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         Email = details.EmailAddress,
                         UserName = details.EmailAddress,
                         PhoneNumber = details.PhoneNumber,
-                        Channel = details.Channel,
+                        ChannelId = details.ChannelId,
                         RegistrationDate = DateTime.UtcNow,
                         Status = (int) RegistrationStatus.Pending,
                         ProfilePicture = details.ProfilePicture,
@@ -640,10 +664,40 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public Task<bool> UserDetails(string userId)
+        public async Task<UserInformationDto> UserDetails(string userId)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if(user!.UserType == (int)UserAccountType.Customer)
+            {
+                var channelName = (await _unitOfWork.Channels.Get(user.ChannelId))?.ChannelName ?? "Unknown";
+                var userType = UserAccountTypeEnumDescription.UserType(user.UserType).ToString();
+                var registrationStatus = RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString();
+                var identificationType = "Remember To Bring ID to User Module"; //(await _unitOfWork.Iden)
+
+                return new CustomerUserInformationDto(user, identificationType, channelName, userType, registrationStatus);
+            }
+
+            if (user!.UserType == (int)UserAccountType.Staff)
+            {
+
+                var department = (await _unitOfWork.Department.Get(user.DepartmentId))?.DepartmentName ?? "Unknown";
+                var unit = (await _unitOfWork.DepartmentUnit.Get(user.UnitId))?.UnitName ?? "Unknown";
+                var channelName = (await _unitOfWork.Channels.Get(user.ChannelId))?.ChannelName ?? "Unknown";
+                var userType = UserAccountTypeEnumDescription.UserType(user.UserType).ToString();
+                var registrationStatus = RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString();
+
+                return new StaffUserInformationDto(user,department,unit,channelName,userType,registrationStatus);
+            }
+
+            return null!;
         }
+
+
+
+
     }
 }
 

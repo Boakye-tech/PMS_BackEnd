@@ -1,7 +1,4 @@
 ﻿using System;
-using Modules.Estates.Application.Interfaces.Management.Property;
-using Modules.Estates.Application.Repositories.Management;
-using Modules.Estates.Infrastructure.Extensions;
 
 namespace Modules.Estates.Presentation;
 
@@ -43,6 +40,8 @@ public static class ModuleExtensions
         services.AddScoped<IResidentTypeService, ResidentTypeService>();
         services.AddScoped<ISocialMediaService, SocialMediaService>();
         services.AddScoped<ITitleService, TitleService>();
+
+        services.AddScoped<ICustomerMasterService, CustomerMasterService>();
 
         // Dependency Injection - Register AutoMapper 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
