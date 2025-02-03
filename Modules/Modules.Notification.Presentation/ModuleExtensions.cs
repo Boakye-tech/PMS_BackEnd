@@ -1,5 +1,7 @@
 ﻿
 
+using Modules.Notification.Application.Interfaces;
+
 namespace Modules.Notification.Presentation
 {
     public static class ModuleExtensions
@@ -12,9 +14,9 @@ namespace Modules.Notification.Presentation
             services.AddMediatR(cfg => cfg.AsTransient(), typeof(SendNotificationHandler).Assembly);
 
             services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddScoped<INotificationSender, EmailNotificationService>();
-            
+            services.AddScoped<INotificationSender, NotificationService>();
 
+            services.AddScoped<ISmsSender, SmsSender>();
 
             return services;
         }

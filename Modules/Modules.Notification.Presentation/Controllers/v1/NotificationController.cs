@@ -16,13 +16,43 @@ public class NotificationController : ControllerBase
         _mediator = mediator;
     }
 
+    //[HttpPost]
+    //[Route("SendEmailNotification")]
+    //public async Task<IActionResult> SendEmailNotification([FromBody] SendNotificationRequestDto values)
+    //{
+    //    SendNotificationRequest request = new SendNotificationRequest(values.UserId,$"{values.Subject}-{values.DisplayName}",values.Message,values.Type);
+
+    //    var notificationId = await _mediator.Send(new SendNotificationCommand(request));
+    //    return Ok(notificationId);
+    //}
+
+    ///// <summary>
+    ///// sends sms to recipient mobile phone
+    ///// </summary>
+    //[HttpPost]
+    //[Route("SendSmsNotification")]
+    //public async Task<IActionResult> SendSMSNotification([FromBody] SendNotificationRequestDto values)
+    //{
+    //    SendNotificationRequest request = new SendNotificationRequest(values.UserId,string.Empty, values.Message, values.Type);
+
+    //    var notificationId = await _mediator.Send(new SendNotificationCommand(request));
+    //    return Ok(notificationId);
+
+    //}
+
+
+    /// <summary>
+    /// sends notification to recipient mobile phone or email address via email,sms,push,InApp
+    /// </summary>
     [HttpPost]
+    [Route("SendNotification")]
     public async Task<IActionResult> SendNotification([FromBody] SendNotificationRequestDto values)
     {
-        SendNotificationRequest request = new SendNotificationRequest(values.UserId,$"{values.Subject}-{values.DisplayName}",values.Message,values.Type);
+        SendNotificationRequest request = new SendNotificationRequest(values.UserId, $"{values.Subject}-{values.DisplayName}", values.Message, values.Type);
 
         var notificationId = await _mediator.Send(new SendNotificationCommand(request));
         return Ok(notificationId);
+
     }
 }
 
