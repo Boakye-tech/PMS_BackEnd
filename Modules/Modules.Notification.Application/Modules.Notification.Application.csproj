@@ -9,10 +9,12 @@
   <ItemGroup>
     <None Remove="Dtos\" />
     <None Remove="UseCases\" />
+    <None Remove="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
     <Folder Include="UseCases\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Notification.Domain\Modules.Notification.Domain.csproj" />

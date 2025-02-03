@@ -1,10 +1,13 @@
 ﻿using System.Web;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Modules.Customers.Presntation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion("2.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[Produces("application/json")]
 public class FileManagerController : ControllerBase
 {
     private readonly IAzureBlobService _blobService;

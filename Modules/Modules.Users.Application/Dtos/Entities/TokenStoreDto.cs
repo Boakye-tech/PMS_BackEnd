@@ -6,11 +6,11 @@ namespace Modules.Users.Application.Dtos.Entities
     //public record TokenStoreDto(int TokenStoreId, string MobilePhoneNumber, string EmailAddress, string? Token, DateTime CreatedDate, DateTime ExpiryDate, bool IsVerified, DateTime VerifiedDate, string ModifiedBy);
     //public record TokenStoreDto(int TokenStoreId);
 
-    public record TokenRequestParameterDto(string requestParameter);
-    public record TokenResponseDto(string token);
+    public record TokenRequestParameterDto(string phone_OR_email);
+    public record TokenResponseDto(string response);
 
 
-    public record VerifyTokenRequestDto(string requestParameter, string token);
+    public record VerifyTokenRequestDto(string phone_OR_email, string token);
     
 }
 

@@ -82,17 +82,21 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 }
 
-
-                _logger.LogWarning($"Password change failed for customer with user ID {changePassword.UserId}. Errors: {result.Errors}", changePassword.UserId, string.Join(", ", result.Errors.Select(e => e.Description)));
-                return new ChangePasswordResponse
+                if (!result.Succeeded)
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ChangePasswordErrorResponse
+                    _logger.LogWarning($"Password change failed for customer with user ID {changePassword.UserId}. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}", changePassword.UserId, string.Join(", ", result.Errors.Select(e => e.Description)));
+                    return new ChangePasswordResponse
                     {
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        StatusMessage = $"Password change failed. - {result.Errors}"
-                    }
-                };
+                        IsSuccess = false,
+                        ErrorResponse = new ChangePasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            StatusMessage = $"Password change failed. - {string.Join(", ", result.Errors.Select(e => e.Description))}"
+                        }
+                    };
+                }
+
+                return null!;
 
             }
             catch (Exception ex)
@@ -131,6 +135,23 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             try
             {
                 //remember to check for the validity of the token
+                var otp_result = await _unitOfWork.TokenStore.VerifyToken(resetPassword.Phone_OR_Email, resetPassword.Token);
+                if(otp_result != "true")
+                {
+                    _logger.LogWarning($"User with email address {resetPassword.Phone_OR_Email}  and OTP Token {resetPassword.Token} not verified.", resetPassword.Phone_OR_Email);
+                    return new ResetPasswordResponse
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"User with email address {resetPassword.Phone_OR_Email}  and OTP Token {resetPassword.Token} not verified."
+                        }
+                    };
+
+                }
+
+
 
                 var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.Phone_OR_Email);
                 var user = await _userManager.FindByIdAsync(appUser.Id);
@@ -138,14 +159,14 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (user is null)
                 {
-                    _logger.LogWarning($"Customer with email address {resetPassword.Phone_OR_Email} not found.", resetPassword.Phone_OR_Email);
+                    _logger.LogWarning($"User with email address {resetPassword.Phone_OR_Email} not found.", resetPassword.Phone_OR_Email);
                     return new ResetPasswordResponse
                     {
                         IsSuccess = false,
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Customer with email address {resetPassword.Phone_OR_Email} not found."
+                            StatusMessage = $"User with email address {resetPassword.Phone_OR_Email} not found."
                         }
                     };
                 }
@@ -155,7 +176,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Password successfully reset for customer with email address {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
+                    _logger.LogInformation($"Password successfully reset for user with email address {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
                     return new ResetPasswordResponse
                     {
                         IsSuccess = true,
@@ -167,18 +188,21 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     };
 
                 }
-
-
-                _logger.LogWarning($"Password reset failed for staff with email address {resetPassword.Phone_OR_Email}. Errors: {result.Errors}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
-                return new ResetPasswordResponse
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ResetPasswordErrorResponse
+                if (!result.Succeeded)
+                { 
+                    _logger.LogWarning($"Password reset failed for user with email address {resetPassword.Phone_OR_Email}. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
+                    return new ResetPasswordResponse
                     {
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        StatusMessage = $"Password reset failed. - {result.Errors}"
-                    }
-                };
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            StatusMessage = $"Password reset failed. - {string.Join(", ", result.Errors.Select(e => e.Description))}"
+                        }
+                    };
+                }
+
+                return null!;
             }
             catch (Exception ex)
             {
@@ -252,17 +276,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 }
 
-
-                _logger.LogWarning($"Password reset failed for staff with mobile phone number {resetPassword.Phone_OR_Email}. Errors: {result.Errors}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
-                return new ResetPasswordResponse
+                if (!result.Succeeded)
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ResetPasswordErrorResponse
+                    _logger.LogWarning($"Password reset failed for staff with mobile phone number {resetPassword.Phone_OR_Email}. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
+                    return new ResetPasswordResponse
                     {
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        StatusMessage = $"Password reset failed. - {result.Errors}"
-                    }
-                };
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            StatusMessage = $"Password reset failed. - {string.Join(", ", result.Errors.Select(e => e.Description))}"
+                        }
+                    };
+                }
+
+                return null!;
+
             }
             catch (Exception ex)
             {
@@ -592,7 +621,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 return new RegistrationResponse { IsSuccess = false, ErrorResponse = err_response };
             }
         }
-
 
         public async Task<RegistrationResponse> StaffUserRegistration(StaffRegistrationRequestDto details)
         {

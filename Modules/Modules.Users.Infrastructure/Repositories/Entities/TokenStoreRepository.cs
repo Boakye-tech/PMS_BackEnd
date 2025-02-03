@@ -33,21 +33,34 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
         public async Task<string> GetToken(string mobilePhoneNumber_OR_emailAddress, int ExpiryMinutes)
         {
             //throw new NotImplementedException();
-            var token = Application.Helpers.NumberGenerator.Generator(6);
+            string token = Application.Helpers.NumberGenerator.Generator(6);
 
             string mobilePhoneNumber = string.Empty, emailAddress = string.Empty;
 
             var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-            var phoneRegex = new Regex(@"^\+?\d{10,15}$");
+            var phoneRegex = new Regex(@"^0[25][3-9]{8}$");
+
+            //var phoneRegex = new Regex(@"^\+?[0-9]{1,4}[\s-]?(\d{3}[\s-]?\d{3}[\s-]?\d{3,4})$", RegexOptions.Compiled);
+            //var phonePrefixRegex = new Regex(@"\b(023|024|027|028|020|053|054|055|059|050|057|026|056)\b");
 
             if (emailRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
             {
                 emailAddress = mobilePhoneNumber_OR_emailAddress;
             }
 
+            if (!phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+            {
+                return "Invalid mobile phone number provided";
+            }
+
             if (phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
             {
                 mobilePhoneNumber = mobilePhoneNumber_OR_emailAddress;
+            }
+
+            if(emailAddress == string.Empty && mobilePhoneNumber == string.Empty)
+            {
+                return "Invalid mobile phone number or email address provided";
             }
 
 
@@ -68,14 +81,44 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
             return token;
         }
 
-        public async Task<bool> VerifyToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode)
+        public async Task<string> VerifyToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode)
         {
             //throw new NotImplementedException();
+
+            string mobilePhoneNumber = string.Empty, emailAddress = string.Empty;
+
+            var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+            var phoneRegex = new Regex(@"^0[25][3-9]{8}$");
+
+            //var phoneRegex = new Regex(@"^\+?[0-9]{1,4}[\s-]?(\d{3}[\s-]?\d{3}[\s-]?\d{3,4})$", RegexOptions.Compiled);
+            //var phonePrefixRegex = new Regex(@"\b(023|024|027|028|020|053|054|055|059|050|057|026|056)\b");
+
+            if (emailRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+            {
+                emailAddress = mobilePhoneNumber_OR_emailAddress;
+            }
+
+            if (!phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+            {
+                return "Invalid mobile phone number provided";
+            }
+
+            if (phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+            {
+                mobilePhoneNumber = mobilePhoneNumber_OR_emailAddress;
+            }
+
+            if (emailAddress == string.Empty && mobilePhoneNumber == string.Empty)
+            {
+                return "Invalid mobile phone number or email address provided";
+            }
+
+
             var result = _userDbContext.TokenStore.SingleOrDefault(t => t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress && t.Token == tokenCode && t.IsVerified == false);
 
             if (result is null) 
             {
-                return false;
+                return "Not Verified";
             }
 
             result!.IsVerified = true;
@@ -84,7 +127,7 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
             _userDbContext.TokenStore.Update(result);
             await _userDbContext.SaveChangesAsync();
 
-            return true;
+            return "Verified";
         }
 
         public JwTokenResponse GetJwToken(ApplicationIdentityUser user, int validityInHours)

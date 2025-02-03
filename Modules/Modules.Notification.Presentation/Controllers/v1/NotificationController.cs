@@ -17,8 +17,10 @@ public class NotificationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> SendNotification([FromBody] SendNotificationRequest request)
+    public async Task<IActionResult> SendNotification([FromBody] SendNotificationRequestDto values)
     {
+        SendNotificationRequest request = new SendNotificationRequest(values.UserId,$"{values.Subject}-{values.DisplayName}",values.Message,values.Type);
+
         var notificationId = await _mediator.Send(new SendNotificationCommand(request));
         return Ok(notificationId);
     }

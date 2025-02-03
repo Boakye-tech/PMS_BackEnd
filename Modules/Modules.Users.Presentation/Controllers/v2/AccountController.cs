@@ -231,7 +231,7 @@ public class AccountController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var result = _unitOfWork.TokenStore.GetToken(value.requestParameter!,5);  //.SendSmsToken(requestParameter);
+                var result = _unitOfWork.TokenStore.GetToken(value.phone_OR_email!,5);  //.SendSmsToken(requestParameter);
                 return Ok(result);
             }
 
@@ -256,7 +256,7 @@ public class AccountController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var result = _unitOfWork.TokenStore.GetToken(value.requestParameter!,5);
+                var result = _unitOfWork.TokenStore.GetToken(value.phone_OR_email!,5);
                 return Ok(result);
             }
 

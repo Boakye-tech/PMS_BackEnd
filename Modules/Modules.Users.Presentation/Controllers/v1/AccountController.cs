@@ -119,8 +119,8 @@ public class AccountController : ControllerBase
         try
         {
             var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-            var phoneRegex = new Regex(@"^\+?\d{10,15}$");
-
+            //var phoneRegex = new Regex(@"^\+?\d{10,15}$");
+            var phoneRegex = new Regex(@"^0[25][3-9]{8}$");
 
             if (ModelState.IsValid)
             {
@@ -173,7 +173,7 @@ public class AccountController : ControllerBase
         try
         {
             var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-            var phoneRegex = new Regex(@"^\+?\d{10,15}$");
+            var phoneRegex = new Regex(@"^0[25][3-9]{8}$");
 
             if (ModelState.IsValid)
             {
@@ -269,9 +269,14 @@ public class AccountController : ControllerBase
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(value.phone_OR_email))
+            {
+                return BadRequest();
+            }
+
             if (ModelState.IsValid)
             {
-                var result = await _unitOfWork.TokenStore.GetToken(value.requestParameter!, 5);
+                var result = await _unitOfWork.TokenStore.GetToken(value.phone_OR_email!, 5);
                 return Ok(new TokenResponseDto(result));
             }
 
@@ -294,9 +299,14 @@ public class AccountController : ControllerBase
     {
         try
         {
+            if(string.IsNullOrWhiteSpace(verifyTokenRequest.phone_OR_email) || string.IsNullOrWhiteSpace(verifyTokenRequest.token))
+            {
+                return BadRequest();
+            }
+
             if (ModelState.IsValid)
             {
-                var result = await _unitOfWork.TokenStore.VerifyToken(verifyTokenRequest.requestParameter, verifyTokenRequest.token);
+                var result = await _unitOfWork.TokenStore.VerifyToken(verifyTokenRequest.phone_OR_email, verifyTokenRequest.token);
                 return Ok(result);
             }
 

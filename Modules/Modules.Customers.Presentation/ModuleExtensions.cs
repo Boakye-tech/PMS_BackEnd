@@ -21,7 +21,7 @@ namespace Modules.Customers.Presentation
             //services.AddScoped<ICustomerInvoiceItemsService, CustomerInvoiceItemsService>();
 
 
-            services.AddScoped(s =>
+            services.AddSingleton(s =>
             {
                 return new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=mindspringsimagesonline;AccountKey=ZKa5Ph0zKTOgh64SGX9VyMcJEGnUHJhAckWaBKI7BJqa9ffMApgLdu6peQ1tma6T2XltQu+Kepwi+AStOJGeHA==;EndpointSuffix=core.windows.net");
             });

@@ -7,7 +7,7 @@ namespace Modules.Users.Domain.Interfaces.Entities
 	{
         Task<string> GetToken(string mobilePhoneNumber_OR_emailAddress, int ExpiryMinutes);
 
-        Task<bool> VerifyToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode);
+        Task<string> VerifyToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode);
 
         JwTokenResponse GetJwToken(ApplicationIdentityUser user, int validityInHours);
         

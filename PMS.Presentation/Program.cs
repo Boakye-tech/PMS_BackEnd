@@ -3,6 +3,7 @@ using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Modules.Customers.Presentation;
 using Modules.Estates.Presentation;
 using Modules.Finance.Presentation;
 using Modules.Notification.Presentation;
@@ -29,6 +30,8 @@ builder.Services.AddFinanceModule(builder.Configuration);
 builder.Services.AddUserModule(builder.Configuration);
 
 builder.Services.AddNotificationModule(builder.Configuration);
+
+builder.Services.AddCustomerModule(builder.Configuration);
 
 var module = "Modules.Estates.Presentation";
 var user_module = "Modules.Users.Presentation";
