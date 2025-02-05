@@ -7,10 +7,14 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 	public interface IAdministrationService
 	{
         //IEnumerable<IdentityRole> GetUserRoles();
+        IEnumerable<RolesDto> GetApprovedUserRoles();
         IEnumerable<RolesDto> GetUserRoles();
         Task<IdentityResult> CreateUserRole(RolesCreateDto role);
         Task<IdentityResult> UpdateUserRole(RolesUpdateDto role);
         Task<IdentityResult> DeleteUserRole(RolesDeleteDto roleId);
+
+        Task<IdentityResult> ApproveUserRole(RolesApprovalDto role);
+
 
         Task<CustomerVerificationResponseDto> VerifyCustomerAccount(VerifyUserAccountDto accountVerification);
         Task<CustomerRejectionResponseDto> RejectCustomerAccount(RejectUserAccountDto accountRejection);
@@ -20,6 +24,16 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 
         Task<ActivateUserAccountResponseDto> ActivateUserAccount(ActivateUserAccountDto accountActivation);
         Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation);
+
+        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff();
+        //Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationStaff();
+        //Task<IEnumerable<AdministrationPartnerBanksDto>> GetAdministrationStaff();
+        //Task<IEnumerable<AdministrationDepartmentMembersDto>> GetAdministrationStaff();
+        //Task<IEnumerable<AdministrationDepartmentUnitMembersDto>> GetAdministrationStaff();
+
+
+
+
 
 
     }

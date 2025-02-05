@@ -15,19 +15,21 @@ namespace Modules.Users.Infrastructure.Repositories
         private readonly UserDbContext _dbContext;
         readonly UserManager<ApplicationIdentityUser> _userManager;
         //readonly IMenuService _menuService;
+        private readonly HttpClient _httpClient;
 
 
-        public UnitOfWork(UserDbContext dbContext, UserManager<ApplicationIdentityUser> userManager,  IConfiguration configuration) //IMenuService menuService,
+        public UnitOfWork(UserDbContext dbContext, UserManager<ApplicationIdentityUser> userManager,  IConfiguration configuration, HttpClient httpClient) //IMenuService menuService,
         {
             _dbContext = dbContext;
             _userManager = userManager;
             //_menuService = menuService;
             _configuration = configuration;
+            _httpClient = httpClient;
 
             Department = new DepartmentRepository(dbContext);
             DepartmentUnit = new DepartmentUnitRepository(dbContext);
             Channels = new ChannelsRepository(dbContext);
-            TokenStore = new TokenStoreRepository(dbContext, _userManager!,_configuration!); // _menuService!
+            TokenStore = new TokenStoreRepository(dbContext, _userManager!,_configuration!, _httpClient); // _menuService!
             Users = new UserRepository(dbContext);
 
             MenuActions = new MenuActionsRepository(dbContext);

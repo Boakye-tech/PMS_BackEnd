@@ -1,9 +1,13 @@
 ﻿// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 
+using System.ComponentModel;
+using System.Reflection;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Modules.Users.Application.Dtos.Entities;
 using Modules.Users.Application.Dtos.Entities.Menu;
+using Modules.Users.Application.Enums;
 using Modules.Users.Application.UseCases;
 
 namespace Modules.Users.Presentation.Controllers.v1
@@ -124,10 +128,28 @@ namespace Modules.Users.Presentation.Controllers.v1
             var result = await _menuService.CreateSubMenu(values);
             return Ok(result);
         }
-        //----
 
+        /// <summary>
+        /// Returns all approved system user roles
+        /// </summary>
+        [HttpPost]
+        [Route("ApproveRole")]
+        public async Task<ActionResult> ApproveRole([FromBody] RolesApprovalDto values)
+        {
+            var result = await _adminService.ApproveUserRole(values);
+            return Ok(result);
+        }
 
-
+        /// <summary>
+        /// Returns all approved system user roles
+        /// </summary>
+        // GET: api/values
+        [HttpGet]
+        [Route("GetApprovedUserRoles")]
+        public IEnumerable<RolesDto> GetApprovedUserRoles()
+        {
+            return _adminService.GetApprovedUserRoles();
+        }
 
 
         /// <summary>
@@ -198,6 +220,8 @@ namespace Modules.Users.Presentation.Controllers.v1
 
             return BadRequest(result);
         }
+
+        //approve role
 
         /// <summary>
         /// assigns an existing role to an existing user
@@ -340,6 +364,16 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentService.GetDepartmentAsync());
         }
 
+        /// <summary>
+        /// Returns a list of exsiting units in a specific department
+        /// </summary>
+        [HttpGet]
+        [Route("GetDepartmentUnits/{departmentId}")]
+        public async Task<ActionResult<IEnumerable<UnitReadDto>>> GetDepartmentUnits(int departmentId)
+        {
+            return Ok(await _departmentUnitService.GetUnitAsync(departmentId));
+        }
+
         [HttpGet]
         [Route("GetDepartment/{value}")]
         private async Task<ActionResult<DepartmentReadDto>> GetDepartment(string value)
@@ -391,14 +425,21 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
         [HttpGet]
-        [Route("Setup/GetDepartmentUnit/{value}")]
+        [Route("GetDepartmentUnit/{value}")]
         private async Task<ActionResult<DepartmentReadDto>> GetDepartmentUnit(string value)
         {
             return Ok(await _departmentUnitService.GetDepartmentUnitAsync(value));
         }
 
         [HttpGet]
-        [Route("Setup/GetDepartmentUnitById/{departmentUnitId}")]
+        [Route("GetDepartmentUnitsByDepartmentId/{departmentId}")]
+        public async Task<ActionResult<IEnumerable<DepartmentUnitReadDto>>> GetDepartmentUnitsByDepartmentId(int departmentId)
+        {
+            return Ok(await _departmentUnitService.GetDepartmentUnitAsync(departmentId));
+        }
+
+        [HttpGet]
+        [Route("GetDepartmentUnitById/{departmentUnitId}")]
         private async Task<ActionResult<DepartmentReadDto>> GetDepartmentUnitById(int departmentUnitId)
         {
             return Ok(await _departmentUnitService.GetDepartmentUnitAsync(departmentUnitId));
@@ -428,6 +469,36 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpDelete("DeleteDepartmentUnit/{departmentUnitId}")]
         public void DeleteDepartmentUnit(int departmentUnitId)
         {
+        }
+
+        [HttpGet]
+        [Route("RegistrationStatus")]
+        [AllowAnonymous]
+        public IActionResult GetRegistrationStatus()
+        {
+            var types = Enum.GetValues(typeof(RegistrationStatus))
+                                   .Cast<RegistrationStatus>()
+                                   .Select(e => new
+                                   {
+                                       Id = (int)e,
+                                       Name = e.ToString(),
+                                       DisplayName = e.GetType()
+                                                     .GetField(e.ToString())!
+                                                     .GetCustomAttribute<DescriptionAttribute>()?
+                                                     .Description
+
+                                   });
+            return Ok(types);
+        }
+
+        /// <summary>
+        /// Returns a list of system registered staff users
+        /// </summary>
+        [HttpGet]
+        [Route("Staff")]
+        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff()
+        {
+            return Ok(await _adminService.GetAdministrationStaff());
         }
 
     }

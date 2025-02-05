@@ -7,8 +7,8 @@ namespace Modules.Users.Application.Dtos.UserAccounts
     public record LoginResponseDto
     {
         public bool LoginStatus { get; set; }
-        public LoginSucessResponseDto? successResponseDto { get; set; }
-        public LoginErrorResponseDto? errorResponseDto { get; set; }
+        public LoginSucessResponseDto? successResponse { get; set; }
+        public LoginErrorResponseDto? errorResponse { get; set; }
     }
 
     public record LoginSucessResponseDto() : LoginResponse;

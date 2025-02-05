@@ -73,7 +73,7 @@ namespace Modules.Users.Presentation
 
             });
 
-
+            services.AddHttpClient<TokenStoreRepository>();
             services.AddScoped<ValidationService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

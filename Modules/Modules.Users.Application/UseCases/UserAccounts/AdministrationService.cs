@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Enums;
@@ -98,6 +99,36 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
 
             return null!;
+        }
+
+        public async Task<IdentityResult> ApproveUserRole(RolesApprovalDto role)
+        {
+            //throw new NotImplementedException();
+            var validationResult = _validationService.Validate(role);
+
+            if (validationResult.IsValid)
+            {
+                ApplicationIdentityRole? identityRole = await _roleManager.FindByIdAsync(role.RoleId);
+
+                identityRole!.ApprovedBy = role.ApprovedBy;
+                identityRole.ApprovedOn = DateTime.UtcNow;
+                identityRole.Status = (int)RegistrationStatus.Approved;
+
+                IdentityResult result = await _roleManager.UpdateAsync(identityRole);
+
+                return result;
+            }
+
+            return null!;
+        }
+
+        public IEnumerable<RolesDto> GetApprovedUserRoles()
+        {
+            //var result = _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!)).ToList();
+
+            return _roleManager.Roles
+                .Where(r => r.Status == (int)RegistrationStatus.Verified)
+                .Select(role => new RolesDto(role.Id, role.Name!, role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, role.Status)).ToList();
         }
 
         //public IEnumerable<IdentityRole> GetUserRoles()
@@ -543,8 +574,34 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             };
         }
 
+        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff()
+        {
+
+            var staff_UserList = (from user in await _unitOfWork.Users.GetAll()
+                            join department in await _unitOfWork.Department.GetAll()
+                                on user.DepartmentId equals department.DepartmentId
+                            join unit in await _unitOfWork.DepartmentUnit.GetAll()
+                                on department.DepartmentId equals unit.DepartmentId
+                            where user.UserType == (int)UserAccountType.Staff
+                            select new AdministrationStaffDto
+                            (
+                                user.Id,
+                                user.IdentificationNumber!,
+                                user.FirstName!,
+                                user.MiddleName!,
+                                user.LastName!,
+                                department.DepartmentName,
+                                unit.UnitName,
+                                user.ProfilePicture!,
+                                user.Email!,
+                                user.PhoneNumber!,
+                                RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString()
+                            )).ToList();
+
+            return staff_UserList;
 
 
+        }
 
 
 

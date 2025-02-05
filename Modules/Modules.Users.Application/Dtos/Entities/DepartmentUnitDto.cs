@@ -6,5 +6,8 @@ namespace Modules.Users.Application.Dtos.Entities
     public record DepartmentUnitUpdateDto(int DepartmentId, int UnitId, string UnitName, string Modified);
     public record DepartmentUnitDeleteDto(int UnitId);
 
+
+    public record UnitReadDto(int UnitId, string UnitName);
+
 }
 

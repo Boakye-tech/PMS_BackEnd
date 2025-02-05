@@ -9,6 +9,8 @@ namespace Modules.Users.Domain.Interfaces.Entities
 
         Task<string> VerifyToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode);
 
+        string VerifyTokenExpiry(string mobilePhoneNumber_OR_emailAddress, string tokenCode);
+
         JwTokenResponse GetJwToken(ApplicationIdentityUser user, int validityInHours);
         
         RefreshToken GetJwRefreshToken();

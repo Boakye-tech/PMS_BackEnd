@@ -25,7 +25,7 @@ namespace Modules.Notification.Presentation.OpenAPI
         {
             var info = new OpenApiInfo
             {
-                Title = "Finance Module - PMS Platform API Services",
+                Title = "Notifications Module - PMS Platform API Services",
                 Version = description.ApiVersion.ToString(),
                 Description = "Back-end API Services for the PMS Platform",
                 Contact = new OpenApiContact { Name = "MindSprings Company Limited", Email = "boakye.ofori-atta@mindsprings-gh.com" },

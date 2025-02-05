@@ -6,5 +6,8 @@ namespace Modules.Users.Application.Dtos.Administration
     public record RolesUpdateDto(string RoleId, string RoleName, string ModifiedBy);
     public record RolesDeleteDto(string RoleId);
 
+    public record RolesApprovalDto(string RoleId, string ApprovedBy);
+
+
 }
 

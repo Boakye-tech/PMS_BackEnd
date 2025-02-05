@@ -191,9 +191,9 @@ public class AccountController : ControllerBase
                     switch (result.LoginStatus)
                     {
                         case true:
-                            return Ok(result.successResponseDto);
+                            return Ok(result);
                         case false:
-                            return Problem(result.errorResponseDto!.StatusMessage);
+                            return Ok(result);
                     }
                 }
 
@@ -204,9 +204,9 @@ public class AccountController : ControllerBase
                     switch (result.LoginStatus)
                     {
                         case true:
-                            return Ok(result.successResponseDto);
+                            return Ok(result);
                         case false:
-                            return Problem(result.errorResponseDto!.StatusMessage);
+                            return Ok(result);
                     }
                 }
 
@@ -294,7 +294,7 @@ public class AccountController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("VerifyOTPToken")]
-    //[ProducesResponseType(200, Type = typeof(UserLoginResponse))]
+    [ProducesResponseType(200, Type = typeof(TokenResponseDto))]
     public async Task<IActionResult> VerifyOTPToken([FromBody] VerifyTokenRequestDto verifyTokenRequest)
     {
         try

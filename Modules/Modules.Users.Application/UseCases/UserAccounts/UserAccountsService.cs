@@ -135,8 +135,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             try
             {
                 //remember to check for the validity of the token
-                var otp_result = await _unitOfWork.TokenStore.VerifyToken(resetPassword.Phone_OR_Email, resetPassword.Token);
-                if(otp_result != "true")
+                var otp_result = _unitOfWork.TokenStore.VerifyTokenExpiry(resetPassword.Phone_OR_Email, resetPassword.Token);
+                if(otp_result != "Verified")
                 {
                     _logger.LogWarning($"User with email address {resetPassword.Phone_OR_Email}  and OTP Token {resetPassword.Token} not verified.", resetPassword.Phone_OR_Email);
                     return new ResetPasswordResponse
@@ -320,7 +320,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     return new LoginResponseDto
                     {
                         LoginStatus = false,
-                        errorResponseDto = new LoginErrorResponseDto
+                        errorResponse = new LoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
                             StatusMessage = $"User with {userLoginDetails.Phone_OR_Email} not found."
@@ -344,7 +344,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     return new LoginResponseDto
                     {
                         LoginStatus = true,
-                        successResponseDto = new LoginSucessResponseDto
+                        successResponse = new LoginSucessResponseDto
                         {
                             UserId = user.Id,
                             IsFirstTime = user.IsFirstTime,
@@ -355,16 +355,58 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     };
                 }
 
-                if (!result.Succeeded)
+                if (result.IsLockedOut)
                 {
-                    _logger.LogWarning($"User with email address {userLoginDetails.Phone_OR_Email} log in attempt {result.ToString()}", userLoginDetails.Phone_OR_Email);
+                    _logger.LogWarning($"User account with email address {userLoginDetails.Phone_OR_Email} is locked. Try again later", userLoginDetails.Phone_OR_Email);
                     return new LoginResponseDto
                     {
                         LoginStatus = false,
-                        errorResponseDto = new LoginErrorResponseDto
+                        errorResponse = new LoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"User login {result.ToString()}"
+                            StatusMessage = "User Account is locked. Try again later."
+                        }
+                    };
+                }
+
+                if (result.IsNotAllowed)
+                {
+                    _logger.LogWarning($"User with email address {userLoginDetails.Phone_OR_Email} is not allowed to sign in", userLoginDetails.Phone_OR_Email);
+                    return new LoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponse = new LoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = "User Account is not allowed to sign in. Please contact your administrator"
+                        }
+                    };
+                }
+
+                if (result.RequiresTwoFactor)
+                {
+                    _logger.LogWarning($"Two-factor authentication required for user with email address {userLoginDetails.Phone_OR_Email}", userLoginDetails.Phone_OR_Email);
+                    return new LoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponse = new LoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = "Two-factor authentication required."
+                        }
+                    };
+                }
+
+                if (!result.Succeeded)
+                {
+                    _logger.LogWarning($"User with email address {userLoginDetails.Phone_OR_Email} log in attempt failed", userLoginDetails.Phone_OR_Email);
+                    return new LoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponse = new LoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = "User login attempt failed"
                         }
                     };
                 }
@@ -378,7 +420,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 return new LoginResponseDto
                 {
                     LoginStatus = false,
-                    errorResponseDto = new LoginErrorResponseDto
+                    errorResponse = new LoginErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status500InternalServerError,
                         StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.InnerException!.Message}"
@@ -399,7 +441,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     return new LoginResponseDto
                     {
                         LoginStatus = false,
-                        errorResponseDto = new LoginErrorResponseDto
+                        errorResponse = new LoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
                             StatusMessage = $"User with {userLoginDetails.Phone_OR_Email} not found."
@@ -416,7 +458,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     return new LoginResponseDto
                     {
                         LoginStatus = true,
-                        successResponseDto = new LoginSucessResponseDto
+                        successResponse = new LoginSucessResponseDto
                         {
                             UserId = user!.Id,
                             IsFirstTime = user.IsFirstTime,
@@ -433,7 +475,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     return new LoginResponseDto
                     {
                         LoginStatus = false,
-                        errorResponseDto = new LoginErrorResponseDto
+                        errorResponse = new LoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
                             StatusMessage = $"User login {result.ToString()}"
@@ -450,7 +492,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 return new LoginResponseDto
                 {
                     LoginStatus = false,
-                    errorResponseDto = new LoginErrorResponseDto
+                    errorResponse = new LoginErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status500InternalServerError,
                         StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.Message}"

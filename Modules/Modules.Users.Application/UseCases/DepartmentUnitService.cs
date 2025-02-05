@@ -31,14 +31,24 @@
             return _mapper.Map<IEnumerable<DepartmentUnitReadDto>>(response);
         }
 
-        public Task<DepartmentUnitReadDto> GetDepartmentUnitAsync(int value)
+        public async Task<IEnumerable<DepartmentUnitReadDto>> GetDepartmentUnitAsync(int value)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var response = await _unitOfWork.DepartmentUnit.GetAll(u => u.DepartmentId == value);
+            return _mapper.Map<IEnumerable<DepartmentUnitReadDto>>(response);
+
         }
 
         public Task<DepartmentUnitReadDto> GetDepartmentUnitAsync(string value)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<UnitReadDto>> GetUnitAsync(int value)
+        {
+            var response = await _unitOfWork.DepartmentUnit.GetAll(u => u.DepartmentId == value);
+            return _mapper.Map<IEnumerable<UnitReadDto>>(response);
+
         }
 
         public Task<DepartmentUnitReadDto> UpdateDepartmentUnitAsync(DepartmentUnitUpdateDto values)
