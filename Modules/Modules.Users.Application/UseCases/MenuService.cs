@@ -60,6 +60,7 @@ namespace Modules.Users.Application.UseCases
                     roleId,
                     item.MenuId,
                     item.SubMenuId,
+                    item.SubMenuItemsId,
                     item.NoAccess,
                     item.Create,
                     item.Read,
@@ -97,14 +98,14 @@ namespace Modules.Users.Application.UseCases
 
             if (validationResult.IsValid)
             {
-                Menus menu = new(menus.menuId, menus.menuName, menus.description);
+                Menus menu = new(menus.menuId, menus.menuName, menus.description, menus.IsOpen);
                 _unitOfWork.Menus.Insert(menu);
                 await _unitOfWork.Complete();
 
-                return new MenusDto(menu.MenuId, menus.menuName, menu.Description);
+                return new MenusDto(menu.MenuId, menus.menuName, menu.Description, menu.IsOpen);
             }
 
-            return new MenusDto(StatusCodes.Status400BadRequest, "BadRequest", "404-BadRequest");
+            return new MenusDto(StatusCodes.Status400BadRequest, "BadRequest", "404-BadRequest", false);
         }
 
         public async Task<SubMenusDto> CreateSubMenu(SubMenusCreateDto subMenus)
@@ -114,14 +115,14 @@ namespace Modules.Users.Application.UseCases
 
             if (validationResult.IsValid)
             {
-                SubMenus _subMenu = new(subMenus.menuId, subMenus.subMenuId, subMenus.subMenuName, subMenus.description);
+                SubMenus _subMenu = new(subMenus.menuId, subMenus.subMenuId, subMenus.subMenuName, subMenus.description, subMenus.IsOpen);
                 _unitOfWork.SubMenus.Insert(_subMenu);
                 await _unitOfWork.Complete();
 
-                return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName, _subMenu.Description);
+                return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName, _subMenu.Description, _subMenu.IsOpen);
             }
 
-            return new SubMenusDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "404-BadRequest");
+            return new SubMenusDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "404-BadRequest",false);
         }
 
         public void DeleteMenu(MenusDeleteDto menuid)
@@ -203,18 +204,23 @@ namespace Modules.Users.Application.UseCases
             var result = from roleAction in await _unitOfWork.RolePermissions.GetAll()
                          join menu in await _unitOfWork.Menus.GetAll()
                          on roleAction.MenuId equals menu.MenuId
+
                          join subMenu in await _unitOfWork.SubMenus.GetAll()
                          on roleAction.SubMenuId equals subMenu.SubMenuId
+
+                         join subMenuItems in await _unitOfWork.SubMenuItems.GetAll()
+                         on roleAction.SubMenuItemsId equals subMenuItems.SubMenuItemId
                          join role in roles
                          on roleAction.RoleId equals role.Id
                          where role.Id == roleId
-                         group new { roleAction, menu, subMenu, role } by role.Name into roleGroup
+                         group new { roleAction, menu, subMenu, subMenuItems, role } by role.Name into roleGroup
                          select new RolesPermissionsResponseDto
                          {
                              RoleName = roleGroup.Key, // Now RoleName is fetched from roles.
                              AssignedPermissions = roleGroup.Select(g => new RolesWithMenusResponseDto(
                                  g.menu.MenuName,
                                  g.subMenu.SubMenuName,
+                                 g.subMenuItems.SubMenuItemName,
                                  g.roleAction.NoAccess,
                                  g.roleAction.Create,
                                  g.roleAction.Read,
@@ -250,16 +256,19 @@ namespace Modules.Users.Application.UseCases
                          on roleAction.MenuId equals menu.MenuId
                          join subMenu in await _unitOfWork.SubMenus.GetAll()
                          on roleAction.SubMenuId equals subMenu.SubMenuId
+                         join subMenuItems in await _unitOfWork.SubMenuItems.GetAll()
+                         on roleAction.SubMenuItemsId equals subMenuItems.SubMenuItemId
                          join role in roles
                          on roleAction.RoleId equals role.Id
                          where role.Name == resultRole
-                         group new { roleAction, menu, subMenu, role } by role.Name into roleGroup
+                         group new { roleAction, menu, subMenu, subMenuItems, role } by role.Name into roleGroup
                          select new RolesPermissionsResponseDto
                          {
                              RoleName = roleGroup.Key, // Now RoleName is fetched from roles.
                              AssignedPermissions = roleGroup.Select(g => new RolesWithMenusResponseDto(
                                  g.menu.MenuName,
                                  g.subMenu.SubMenuName,
+                                 g.subMenuItems.SubMenuItemName,
                                  g.roleAction.NoAccess,
                                  g.roleAction.Create,
                                  g.roleAction.Read,
@@ -289,6 +298,8 @@ namespace Modules.Users.Application.UseCases
         //    var dbContext = _unitOfWork
         //}
 
+
+        //remember to mark as obsolte
         public async Task<IEnumerable<Claim>> GetUserRoleClaims(string userId)
         {
             //throw new NotImplementedException();
@@ -332,12 +343,12 @@ namespace Modules.Users.Application.UseCases
             {
                 //var ts = ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.NoAccess)).ToString();
                 //var rs = $"{item.MenuName}{item.SubMenuName}/{ts}:";
-                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.NoAccess)).ToString()}", item.NoAccess));
-                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Create)).ToString()}", item.Create));
-                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Read)).ToString()}", item.Read));
-                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Update)).ToString()}", item.Update));
-                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Delete)).ToString()}", item.Delete));
-                claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Approve)).ToString()}", item.Approve));
+                //claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.NoAccess)).ToString()}", item.NoAccess));
+                //claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Create)).ToString()}", item.Create));
+                //claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Read)).ToString()}", item.Read));
+                //claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Update)).ToString()}", item.Update));
+                //claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Delete)).ToString()}", item.Delete));
+                //claims.Add(new Claim($"{item.MenuName}{item.SubMenuName}/{ClaimsMenuActionsEnumDescription.CheckClaimsMenuActions(((int)ClaimsMenuActions.Approve)).ToString()}", item.Approve));
 
             }
 
@@ -345,6 +356,37 @@ namespace Modules.Users.Application.UseCases
         }
 
 
+        public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()
+        {
+            var response = await _unitOfWork.SubMenuItems.GetAll();
+            return _mapper.Map<IEnumerable<SubMenuItemsDto>>(response);
+        }
+
+        public async Task<SubMenuItemsDto> CreateSubMenuItems(SubMenuItemsCreateDto subMenuItems)
+        {
+            var validationResult = _validationService.Validate(subMenuItems);
+
+            if (validationResult.IsValid)
+            {
+                SubMenuItems _subMenuItems = new(subMenuItems.menuId, subMenuItems.subMenuId, subMenuItems.subMenuItemsId ,subMenuItems.subMenuItemName, subMenuItems.description, subMenuItems.IsOpen);
+                _unitOfWork.SubMenuItems.Insert(_subMenuItems);
+                await _unitOfWork.Complete();
+
+                return new SubMenuItemsDto(_subMenuItems.MenuId, _subMenuItems.SubMenuId, _subMenuItems.SubMenuItemId , _subMenuItems.SubMenuItemName, _subMenuItems.Description, _subMenuItems.IsOpen);
+            }
+
+            return new SubMenuItemsDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "404-BadRequest", false);
+        }
+
+        public Task<SubMenuItemsDto> UpdateSubMenuItems(SubMenuItemsUpdateDto updateSubMenuItems)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteSubMenuItems(SubMenuItemsDeleteDto subMenuItemsId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

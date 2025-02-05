@@ -7,7 +7,7 @@ namespace Modules.Users.Application.Dtos.Administration
         public IEnumerable<RolesWithMenusResponseDto>? AssignedPermissions { get; set; }
     }
 
-    public record RolesWithMenusResponseDto(string MenuName, string SubMenuName, string NoAccess, string Create, string Read, string Update, string Delete, string Approve);
+    public record RolesWithMenusResponseDto(string MenuName, string SubMenuName, string SubMenItemName ,bool NoAccess, bool Create, bool Read, bool Update, bool Delete, bool Approve);
 
 }
 

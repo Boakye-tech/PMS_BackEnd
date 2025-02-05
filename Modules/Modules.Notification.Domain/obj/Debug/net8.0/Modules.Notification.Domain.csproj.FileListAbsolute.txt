@@ -10,3 +10,15 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Domain/obj/Debug/net8.0/refint/Modules.Notification.Domain.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Domain/obj/Debug/net8.0/Modules.Notification.Domain.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Domain/obj/Debug/net8.0/ref/Modules.Notification.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/bin/Debug/net8.0/Modules.Notification.Domain.deps.json
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/bin/Debug/net8.0/Modules.Notification.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/bin/Debug/net8.0/Modules.Notification.Domain.pdb
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/Modules.Notification.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/Modules.Notification.Domain.AssemblyInfoInputs.cache
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/Modules.Notification.Domain.AssemblyInfo.cs
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/Modules.Notification.Domain.csproj.CoreCompileInputs.cache
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/Modules.Notification.Domain.sourcelink.json
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/Modules.Notification.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/refint/Modules.Notification.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/Modules.Notification.Domain.pdb
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Domain/obj/Debug/net8.0/ref/Modules.Notification.Domain.dll

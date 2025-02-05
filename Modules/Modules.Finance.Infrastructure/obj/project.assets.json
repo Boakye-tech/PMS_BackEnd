@@ -4118,36 +4118,35 @@
     ]
   },
   "packageFolders": {
-    "/Users/macbook/.nuget/packages/": {}
+    "/Users/imac5k/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/Modules.Finance.Infrastructure.csproj",
+      "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Infrastructure/Modules.Finance.Infrastructure.csproj",
       "projectName": "Modules.Finance.Infrastructure",
-      "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/Modules.Finance.Infrastructure.csproj",
-      "packagesPath": "/Users/macbook/.nuget/packages/",
-      "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Infrastructure/obj/",
+      "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Infrastructure/Modules.Finance.Infrastructure.csproj",
+      "packagesPath": "/Users/imac5k/.nuget/packages/",
+      "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Infrastructure/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/macbook/.nuget/NuGet/NuGet.Config"
+        "/Users/imac5k/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+            "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
+              "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
             },
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/Modules.Finance.Domain.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/Modules.Finance.Domain.csproj"
+            "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Domain/Modules.Finance.Domain.csproj": {
+              "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Domain/Modules.Finance.Domain.csproj"
             }
           }
         }

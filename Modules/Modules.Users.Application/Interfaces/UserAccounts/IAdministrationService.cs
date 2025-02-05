@@ -14,6 +14,7 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         Task<IdentityResult> DeleteUserRole(RolesDeleteDto roleId);
 
         Task<IdentityResult> ApproveUserRole(RolesApprovalDto role);
+        Task<IdentityResult> DisapproveUserRole(RolesApprovalDto role);
 
 
         Task<CustomerVerificationResponseDto> VerifyCustomerAccount(VerifyUserAccountDto accountVerification);

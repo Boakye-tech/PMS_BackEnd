@@ -101,7 +101,9 @@ namespace Modules.Users.Presentation
 
             services.AddValidatorsFromAssemblyContaining<RoleMenuActionsDtoValidator>();
             services.AddValidatorsFromAssemblyContaining<MenusDtoValidator>();
-
+            services.AddValidatorsFromAssemblyContaining<SubMenusDtoValidator>();
+            services.AddValidatorsFromAssemblyContaining<SubMenuItemsDtoValidator>();
+            services.AddValidatorsFromAssemblyContaining<ApproveUserAccountDtoValidator>();
 
             //// Dependency Injection - Register AutoMapper 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

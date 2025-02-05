@@ -26,7 +26,8 @@ namespace Modules.Users.Infrastructure
         //menus
         public DbSet<Menus> Menus { get; set; }
         public DbSet<SubMenus> SubMenus { get; set; }
-        public DbSet<MenuActions> MenuActions { get; set; }
+        public DbSet<SubMenuItems> SubMenuItems { get; set; }
+        //public DbSet<MenuActions> MenuActions { get; set; }
         public DbSet<RoleMenuActions> RoleMenuActions { get; set; }
 
 
@@ -63,15 +64,19 @@ namespace Modules.Users.Infrastructure
                 .HasIndex(m => m.MenuName)
                 .IsUnique(true);
 
-            builder.Entity<SubMenus>()
-                .HasIndex(sm => sm.SubMenuName)
+            //builder.Entity<SubMenus>()
+            //    .HasIndex(sm => sm.SubMenuName)
+            //    .IsUnique(true);
+
+            builder.Entity<SubMenuItems>()
+                .HasIndex(smi => smi.SubMenuItemName)
                 .IsUnique(true);
 
             builder.Entity<RoleMenuActions>()
                .HasIndex(rma => new { rma.RoleId, rma.SubMenuId })
                .IsUnique(true);
 
-            builder.ApplyConfiguration(new MenuActionConfiguration());
+            //builder.ApplyConfiguration(new MenuActionConfiguration());
             builder.ApplyConfiguration(new ChannelConfiguration());
             builder.ApplyConfiguration(new DepartmentsConfiguration());
             builder.ApplyConfiguration(new DepartmentsUnitsConfiguration());

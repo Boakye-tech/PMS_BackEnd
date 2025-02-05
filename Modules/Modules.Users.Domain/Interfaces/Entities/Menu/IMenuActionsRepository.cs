@@ -3,9 +3,9 @@ using Modules.Users.Domain.Entities.Menu;
 
 namespace Modules.Users.Domain.Interfaces.Entities.Menu
 {
-	public interface IMenuActionsRepository : IRepository<MenuActions>
-    {
+	//public interface IMenuActionsRepository : IRepository<MenuActions>
+ //   {
 		
-	}
+	//}
 }
 

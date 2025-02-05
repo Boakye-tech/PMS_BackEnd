@@ -6,12 +6,12 @@ namespace Modules.Users.Application.Profiles
 {
 	public class MenuActionsProfile : Profile
 	{
-		public MenuActionsProfile()
-		{
-			CreateMap<MenuActions, MenuActionsDto>();
-			CreateMap<MenuActionsDto, MenuActions>();
+		//public MenuActionsProfile()
+		//{
+		//	CreateMap<MenuActions, MenuActionsDto>();
+		//	CreateMap<MenuActionsDto, MenuActions>();
 
-        }
+  //      }
 	}
 }
 

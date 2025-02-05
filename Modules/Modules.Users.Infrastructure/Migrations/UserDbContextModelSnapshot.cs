@@ -675,76 +675,6 @@ namespace Modules.Users.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.MenuActions", b =>
-                {
-                    b.Property<int>("ActionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActionId"));
-
-                    b.Property<string>("ActionName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("ActionId");
-
-                    b.HasIndex("ActionName")
-                        .IsUnique();
-
-                    b.ToTable("MenuActions");
-
-                    b.HasData(
-                        new
-                        {
-                            ActionId = 1,
-                            ActionName = "No Access",
-                            Description = ""
-                        },
-                        new
-                        {
-                            ActionId = 2,
-                            ActionName = "Create",
-                            Description = ""
-                        },
-                        new
-                        {
-                            ActionId = 3,
-                            ActionName = "Read",
-                            Description = ""
-                        },
-                        new
-                        {
-                            ActionId = 4,
-                            ActionName = "Update",
-                            Description = ""
-                        },
-                        new
-                        {
-                            ActionId = 5,
-                            ActionName = "Delete",
-                            Description = ""
-                        },
-                        new
-                        {
-                            ActionId = 6,
-                            ActionName = "Approve",
-                            Description = ""
-                        },
-                        new
-                        {
-                            ActionId = 7,
-                            ActionName = "Access",
-                            Description = ""
-                        });
-                });
-
             modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.Menus", b =>
                 {
                     b.Property<int>("MenuId")
@@ -758,10 +688,13 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MenuName")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("MenuId");
 
@@ -779,34 +712,23 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleMenuActionId"));
 
-                    b.Property<string>("Approve")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<bool>("Approve")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Create")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<bool>("Create")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Delete")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
 
                     b.Property<int>("MenuId")
-                        .HasMaxLength(150)
                         .HasColumnType("int");
 
-                    b.Property<string>("NoAccess")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<bool>("NoAccess")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Read")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
@@ -814,13 +736,13 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("SubMenuId")
-                        .HasMaxLength(255)
                         .HasColumnType("int");
 
-                    b.Property<string>("Update")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<int>("SubMenuItemsId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Update")
+                        .HasColumnType("bit");
 
                     b.HasKey("RoleMenuActionId");
 
@@ -828,6 +750,41 @@ namespace Modules.Users.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("RoleMenuActions");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.SubMenuItems", b =>
+                {
+                    b.Property<int>("SubMenuItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubMenuItemId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubMenuId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubMenuItemName")
+                        .IsRequired()
+                        .HasMaxLength(110)
+                        .HasColumnType("nvarchar(110)");
+
+                    b.HasKey("SubMenuItemId");
+
+                    b.HasIndex("SubMenuItemName")
+                        .IsUnique();
+
+                    b.ToTable("SubMenuItems");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.SubMenus", b =>
@@ -843,18 +800,18 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("bit");
+
                     b.Property<int>("MenuId")
                         .HasColumnType("int");
 
                     b.Property<string>("SubMenuName")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(110)
+                        .HasColumnType("nvarchar(110)");
 
                     b.HasKey("SubMenuId");
-
-                    b.HasIndex("SubMenuName")
-                        .IsUnique();
 
                     b.ToTable("SubMenus");
                 });

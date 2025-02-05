@@ -8,7 +8,7 @@ namespace Modules.Users.Application.Validations
 		public MenusDtoValidator()
 		{
             RuleFor(x => x.menuId).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.menuName).NotEmpty().Length(2, 255).WithMessage("The menu name must not be empty, null or exceed 255 characters");
+            RuleFor(x => x.menuName).NotEmpty().Length(2, 100).WithMessage("The menu name must not be empty, null or exceed 100 characters");
 
         }
     }

@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/Modules.Customers.Presentation.csproj": {}
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/Modules.Customers.Presentation.csproj": {}
   },
   "projects": {
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
+        "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
         "projectName": "Modules.Common.Infrastructure",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
-        "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/obj/",
+        "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj",
+        "packagesPath": "/Users/imac5k/.nuget/packages/",
+        "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/macbook/.nuget/NuGet/NuGet.Config"
+          "/Users/imac5k/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -83,31 +82,30 @@
         }
       }
     },
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj": {
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj",
+        "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj",
         "projectName": "Modules.Customers.Application",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj",
-        "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/obj/",
+        "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj",
+        "packagesPath": "/Users/imac5k/.nuget/packages/",
+        "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/macbook/.nuget/NuGet/NuGet.Config"
+          "/Users/imac5k/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj"
+              "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj": {
+                "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj"
               }
             }
           }
@@ -146,23 +144,22 @@
         }
       }
     },
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj": {
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj",
+        "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj",
         "projectName": "Modules.Customers.Domain",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj",
-        "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/obj/",
+        "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj",
+        "packagesPath": "/Users/imac5k/.nuget/packages/",
+        "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/macbook/.nuget/NuGet/NuGet.Config"
+          "/Users/imac5k/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -219,37 +216,36 @@
         }
       }
     },
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj": {
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj",
+        "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj",
         "projectName": "Modules.Customers.Infrastructure",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj",
-        "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/obj/",
+        "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj",
+        "packagesPath": "/Users/imac5k/.nuget/packages/",
+        "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/macbook/.nuget/NuGet/NuGet.Config"
+          "/Users/imac5k/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
+              "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj": {
+                "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj"
               },
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj"
+              "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj": {
+                "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj"
               },
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj"
+              "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj": {
+                "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/Modules.Customers.Domain.csproj"
               }
             }
           }
@@ -314,34 +310,33 @@
         }
       }
     },
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/Modules.Customers.Presentation.csproj": {
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/Modules.Customers.Presentation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/Modules.Customers.Presentation.csproj",
+        "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/Modules.Customers.Presentation.csproj",
         "projectName": "Modules.Customers.Presentation",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/Modules.Customers.Presentation.csproj",
-        "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Presentation/obj/",
+        "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/Modules.Customers.Presentation.csproj",
+        "packagesPath": "/Users/imac5k/.nuget/packages/",
+        "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/macbook/.nuget/NuGet/NuGet.Config"
+          "/Users/imac5k/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj"
+              "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj": {
+                "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Application/Modules.Customers.Application.csproj"
               },
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj"
+              "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj": {
+                "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Infrastructure/Modules.Customers.Infrastructure.csproj"
               }
             }
           }

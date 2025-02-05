@@ -129,12 +129,39 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("GetSubMenuItems")]
+        public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()
+        {
+            return await _menuService.GetSubMenuItems();
+        }
+
+        [HttpPost]
+        [Route("CreateSubMenuItems")]
+        public async Task<ActionResult> CreateSubMenuItems([FromBody] SubMenuItemsCreateDto values)
+        {
+            var result = await _menuService.CreateSubMenuItems(values);
+            return Ok(result);
+        }
+
+
         /// <summary>
         /// Returns all approved system user roles
         /// </summary>
         [HttpPost]
         [Route("ApproveRole")]
         public async Task<ActionResult> ApproveRole([FromBody] RolesApprovalDto values)
+        {
+            var result = await _adminService.ApproveUserRole(values);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns all approved system user roles
+        /// </summary>
+        [HttpPost]
+        [Route("DisapproveRole")]
+        public async Task<ActionResult> DisapproveRole([FromBody] RolesApprovalDto values)
         {
             var result = await _adminService.ApproveUserRole(values);
             return Ok(result);

@@ -1,34 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Application/Modules.Users.Application.csproj": {}
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Application/Modules.Users.Application.csproj": {}
   },
   "projects": {
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Application/Modules.Users.Application.csproj": {
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Application/Modules.Users.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Application/Modules.Users.Application.csproj",
+        "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Application/Modules.Users.Application.csproj",
         "projectName": "Modules.Users.Application",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Application/Modules.Users.Application.csproj",
-        "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Application/obj/",
+        "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Application/Modules.Users.Application.csproj",
+        "packagesPath": "/Users/imac5k/.nuget/packages/",
+        "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/macbook/.nuget/NuGet/NuGet.Config"
+          "/Users/imac5k/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj": {
-                "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj"
+              "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj": {
+                "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj"
               }
             }
           }
@@ -85,23 +84,22 @@
         }
       }
     },
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj": {
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj",
+        "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj",
         "projectName": "Modules.Users.Domain",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj",
-        "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Users.Domain/obj/",
+        "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Domain/Modules.Users.Domain.csproj",
+        "packagesPath": "/Users/imac5k/.nuget/packages/",
+        "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Users.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/macbook/.nuget/NuGet/NuGet.Config"
+          "/Users/imac5k/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

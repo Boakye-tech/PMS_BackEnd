@@ -5,11 +5,11 @@ using Modules.Users.Domain.Interfaces.Entities.Menu;
 
 namespace Modules.Users.Infrastructure.Repositories.Entities.Menu
 {
-	public class MenuActionsRepository : Repository<MenuActions>, IMenuActionsRepository
-    {
-		public MenuActionsRepository(UserDbContext dbContext) : base(dbContext)
-        {
-		}
-	}
+	//public class MenuActionsRepository : Repository<MenuActions>, IMenuActionsRepository
+ //   {
+	//	public MenuActionsRepository(UserDbContext dbContext) : base(dbContext)
+ //       {
+	//	}
+	//}
 }
 

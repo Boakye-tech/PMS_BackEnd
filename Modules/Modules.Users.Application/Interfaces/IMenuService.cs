@@ -17,8 +17,13 @@ namespace Modules.Users.Application.Interfaces
         Task<SubMenusDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus);
         void DeleteSubMenu(SubMenuDeleteDto subMenuId);
 
+        Task<SubMenuItemsDto> CreateSubMenuItems(SubMenuItemsCreateDto subMenuItems);
+        Task<SubMenuItemsDto> UpdateSubMenuItems(SubMenuItemsUpdateDto updateSubMenuItems);
+        void DeleteSubMenuItems(SubMenuItemsDeleteDto subMenuItemsId);
+
         Task<IEnumerable<MenusDto>> GetMenus();
         Task<IEnumerable<SubMenusDto>> GetSubMenus();
+        Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems();
 
         //void GetSubMenus(SubMenusDto subMenus);
 

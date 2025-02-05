@@ -9,7 +9,7 @@ namespace Modules.Users.Application.Dtos.Administration
 		public IEnumerable<RolesWithActionsDto>? Permissions { get; set; }
 	}
 
-    public record RolesWithActionsDto(int MenuId, int SubMenuId, string NoAccess, string Create, string Read, string Update, string Delete, string Approve);
+    public record RolesWithActionsDto(int MenuId, int SubMenuId, int SubMenuItemsId, bool NoAccess, bool Create, bool Read, bool Update, bool Delete, bool Approve);
 
     public record AssignPermissionToRoleResponseDto(string response);
 }

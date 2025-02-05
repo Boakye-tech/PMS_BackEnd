@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -49,7 +50,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     Name = role.RoleName,
                     CreatedBy = role.CreatedBy,
                     CreatedOn = DateTime.UtcNow,
-                    Status = 0
+                    Status = (int)RegistrationStatus.Pending
                 };
 
                 IdentityResult result = await _roleManager.CreateAsync(identityRole);
@@ -122,13 +123,35 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return null!;
         }
 
+
+        public async Task<IdentityResult> DisapproveUserRole(RolesApprovalDto role)
+        {
+            //throw new NotImplementedException();
+            var validationResult = _validationService.Validate(role);
+
+            if (validationResult.IsValid)
+            {
+                ApplicationIdentityRole? identityRole = await _roleManager.FindByIdAsync(role.RoleId);
+
+                identityRole!.ApprovedBy = role.ApprovedBy;
+                identityRole.ApprovedOn = DateTime.UtcNow;
+                identityRole.Status = (int)RegistrationStatus.Disapproved;
+
+                IdentityResult result = await _roleManager.UpdateAsync(identityRole);
+
+                return result;
+            }
+
+            return null!;
+        }
+
         public IEnumerable<RolesDto> GetApprovedUserRoles()
         {
             //var result = _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!)).ToList();
 
             return _roleManager.Roles
                 .Where(r => r.Status == (int)RegistrationStatus.Verified)
-                .Select(role => new RolesDto(role.Id, role.Name!, role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, role.Status)).ToList();
+                .Select(role => new RolesDto(role.Id, role.Name!, role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
         }
 
         //public IEnumerable<IdentityRole> GetUserRoles()
@@ -136,37 +159,38 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         {
             //var result = _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!)).ToList();
 
-            return _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!,role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, role.Status)).ToList();
+            return _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!,role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
         }
 
         public async Task<CustomerVerificationResponseDto> VerifyCustomerAccount(VerifyUserAccountDto accountVerification)
         {
             //throw new NotImplementedException();
-            var user = await _userManager.FindByEmailAsync(accountVerification.EmailAddress!);
+            var user = await _userManager.FindByIdAsync(accountVerification.UserId!);
+
             if(user is null)
             {
-                _logger.LogWarning($"Customer account with email address {accountVerification.EmailAddress} not found.", accountVerification.EmailAddress);
+                _logger.LogWarning($"User account with id {accountVerification.UserId} not found.", accountVerification.UserId);
                 return new CustomerVerificationResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new CustomerVerificationErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountVerification.EmailAddress} not found."
+                        StatusMessage = $"User account with id '{accountVerification.UserId}' not found."
                     }
                 };
             }
 
             if((RegistrationStatus)user.Status == RegistrationStatus.Verified)
             {
-                _logger.LogWarning($"Customer account with email address {accountVerification.EmailAddress} has already been verified", accountVerification.EmailAddress);
+                _logger.LogWarning($"User account with id {accountVerification.UserId} has already been verified", accountVerification.UserId);
                 return new CustomerVerificationResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new CustomerVerificationErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountVerification.EmailAddress} not found."
+                        StatusMessage = $"User account with id '{accountVerification.UserId}; not found."
                     }
                 };
 
@@ -188,22 +212,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountVerification.EmailAddress);
-            userAccount.Status = (int)RegistrationStatus.Verified; // 1- verified
-            userAccount.VerifiedBy = accountVerification.verifiedBy;
-            userAccount.VerifiedDate = DateTime.UtcNow;
+            //var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountVerification.EmailAddress);
+            user.Status = (int)RegistrationStatus.Verified; // 1- verified
+            user.VerifiedBy = accountVerification.verifiedBy;
+            user.VerifiedDate = DateTime.UtcNow;
 
-            _unitOfWork.Users.Update(userAccount);
+            _unitOfWork.Users.Update(user);
             await _unitOfWork.Complete();
 
-            _logger.LogInformation($"Customer account id {user.Id} with email address {user.Email} has been successfully verified by verification officer with account id {staff.Id} and staff id {staff.IdentificationNumber}.", user.Id);
+            _logger.LogInformation($"User account with id {user.Id} with email address {user.Email} has been successfully verified by verification officer with account id {staff.Id} and staff id {staff.IdentificationNumber}.", user.Id);
             return new CustomerVerificationResponseDto
             {
                 IsSuccess = true,
                 SuccessResponse = new CustomerVerificationSuccessResponseDto
                 {
                     StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"Customer account id {user.Id} with email address {user.Email} has been successfully verified by verification officer with account id {staff.Id} and staff id {staff.IdentificationNumber}"
+                    StatusMessage = $"User account with id '{user.Id}', with email address '{user.Email}' has been successfully verified by verification officer with account id '{staff.Id}' and staff id '{staff.IdentificationNumber}'"
                 }
             };
         }
@@ -211,17 +235,18 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         public async Task<CustomerRejectionResponseDto> RejectCustomerAccount(RejectUserAccountDto accountRejection)
         {
             //throw new NotImplementedException();
-            var user = await _userManager.FindByEmailAsync(accountRejection.EmailAddress!);
+            var user = await _userManager.FindByIdAsync(accountRejection.UserId!);
+
             if (user is null)
             {
-                _logger.LogWarning($"Customer with email address {accountRejection.EmailAddress} not found.", accountRejection.EmailAddress);
+                _logger.LogWarning($"User account with id {accountRejection.UserId} not found.", accountRejection.UserId);
                 return new CustomerRejectionResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new CustomerRejectionErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountRejection.EmailAddress} not found."
+                        StatusMessage = $"User with id '{accountRejection.UserId}' not found."
                     }
                 };
 
@@ -229,14 +254,14 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             if ((RegistrationStatus)user.Status == RegistrationStatus.Rejected)
             {
-                _logger.LogWarning($"Customer account with email address {accountRejection.EmailAddress} has already been rejected", accountRejection.EmailAddress);
+                _logger.LogWarning($"User account with id {accountRejection.UserId} has already been rejected", accountRejection.UserId);
                 return new CustomerRejectionResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new CustomerRejectionErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountRejection.EmailAddress} has already been rejected."
+                        StatusMessage = $"User account with id '{accountRejection.UserId}' has already been rejected."
                     }
                 };
 
@@ -258,26 +283,26 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountRejection.EmailAddress);
-            userAccount.Status = (int)RegistrationStatus.Rejected; //4 - rejected
-            userAccount.RejectedBy = accountRejection.RejectedBy;
-            userAccount.RejectedDate = DateTime.UtcNow;
-            userAccount.RejectedReasons = accountRejection.RejectedReasons;
-            userAccount.EmailConfirmed = false;
-            userAccount.PhoneNumberConfirmed = false;
+            //var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountRejection.EmailAddress);
+            user.Status = (int)RegistrationStatus.Rejected; //4 - rejected
+            user.RejectedBy = accountRejection.RejectedBy;
+            user.RejectedDate = DateTime.UtcNow;
+            user.RejectedReasons = accountRejection.RejectedReasons;
+            user.EmailConfirmed = false;
+            user.PhoneNumberConfirmed = false;
 
 
-            _unitOfWork.Users.Update(userAccount);
+            _unitOfWork.Users.Update(user);
             await _unitOfWork.Complete();
 
-            _logger.LogInformation($"Customer account id {user.Id} with email address {user.Email} has been rejected by verification officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountRejection.RejectedReasons}", user.Id);
+            _logger.LogInformation($"User account with id {user.Id} with email address {user.Email} has been rejected by verification officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountRejection.RejectedReasons}", user.Id);
             return new CustomerRejectionResponseDto
             {
                 IsSuccess = true,
                 SuccessResponse = new CustomerRejectionSuccessResponseDto
                 {
                     StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"Customer account id {user.Id} with email address {user.Email} has been rejected by verification officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountRejection.RejectedReasons}"
+                    StatusMessage = $"User account with id '{user.Id}', with email address '{user.Email}' has been rejected by verification officer '{staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}', with the reason '{accountRejection.RejectedReasons}'"
                 }
             };
         }
@@ -285,31 +310,32 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         public async Task<ApproveUserAccountResponseDto> ApproveUserAccount(ApproveUserAccountDto accountApproval)
         {
             //throw new NotImplementedException();
-            var user = await _userManager.FindByEmailAsync(accountApproval.EmailAddress!);
+            var user = await _userManager.FindByIdAsync(accountApproval.UserId);
+
             if (user is null)
             {
-                _logger.LogWarning($"Customer account with email address {accountApproval.EmailAddress} not found.", accountApproval.EmailAddress);
+                _logger.LogWarning($"User account with id '{accountApproval.UserId}' not found.", accountApproval.UserId);
                 return new ApproveUserAccountResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new ApproveUserAccountErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountApproval.EmailAddress} not found."
+                        StatusMessage = $"User account with id {accountApproval.UserId} not found."
                     }
                 };
             }
 
             if ((RegistrationStatus)user.Status == RegistrationStatus.Approved)
             {
-                _logger.LogWarning($"Customer account with email address {accountApproval.EmailAddress} has already been approved", accountApproval.EmailAddress);
+                _logger.LogWarning($"User account with id {accountApproval.UserId} has already been approved", accountApproval.UserId);
                 return new ApproveUserAccountResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new ApproveUserAccountErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountApproval.EmailAddress} not found."
+                        StatusMessage = $"User account with id {accountApproval.UserId} not found."
                     }
                 };
 
@@ -330,22 +356,26 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 };
             }
 
-            var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountApproval.EmailAddress);
-            userAccount.Status = (int)RegistrationStatus.Approved; // 2 - approved
-            userAccount.ApprovedBy = accountApproval.ApprovedBy;
-            userAccount.ApprovedDate = DateTime.UtcNow;
+            //assign role
+            var roleName = await _roleManager.FindByIdAsync(accountApproval.RoleId);
+            IdentityResult resultRole = await _userManager.AddToRoleAsync(user, roleName!.Name!);
 
-            _unitOfWork.Users.Update(userAccount);
+            //var userAccount = await _unitOfWork.Users.Get(u => u.Id == accountApproval.UserId);
+            user.Status = (int)RegistrationStatus.Approved; // 2 - approved
+            user.ApprovedBy = accountApproval.ApprovedBy;
+            user.ApprovedDate = DateTime.UtcNow;
+
+            _unitOfWork.Users.Update(user);
             await _unitOfWork.Complete();
 
-            _logger.LogInformation($"Customer account id {user.Id} with email address {user.Email} has been successfully approved by approval officer with account id {staff.Id} and staff id {staff.IdentificationNumber}.", user.Id);
+            _logger.LogInformation($"User account with id '{user.Id}' has been successfully assigned to the role '{roleName!.Name!}' and successfully approved by approval officer with account id '{staff.Id}' and staff id '{staff.IdentificationNumber}'.", user.Id);
             return new ApproveUserAccountResponseDto
             {
                 IsSuccess = true,
                 SuccessResponse = new ApproveUserAccountSuccessResponseDto
                 {
                     StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"Customer account id {user.Id} with email address {user.Email} has been successfully approved by approval officer with account id {staff.Id} and staff id {staff.IdentificationNumber}"
+                    StatusMessage = $"User account with id '{user.Id}' has been successfully assigned to the role '{roleName!.Name!}' and successfully approved by approval officer with account id '{staff.Id}' and staff id '{staff.IdentificationNumber}'."
                 }
             };
         }
@@ -353,17 +383,18 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         public async Task<DisapprovedUserAccountResponseDto> DisapproveUserAccount(DisapprovedUserAccountDto accountDisapproval)
         {
             //throw new NotImplementedException();
-            var user = await _userManager.FindByEmailAsync(accountDisapproval.EmailAddress!);
+            var user = await _userManager.FindByIdAsync(accountDisapproval.UserId!);
+
             if (user is null)
             {
-                _logger.LogWarning($"Customer with email address {accountDisapproval.EmailAddress} not found.", accountDisapproval.EmailAddress);
+                _logger.LogWarning($"User account with id {accountDisapproval.UserId} not found.", accountDisapproval.UserId);
                 return new DisapprovedUserAccountResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new DisapprovedUserAccountErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountDisapproval.EmailAddress} not found."
+                        StatusMessage = $"User account with id '{accountDisapproval.UserId}' not found."
                     }
                 };
 
@@ -371,14 +402,14 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             if ((RegistrationStatus)user.Status == RegistrationStatus.Disapproved)
             {
-                _logger.LogWarning($"Customer account with email address {accountDisapproval.EmailAddress} has already been disapproved", accountDisapproval.EmailAddress);
+                _logger.LogWarning($"User account with id '{accountDisapproval.UserId}' has already been disapproved", accountDisapproval.UserId);
                 return new DisapprovedUserAccountResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new DisapprovedUserAccountErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountDisapproval.EmailAddress} has already been rejected."
+                        StatusMessage = $"User account with id '{accountDisapproval.UserId}' has already been disapproved"
                     }
                 };
 
@@ -400,26 +431,26 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountDisapproval.EmailAddress);
-            userAccount.Status = (int)RegistrationStatus.Disapproved; //5 - Disapproved
-            userAccount.DisapprovedBy = accountDisapproval.DisapprovedBy;
-            userAccount.DisapprovedDate = DateTime.UtcNow;
-            userAccount.DisapprovedReasons = accountDisapproval.DisapprovedReasons;
-            userAccount.EmailConfirmed = false;
-            userAccount.PhoneNumberConfirmed = false;
+            //var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountDisapproval.EmailAddress);
+            user.Status = (int)RegistrationStatus.Disapproved; //5 - Disapproved
+            user.DisapprovedBy = accountDisapproval.DisapprovedBy;
+            user.DisapprovedDate = DateTime.UtcNow;
+            user.DisapprovedReasons = accountDisapproval.DisapprovedReasons;
+            user.EmailConfirmed = false;
+            user.PhoneNumberConfirmed = false;
 
 
-            _unitOfWork.Users.Update(userAccount);
+            _unitOfWork.Users.Update(user);
             await _unitOfWork.Complete();
 
-            _logger.LogInformation($"Customer account id {user.Id} with email address {user.Email} has been disapproved by disapproval officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountDisapproval.DisapprovedReasons}", user.Id);
+            _logger.LogInformation($"User account with id {user.Id} has been disapproved by disapproval officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountDisapproval.DisapprovedReasons}", user.Id);
             return new DisapprovedUserAccountResponseDto
             {
                 IsSuccess = true,
                 SuccessResponse = new DisapprovedUserAccountSuccessResponseDto
                 {
                     StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"Customer account id {user.Id} with email address {user.Email} has been disapproved by disapproval officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountDisapproval.DisapprovedReasons}"
+                    StatusMessage = $"User account with id {user.Id} has been disapproved by disapproval officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountDisapproval.DisapprovedReasons}"
                 }
             };
         }
@@ -428,31 +459,31 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         {
             //throw new NotImplementedException();
 
-            var user = await _userManager.FindByEmailAsync(accountActivation.EmailAddress!);
+            var user = await _userManager.FindByIdAsync(accountActivation.UserId!);
             if (user is null)
             {
-                _logger.LogWarning($"{accountActivation.UserAccountType} account with email address {accountActivation.EmailAddress} not found.", accountActivation.EmailAddress);
+                _logger.LogWarning($"User account with id {accountActivation.UserId} not found.", accountActivation.UserId);
                 return new ActivateUserAccountResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new ActivateUserAccountErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountActivation.EmailAddress} not found."
+                        StatusMessage = $"User account with id {accountActivation.UserId} not found."
                     }
                 };
             }
 
             if ((RegistrationStatus)user.Status == RegistrationStatus.Activated)
             {
-                _logger.LogWarning($"{accountActivation.UserAccountType} account with email address {accountActivation.EmailAddress} has already been activated", accountActivation.EmailAddress);
+                _logger.LogWarning($"User account with id {accountActivation.UserId} has already been activated", accountActivation.UserId);
                 return new ActivateUserAccountResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new ActivateUserAccountErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountActivation.EmailAddress} not found."
+                        StatusMessage = $"User account with id {accountActivation.UserId} not found."
                     }
                 };
 
@@ -475,25 +506,24 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
 
 
+            //var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountActivation.EmailAddress);
+            user.Status = (int)RegistrationStatus.Activated; // 3 - activated
+            user.ActivatedBy = accountActivation.activatedBy;
+            user.ActivatedDate = DateTime.UtcNow;
+            user.EmailConfirmed = true;
+            user.PhoneNumberConfirmed = true;
 
-            var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountActivation.EmailAddress);
-            userAccount.Status = (int)RegistrationStatus.Activated; // 3 - activated
-            userAccount.ActivatedBy = accountActivation.activatedBy;
-            userAccount.ActivatedDate = DateTime.UtcNow;
-            userAccount.EmailConfirmed = true;
-            userAccount.PhoneNumberConfirmed = true;
-
-            _unitOfWork.Users.Update(userAccount);
+            _unitOfWork.Users.Update(user);
             await _unitOfWork.Complete();
 
-            _logger.LogInformation($"Customer account id {user.Id} with email address {user.Email} has been successfully activated by activation officer with account id {staff.Id} and staff id {staff.IdentificationNumber}.", user.Id);
+            _logger.LogInformation($"User account with id '{user.Id}', with email address {user.Email} has been successfully activated by activation officer with account id {staff.Id} and staff id {staff.IdentificationNumber}.", user.Id);
             return new ActivateUserAccountResponseDto
             {
                 IsSuccess = true,
                 SuccessResponse = new ActivateUserAccountSuccessResponseDto
                 {
                     StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"Customer account id {user.Id} with email address {user.Email} has been successfully actibvated by activation officer with account id {staff.Id} and staff id {staff.IdentificationNumber}"
+                    StatusMessage = $"User account with id '{user.Id}', with email address '{user.Email}' has been successfully actibvated by activation officer with account id {staff.Id} and staff id {staff.IdentificationNumber}"
                 }
             };
 
@@ -503,17 +533,18 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         public async Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation)
         {
             //throw new NotImplementedException();
-            var user = await _userManager.FindByEmailAsync(accountDeactivation.EmailAddress!);
+            var user = await _userManager.FindByIdAsync(accountDeactivation.UserId!);
+
             if (user is null)
             {
-                _logger.LogWarning($"Customer with email address {accountDeactivation.EmailAddress} not found.", accountDeactivation.EmailAddress);
+                _logger.LogWarning($"User with id {accountDeactivation.UserId} not found.", accountDeactivation.UserId);
                 return new DeactivateUserAccountResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new DeactivateUserAccountErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountDeactivation.EmailAddress} not found."
+                        StatusMessage = $"User account with id '{accountDeactivation.UserId}' not found."
                     }
                 };
 
@@ -521,14 +552,14 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             if ((RegistrationStatus)user.Status == RegistrationStatus.Rejected)
             {
-                _logger.LogWarning($"Customer account with email address {accountDeactivation.EmailAddress} has already been rejected", accountDeactivation.EmailAddress);
+                _logger.LogWarning($"User account with id {accountDeactivation.UserId} has already been deactivated", accountDeactivation.UserId);
                 return new DeactivateUserAccountResponseDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new DeactivateUserAccountErrorResponseDto
                     {
                         StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Customer with email address {accountDeactivation.EmailAddress} has already been rejected."
+                        StatusMessage = $"User account with id {accountDeactivation.UserId} has already been deactivated."
                     }
                 };
 
@@ -550,26 +581,26 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountDeactivation.EmailAddress);
-            userAccount.Status = (int)RegistrationStatus.Deactivated; //6 - deactivated
-            userAccount.DeactivatedBy = accountDeactivation.DeactivatedBy;
-            userAccount.DeactivatedDate = DateTime.UtcNow;
-            userAccount.DeactivatedReasons = accountDeactivation.DeactivatedReasons;
-            userAccount.EmailConfirmed = false;
-            userAccount.PhoneNumberConfirmed = false;
+            //var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountDeactivation.EmailAddress);
+            user.Status = (int)RegistrationStatus.Deactivated; //6 - deactivated
+            user.DeactivatedBy = accountDeactivation.DeactivatedBy;
+            user.DeactivatedDate = DateTime.UtcNow;
+            user.DeactivatedReasons = accountDeactivation.DeactivatedReasons;
+            user.EmailConfirmed = false;
+            user.PhoneNumberConfirmed = false;
 
 
-            _unitOfWork.Users.Update(userAccount);
+            _unitOfWork.Users.Update(user);
             await _unitOfWork.Complete();
 
-            _logger.LogInformation($"Customer account id {user.Id} with email address {user.Email} has been rejected by verification officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountDeactivation.DeactivatedReasons}", user.Id);
+            _logger.LogInformation($"User account with id {user.Id} with email address {user.Email} has been deactivated by deactivation officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountDeactivation.DeactivatedReasons}", user.Id);
             return new DeactivateUserAccountResponseDto
             {
                 IsSuccess = true,
                 SuccessResponse = new DeactivateUserAccountSuccessResponseDto
                 {
                     StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"Customer account id {user.Id} with email address {user.Email} has been rejected by verification officer {staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}, with the reason {accountDeactivation.DeactivatedReasons}"
+                    StatusMessage = $"User account with id '{user.Id}', with email address '{user.Email}' has been deactivated by deactivation officer '{staff.IdentificationNumber} - {staff.FirstName} {staff.LastName}', with the reason '{accountDeactivation.DeactivatedReasons}'"
                 }
             };
         }
@@ -581,7 +612,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                             join department in await _unitOfWork.Department.GetAll()
                                 on user.DepartmentId equals department.DepartmentId
                             join unit in await _unitOfWork.DepartmentUnit.GetAll()
-                                on department.DepartmentId equals unit.DepartmentId
+                                on user.UnitId equals unit.UnitId
                             where user.UserType == (int)UserAccountType.Staff
                             select new AdministrationStaffDto
                             (

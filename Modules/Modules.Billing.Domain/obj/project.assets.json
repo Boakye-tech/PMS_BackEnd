@@ -8,25 +8,24 @@
     "net8.0": []
   },
   "packageFolders": {
-    "/Users/macbook/.nuget/packages/": {}
+    "/Users/imac5k/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj",
+      "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj",
       "projectName": "Modules.Billing.Domain",
-      "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj",
-      "packagesPath": "/Users/macbook/.nuget/packages/",
-      "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Billing.Domain/obj/",
+      "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj",
+      "packagesPath": "/Users/imac5k/.nuget/packages/",
+      "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Billing.Domain/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/macbook/.nuget/NuGet/NuGet.Config"
+        "/Users/imac5k/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

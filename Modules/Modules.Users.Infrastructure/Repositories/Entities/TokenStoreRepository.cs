@@ -81,12 +81,8 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
 
         public async Task<string> GetToken(string mobilePhoneNumber_OR_emailAddress, int ExpiryMinutes)
         {
-            //throw new NotImplementedException();
             string token = Application.Helpers.NumberGenerator.Generator(6);
 
-
-            //var phoneRegex = new Regex(@"^\+?[0-9]{1,4}[\s-]?(\d{3}[\s-]?\d{3}[\s-]?\d{3,4})$", RegexOptions.Compiled);
-            //var phonePrefixRegex = new Regex(@"\b(023|024|027|028|020|053|054|055|059|050|057|026|056)\b");
 
             if (emailRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
             {

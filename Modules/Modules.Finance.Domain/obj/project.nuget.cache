@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "NciHq0m9yeY=",
+  "dgSpecHash": "+hCyOu80uRo=",
   "success": true,
-  "projectFilePath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Finance.Domain/Modules.Finance.Domain.csproj",
+  "projectFilePath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Domain/Modules.Finance.Domain.csproj",
   "expectedPackageFiles": [
-    "/Users/macbook/.nuget/packages/fluentvalidation/11.11.0/fluentvalidation.11.11.0.nupkg.sha512",
-    "/Users/macbook/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
-    "/Users/macbook/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
-    "/Users/macbook/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/2.1.0/microsoft.extensions.dependencyinjection.abstractions.2.1.0.nupkg.sha512"
+    "/Users/imac5k/.nuget/packages/fluentvalidation/11.11.0/fluentvalidation.11.11.0.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/2.1.0/microsoft.extensions.dependencyinjection.abstractions.2.1.0.nupkg.sha512"
   ],
   "logs": []
 }

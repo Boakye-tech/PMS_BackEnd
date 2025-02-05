@@ -33,7 +33,28 @@ public class FileManagerController : ControllerBase
             var result = await _blobService.UploadFileBlobAsync("mindspringsimagesonline", files.OpenReadStream(), files.ContentType, files.FileName);
             var toReturn = result.AbsoluteUri;
 
+           
+
             return Ok(new { path = toReturn });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.ToString() });
+        }
+    }
+
+    [HttpDelete]
+    [Route("DeleteUploadFile/{filename}")]
+    public async Task<IActionResult> DeleteUploadFile(string filename)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(filename) == true)
+                return BadRequest();
+
+            var result = await _blobService.DeleteFileBlobAsync("mindspringsimagesonline", filename);
+
+            return Ok(new { Response = result });
         }
         catch (Exception ex)
         {

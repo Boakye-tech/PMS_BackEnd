@@ -32,10 +32,11 @@ namespace Modules.Users.Infrastructure.Repositories
             TokenStore = new TokenStoreRepository(dbContext, _userManager!,_configuration!, _httpClient); // _menuService!
             Users = new UserRepository(dbContext);
 
-            MenuActions = new MenuActionsRepository(dbContext);
+            //MenuActions = new MenuActionsRepository(dbContext);
             //RoleMenuActions = new RoleMenuActionsRepository(dbContext);
             Menus = new MenusRepository(dbContext);
             SubMenus = new SubMenusRepository(dbContext);
+            SubMenuItems = new SubMenuItemsRepository(dbContext);
             RolePermissions = new RoleMenuActionsRepository(dbContext);
         }
 
@@ -45,7 +46,7 @@ namespace Modules.Users.Infrastructure.Repositories
         public ITokenStoreRepository TokenStore { get; private set; }
         public IUserRepository Users { get; private set; }
 
-        public IMenuActionsRepository MenuActions { get; private set; }
+        //public IMenuActionsRepository MenuActions { get; private set; }
         //public IRoleMenuActionsRepository RoleMenuActions { get; private set; }
         public IMenusRepository Menus { get; private set; }
         public ISubMenusRepository SubMenus { get; private set; }
@@ -53,6 +54,8 @@ namespace Modules.Users.Infrastructure.Repositories
         public IRoleMenuActionsRepository RolePermissions { get; private set; }
 
         public IChannelsRepository Channels { get; private set; }
+
+        public ISubMenuItemsRepository SubMenuItems { get; private set; }
 
         public Task<int> Complete()
         {

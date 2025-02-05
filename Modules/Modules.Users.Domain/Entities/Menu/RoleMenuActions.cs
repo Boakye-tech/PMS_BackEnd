@@ -13,39 +13,32 @@ namespace Modules.Users.Domain.Entities.Menu
         [StringLength(50)]
         public string RoleId { get; set; }
       
-        [Required]
-        [StringLength(150)]
         public int MenuId { get; set; }
 
-        [Required]
-        [StringLength(255)]
         public int SubMenuId { get; set; }
 
-        [StringLength(255)]
-        public string NoAccess { get; set; }
+        public int SubMenuItemsId { get; set; }
 
-        [StringLength(255)]
-        public string Create { get; set; }
+        public bool NoAccess { get; set; }
 
-        [StringLength(255)]
-        public string Read { get; set; }
+        public bool Create { get; set; }
 
-        [StringLength(255)]
-        public string Update { get; set; }
+        public bool Read { get; set; }
 
-        [StringLength(255)]
-        public string Delete { get; set; }
+        public bool Update { get; set; }
 
-        [StringLength(255)]
-        public string Approve { get; set; }
+        public bool Delete { get; set; }
+
+        public bool Approve { get; set; }
 
 
-        public RoleMenuActions(string roleId, int menuId, int subMenuId, string noAccess, string create, string read, string update, string delete, string approve)
+        public RoleMenuActions(string roleId, int menuId, int subMenuId, int subMenuItemsId, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
 		{
 			//RoleMenuActionId = 0;
             RoleId = roleId;
 			MenuId = menuId;
 			SubMenuId = subMenuId;
+            SubMenuItemsId = subMenuItemsId;
             NoAccess = noAccess;
             Create = create;
             Read = read;
@@ -55,14 +48,14 @@ namespace Modules.Users.Domain.Entities.Menu
 
         }
 
-        public static RoleMenuActions AssignToRoles( string roleId, int menuId, int subMenuId, string noAccess, string create, string read, string update, string delete, string approve)
+        public static RoleMenuActions AssignToRoles( string roleId, int menuId, int subMenuId, int subMenuItemsId, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
         {
             if (string.IsNullOrWhiteSpace(roleId) || menuId < 0 || subMenuId < 0)
             {
                 throw new ArgumentException("Invalid role and menus data.");
             }
 
-            return new RoleMenuActions(roleId, menuId, subMenuId, noAccess, create, read, update, delete, approve);
+            return new RoleMenuActions(roleId, menuId, subMenuId, subMenuItemsId, noAccess, create, read, update, delete, approve);
         }
     }
 }

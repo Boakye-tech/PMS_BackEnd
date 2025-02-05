@@ -10,10 +10,11 @@ namespace Modules.Users.Domain.Interfaces
         IUserRepository Users { get; }
         IChannelsRepository Channels { get; }
 
-        IMenuActionsRepository MenuActions {get; }
+        //IMenuActionsRepository MenuActions {get; }
         IRoleMenuActionsRepository RolePermissions { get; }
         IMenusRepository Menus { get; }
         ISubMenusRepository SubMenus { get; }
+        ISubMenuItemsRepository SubMenuItems { get; }
 
         Task<int> Complete();
     }

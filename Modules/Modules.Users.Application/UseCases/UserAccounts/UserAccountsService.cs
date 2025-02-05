@@ -313,17 +313,33 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             try
             {
                 var user = await _userManager.FindByEmailAsync(userLoginDetails.Phone_OR_Email!);
+                var userRoles = _userManager.GetRolesAsync(user!).Result.FirstOrDefault();
 
-                if (user is null)
+                if(userRoles is null)
                 {
-                    _logger.LogWarning($"Customer with email address {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
+                    _logger.LogWarning($"User Role not set for user account with email address '{userLoginDetails.Phone_OR_Email}'", userLoginDetails.Phone_OR_Email);
                     return new LoginResponseDto
                     {
                         LoginStatus = false,
                         errorResponse = new LoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"User with {userLoginDetails.Phone_OR_Email} not found."
+                            StatusMessage = $"User Role not set for user account with '{userLoginDetails.Phone_OR_Email}'"
+                        }
+                    };
+
+                }
+
+                if (user is null)
+                {
+                    _logger.LogWarning($"User account with email address {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
+                    return new LoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponse = new LoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"User with email address '{userLoginDetails.Phone_OR_Email}' not found."
                         }
                     };
                 }
@@ -332,7 +348,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"User with email address {userLoginDetails.Phone_OR_Email} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.Phone_OR_Email);
+                    _logger.LogInformation($"User account with email address {userLoginDetails.Phone_OR_Email} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.Phone_OR_Email);
 
                     user.RefreshToken = _tokenService.GetJwRefreshToken().Token;
                     user.RefreshTokenExpires = _tokenService.GetJwRefreshToken().Expires;
@@ -435,6 +451,24 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             try
             {
                 var phoneUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == userLoginDetails.Phone_OR_Email);
+
+                var userRoles = _userManager.GetRolesAsync(phoneUser!).Result.FirstOrDefault();
+
+                if (userRoles is null)
+                {
+                    _logger.LogWarning($"User Role not set for user account with mobile phone number '{userLoginDetails.Phone_OR_Email}'", userLoginDetails.Phone_OR_Email);
+                    return new LoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponse = new LoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"User Role not set for user account with mobile phone number '{userLoginDetails.Phone_OR_Email}'"
+                        }
+                    };
+
+                }
+
                 if (phoneUser is null)
                 {
                     _logger.LogWarning($"User with mobile phone number {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
@@ -444,7 +478,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         errorResponse = new LoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"User with {userLoginDetails.Phone_OR_Email} not found."
+                            StatusMessage = $"User account with '{userLoginDetails.Phone_OR_Email}' not found."
                         }
                     };
                 }

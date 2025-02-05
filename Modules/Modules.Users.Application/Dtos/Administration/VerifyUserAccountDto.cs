@@ -1,8 +1,8 @@
 ﻿using System;
 namespace Modules.Users.Application.Dtos.Administration;
 
-public record VerifyUserAccountDto(string verifiedBy) : ConfirmUserAccountDto();
-public record RejectUserAccountDto(string RejectedBy, string RejectedReasons) : ConfirmUserAccountDto();
+public record VerifyUserAccountDto(string UserId, string verifiedBy); //: ConfirmUserAccountDto();
+public record RejectUserAccountDto(string UserId, string RejectedBy, string RejectedReasons); // : ConfirmUserAccountDto();
 
 public record CustomerVerificationSuccessResponseDto : BaseResponse { };
 public record CustomerVerificationErrorResponseDto : BaseResponse { };

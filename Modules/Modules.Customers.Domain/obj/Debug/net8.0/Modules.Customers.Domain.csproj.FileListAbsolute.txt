@@ -11,3 +11,16 @@
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/obj/Debug/net8.0/refint/Modules.Customers.Domain.dll
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.pdb
 /Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Customers.Domain/obj/Debug/net8.0/ref/Modules.Customers.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/bin/Debug/net8.0/Modules.Customers.Domain.deps.json
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/bin/Debug/net8.0/Modules.Customers.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/bin/Debug/net8.0/Modules.Customers.Domain.pdb
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.csproj.AssemblyReference.cache
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.AssemblyInfoInputs.cache
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.AssemblyInfo.cs
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.csproj.CoreCompileInputs.cache
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.sourcelink.json
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/refint/Modules.Customers.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/Modules.Customers.Domain.pdb
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Domain/obj/Debug/net8.0/ref/Modules.Customers.Domain.dll

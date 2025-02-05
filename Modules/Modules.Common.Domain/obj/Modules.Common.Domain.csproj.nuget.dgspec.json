@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Domain.csproj": {}
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Domain/Modules.Common.Domain.csproj": {}
   },
   "projects": {
-    "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Domain.csproj": {
+    "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Domain/Modules.Common.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Domain.csproj",
+        "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Domain/Modules.Common.Domain.csproj",
         "projectName": "Modules.Common.Domain",
-        "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/Modules.Common.Domain.csproj",
-        "packagesPath": "/Users/macbook/.nuget/packages/",
-        "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Common.Domain/obj/",
+        "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Domain/Modules.Common.Domain.csproj",
+        "packagesPath": "/Users/imac5k/.nuget/packages/",
+        "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Common.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/macbook/.nuget/NuGet/NuGet.Config"
+          "/Users/imac5k/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

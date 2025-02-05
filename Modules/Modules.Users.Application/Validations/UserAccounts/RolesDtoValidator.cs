@@ -38,6 +38,17 @@ namespace Modules.Users.Application.Validations.UserAccounts
             RuleFor(x => x.RoleId).NotEmpty();
         }
     }
+
+    public class RolesApprovalDtoValidator : AbstractValidator<RolesApprovalDto>
+    {
+        public RolesApprovalDtoValidator()
+        {
+            RuleFor(x => x.RoleId).NotEmpty();
+            RuleFor(x => x.ApprovedBy).NotEmpty();
+        }
+    }
+
+    
 }
 
 

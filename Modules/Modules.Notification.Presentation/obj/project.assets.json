@@ -5655,36 +5655,35 @@
     ]
   },
   "packageFolders": {
-    "/Users/macbook/.nuget/packages/": {}
+    "/Users/imac5k/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Presentation/Modules.Notification.Presentation.csproj",
+      "projectUniqueName": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/Modules.Notification.Presentation.csproj",
       "projectName": "Modules.Notification.Presentation",
-      "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Presentation/Modules.Notification.Presentation.csproj",
-      "packagesPath": "/Users/macbook/.nuget/packages/",
-      "outputPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Presentation/obj/",
+      "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/Modules.Notification.Presentation.csproj",
+      "packagesPath": "/Users/imac5k/.nuget/packages/",
+      "outputPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/macbook/.nuget/NuGet/NuGet.Config"
+        "/Users/imac5k/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/Modules.Notification.Application.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Application/Modules.Notification.Application.csproj"
+            "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Application/Modules.Notification.Application.csproj": {
+              "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Application/Modules.Notification.Application.csproj"
             },
-            "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Infrastructure/Modules.Notification.Infrastructure.csproj": {
-              "projectPath": "/Users/macbook/Projects/PropertyManagementSolution/Modules/Modules.Notification.Infrastructure/Modules.Notification.Infrastructure.csproj"
+            "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Infrastructure/Modules.Notification.Infrastructure.csproj": {
+              "projectPath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Infrastructure/Modules.Notification.Infrastructure.csproj"
             }
           }
         }
