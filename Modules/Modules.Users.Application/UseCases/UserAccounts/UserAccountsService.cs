@@ -154,7 +154,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
 
                 var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.Phone_OR_Email);
-                var user = await _userManager.FindByIdAsync(appUser.Id);
+                var user = await _userManager.FindByIdAsync(appUser!.Id);
                 //var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress_OR_PhoneNumber);
 
                 if (user is null)
@@ -241,7 +241,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 //remember to check for the validity of the token
 
                 var appUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == resetPassword.Phone_OR_Email);
-                var user = await _userManager.FindByIdAsync(appUser.Id);
+                var user = await _userManager.FindByIdAsync(appUser!.Id);
                 //var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress_OR_PhoneNumber);
 
                 if (user is null)

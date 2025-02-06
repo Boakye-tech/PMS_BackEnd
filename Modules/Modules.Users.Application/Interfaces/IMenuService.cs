@@ -25,21 +25,22 @@ namespace Modules.Users.Application.Interfaces
         Task<IEnumerable<SubMenusDto>> GetSubMenus();
         Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems();
 
-        //void GetSubMenus(SubMenusDto subMenus);
 
-        Task<IEnumerable<MenusWithActionsDto>> GetMenuActions();
+        //Task<IEnumerable<MenusWithActionsDto>> GetMenuActions();
+
+        Task<AccessModulesDto> GetAccessMenus();
         //Task<IEnumerable<MenuActionsDto>> GetActions();
         IEnumerable<MenuActionsDto> GetActions();
 
-        //void AssignMenuActionsToRole(RolesPermissionsDto rolesPermissions);
-        Task<AssignPermissionToRoleResponseDto> AssignPermissionToRole(RolesPermissionsDto rolesPermissions);
+
+        Task<string> AssignPermissionToRole(PermissionsAccessModulesDto rolesPermissions); 
+
         Task<IdentityResult> AssignUserRole(AssignUserRoleDto assignUserRole);
 
-        Task<IEnumerable<RolesPermissionsResponseDto>> GetRolesPermissions(string roleId);
+        Task<PermissionsAccessModulesDto> GetRolesPermissions(string roleId);
 
-        Task<IEnumerable<RolesPermissionsResponseDto>> GetUserRolePermissions(string userId);
+        Task<PermissionsAccessModulesDto> GetUserRolePermissions(string userId);
 
-        Task<IEnumerable<Claim>> GetUserRoleClaims(string userId); //remove
     }
 }
 

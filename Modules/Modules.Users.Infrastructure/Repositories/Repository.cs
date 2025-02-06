@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
-using Modules.Users.Domain.Interfaces;
 
 namespace Modules.Users.Infrastructure.Repositories
 {
@@ -19,12 +18,10 @@ namespace Modules.Users.Infrastructure.Repositories
 
         public void DeleteRange(IEnumerable<TEntity> entities) => _dbContext.Set<TEntity>().RemoveRange(entities);
 
-        public async Task<TEntity> Get(int id) => await _dbContext.Set<TEntity>().FindAsync(id);
-
-        //public async Task<TEntity> Get(string name) => await _dbContext.Set<TEntity>().FindAsync(name);
+        public async Task<TEntity?> Get(int id) => await _dbContext.Set<TEntity>().FindAsync(id);
 
 
-        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> expression, List<string>? includes = null)
+        public async Task<TEntity?> Get(Expression<Func<TEntity, bool>> expression, List<string>? includes = null)
         {
             IQueryable<TEntity> entities = _dbContext.Set<TEntity>();
             if (includes != null)

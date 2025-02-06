@@ -7,6 +7,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Modules.Users.Application.Dtos.Entities;
 using Modules.Users.Application.Dtos.Entities.Menu;
+using Modules.Users.Application.Dtos.Entities.Permissions;
 using Modules.Users.Application.Enums;
 using Modules.Users.Application.UseCases;
 
@@ -44,19 +45,6 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _channelService.GetChannelAsync());
         }
 
-        //[HttpGet]
-        //[Route("Setup/GetDepartment/{value}")]
-        //public async Task<ActionResult<DepartmentReadDto>> GetDepartment(string value)
-        //{
-        //    return Ok(await _departmentService.GetDepartmentAsync(value));
-        //}
-
-        //[HttpGet]
-        //[Route("Setup/GetDepartmentById/{departmentId}")]
-        //public async Task<ActionResult<DepartmentReadDto>> GetDepartmentById(int departmentId)
-        //{
-        //    return Ok(await _departmentService.GetDepartmentAsync(departmentId));
-        //}
 
         [HttpPost]
         [Route("CreateChannel")]
@@ -82,15 +70,15 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpDelete("DeleteChannel/{channelId}")]
         public void DeleteChannel(int channelId)
         { }
+        
 
-        //-----MENUS----
+
         [HttpGet]
-        [Route("GetMenuActions")]
-        public async Task<IEnumerable<MenusWithActionsDto>> GetMenuActions()
+        [Route("GetAccessMenus")]
+        public async Task<AccessModulesDto> GetAccessMenus()
         {
-            return await _menuService.GetMenuActions();
+            return await _menuService.GetAccessMenus();
         }
-
 
         [HttpGet]
         [Route("GetUserActions")]
@@ -276,23 +264,25 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("AssignPermissionsToRole")]
-        public async Task<ActionResult> AssignPermissionsToRole([FromBody] RolesPermissionsDto values)
+        public async Task<ActionResult> AssignPermissionsToRole([FromBody] PermissionsAccessModulesDto values)
         {
             return Ok(await _menuService.AssignPermissionToRole(values));
         }
 
         [HttpGet]
         [Route("GetUserPermissions/{userId}")]
-        public async Task<IEnumerable<RolesPermissionsResponseDto>> GetUserPermissions(string userId)
+        public Task<IEnumerable<PermissionsAccessModulesDto>> GetUserPermissions(string userId)
         {
-            return await _menuService.GetUserRolePermissions(userId);
+            return null!;
+            //return await _menuService.GetUserRolePermissions(userId);
         }
 
         [HttpGet]
         [Route("GetRolePermissions/{roleId}")]
-        public async Task<IEnumerable<RolesPermissionsResponseDto>> GetRolePermissions(string roleId)
+        public Task<IEnumerable<PermissionsAccessModulesDto>> GetRolePermissions(string roleId)
         {
-            return await _menuService.GetRolesPermissions(roleId);
+            //return await _menuService.GetRolesPermissions(roleId);
+            return null!;
         }
 
         [HttpPut]

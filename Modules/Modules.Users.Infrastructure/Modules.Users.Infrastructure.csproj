@@ -30,6 +30,7 @@
     <None Remove="Extensions\" />
     <None Remove="Repositories\Entities\Menu\" />
     <None Remove="Migrations\" />
+    <None Remove="Repositories\Entities\Permissions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
@@ -38,5 +39,6 @@
     <Folder Include="Extensions\" />
     <Folder Include="Repositories\Entities\Menu\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Repositories\Entities\Permissions\" />
   </ItemGroup>
 </Project>

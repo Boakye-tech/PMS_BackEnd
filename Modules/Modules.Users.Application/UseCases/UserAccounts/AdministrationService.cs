@@ -150,7 +150,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             //var result = _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!)).ToList();
 
             return _roleManager.Roles
-                .Where(r => r.Status == (int)RegistrationStatus.Verified)
+                .Where(r => r.Status == (int)RegistrationStatus.Approved)
                 .Select(role => new RolesDto(role.Id, role.Name!, role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
         }
 

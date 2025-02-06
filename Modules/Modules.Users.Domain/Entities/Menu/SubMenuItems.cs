@@ -21,26 +21,25 @@ namespace Modules.Users.Domain.Entities.Menu
         [StringLength(255)]
         public string Description { get; set; }
 
-        public bool IsOpen { get; set; }
 
-        public SubMenuItems(int menuId, int subMenuId, int subMenuItemId, string subMenuItemName, string description, bool isOpen)
-		{
+        public SubMenuItems(int menuId, int subMenuId, int subMenuItemId, string subMenuItemName, string description)
+        {
 			MenuId = menuId;
 			SubMenuId = subMenuId;
             SubMenuItemId = subMenuItemId;
             SubMenuItemName = subMenuItemName;
 			Description = description;
-            IsOpen = isOpen;
+            //IsOpen = isOpen;
 		}
 
-        public static SubMenuItems CreateSubMenuItems(int menuId, int subMenuId, int subMenuItemId, string subMenuItemName, string description, bool isOpen)
+        public static SubMenuItems CreateSubMenuItems(int menuId, int subMenuId, int subMenuItemId, string subMenuItemName, string description) 
         {
             if (string.IsNullOrWhiteSpace(subMenuItemName) || menuId < 0 || subMenuId < 0)
             {
                 throw new ArgumentException("Invalid sub-menu items data.");
             }
 
-            return new SubMenuItems(menuId, subMenuId, subMenuItemId, subMenuItemName, description, isOpen);
+            return new SubMenuItems(menuId, subMenuId, subMenuItemId, subMenuItemName, description); 
         }
 
 

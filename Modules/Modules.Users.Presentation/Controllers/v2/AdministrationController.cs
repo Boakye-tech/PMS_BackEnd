@@ -3,6 +3,7 @@
 
 using Asp.Versioning;
 using Modules.Users.Application.Dtos.Entities.Menu;
+using Modules.Users.Application.Dtos.Entities.Permissions;
 
 namespace Modules.Users.Presentation.Controllers.v2
 {
@@ -22,12 +23,12 @@ namespace Modules.Users.Presentation.Controllers.v2
         }
 
         //-----MENUS----
-        [HttpGet]
-        [Route("GetMenuActions")]
-        public async Task<IEnumerable<MenusWithActionsDto>> GetMenuActions()
-        {
-            return await _menuService.GetMenuActions();
-        }
+        //[HttpGet]
+        //[Route("GetMenuActions")]
+        //public async Task<IEnumerable<MenusWithActionsDto>> GetMenuActions()
+        //{
+        //    return await _menuService.GetMenuActions();
+        //}
 
 
         [HttpGet]
@@ -167,23 +168,25 @@ namespace Modules.Users.Presentation.Controllers.v2
 
         [HttpPost]
         [Route("AssignPermissionsToRole")]
-        public async Task<ActionResult> AssignPermissionsToRole([FromBody] RolesPermissionsDto values)
+        public async Task<ActionResult> AssignPermissionsToRole([FromBody] PermissionsAccessModulesDto values)
         {
             return Ok(await _menuService.AssignPermissionToRole(values));
         }
 
         [HttpGet]
         [Route("GetUserPermissions/{userId}")]
-        public async Task<IEnumerable<RolesPermissionsResponseDto>> GetUserPermissions(string userId)
+        public Task<IEnumerable<PermissionsAccessModulesDto>> GetUserPermissions(string userId)
         {
-            return await _menuService.GetUserRolePermissions(userId);
+            return null!;
+            //return await _menuService.GetUserRolePermissions(userId);
         }
 
         [HttpGet]
         [Route("GetRolePermissions/{roleId}")]
-        public async Task<IEnumerable<RolesPermissionsResponseDto>> GetRolePermissions(string roleId)
+        public Task<IEnumerable<PermissionsAccessModulesDto>> GetRolePermissions(string roleId)
         {
-            return await _menuService.GetRolesPermissions(roleId);
+            //return await _menuService.GetRolesPermissions(roleId);
+            return null!;
         }
 
         [HttpPut]

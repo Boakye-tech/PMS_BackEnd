@@ -18,6 +18,7 @@
     <None Remove="Interfaces\Entities\" />
     <None Remove="Entities\Menu\" />
     <None Remove="Interfaces\Entities\Menu\" />
+    <None Remove="Interfaces\Entities\Permissions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -25,5 +26,6 @@
     <Folder Include="Interfaces\Entities\" />
     <Folder Include="Entities\Menu\" />
     <Folder Include="Interfaces\Entities\Menu\" />
+    <Folder Include="Interfaces\Entities\Permissions\" />
   </ItemGroup>
 </Project>

@@ -675,6 +675,47 @@ namespace Modules.Users.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.AccessPermissions", b =>
+                {
+                    b.Property<int>("PermissionsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionsId"));
+
+                    b.Property<bool>("Approve")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Create")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModuleName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("NoAccess")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("Update")
+                        .HasColumnType("bit");
+
+                    b.HasKey("PermissionsId");
+
+                    b.ToTable("Permissions");
+                });
+
             modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.Menus", b =>
                 {
                     b.Property<int>("MenuId")
@@ -704,54 +745,6 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.ToTable("Menus");
                 });
 
-            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.RoleMenuActions", b =>
-                {
-                    b.Property<int>("RoleMenuActionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleMenuActionId"));
-
-                    b.Property<bool>("Approve")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Create")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Delete")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("NoAccess")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Read")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("SubMenuId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubMenuItemsId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Update")
-                        .HasColumnType("bit");
-
-                    b.HasKey("RoleMenuActionId");
-
-                    b.HasIndex("RoleId", "SubMenuId")
-                        .IsUnique();
-
-                    b.ToTable("RoleMenuActions");
-                });
-
             modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.SubMenuItems", b =>
                 {
                     b.Property<int>("SubMenuItemId")
@@ -764,9 +757,6 @@ namespace Modules.Users.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("IsOpen")
-                        .HasColumnType("bit");
 
                     b.Property<int>("MenuId")
                         .HasColumnType("int");
@@ -814,6 +804,97 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.HasKey("SubMenuId");
 
                     b.ToTable("SubMenus");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.SubPermissions", b =>
+                {
+                    b.Property<int>("SubPermissionsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubPermissionsId"));
+
+                    b.Property<bool>("Approve")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Create")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("NoAccess")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PermissionsId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("SectionName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Update")
+                        .HasColumnType("bit");
+
+                    b.HasKey("SubPermissionsId");
+
+                    b.ToTable("SubPermissions");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Menu.SubPermissionsItems", b =>
+                {
+                    b.Property<int>("SubPermissionsItemsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubPermissionsItemsId"));
+
+                    b.Property<bool>("Approve")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Create")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("NoAccess")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PermissionsId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SubPermissionsId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Update")
+                        .HasColumnType("bit");
+
+                    b.HasKey("SubPermissionsItemsId");
+
+                    b.ToTable("SubPermissionsItems");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.TokenStore", b =>
