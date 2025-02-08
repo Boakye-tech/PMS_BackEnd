@@ -24,7 +24,7 @@ if (builder.Environment.IsDevelopment())
             break;
 
         case "MsSQLServer":
-            builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection")));
+            builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection")).EnableDetailedErrors().EnableSensitiveDataLogging());
             break;
     }
 

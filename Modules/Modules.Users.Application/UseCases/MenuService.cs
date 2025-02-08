@@ -5,6 +5,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static System.Collections.Specialized.BitVector32;
 
 
 namespace Modules.Users.Application.UseCases
@@ -28,27 +29,19 @@ namespace Modules.Users.Application.UseCases
             _roleManager = roleManager;
         }
 
-        public async Task<string> AssignPermissionToRole(PermissionsAccessModulesDto rolesPermissions)
+
+        public async Task<GenericResponseDto> AssignPermissionToRole(PermissionsAccessModulesDto rolesPermissions)
         {
-            //throw new NotImplementedException();
-
-            //set counters
-            int pCounter; int spCounter; int spiCounter;
-
-            if(rolesPermissions is null)
+            if (rolesPermissions is null || rolesPermissions.permissionsAccessModules == null)
             {
+                return new GenericResponseDto("Invalid input data.");
             }
-            pCounter = _unitOfWork.AcccessPermissions.GetAll().Result.Count();
-            spCounter = _unitOfWork.SubPermissions.GetAll().Result.Count();
-            spiCounter = _unitOfWork.SubPermissionsItems.GetAll().Result.Count();
 
-
-            foreach (var _menus in rolesPermissions!.permissionsAccessModules)
+            foreach (var _menus in rolesPermissions.permissionsAccessModules)
             {
-                pCounter++;
+                // Step 1: Create and save AccessPermissions FIRST
                 var permissions = new AccessPermissions
                 (
-                    permissionsId: pCounter,
                     roleId: rolesPermissions.RoleId,
                     moduleName: _menus.menuName,
                     noAccess: _menus.permissionsActions.NoAccess,
@@ -60,14 +53,17 @@ namespace Modules.Users.Application.UseCases
                 );
 
                 _unitOfWork.AcccessPermissions.Insert(permissions);
+                await _unitOfWork.Complete(); // Save to DB first
+
+                // Step 2: Retrieve the assigned PermissionsId
+                int permissionsId = permissions.PermissionsId; // EF Core now assigns this
 
                 foreach (var _subMenu in _menus.sections)
                 {
-                    spCounter++;
+                    // Create SubPermissions with the real permissionsId
                     var subpermissions = new SubPermissions
                     (
-                        permissionsId : pCounter,
-                        subPermissionsId: spCounter,
+                        permissionsId: permissionsId, // Use the DB-generated ID
                         roleId: rolesPermissions.RoleId,
                         sectionName: _subMenu.sectionName,
                         noAccess: _subMenu.permissionsActions.NoAccess,
@@ -76,18 +72,20 @@ namespace Modules.Users.Application.UseCases
                         update: _subMenu.permissionsActions.Update,
                         delete: _subMenu.permissionsActions.Delete,
                         approve: _subMenu.permissionsActions.Approve
-                    );;
+                    );
 
                     _unitOfWork.SubPermissions.Insert(subpermissions);
+                    await _unitOfWork.Complete(); // Save to DB first
+
+                    int subPermissionsId = subpermissions.SubPermissionsId; // Get the new ID
 
                     foreach (var _item in _subMenu.items)
                     {
-                        spiCounter++;
+                        // Create SubPermissionsItems with real IDs
                         var subpermissionsitems = new SubPermissionsItems
                         (
-                            permissionsId: pCounter,
-                            subPermissionsId : spCounter,
-                            subPermissionsItemsId: spiCounter,
+                            permissionsId: permissionsId,
+                            subPermissionsId: subPermissionsId, // Use the correct sub permission ID
                             roleId: rolesPermissions.RoleId,
                             itemName: _item.ItemName,
                             noAccess: _item.permissionsActions.NoAccess,
@@ -100,15 +98,14 @@ namespace Modules.Users.Application.UseCases
 
                         _unitOfWork.SubPermissionsItems.Insert(subpermissionsitems);
                     }
+
+                    await _unitOfWork.Complete(); // Ensure changes persist
                 }
             }
-            await _unitOfWork.Complete();
 
-            //return null!;
-            
-
-            return "Permissions applied successfully.";
+            return new GenericResponseDto("Permissions applied successfully.");
         }
+
 
         public async Task<IdentityResult> AssignUserRole(AssignUserRoleDto assignUserRole)
         {
@@ -169,7 +166,6 @@ namespace Modules.Users.Application.UseCases
 
         public IEnumerable<MenuActionsDto> GetActions()
         {
-            //var response = await _unitOfWork.MenuActions.GetAll();
             var response = ClaimsMenuActionsEnumDescription.ToMenuActionsDtoList();
             return _mapper.Map<IEnumerable<MenuActionsDto>>(response);
         }
@@ -204,7 +200,6 @@ namespace Modules.Users.Application.UseCases
                 accessModules.Add(new AccessMenusWithActionsDto(_menuItem.MenuName, _menuItem.IsOpen, permissions, sections));
             }
 
-            //return new List<AccessModulesDto> { new AccessModulesDto(accessModules) };
             return new AccessModulesDto(accessModules);
         }
 
@@ -237,50 +232,8 @@ namespace Modules.Users.Application.UseCases
                 accessModules.Add(new PermissionAccessMenusWithActionsDto(_menuItem.MenuName, permissions, sections));
             }
 
-            //return new List<AccessModulesDto> { new AccessModulesDto(accessModules) };
             return new PermissionsAccessModulesDto(values.RoleId, accessModules);
         }
-
-        //public async Task<IEnumerable<MenusWithActionsDto>> GetMenuActions()
-        //{
-        //    //throw new NotImplementedException();
-        //    //var _actions = await _unitOfWork.MenuActions!.GetAll();
-        //    var _actions = ClaimsMenuActionsEnumDescription.ToMenuActionsDtoList();
-
-        //    var result =
-        //        (from menu in await _unitOfWork.Menus.GetAll()
-        //         join submenu in await _unitOfWork.SubMenus.GetAll()
-        //         on menu.MenuId equals submenu.MenuId into submenuGroup
-        //         from submenu in submenuGroup.DefaultIfEmpty() // LEFT JOIN
-        //         from action in _actions  // CROSS JOIN
-        //         group new { menu, submenu, action }
-        //         by new { menu.MenuName, SubmenuName = submenu != null ? submenu.SubMenuName : null } into grouped
-        //         select new MenusWithActionsDto
-        //         (0,
-        //          grouped.Key.MenuName,
-        //          grouped.Key.SubmenuName,
-        //          grouped.Any(g => g.action.actionName == "No Access") ? "" : null!,
-        //          grouped.Any(g => g.action.actionName == "Create") ? "" : null!,
-        //          grouped.Any(g => g.action.actionName == "Read") ? "" : null!,
-        //          grouped.Any(g => g.action.actionName == "Update") ? "" : null!,
-        //          grouped.Any(g => g.action.actionName == "Delete") ? "" : null!,
-        //          grouped.Any(g => g.action.actionName == "Approve") ? "" : null!
-        //         )).ToList();
-        //    //select new MenusWithActionsDto
-        //    //{
-        //    //    MenuId = 0,
-        //    //    MenuName = grouped.Key.MenuName,
-        //    //    SubmenuName = grouped.Key.SubmenuName,
-        //    //    NoAccess = grouped.Any(g => g.action.ActionName == "No Access") ? "" : null,
-        //    //    Create = grouped.Any(g => g.action.ActionName == "Create") ? "" : null,
-        //    //    Read = grouped.Any(g => g.action.ActionName == "Read") ? "" : null,
-        //    //    Update = grouped.Any(g => g.action.ActionName == "Update") ? "" : null,
-        //    //    Delete = grouped.Any(g => g.action.ActionName == "Delete") ? "" : null,
-        //    //    Approve = grouped.Any(g => g.action.ActionName == "Approve") ? "" : null
-        //    //}).ToList();
-
-        //    return result!;
-        //}
 
         public async Task<IEnumerable<MenusDto>> GetMenus()
         {
@@ -288,95 +241,76 @@ namespace Modules.Users.Application.UseCases
             return _mapper.Map<IEnumerable<MenusDto>>(response);
         }
 
-        //public void GetRolesMenusActions()
-        //{
-        //    throw new NotImplementedException();
-        //}
 
-        public Task<PermissionsAccessModulesDto> GetRolesPermissions(string roleId)
+        public async Task<PermissionsAccessModulesDto> GetRolesPermissions(string roleId)
         {
-            throw new NotImplementedException();
+            var _permissions = await _unitOfWork.AcccessPermissions.GetAll(p => p.RoleId == roleId);
+            var accessModules = new List<PermissionAccessMenusWithActionsDto>();
 
-            //var roles = _roleManager.Roles;
+            foreach (var permission in _permissions)
+            {
+                string role = permission.RoleId;
 
-            //var result = from roleAction in await _unitOfWork.RolePermissions.GetAll()
-            //             join menu in await _unitOfWork.Menus.GetAll()
-            //             on roleAction.MenuId equals menu.MenuId
+                var _subPermissions = await _unitOfWork.SubPermissions.GetAll(sp => sp.PermissionsId == permission.PermissionsId);
+                var sections = new List<PermissionAccessSubMenusWithActionsDto>();
 
-            //             join subMenu in await _unitOfWork.SubMenus.GetAll()
-            //             on roleAction.SubMenuId equals subMenu.SubMenuId
+                foreach (var _section in _subPermissions)
+                {
+                    var _subPermissionItems = await _unitOfWork.SubPermissionsItems.GetAll(spi => spi.SubPermissionsId == _section.SubPermissionsId);
+                    var items = new List<PermissionAccessSubMenuItemsWithActionsDto>();
 
-            //             join subMenuItems in await _unitOfWork.SubMenuItems.GetAll()
-            //             on roleAction.SubMenuItemsId equals subMenuItems.SubMenuItemId
-            //             join role in roles
-            //             on roleAction.RoleId equals role.Id
-            //             where role.Id == roleId
-            //             group new { roleAction, menu, subMenu, subMenuItems, role } by role.Name into roleGroup
-            //             select new RolesPermissionsResponseDto
-            //             {
-            //                 RoleName = roleGroup.Key, // Now RoleName is fetched from roles.
-            //                 AssignedPermissions = roleGroup.Select(g => new RolesWithMenusResponseDto(
-            //                     g.menu.MenuName,
-            //                     g.subMenu.SubMenuName,
-            //                     g.subMenuItems.SubMenuItemName,
-            //                     g.roleAction.NoAccess,
-            //                     g.roleAction.Create,
-            //                     g.roleAction.Read,
-            //                     g.roleAction.Update,
-            //                     g.roleAction.Delete,
-            //                     g.roleAction.Approve
-            //                 ))
-            //             };
+                    foreach (var item in _subPermissionItems)
+                    {
+                         items.Add(new PermissionAccessSubMenuItemsWithActionsDto(item.RoleId, new PermissionsActionsDto(item.NoAccess, item.Create, item.Read, item.Update, item.Delete, item.Approve)));
+                    }
 
-            //return result.ToList();
+                    sections.Add(new PermissionAccessSubMenusWithActionsDto(_section.SectionName,new PermissionsActionsDto(_section.NoAccess, _section.Create, _section.Read, _section.Update, _section.Delete, _section.Approve), items));
+                }
+
+                accessModules.Add(new PermissionAccessMenusWithActionsDto(permission.ModuleName, new PermissionsActionsDto(permission.NoAccess, permission.Create, permission.Read, permission.Update, permission.Delete, permission.Approve), sections));
+            }
+
+            return new PermissionsAccessModulesDto(roleId, accessModules);
         }
+
 
         public async Task<IEnumerable<SubMenusDto>> GetSubMenus()
         {
-            //throw new NotImplementedException();
             var response = await _unitOfWork.SubMenus.GetAll();
             return _mapper.Map<IEnumerable<SubMenusDto>>(response);
         }
 
-        public Task<PermissionsAccessModulesDto> GetUserRolePermissions(string userId)
+        public async Task<PermissionsAccessModulesDto> GetUserRolePermissions(string userId)
         {
-            throw new NotImplementedException();
-            //var resultUser = await  _userManager.FindByIdAsync(userId);
+            //throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null)
+            {
+                throw new Exception("User not found");
+            }
 
-            //if(resultUser is null) { }
+            var userRoles = await _userManager.GetRolesAsync(user); 
 
-            //var resultRole = _userManager.GetRolesAsync(resultUser!).Result.FirstOrDefault();
+            if (userRoles.Count == 0)
+            {
+                throw new Exception("User has no roles assigned");
+            }
 
-            //var roles = _roleManager.Roles;
+            // Assuming a user has only one role, get the first role name
+            string roleName = userRoles.First();
 
-            //var result = from roleAction in await _unitOfWork.RolePermissions.GetAll()
-            //             join menu in await _unitOfWork.Menus.GetAll()
-            //             on roleAction.MenuId equals menu.MenuId
-            //             join subMenu in await _unitOfWork.SubMenus.GetAll()
-            //             on roleAction.SubMenuId equals subMenu.SubMenuId
-            //             join subMenuItems in await _unitOfWork.SubMenuItems.GetAll()
-            //             on roleAction.SubMenuItemsId equals subMenuItems.SubMenuItemId
-            //             join role in roles
-            //             on roleAction.RoleId equals role.Id
-            //             where role.Name == resultRole
-            //             group new { roleAction, menu, subMenu, subMenuItems, role } by role.Name into roleGroup
-            //             select new RolesPermissionsResponseDto
-            //             {
-            //                 RoleName = roleGroup.Key, // Now RoleName is fetched from roles.
-            //                 AssignedPermissions = roleGroup.Select(g => new RolesWithMenusResponseDto(
-            //                     g.menu.MenuName,
-            //                     g.subMenu.SubMenuName,
-            //                     g.subMenuItems.SubMenuItemName,
-            //                     g.roleAction.NoAccess,
-            //                     g.roleAction.Create,
-            //                     g.roleAction.Read,
-            //                     g.roleAction.Update,
-            //                     g.roleAction.Delete,
-            //                     g.roleAction.Approve
-            //                 ))
-            //             };
+            // Find the role entity using its name
+            var role = await _roleManager.FindByNameAsync(roleName);
 
-            //return result.ToList();
+            if (role is null)
+            {
+                throw new Exception("Role not found");
+            }
+
+            string roleId = role.Id; // Role ID
+
+            return await GetRolesPermissions(roleId);
+
         }
 
         public Task<MenusDto> UpdateMenu(MenusDto updateMenus)
@@ -388,9 +322,6 @@ namespace Modules.Users.Application.UseCases
         {
             throw new NotImplementedException();
         }
-
-
-
 
         public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()
         {

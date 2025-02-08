@@ -26,9 +26,9 @@ namespace Modules.Users.Domain.Entities.Menu
 
         
 
-        public AccessPermissions(int permissionsId, string roleId, string moduleName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
+        public AccessPermissions( string roleId, string moduleName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
 		{
-            PermissionsId = permissionsId;
+            //PermissionsId = permissionsId;
 			RoleId = roleId;
             ModuleName= moduleName;
             NoAccess = noAccess;
@@ -39,14 +39,14 @@ namespace Modules.Users.Domain.Entities.Menu
             Approve = approve;
 		}
 
-        public static AccessPermissions CreatePermissions(int permissionsId, string roleId, string moduleName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
+        public static AccessPermissions CreatePermissions(string roleId, string moduleName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
         {
             if (string.IsNullOrWhiteSpace(roleId) || string.IsNullOrWhiteSpace(moduleName))
             {
                 throw new ArgumentException("Invalid permissions data.");
             }
 
-            return new AccessPermissions(permissionsId, roleId, moduleName, noAccess, create, read,  update,  delete,  approve);
+            return new AccessPermissions(roleId, moduleName, noAccess, create, read,  update,  delete,  approve);
         }
     }
 }

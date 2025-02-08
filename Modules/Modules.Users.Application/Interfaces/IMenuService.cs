@@ -33,7 +33,7 @@ namespace Modules.Users.Application.Interfaces
         IEnumerable<MenuActionsDto> GetActions();
 
 
-        Task<string> AssignPermissionToRole(PermissionsAccessModulesDto rolesPermissions); 
+        Task<GenericResponseDto> AssignPermissionToRole(PermissionsAccessModulesDto rolesPermissions); 
 
         Task<IdentityResult> AssignUserRole(AssignUserRoleDto assignUserRole);
 

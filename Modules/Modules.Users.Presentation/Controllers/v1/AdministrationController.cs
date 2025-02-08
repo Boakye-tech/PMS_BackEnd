@@ -279,10 +279,9 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpGet]
         [Route("GetRolePermissions/{roleId}")]
-        public Task<IEnumerable<PermissionsAccessModulesDto>> GetRolePermissions(string roleId)
+        public async Task<PermissionsAccessModulesDto> GetRolePermissions(string roleId)
         {
-            //return await _menuService.GetRolesPermissions(roleId);
-            return null!;
+            return await _menuService.GetRolesPermissions(roleId);
         }
 
         [HttpPut]

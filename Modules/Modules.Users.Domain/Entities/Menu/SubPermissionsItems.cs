@@ -33,11 +33,10 @@ namespace Modules.Users.Domain.Entities.Menu
 
         
 
-        public SubPermissionsItems(int permissionsId, int subPermissionsId, int subPermissionsItemsId, string roleId, string itemName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
+        public SubPermissionsItems(int permissionsId, int subPermissionsId, string roleId, string itemName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
 		{
             PermissionsId = permissionsId;
             SubPermissionsId = subPermissionsId;
-            SubPermissionsItemsId = subPermissionsItemsId;
 			RoleId = roleId;
             ItemName= itemName;
             NoAccess = noAccess;
@@ -48,14 +47,14 @@ namespace Modules.Users.Domain.Entities.Menu
             Approve = approve;
 		}
 
-        public static SubPermissionsItems CreateSubPermissionsItems(int permissionsId, int subPermissionsId, int subPermissionsItemsId, string roleId, string itemName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
+        public static SubPermissionsItems CreateSubPermissionsItems(int permissionsId, int subPermissionsId, string roleId, string itemName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
         {
             if (string.IsNullOrWhiteSpace(roleId) || string.IsNullOrWhiteSpace(itemName))
             {
                 throw new ArgumentException("Invalid sub-permissions items data.");
             }
 
-            return new SubPermissionsItems(permissionsId, subPermissionsId, subPermissionsItemsId, roleId, itemName, noAccess, create, read,  update,  delete,  approve);
+            return new SubPermissionsItems(permissionsId, subPermissionsId, roleId, itemName, noAccess, create, read,  update,  delete,  approve);
         }
     }
 }

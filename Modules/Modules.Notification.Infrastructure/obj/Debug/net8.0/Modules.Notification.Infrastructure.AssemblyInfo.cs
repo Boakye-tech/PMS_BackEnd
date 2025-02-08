@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Modules.Notification.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e1667a6b3fb0de64d583115517b51990835b384")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f32210a53ece5fc039a59c57559844096166bb08")]
 [assembly: System.Reflection.AssemblyProductAttribute("Modules.Notification.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Modules.Notification.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
