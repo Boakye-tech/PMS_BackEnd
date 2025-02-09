@@ -26,11 +26,12 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         Task<ActivateUserAccountResponseDto> ActivateUserAccount(ActivateUserAccountDto accountActivation);
         Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation);
 
+
         Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff();
-        //Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationStaff();
-        //Task<IEnumerable<AdministrationPartnerBanksDto>> GetAdministrationStaff();
-        //Task<IEnumerable<AdministrationDepartmentMembersDto>> GetAdministrationStaff();
-        //Task<IEnumerable<AdministrationDepartmentUnitMembersDto>> GetAdministrationStaff();
+        Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationCustomer();
+        Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners();
+        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId);
+        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentUnitStaff(int unitId);
 
 
 

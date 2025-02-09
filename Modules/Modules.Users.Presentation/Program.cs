@@ -1,6 +1,10 @@
 ﻿using System.Reflection;
+using System.Text;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Modules.Users.Infrastructure.Configuration;
 using Modules.Users.Presentation.OpenAPI;
@@ -54,6 +58,37 @@ builder.Services.AddCors(o =>
                    //.AllowCredentials();
         });
 });
+
+//var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
+
+//builder.Services.AddAuthentication(a =>
+//{
+//    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//    a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//.AddJwtBearer(x =>
+//{
+//   x.Events = new JwtBearerEvents
+//   {
+//       OnTokenValidated = UserDbContext =>
+//       {
+//           //TODO
+//           return Task.CompletedTask;
+//       }
+//   };
+//   x.RequireHttpsMetadata = false;
+//   x.SaveToken = true;
+//   x.TokenValidationParameters = new TokenValidationParameters
+//   {
+//       ValidateIssuerSigningKey = true,
+//       ValidateLifetime = true,
+//       IssuerSigningKey = new SymmetricSecurityKey(key),
+//       ValidateIssuer = false,
+//       ValidateAudience = false
+//   };
+
+//});
 
 builder.Services.AddUserModule(builder.Configuration);
 
@@ -118,7 +153,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors();

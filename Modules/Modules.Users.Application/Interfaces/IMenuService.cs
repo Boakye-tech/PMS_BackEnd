@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Dtos.Entities.Menu;
+using Modules.Users.Application.Dtos.UserAccounts;
 
 namespace Modules.Users.Application.Interfaces
 {
@@ -25,11 +26,7 @@ namespace Modules.Users.Application.Interfaces
         Task<IEnumerable<SubMenusDto>> GetSubMenus();
         Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems();
 
-
-        //Task<IEnumerable<MenusWithActionsDto>> GetMenuActions();
-
         Task<AccessModulesDto> GetAccessMenus();
-        //Task<IEnumerable<MenuActionsDto>> GetActions();
         IEnumerable<MenuActionsDto> GetActions();
 
 
@@ -40,6 +37,9 @@ namespace Modules.Users.Application.Interfaces
         Task<PermissionsAccessModulesDto> GetRolesPermissions(string roleId);
 
         Task<PermissionsAccessModulesDto> GetUserRolePermissions(string userId);
+
+
+        Task<IEnumerable<UsersAndRolesReadDto>> GetListOfUsersAndRoles();
 
     }
 }

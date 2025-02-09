@@ -3,6 +3,7 @@ using System.Reflection.Emit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Domain.Entities.Menu;
 using Modules.Users.Infrastructure.Configuration;
 
@@ -31,6 +32,8 @@ namespace Modules.Users.Infrastructure
         public DbSet<AccessPermissions> Permissions { get; set; }
         public DbSet<SubPermissions> SubPermissions { get; set; }
         public DbSet<SubPermissionsItems> SubPermissionsItems { get; set; }
+
+        public DbSet<StaffAccounts> StaffAccounts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Modules.Users.Application.Dtos.Entities;
 using Modules.Users.Application.Dtos.Entities.Menu;
@@ -17,6 +18,9 @@ namespace Modules.Users.Presentation.Controllers.v1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
+
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class AdministrationController : ControllerBase
     {
         readonly IAdministrationService _adminService;
@@ -511,11 +515,53 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// Returns a list of system registered staff users
         /// </summary>
         [HttpGet]
-        [Route("Staff")]
+        [Route("StaffAccounts")]
         public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff()
         {
             return Ok(await _adminService.GetAdministrationStaff());
         }
+
+        /// <summary>
+        /// Returns a list of system registered customer users
+        /// </summary>
+        [HttpGet]
+        [Route("CustomerAccounts")]
+        public async Task<ActionResult<IEnumerable<AdministrationCustomerDto>>> GetAdministrationCustomers()
+        {
+            return Ok(await _adminService.GetAdministrationCustomer());
+        }
+
+        /// <summary>
+        /// Returns a list of system registered 3rd Party users (i.e. Parrtner Banks)
+        /// </summary>
+        [HttpGet]
+        [Route("ThirdPartyAccounts")]
+        public async Task<ActionResult<IEnumerable<AdministrationPartnersDto>>> GetAdministrationPartner()
+        {
+            return Ok(await _adminService.GetAdministrationPartners());
+        }
+
+
+        /// <summary>
+        /// Returns a list of system registered staff users for a specific department
+        /// </summary>
+        [HttpGet]
+        [Route("DepartmentStaffAccounts/{departmentId}")]
+        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentStaff(int departmentId)
+        {
+            return Ok(await _adminService.GetAdministrationDepartmentStaff(departmentId));
+        }
+
+        /// <summary>
+        /// Returns a list of system registered staff users for a specific department unit
+        /// </summary>
+        [HttpGet]
+        [Route("DepartmentUnitStaffAccounts/{unitId}")]
+        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentUnitStaff(int unitId)
+        {
+            return Ok(await _adminService.GetAdministrationDepartmentUnitStaff(unitId));
+        }
+
 
     }
 }

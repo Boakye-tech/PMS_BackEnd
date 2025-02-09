@@ -7,11 +7,11 @@ namespace Modules.Users.Domain.Interfaces
         IDepartmentRepository Department { get; }
         IDepartmentUnitRepository DepartmentUnit { get; }
         ITokenStoreRepository TokenStore { get; }
-        IUserRepository Users { get; }
         IChannelsRepository Channels { get; }
 
-        //IMenuActionsRepository MenuActions {get; }
-        //IRoleMenuActionsRepository RolePermissions { get; }
+        IUserRepository Users { get; }
+        IRolesRepository Roles {get; }
+        IUsersRolesRepository UsersRoles { get; }
 
         IMenusRepository Menus { get; }
         ISubMenusRepository SubMenus { get; }
@@ -20,6 +20,8 @@ namespace Modules.Users.Domain.Interfaces
         IPermissionsRepository AcccessPermissions { get; }
         ISubPermissionsRepository SubPermissions { get; }
         ISubPermissionsItemsRepository SubPermissionsItems { get; }
+
+        IStaffAccountsRepository StaffAccounts { get; }
 
         Task<int> Complete();
     }

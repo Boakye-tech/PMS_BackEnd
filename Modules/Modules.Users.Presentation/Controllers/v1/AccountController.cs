@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,9 @@ namespace Modules.Users.Presentation.Controllers.v1;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
+
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+//[AllowAnonymous]
 public class AccountController : ControllerBase
 {
     IUserAccountsService _userAccountsService;

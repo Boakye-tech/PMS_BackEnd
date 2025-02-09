@@ -206,18 +206,12 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                 return "Not Verified";
             }
 
-            //result!.IsVerified = true;
-            //result.VerifiedDate = DateTime.UtcNow;
-
-            //_userDbContext.TokenStore.Update(result);
-            //await _userDbContext.SaveChangesAsync();
 
             return "Verified";
         }
 
         public JwTokenResponse GetJwToken(ApplicationIdentityUser user, int validityInHours)
         {
-            //throw new NotImplementedException();
             var userRoles = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
 
             //var claims = await _menuService.GetUserRoleClaims(user.Id);

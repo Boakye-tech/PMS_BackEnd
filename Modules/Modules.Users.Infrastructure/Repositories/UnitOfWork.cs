@@ -29,8 +29,11 @@ namespace Modules.Users.Infrastructure.Repositories
             Department = new DepartmentRepository(dbContext);
             DepartmentUnit = new DepartmentUnitRepository(dbContext);
             Channels = new ChannelsRepository(dbContext);
-            TokenStore = new TokenStoreRepository(dbContext, _userManager!,_configuration!, _httpClient); 
+            TokenStore = new TokenStoreRepository(dbContext, _userManager!,_configuration!, _httpClient);
+
             Users = new UserRepository(dbContext);
+            Roles = new RolesRepository(dbContext);
+            UsersRoles = new UsersRolesRepository(dbContext);
 
             Menus = new MenusRepository(dbContext);
             SubMenus = new SubMenusRepository(dbContext);
@@ -39,6 +42,7 @@ namespace Modules.Users.Infrastructure.Repositories
             AcccessPermissions = new PermissionsRepository(dbContext);
             SubPermissions = new SubPermissionsRepository(dbContext);
             SubPermissionsItems = new SubPermissionsItemsRepository(dbContext);
+            StaffAccounts = new StaffAccountsRepository(dbContext);
         }
 
 
@@ -46,7 +50,10 @@ namespace Modules.Users.Infrastructure.Repositories
         public IDepartmentUnitRepository DepartmentUnit { get; private set; }
         public IChannelsRepository Channels { get; private set; }
         public ITokenStoreRepository TokenStore { get; private set; }
+
         public IUserRepository Users { get; private set; }
+        public IRolesRepository Roles { get; private set; }
+        public IUsersRolesRepository UsersRoles { get; private set; }
 
         public IMenusRepository Menus { get; private set; }
         public ISubMenusRepository SubMenus { get; private set; }
@@ -56,6 +63,7 @@ namespace Modules.Users.Infrastructure.Repositories
         public ISubPermissionsRepository SubPermissions { get; private set; }
         public ISubPermissionsItemsRepository SubPermissionsItems { get; private set; }
 
+        public IStaffAccountsRepository StaffAccounts { get; private set; }
 
         public Task<int> Complete()
         {

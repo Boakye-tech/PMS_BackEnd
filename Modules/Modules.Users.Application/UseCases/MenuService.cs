@@ -5,6 +5,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Modules.Users.Application.Dtos.UserAccounts;
 using static System.Collections.Specialized.BitVector32;
 
 
@@ -261,7 +262,7 @@ namespace Modules.Users.Application.UseCases
 
                     foreach (var item in _subPermissionItems)
                     {
-                         items.Add(new PermissionAccessSubMenuItemsWithActionsDto(item.RoleId, new PermissionsActionsDto(item.NoAccess, item.Create, item.Read, item.Update, item.Delete, item.Approve)));
+                         items.Add(new PermissionAccessSubMenuItemsWithActionsDto(item.ItemName, new PermissionsActionsDto(item.NoAccess, item.Create, item.Read, item.Update, item.Delete, item.Approve)));
                     }
 
                     sections.Add(new PermissionAccessSubMenusWithActionsDto(_section.SectionName,new PermissionsActionsDto(_section.NoAccess, _section.Create, _section.Read, _section.Update, _section.Delete, _section.Approve), items));
@@ -355,7 +356,31 @@ namespace Modules.Users.Application.UseCases
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<UsersAndRolesReadDto>> GetListOfUsersAndRoles()
+        {
+            //throw new NotImplementedException();
 
+            IEnumerable<ApplicationIdentityUser> appUsers = await _unitOfWork.Users.GetAll();
+            IEnumerable<ApplicationIdentityRole> appRoles = await _unitOfWork.Roles.GetAll();
+            IEnumerable<ApplicationIdentityUserRole> appUserRoles = await _unitOfWork.UsersRoles.GetAll();
+
+            var userRoles = from au in appUsers
+                            join aur in appUserRoles on au.Id equals aur.UserId into table1
+                            from aur in table1.ToList()
+                            join ar in appRoles on aur.RoleId equals ar.Id into table2
+                            from ar in table2.ToList()
+
+
+                            select new UsersAndRolesReadDto
+                            (
+                                userId: au.Id,
+                                userName: au.Email!,
+                                roleId: ar.Id,
+                                roleName: ar.Name!
+                            );
+
+            return userRoles;
+        }
     }
 }
 
