@@ -617,43 +617,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff()
         {
-            //var staff_UserList = (from user in await _unitOfWork.Users.GetAll()
-            //                join department in await _unitOfWork.Department.GetAll()
-            //                    on user.DepartmentId equals department.DepartmentId
-            //                join unit in await _unitOfWork.DepartmentUnit.GetAll()
-            //                    on user.UnitId equals unit.UnitId
-            //                join usrole in await _unitOfWork.UsersRoles.GetAll()
-            //                    on user.Id equals usrole.UserId
-            //                join role in await _unitOfWork.Roles.GetAll()
-            //                    on usrole.RoleId equals role.Id
-            //                where user.UserType == (int)UserAccountType.Staff
-
-            //var staff_UserList = (from a in await _unitOfWork.Users.GetAll()
-            //                      where a.UserType == (int)UserAccountType.Staff
-            //                      join b in await _unitOfWork.Department.GetAll() on a.DepartmentId equals b.DepartmentId into deptGroup
-            //                      from b in deptGroup.DefaultIfEmpty()
-            //                      join c in await _unitOfWork.DepartmentUnit.GetAll() on a.UnitId equals c.UnitId into unitGroup
-            //                      from c in unitGroup.DefaultIfEmpty()
-            //                      join d in await _unitOfWork.UsersRoles.GetAll() on a.Id equals d.UserId into userRoleGroup
-            //                      from d in userRoleGroup.DefaultIfEmpty()
-            //                      join e in await _unitOfWork.Roles.GetAll() on d.RoleId equals e.Id into roleGroup
-            //                      from e in roleGroup.DefaultIfEmpty()
-            //                      select new AdministrationStaffDto
-            //                       (
-            //                           a.Id,
-            //                           a.IdentificationNumber!,
-            //                           a.FirstName!,
-            //                           a.MiddleName!,
-            //                           a.LastName!,
-            //                           b.DepartmentName,
-            //                           c.UnitName,
-            //                           //user.ProfilePicture!,
-            //                           a.Email!,
-            //                           a.PhoneNumber!,
-            //                           e != null ? e.Name ?? "" : "",
-            //                           RegistrationStatusEnumDescription.RegistrationStatusEnum(a.Status).ToString()
-            //                       )).ToList();
-
+           
             var staff_UserList = (from user in await _unitOfWork.StaffAccounts.GetAll()
                         select new AdministrationStaffDto
                         (

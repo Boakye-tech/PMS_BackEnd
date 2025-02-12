@@ -15,9 +15,16 @@ namespace Modules.Customers.Application.UseCases
             _mapper = mapper;
         }
 
-        public Task<GenericResponseDto> AddNewCustomerDetails(CustomerDetailsDto values)
+        public async Task<GenericResponseDto> AddNewCustomerDetails(CustomerDetailsDto values)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            CustomerDetails customer = CustomerDetails.AddCustomerDetails(0, values.CustomerType, values.ResidentType, values.Locality, values.CustomerCode, values.CustomerName, values.Picture!, values.Gender!, values.Nationality!, values.PostalAddress!, values.ResidentialAddress!,
+                                                                          values.DigitalAddress!, values.PrimaryMobileNumber, values.SecondaryMobileNumber!, values.OfficeNumber!, values.WhatsAppNumber!, values.EmailAddress, values.SocialMediaType!, values.SocialMediaAccount!);
+
+            _unitOfWork.CustomerDetails.Insert(customer);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto { response = "200" };
         }
 
         public Task<GenericResponseDto> DeleteCustomerDetails(string customerCode)

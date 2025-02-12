@@ -69,6 +69,10 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.Succeeded)
                 {
+                    //set IsFirstTime to false upon successful change of password
+                    user.IsFirstTime = false;
+                    await _userManager.UpdateAsync(user);
+
                     _logger.LogInformation($"Password successfully changed for customer with user ID {changePassword.UserId}.", changePassword.UserId);
                     return new ChangePasswordResponse
                     {
@@ -117,7 +121,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetPasswordRequestDto resetPassword)
         {
-            //throw new NotImplementedException();
             if (resetPassword is null)
             {
                 _logger.LogWarning("Reset password request is null.");
@@ -221,7 +224,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetPasswordRequestDto resetPassword)
         {
-            //throw new NotImplementedException();
             if (resetPassword is null)
             {
                 _logger.LogWarning("Reset password request is null.");
@@ -538,7 +540,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<RefreshTokenResponseDto> RefreshBearerToken(RefreshTokenRequestDto tokens)
         {
-            //throw new NotImplementedException();
             if (tokens is null)
             {
             }
@@ -573,7 +574,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<RegistrationResponse> CustomerUserRegistration(CustomerRegistrationRequestDto details)
         {
-            //throw new NotImplementedException();
             try
             {
                 if (details != null)

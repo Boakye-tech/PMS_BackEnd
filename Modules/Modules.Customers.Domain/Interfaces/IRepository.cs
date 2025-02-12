@@ -6,9 +6,9 @@ namespace Modules.Customers.Domain.Interfaces
 	public interface IRepository<TEntity> where TEntity : class
     {
 
-        Task<TEntity> Get(int id);
+        Task<TEntity?> Get(int id);
 
-        Task<TEntity> Get(string name);
+        Task<TEntity?> Get(string name);
 
         Task<IList<TEntity>> GetAll(
                     Expression<Func<TEntity, bool>>? expression = null,
@@ -18,7 +18,7 @@ namespace Modules.Customers.Domain.Interfaces
 
         Task<IList<TEntity>> GetAll();
 
-        Task<TEntity> Get(Expression<Func<TEntity, bool>> expression, List<string>? includes = null);
+        Task<TEntity?> Get(Expression<Func<TEntity, bool>> expression, List<string>? includes = null);
 
         void Insert(TEntity entity);
 
