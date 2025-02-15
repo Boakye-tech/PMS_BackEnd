@@ -22,6 +22,10 @@ namespace Modules.Notification.Application.UseCases
             if (sent)
                 notification_msg.MarkAsSent();
 
+            //var sent = await _sender.Send(notification_msg);
+            //if(sent != "false")
+            //    notification_msg.MarkAsSent();
+
             await _repository.UpdateStatusAsync(notification_msg.Id, notification_msg.Status);
 
             return notification_msg.Id;

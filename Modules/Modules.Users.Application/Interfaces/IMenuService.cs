@@ -30,13 +30,15 @@ namespace Modules.Users.Application.Interfaces
         IEnumerable<MenuActionsDto> GetActions();
 
 
-        Task<GenericResponseDto> AssignPermissionToRole(PermissionsAccessModulesDto rolesPermissions); 
+        Task<GenericResponseDto> AssignPermissionToRole(PermissionsAccessModulesDto rolesPermissions);
+
+        Task<GenericResponseDto> UpdatePermissionsAssignedToRole(PermissionsAccessModulesReadDto rolesPermissions);
 
         Task<IdentityResult> AssignUserRole(AssignUserRoleDto assignUserRole);
 
-        Task<PermissionsAccessModulesDto> GetRolesPermissions(string roleId);
+        Task<PermissionsAccessModulesReadDto> GetRolesPermissions(string roleId);
 
-        Task<PermissionsAccessModulesDto> GetUserRolePermissions(string userId);
+        Task<PermissionsAccessModulesReadDto> GetUserRolePermissions(string userId);
 
 
         Task<IEnumerable<UsersAndRolesReadDto>> GetListOfUsersAndRoles();

@@ -29,9 +29,10 @@ namespace Modules.Users.Domain.Entities.Menu
 
         
 
-        public SubPermissions(int permissionsId, string roleId, string sectionName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
+        public SubPermissions(int permissionsId, int subPermissionsId, string roleId, string sectionName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
 		{
             PermissionsId = permissionsId;
+            SubPermissionsId = subPermissionsId;
 			RoleId = roleId;
             SectionName = sectionName;
             NoAccess = noAccess;
@@ -42,14 +43,14 @@ namespace Modules.Users.Domain.Entities.Menu
             Approve = approve;
 		}
 
-        public static SubPermissions CreateSubPermissions(int permissionsId, string roleId, string sectionName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
+        public static SubPermissions CreateSubPermissions(int permissionsId, int subPermissionsId, string roleId, string sectionName, bool noAccess, bool create, bool read, bool update, bool delete, bool approve)
         {
             if (string.IsNullOrWhiteSpace(roleId) || string.IsNullOrWhiteSpace(sectionName))
             {
                 throw new ArgumentException("Invalid sub-permissions data.");
             }
 
-            return new SubPermissions(permissionsId, roleId, sectionName, noAccess, create, read,  update,  delete,  approve);
+            return new SubPermissions(permissionsId, subPermissionsId ,roleId, sectionName, noAccess, create, read,  update,  delete,  approve);
         }
     }
 }

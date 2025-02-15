@@ -9,7 +9,18 @@ namespace Modules.Notification.Infrastructure.Services
         private readonly ISmsSender _smsSender;
 
         public SmsNotificationService(ISmsSender smsSender) => _smsSender = smsSender;
-		
+
+        public Task<string> Send(Notifications values)
+        {
+            //throw new NotImplementedException();
+            if (values.Type != NotificationType.SMS)
+                return Task.FromResult(false.ToString());
+
+            SendSmsRequestDto request = new SendSmsRequestDto { mobileNumber = values.UserId, message_content = values.Message };
+
+            var response = _smsSender.SendMessage(request);
+            return Task.FromResult(response);
+        }
 
         public async Task<bool> SendAsync(Notifications values)
         {

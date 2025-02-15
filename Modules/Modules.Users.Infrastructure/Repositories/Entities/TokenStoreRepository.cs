@@ -64,18 +64,18 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
 
             
             var email_payload = new { userId = userid, displayName = "Notifications", subject = "OTP VERIFICATION", message = sb.ToString(), type = 0 };
-            //var sms_payload = new { userId = user.PhoneNumber, displayName = string.Empty, subject = string.Empty, message = $"Account Verification OTP: {token}" , type = 1 };
+            var sms_payload = new { userId = user.PhoneNumber, displayName = string.Empty, subject = string.Empty, message = $"Kindly use OTP {token}  for account verification. 'NEVER SHARE THIS OTP WITH ANYONE'" , type = 1 };
 
+
+            string json_smspayload = JsonSerializer.Serialize(sms_payload);
+            var sms_httpContent = new StringContent(json_smspayload, Encoding.UTF8, "application/json");
+            HttpResponseMessage sms_response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Notification/SendNotification", sms_httpContent);
+            var result_sms = sms_response.IsSuccessStatusCode;
 
             string json_emailpayload = JsonSerializer.Serialize(email_payload);
             var email_httpContent = new StringContent(json_emailpayload, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Notification/SendNotification", email_httpContent);
             var result = response.IsSuccessStatusCode;
-
-            //string json_smspayload = JsonSerializer.Serialize(sms_payload);
-            //var sms_httpContent = new StringContent(json_smspayload, Encoding.UTF8, "application/json");
-            //HttpResponseMessage sms_response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Notification/SendNotification", sms_httpContent);
-            //var result_sms = response.IsSuccessStatusCode;
 
         }
 

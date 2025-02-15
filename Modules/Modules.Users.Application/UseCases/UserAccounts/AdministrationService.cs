@@ -305,7 +305,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 };
             }
 
-            var role = _roleManager.FindByIdAsync(accountApproval.RoleId);
+            var role = await _roleManager.FindByIdAsync(accountApproval.RoleId);
             if(role is null)
             {
                 _logger.LogWarning($"Role Id '{accountApproval.RoleId}' not found.", accountApproval.RoleId);
@@ -336,7 +336,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            if ((RegistrationStatus)user.Status != RegistrationStatus.Pending)
+            if ((UserAccountType)user.UserType != UserAccountType.Customer && (RegistrationStatus)user.Status != RegistrationStatus.Pending)
             {
                 _logger.LogWarning($"User account with id {accountApproval.UserId} is not in a pending state. Account cannot be approved.", accountApproval.UserId);
                 return new ApproveUserAccountResponseDto
@@ -484,20 +484,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 };
             }
 
-            if ((RegistrationStatus)user.Status != RegistrationStatus.Approved)
-            {
-                _logger.LogWarning($"User account with id '{accountActivation.UserId}' has not been approved. Account cannot be activated", accountActivation.UserId);
-                return new ActivateUserAccountResponseDto
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ActivateUserAccountErrorResponseDto
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"User account with id '{accountActivation.UserId}' has not been approved. Account cannot be activated"
-                    }
-                };
-
-            }
 
             var staff = await _userManager.FindByIdAsync(accountActivation.activatedBy);
             if (staff is null)
@@ -516,7 +502,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
 
 
-            //var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountActivation.EmailAddress);
+            if ((RegistrationStatus)user.Status != RegistrationStatus.Approved && (RegistrationStatus)user.Status != RegistrationStatus.Deactivated)
+            {
+                _logger.LogWarning($"User account with id '{accountActivation.UserId}' has not been approved. Account cannot be activated", accountActivation.UserId);
+                return new ActivateUserAccountResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ActivateUserAccountErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status404NotFound,
+                        StatusMessage = $"User account with id '{accountActivation.UserId}' has not been approved. Account cannot be activated"
+                    }
+                };
+
+            }
+
+
             user.Status = (int)RegistrationStatus.Activated; // 3 - activated
             user.ActivatedBy = accountActivation.activatedBy;
             user.ActivatedDate = DateTime.UtcNow;

@@ -275,7 +275,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpGet]
         [Route("GetUserPermissions/{userId}")]
-        public Task<IEnumerable<PermissionsAccessModulesDto>> GetUserPermissions(string userId)
+        public Task<IEnumerable<PermissionsAccessModulesReadDto>> GetUserPermissions(string userId)
         {
             return null!;
             //return await _menuService.GetUserRolePermissions(userId);
@@ -283,9 +283,16 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpGet]
         [Route("GetRolePermissions/{roleId}")]
-        public async Task<PermissionsAccessModulesDto> GetRolePermissions(string roleId)
+        public async Task<PermissionsAccessModulesReadDto> GetRolePermissions(string roleId)
         {
             return await _menuService.GetRolesPermissions(roleId);
+        }
+
+        [HttpPut]
+        [Route("UpdatePermissionsAssignedToRole")]
+        public async Task<ActionResult> UpdatePermissionsAssignedToRole([FromBody] PermissionsAccessModulesReadDto values)
+        {
+            return Ok(await _menuService.UpdatePermissionsAssignedToRole(values));
         }
 
         [HttpPut]

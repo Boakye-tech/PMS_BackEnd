@@ -43,6 +43,7 @@ namespace Modules.Users.Application.UseCases
                 // Step 1: Create and save AccessPermissions FIRST
                 var permissions = new AccessPermissions
                 (
+                    permissionsId: 0,
                     roleId: rolesPermissions.RoleId,
                     moduleName: _menus.menuName,
                     noAccess: _menus.permissionsActions.NoAccess,
@@ -65,6 +66,7 @@ namespace Modules.Users.Application.UseCases
                     var subpermissions = new SubPermissions
                     (
                         permissionsId: permissionsId, // Use the DB-generated ID
+                        subPermissionsId: 0,
                         roleId: rolesPermissions.RoleId,
                         sectionName: _subMenu.sectionName,
                         noAccess: _subMenu.permissionsActions.NoAccess,
@@ -73,7 +75,7 @@ namespace Modules.Users.Application.UseCases
                         update: _subMenu.permissionsActions.Update,
                         delete: _subMenu.permissionsActions.Delete,
                         approve: _subMenu.permissionsActions.Approve
-                    );
+                    ) ;
 
                     _unitOfWork.SubPermissions.Insert(subpermissions);
                     await _unitOfWork.Complete(); // Save to DB first
@@ -87,6 +89,7 @@ namespace Modules.Users.Application.UseCases
                         (
                             permissionsId: permissionsId,
                             subPermissionsId: subPermissionsId, // Use the correct sub permission ID
+                            subPermissionsItemsId : 0,
                             roleId: rolesPermissions.RoleId,
                             itemName: _item.ItemName,
                             noAccess: _item.permissionsActions.NoAccess,
@@ -243,35 +246,35 @@ namespace Modules.Users.Application.UseCases
         }
 
 
-        public async Task<PermissionsAccessModulesDto> GetRolesPermissions(string roleId)
+        public async Task<PermissionsAccessModulesReadDto> GetRolesPermissions(string roleId)
         {
             var _permissions = await _unitOfWork.AcccessPermissions.GetAll(p => p.RoleId == roleId);
-            var accessModules = new List<PermissionAccessMenusWithActionsDto>();
+            var accessModules = new List<PermissionAccessMenusWithActionsReadDto>();
 
             foreach (var permission in _permissions)
             {
                 string role = permission.RoleId;
 
                 var _subPermissions = await _unitOfWork.SubPermissions.GetAll(sp => sp.PermissionsId == permission.PermissionsId);
-                var sections = new List<PermissionAccessSubMenusWithActionsDto>();
+                var sections = new List<PermissionAccessSubMenusWithActionsReadDto>();
 
                 foreach (var _section in _subPermissions)
                 {
                     var _subPermissionItems = await _unitOfWork.SubPermissionsItems.GetAll(spi => spi.SubPermissionsId == _section.SubPermissionsId);
-                    var items = new List<PermissionAccessSubMenuItemsWithActionsDto>();
+                    var items = new List<PermissionAccessSubMenuItemsWithActionsReadDto>();
 
                     foreach (var item in _subPermissionItems)
                     {
-                         items.Add(new PermissionAccessSubMenuItemsWithActionsDto(item.ItemName, new PermissionsActionsDto(item.NoAccess, item.Create, item.Read, item.Update, item.Delete, item.Approve)));
+                         items.Add(new PermissionAccessSubMenuItemsWithActionsReadDto(item.PermissionsId,item.SubPermissionsId, item.SubPermissionsItemsId, item.ItemName, new PermissionsActionsDto(item.NoAccess, item.Create, item.Read, item.Update, item.Delete, item.Approve)));
                     }
 
-                    sections.Add(new PermissionAccessSubMenusWithActionsDto(_section.SectionName,new PermissionsActionsDto(_section.NoAccess, _section.Create, _section.Read, _section.Update, _section.Delete, _section.Approve), items));
+                    sections.Add(new PermissionAccessSubMenusWithActionsReadDto(_section.PermissionsId, _section.SubPermissionsId, _section.SectionName,new PermissionsActionsDto(_section.NoAccess, _section.Create, _section.Read, _section.Update, _section.Delete, _section.Approve), items));
                 }
 
-                accessModules.Add(new PermissionAccessMenusWithActionsDto(permission.ModuleName, new PermissionsActionsDto(permission.NoAccess, permission.Create, permission.Read, permission.Update, permission.Delete, permission.Approve), sections));
+                accessModules.Add(new PermissionAccessMenusWithActionsReadDto(permission.PermissionsId, permission.ModuleName, new PermissionsActionsDto(permission.NoAccess, permission.Create, permission.Read, permission.Update, permission.Delete, permission.Approve), sections));
             }
 
-            return new PermissionsAccessModulesDto(roleId, accessModules);
+            return new PermissionsAccessModulesReadDto(roleId, accessModules);
         }
 
 
@@ -281,7 +284,7 @@ namespace Modules.Users.Application.UseCases
             return _mapper.Map<IEnumerable<SubMenusDto>>(response);
         }
 
-        public async Task<PermissionsAccessModulesDto> GetUserRolePermissions(string userId)
+        public async Task<PermissionsAccessModulesReadDto> GetUserRolePermissions(string userId)
         {
             //throw new NotImplementedException();
             var user = await _userManager.FindByIdAsync(userId);
@@ -358,8 +361,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<IEnumerable<UsersAndRolesReadDto>> GetListOfUsersAndRoles()
         {
-            //throw new NotImplementedException();
-
             IEnumerable<ApplicationIdentityUser> appUsers = await _unitOfWork.Users.GetAll();
             IEnumerable<ApplicationIdentityRole> appRoles = await _unitOfWork.Roles.GetAll();
             IEnumerable<ApplicationIdentityUserRole> appUserRoles = await _unitOfWork.UsersRoles.GetAll();
@@ -380,6 +381,87 @@ namespace Modules.Users.Application.UseCases
                             );
 
             return userRoles;
+        }
+
+        public async Task<GenericResponseDto> UpdatePermissionsAssignedToRole(PermissionsAccessModulesReadDto rolesPermissions)
+        {
+            //throw new NotImplementedException();
+
+            if (rolesPermissions is null || rolesPermissions.permissionsAccessModules == null)
+            {
+                return new GenericResponseDto("Invalid input data.");
+            }
+
+            foreach (var _menus in rolesPermissions.permissionsAccessModules)
+            {
+                // Step 1: Create and save AccessPermissions FIRST
+                var permissions = new AccessPermissions
+                (
+                    permissionsId: _menus.PermissionsId,
+                    roleId: rolesPermissions.RoleId,
+                    moduleName: _menus.menuName,
+                    noAccess: _menus.permissionsActions.NoAccess,
+                    create: _menus.permissionsActions.Create,
+                    read: _menus.permissionsActions.Read,
+                    update: _menus.permissionsActions.Update,
+                    delete: _menus.permissionsActions.Delete,
+                    approve: _menus.permissionsActions.Approve
+                );
+
+                _unitOfWork.AcccessPermissions.Update(permissions);
+                //await _unitOfWork.Complete(); // Save to DB first
+
+                // Step 2: Retrieve the assigned PermissionsId
+                //int permissionsId = permissions.PermissionsId; // EF Core now assigns this
+
+                foreach (var _subMenu in _menus.sections)
+                {
+                    // Create SubPermissions with the real permissionsId
+                    var subpermissions = new SubPermissions
+                    (
+                        permissionsId: _subMenu.PermissionsId, // Use the DB-generated ID
+                        subPermissionsId: _subMenu.SubPermissionsId,
+                        roleId: rolesPermissions.RoleId,
+                        sectionName: _subMenu.sectionName,
+                        noAccess: _subMenu.permissionsActions.NoAccess,
+                        create: _subMenu.permissionsActions.Create,
+                        read: _subMenu.permissionsActions.Read,
+                        update: _subMenu.permissionsActions.Update,
+                        delete: _subMenu.permissionsActions.Delete,
+                        approve: _subMenu.permissionsActions.Approve
+                    );
+
+                    _unitOfWork.SubPermissions.Update(subpermissions);
+                    //await _unitOfWork.Complete(); // Save to DB first
+
+                    //int subPermissionsId = subpermissions.SubPermissionsId; // Get the new ID
+
+                    foreach (var _item in _subMenu.items)
+                    {
+                        // Create SubPermissionsItems with real IDs
+                        var subpermissionsitems = new SubPermissionsItems
+                        (
+                            permissionsId: _item.PermissionsId,
+                            subPermissionsId: _item.SubPermissionsId, // Use the correct sub permission ID
+                            subPermissionsItemsId: _item.SubPermissionsItemsId,
+                            roleId: rolesPermissions.RoleId,
+                            itemName: _item.ItemName,
+                            noAccess: _item.permissionsActions.NoAccess,
+                            create: _item.permissionsActions.Create,
+                            read: _item.permissionsActions.Read,
+                            update: _item.permissionsActions.Update,
+                            delete: _item.permissionsActions.Delete,
+                            approve: _item.permissionsActions.Approve
+                        );
+
+                        _unitOfWork.SubPermissionsItems.Update(subpermissionsitems);
+                    }
+
+                    await _unitOfWork.Complete(); // Ensure changes persist
+                }
+            }
+
+            return new GenericResponseDto("Permissions updated successfully.");
         }
     }
 }

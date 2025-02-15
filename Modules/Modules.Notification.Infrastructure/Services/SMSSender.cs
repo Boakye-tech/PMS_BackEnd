@@ -104,16 +104,18 @@ namespace Modules.Notification.Infrastructure.Services
 
                     MNotifySmsRequestDto sendModel = new MNotifySmsRequestDto();
 
-                    sendModel.key = _configuration["mNotifySMS:UserKey"];
+                    //sendModel.key = _configuration["mNotifySMS:UserKey"];
                     sendModel.recipient = receivingNumber;
                     sendModel.sender = _configuration["mNotifySMS:SenderId"];
                     sendModel.message = message;
                     sendModel.is_schedule = false;
                     sendModel.schedule_date = "";
 
+                    var url = $"{_configuration["mNotifySMS:BaseUrl"]}?key={_configuration["mNotifySMS:UserKey"]}";
+
                     StringContent content = new StringContent(JsonSerializer.Serialize(sendModel), encoding: System.Text.Encoding.UTF8, "application/json");
 
-                    using (var response = await _client.PostAsync(_configuration["mNotifySMS:BaseUrl"], content))
+                    using (var response = await _client.PostAsync(url, content))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
 

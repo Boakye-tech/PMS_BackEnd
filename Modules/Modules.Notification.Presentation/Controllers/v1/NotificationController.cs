@@ -1,4 +1,9 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
+using Modules.Notification.Domain.Enums;
+using System.ComponentModel;
+using System.Reflection;
+
 namespace Modules.Notification.Presentation.Controllers.v1;
 
 [ApiController]
@@ -40,6 +45,47 @@ public class NotificationController : ControllerBase
 
     //}
 
+
+    [HttpGet]
+    [Route("NotificationType")]
+    [AllowAnonymous]
+    public IActionResult GetNotificationType()
+    {
+        var types = Enum.GetValues(typeof(NotificationType))
+                               .Cast<NotificationType>()
+                               .Select(e => new
+                               {
+                                   Id = (int)e,
+                                   Name = e.ToString(),
+                                   DisplayName = e.GetType()
+                                                 .GetField(e.ToString())!
+                                                 .GetCustomAttribute<DescriptionAttribute>()?
+                                                 .Description
+
+                               });
+        return Ok(types);
+    }
+
+
+    [HttpGet]
+    [Route("NotificationStatus")]
+    [AllowAnonymous]
+    public IActionResult GetNotificationStatus()
+    {
+        var types = Enum.GetValues(typeof(NotificationStatus))
+                               .Cast<NotificationStatus>()
+                               .Select(e => new
+                               {
+                                   Id = (int)e,
+                                   Name = e.ToString(),
+                                   DisplayName = e.GetType()
+                                                 .GetField(e.ToString())!
+                                                 .GetCustomAttribute<DescriptionAttribute>()?
+                                                 .Description
+
+                               });
+        return Ok(types);
+    }
 
     /// <summary>
     /// sends notification to recipient mobile phone or email address via email,sms,push,InApp
