@@ -46,15 +46,37 @@ namespace Modules.Customers.Application.UseCases
 
         public  async Task<IEnumerable<PropertySummaryMobileViewDto>> GetPropertySummaryMobile(string customerCode)
         {
-            var propertyDetails = await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode);
-            var summary = propertyDetails.Select(pd => new PropertySummaryMobileViewDto
-            {
-                PropertyNumber = pd.PropertyNumber,
-                LandUse = pd.LandUse
-            }).ToList();
+            //var propertyDetails = await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode);
+            //var summary = propertyDetails.Select(pd => new PropertySummaryMobileViewDto
+            //{
+            //    PropertyNumber = pd.PropertyNumber,
+            //    LandUse = pd.LandUse
+            //}).ToList();
 
+
+            //return summary;
+
+            var summary = (await _unitOfWork.CustomerTransaction.GetAll(ct => ct.CustomerCode == customerCode))
+                      .Join(await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode),
+                                transaction => transaction.PropertyNumber,
+                                property => property.PropertyNumber,
+                                (transaction, property) => new PropertySummaryMobileViewDto
+                                {
+                                    PropertyNumber = transaction.PropertyNumber,
+                                    LandUse = property.LandUse,
+                                    Balance = transaction.Amount
+                                })
+                            .GroupBy(t => new { t.PropertyNumber, t.LandUse })
+                            .Select(g => new PropertySummaryMobileViewDto
+                            {
+                                PropertyNumber = g.Key.PropertyNumber,
+                                LandUse = g.Key.LandUse,
+                                Balance = g.Sum(t => t.Balance)
+                            })
+                            .ToList();
 
             return summary;
+
         }
 
         public async Task<IEnumerable<PropertySummaryWebViewDto>> GetPropertySummaryWeb(string customerCode)

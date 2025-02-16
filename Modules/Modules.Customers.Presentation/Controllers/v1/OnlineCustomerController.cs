@@ -58,6 +58,34 @@ public class OnlineCustomerController : ControllerBase
         return await _transactionsService.CustomerTransactionDetails(customerCode, propertynumber);
     }
 
+    [HttpGet("CustomerStatementVoucherSearch/{receipt_or_invoiceNumber}")]
+    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementVoucherSearch(string receipt_or_invoiceNumber)
+    {
+        return await _transactionsService.CustomerStatementVoucherSearchDetails(receipt_or_invoiceNumber);
+    }
+
+
+    [HttpGet("CustomerStatementDetails/{customerCode}")]
+    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails(string customerCode)
+    {
+        return await _transactionsService.CustomerStatementDetails(customerCode);
+    }
+
+    [HttpGet("CustomerStatementDetails/{customerCode}/{propertyNumber}")]
+    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails(string customerCode, string propertyNumber)
+    {
+        string propertynumber = HttpUtility.UrlDecode(propertyNumber);
+        return await _transactionsService.CustomerStatementDetails(customerCode, propertynumber);
+    }
+
+    [HttpGet("CustomerStatementDetails/{customerCode}/{propertyNumber}/{transactionType}/{startDate}/{endDate}")]
+    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails(string customerCode, string propertyNumber, string transactionType, DateTime startDate, DateTime endDate)
+    {
+        string propertynumber = HttpUtility.UrlDecode(propertyNumber);
+        return await _transactionsService.CustomerStatementSearchDetails(customerCode, propertynumber, transactionType, startDate, endDate);
+    }
+
+
     [HttpPost("AddCustomerDetails", Name = "AddApprovedCustomerDetails")]
     public async Task<GenericResponseDto> CustomerDetails(CustomerDetailsDto values)
     {
