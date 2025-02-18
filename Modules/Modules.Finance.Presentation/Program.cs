@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
+using System.Text;
 using Asp.Versioning;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Modules.Finance.Application.Validations.Setup;
 using Modules.Finance.Presentation.OpenAPI;
@@ -43,6 +46,49 @@ if (builder.Environment.IsProduction())
             break;
     }
 }
+
+builder.Services.AddCors(o =>
+{
+    o.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+            //.AllowCredentials();
+        });
+});
+
+//var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
+
+//builder.Services.AddAuthentication(a =>
+//{
+//    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//    a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//.AddJwtBearer(x =>
+//{
+//    x.Events = new JwtBearerEvents
+//    {
+//        OnTokenValidated = UserDbContext =>
+//        {
+//            //TODO
+//            return Task.CompletedTask;
+//        }
+//    };
+//    x.RequireHttpsMetadata = false;
+//    x.SaveToken = true;
+//    x.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuerSigningKey = true,
+//        ValidateLifetime = true,
+//        IssuerSigningKey = new SymmetricSecurityKey(key),
+//        ValidateIssuer = false,
+//        ValidateAudience = false
+//    };
+
+//});
 
 builder.Services.AddFinanceModule(builder.Configuration);
 

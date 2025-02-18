@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Security;
 using System.Text;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +12,9 @@ using Modules.Customers.Presentation;
 using Modules.Estates.Presentation;
 using Modules.Finance.Presentation;
 using Modules.Notification.Presentation;
+using Modules.Users.Application.Dtos.Entities.Permissions;
+using Modules.Users.Domain.Interfaces.Entities;
+using Modules.Users.Infrastructure;
 using Modules.Users.Presentation;
 using PMS.Presentation.Extensions;
 using PMS.Presentation.OpenAPI;
@@ -42,36 +46,81 @@ var user_module = "Modules.Users.Presentation";
 //var finance_module = "Modules.Finance.Presentation";
 //var notification_module = "Modules.Notification.Presentation";
 
-//var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
+builder.Services.AddAuthorization(options =>
+{
+    using var scope = builder.Services.BuildServiceProvider().CreateScope();
+    var _userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
 
-//builder.Services.AddAuthentication(a =>
-//{
-//    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//    a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer(x =>
-//{
-//   x.Events = new JwtBearerEvents
-//   {
-//       OnTokenValidated = ApplicationDbContext =>
-//       {
-//           //TODO
-//           return Task.CompletedTask;
-//       }
-//   };
-//   x.RequireHttpsMetadata = false;
-//   x.SaveToken = true;
-//   x.TokenValidationParameters = new TokenValidationParameters
-//   {
-//       ValidateIssuerSigningKey = true,
-//       ValidateLifetime = true,
-//       IssuerSigningKey = new SymmetricSecurityKey(key),
-//       ValidateIssuer = false,
-//       ValidateAudience = false
-//   };
+    var actions = new List<string> { "CREATE", "READ", "UPDATE", "DELETE", "APPROVE" };
 
-//});
+    //var modulePermissions = (from a in _userDbContext.ApplicationModulesPermissions
+    //                         join b in _userDbContext.ApplicationModules
+    //                             on a.ModuleId equals b.ModuleId into modules
+    //                         from module in modules.DefaultIfEmpty() // Left Join on ApplicationModules
+    //                         join c in _userDbContext.Roles
+    //                             on a.RoleId equals c.Id into roles
+    //                         from role in roles.DefaultIfEmpty() // Left Join on Roles
+    //                         //where a.RoleId == roleId // Filter based on RoleId
+    //                         select new RoleModulesPermissionsDto
+    //                         {
+    //                             ModulePermissionId = a.ModulePermissionId,
+    //                             RoleId = a.RoleId,
+    //                             RoleName = role != null ? role.Name : "No Role",
+    //                             ModuleId = a.ModuleId,
+    //                             ModuleName = module != null ? module.ModuleName : "No Module",
+    //                             ModulePermission = a.ModulePermission
+    //                         }).ToList();
+
+    //foreach (var permission in modulePermissions)
+    //{
+    //    var policyName = $"Permission:{permission.ModuleName}.{permission.ModulePermission}";
+
+    //    options.AddPolicy(policyName, policy =>
+    //        policy.RequireClaim($"Permission:{permission.ModuleName}:{permission.ModulePermission}", permission.ModulePermission!));
+    //}
+
+
+    foreach (var module in _userDbContext.ApplicationModules)
+    {
+        foreach (var action in actions)
+        {
+            var policyName = $"Permission:{module.ModuleName}.{action}";
+
+            options.AddPolicy(policyName, policy =>
+            policy.RequireClaim($"Permission:{module.ModuleName}:{action}", action));
+        }
+    }
+});
+var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
+
+builder.Services.AddAuthentication(a =>
+{
+    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.Events = new JwtBearerEvents
+    {
+        OnTokenValidated = ApplicationDbContext =>
+        {
+            //TODO
+            return Task.CompletedTask;
+        }
+    };
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+
+});
 
 builder.Services.AddCors(o =>
 {
@@ -109,31 +158,31 @@ builder.Services.AddSwaggerGen(options =>
 
     options.OperationFilter<SwaggerDefaultValues>();
 
-    //options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    //{
-    //    Name = "Authorization",
-    //    Type = SecuritySchemeType.ApiKey,
-    //    Scheme = "Bearer",
-    //    BearerFormat = "JWT",
-    //    In = ParameterLocation.Header,
-    //    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
 
-    //});
+    });
 
-    //options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    //{
-    //    {
-    //        new OpenApiSecurityScheme
-    //        {
-    //            Reference = new OpenApiReference
-    //            {
-    //                Type = ReferenceType.SecurityScheme,
-    //                Id =  "Bearer"
-    //            }
-    //        },
-    //        Array.Empty<string>()
-    //    }
-    //});
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id =  "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 
 
     // Use the full type name (namespace + class name) as the schemaId

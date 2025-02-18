@@ -15,12 +15,12 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly ILogger<UserAccountsService> _logger;
         private readonly ITokenStoreRepository _tokenService;
-        readonly IUnitOfWork _unitOfWork;
-
-        readonly IValidator<PartnerBankRegistrationRequestDto> _partnerValidator;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMenuService _menuService;
+        private readonly IValidator<PartnerBankRegistrationRequestDto> _partnerValidator;
 
         public UserAccountsService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, IUnitOfWork unitOfWork, ILogger<UserAccountsService> logger,
-                                      ITokenStoreRepository tokenRepo, IValidator<PartnerBankRegistrationRequestDto> partnerValidator)
+                                      ITokenStoreRepository tokenRepo, IValidator<PartnerBankRegistrationRequestDto> partnerValidator, IMenuService menuService)
 		{
             _userManager = userManager;
             _signInManager = signInManager;
@@ -28,6 +28,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             _logger = logger;
             _tokenService = tokenRepo;
             _partnerValidator = partnerValidator;
+            _menuService = menuService;
         }
 
         public async Task<ChangePasswordResponse> ChangePassword(ChangePasswordRequestDto changePassword)
@@ -556,7 +557,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             {
             }
 
-            string? newBearerToken = _tokenService.GetJwToken(user!, 3).Token;
+            string? newBearerToken =  _tokenService.GetJwToken(user!, 3).Token;
             string newRefreshToken = _tokenService.GetJwRefreshToken().Token!;
             DateTime refreshTokenExpiresAt = _tokenService.GetJwRefreshToken().Expires;
 
@@ -793,7 +794,13 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 var userType = UserAccountTypeEnumDescription.UserType(user.UserType).ToString();
                 var registrationStatus = RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString();
 
-                return new StaffUserInformationDto(user,department,unit,channelName,userType,registrationStatus);
+                var userRoles = await _userManager.GetRolesAsync(user);
+                //var role = await _roleManager.FindByNameAsync(userRoles.First());
+                //var roleId = role!.Id;
+
+                var permissions = await _menuService.GetUserRolePermissions(user.Id); // GetRolesPermissions(roleId);
+
+                return new StaffUserInformationDto(user,department,unit,channelName,userType,registrationStatus, userRoles, permissions);
             }
 
             return null!;

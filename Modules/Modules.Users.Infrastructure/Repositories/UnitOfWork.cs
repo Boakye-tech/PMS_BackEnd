@@ -17,19 +17,21 @@ namespace Modules.Users.Infrastructure.Repositories
         readonly UserManager<ApplicationIdentityUser> _userManager;
         
         private readonly HttpClient _httpClient;
+        //private readonly IMenuService _menuService;
 
 
-        public UnitOfWork(UserDbContext dbContext, UserManager<ApplicationIdentityUser> userManager,  IConfiguration configuration, HttpClient httpClient) 
+        public UnitOfWork(UserDbContext dbContext, UserManager<ApplicationIdentityUser> userManager,  IConfiguration configuration, HttpClient httpClient) //, IMenuService menuService
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _configuration = configuration;
             _httpClient = httpClient;
+            //_menuService = menuService;
 
             Department = new DepartmentRepository(dbContext);
             DepartmentUnit = new DepartmentUnitRepository(dbContext);
             Channels = new ChannelsRepository(dbContext);
-            TokenStore = new TokenStoreRepository(dbContext, _userManager!,_configuration!, _httpClient);
+            TokenStore = new TokenStoreRepository(dbContext, _userManager!, _configuration!, _httpClient);
 
             Users = new UserRepository(dbContext);
             Roles = new RolesRepository(dbContext);
@@ -43,6 +45,9 @@ namespace Modules.Users.Infrastructure.Repositories
             SubPermissions = new SubPermissionsRepository(dbContext);
             SubPermissionsItems = new SubPermissionsItemsRepository(dbContext);
             StaffAccounts = new StaffAccountsRepository(dbContext);
+
+            ApplicationModules = new ApplicationModulesRepository(dbContext);
+            ApplicationModulesPermissions = new ApplicationModulesPermissionsRepository(dbContext);
         }
 
 
@@ -64,6 +69,9 @@ namespace Modules.Users.Infrastructure.Repositories
         public ISubPermissionsItemsRepository SubPermissionsItems { get; private set; }
 
         public IStaffAccountsRepository StaffAccounts { get; private set; }
+
+        public IApplicationModulesRepository ApplicationModules { get; private set; }
+        public IApplicationModulesPermissionsRepository ApplicationModulesPermissions { get; private set; }
 
         public Task<int> Complete()
         {

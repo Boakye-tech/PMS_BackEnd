@@ -23,6 +23,9 @@ namespace Modules.Users.Domain.Interfaces
 
         IStaffAccountsRepository StaffAccounts { get; }
 
+        IApplicationModulesRepository ApplicationModules { get; }
+        IApplicationModulesPermissionsRepository ApplicationModulesPermissions { get; }
+
         Task<int> Complete();
     }
 }

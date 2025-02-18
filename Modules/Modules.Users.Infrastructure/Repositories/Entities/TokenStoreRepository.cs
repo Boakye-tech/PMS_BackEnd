@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Modules.Users.Application.Dtos.Entities.Permissions;
+using Modules.Users.Application.Interfaces;
 
 namespace Modules.Users.Infrastructure.Repositories.Entities
 {
@@ -213,16 +215,25 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
         public JwTokenResponse GetJwToken(ApplicationIdentityUser user, int validityInHours)
         {
             var userRoles = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+            var roleId = _userDbContext.roles
+                                       .Where(r => r.Name == userRoles!)
+                                       .Select(r => r.Id)
+                                       .FirstOrDefault();
 
-            //var claims = await _menuService.GetUserRoleClaims(user.Id);
+            var claims = this.GetModulesPermissions(roleId!);
 
             var allClaims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.Id),
                         new Claim(ClaimTypes.Role, userRoles!),
                         new Claim(ClaimTypes.Email, user.Email!),
-                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!)
+                        new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!)
             };
+
+            foreach (var permission in claims)
+            {
+                allClaims.Add(new Claim($"Permission:{permission.ModuleName}:{permission.ModulePermission}", permission.ModulePermission!));
+            }
 
             //allClaims.AddRange(claims);
 
@@ -284,6 +295,55 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
 
             return principal;
         }
+
+        private IEnumerable<RoleModulesPermissionsDto> GetModulesPermissions(string roleId)
+        {
+            //var modulePermissions = (_userDbContext.ApplicationModulesPermissions)
+            //   .Where(a => a.RoleId == roleId) // Filter where based on RoleId 
+            //   .GroupJoin(_userDbContext.ApplicationModules,
+            //       a => a.ModuleId,
+            //       b => b.ModuleId,
+            //       (a, moduleGroup) => new { a, module = moduleGroup.FirstOrDefault() }) // Left Join on ApplicationModules
+            //   .GroupJoin(_userDbContext.Roles,
+            //       ab => ab.a.RoleId,
+            //       c => c.Id,
+            //       (ab, roleGroup) => new RoleModulesPermissionsDto
+            //       {
+            //           ModulePermissionId = ab.a.ModulePermissionId,
+            //           RoleId = ab.a.RoleId,
+            //           RoleName = roleGroup.FirstOrDefault()!.Name, // Left Join on Roles
+            //           ModuleId = ab.a.ModuleId,
+            //           ModuleName = ab.module!.ModuleName,
+            //           ModulePermission = ab.a.ModulePermission
+            //       })
+            //   .ToList();
+
+            var modulePermissions = (from a in _userDbContext.ApplicationModulesPermissions
+                                     join b in _userDbContext.ApplicationModules
+                                         on a.ModuleId equals b.ModuleId into modules
+                                     from module in modules.DefaultIfEmpty() // Left Join on ApplicationModules
+                                     join c in _userDbContext.Roles
+                                         on a.RoleId equals c.Id into roles
+                                     from role in roles.DefaultIfEmpty() // Left Join on Roles
+                                     where a.RoleId == roleId // Filter based on RoleId
+                                     select new RoleModulesPermissionsDto
+                                     {
+                                         ModulePermissionId = a.ModulePermissionId,
+                                         RoleId = a.RoleId,
+                                         RoleName = role != null ? role.Name : "No Role",
+                                         ModuleId = a.ModuleId,
+                                         ModuleName = module != null ? module.ModuleName : "No Module",
+                                         ModulePermission = a.ModulePermission
+                                     }).ToList();
+
+
+
+
+            //return _mapper.Map<IEnumerable<RoleModulesPermissionsDto>>(modulePermissions);
+            return modulePermissions;
+
+        }
+
     }
 }
 

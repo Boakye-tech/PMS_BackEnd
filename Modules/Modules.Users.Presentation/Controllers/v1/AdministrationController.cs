@@ -19,7 +19,8 @@ namespace Modules.Users.Presentation.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
 
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "Permission:Users.READ")]
 
     public class AdministrationController : ControllerBase
     {
@@ -50,6 +51,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
 
+        [Authorize(Policy = "Permission:Users.CREATE")]
         [HttpPost]
         [Route("CreateChannel")]
         public async Task<ActionResult<ChannelReadDto>> CreateChannel([FromBody] ChannelCreateDto values)
@@ -126,6 +128,45 @@ namespace Modules.Users.Presentation.Controllers.v1
         public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()
         {
             return await _menuService.GetSubMenuItems();
+        }
+
+        [HttpGet]
+        [Route("GetApplicationModules")]
+        public async Task<IEnumerable<ApplicationModulesDto>> GetApplicationModules()
+        {
+            return await _menuService.GetModules();
+        }
+
+        [HttpPost]
+        [Route("AddApplicationModules")]
+        public async Task<ActionResult> AddApplicationModules([FromBody] ApplicationModulesCreateDto values)
+        {
+            var result = await _menuService.AddModules(values);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("UpdateApplicationModules")]
+        public async Task<ActionResult> UpdateApplicationModules([FromBody] ApplicationModulesDto values)
+        {
+            var result = await _menuService.UpdateModules(values);
+            return Ok(result);
+        }
+
+
+        [HttpPost]
+        [Route("AssignModulePermission")]
+        public async Task<ActionResult> AssignModulePermission([FromBody] ApplicationModulesPermissionsDto values)
+        {
+            var result = await _menuService.AssignModulePermission(values);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetAssignedModulesPermissions/{roleId}")]
+        public async Task<IEnumerable<RoleModulesPermissionsDto>> GetApplicationModulesPermissions(string roleId)
+        {
+            return await _menuService.GetModulesPermissions(roleId);
         }
 
         [HttpPost]

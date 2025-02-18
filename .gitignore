@@ -1,4 +1,7 @@
-﻿# globs
+﻿**/bin/
+**/obj/
+
+# globs
 Makefile.in
 *.userprefs
 *.usertasks

@@ -29,7 +29,6 @@ namespace Modules.Users.Application.Interfaces
         Task<AccessModulesDto> GetAccessMenus();
         IEnumerable<MenuActionsDto> GetActions();
 
-
         Task<GenericResponseDto> AssignPermissionToRole(PermissionsAccessModulesDto rolesPermissions);
 
         Task<GenericResponseDto> UpdatePermissionsAssignedToRole(PermissionsAccessModulesReadDto rolesPermissions);
@@ -40,8 +39,15 @@ namespace Modules.Users.Application.Interfaces
 
         Task<PermissionsAccessModulesReadDto> GetUserRolePermissions(string userId);
 
-
         Task<IEnumerable<UsersAndRolesReadDto>> GetListOfUsersAndRoles();
+
+        Task<IEnumerable<ApplicationModulesDto>> GetModules();
+        Task<ApplicationModulesDto> AddModules(ApplicationModulesCreateDto appModules);
+        Task<ApplicationModulesDto> UpdateModules(ApplicationModulesDto appModules);
+
+        Task<GenericResponseDto> AssignModulePermission(ApplicationModulesPermissionsDto permissions);
+
+        Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId);
 
     }
 }

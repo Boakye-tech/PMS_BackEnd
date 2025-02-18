@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Data;
+using System.Reflection;
 using System.Security.Claims;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Modules.Users.Application.Dtos.Entities.Permissions;
 using Modules.Users.Application.Dtos.UserAccounts;
+using Modules.Users.Domain.Entities;
 using static System.Collections.Specialized.BitVector32;
 
 
@@ -462,6 +465,87 @@ namespace Modules.Users.Application.UseCases
             }
 
             return new GenericResponseDto("Permissions updated successfully.");
+        }
+
+        public async Task<ApplicationModulesDto> AddModules(ApplicationModulesCreateDto appModules)
+        {
+            //throw new NotImplementedException();
+            var moduleId = Guid.NewGuid().ToString().Substring(0,12);
+            ApplicationModules applicationModules = new ApplicationModules(moduleId, appModules.ModuleName!);
+            _unitOfWork.ApplicationModules.Insert(applicationModules);
+            await _unitOfWork.Complete();
+
+            return new ApplicationModulesDto
+            {
+                ModuleId = applicationModules.ModuleId,
+                ModuleName = applicationModules.ModuleName
+            };
+
+        }
+
+        public async Task<ApplicationModulesDto> UpdateModules(ApplicationModulesDto appModules)
+        {
+            //throw new NotImplementedException();
+            ApplicationModules applicationModules = new ApplicationModules(appModules.ModuleId!, appModules.ModuleName!);
+            _unitOfWork.ApplicationModules.Update(applicationModules);
+            await _unitOfWork.Complete();
+
+            return new ApplicationModulesDto
+            {
+                ModuleId = applicationModules.ModuleId,
+                ModuleName = applicationModules.ModuleName
+            };
+        }
+
+        public async Task<GenericResponseDto> AssignModulePermission(ApplicationModulesPermissionsDto permissions)
+        {
+            //throw new NotImplementedException();
+
+            foreach (var item in permissions.ModulePermission!)
+            {
+                ApplicationModulesPermissions modulesPermissions = new ApplicationModulesPermissions(permissions.RoleId!, permissions.ModuleId!, item.ModulePermission!);
+                _unitOfWork.ApplicationModulesPermissions.Insert(modulesPermissions);
+            }
+
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto("Permissions applied successfully.");
+        }
+
+        public async Task<IEnumerable<ApplicationModulesDto>> GetModules()
+        {
+            //throw new NotImplementedException();
+            var response = await _unitOfWork.ApplicationModules.GetAll();
+            return _mapper.Map<IEnumerable<ApplicationModulesDto>>(response);
+
+        }
+
+
+        public async Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId)
+        {
+            var modulePermissions = (await _unitOfWork.ApplicationModulesPermissions.GetAll())
+               .Where(a => a.RoleId == roleId) // Filter where based on RoleId 
+               .GroupJoin(await _unitOfWork.ApplicationModules.GetAll(),
+                   a => a.ModuleId,
+                   b => b.ModuleId,
+                   (a, moduleGroup) => new { a, module = moduleGroup.FirstOrDefault() }) // Left Join on ApplicationModules
+               .GroupJoin(await _unitOfWork.Roles.GetAll(),
+                   ab => ab.a.RoleId,
+                   c => c.Id,
+                   (ab, roleGroup) => new RoleModulesPermissionsDto
+                   {
+                       ModulePermissionId = ab.a.ModulePermissionId,
+                       RoleId = ab.a.RoleId,
+                       RoleName = roleGroup.FirstOrDefault()?.Name, // Left Join on Roles
+                       ModuleId = ab.a.ModuleId,
+                       ModuleName = ab.module?.ModuleName,
+                       ModulePermission = ab.a.ModulePermission
+                   })
+               .ToList();
+
+
+            return _mapper.Map<IEnumerable<RoleModulesPermissionsDto>>(modulePermissions);
+
         }
     }
 }

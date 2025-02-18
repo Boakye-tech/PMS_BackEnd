@@ -445,6 +445,50 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.ToTable("UserRoles", "dbo");
                 });
 
+            modelBuilder.Entity("Modules.Users.Domain.Entities.ApplicationModules", b =>
+                {
+                    b.Property<string>("ModuleId")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("ModuleName")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("ModuleId");
+
+                    b.HasIndex("ModuleId", "ModuleName")
+                        .IsUnique()
+                        .HasFilter("[ModuleName] IS NOT NULL");
+
+                    b.ToTable("ApplicationModules");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.ApplicationModulesPermissions", b =>
+                {
+                    b.Property<int>("ModulePermissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModulePermissionId"));
+
+                    b.Property<string>("ModuleId")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("ModulePermission")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("RoleId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ModulePermissionId");
+
+                    b.ToTable("ApplicationModulesPermissions");
+                });
+
             modelBuilder.Entity("Modules.Users.Domain.Entities.Channels", b =>
                 {
                     b.Property<int>("ChannelId")
@@ -895,6 +939,44 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.HasKey("SubPermissionsItemsId");
 
                     b.ToTable("SubPermissionsItems");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.StaffAccounts", b =>
+                {
+                    b.Property<string>("DepartmentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentificationNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnitName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("StaffAccounts");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.TokenStore", b =>

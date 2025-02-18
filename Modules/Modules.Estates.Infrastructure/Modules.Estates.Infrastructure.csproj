@@ -43,8 +43,8 @@
     <Folder Include="Repositories\Registration\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules.Estates.Application\Modules.Estates.Application.csproj" />
     <ProjectReference Include="..\Modules.Estates.Domain\Modules.Estates.Domain.csproj" />
-    <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

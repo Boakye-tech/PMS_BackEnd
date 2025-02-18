@@ -38,40 +38,41 @@ namespace Modules.Users.Presentation
                 options.User.RequireUniqueEmail = true;
                 options.User.AllowedUserNameCharacters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
             }).AddEntityFrameworkStores<UserDbContext>()
+            //.AddRoles<ApplicationIdentityRole>()
               .AddDefaultTokenProviders();
 
 
             //var key = Encoding.ASCII.GetBytes(configuration["JwTokenKey:TokenKey"]); 
-            var key = Encoding.ASCII.GetBytes(configuration.GetSection("JwTokenKey").GetSection("TokenKey").Value!);
+            //var key = Encoding.ASCII.GetBytes(configuration.GetSection("JwTokenKey").GetSection("TokenKey").Value!);
 
-            services.AddAuthentication(a =>
-            {
-                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = ApplicationDbContext =>
-                    {
-                        //TODO
-                        return Task.CompletedTask;
-                    }
-                };
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
+            //services.AddAuthentication(a =>
+            //{
+            //    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(x =>
+            //{
+            //    x.Events = new JwtBearerEvents
+            //    {
+            //        OnTokenValidated = ApplicationDbContext =>
+            //        {
+            //            //TODO
+            //            return Task.CompletedTask;
+            //        }
+            //    };
+            //    x.RequireHttpsMetadata = false;
+            //    x.SaveToken = true;
+            //    x.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuerSigningKey = true,
+            //        ValidateLifetime = true,
+            //        IssuerSigningKey = new SymmetricSecurityKey(key),
+            //        ValidateIssuer = false,
+            //        ValidateAudience = false
+            //    };
 
-            });
+            //});
 
             services.AddHttpClient<TokenStoreRepository>();
             services.AddScoped<ValidationService>();

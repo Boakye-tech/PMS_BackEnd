@@ -35,6 +35,9 @@ namespace Modules.Users.Infrastructure
 
         public DbSet<StaffAccounts> StaffAccounts { get; set; }
 
+        public DbSet<ApplicationModules> ApplicationModules { get; set; }
+        public DbSet<ApplicationModulesPermissions> ApplicationModulesPermissions { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -73,6 +76,13 @@ namespace Modules.Users.Infrastructure
             builder.Entity<SubMenuItems>()
                 .HasIndex(smi => smi.SubMenuItemName)
                 .IsUnique(true);
+
+
+            builder.Entity<ApplicationModules>()
+                .HasIndex(am => new { am.ModuleId, am.ModuleName })
+                .IsUnique(true);
+
+
 
 
             builder.ApplyConfiguration(new ChannelConfiguration());

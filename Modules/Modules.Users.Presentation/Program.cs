@@ -69,24 +69,24 @@ builder.Services.AddCors(o =>
 //})
 //.AddJwtBearer(x =>
 //{
-//   x.Events = new JwtBearerEvents
-//   {
-//       OnTokenValidated = UserDbContext =>
-//       {
-//           //TODO
-//           return Task.CompletedTask;
-//       }
-//   };
-//   x.RequireHttpsMetadata = false;
-//   x.SaveToken = true;
-//   x.TokenValidationParameters = new TokenValidationParameters
-//   {
-//       ValidateIssuerSigningKey = true,
-//       ValidateLifetime = true,
-//       IssuerSigningKey = new SymmetricSecurityKey(key),
-//       ValidateIssuer = false,
-//       ValidateAudience = false
-//   };
+//    x.Events = new JwtBearerEvents
+//    {
+//        OnTokenValidated = UserDbContext =>
+//        {
+//            //TODO
+//            return Task.CompletedTask;
+//        }
+//    };
+//    x.RequireHttpsMetadata = false;
+//    x.SaveToken = true;
+//    x.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuerSigningKey = true,
+//        ValidateLifetime = true,
+//        IssuerSigningKey = new SymmetricSecurityKey(key),
+//        ValidateIssuer = false,
+//        ValidateAudience = false
+//    };
 
 //});
 

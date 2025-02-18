@@ -67,8 +67,10 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         public string? Department { get; set; }
         public string? Unit { get; set; }
         public string? ProfilePicture { get; set; }
+        public IList<string>? UsersRoles { get; set; }
+        public PermissionsAccessModulesReadDto? AccessPermissions { get; set; }
 
-        public StaffUserInformationDto(ApplicationIdentityUser user, string department, string unit, string channelName, string userType, string status)
+        public StaffUserInformationDto(ApplicationIdentityUser user, string department, string unit, string channelName, string userType, string status, IList<string>? usersRoles, PermissionsAccessModulesReadDto? accessPermissions)
         {
             UserId = user.Id;
             StaffIdentificationNumber = user.IdentificationNumber;
@@ -86,8 +88,14 @@ namespace Modules.Users.Application.Dtos.UserAccounts
             IsFirstTime = user.IsFirstTime;
             RegistrationDate = user.RegistrationDate;
             Status = status;
+            UsersRoles = usersRoles;
+            AccessPermissions = accessPermissions;
+
         }
+
     };
+
+   
 
 }
 
