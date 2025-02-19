@@ -38,6 +38,8 @@ public interface IUnitOfWork : IDisposable
     IActivityRepository Activity { get; }
     IActivityTypeRepository ActivityType { get; }
 
+    IOwnershipTypeRepository OwnershipType { get; }
+
     Task<int> Complete();
 }
 

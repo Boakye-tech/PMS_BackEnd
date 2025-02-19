@@ -47,13 +47,30 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("ContactPerson")
-                        .IsRequired()
+                    b.Property<string>("ContactPerson_Address")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("ContactPerson_EmailAddress")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("ContactPersonPhoneNumber")
-                        .IsRequired()
+                    b.Property<string>("ContactPerson_FullName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("ContactPerson_IdentificationTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContactPerson_IdentificationTypeImage")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ContactPerson_IdentificationTypeNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ContactPerson_PhoneNumber")
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
@@ -70,9 +87,6 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<int>("CustomerTypeId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("DateIssued")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -93,12 +107,8 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("GenderId")
                         .HasColumnType("int");
@@ -129,15 +139,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("MiddleName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("LocalityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -152,6 +155,11 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("OtherNames")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("ParentCode")
                         .IsRequired()
@@ -173,10 +181,16 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
+                    b.Property<DateTime>("ResidentPermitDateIssued")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ResidentPermitExpiryDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ResidentPermitNumber")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("ResidentTypeId")
                         .HasColumnType("int");
@@ -198,6 +212,11 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<int>("SocialMediaTypeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SurName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("TinNumber")
                         .IsRequired()
@@ -553,6 +572,42 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.ToTable("Nationality", "est");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.OwnershipType", b =>
+                {
+                    b.Property<int>("OwnershipTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OwnershipTypeId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnershipTypes")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("OwnershipTypeId");
+
+                    b.ToTable("OwnershipType", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.ResidentType", b =>
                 {
                     b.Property<int>("ResidentTypeId")
@@ -706,7 +761,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            ActivityId = 10,
+                            ActivityId = 1,
                             ActivityDescription = "VARIOUS LETTERS ON PROPERTY",
                             ActivityName = "LETTERS",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -715,7 +770,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         },
                         new
                         {
-                            ActivityId = 11,
+                            ActivityId = 2,
                             ActivityDescription = "VARIOUS CUSTOMER DEPOSITS ON PROPERTIES",
                             ActivityName = "DEPOSITS",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),

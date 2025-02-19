@@ -25,6 +25,21 @@ public class CustomerTypeService : ICustomerTypeService
         return new CustomerTypeReadDto(customerType.CustomerTypeId, customerType.CustomerTypes!);
     }
 
+    public async Task<string> DeleteCustomerTyeAsync(int value)
+    {
+        var response = await _unitOfWork.CustomerType.Get(value);
+
+        if (response is null)
+        {
+            return "400 - BadRequest";
+        }
+
+        _unitOfWork.CustomerType.Delete(response);
+        await _unitOfWork.Complete();
+
+        return "success";
+    }
+
     public async Task<IEnumerable<CustomerTypeReadDto>> GetCustomerTypeAsync()
     {
         var response = await _unitOfWork.CustomerType.GetAll();

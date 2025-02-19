@@ -27,6 +27,21 @@ namespace Modules.Estates.Application.Repositories.Setup.Customer
             return new NationalityReadDto(request.NationalityId, request.Nationalities!);
         }
 
+        public async Task<string> DeleteNationalityAsync(int value)
+        {
+            var response = await _unitOfWork.Nationality.Get(value);
+
+            if (response is null)
+            {
+                return "400 - BadRequest";
+            }
+
+            _unitOfWork.Nationality.Delete(response);
+            await _unitOfWork.Complete();
+
+            return "success";
+        }
+
         public async Task<IEnumerable<NationalityReadDto>> GetNationalityAsync()
         {
             var response = await _unitOfWork.Nationality.GetAll();

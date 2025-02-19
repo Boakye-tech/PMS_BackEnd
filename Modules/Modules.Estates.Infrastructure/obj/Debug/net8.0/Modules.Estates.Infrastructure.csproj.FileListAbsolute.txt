@@ -69,9 +69,9 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/bin/Debug/net8.0/Modules.Common.Infrastructure.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/bin/Debug/net8.0/Modules.Estates.Application.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/bin/Debug/net8.0/Modules.Estates.Domain.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/bin/Debug/net8.0/Modules.Common.Infrastructure.pdb
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/bin/Debug/net8.0/Modules.Estates.Application.pdb
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/bin/Debug/net8.0/Modules.Estates.Domain.pdb
-/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/bin/Debug/net8.0/Modules.Common.Infrastructure.pdb
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/obj/Debug/net8.0/Modules.Estates.Infrastructure.csproj.AssemblyReference.cache
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/obj/Debug/net8.0/Modules.Estates.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Infrastructure/obj/Debug/net8.0/Modules.Estates.Infrastructure.AssemblyInfoInputs.cache

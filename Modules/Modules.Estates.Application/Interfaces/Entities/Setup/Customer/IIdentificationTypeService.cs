@@ -7,5 +7,7 @@ public interface IIdentificationTypeService
     Task<IEnumerable<IdentificationTypeReadDto>> GetIdentificationTypeAsync();
     Task<IdentificationTypeReadDto> GetIdentificationTypeAsync(int value);
     Task<IdentificationTypeReadDto> GetIdentificationTypeAsync(string value);
+
+    Task<string> DeleteIdentificationTypeAsync(int value);
 }
 

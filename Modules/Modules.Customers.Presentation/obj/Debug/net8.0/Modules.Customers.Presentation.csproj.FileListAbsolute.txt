@@ -222,6 +222,7 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Azure.Storage.Blobs.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Azure.Storage.Common.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Humanizer.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Microsoft.CodeAnalysis.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.dll
@@ -375,4 +376,3 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/obj/Debug/net8.0/Modules.Customers.Presentation.pdb
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/obj/Debug/net8.0/Modules.Customers.Presentation.genruntimeconfig.cache
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/obj/Debug/net8.0/ref/Modules.Customers.Presentation.dll
-/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Customers.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

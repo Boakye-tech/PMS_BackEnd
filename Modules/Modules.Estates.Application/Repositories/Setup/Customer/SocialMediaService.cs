@@ -25,6 +25,21 @@ public class SocialMediaService: ISocialMediaService
         return new SocialMediaReadDto(request.SocialMediaId, request.SocialMediaPlatform!);
     }
 
+    public async Task<string> DeleteSocialMediaAsync(int value)
+    {
+        var response = await _unitOfWork.SocialMedia.Get(value);
+
+        if (response is null)
+        {
+            return "400 - BadRequest";
+        }
+
+        _unitOfWork.SocialMedia.Delete(response);
+        await _unitOfWork.Complete();
+
+        return "success";
+    }
+
     public async Task<IEnumerable<SocialMediaReadDto>> GetSocialMediaAsync()
     {
         var response = await _unitOfWork.SocialMedia.GetAll();

@@ -19,8 +19,8 @@ namespace Modules.Users.Presentation.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Policy = "Permission:Users.READ")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(Policy = "Permission:Users.READ")]
 
     public class AdministrationController : ControllerBase
     {
@@ -51,7 +51,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
 
-        [Authorize(Policy = "Permission:Users.CREATE")]
+        //[Authorize(Policy = "Permission:Users.CREATE")]
         [HttpPost]
         [Route("CreateChannel")]
         public async Task<ActionResult<ChannelReadDto>> CreateChannel([FromBody] ChannelCreateDto values)

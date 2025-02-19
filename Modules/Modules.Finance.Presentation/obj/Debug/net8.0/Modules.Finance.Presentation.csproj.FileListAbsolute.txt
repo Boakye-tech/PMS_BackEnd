@@ -190,6 +190,7 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Humanizer.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.CodeAnalysis.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.dll
@@ -342,4 +343,3 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/Modules.Finance.Presentation.pdb
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/Modules.Finance.Presentation.genruntimeconfig.cache
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/ref/Modules.Finance.Presentation.dll
-/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

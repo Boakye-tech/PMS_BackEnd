@@ -7,5 +7,7 @@ public interface ITitleService
     Task<IEnumerable<TitleReadDto>> GetTitleAsync();
     Task<TitleReadDto> GetTitleAsync(int value);
     Task<TitleReadDto> GetTitleAsync(string value);
+
+    Task<string> DeleteTitleAsync(int value);
 }
 

@@ -7,5 +7,7 @@ public interface IResidentTypeService
     Task<IEnumerable<ResidentTypeReadDto>> GetResidentTypeAsync();
     Task<ResidentTypeReadDto> GetResidentTypeAsync(int value);
     Task<ResidentTypeReadDto> GetResidentTypeAsync(string value);
+
+    Task<string> DeleteResidentTypeAsync(int value);
 }
 

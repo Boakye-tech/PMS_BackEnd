@@ -25,6 +25,21 @@ public class GenderService : IGenderService
         return new GenderReadDto(gender.GenderId, gender.GenderType!);
     }
 
+    public async Task<string> DeleteGenderAsync(int value)
+    {
+        var response = await _unitOfWork.Gender.Get(value);
+
+        if (response is null)
+        {
+            return "400 - BadRequest";
+        }
+
+        _unitOfWork.Gender.Delete(response);
+        await _unitOfWork.Complete();
+
+        return "success";
+    }
+
     public async Task<IEnumerable<GenderReadDto>> GetGenderAsync()
     {
         var response = await _unitOfWork.Gender.GetAll();

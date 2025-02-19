@@ -58,6 +58,8 @@ public class UnitOfWork: IUnitOfWork
         Activity = new ActivityRepository(_dbContext);
         ActivityType = new ActivityTypeRepository(_dbContext);
 
+        OwnershipType = new OwnershipTypeRepository(_dbContext);
+
     }
 
 
@@ -111,6 +113,7 @@ public class UnitOfWork: IUnitOfWork
     public IActivityRepository Activity { get; private set; }
     public IActivityTypeRepository ActivityType { get; private set; }
 
+    public IOwnershipTypeRepository OwnershipType { get; private set; }
 
     public Task<int> Complete()
     {

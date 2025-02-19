@@ -40,6 +40,7 @@ public static class ModuleExtensions
         services.AddScoped<IResidentTypeService, ResidentTypeService>();
         services.AddScoped<ISocialMediaService, SocialMediaService>();
         services.AddScoped<ITitleService, TitleService>();
+        services.AddScoped<IOwnershipTypeService, OwnershipTypeService>();
 
         services.AddScoped<ICustomerMasterService, CustomerMasterService>();
 

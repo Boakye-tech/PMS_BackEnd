@@ -7,5 +7,7 @@ public interface ISocialMediaService
     Task<IEnumerable<SocialMediaReadDto>> GetSocialMediaAsync();
     Task<SocialMediaReadDto> GetSocialMediaAsync(int value);
     Task<SocialMediaReadDto> GetSocialMediaAsync(string value);
+
+    Task<string> DeleteSocialMediaAsync(int value);
 }
 

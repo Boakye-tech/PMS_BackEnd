@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Application.Repositories.Setup.Customer;
+using Modules.Estates.Domain.Entities.Setup.Customer;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,11 +24,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         readonly IResidentTypeService _residentTypeService;
         readonly ISocialMediaService _socialMediaService;
         readonly ITitleService _titleService;
+        readonly IOwnershipTypeService _ownershipTypeService;
 
         readonly ICustomerMasterService _customerMasterService;
 
         public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService,
-                                  IResidentTypeService residentTypeService, ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService)
+                                  IResidentTypeService residentTypeService, ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService)
         {
             _customerTypeService = customerTypeService;
             _genderService = genderService;
@@ -37,6 +40,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             _titleService = titleService;
 
             _customerMasterService = customerMasterService;
+            _ownershipTypeService = ownershipTypeService; ;
         }
 
         //----------------------CUSTOMER TYPES------------
@@ -104,8 +108,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpDelete("DeleteCustomerType/{customerTypeId}")]
-        public void DeleteCustomerType(int customerTypeId)
+        public async Task<ActionResult> DeleteCustomerType(int customerTypeId)
         {
+            return Ok(await _customerTypeService.DeleteCustomerTyeAsync(customerTypeId));
         }
 
         //----------------------GENDER------------
@@ -185,8 +190,10 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpDelete("DeleteGender/{genderId}")]
-        public void DeleteGender(int genderId)
-        { }
+        public async Task<ActionResult> DeleteGender(int genderId)
+        {
+            return Ok(await _genderService.DeleteGenderAsync(genderId));
+        }
 
         //----------------------IDENTIFICATION TYPES------------
         /// <summary>
@@ -252,8 +259,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpDelete("DeleteIdentificationType/{identificationTypeId}")]
-        public void DeleteIdentificationType(int identificationTypeId)
+        public async Task<ActionResult> DeleteIdentificationType(int identificationTypeId)
         {
+            return Ok(await _identificationTypeService.DeleteIdentificationTypeAsync(identificationTypeId));
         }
 
         //----------------------NATIONALITY------------
@@ -318,8 +326,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpDelete("DeleteNationality/{nationalityId}")]
-        public void DeleteNationality(int nationalityId)
+        public async Task<ActionResult> DeleteNationality(int nationalityId)
         {
+            return Ok(await _nationalityService.DeleteNationalityAsync(nationalityId));
         }
 
         //----------------------RESIDENT TYPES------------
@@ -385,8 +394,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpDelete("DeleteResidentType/{residentTypeId}")]
-        public void DeleteResidentType(int residentTypeId)
+        public async Task<ActionResult> DeleteResidentType(int residentTypeId)
         {
+            return Ok(await _residentTypeService.DeleteResidentTypeAsync(residentTypeId));
         }
 
         //----------------------SOCIAL MEDIA------------
@@ -428,8 +438,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpDelete("DeleteSocialMedia/{socialMediaId}")]
-        public void DeleteSocialMedia(int socialMediaId)
+        public async Task<ActionResult> DeleteSocialMedia(int socialMediaId)
         {
+            return Ok(await _socialMediaService.DeleteSocialMediaAsync(socialMediaId));
         }
 
         //----------------------TITLE------------
@@ -509,8 +520,93 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpDelete("DeleteTitle/{titleId}")]
-        public void DeleteTitle(int titleId)
-        { }
+        public async Task<ActionResult> DeleteTitle(int titleId)
+        {
+            return Ok(await _titleService.DeleteTitleAsync(titleId));
+        }
+
+
+        //----------------------OWNERSHIP TYPE------------
+        /// <summary>
+        /// Returns a list of exisitng ownership types
+        /// </summary>
+        [HttpGet]
+        [Route("GetOwnershipTypes")]
+        public async Task<ActionResult<IEnumerable<OwnershipTypeReadDto>>> GetOwnershipTypes()
+        {
+            return Ok(await _ownershipTypeService.GetOwnershipTypeAsync());
+        }
+
+        [HttpGet]
+        [Route("GetOwnershipTypes/{value}")]
+        private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipTypes(string value)
+        {
+            return Ok(await _ownershipTypeService.GetOwnershipTypeAsync(value));
+        }
+
+        [HttpGet]
+        [Route("GetOwnershipType/{ownershipTypeId}")]
+        public async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipType(int ownershipTypeId)
+        {
+            return Ok(await _ownershipTypeService.GetOwnershipTypeAsync(ownershipTypeId));
+        }
+
+        /// <summary>
+        ///  Create a new ownership type
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateTitle
+        /// 
+        /// {
+        ///    "ownershipTypeId": 0,
+        ///    "ownershipType": "LEASEHOLDS",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateOwnershipType")]
+        public async Task<ActionResult<TitleReadDto>> CreateOwnershipType([FromBody] OwnershipTypeCreateDto values)
+        {
+            try
+            {
+                return Ok(await _ownershipTypeService.AddOwnershipTypeAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Modify details of exisitng ownership type
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /UpdateTitle
+        /// 
+        /// {
+        ///    "ownershipTypeId": 3,
+        ///    "ownershipType": "LEASE HOLD",
+        ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateOwnershipType")]
+        public async Task<ActionResult<OwnershipTypeReadDto>> UpdateOwnershipType([FromBody] OwnershipTypeUpdateDto values)
+        {
+            return Ok(await _ownershipTypeService.UpdateOwnershipTypeAsync(values));
+        }
+
+        [HttpDelete("DeleteOwnershipType/{ownershipTypeId}")]
+        public async Task<ActionResult> DeleteOwnershipType(int ownershipTypeId)
+        {
+            return Ok(await _ownershipTypeService.DeleteOwnershipTypeAsync(ownershipTypeId));
+        }
 
         //------------------
         [HttpPost]

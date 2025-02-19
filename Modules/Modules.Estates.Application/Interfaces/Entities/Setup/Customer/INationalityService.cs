@@ -7,5 +7,7 @@ public interface INationalityService
     Task<IEnumerable<NationalityReadDto>> GetNationalityAsync();
     Task<NationalityReadDto> GetNationalityAsync(int value);
     Task<NationalityReadDto> GetNationalityAsync(string value);
+
+    Task<string> DeleteNationalityAsync(int value);
 }
 

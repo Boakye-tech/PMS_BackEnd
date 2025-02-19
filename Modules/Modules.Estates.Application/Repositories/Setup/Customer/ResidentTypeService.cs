@@ -28,6 +28,21 @@ namespace Modules.Estates.Application.Repositories.Setup.Customer
             return new ResidentTypeReadDto(request.ResidentTypeId, request.ResidentTypes!);
         }
 
+        public async Task<string> DeleteResidentTypeAsync(int value)
+        {
+            var response = await _unitOfWork.ResidentType.Get(value);
+
+            if (response is null)
+            {
+                return "400 - BadRequest";
+            }
+
+            _unitOfWork.ResidentType.Delete(response);
+            await _unitOfWork.Complete();
+
+            return "success";
+        }
+
         public async Task<IEnumerable<ResidentTypeReadDto>> GetResidentTypeAsync()
         {
             var response = await _unitOfWork.ResidentType.GetAll();

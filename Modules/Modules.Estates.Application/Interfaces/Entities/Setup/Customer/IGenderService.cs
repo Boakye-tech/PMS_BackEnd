@@ -7,5 +7,7 @@ public interface IGenderService
     Task<IEnumerable<GenderReadDto>> GetGenderAsync();
     Task<GenderReadDto> GetGenderAsync(int value);
     Task<GenderReadDto> GetGenderAsync(string value);
+
+    Task<string> DeleteGenderAsync(int value);
 }
 

@@ -44,6 +44,8 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<CustomerMaster> CustomerMaster { get; set; }
     public DbSet<PropertyMaster> PropertyMaster { get; set; }
 
+    public DbSet<OwnershipType> OwnershipType { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

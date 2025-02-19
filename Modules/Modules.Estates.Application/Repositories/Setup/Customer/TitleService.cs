@@ -27,6 +27,21 @@ namespace Modules.Estates.Application.Repositories.Setup.Customer
             return new TitleReadDto(title.TitleId, title.Titles!);
         }
 
+        public async Task<string> DeleteTitleAsync(int value)
+        {
+            var response = await _unitOfWork.Title.Get(value);
+
+            if (response is null)
+            {
+                return "400 - BadRequest";
+            }
+
+            _unitOfWork.Title.Delete(response);
+            await _unitOfWork.Complete();
+
+            return "success";
+        }
+
         public async Task<IEnumerable<TitleReadDto>> GetTitleAsync()
         {
             var response = await _unitOfWork.Title.GetAll();
