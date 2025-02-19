@@ -35,6 +35,14 @@ namespace Modules.Customers.Application.Dtos
 
         public string? IssuingBranch { get; set; }
 
+        public string? ReceivingBank { get; set; }
+
+        public string? ProcessingBranch { get; set; }
+
+        public string? ReceivingBranch { get; set; }
+
+        public string? PayPoint { get; set; }
+
         [StringLength(10)]
         public string? ChequeNumber { get; set; }
 
@@ -49,6 +57,9 @@ namespace Modules.Customers.Application.Dtos
 
         [StringLength(20)]
         public required string InvoiceNumber { get; set; }
+
+        [StringLength(150)]
+        public required string Cashier { get; set; }
     }
 }
 

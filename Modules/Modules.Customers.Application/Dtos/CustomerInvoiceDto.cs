@@ -13,6 +13,9 @@ namespace Modules.Customers.Application.Dtos
         [StringLength(25)]
         public required string PropertyNumber { get; set; }
 
+        [StringLength(10)]
+        public required string CustomerCode { get; set; }
+
         public double Acreage { get; set; }
 
         public string? TransactionCode { get; set; }
@@ -20,9 +23,6 @@ namespace Modules.Customers.Application.Dtos
         public string? TransactionNumber { get; set; }
 
         public required DateTime ExpirationDate { get; set; }
-
-        [StringLength(10)]
-        public required string CustomerCode { get; set; }
 
         public string? CustomerName { get; set; }
 

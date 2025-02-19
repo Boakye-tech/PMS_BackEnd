@@ -1,11 +1,10 @@
 ﻿using System;
 namespace Modules.Customers.Application.Interfaces
 {
-	public class ICustomerInvoiceService
+	public interface ICustomerInvoiceService
 	{
-		public ICustomerInvoiceService()
-		{
-		}
-	}
+        Task<GenericResponseDto> AddCustomerInvoiceDetails(CustomerInvoiceDto values);
+
+    }
 }
 

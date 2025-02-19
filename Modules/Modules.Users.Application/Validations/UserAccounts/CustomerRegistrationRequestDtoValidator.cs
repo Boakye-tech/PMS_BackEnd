@@ -11,7 +11,7 @@ namespace Modules.Users.Application.Validations.UserAccounts
             RuleFor(x => x.FirstName).NotEmpty().Length(2, 50).WithMessage("Customer firstname is required");
             RuleFor(x => x.LastName).NotEmpty().Length(2, 100).WithMessage("Customer lastName is required");
             RuleFor(x => x.PhoneNumber).NotEmpty().Length(9, 12).Matches("^([0-9]{10})$").WithMessage("Invalid Phone Number.");
-            RuleFor(x => x.EmailAddress).NotEmpty().WithMessage("Email address is required").EmailAddress().Matches(@"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$").WithMessage("Invalid email address format.");
+            RuleFor(x => x.EmailAddress).NotEmpty().WithMessage("Email address is required").EmailAddress().Matches(@"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$"); //.WithMessage("Invalid email address format.");
 
             RuleFor(x => x.LastReceiptNumber).NotEmpty().MinimumLength(11).WithMessage("The last receipt number is required and cannot be less than eleven(11) characters.");
             RuleFor(x => x.LastReceiptImage).NotEmpty().WithMessage("Image of receipt required.");

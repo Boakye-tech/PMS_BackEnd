@@ -19,8 +19,8 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string IdentificationUniqueNumber,
         string IdentificationImage,
         string IdentificationImageOne,
-        string SelfieImage,
-        string PassportPicture,
+        string? SelfieImage,
+        string? PassportPicture,
         int ChannelId
         //DateTime RegistrationDate,
         //int Status,

@@ -14,13 +14,17 @@ public class OnlineCustomerController : ControllerBase
     private readonly IPropertyDetailsService _propertyDetailsService;
     private readonly ICustomerDetailsService _customerDetailsService;
     private readonly ICustomerTransactionsService _transactionsService;
+    private readonly ICustomerInvoiceService _invoiceService;
+    private readonly ICustomerPaymentsService _paymentsService;
 
-    public OnlineCustomerController(ILogger<OnlineCustomerController> logger, IPropertyDetailsService propertyDetailsService, ICustomerDetailsService customerDetailsService, ICustomerTransactionsService transactionsService)
+    public OnlineCustomerController(ILogger<OnlineCustomerController> logger, IPropertyDetailsService propertyDetailsService, ICustomerDetailsService customerDetailsService, ICustomerTransactionsService transactionsService, ICustomerInvoiceService invoiceService, ICustomerPaymentsService paymentsService)
     {
         _logger = logger;
         _propertyDetailsService = propertyDetailsService;
         _customerDetailsService = customerDetailsService;
         _transactionsService = transactionsService;
+        _invoiceService = invoiceService;
+        _paymentsService = paymentsService;
     }
 
 
@@ -106,17 +110,15 @@ public class OnlineCustomerController : ControllerBase
     }
 
     [HttpPost("AddCustomerInvoices")]
-    public  Task<GenericResponseDto> AddCustomerInvoices(CustomerInvoiceDto values)
+    public async  Task<GenericResponseDto> AddCustomerInvoices(CustomerInvoiceDto values)
     {
-        //return await _propertyDetailsService.AddNewPropertyDetails(values);
-        return null!;
+        return await _invoiceService.AddCustomerInvoiceDetails(values);
     }
 
     [HttpPost("AddCustomerPayments")]
-    public Task<GenericResponseDto> AddCustomerPayments(CustomerPaymentsDto values)
+    public async Task<GenericResponseDto> AddCustomerPayments(CustomerPaymentsDto values)
     {
-        //return await _propertyDetailsService.AddNewPropertyDetails(values);
-        return null!;
+        return await _paymentsService.AddNewCustomerPaymentDetails(values);
     }
 
 }

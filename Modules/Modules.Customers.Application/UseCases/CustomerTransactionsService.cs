@@ -6,7 +6,7 @@ namespace Modules.Customers.Application.UseCases
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CustomerTransactionsService(IUnitOfWork unitOfWork, IMapper mapper)
+        public CustomerTransactionsService(IUnitOfWork unitOfWork) //, IMapper mapper
         {
             _unitOfWork = unitOfWork;
         }

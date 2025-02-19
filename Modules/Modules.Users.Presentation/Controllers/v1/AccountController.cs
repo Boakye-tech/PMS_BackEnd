@@ -38,12 +38,33 @@ public class AccountController : ControllerBase
     /// <response code="200">Returns the uniquely created user id for a newly registered application user</response>
     [HttpPost]
     [Route("Register/Customer")]
-    [ProducesResponseType(200, Type = typeof(RegistrationResponse))]
+    [ProducesResponseType(201, Type = typeof(RegistrationResponse))]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] CustomerRegistrationRequestDto values)
     {
         if (ModelState.IsValid)
         {
-            return Ok(await _userAccountsService.CustomerUserRegistration(values));
+            var response = await _userAccountsService.CustomerUserRegistration(values);
+
+            if (response.IsSuccess == true)
+            {
+                return CreatedAtAction(string.Empty, response.SuccessResponse);
+            }
+
+            var status = response.ErrorResponse!.StatusCode;
+
+            switch (status)
+            {
+                case 204:
+                    return NoContent();
+                case 400:
+                    return BadRequest(response.ErrorResponse);
+                case 404:
+                    return NotFound(response.ErrorResponse);
+                default:
+                    break;
+            };
+
+            //return Ok(await _userAccountsService.CustomerUserRegistration(values));
         }
 
         return BadRequest();
@@ -73,15 +94,36 @@ public class AccountController : ControllerBase
     /// Registers a new staff user.
     /// </summary>
     /// <remarks>Returns the registration status and user id. The user and password used in a successful registration will be used to access generated a json web token and a refresh token that will be used to access the application</remarks>
-    /// <response code="200">Returns the uniquely created user id for a newly registered application user</response>
+    /// <response code="201">Returns the uniquely created user id for a newly registered application user</response>
     [HttpPost]
     [Route("Register/Staff")]
-    [ProducesResponseType(200, Type = typeof(RegistrationResponse))]
+    [ProducesResponseType(201, Type = typeof(RegistrationResponse))]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] StaffRegistrationRequestDto values)
     {
         if (ModelState.IsValid)
         {
-            return Ok(await _userAccountsService.StaffUserRegistration(values));
+            var response = await _userAccountsService.StaffUserRegistration(values);
+
+            if(response.IsSuccess == true)
+            {
+                return CreatedAtAction(string.Empty, response.SuccessResponse);
+            }
+
+            var status = response.ErrorResponse!.StatusCode;
+
+            switch (status)
+            {
+                case 204:
+                    return NoContent();
+                case 400:
+                    return BadRequest(response.ErrorResponse);
+                case 404:
+                    return NotFound(response.ErrorResponse);
+                default:
+                    break;
+            };
+
+            //return Ok(await _userAccountsService.StaffUserRegistration(values));
         }
 
         return BadRequest();

@@ -16,8 +16,8 @@ namespace Modules.Customers.Presentation
             services.AddScoped<IPropertyDetailsService, PropertyDetailsService>();
             services.AddScoped<ICustomerDetailsService, CustomerDetailsService>();
             services.AddScoped<ICustomerTransactionsService, CustomerTransactionsService>();
-            //services.AddScoped<ICustomerPaymentsService, CustomerPaymentsService>();
-            //services.AddScoped<ICustomerInvoiceService, CustomerInvoiceService>();
+            services.AddScoped<ICustomerPaymentsService, CustomerPaymentsService>();
+            services.AddScoped<ICustomerInvoiceService, CustomerInvoiceService>();
             //services.AddScoped<ICustomerInvoiceItemsService, CustomerInvoiceItemsService>();
 
 
