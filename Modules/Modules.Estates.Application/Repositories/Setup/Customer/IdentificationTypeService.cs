@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using System.Text.Json;
 
 namespace Modules.Estates.Application.Repositories.Setup.Customer
 {
@@ -6,11 +8,13 @@ namespace Modules.Estates.Application.Repositories.Setup.Customer
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly HttpClient _httpClient;
 
-        public IdentificationTypeService(IUnitOfWork unitOfWork, IMapper mapper)
+        public IdentificationTypeService(IUnitOfWork unitOfWork, IMapper mapper, HttpClient httpClient)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _httpClient = httpClient;
         }
 
         public async Task<IdentificationTypeReadDto> AddIdentificationTypeAsync(IdentificationTypeCreateDto values)
@@ -23,6 +27,15 @@ namespace Modules.Estates.Application.Repositories.Setup.Customer
 
             _unitOfWork.IdentificationType.Insert(request);
             await _unitOfWork.Complete();
+
+            //send to user module
+            var payload = new IdentificationTypeDto(request.IdentificationTypeId, request.IdentificationTypes!);
+
+            string json_payload = JsonSerializer.Serialize(payload);
+            var _httpContent = new StringContent(json_payload, Encoding.UTF8, "application/json");
+            HttpResponseMessage _response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Administration/AddIdentificationType", _httpContent);
+            var result_sms = _response.IsSuccessStatusCode;
+
 
             return new IdentificationTypeReadDto(request.IdentificationTypeId, request.IdentificationTypes!);
         }

@@ -26,6 +26,8 @@ namespace Modules.Users.Domain.Interfaces
         IApplicationModulesRepository ApplicationModules { get; }
         IApplicationModulesPermissionsRepository ApplicationModulesPermissions { get; }
 
+        IIdentificationTypeRepository IdentificationType { get; }
+
         Task<int> Complete();
     }
 }

@@ -27,9 +27,9 @@ namespace Modules.Customers.Application.Dtos
 
         public string? PaymentCurrency { get; set; }
 
-        public required float Amount { get; set; }
+        public required double Amount { get; set; }
 
-        public required float AmountPaid { get; set; }
+        public required double AmountPaid { get; set; }
 
         public string? IssuingBank { get; set; }
 
@@ -61,5 +61,27 @@ namespace Modules.Customers.Application.Dtos
         [StringLength(150)]
         public required string Cashier { get; set; }
     }
+
+    public record CustomerPaymentsSummaryDto
+    {
+        [StringLength(50)]
+        public required string ReceiptNumber { get; set; }
+
+        [Required]
+        public required string Narration { get; set; }
+
+        public required DateTime DateOfPayment { get; set; }
+
+        public required string PaymentMode { get; set; } //cash, cheque etc
+
+        public string? PaymentCurrency { get; set; }
+
+        public required double AmountPaid { get; set; }
+
+        [StringLength(10)]
+        public string? ChequeNumber { get; set; }
+
+    }
+
 }
 

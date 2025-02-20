@@ -29,14 +29,16 @@ namespace Modules.Users.Presentation.Controllers.v1
         readonly IDepartmentService _departmentService;
         readonly IDepartmentUnitService _departmentUnitService;
         readonly IChannelService _channelService;
+        readonly IIdentificationTypeService _identificationTypeService;
 
-        public AdministrationController(IAdministrationService adminService, IDepartmentService departmentService, IDepartmentUnitService departmentUnitService, IMenuService menuService, IChannelService channelService)
+        public AdministrationController(IAdministrationService adminService, IDepartmentService departmentService, IDepartmentUnitService departmentUnitService, IMenuService menuService, IChannelService channelService, IIdentificationTypeService identificationTypeService)
         {
             _adminService = adminService;
             _menuService = menuService;
             _departmentService = departmentService;
             _departmentUnitService = departmentUnitService;
             _channelService = channelService;
+            _identificationTypeService = identificationTypeService;
         }
 
         //----------------------CHANNELS------------
@@ -558,6 +560,50 @@ namespace Modules.Users.Presentation.Controllers.v1
                                    });
             return Ok(types);
         }
+
+        //----------------------IDENTIFICATION TYPES------------
+        /// <summary>
+        /// Returns a list of identification types
+        /// </summary>
+        [HttpGet]
+        [Route("GetIdentificationTypes")]
+        public async Task<ActionResult<IEnumerable<IIdentificationTypeService>>> GetIdentificationTypes()
+        {
+            return Ok(await _identificationTypeService.GetIdentificationTypeAsync());
+        }
+
+
+        [HttpPost]
+        [Route("CreateIdentificationType")]
+        public async Task<ActionResult<ChannelReadDto>> CreateIdentificationType([FromBody] IdentificationTypeDto values)
+        {
+            try
+            {
+                await _identificationTypeService.AddIdentificationTypeAsync(values);
+                return Ok( new { response = "200" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateIdentificationType")]
+        public async Task<ActionResult<ChannelReadDto>> UpdateIdentificationType([FromBody] IdentificationTypeDto values)
+        {
+            await _identificationTypeService.UpdateIdentificationTypeAsync(values);
+            return Ok(new { response = "200" });
+        }
+
+        [HttpDelete("DeleteIdentificationType/{identificationTypeId}")]
+        public async Task<ActionResult> DeleteIdentificationType(int identificationTypeId)
+        {
+            await _identificationTypeService.DeleteIdentificationTypeAsync(identificationTypeId);
+            return Ok(new { response = "200" });
+        }
+
+
 
         /// <summary>
         /// Returns a list of system registered staff users

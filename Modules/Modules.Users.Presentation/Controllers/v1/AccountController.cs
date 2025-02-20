@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text.Json;
+using System.Text.RegularExpressions;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +33,16 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
+    /// Returns a list of identification types
+    /// </summary>
+    [HttpGet]
+    [Route("GetIdentificationTypes")]
+    public async Task<ActionResult<IEnumerable<IdentificationType>>> GetIdentificationTypes()
+    {
+        return Ok(await _unitOfWork.IdentificationType.GetAll());
+    }
+
+    /// <summary>
     /// Registers a new customer user.
     /// </summary>
     /// <remarks>Returns the registration status and user id. The email/phone and password used in a successful registration will be required to access and generated a json web token and a refresh token that will be used for authoriation and authentication purposes</remarks>
@@ -47,7 +58,7 @@ public class AccountController : ControllerBase
 
             if (response.IsSuccess == true)
             {
-                return CreatedAtAction(string.Empty, response.SuccessResponse);
+                return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
             }
 
             var status = response.ErrorResponse!.StatusCode;
@@ -60,6 +71,8 @@ public class AccountController : ControllerBase
                     return BadRequest(response.ErrorResponse);
                 case 404:
                     return NotFound(response.ErrorResponse);
+                case 409:
+                    return Conflict(response.ErrorResponse);
                 default:
                     break;
             };
@@ -84,7 +97,29 @@ public class AccountController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            return Ok(await _userAccountsService.PartnerUserRegistration(values));
+            var response = await _userAccountsService.PartnerUserRegistration(values);
+
+            if (response.IsSuccess == true)
+            {
+                return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
+            }
+
+            var status = response.ErrorResponse!.StatusCode;
+
+            switch (status)
+            {
+                case 204:
+                    return NoContent();
+                case 400:
+                    return BadRequest(response.ErrorResponse);
+                case 404:
+                    return NotFound(response.ErrorResponse);
+                case 409:
+                    return Conflict(response.ErrorResponse);
+                default:
+                    break;
+            };
+            //return Ok(await _userAccountsService.PartnerUserRegistration(values));
         }
 
         return BadRequest();
@@ -106,7 +141,8 @@ public class AccountController : ControllerBase
 
             if(response.IsSuccess == true)
             {
-                return CreatedAtAction(string.Empty, response.SuccessResponse);
+                return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
+                //return CreatedAtAction(string.Empty, response.SuccessResponse);
             }
 
             var status = response.ErrorResponse!.StatusCode;
@@ -119,6 +155,8 @@ public class AccountController : ControllerBase
                     return BadRequest(response.ErrorResponse);
                 case 404:
                     return NotFound(response.ErrorResponse);
+                case 409:
+                    return Conflict(response.ErrorResponse); 
                 default:
                     break;
             };

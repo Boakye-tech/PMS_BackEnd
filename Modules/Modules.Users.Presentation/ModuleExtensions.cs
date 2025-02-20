@@ -86,6 +86,8 @@ namespace Modules.Users.Presentation
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<ITokenStoreRepository, TokenStoreRepository>();
 
+            services.AddScoped<IIdentificationTypeService, IdentificationTypeService>();
+
 
             //register global exception handler
             services.AddExceptionHandler<HttpGlobalExceptionFilter>();

@@ -629,7 +629,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     if (!results.Succeeded)
                     {
                         _logger.LogError($"Customer Registration Error: {string.Join("; ", results.Errors.Select(err => err.Description))}");
-                        var errResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
+                        var errResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status409Conflict, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errResponse };
                         //return response;
                     }
@@ -684,7 +684,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     if (!results.Succeeded)
                     {
                         _logger.LogError($"Partner Bank Registration Error: {string.Join("; ", results.Errors.Select(err => err.Description))}");
-                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
+                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status409Conflict, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
                     }
                 }
@@ -705,17 +705,23 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             {
                 if (details != null)
                 {
-                    //var department = await _unitOfWork.Department.Get(details.DepartmentId);
-                    var unit = await _unitOfWork.DepartmentUnit.Get(du => du.DepartmentId == details.DepartmentId && du.UnitId == details.UnitId);
-                    var channels = await _unitOfWork.Channels.Get(details.ChannelId);
+                    var staffId = await _unitOfWork.Users.Get(i => i.IdentificationNumber == details.StaffIdentificationNumber);
+                    if(staffId is not null)
+                    {
+                        _logger.LogError($"Staff Registration Error - Staff Identification Number: {details.StaffIdentificationNumber} already exist");
+                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status409Conflict, StatusMessage = $"Registration Error - Staff Identification Number: {details.StaffIdentificationNumber} already exist." };
+                        return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
+                    }
 
+                    var unit = await _unitOfWork.DepartmentUnit.Get(du => du.DepartmentId == details.DepartmentId && du.UnitId == details.UnitId);
                     if(unit is null)
                     {
                         var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status404NotFound, StatusMessage = "Department and unit not found." };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
                     }
 
-                    if(channels is null)
+                    var channels = await _unitOfWork.Channels.Get(details.ChannelId);
+                    if (channels is null)
                     {
                         var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status404NotFound, StatusMessage = "Channel not found." };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
@@ -754,7 +760,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     if (!results.Succeeded)
                     {
                         _logger.LogError($"Staff Registration Error: {string.Join("; ", results.Errors.Select(err => err.Description))}");
-                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
+                        var errorResponse = new RegistrationErrorResponse { StatusCode = StatusCodes.Status409Conflict, StatusMessage = string.Join("; ", results.Errors.Select(err => err.Description)) };
                         return new RegistrationResponse { IsSuccess = false, ErrorResponse = errorResponse };
                     }
                 }
@@ -780,7 +786,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 var channelName = (await _unitOfWork.Channels.Get(user.ChannelId))?.ChannelName ?? "Unknown";
                 var userType = UserAccountTypeEnumDescription.UserType(user.UserType).ToString();
                 var registrationStatus = RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString();
-                var identificationType = "Remember To Bring ID to User Module"; //(await _unitOfWork.Iden)
+                var identificationType = (await _unitOfWork.IdentificationType.Get(user.IdentificationTypeId))?.IdentificationTypes ?? "Unknown";
 
                 return new CustomerUserInformationDto(user, identificationType, channelName, userType, registrationStatus);
             }

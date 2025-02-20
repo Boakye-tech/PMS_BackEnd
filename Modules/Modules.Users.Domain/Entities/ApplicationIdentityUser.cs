@@ -61,6 +61,7 @@ namespace Modules.Users.Domain.Entities
         public string? ContactPerson_FullName { get; set; }
 
         [StringLength(100)]
+        [EmailAddress]
         public string? ContactPerson_Email { get; set; }
 
         [StringLength(25)]

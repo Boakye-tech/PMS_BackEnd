@@ -38,6 +38,8 @@ namespace Modules.Users.Infrastructure
         public DbSet<ApplicationModules> ApplicationModules { get; set; }
         public DbSet<ApplicationModulesPermissions> ApplicationModulesPermissions { get; set; }
 
+        public DbSet<IdentificationType> IdentificationType { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -80,6 +82,17 @@ namespace Modules.Users.Infrastructure
 
             builder.Entity<ApplicationModules>()
                 .HasIndex(am => new { am.ModuleId, am.ModuleName })
+                .IsUnique(true);
+
+            builder.Entity<IdentificationType>()
+                .HasKey(e => e.IdentificationTypeId);
+
+            builder.Entity<IdentificationType>()
+                .Property(e => e.IdentificationTypeId)
+                .ValueGeneratedNever();
+
+            builder.Entity<IdentificationType>()
+                .HasIndex(e => new { e.IdentificationTypeId, e.IdentificationTypes })
                 .IsUnique(true);
 
 

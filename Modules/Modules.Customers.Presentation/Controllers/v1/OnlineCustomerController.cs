@@ -89,6 +89,58 @@ public class OnlineCustomerController : ControllerBase
         return await _transactionsService.CustomerStatementSearchDetails(customerCode, propertynumber, transactionType, startDate, endDate);
     }
 
+    [HttpGet("CustomerPaymentsSummary/{customerCode}")]
+    public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentsSummary(string customerCode)
+    {
+        return await _paymentsService.CustomerPaymentSummary(customerCode);
+    }
+
+    [HttpGet("CustomerPaymentDetails/{customerCode}")]
+    public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetails(string customerCode)
+    {
+        return await _paymentsService.CustomerPaymentDetails(customerCode);
+    }
+
+    [HttpGet("CustomerPropertyPaymentSummary/{propertyNumber}")]
+    public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPropertyPaymentSummary(string propertyNumber)
+    {
+        return await _paymentsService.CustomerPropertyPaymentSummary(propertyNumber);
+    }
+
+    [HttpGet("CustomerPropertyPaymentDetails/{propertyNumber}")]
+    public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPropertyPaymentDetails(string propertyNumber)
+    {
+        return await _paymentsService.CustomerPropertyPaymentDetails(propertyNumber);
+    }
+
+
+    [HttpGet("CustomerPaymentSearchByReceiptNumber/{receiptNumber}")]
+    public async Task<CustomerPaymentsSummaryDto> CustomerPaymentSearchByReceiptNumber(string receiptNumber)
+    {
+        return await _paymentsService.CustomerPaymentSearchByReceiptNumber(receiptNumber);
+    }
+
+    [HttpGet("CustomerPaymentDetailsSearchByReceiptNumber/{receiptNumber}")]
+    public async Task<CustomerPaymentsDto> CustomerPaymentDetailsSearchByReceiptNumber(string receiptNumber)
+    {
+        return await _paymentsService.CustomerPaymentDetailsSearchByReceiptNumber(receiptNumber);
+    }
+
+    [HttpGet("CustomerPaymentSummarySearch/{propertyNumber}/{paymentMode}/{startDate}/{endDate}")]
+    public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentSummarySearch(string propertyNumber, string paymentMode, DateTime startDate, DateTime endDate)
+    {
+        return await _paymentsService.CustomerPaymentSummarySearch(propertyNumber, paymentMode,startDate, endDate);
+    }
+
+
+    [HttpGet("CustomerPaymentDetailsSearch/{propertyNumber}/{paymentMode}/{startDate}/{endDate}")]
+    public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetailsSearch(string propertyNumber, string paymentMode, DateTime startDate, DateTime endDate)
+    {
+        return await _paymentsService.CustomerPaymentDetailsSearch(propertyNumber, paymentMode, startDate, endDate);
+    }
+
+
+
 
     [HttpPost("AddCustomerDetails", Name = "AddApprovedCustomerDetails")]
     public async Task<GenericResponseDto> CustomerDetails(CustomerDetailsDto values)

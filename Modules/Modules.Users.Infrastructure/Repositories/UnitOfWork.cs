@@ -48,6 +48,8 @@ namespace Modules.Users.Infrastructure.Repositories
 
             ApplicationModules = new ApplicationModulesRepository(dbContext);
             ApplicationModulesPermissions = new ApplicationModulesPermissionsRepository(dbContext);
+
+            IdentificationType = new IdentificationTypeRepository(dbContext);
         }
 
 
@@ -72,6 +74,8 @@ namespace Modules.Users.Infrastructure.Repositories
 
         public IApplicationModulesRepository ApplicationModules { get; private set; }
         public IApplicationModulesPermissionsRepository ApplicationModulesPermissions { get; private set; }
+
+        public IIdentificationTypeRepository IdentificationType { get; private set; }
 
         public Task<int> Complete()
         {
