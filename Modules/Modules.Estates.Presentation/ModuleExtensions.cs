@@ -44,6 +44,8 @@ public static class ModuleExtensions
 
         services.AddScoped<ICustomerMasterService, CustomerMasterService>();
 
+        services.AddHttpClient<IIdentificationTypeService, IdentificationTypeService>();
+
         // Dependency Injection - Register AutoMapper 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

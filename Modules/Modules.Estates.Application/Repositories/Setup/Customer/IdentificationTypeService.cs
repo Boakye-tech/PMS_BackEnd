@@ -33,7 +33,7 @@ namespace Modules.Estates.Application.Repositories.Setup.Customer
 
             string json_payload = JsonSerializer.Serialize(payload);
             var _httpContent = new StringContent(json_payload, Encoding.UTF8, "application/json");
-            HttpResponseMessage _response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Administration/AddIdentificationType", _httpContent);
+            HttpResponseMessage _response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Administration/CreateIdentificationType", _httpContent);
             var result_sms = _response.IsSuccessStatusCode;
 
 
