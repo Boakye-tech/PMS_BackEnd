@@ -120,20 +120,40 @@ namespace Modules.Customers.Domain.Entities
 
         public bool IsLargeScale { get; set; } = false;
 
+        [Required]
+        [StringLength(255)]
+        public string ImageOne { get; set; }
+
+        [StringLength(255)]
+        public string? ImageTwo { get; set; }
+
+        [StringLength(255)]
+        public string? ImageThree { get; set; }
+
+        [StringLength(255)]
+        public string? ImageFour { get; set; }
+
+        [StringLength(255)]
+        public string? ImageFive { get; set; }
+
 
         public PropertyDetails()
         {
         }
 
 
-        public PropertyDetails(string propertyType, string landUse, string landUseType, string locality, string allocationType, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, string propertyHeight, string plotSize, string sitePlanNumber, bool isLargeScale = false)
+        public PropertyDetails(string propertyType, string landUse, string landUseType, string locality, string allocationType, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, string propertyHeight, string plotSize, string sitePlanNumber,
+                               string imageOne, string imageTwo, string imageThree, string imageFour, string imageFive, bool isLargeScale = false)
         {
 
         }
 
-        public static PropertyDetails AddPropertyDetails(int propertyMasterId, string propertyNumber, string propertyType, string landUse, string landUseType, string locality, string allocationType, string blockNumber, string plotNumber, double acreageOne, double acreageTwo, string propertyHeight, string plotSize, double sellingPrice ,string currency,string customerCode, bool isLargeScale = false)
+        public static PropertyDetails AddPropertyDetails(int propertyMasterId, string propertyNumber, string propertyType, string landUse, string landUseType, string locality, string allocationType, string blockNumber, string plotNumber, double acreageOne,
+                                                         double acreageTwo, string propertyHeight, string plotSize, double sellingPrice ,string currency,string customerCode, string imageOne, string imageTwo, string imageThree, string imageFour, string imageFive,
+                                                         bool isLargeScale = false)
         {
-            if (string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(propertyType) || string.IsNullOrWhiteSpace(landUse) || string.IsNullOrWhiteSpace(landUseType) || string.IsNullOrWhiteSpace(locality) || string.IsNullOrWhiteSpace(allocationType) || string.IsNullOrWhiteSpace(plotNumber) || string.IsNullOrWhiteSpace(currency) || sellingPrice <= 0 )
+            if (string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(propertyType) || string.IsNullOrWhiteSpace(landUse) || string.IsNullOrWhiteSpace(landUseType) || string.IsNullOrWhiteSpace(locality) || string.IsNullOrWhiteSpace(allocationType)
+                || string.IsNullOrWhiteSpace(plotNumber) || string.IsNullOrWhiteSpace(currency) || string.IsNullOrWhiteSpace(imageOne) || sellingPrice <= 0 )
             {
                 throw new ArgumentException("Invalid property details data.");
             }
@@ -178,7 +198,12 @@ namespace Modules.Customers.Domain.Entities
             {
                 throw new ArgumentException("The selling price cannot be zero");
             }
-           
+
+            if (string.IsNullOrWhiteSpace(imageOne))
+            {
+                throw new ArgumentException("Kindly provide at least one image");
+            }
+
             return new PropertyDetails
             {
                 PropertyMasterId = propertyMasterId,
@@ -198,10 +223,21 @@ namespace Modules.Customers.Domain.Entities
                 Currency = currency,
                 SellingPrice = sellingPrice,
                 CustomerCode = customerCode,
-                IsLargeScale = isLargeScale
+                IsLargeScale = isLargeScale,
+                ImageOne = imageOne,
+                ImageTwo = imageTwo,
+                ImageThree = imageThree,
+                ImageFour = imageFour,
+                ImageFive = imageFive
             };
         }
 
+
+
     }
+
+   
+
+
 }
 

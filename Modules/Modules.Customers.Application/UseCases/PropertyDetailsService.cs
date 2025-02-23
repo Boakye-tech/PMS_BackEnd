@@ -19,16 +19,30 @@ namespace Modules.Customers.Application.UseCases
 
         public async Task<GenericResponseDto> AddNewPropertyDetails(PropertyDetailsDto values)
         {
-            //throw new NotImplementedException();
-
             PropertyDetails property = PropertyDetails.AddPropertyDetails(values.PropertyMasterId, values.PropertyNumber, values.PropertyType, values.LandUse, values.LandUseType, values.Locality, values.AllocationType,
                                                                           values.BlockNumber!, values.PlotNumber, values.AcreageOne, values.AcreageTwo, values.PropertyHeight!, values.PlotSize!,values.SellingPrice,values.Currency,
-                                                                          values.CustomerCode!, false);
+                                                                          values.CustomerCode!, values.PropertyImages![0].ImageOne!, values.PropertyImages[0].ImageTwo!, values.PropertyImages[0].ImageThree!, values.PropertyImages[0].ImageFour!,
+                                                                          values.PropertyImages[0].ImageFive!,false);
 
             _unitOfWork.PropertyDetails.Insert(property);
             await _unitOfWork.Complete();
 
             return new GenericResponseDto { response = "200" };
+        }
+
+        public async Task<IEnumerable<AvailablePropertySummaryViewDto>> AvailablePropertiesSummary()
+        {
+            var propertyDetails = await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == string.Empty);
+            var summary = propertyDetails.Select(pd => new AvailablePropertySummaryViewDto
+            {
+                PropertyNumber = pd.PropertyNumber,
+                LandUse = pd.LandUse,
+                Address = $"{pd.Locality} - BLOCK {pd.BlockNumber}, PLOT NUMBER {pd.PlotNumber}",
+                Image = pd.ImageOne
+            }).ToList();
+
+
+            return summary;
         }
 
         public Task<GenericResponseDto> DeletePropertyDetails(string value)
@@ -40,22 +54,16 @@ namespace Modules.Customers.Application.UseCases
         {
             
             var propertydetails = await _unitOfWork.PropertyDetails.Get(pd => pd.PropertyNumber == propertyNumber);
-            return _mapper.Map<PropertyDetailsReadDto>(propertydetails);
+            PropertyImages images = new PropertyImages { ImageOne = propertydetails!.ImageOne!, ImageTwo = propertydetails.ImageTwo!, ImageThree = propertydetails.ImageThree!, ImageFour = propertydetails.ImageFour!, ImageFive = propertydetails.ImageFive! };
+            PropertyDetailsReadDto propertyDetails = _mapper.Map<PropertyDetailsReadDto>(propertydetails);
+            propertyDetails.PropertyImages = images;
+
+            return propertyDetails; 
 
         }
 
         public  async Task<IEnumerable<PropertySummaryMobileViewDto>> GetPropertySummaryMobile(string customerCode)
         {
-            //var propertyDetails = await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode);
-            //var summary = propertyDetails.Select(pd => new PropertySummaryMobileViewDto
-            //{
-            //    PropertyNumber = pd.PropertyNumber,
-            //    LandUse = pd.LandUse
-            //}).ToList();
-
-
-            //return summary;
-
             var summary = (await _unitOfWork.CustomerTransaction.GetAll(ct => ct.CustomerCode == customerCode))
                       .Join(await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode),
                                 transaction => transaction.PropertyNumber,
@@ -64,14 +72,16 @@ namespace Modules.Customers.Application.UseCases
                                 {
                                     PropertyNumber = transaction.PropertyNumber,
                                     LandUse = property.LandUse,
-                                    Balance = transaction.Amount
+                                    Balance = transaction.Amount,
+                                    Image = property.ImageOne
                                 })
-                            .GroupBy(t => new { t.PropertyNumber, t.LandUse })
+                            .GroupBy(t => new { t.PropertyNumber, t.LandUse, t.Image })
                             .Select(g => new PropertySummaryMobileViewDto
                             {
                                 PropertyNumber = g.Key.PropertyNumber,
                                 LandUse = g.Key.LandUse,
-                                Balance = g.Sum(t => t.Balance)
+                                Balance = g.Sum(t => t.Balance),
+                                Image = g.Key.Image
                             })
                             .ToList();
 
@@ -86,7 +96,8 @@ namespace Modules.Customers.Application.UseCases
             {
                 PropertyNumber = pd.PropertyNumber,
                 LandUse = pd.LandUse,
-                Address = pd.Locality
+                Address = pd.Locality,
+                Image = pd.ImageOne
             }).ToList();
 
             

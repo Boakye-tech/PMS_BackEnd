@@ -14,7 +14,10 @@ namespace Modules.Customers.Application.Interfaces
         Task<IEnumerable<PropertySummaryWebViewDto>> GetPropertySummaryWeb(string customerCode);
 
         Task<PropertyDetailsReadDto> GetPropertyDetails(string propertyNumber);
+
+        Task<IEnumerable<AvailablePropertySummaryViewDto>> AvailablePropertiesSummary();
         
+
     }
 
 

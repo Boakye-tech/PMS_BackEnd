@@ -112,6 +112,8 @@ namespace Modules.Customers.Application.Dtos.PropertyDetails
         [StringLength(50)]
         public string? CoordinateSix { get; set; }
 
+        public PropertyImages? PropertyImages { get; set; }
+
         public bool IsLargeScale { get; set; }
     }
 }

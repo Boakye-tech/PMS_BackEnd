@@ -9,10 +9,13 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string FirstName,
         string MiddleName,
         string LastName,
+
         [Phone]
         string PhoneNumber,
+
         [EmailAddress]
         string EmailAddress,
+
         string LastReceiptNumber,
         string LastReceiptImage,
         int IdentificationTypeId,

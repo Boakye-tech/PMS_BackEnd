@@ -1,10 +1,14 @@
 ﻿using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Modules.Users.Application.Dtos.Administration;
 using Modules.Users.Application.Enums;
+using Modules.Users.Application.Helpers;
 using Modules.Users.Application.Validations;
 using Modules.Users.Domain.Entities;
 
@@ -18,15 +22,17 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         private readonly ValidationService _validationService;
         private readonly ILogger<AdministrationService> _logger;
+        private readonly HttpClient _httpClient;
 
         public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,
-                                     ValidationService validationService, ILogger<AdministrationService> logger) 
+                                     ValidationService validationService, ILogger<AdministrationService> logger, HttpClient httpClient) 
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _validationService = validationService;
             _logger = logger;
+            _httpClient = httpClient;
 
         }
 
@@ -52,7 +58,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return null!;
         }
 
-
         public async Task<IdentityResult> DeleteUserRole(RolesDeleteDto roleId)
         {
             var validationResult = _validationService.Validate(roleId);
@@ -67,7 +72,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             return null!;
         }
-
 
         public async Task<IdentityResult> UpdateUserRole(RolesUpdateDto role)
         {
@@ -131,14 +135,50 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public IEnumerable<RolesDto> GetApprovedUserRoles()
         {
+            //return _roleManager.Roles
+            //    .Where(r => r.Status == (int)RegistrationStatus.Approved)
+            //    .Select(role => new RolesDto(role.Id, role.Name!, role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
             return _roleManager.Roles
                 .Where(r => r.Status == (int)RegistrationStatus.Approved)
-                .Select(role => new RolesDto(role.Id, role.Name!, role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
+                .Select(role => new RolesDto(
+                    role.Id,
+                    role.Name!,
+                    _userManager.Users
+                        .Where(u => u.Id == role.CreatedBy)
+                        .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                        .FirstOrDefault() ?? "Unknown",  // Handle null case
+                    role.CreatedOn,
+                    _userManager.Users
+                        .Where(u => u.Id == role.ApprovedBy)
+                        .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                        .FirstOrDefault() ?? "Unknown",  // Handle null case
+                    role.ApprovedOn,
+                    RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString()
+                ))
+                .ToList();
         }
 
         public IEnumerable<RolesDto> GetUserRoles()
         {
-            return _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!,role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
+            //return _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!,  role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
+
+            return _roleManager.Roles
+                .Select(role => new RolesDto(
+                        role.Id,
+                        role.Name!,
+                        _userManager.Users
+                            .Where(u => u.Id == role.CreatedBy)
+                            .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                            .FirstOrDefault() ?? "Unknown",  // Handle null case
+                        role.CreatedOn,
+                        _userManager.Users
+                            .Where(u => u.Id == role.ApprovedBy)
+                            .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                            .FirstOrDefault() ?? "Unknown",  // Handle null case
+                        role.ApprovedOn,
+                        RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString()
+                    ))
+                    .ToList();
         }
 
         public async Task<CustomerVerificationResponseDto> VerifyCustomerAccount(VerifyUserAccountDto accountVerification)
@@ -468,77 +508,147 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         public async Task<ActivateUserAccountResponseDto> ActivateUserAccount(ActivateUserAccountDto accountActivation)
         {
             //throw new NotImplementedException();
-
-            var user = await _userManager.FindByIdAsync(accountActivation.UserId!);
-            if (user is null)
+            try
             {
-                _logger.LogWarning($"User account with id {accountActivation.UserId} not found.", accountActivation.UserId);
-                return new ActivateUserAccountResponseDto
+                var user = await _userManager.FindByIdAsync(accountActivation.UserId!);
+                if (user is null)
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ActivateUserAccountErrorResponseDto
+                    _logger.LogWarning($"User account with id {accountActivation.UserId} not found.", accountActivation.UserId);
+                    return new ActivateUserAccountResponseDto
                     {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"User account with id {accountActivation.UserId} not found."
-                    }
-                };
-            }
-
-
-            var staff = await _userManager.FindByIdAsync(accountActivation.activatedBy);
-            if (staff is null)
-            {
-                _logger.LogWarning($"Activation officer with id {accountActivation.activatedBy} not found.", accountActivation.activatedBy);
-                return new ActivateUserAccountResponseDto
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ActivateUserAccountErrorResponseDto
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"Activation officer with id {accountActivation.activatedBy} not found."
-                    }
-                };
-
-            }
-
-
-            if ((RegistrationStatus)user.Status != RegistrationStatus.Approved && (RegistrationStatus)user.Status != RegistrationStatus.Deactivated)
-            {
-                _logger.LogWarning($"User account with id '{accountActivation.UserId}' has not been approved. Account cannot be activated", accountActivation.UserId);
-                return new ActivateUserAccountResponseDto
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ActivateUserAccountErrorResponseDto
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"User account with id '{accountActivation.UserId}' has not been approved. Account cannot be activated"
-                    }
-                };
-
-            }
-
-
-            user.Status = (int)RegistrationStatus.Activated; // 3 - activated
-            user.ActivatedBy = accountActivation.activatedBy;
-            user.ActivatedDate = DateTime.UtcNow;
-            user.EmailConfirmed = true;
-            user.PhoneNumberConfirmed = true;
-
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.Complete();
-
-            _logger.LogInformation($"User account with id '{user.Id}', with email address {user.Email} has been successfully activated by activation officer with account id {staff.Id} and staff id {staff.IdentificationNumber}.", user.Id);
-            return new ActivateUserAccountResponseDto
-            {
-                IsSuccess = true,
-                SuccessResponse = new ActivateUserAccountSuccessResponseDto
-                {
-                    StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"User account with id '{user.Id}', with email address '{user.Email}' has been successfully actibvated by activation officer with account id {staff.Id} and staff id {staff.IdentificationNumber}"
+                        IsSuccess = false,
+                        ErrorResponse = new ActivateUserAccountErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"User account with id {accountActivation.UserId} not found."
+                        }
+                    };
                 }
-            };
 
 
+                var staff = await _userManager.FindByIdAsync(accountActivation.activatedBy);
+                if (staff is null)
+                {
+                    _logger.LogWarning($"Activation officer with id {accountActivation.activatedBy} not found.", accountActivation.activatedBy);
+                    return new ActivateUserAccountResponseDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ActivateUserAccountErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"Activation officer with id {accountActivation.activatedBy} not found."
+                        }
+                    };
+
+                }
+
+
+                if ((RegistrationStatus)user.Status != RegistrationStatus.Approved && (RegistrationStatus)user.Status != RegistrationStatus.Deactivated)
+                {
+                    _logger.LogWarning($"User account with id '{accountActivation.UserId}' has not been approved. Account cannot be activated", accountActivation.UserId);
+                    return new ActivateUserAccountResponseDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ActivateUserAccountErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"User account with id '{accountActivation.UserId}' has not been approved. Account cannot be activated"
+                        }
+                    };
+
+                }
+                //set temp password
+                var tempPassword = PasswordGenerator.GenerateTemporaryPassword();
+
+                //reset password with temp password to enable login...IsFirstTime would be used to re-direct to the change password section
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                await _userManager.ResetPasswordAsync(user, token, tempPassword);
+
+                user.Status = (int)RegistrationStatus.Activated; // 3 - activated
+                user.ActivatedBy = accountActivation.activatedBy;
+                user.ActivatedDate = DateTime.UtcNow;
+                user.EmailConfirmed = true;
+                user.PhoneNumberConfirmed = true;
+                user.IsFirstTime = true;
+
+                _unitOfWork.Users.Update(user);
+                await _unitOfWork.Complete();
+
+                ////set temp password
+                //var tempPassword = PasswordGenerator.GenerateTemporaryPassword();
+
+                ////reset password with temp password to enable login...IsFirstTime would be used to re-direct to the change password section
+                //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                //await _userManager.ResetPasswordAsync(user, token, tempPassword);
+
+                //send temp password via notification (.i.e email or sms)
+                //await this.SendTokenViaNotification(user, tempPassword);
+
+
+                //_logger.LogInformation($"User account with id '{user.Id!}', with email address {user.Email!} has been successfully activated by activation officer with account id {staff.Id!} and staff id {staff.IdentificationNumber!}.", user.Id!);
+
+                _logger.LogInformation("User account has been successfully activated by activation officer.");
+
+
+
+                await this.SendTokenViaNotification(user, tempPassword);
+
+                return new ActivateUserAccountResponseDto
+                {
+                    IsSuccess = true,
+                    SuccessResponse = new ActivateUserAccountSuccessResponseDto
+                    {
+                        StatusCode = StatusCodes.Status200OK,
+                        StatusMessage = "User account has been successfully activated by activation officer." //$"User account with id '{user.Id}', with email address '{user.Email}' has been successfully actibvated by activation officer with account id {staff.Id} and staff id {staff.IdentificationNumber}"
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ActivateUserAccountResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ActivateUserAccountErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError,
+                        StatusMessage = ex.ToString()
+                    }
+                };
+
+            }
+
+
+
+
+
+        }
+
+        private async Task SendTokenViaNotification(ApplicationIdentityUser user, string temp_password)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"Dear {user!.FirstName} {user.LastName},<br>");
+            sb.AppendLine("<br>");
+            sb.AppendLine($"Your account has been activated<br>");
+            sb.AppendLine("<br>");
+            sb.AppendLine($"Kindly use this temporary pass <b>{temp_password}</b> to login.<br>");
+            sb.AppendLine("<br>");
+            sb.AppendLine($"If you didn’t make this request, kindly ignore this email or contact our support team immediately.<br>");
+            sb.AppendLine("<br>");
+            sb.AppendLine($"Thank you for your attention.<br>");
+            sb.AppendLine("<br>");
+            sb.AppendLine($"Kind regards,<br>");
+            sb.AppendLine("<br>");
+            sb.AppendLine($"TDC MIS Team<br>");
+            sb.AppendLine($"TDC Ghana Ltd.<br>");
+            sb.AppendLine($"0302211211<br>");
+
+            var email_payload = new { userId = user.Email, displayName = "Notifications", subject = "Account Activation", message = sb.ToString(), type = 0 };
+
+            string json_emailpayload = JsonSerializer.Serialize(email_payload);
+            var email_httpContent = new StringContent(json_emailpayload, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Notification/SendNotification", email_httpContent);
+            var result = response.IsSuccessStatusCode;
         }
 
         public async Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation)

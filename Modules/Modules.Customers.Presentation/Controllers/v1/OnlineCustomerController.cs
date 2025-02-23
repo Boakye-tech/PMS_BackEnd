@@ -27,6 +27,11 @@ public class OnlineCustomerController : ControllerBase
         _paymentsService = paymentsService;
     }
 
+    [HttpGet("AvailableProperties")]
+    public async Task<IEnumerable<AvailablePropertySummaryViewDto>> AvailableProperties()
+    {
+        return await _propertyDetailsService.AvailablePropertiesSummary();
+    }
 
 
     [HttpGet("PropertySummary/MobileView/{customerCode}", Name = "PropertyDetailsSummaryMobileView")]

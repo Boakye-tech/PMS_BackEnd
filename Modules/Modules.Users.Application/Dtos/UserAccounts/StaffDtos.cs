@@ -10,10 +10,14 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string FirstName,
         string MiddleName,
         string LastName,
+
         [EmailAddress]
         string EmailAddress,
+
         [EmailAddress]
         string UserName,
+
+        [Phone]
         string PhoneNumber,
         int ChannelId,
         //DateTime RegistrationDate,

@@ -114,7 +114,31 @@ namespace Modules.Customers.Application.Dtos.PropertyDetails
         [StringLength(50)]
         public string? CoordinateSix { get; set; }
 
+        public PropertyImages[]? PropertyImages { get; set; }
+
         public bool IsLargeScale { get; set; }
+    }
+
+
+
+
+    public record PropertyImages
+    {
+        [Required]
+        [StringLength(255)]
+        public string? ImageOne { get; set; }
+
+        [StringLength(255)]
+        public string? ImageTwo { get; set; }
+
+        [StringLength(255)]
+        public string? ImageThree { get; set; }
+
+        [StringLength(255)]
+        public string? ImageFour { get; set; }
+
+        [StringLength(255)]
+        public string? ImageFive { get; set; }
     }
 }
 
