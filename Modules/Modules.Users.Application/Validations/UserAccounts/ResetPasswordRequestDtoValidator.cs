@@ -10,6 +10,9 @@ namespace Modules.Users.Application.Validations.UserAccounts
                 .Length(6).WithMessage("OTP Token cannot be less or more than 6 digits.")
                 .Matches(@"^\d+$").WithMessage("OTP Token must contain only numeric digits.");
 
+            RuleFor(x => x.NewPassword).MinimumLength(8);
+            RuleFor(x => x.ConfirmNewPassword).MinimumLength(8);
+
             RuleFor(x => x.NewPassword).NotEmpty().WithMessage("New password is required");
             RuleFor(x => x.ConfirmNewPassword).NotEmpty().Equal(x => x.NewPassword).WithMessage("Password and confirmation password do not match.");
 

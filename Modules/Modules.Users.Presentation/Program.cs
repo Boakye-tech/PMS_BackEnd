@@ -59,36 +59,6 @@ builder.Services.AddCors(o =>
         });
 });
 
-//var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
-
-//builder.Services.AddAuthentication(a =>
-//{
-//    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//    a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer(x =>
-//{
-//    x.Events = new JwtBearerEvents
-//    {
-//        OnTokenValidated = UserDbContext =>
-//        {
-//            //TODO
-//            return Task.CompletedTask;
-//        }
-//    };
-//    x.RequireHttpsMetadata = false;
-//    x.SaveToken = true;
-//    x.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuerSigningKey = true,
-//        ValidateLifetime = true,
-//        IssuerSigningKey = new SymmetricSecurityKey(key),
-//        ValidateIssuer = false,
-//        ValidateAudience = false
-//    };
-
-//});
 
 builder.Services.AddUserModule(builder.Configuration);
 
@@ -118,8 +88,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 //register global exception handler
-builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
-builder.Services.AddProblemDetails();
+//builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
+//builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -128,8 +98,6 @@ UserAndRolesConfiguration.SeedUserAndRoles(app.Services).Wait();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
     app.UseSwagger(options =>
     {
         options.PreSerializeFilters.Add((swagger, req) =>
@@ -151,6 +119,8 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
+
+app.UseRateLimiter();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

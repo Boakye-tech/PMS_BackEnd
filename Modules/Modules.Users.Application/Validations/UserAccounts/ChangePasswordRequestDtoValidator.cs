@@ -10,9 +10,21 @@ namespace Modules.Users.Application.Validations.UserAccounts
 
             RuleFor(x => x.OldPassword).NotEmpty().WithMessage("Old password is required"); //cannot be less than 8 characters
             RuleFor(x => x.NewPassword).NotEmpty().WithMessage("New password is required");
+
+            RuleFor(x => x.ConfirmNewPassword).NotEmpty().WithMessage("The confirmNewPassword field is required.");
+
+            RuleFor(x => x.OldPassword).MinimumLength(8);
+            RuleFor(x => x.NewPassword).MinimumLength(8);
+            RuleFor(x => x.ConfirmNewPassword).MinimumLength(8);
+
+
+            RuleFor(x => x.NewPassword).NotEmpty().Equal(x => x.OldPassword).WithMessage("New password cannot be the same as the old password.");
             RuleFor(x => x.ConfirmNewPassword).NotEmpty().Equal(x => x.NewPassword).WithMessage("Password and confirmation password do not match.");
 
         }
+
+
+       
     }
 }
 

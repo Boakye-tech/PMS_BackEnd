@@ -1,10 +1,12 @@
 ﻿using System.Text.Json;
 using System.Text.RegularExpressions;
 using Asp.Versioning;
+using Azure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Modules.Users.Application.Dtos.Entities;
 using Modules.Users.Application.Dtos.UserAccounts;
 using Modules.Users.Application.Shared;
@@ -18,6 +20,7 @@ namespace Modules.Users.Presentation.Controllers.v1;
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
 
+[EnableRateLimiting("UsersModulePolicy")]
 //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 //[AllowAnonymous]
 public class AccountController : ControllerBase
@@ -181,7 +184,27 @@ public class AccountController : ControllerBase
             if (ModelState.IsValid)
             {
                 var changeResult = await _userAccountsService.ChangePassword(changeUserPasswordRequest);
-                return Ok(changeResult);
+                if (changeResult.IsSuccess)
+                {
+                    return Ok(changeResult);
+                }
+
+                var status = changeResult.ErrorResponse!.StatusCode;
+
+                switch (status)
+                {
+                    case 204:
+                        return NoContent();
+                    case 400:
+                        return BadRequest(changeResult.ErrorResponse);
+                    case 404:
+                        return NotFound(changeResult.ErrorResponse);
+                    case 409:
+                        return Conflict(changeResult.ErrorResponse);
+                    default:
+                        return StatusCode(500, changeResult);
+                };
+
             }
 
             return BadRequest();
@@ -205,6 +228,8 @@ public class AccountController : ControllerBase
             var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             //var phoneRegex = new Regex(@"^\+?\d{10,15}$");
             var phoneRegex = new Regex(@"^0[25][3-9]{8}$");
+            ResetPasswordResponse changeResult = null! ;
+
 
             if (ModelState.IsValid)
             {
@@ -220,17 +245,38 @@ public class AccountController : ControllerBase
 
                 if (emailRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
                 {
-                    var changeResult = await _userAccountsService.ResetPasswordViaEmailAddress(passwordRequest);
-                    return Ok(changeResult);
+                    changeResult = await _userAccountsService.ResetPasswordViaEmailAddress(passwordRequest);
+                    //return Ok(changeResult);
                 }
 
 
                 if (phoneRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
                 {
-                    var changeResult = await _userAccountsService.ResetPasswordViaMobilePhoneNumber(passwordRequest);
-                    return Ok(changeResult);
+                    changeResult = await _userAccountsService.ResetPasswordViaMobilePhoneNumber(passwordRequest);
+                    //return Ok(changeResult);
 
                 }
+
+                if (changeResult.IsSuccess)
+                {
+                    return Ok(changeResult.SuccessResponse);
+                }
+
+                var status = changeResult.ErrorResponse!.StatusCode;
+
+                switch (status)
+                {
+                    case 204:
+                        return NoContent();
+                    case 400:
+                        return BadRequest(changeResult.ErrorResponse);
+                    case 404:
+                        return NotFound(changeResult.ErrorResponse);
+                    case 409:
+                        return Conflict(changeResult.ErrorResponse);
+                    default:
+                        return StatusCode(500, changeResult);
+                };
 
             }
 
@@ -277,7 +323,19 @@ public class AccountController : ControllerBase
                         case true:
                             return Ok(result);
                         case false:
-                            return Ok(result);
+                            var status = result.errorResponse!.StatusCode;
+
+                            return status switch
+                            {
+                                204 => NoContent(),
+                                400 => BadRequest(result.errorResponse),
+                                404 => NotFound(result.errorResponse),
+                                409 => Conflict(result.errorResponse),
+                                500 => StatusCode(500, result.errorResponse),
+                                _ => StatusCode(500, result),
+                            };
+                            //return Ok(result);
+
                     }
                 }
 
@@ -290,14 +348,24 @@ public class AccountController : ControllerBase
                         case true:
                             return Ok(result);
                         case false:
-                            return Ok(result);
+                            var status = result.errorResponse!.StatusCode;
+
+                            return status switch
+                            {
+                                204 => NoContent(),
+                                400 => BadRequest(result.errorResponse),
+                                404 => NotFound(result.errorResponse),
+                                409 => Conflict(result.errorResponse),
+                                500 => StatusCode(500, result.errorResponse),
+                                _ => StatusCode(500, result),
+                            };
                     }
                 }
 
 
             }
 
-            return BadRequest();
+            return BadRequest(new {statusCode = 400, message = "Invalid phone number, email address or password." });
         }
         catch (Exception ex)
         {

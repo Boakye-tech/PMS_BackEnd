@@ -19,8 +19,10 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly IMenuService _menuService;
         private readonly IValidator<PartnerBankRegistrationRequestDto> _partnerValidator;
 
+        private readonly IPasswordValidator<ApplicationIdentityUser> _passwordValidator;
+
         public UserAccountsService(UserManager<ApplicationIdentityUser> userManager, SignInManager<ApplicationIdentityUser> signInManager, IUnitOfWork unitOfWork, ILogger<UserAccountsService> logger,
-                                      ITokenStoreRepository tokenRepo, IValidator<PartnerBankRegistrationRequestDto> partnerValidator, IMenuService menuService)
+                                      ITokenStoreRepository tokenRepo, IValidator<PartnerBankRegistrationRequestDto> partnerValidator, IMenuService menuService, IPasswordValidator<ApplicationIdentityUser> passwordValidator)
 		{
             _userManager = userManager;
             _signInManager = signInManager;
@@ -29,6 +31,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             _tokenService = tokenRepo;
             _partnerValidator = partnerValidator;
             _menuService = menuService;
+            _passwordValidator = passwordValidator;
         }
 
         public async Task<ChangePasswordResponse> ChangePassword(ChangePasswordRequestDto changePassword)
@@ -65,6 +68,20 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     };
                 }
 
+                var validationResult = await _passwordValidator.ValidateAsync(_userManager, user, changePassword.NewPassword);
+                if (!validationResult.Succeeded)
+                {
+                    return new ChangePasswordResponse
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ChangePasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            StatusMessage = $"Password change failed. - {string.Join(", ", validationResult.Errors.Select(e => e.Description))}"
+                        }
+                    };
+                }
+                    
 
                 var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
 
@@ -139,6 +156,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             try
             {
                 //remember to check for the validity of the token
+                var otpresult = await _unitOfWork.TokenStore.VerifyToken(resetPassword.Phone_OR_Email, resetPassword.Token);
+                if (otpresult != "Verified")
+                {
+                    _logger.LogWarning($"OTP Token {resetPassword.Token} is invalid.", resetPassword.Phone_OR_Email);
+                    return new ResetPasswordResponse
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"OTP Token '{resetPassword.Token}' is invalid."
+                        }
+                    };
+                }
+
+                //remember to check for the expiry validity of the token
                 var otp_result = _unitOfWork.TokenStore.VerifyTokenExpiry(resetPassword.Phone_OR_Email, resetPassword.Token);
                 if(otp_result != "Verified")
                 {
@@ -149,7 +182,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"User with email address {resetPassword.Phone_OR_Email}  and OTP Token {resetPassword.Token} not verified."
+                            StatusMessage = $"User with email address '{resetPassword.Phone_OR_Email.ToLower()}' and OTP Token '{resetPassword.Token}' not verified."
                         }
                     };
 
@@ -170,10 +203,28 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"User with email address {resetPassword.Phone_OR_Email} not found."
+                            StatusMessage = $"User with email address '{resetPassword.Phone_OR_Email}' not found."
                         }
                     };
                 }
+
+
+                var validationResult = await _passwordValidator.ValidateAsync(_userManager, user, resetPassword.NewPassword);
+                if (!validationResult.Succeeded)
+                {
+                    return new ResetPasswordResponse
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            StatusMessage = $"Password reset failed. - {string.Join(", ", validationResult.Errors.Select(e => e.Description))}"
+                        }
+                    };
+                }
+
+                //check otp token validity
+
 
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var result = await _userManager.ResetPasswordAsync(user, token, resetPassword.NewPassword);
@@ -242,6 +293,37 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             try
             {
                 //remember to check for the validity of the token
+                var otpresult = await _unitOfWork.TokenStore.VerifyToken(resetPassword.Phone_OR_Email, resetPassword.Token);
+                if (otpresult != "Verified")
+                {
+                    _logger.LogWarning($"OTP Token {resetPassword.Token} is invalid.", resetPassword.Phone_OR_Email);
+                    return new ResetPasswordResponse
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"OTP Token '{resetPassword.Token}' is invalid."
+                        }
+                    };
+                }
+
+                //remember to check for the expiry validity of the token
+                var otp_result = _unitOfWork.TokenStore.VerifyTokenExpiry(resetPassword.Phone_OR_Email, resetPassword.Token);
+                if (otp_result != "Verified")
+                {
+                    _logger.LogWarning($"User with email address {resetPassword.Phone_OR_Email}  and OTP Token {resetPassword.Token} not verified.", resetPassword.Phone_OR_Email);
+                    return new ResetPasswordResponse
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"User with email address '{resetPassword.Phone_OR_Email.ToLower()}' and OTP Token '{resetPassword.Token}' not verified."
+                        }
+                    };
+
+                }
 
                 var appUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == resetPassword.Phone_OR_Email);
                 var user = await _userManager.FindByIdAsync(appUser!.Id);
@@ -256,7 +338,21 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Customer with mobile phone number {resetPassword.Phone_OR_Email} not found."
+                            StatusMessage = $"Customer with mobile phone number '{resetPassword.Phone_OR_Email}' not found."
+                        }
+                    };
+                }
+
+                var validationResult = await _passwordValidator.ValidateAsync(_userManager, user, resetPassword.NewPassword);
+                if (!validationResult.Succeeded)
+                {
+                    return new ResetPasswordResponse
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ResetPasswordErrorResponse
+                        {
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            StatusMessage = $"Password reset failed. - {string.Join(", ", validationResult.Errors.Select(e => e.Description))}"
                         }
                     };
                 }
@@ -315,9 +411,24 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(userLoginDetails.Phone_OR_Email!);
-                var userRoles = _userManager.GetRolesAsync(user!).Result.FirstOrDefault();
 
+                var user = await _userManager.FindByEmailAsync(userLoginDetails.Phone_OR_Email!);
+                if (user is null)
+                {
+                    _logger.LogWarning($"User account with email address {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
+                    return new LoginResponseDto
+                    {
+                        LoginStatus = false,
+                        errorResponse = new LoginErrorResponseDto
+                        {
+                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusMessage = $"User with email address '{userLoginDetails.Phone_OR_Email}' not found."
+                        }
+                    };
+                }
+
+
+                var userRoles = _userManager.GetRolesAsync(user!).Result.FirstOrDefault();
                 if(userRoles is null)
                 {
                     _logger.LogWarning($"User Role not set for user account with email address '{userLoginDetails.Phone_OR_Email}'", userLoginDetails.Phone_OR_Email);
@@ -333,22 +444,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 }
 
-                if (user is null)
+
+                var validationResult = await _passwordValidator.ValidateAsync(_userManager, user, userLoginDetails.Password);
+                if (!validationResult.Succeeded)
                 {
-                    _logger.LogWarning($"User account with email address {userLoginDetails.Phone_OR_Email} not found.", userLoginDetails.Phone_OR_Email);
                     return new LoginResponseDto
                     {
                         LoginStatus = false,
                         errorResponse = new LoginErrorResponseDto
                         {
-                            StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"User with email address '{userLoginDetails.Phone_OR_Email}' not found."
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            StatusMessage = $"User Login failed. - {string.Join(", ", validationResult.Errors.Select(e => e.Description))}"
                         }
                     };
                 }
 
                 var result = await _signInManager.PasswordSignInAsync(user, userLoginDetails.Password!, true, false);
-
                 if (result.Succeeded)
                 {
                     _logger.LogInformation($"User account with email address {userLoginDetails.Phone_OR_Email} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.Phone_OR_Email);
@@ -397,7 +508,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         errorResponse = new LoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = "User Account is not allowed to sign in. Please contact your administrator"
+                            StatusMessage = "User Account is not allowed to sign in. Please contact your administrator."
                         }
                     };
                 }
@@ -425,7 +536,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         errorResponse = new LoginErrorResponseDto
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = "User login attempt failed"
+                            StatusMessage = "User login attempt failed. Kindly check your credentials or please contact your administrator."
                         }
                     };
                 }

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Modules.Users.Application.Dtos.Entities.Permissions;
 using Modules.Users.Application.Dtos.UserAccounts;
 using Modules.Users.Domain.Entities;
+using Modules.Users.Domain.Entities.Menu;
 using static System.Collections.Specialized.BitVector32;
 
 
@@ -39,6 +40,14 @@ namespace Modules.Users.Application.UseCases
             if (rolesPermissions is null || rolesPermissions.permissionsAccessModules == null)
             {
                 return new GenericResponseDto("Invalid input data.");
+            }
+
+            //check if role already exist with permissions
+            var persmissions = await _unitOfWork.AcccessPermissions.GetAll(p => p.RoleId == rolesPermissions.RoleId);
+
+            if(persmissions is not null)
+            {
+                _unitOfWork.AcccessPermissions.DeleteRange(persmissions);
             }
 
             foreach (var _menus in rolesPermissions.permissionsAccessModules)
@@ -146,7 +155,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<SubMenusDto> CreateSubMenu(SubMenusCreateDto subMenus)
         {
-            //throw new NotImplementedException();
             var validationResult = _validationService.Validate(subMenus);
 
             if (validationResult.IsValid)
@@ -179,7 +187,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<AccessModulesDto> GetAccessMenus()
         {
-            //throw new NotImplementedException();
 
             var permissions = new PermissionsActionsDto(NoAccess:false, Create:false, Read:false, Update:false, Delete:false, Approve:false);
 
@@ -519,7 +526,6 @@ namespace Modules.Users.Application.UseCases
             return _mapper.Map<IEnumerable<ApplicationModulesDto>>(response);
 
         }
-
 
         public async Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId)
         {

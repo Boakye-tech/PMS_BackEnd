@@ -333,7 +333,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPut]
         [Route("UpdatePermissionsAssignedToRole")]
-        public async Task<ActionResult> UpdatePermissionsAssignedToRole([FromBody] PermissionsAccessModulesReadDto values)
+        private async Task<ActionResult> UpdatePermissionsAssignedToRole([FromBody] PermissionsAccessModulesReadDto values)
         {
             return Ok(await _menuService.UpdatePermissionsAssignedToRole(values));
         }

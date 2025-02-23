@@ -5,6 +5,7 @@ namespace Modules.Users.Application.Shared
 {
 	public record ChangePasswordRequest
 	{
+        [StringLength(36)]
         public required string UserId { get; set; }
 
         public required string OldPassword { get; set; }
