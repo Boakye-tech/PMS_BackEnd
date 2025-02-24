@@ -10,6 +10,9 @@ namespace Modules.Customers.Application.Profiles
             CreateMap<CustomerInvoice, CustomerInvoiceDto>();
             CreateMap<CustomerInvoiceDto, CustomerInvoice>();
 
+
+            CreateMap<CustomerInvoiceSummaryDto, CustomerInvoiceSummaryReadDto>();
+            CreateMap<CustomerInvoiceSummaryReadDto, CustomerInvoiceSummaryDto>();
         }
     }
 }

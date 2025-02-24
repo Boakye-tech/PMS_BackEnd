@@ -72,6 +72,8 @@ namespace Modules.Customers.Domain.Entities
         [StringLength(20)]
         public string? InvoiceNumber { get; set; }
 
+        public int InvoiceItemsId { get; set; }
+
         [Required]
         [StringLength(150)]
         public string? Cashier { get; set; }
@@ -82,12 +84,12 @@ namespace Modules.Customers.Domain.Entities
 		}
 
         public CustomerPayments(string receiptNumber, string propertyNumber, string customerCode, string customerName, DateTime dateOfPayment, string paymentMode, string paymentType, string invoiceCurrency, string paymentCurrency, double amount, double AmountPaid, string issuingBank,
-                                string issuingBranch, string receivingBank, string processingBranch, string receivingBranch, string payPoint, string chequeNumber, string referenceNumber, string payeeName, string njarration, string invoiceNumber, string cashier)
+                                string issuingBranch, string receivingBank, string processingBranch, string receivingBranch, string payPoint, string chequeNumber, string referenceNumber, string payeeName, string njarration, string invoiceNumber, int invoiceItemsId, string cashier)
         {
         }
 
         public static CustomerPayments AddPaymentDetails(string receiptNumber, string propertyNumber, string customerCode, string customerName, DateTime dateOfPayment, string paymentMode, string paymentType, string invoiceCurrency, string paymentCurrency, double amount, double amountPaid,
-                                                         string issuingBank,string issuingBranch, string receivingBank, string processingBranch, string receivingBranch, string payPoint, string chequeNumber, string referenceNumber, string payeeName, string narration, string invoiceNumber, string cashier)
+                                                         string issuingBank,string issuingBranch, string receivingBank, string processingBranch, string receivingBranch, string payPoint, string chequeNumber, string referenceNumber, string payeeName, string narration, string invoiceNumber, int invoiceItemsId, string cashier)
         {
 
             if (string.IsNullOrWhiteSpace(receiptNumber) || string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(customerCode) || string.IsNullOrWhiteSpace(customerName) || string.IsNullOrWhiteSpace(invoiceNumber) || string.IsNullOrWhiteSpace(narration) || amount < 0 || amountPaid < 0)
@@ -190,6 +192,7 @@ namespace Modules.Customers.Domain.Entities
                 PayeeName = payeeName,
                 Narration = narration,
                 InvoiceNumber = invoiceNumber,
+                InvoiceItemsId = invoiceItemsId,
                 Cashier = cashier
 
             };

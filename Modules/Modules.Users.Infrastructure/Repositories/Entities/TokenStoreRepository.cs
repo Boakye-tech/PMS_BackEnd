@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -20,7 +21,7 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
         string mobilePhoneNumber = string.Empty, emailAddress = string.Empty;
 
         Regex emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-        Regex phoneRegex = new Regex(@"^0[25][1-9]{8}$");
+        Regex phoneRegex = new Regex(@"^(023|024|025|053|054|055|059|027|057|026|056|028|020|050)\d{7}$");
 
         private IConfiguration _configuration { get; }
 
@@ -42,7 +43,17 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
 
         private async Task SendTokenViaNotification(string userid, string token)
         {
-            var user = await _userManager.FindByEmailAsync(userid);
+            ApplicationIdentityUser? user = null; // await _userManager.FindByEmailAsync(userid);
+
+            if (emailRegex.IsMatch(userid))
+            {
+                user = _userDbContext.Users.FirstOrDefault(e => e.Email == userid);
+            }
+
+            if (phoneRegex.IsMatch(userid))
+            {
+                user = _userDbContext.Users.FirstOrDefault(e => e.PhoneNumber == userid);
+            }
 
             var sb = new StringBuilder();
 
@@ -65,7 +76,7 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
             sb.AppendLine($"0302211211<br>");
 
             
-            var email_payload = new { userId = userid, displayName = "Notifications", subject = "OTP VERIFICATION", message = sb.ToString(), type = 0 };
+            var email_payload = new { userId = user.Email, displayName = "Notifications", subject = "OTP VERIFICATION", message = sb.ToString(), type = 0 };
             var sms_payload = new { userId = user.PhoneNumber, displayName = string.Empty, subject = string.Empty, message = $"Kindly use OTP {token}  for account verification. 'NEVER SHARE THIS OTP WITH ANYONE'" , type = 1 };
 
 
@@ -89,6 +100,11 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
             if (emailRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
             {
                 emailAddress = mobilePhoneNumber_OR_emailAddress;
+                var user = await _userManager.FindByEmailAsync(emailAddress);
+                if(user is null)
+                {
+                    return $"User email address '{emailAddress}' provided does not exist.";
+                }
             }
 
             if (emailAddress == string.Empty && !phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
@@ -99,6 +115,12 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
             if (phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
             {
                 mobilePhoneNumber = mobilePhoneNumber_OR_emailAddress;
+                var user = _userDbContext.Users.FirstOrDefault(u => u.PhoneNumber == mobilePhoneNumber);
+                if (user is null)
+                {
+                    return $"User mobile phone number '{mobilePhoneNumber}' provided does not exist.";
+                }
+                
             }
 
             if(emailAddress == string.Empty && mobilePhoneNumber == string.Empty)
@@ -121,7 +143,7 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
             _userDbContext.TokenStore.Add(tokenStore);
             await _userDbContext.SaveChangesAsync();
 
-            await this.SendTokenViaNotification(emailAddress, token);
+            await this.SendTokenViaNotification(mobilePhoneNumber_OR_emailAddress, token);
 
             return token;
         }
@@ -153,9 +175,27 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                 return "Invalid mobile phone number or email address provided";
             }
 
+            var checkToken = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode);
+            if (checkToken is null)
+            {
+                return "Invalid OTP. Please enter the correct OTP.";
+            }
+
+
+            var checkTokenExpiry = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode && t.ExpiryDate <= DateTime.UtcNow);
+            if (checkTokenExpiry is not null)
+            {
+                return "Sorry the OTP provided has expired, please request for a new OTP.";
+            }
+
+            var checkVerified = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode && t.IsVerified == true);
+            if (checkVerified is not null)
+            {
+                return "Sorry the OTP provided has already been used, please request for a new OTP.";
+            }
+
 
             var result = _userDbContext.TokenStore.SingleOrDefault(t => t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress && t.Token == tokenCode && t.IsVerified == false);
-
             if (result is null) 
             {
                 return "Not Verified";
@@ -298,25 +338,6 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
 
         private IEnumerable<RoleModulesPermissionsDto> GetModulesPermissions(string roleId)
         {
-            //var modulePermissions = (_userDbContext.ApplicationModulesPermissions)
-            //   .Where(a => a.RoleId == roleId) // Filter where based on RoleId 
-            //   .GroupJoin(_userDbContext.ApplicationModules,
-            //       a => a.ModuleId,
-            //       b => b.ModuleId,
-            //       (a, moduleGroup) => new { a, module = moduleGroup.FirstOrDefault() }) // Left Join on ApplicationModules
-            //   .GroupJoin(_userDbContext.Roles,
-            //       ab => ab.a.RoleId,
-            //       c => c.Id,
-            //       (ab, roleGroup) => new RoleModulesPermissionsDto
-            //       {
-            //           ModulePermissionId = ab.a.ModulePermissionId,
-            //           RoleId = ab.a.RoleId,
-            //           RoleName = roleGroup.FirstOrDefault()!.Name, // Left Join on Roles
-            //           ModuleId = ab.a.ModuleId,
-            //           ModuleName = ab.module!.ModuleName,
-            //           ModulePermission = ab.a.ModulePermission
-            //       })
-            //   .ToList();
 
             var modulePermissions = (from a in _userDbContext.ApplicationModulesPermissions
                                      join b in _userDbContext.ApplicationModules
@@ -339,7 +360,6 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
 
 
 
-            //return _mapper.Map<IEnumerable<RoleModulesPermissionsDto>>(modulePermissions);
             return modulePermissions;
 
         }

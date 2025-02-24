@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Modules.Customers.Domain.Entities;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -63,6 +64,8 @@ namespace Modules.Customers.Infrastructure.Persistence.Repositories
         public void Update(TEntity entity) => _dbContext.Set<TEntity>().Update(entity);
 
         public void UpdateRange(IEnumerable<TEntity> entities) => _dbContext.Set<TEntity>().UpdateRange(entities);
+
+        
     }
 }
 

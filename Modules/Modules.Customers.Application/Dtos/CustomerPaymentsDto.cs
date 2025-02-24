@@ -58,6 +58,8 @@ namespace Modules.Customers.Application.Dtos
         [StringLength(20)]
         public required string InvoiceNumber { get; set; }
 
+        public int InvoiceItemId { get; set; }
+
         [StringLength(150)]
         public required string Cashier { get; set; }
     }

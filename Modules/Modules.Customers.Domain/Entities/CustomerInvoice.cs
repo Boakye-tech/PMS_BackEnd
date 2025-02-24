@@ -43,19 +43,27 @@ namespace Modules.Customers.Domain.Entities
         [Required]
         public double InvoiceAmount { get; set; }
 
+        //[Required]
+        public double AmountPaid { get; set; }
+
+        //[Required]
+        public double BalanceDue { get; set; }
+
+        public string? InvoiceStatus { get; set; }
+
         public CustomerInvoice()
         {
 
         }
 
         public CustomerInvoice(string invoiceNumber, DateTime invoiceDate, string? propertyNumber, double acreage, string? transactionCode, string? transactionNumber, DateTime expirationDate, string? customerCode, string? customerName, string? customerAddress, string? customerEmailAddress,
-                               string? customerPhoneNumber, double invoiceAmount)
+                               string? customerPhoneNumber, double invoiceAmount, double amountPaid, double balanceDue, string invoiceStatus)
         {
 
         }
 
         public static CustomerInvoice AddInvoiceDetails(string invoiceNumber, DateTime invoiceDate, string? propertyNumber, double acreage, string? transactionCode, string? transactionNumber, DateTime expirationDate, string? customerCode, string? customerName, string? customerAddress,
-                                                        string? customerEmailAddress,string? customerPhoneNumber, double invoiceAmount)
+                                                        string? customerEmailAddress,string? customerPhoneNumber, double invoiceAmount, double amountPaid, double balanceDue, string invoiceStatus)
         {
             if (string.IsNullOrWhiteSpace(invoiceNumber) || string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(customerCode) || string.IsNullOrWhiteSpace(customerName)  || string.IsNullOrWhiteSpace(customerPhoneNumber) || invoiceAmount < 0 )
             {
@@ -122,7 +130,10 @@ namespace Modules.Customers.Domain.Entities
                 CustomerAddress = customerAddress,
                 CustomerEmailAddress = customerEmailAddress,
                 CustomerPhoneNumber = customerPhoneNumber,
-                InvoiceAmount = invoiceAmount
+                InvoiceAmount = invoiceAmount,
+                AmountPaid = amountPaid,
+                BalanceDue = balanceDue,
+                InvoiceStatus = invoiceStatus
                 
             };
 

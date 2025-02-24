@@ -17,19 +17,23 @@ namespace Modules.Customers.Domain.Entities
         [Required]
         public double Amount { get; set; }
 
-        public int Status { get; set; }
+        public double AmountPaid { get; set; }
+
+        public double BalanceDue { get; set; }
+
+        public string? Status { get; set; }
 
 
         public CustomerInvoiceItems()
 		{
 		}
 
-        public CustomerInvoiceItems(int invoiceItemsId, string invoiceNumber, string description, double amount, int status)
+        public CustomerInvoiceItems(int invoiceItemsId, string invoiceNumber, string description, double amount, double amountPaid, double balanceDue, string status)
         {
                 
         }
 
-        public static CustomerInvoiceItems AddInvoiceItems(int invoiceItemsId, string invoiceNumber, string description, double amount, int status)
+        public static CustomerInvoiceItems AddInvoiceItems(int invoiceItemsId, string invoiceNumber, string description, double amount, double amountPaid, double balanceDue, string status)
         {
             if (string.IsNullOrWhiteSpace(invoiceNumber) || string.IsNullOrWhiteSpace(invoiceNumber) || string.IsNullOrWhiteSpace(description) || amount < 0)
             {
@@ -44,12 +48,12 @@ namespace Modules.Customers.Domain.Entities
 
             if (string.IsNullOrWhiteSpace(description))
             {
-                throw new ArgumentException("Invoice description must not be null or empty.");
+                throw new ArgumentException("Invoice Item description must not be null or empty.");
             }
 
             if (amount <= 0)
             {
-                throw new ArgumentException("Invoice amount must be greater than zero.");
+                throw new ArgumentException("Invoice Item amount must be greater than zero.");
             }
 
             return new CustomerInvoiceItems
@@ -58,6 +62,8 @@ namespace Modules.Customers.Domain.Entities
                 InvoiceNumber = invoiceNumber,
                 Description = description,
                 Amount = amount,
+                AmountPaid = amountPaid,
+                BalanceDue = balanceDue,
                 Status = status
             };
 

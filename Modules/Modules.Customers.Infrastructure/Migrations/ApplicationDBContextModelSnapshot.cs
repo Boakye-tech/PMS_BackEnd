@@ -195,6 +195,12 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<double>("Acreage")
                         .HasColumnType("float");
 
+                    b.Property<double>("AmountPaid")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BalanceDue")
+                        .HasColumnType("float");
+
                     b.Property<string>("CustomerAddress")
                         .HasColumnType("nvarchar(max)");
 
@@ -222,6 +228,9 @@ namespace Modules.Customers.Infrastructure.Migrations
 
                     b.Property<DateTime>("InvoiceDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("InvoiceStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PropertyNumber")
                         .IsRequired()
@@ -256,6 +265,12 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
+                    b.Property<double>("AmountPaid")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BalanceDue")
+                        .HasColumnType("float");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -264,8 +279,8 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InvoiceItemsId");
 
@@ -309,6 +324,9 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<string>("InvoiceCurrency")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InvoiceItemsId")
+                        .HasColumnType("int");
 
                     b.Property<string>("InvoiceNumber")
                         .IsRequired()

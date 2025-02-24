@@ -34,7 +34,52 @@ namespace Modules.Customers.Application.Dtos
 
         public required double InvoiceAmount { get; set; }
 
+        public double AmountPaid { get; set; }
+
+        public double BalanceDue { get; set; }
+
+        public string? InvoiceStatus { get; set; }
+
         public required IEnumerable<CustomerInvoiceItemsDto> InvoiceItems { get; set; }
+    }
+
+
+    public record CustomerInvoiceSummaryDto
+    {
+        [StringLength(50)]
+        public required string InvoiceNumber { get; set; }
+
+        public DateTime InvoiceDate { get; set; }
+
+        [StringLength(10)]
+        public  string? CustomerCode { get; set; }
+
+        [StringLength(75)]
+        public string? PropertyNumber { get; set; }
+
+        [StringLength(50)]
+        public required string InvoiceDescription { get; set; }
+
+        public required double InvoiceAmount { get; set; }
+
+        public string? InvoiceStatus { get; set; }
+
+    }
+
+    public record CustomerInvoiceSummaryReadDto
+    {
+        [StringLength(50)]
+        public required string InvoiceNumber { get; set; }
+
+        public DateTime InvoiceDate { get; set; }
+
+        [StringLength(50)]
+        public required string InvoiceDescription { get; set; }
+
+        public required double InvoiceAmount { get; set; }
+
+        public string? InvoiceStatus { get; set; }
+
     }
 }
 

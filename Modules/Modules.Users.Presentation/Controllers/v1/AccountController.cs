@@ -28,6 +28,10 @@ public class AccountController : ControllerBase
     IUserAccountsService _userAccountsService;
     IUnitOfWork _unitOfWork;
 
+    Regex emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+    Regex phoneRegex = new Regex(@"^(023|024|025|053|054|055|059|027|057|026|056|028|020|050)\d{7}$");
+
+
     public AccountController(IUserAccountsService userAccountsService, IUnitOfWork unitOfWork)
     {
         _userAccountsService = userAccountsService;
@@ -80,7 +84,6 @@ public class AccountController : ControllerBase
                     break;
             };
 
-            //return Ok(await _userAccountsService.CustomerUserRegistration(values));
         }
 
         return BadRequest();
@@ -122,7 +125,6 @@ public class AccountController : ControllerBase
                 default:
                     break;
             };
-            //return Ok(await _userAccountsService.PartnerUserRegistration(values));
         }
 
         return BadRequest();
@@ -145,7 +147,6 @@ public class AccountController : ControllerBase
             if(response.IsSuccess == true)
             {
                 return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
-                //return CreatedAtAction(string.Empty, response.SuccessResponse);
             }
 
             var status = response.ErrorResponse!.StatusCode;
@@ -164,7 +165,6 @@ public class AccountController : ControllerBase
                     break;
             };
 
-            //return Ok(await _userAccountsService.StaffUserRegistration(values));
         }
 
         return BadRequest();
@@ -225,11 +225,7 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-            //var phoneRegex = new Regex(@"^\+?\d{10,15}$");
-            var phoneRegex = new Regex(@"^0[25][3-9]{8}$");
             ResetPasswordResponse changeResult = null! ;
-
 
             if (ModelState.IsValid)
             {
@@ -246,15 +242,12 @@ public class AccountController : ControllerBase
                 if (emailRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
                 {
                     changeResult = await _userAccountsService.ResetPasswordViaEmailAddress(passwordRequest);
-                    //return Ok(changeResult);
                 }
 
 
                 if (phoneRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
                 {
                     changeResult = await _userAccountsService.ResetPasswordViaMobilePhoneNumber(passwordRequest);
-                    //return Ok(changeResult);
-
                 }
 
                 if (changeResult.IsSuccess)
@@ -302,9 +295,6 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-            var phoneRegex = new Regex(@"^0[25][3-9]{8}$");
-
             if (ModelState.IsValid)
             {
 
@@ -428,11 +418,29 @@ public class AccountController : ControllerBase
 
             if (ModelState.IsValid)
             {
-                var result = await _unitOfWork.TokenStore.GetToken(value.phone_OR_email!, 5);
-                return Ok(new TokenResponseDto(result));
+                if (emailRegex.IsMatch(value.phone_OR_email!))
+                {
+                    var result = await _unitOfWork.TokenStore.GetToken(value.phone_OR_email!, 5);
+                    if(result.Length != 6)
+                    {
+                        return NotFound(new { message = result });
+                    }
+                    return Ok(new TokenResponseDto(result));
+                }
+
+
+                if (phoneRegex.IsMatch(value.phone_OR_email!))
+                {
+                    var result = await _unitOfWork.TokenStore.GetToken(value.phone_OR_email!, 5);
+                    if (result.Length != 6)
+                    {
+                        return NotFound(new { message = result });
+                    }
+                    return Ok(new TokenResponseDto(result));
+                }
             }
 
-            return NotFound();
+            return NotFound(new {message = "Invalid mobile phone number or email address provided" });
         }
         catch (Exception ex)
         {
@@ -458,8 +466,28 @@ public class AccountController : ControllerBase
 
             if (ModelState.IsValid)
             {
-                var result = await _unitOfWork.TokenStore.VerifyToken(verifyTokenRequest.phone_OR_email, verifyTokenRequest.token);
-                return Ok(result);
+
+                if (emailRegex.IsMatch(verifyTokenRequest.phone_OR_email!))
+                {
+                    var result = await _unitOfWork.TokenStore.VerifyToken(verifyTokenRequest.phone_OR_email, verifyTokenRequest.token);
+                    if(result != "Verified")
+                    {
+                        return BadRequest(new { message = result });
+                    }
+                    return Ok(new { message = result });
+                }
+
+
+                if (phoneRegex.IsMatch(verifyTokenRequest.phone_OR_email!))
+                {
+                    var result = await _unitOfWork.TokenStore.VerifyToken(verifyTokenRequest.phone_OR_email, verifyTokenRequest.token);
+                    if (result != "Verified")
+                    {
+                        return BadRequest(new { message = result });
+                    }
+                    return Ok(new { message = result });
+                }
+
             }
 
             return NotFound();

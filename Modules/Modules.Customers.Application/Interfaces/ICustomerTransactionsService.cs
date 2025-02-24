@@ -7,7 +7,7 @@ namespace Modules.Customers.Application.Interfaces
 
         Task<IEnumerable<CustomerTransactionsReadDto>> CustomerTransactionDetails(string customerCode);
 
-        Task<IEnumerable<CustomerTransactionsReadDto>> CustomerTransactionDetails(string customerCode, string propertyNumber);
+        Task<IEnumerable<CustomerTransactionsReadDto>> PropertyTransactionDetails(string propertyNumber);
 
 
 
@@ -17,7 +17,7 @@ namespace Modules.Customers.Application.Interfaces
 
         Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementVoucherSearchDetails(string voucherNumber);
 
-        Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementSearchDetails(string customerCode, string propertyNumber, string transactionType, DateTime startDate, DateTime endDate);
+        Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementSearchDetails(string customerCode, string propertyNumber, string transactionType, DateTime? startDate, DateTime? endDate);
     }
 }
 
