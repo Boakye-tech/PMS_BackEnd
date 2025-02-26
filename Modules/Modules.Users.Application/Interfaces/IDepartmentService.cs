@@ -8,6 +8,7 @@ namespace Modules.Users.Application.Interfaces
         Task<IEnumerable<DepartmentReadDto>> GetDepartmentAsync();
         Task<DepartmentReadDto> GetDepartmentAsync(int value);
         Task<DepartmentReadDto> GetDepartmentAsync(string value);
+        Task<GenericResponseDto> DeleteDepartment(int departmentId);
     }
 }
 

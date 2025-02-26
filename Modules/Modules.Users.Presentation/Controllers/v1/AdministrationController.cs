@@ -11,6 +11,7 @@ using Modules.Users.Application.Dtos.Entities.Menu;
 using Modules.Users.Application.Dtos.Entities.Permissions;
 using Modules.Users.Application.Enums;
 using Modules.Users.Application.UseCases;
+using Modules.Users.Domain.Entities;
 
 namespace Modules.Users.Presentation.Controllers.v1
 {
@@ -453,7 +454,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpGet]
         [Route("GetDepartmentById/{departmentId}")]
-        private async Task<ActionResult<DepartmentReadDto>> GetDepartmentById(int departmentId)
+        public async Task<ActionResult<DepartmentReadDto>> GetDepartmentById(int departmentId)
         {
             return Ok(await _departmentService.GetDepartmentAsync(departmentId));
         }
@@ -480,8 +481,15 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
         [HttpDelete("DeleteDepartment/{departmentId}")]
-        public void DeleteDepartment(int departmentId)
-        { }
+        public async Task<ActionResult> DeleteDepartment(int departmentId)
+        {
+            var result = await _departmentService.DeleteDepartment(departmentId);
+            if(result.response == "success")
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
         //----------------------DEPARTMENT UNIT------------
         /// <summary>
@@ -536,9 +544,15 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentUnitService.UpdateDepartmentUnitAsync(values));
         }
 
-        [HttpDelete("DeleteDepartmentUnit/{departmentUnitId}")]
-        public void DeleteDepartmentUnit(int departmentUnitId)
+        [HttpDelete("DeleteDepartmentUnit/{unitId}")]
+        public async Task<ActionResult> DeleteDepartmentUnit(int unitId)
         {
+            var result = await _departmentUnitService.DeleteDepartmentUnit(unitId);
+            if (result.response == "success")
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         [HttpGet]

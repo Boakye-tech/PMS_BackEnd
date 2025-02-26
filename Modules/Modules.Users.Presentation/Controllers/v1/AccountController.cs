@@ -499,6 +499,35 @@ public class AccountController : ControllerBase
 
     }
 
+    /// <summary>
+    /// Update specific account details only
+    /// </summary>
+    [HttpPut]
+    [AllowAnonymous]
+    [Route("UpdateUserAccount")]
+    //[ProducesResponseType(200, Type = typeof(TokenResponseDto))]
+    public async Task<IActionResult> UpdateUserAccount([FromBody] UpdateUserDto UserUpdateRequest)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _userAccountsService.UpdateAccountDetails(UserUpdateRequest);
+                if (result.response != "success")
+                {
+                    return BadRequest(new { message = result.response });
+                }
+                return Ok(new { message = result.response });
 
+            }
+
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+
+    }
 
 }

@@ -1,4 +1,6 @@
-﻿namespace Modules.Users.Application.UseCases
+﻿using Modules.Users.Domain.Entities;
+
+namespace Modules.Users.Application.UseCases
 {
 	public class DepartmentUnitService : IDepartmentUnitService
     {
@@ -23,6 +25,20 @@
             await _unitOfWork.Complete();
 
             return new DepartmentUnitReadDto(departmentUnit.DepartmentId, departmentUnit.UnitId, departmentUnit.UnitName!);
+        }
+
+        public async Task<GenericResponseDto> DeleteDepartmentUnit(int unitId)
+        {
+            //throw new NotImplementedException();
+            var unit = await _unitOfWork.DepartmentUnit.Get(unitId);
+            if (unit is null)
+            {
+                return new GenericResponseDto("Not Found");
+            }
+
+            _unitOfWork.DepartmentUnit.Delete(unit!);
+            await _unitOfWork.Complete();
+            return new GenericResponseDto("success");
         }
 
         public async Task<IEnumerable<DepartmentUnitReadDto>> GetDepartmentUnitAsync()
@@ -51,9 +67,18 @@
 
         }
 
-        public Task<DepartmentUnitReadDto> UpdateDepartmentUnitAsync(DepartmentUnitUpdateDto values)
+        public async Task<DepartmentUnitReadDto> UpdateDepartmentUnitAsync(DepartmentUnitUpdateDto values)
         {
-            throw new NotImplementedException();
+            DepartmentUnit departmentUnit = new(values.DepartmentId, values.UnitId, values.UnitName!)
+            {
+                ModifiedBy = values.ModifiedBy,
+                ModifiedOn = DateTime.Now
+            };
+
+            _unitOfWork.DepartmentUnit.Update(departmentUnit);
+            await _unitOfWork.Complete();
+
+            return new DepartmentUnitReadDto(departmentUnit.DepartmentId, departmentUnit.UnitId, departmentUnit.UnitName!);
         }
     }
 }

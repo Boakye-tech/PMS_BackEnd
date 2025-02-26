@@ -38,7 +38,9 @@ namespace Modules.Customers.Application.UseCases
                 PropertyNumber = pd.PropertyNumber,
                 LandUse = pd.LandUse,
                 Address = $"{pd.Locality} - BLOCK {pd.BlockNumber}, PLOT NUMBER {pd.PlotNumber}",
-                Image = pd.ImageOne
+                Image = pd.ImageOne,
+                Currency = pd.Currency,
+                SellingPrice = pd.SellingPrice
             }).ToList();
 
 
@@ -54,7 +56,8 @@ namespace Modules.Customers.Application.UseCases
         {
             
             var propertydetails = await _unitOfWork.PropertyDetails.Get(pd => pd.PropertyNumber == propertyNumber);
-            PropertyImages images = new PropertyImages { ImageOne = propertydetails!.ImageOne!, ImageTwo = propertydetails.ImageTwo!, ImageThree = propertydetails.ImageThree!, ImageFour = propertydetails.ImageFour!, ImageFive = propertydetails.ImageFive! };
+            //PropertyImages[] images = new PropertyImages { ImageOne = propertydetails!.ImageOne!, ImageTwo = propertydetails.ImageTwo!, ImageThree = propertydetails.ImageThree!, ImageFour = propertydetails.ImageFour!, ImageFive = propertydetails.ImageFive! };
+            string[] images = new string[] { propertydetails!.ImageOne!, propertydetails.ImageTwo!, propertydetails.ImageThree!, propertydetails.ImageFour!, propertydetails.ImageFive! };
             PropertyDetailsReadDto propertyDetails = _mapper.Map<PropertyDetailsReadDto>(propertydetails);
             propertyDetails.PropertyImages = images;
 

@@ -1,4 +1,6 @@
-﻿namespace Modules.Users.Application.UseCases
+﻿using Modules.Users.Domain.Entities;
+
+namespace Modules.Users.Application.UseCases
 {
 	public class DepartmentService : IDepartmentService
     {
@@ -25,25 +27,52 @@
             return new DepartmentReadDto(department.DepartmentId, department.DepartmentName!);
         }
 
+        public async Task<GenericResponseDto> DeleteDepartment(int departmentId)
+        {
+            //throw new NotImplementedException();
+            var department = await _unitOfWork.Department.Get(departmentId);
+            if(department is null)
+            {
+                return new GenericResponseDto("Not Found");
+            }
+
+            _unitOfWork.Department.Delete(department!);
+            await _unitOfWork.Complete();
+            return new GenericResponseDto("success");
+        }
+
         public async Task<IEnumerable<DepartmentReadDto>> GetDepartmentAsync()
         {
             var response = await _unitOfWork.Department.GetAll();
             return _mapper.Map<IEnumerable<DepartmentReadDto>>(response);
         }
 
-        public Task<DepartmentReadDto> GetDepartmentAsync(int value)
+        public async Task<DepartmentReadDto> GetDepartmentAsync(int value)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var response = await _unitOfWork.Department.Get(value);
+            return _mapper.Map<DepartmentReadDto>(response);
         }
 
-        public Task<DepartmentReadDto> GetDepartmentAsync(string value)
+        public async Task<DepartmentReadDto> GetDepartmentAsync(string value)
         {
-            throw new NotImplementedException();
+            var response = await _unitOfWork.Department.Get(d => d.DepartmentName == value);
+            return _mapper.Map<DepartmentReadDto>(response);
         }
 
-        public Task<DepartmentReadDto> UpdateDepartmentAsync(DepartmentUpdateDto values)
+        public async Task<DepartmentReadDto> UpdateDepartmentAsync(DepartmentUpdateDto values)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            Department department = new(values.DepartmentId, values.DepartmentName!)
+            {
+                ModifiedBy = values.ModifiedBy,
+                ModifiedOn = DateTime.UtcNow
+            };
+
+            _unitOfWork.Department.Update(department);
+            await _unitOfWork.Complete();
+
+            return new DepartmentReadDto(department.DepartmentId, department.DepartmentName!);
         }
     }
 }

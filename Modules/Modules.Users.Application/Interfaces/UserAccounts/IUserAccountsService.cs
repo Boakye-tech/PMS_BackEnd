@@ -37,7 +37,8 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         //Task<bool> DisapproveCustomerAccount(UserRequestParameter mobileNumber);
 
         //Task<bool> ActivateCustomerAccount(UserRequestParameter mobileNumber);
-        //Task<bool> DeactivateCustomerAccount(UserRequestParameter mobileNumber);
+
+        Task<GenericResponseDto> UpdateAccountDetails(UpdateUserDto values);
     }
 }
 

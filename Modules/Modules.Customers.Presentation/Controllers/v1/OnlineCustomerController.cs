@@ -46,8 +46,8 @@ public class OnlineCustomerController : ControllerBase
         return await _propertyDetailsService.GetPropertySummaryWeb(customerCode);
     }
 
-    [HttpGet("PropertyDetails/{propertyNumber}")]
-    public async Task<PropertyDetailsReadDto> PropertyDetails(string propertyNumber)
+    [HttpGet("PropertyDetails")]
+    public async Task<PropertyDetailsReadDto> PropertyDetails([FromQuery] string propertyNumber)
     {
         string propertynumber = HttpUtility.UrlDecode(propertyNumber);
         return await _propertyDetailsService.GetPropertyDetails(propertynumber);

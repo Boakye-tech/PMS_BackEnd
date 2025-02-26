@@ -300,14 +300,15 @@ namespace Modules.Users.Application.UseCases
             var user = await _userManager.FindByIdAsync(userId);
             if (user is null)
             {
-                throw new Exception("User not found");
+                //throw new Exception("User not found");
+                return null!;
             }
 
             var userRoles = await _userManager.GetRolesAsync(user); 
 
             if (userRoles.Count == 0)
             {
-                throw new Exception("User has no roles assigned");
+                return null!;
             }
 
             // Assuming a user has only one role, get the first role name
@@ -318,7 +319,7 @@ namespace Modules.Users.Application.UseCases
 
             if (role is null)
             {
-                throw new Exception("Role not found");
+                return null!;
             }
 
             string roleId = role.Id; // Role ID

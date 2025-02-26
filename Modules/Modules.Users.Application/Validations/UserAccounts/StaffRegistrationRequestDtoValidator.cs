@@ -19,7 +19,7 @@ namespace Modules.Users.Application.Validations.UserAccounts
             RuleFor(x => x.EmailAddress).NotEmpty().WithMessage("Email address is required"); //.EmailAddress().Matches(@"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$");//.WithMessage("Invalid email address format.");
             RuleFor(x => x.UserName).NotEmpty().WithMessage("UserName is required.");
             RuleFor(x => x.UserName).Equal(x => x.EmailAddress).WithMessage("Email address and username must be the same.");
-            RuleFor(x => x.PhoneNumber).NotEmpty().Length(10).Matches(@"^([0]{10})$");//.WithMessage("Invalid phone number.");
+            RuleFor(x => x.PhoneNumber).NotEmpty().Length(10).Matches(@"^(023|024|025|053|054|055|059|027|057|026|056|028|020|050)\d{7}$").WithMessage("Invalid phone number.");
             RuleFor(x => x.ChannelId).GreaterThanOrEqualTo(0).WithMessage("Channel is required.");
             //RuleFor(x => x.Password).NotEmpty().MinimumLength(8);
             //RuleFor(x => x.ConfirmPassword).NotEmpty().Equal(x => x.Password).WithMessage("Password and confirmation password do not match.");

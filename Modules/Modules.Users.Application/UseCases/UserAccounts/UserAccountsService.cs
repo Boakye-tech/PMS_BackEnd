@@ -888,8 +888,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<UserInformationDto> UserDetails(string userId)
         {
-            //throw new NotImplementedException();
-
             var user = await _userManager.FindByIdAsync(userId);
 
             if(user!.UserType == (int)UserAccountType.Customer)
@@ -912,16 +910,69 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 var registrationStatus = RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString();
 
                 var userRoles = await _userManager.GetRolesAsync(user);
-                //var role = await _roleManager.FindByNameAsync(userRoles.First());
-                //var roleId = role!.Id;
+                if(userRoles.Count == 0)
+                {
+                    var permissions = new PermissionsAccessModulesReadDto(string.Empty, new List<PermissionAccessMenusWithActionsReadDto>());
+                    return new StaffUserInformationDto(user, department, unit, channelName, userType, registrationStatus, userRoles, permissions!);
 
-                var permissions = await _menuService.GetUserRolePermissions(user.Id); // GetRolesPermissions(roleId);
+                }
+                else
+                {
+                    var permissions = await _menuService.GetUserRolePermissions(user.Id);
+                    return new StaffUserInformationDto(user, department, unit, channelName, userType, registrationStatus, userRoles, permissions);
 
-                return new StaffUserInformationDto(user,department,unit,channelName,userType,registrationStatus, userRoles, permissions);
+                }
+
+                // GetRolesPermissions(roleId);
+
             }
 
             return null!;
         }
+
+        public async Task<GenericResponseDto> UpdateAccountDetails(UpdateUserDto values)
+        {
+
+            if(values is null)
+            {
+                return new GenericResponseDto("The update request caanot be null or empty");
+            }
+
+            var user = await _userManager.FindByIdAsync(values.UserId);
+            if(user is null)
+            {
+                return new GenericResponseDto("User id not found");
+            }
+
+            if(string.IsNullOrWhiteSpace(values.UserId) || string.IsNullOrWhiteSpace(values.PhoneNumber) || string.IsNullOrWhiteSpace(values.ProfilePicture) || string.IsNullOrWhiteSpace(values.MiddleName))
+            {
+                return new GenericResponseDto("At least two values must be supplied.");
+            }
+
+            if(!string.IsNullOrWhiteSpace(values.PhoneNumber))
+            {
+                user.PhoneNumber = values.PhoneNumber;
+            }
+
+            if (!string.IsNullOrWhiteSpace(values.ProfilePicture))
+            {
+                user.ProfilePicture = values.ProfilePicture;
+            }
+
+            if (!string.IsNullOrWhiteSpace(values.MiddleName))
+            {
+                user.MiddleName = values.MiddleName;
+            }
+
+            await _userManager.UpdateAsync(user);
+            return new GenericResponseDto("success");
+
+        }
+
+
+
+
+
 
 
 

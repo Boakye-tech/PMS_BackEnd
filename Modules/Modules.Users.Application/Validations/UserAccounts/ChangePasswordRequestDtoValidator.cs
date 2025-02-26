@@ -18,7 +18,7 @@ namespace Modules.Users.Application.Validations.UserAccounts
             RuleFor(x => x.ConfirmNewPassword).MinimumLength(8);
 
 
-            RuleFor(x => x.NewPassword).NotEmpty().Equal(x => x.OldPassword).WithMessage("New password cannot be the same as the old password.");
+            RuleFor(x => x.NewPassword).NotEmpty().NotEqual(x => x.OldPassword).WithMessage("New password cannot be the same as the old password.");
             RuleFor(x => x.ConfirmNewPassword).NotEmpty().Equal(x => x.NewPassword).WithMessage("Password and confirmation password do not match.");
 
         }

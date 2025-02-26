@@ -7,6 +7,8 @@ namespace Modules.Customers.Application.Dtos.PropertyDetails
         public string? PropertyNumber { get; set; }
         public string? Address { get; set; }
         public string? Image { get; set; }
+        public string? Currency { get; set; }
+        public double SellingPrice { get; set; }
     }
 }
 
