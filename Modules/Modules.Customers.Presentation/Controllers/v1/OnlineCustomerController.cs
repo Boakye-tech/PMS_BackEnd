@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Net.NetworkInformation;
+using System.Web;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,126 +54,80 @@ public class OnlineCustomerController : ControllerBase
         return await _propertyDetailsService.GetPropertyDetails(propertynumber);
     }
 
-    [HttpGet("CustomerTransactions/{customerCode}")]
-    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerTransactions(string customerCode)
+    [HttpGet("CustomerTransactions")]
+    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerTransactions([FromQuery] string customerCode, [FromQuery] string propertyNumber)
     {
-        return await _transactionsService.CustomerTransactionDetails(customerCode);
-    }
-
-
-    [HttpGet("CustomerTransactions/{propertyNumber}")]
-    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerPropertyTransactions(string propertyNumber)
-    {
-        string propertynumber = HttpUtility.UrlDecode(propertyNumber);
-        return await _transactionsService.PropertyTransactionDetails(propertynumber);
-    }
-
-    [HttpGet("CustomerStatementVoucherSearch/{receipt_or_invoiceNumber}")]
-    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementVoucherSearch(string receipt_or_invoiceNumber)
-    {
-        return await _transactionsService.CustomerStatementVoucherSearchDetails(receipt_or_invoiceNumber);
-    }
-
-
-    [HttpGet("CustomerStatementDetails/{customerCode}")]
-    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails(string customerCode)
-    {
-        return await _transactionsService.CustomerStatementDetails(customerCode);
-    }
-
-    [HttpGet("CustomerStatementDetails/{customerCode}/{propertyNumber}")]
-    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails(string customerCode, string propertyNumber)
-    {
-        string propertynumber = HttpUtility.UrlDecode(propertyNumber);
-        return await _transactionsService.CustomerStatementDetails(customerCode, propertynumber);
-    }
-
-
-    [HttpGet("CustomerStatementDetails")] 
-    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails([FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? transactionType, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
-    {
-        if (customerCode == null && propertyNumber == null && transactionType == null && startDate == null && endDate == null)
+        if (propertyNumber == null && customerCode == null)
         {
             return null!;
         }
 
         string propertynumber = HttpUtility.UrlDecode(propertyNumber!);
-        return await _transactionsService.CustomerStatementSearchDetails(customerCode!, propertynumber, transactionType!, startDate, endDate);
+        return await _transactionsService.CustomerTransactionDetails( customerCode, propertynumber);
+
     }
 
-    [HttpGet("CustomerPaymentsSummary/{customerCode}")]
-    public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentsSummary(string customerCode)
+   
+    [HttpGet("CustomerStatement")] 
+    public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatement([FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? receipt_or_invoiceNumber, [FromQuery] string? transactionType, [FromQuery] int year)
     {
-        return await _paymentsService.CustomerPaymentSummary(customerCode);
-    }
-
-    [HttpGet("CustomerPaymentDetails/{customerCode}")]
-    public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetails(string customerCode)
-    {
-        return await _paymentsService.CustomerPaymentDetails(customerCode);
-    }
-
-    [HttpGet("CustomerPropertyPaymentSummary/{propertyNumber}")]
-    public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPropertyPaymentSummary(string propertyNumber)
-    {
-        return await _paymentsService.CustomerPropertyPaymentSummary(propertyNumber);
-    }
-
-    [HttpGet("CustomerPropertyPaymentDetails/{propertyNumber}")]
-    public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPropertyPaymentDetails(string propertyNumber)
-    {
-        return await _paymentsService.CustomerPropertyPaymentDetails(propertyNumber);
-    }
-
-
-    [HttpGet("CustomerPaymentSearchByReceiptNumber/{receiptNumber}")]
-    public async Task<CustomerPaymentsSummaryDto> CustomerPaymentSearchByReceiptNumber(string receiptNumber)
-    {
-        return await _paymentsService.CustomerPaymentSearchByReceiptNumber(receiptNumber);
-    }
-
-    [HttpGet("CustomerPaymentDetailsSearchByReceiptNumber/{receiptNumber}")]
-    public async Task<CustomerPaymentsDto> CustomerPaymentDetailsSearchByReceiptNumber(string receiptNumber)
-    {
-        return await _paymentsService.CustomerPaymentDetailsSearchByReceiptNumber(receiptNumber);
-    }
-
-    [HttpGet("CustomerPaymentSummarySearch")]
-    public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentSummarySearch([FromQuery] string propertyNumber, [FromQuery] string paymentMode, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
-    {
-        if (propertyNumber == null && paymentMode == null && startDate == null && endDate == null)
+        if (customerCode == null && propertyNumber == null && receipt_or_invoiceNumber == null && transactionType == null && year.ToString().Length != 4)
         {
             return null!;
         }
 
         string propertynumber = HttpUtility.UrlDecode(propertyNumber!);
-        return await _paymentsService.CustomerPaymentSummarySearch(propertynumber!, paymentMode!, startDate, endDate);
+        return await _transactionsService.CustomerStatement(customerCode!, propertynumber, receipt_or_invoiceNumber!, transactionType!,year);
     }
 
-
-    [HttpGet("CustomerPaymentDetailsSearch")]
-    public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetailsSearch([FromQuery] string propertyNumber, [FromQuery] string paymentMode, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+    [HttpGet("CustomerPaymentSummary")]
+    public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentSummary([FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? receiptNumber, [FromQuery] string? paymentMode, [FromQuery] int year)
     {
-        if (propertyNumber == null && paymentMode == null && startDate == null && endDate == null)
+        if (propertyNumber == null && paymentMode == null && customerCode == null && year.ToString().Length != 4)
         {
             return null!;
         }
 
         string propertynumber = HttpUtility.UrlDecode(propertyNumber!);
-        return await _paymentsService.CustomerPaymentDetailsSearch(propertynumber, paymentMode!, startDate, endDate);
+        return await _paymentsService.CustomerPaymentSummary(customerCode, propertynumber, receiptNumber, paymentMode!, year);
+    }
+
+
+    [HttpGet("CustomerPaymentDetails")]
+    public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetails([FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? receiptNumber, [FromQuery] string? paymentMode, [FromQuery] int year)
+    {
+        if (propertyNumber == null && paymentMode == null && customerCode == null && year.ToString().Length != 4)
+        {
+            return null!;
+        }
+
+        string propertynumber = HttpUtility.UrlDecode(propertyNumber!);
+        return await _paymentsService.CustomerPaymentDetails(customerCode, propertynumber, receiptNumber, paymentMode!, year);
     }
 
 
     [HttpGet("CustomerInvoiceSummary")]
-    public async Task<IEnumerable<CustomerInvoiceSummaryReadDto>> CustomerInvoiceSummary([FromQuery] string? invoiceNumber, [FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? status, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+    public async Task<IEnumerable<CustomerInvoiceSummaryReadDto>> CustomerInvoiceSummary([FromQuery] string? invoiceNumber, [FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? status, [FromQuery] int year)
     {
-        if ( invoiceNumber == null && propertyNumber == null && customerCode == null && status == null && startDate == null && endDate == null)
+        if ( invoiceNumber == null && propertyNumber == null && customerCode == null && status == null && year.ToString()!.Length != 4)
         {
             return null!;
         }
 
         string propertynumber = HttpUtility.UrlDecode(propertyNumber!);
-        return await _invoiceService.CustomerInvoiceSummary(invoiceNumber!, customerCode!, propertynumber, status!, startDate, endDate);
+        return await _invoiceService.CustomerInvoiceSummary(invoiceNumber!, customerCode!, propertynumber, status!, year);
+    }
+
+    [HttpGet("CustomerInvoiceDetails")]
+    public async Task<IEnumerable<CustomerInvoiceDto>> CustomerInvoiceDetails([FromQuery] string? invoiceNumber, [FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? status, [FromQuery] int year)
+    {
+        if (invoiceNumber == null && propertyNumber == null && customerCode == null && status == null && year.ToString()!.Length != 4)
+        {
+            return null!;
+        }
+
+        string propertynumber = HttpUtility.UrlDecode(propertyNumber!);
+        return await _invoiceService.CustomerInvoiceDetails(invoiceNumber!, customerCode!, propertynumber, status!, year);
     }
 
 

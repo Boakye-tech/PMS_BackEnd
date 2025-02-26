@@ -12,12 +12,12 @@ namespace Modules.Estates.Application.Interfaces.Management.Customer
         Task<IndividualNonResidentCustomerResponseDto> CreateCustomer(IndividualNonResidentCustomerDto values);
         Task<IndividualExpatriateCustomerResponseDto> CreateCustomer(IndividualExpatriateCustomerDto values);
 
-
+        Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync();
 
         //Task<AllocationTypeReadDto> UpdateAllocationTypeAsync(AllocationTypeUpdateDto values);
-        Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync();
         //Task<AllocationTypeReadDto> GetAllocationTypeAsync(int value);
-        //Task<AllocationTypeReadDto> GetAllocationTypeAsync(string value);
+
+        Task<IEnumerable<CustomerListDto>> GetCustomerListAsync();
 
     }
 }

@@ -5,8 +5,9 @@ namespace Modules.Customers.Application.Interfaces
 	{
         Task<GenericResponseDto> AddCustomerInvoiceDetails(CustomerInvoiceDto values);
 
-        Task<IEnumerable<CustomerInvoiceSummaryReadDto>> CustomerInvoiceSummary(string invoiceNumber, string customerCode, string propertyNumber, string status, DateTime? startDate, DateTime? endDate);
-        Task<IEnumerable<CustomerInvoiceDto>> CustomerInvoiceDetails(string invoiceNumber, string customerCode, string propertyNumber, string status, DateTime? startDate, DateTime? endDate);
+        Task<IEnumerable<CustomerInvoiceSummaryReadDto>> CustomerInvoiceSummary(string invoiceNumber, string customerCode, string propertyNumber, string status, int year);
+
+        Task<IEnumerable<CustomerInvoiceDto>> CustomerInvoiceDetails(string invoiceNumber, string customerCode, string propertyNumber, string status, int year);
 
     }
 }

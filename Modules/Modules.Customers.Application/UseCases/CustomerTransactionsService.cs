@@ -23,172 +23,42 @@ namespace Modules.Customers.Application.UseCases
 
         }
 
-        public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerTransactionDetails(string customerCode)
+        public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerTransactionDetails(string customerCode, string propertyNumber)
         {
-            //throw new NotImplementedException();
-            var transactions = (await _unitOfWork.CustomerTransaction.GetAll())
-                            .Where(t => t.CustomerCode == customerCode) // Filter for specific CustomerCode
-                            .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
-                            .Select(t => new CustomerTransactionsReadDto
-                            {
-                                VoucherNumber = t.VoucherNumber,
-                                CustomerCode = t.CustomerCode,
-                                PropertyNumber = t.PropertyNumber,
-                                TransactionDate = t.TransactionDate,
-                                ChequeNumber =t.ChequeNumber,
-                                ReferenceNumber = t.ReferenceNumber,
-                                Narration =t.Narration,
-                                Amount = t.Amount,
-                                PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
-                                    ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
-                                    : "Cheque",
-                                VoucherType = t.VoucherType,
-                                TransactionType = t.TransactionType
-                            })
-                            .ToList();
+            var transactionsQuery = (await _unitOfWork.CustomerTransaction.GetAll())
+                                    .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
+                                    .Select(t => new CustomerTransactionsReadDto
+                                    {
+                                        VoucherNumber = t.VoucherNumber,
+                                        CustomerCode = t.CustomerCode,
+                                        PropertyNumber = t.PropertyNumber,
+                                        TransactionDate = t.TransactionDate,
+                                        ChequeNumber = t.ChequeNumber,
+                                        ReferenceNumber = t.ReferenceNumber,
+                                        Narration = t.Narration,
+                                        Amount = t.Amount,
+                                        PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
+                                            ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
+                                            : "Cheque",
+                                        VoucherType = t.VoucherType,
+                                        TransactionType = t.TransactionType
+                                    }).AsQueryable();
 
-            return transactions!;
+            if (!string.IsNullOrEmpty(customerCode))
+                transactionsQuery = transactionsQuery.Where(t => t.CustomerCode == customerCode);
+
+            if (!string.IsNullOrEmpty(propertyNumber))
+                transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == propertyNumber);
+
+
+            transactionsQuery.OrderByDescending(t => t.TransactionDate);
+
+            return transactionsQuery!;
 
         }
 
-        public async Task<IEnumerable<CustomerTransactionsReadDto>> PropertyTransactionDetails(string propertyNumber)
+        public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatement(string customerCode, string propertyNumber, string receipt_or_invoiceNumber, string transactionType, int year)
         {
-            //throw new NotImplementedException();
-            var transactions = (await _unitOfWork.CustomerTransaction.GetAll())
-                            .Where(t => t.PropertyNumber == propertyNumber) // Filter for specific Property Number
-                            .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
-                            .Select(t => new CustomerTransactionsReadDto
-                            {
-                                VoucherNumber = t.VoucherNumber,
-                                CustomerCode = t.CustomerCode,
-                                PropertyNumber = t.PropertyNumber,
-                                TransactionDate = t.TransactionDate,
-                                ChequeNumber = t.ChequeNumber,
-                                ReferenceNumber = t.ReferenceNumber,
-                                Narration = t.Narration,
-                                Amount = t.Amount,
-                                PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
-                                    ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
-                                    : "Cheque",
-                                VoucherType = t.VoucherType,
-                                TransactionType = t.TransactionType
-                            })
-                            .ToList();
-
-            return transactions!;
-        }
-
-        public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails(string customerCode)
-        {
-            //throw new NotImplementedException();
-            var transactions = (await _unitOfWork.CustomerTransaction.GetAll())
-                            .Where(t => t.CustomerCode == customerCode) // Filter for specific CustomerCode
-                            .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
-                            .Select(t => new CustomerTransactionsReadDto
-                            {
-                                VoucherNumber = t.VoucherNumber,
-                                CustomerCode = t.CustomerCode,
-                                PropertyNumber = t.PropertyNumber,
-                                TransactionDate = t.TransactionDate,
-                                ChequeNumber = t.ChequeNumber,
-                                ReferenceNumber = t.ReferenceNumber,
-                                Narration = t.Narration,
-                                Amount = t.Amount,
-                                PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
-                                    ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
-                                    : "Cheque",
-                                VoucherType = t.VoucherType,
-                                TransactionType = t.TransactionType
-                            })
-                            .ToList();
-
-            return transactions!;
-
-        }
-
-        public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails(string customerCode, string propertyNumber)
-        {
-            //throw new NotImplementedException();
-            var transactions = (await _unitOfWork.CustomerTransaction.GetAll())
-                            .Where(t => t.CustomerCode == customerCode && t.PropertyNumber == propertyNumber) // Filter for specific CustomerCode
-                            .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
-                            .Select(t => new CustomerTransactionsReadDto
-                            {
-                                VoucherNumber = t.VoucherNumber,
-                                CustomerCode = t.CustomerCode,
-                                PropertyNumber = t.PropertyNumber,
-                                TransactionDate = t.TransactionDate,
-                                ChequeNumber = t.ChequeNumber,
-                                ReferenceNumber = t.ReferenceNumber,
-                                Narration = t.Narration,
-                                Amount = t.Amount,
-                                PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
-                                    ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
-                                    : "Cheque",
-                                VoucherType = t.VoucherType,
-                                TransactionType = t.TransactionType
-                            })
-                            .ToList();
-
-            return transactions!;
-
-        }
-
-
-        //public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementDetails(string customerCode, string propertyNumber, string transactionType)
-        //{
-        //    //throw new NotImplementedException();
-        //    var transactions = (await _unitOfWork.CustomerTransaction.GetAll())
-        //                    .Where(t => t.CustomerCode == customerCode && t.PropertyNumber == propertyNumber && t.TransactionType == transactionType) // Filter for specific CustomerCode
-        //                    .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
-        //                    .Select(t => new CustomerTransactionsReadDto
-        //                    {
-        //                        VoucherNumber = t.VoucherNumber,
-        //                        CustomerCode = t.CustomerCode,
-        //                        PropertyNumber = t.PropertyNumber,
-        //                        TransactionDate = t.TransactionDate,
-        //                        ChequeNumber = t.ChequeNumber,
-        //                        ReferenceNumber = t.ReferenceNumber,
-        //                        Narration = t.Narration,
-        //                        Amount = t.Amount,
-        //                        PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
-        //                            ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
-        //                            : "Cheque",
-        //                        VoucherType = t.VoucherType,
-        //                        TransactionType = t.TransactionType
-        //                    })
-        //                    .ToList();
-
-        //    return transactions!;
-
-        //}
-
-        public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementSearchDetails(string customerCode, string propertyNumber, string transactionType, DateTime? startDate, DateTime? endDate)
-        {
-            //throw new NotImplementedException();
-            //var transactions = (await _unitOfWork.CustomerTransaction.GetAll())
-            //                .Where(t => t.CustomerCode == customerCode && t.PropertyNumber == propertyNumber && t.TransactionType == transactionType && t.TransactionDate >= startDate && t.TransactionDate <= endDate) // Filter for specific CustomerCode
-            //                .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
-            //                .Select(t => new CustomerTransactionsReadDto
-            //                {
-            //                    VoucherNumber = t.VoucherNumber,
-            //                    CustomerCode = t.CustomerCode,
-            //                    PropertyNumber = t.PropertyNumber,
-            //                    TransactionDate = t.TransactionDate,
-            //                    ChequeNumber = t.ChequeNumber,
-            //                    ReferenceNumber = t.ReferenceNumber,
-            //                    Narration = t.Narration,
-            //                    Amount = t.Amount,
-            //                    PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
-            //                        ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
-            //                        : "Cheque",
-            //                    VoucherType = t.VoucherType,
-            //                    TransactionType = t.TransactionType
-            //                })
-            //                .ToList();
-
-            //return transactions!;
-
 
             var transactionsQuery = (await _unitOfWork.CustomerTransaction.GetAll()).AsQueryable();
 
@@ -200,13 +70,15 @@ namespace Modules.Customers.Application.UseCases
             if (!string.IsNullOrEmpty(propertyNumber))
                 transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == propertyNumber);
 
+            if (!string.IsNullOrEmpty(receipt_or_invoiceNumber))
+                transactionsQuery = transactionsQuery.Where(t => t.VoucherNumber == receipt_or_invoiceNumber);
+
             if (!string.IsNullOrEmpty(transactionType)) 
                 transactionsQuery = transactionsQuery.Where(t => t.TransactionType == transactionType);
 
-            // Ensure both startDate and endDate are supplied together
-            if (startDate.HasValue && endDate.HasValue)
+            if (!string.IsNullOrEmpty(year.ToString()))
             {
-                transactionsQuery = transactionsQuery.Where(t => t.TransactionDate >= startDate && t.TransactionDate <= endDate);
+                transactionsQuery = transactionsQuery.Where(t => t.TransactionDate.Year >= year);
             }
 
             // Order by latest TransactionDate first
@@ -236,33 +108,7 @@ namespace Modules.Customers.Application.UseCases
         }
 
 
-        public async Task<IEnumerable<CustomerTransactionsReadDto>> CustomerStatementVoucherSearchDetails(string voucherNumber)
-        {
-            //throw new NotImplementedException();
-            var transactions = (await _unitOfWork.CustomerTransaction.GetAll())
-                            .Where(t => t.VoucherNumber.Contains(voucherNumber)) // Filter for specific receit number or invoice/bill number
-                            .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
-                            .Select(t => new CustomerTransactionsReadDto
-                            {
-                                VoucherNumber = t.VoucherNumber,
-                                CustomerCode = t.CustomerCode,
-                                PropertyNumber = t.PropertyNumber,
-                                TransactionDate = t.TransactionDate,
-                                ChequeNumber = t.ChequeNumber,
-                                ReferenceNumber = t.ReferenceNumber,
-                                Narration = t.Narration,
-                                Amount = t.Amount,
-                                PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
-                                    ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
-                                    : "Cheque",
-                                VoucherType = t.VoucherType,
-                                TransactionType = t.TransactionType
-                            })
-                            .ToList();
-
-            return transactions!;
-
-        }
+        
 
 
     }

@@ -27,95 +27,47 @@ namespace Modules.Customers.Application.UseCases
 
         }
 
-        public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentSummary(string customerCode)
-        {
-            //throw new NotImplementedException();
-            var customerPayments = (await _unitOfWork.CustomerPayment.GetAll(p => p.CustomerCode == customerCode)) // Fetch all customer payments .Where() // Filter by CustomerCode
-                    .OrderByDescending(t => t.DateOfPayment)
-                    .Select(p => new CustomerPaymentsSummaryDto
-                    {
-                        ReceiptNumber = p.ReceiptNumber!,
-                        Narration = p.Narration!,
-                        DateOfPayment = p.DateOfPayment,
-                        PaymentMode = p.PaymentMode!,
-                        PaymentCurrency = p.PaymentCurrency,
-                        AmountPaid = p.AmountPaid,
-                        ChequeNumber = p.ChequeNumber
-                    });
 
-            return customerPayments;
 
-        }
-
-        public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetailsSearch(string propertyNumber, string paymentMode, DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetails(string? customerCode,string propertyNumber, string? receiptNumber, string paymentMode, int? paymentYear)
         {
             //var customerPayments = (await _unitOfWork.CustomerPayment.GetAll()).AsQueryable();
 
             var transactionsQuery = (await _unitOfWork.CustomerPayment.GetAll()).AsQueryable();
 
+            if (!string.IsNullOrEmpty(customerCode))
+                transactionsQuery = transactionsQuery.Where(t => t.CustomerCode == customerCode);
+
             if (!string.IsNullOrEmpty(propertyNumber))
                 transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == propertyNumber);
+
+            if (!string.IsNullOrEmpty(propertyNumber))
+                transactionsQuery = transactionsQuery.Where(t => t.ReceiptNumber == receiptNumber);
 
             if (!string.IsNullOrEmpty(paymentMode))
                 transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == paymentMode);
 
-            // Ensure both startDate and endDate are supplied together
-            if (startDate.HasValue && endDate.HasValue)
-            {
-                transactionsQuery = transactionsQuery.Where(t => t.DateOfPayment >= startDate && t.DateOfPayment <= endDate);
-            }
+            if (!string.IsNullOrEmpty(paymentYear.ToString()))
+                transactionsQuery = transactionsQuery.Where(t => t.DateOfPayment.Year >= paymentYear);
 
-            // Order by latest DateOfPayment first
             transactionsQuery = transactionsQuery.OrderByDescending(t => t.DateOfPayment);
 
 
             return _mapper.Map<IEnumerable<CustomerPaymentsDto>>(transactionsQuery.ToList());
         }
 
-        public async Task<CustomerPaymentsSummaryDto> CustomerPaymentSearchByReceiptNumber(string receiptNumber)
+
+
+        public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentSummary(string? customerCode, string? propertyNumber, string? receiptNumber, string paymentMode, int? paymentYear)
         {
-            var customerPayments = (await _unitOfWork.CustomerPayment.GetAll(p => p.ReceiptNumber!.Contains(receiptNumber))) 
-                    .Select(p => new CustomerPaymentsSummaryDto
-                    {
-                        ReceiptNumber = p.ReceiptNumber!,
-                        Narration = p.Narration!,
-                        DateOfPayment = p.DateOfPayment,
-                        PaymentMode = p.PaymentMode!,
-                        PaymentCurrency = p.PaymentCurrency,
-                        AmountPaid = p.AmountPaid,
-                        ChequeNumber = p.ChequeNumber
-                    }).FirstOrDefault();
-
-            return customerPayments!;
-        }
-
-        public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetails(string customerCode)
-        {
-            var customerPayments = (await _unitOfWork.CustomerPayment.GetAll(p => p.CustomerCode == customerCode))
-                    .OrderByDescending(t => t.DateOfPayment);
-
-            return _mapper.Map<IEnumerable<CustomerPaymentsDto>>(customerPayments);
-        }
-
-        public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentSummarySearch(string propertyNumber, string paymentMode, DateTime? startDate, DateTime? endDate)
-        {
-            //var customerPayments = (await _unitOfWork.CustomerPayment.GetAll(p => p.PropertyNumber == propertyNumber && p.DateOfPayment >= startDate && p.DateOfPayment <= endDate || p.PaymentMode!.Contains(paymentMode))) // Fetch all customer payments .Where() // Filter by propertyNumber
-            //        .OrderByDescending(t => t.DateOfPayment)
-            //        .Select(p => new CustomerPaymentsSummaryDto
-            //        {
-            //            ReceiptNumber = p.ReceiptNumber!,
-            //            Narration = p.Narration!,
-            //            DateOfPayment = p.DateOfPayment,
-            //            PaymentMode = p.PaymentMode!,
-            //            PaymentCurrency = p.PaymentCurrency,
-            //            AmountPaid = p.AmountPaid,
-            //            ChequeNumber = p.ChequeNumber
-            //        });
-
-            //return customerPayments;
-
-
             var transactionsQuery = (await _unitOfWork.CustomerPayment.GetAll()).AsQueryable();
+
+
+            if (!string.IsNullOrEmpty(customerCode))
+                transactionsQuery = transactionsQuery.Where(t => t.CustomerCode == customerCode);
+
+            if (!string.IsNullOrEmpty(receiptNumber))
+                transactionsQuery = transactionsQuery.Where(t => t.ReceiptNumber == receiptNumber);
 
             if (!string.IsNullOrEmpty(propertyNumber))
                 transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == propertyNumber);
@@ -123,11 +75,8 @@ namespace Modules.Customers.Application.UseCases
             if (!string.IsNullOrEmpty(paymentMode))
                 transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == paymentMode );
 
-            // Ensure both startDate and endDate are supplied together
-            if (startDate.HasValue && endDate.HasValue)
-            {
-                transactionsQuery = transactionsQuery.Where(t => t.DateOfPayment >= startDate && t.DateOfPayment <= endDate);
-            }
+            if (!string.IsNullOrEmpty(paymentYear.ToString()))
+                transactionsQuery = transactionsQuery.Where(t => t.DateOfPayment.Year >= paymentYear);
 
             // Order by latest DateOfPayment first
             transactionsQuery = transactionsQuery.OrderByDescending(t => t.DateOfPayment);
@@ -148,40 +97,14 @@ namespace Modules.Customers.Application.UseCases
 
         }
 
-        public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPropertyPaymentDetails(string propertyNumber)
-        {
-            var customerPayments = (await _unitOfWork.CustomerPayment.GetAll(p => p.PropertyNumber == propertyNumber))
-                    .OrderByDescending(t => t.DateOfPayment);
 
-            return _mapper.Map<IEnumerable<CustomerPaymentsDto>>(customerPayments);
-        }
+
+      
     
 
-        public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPropertyPaymentSummary(string propertyNumber)
-        {
-            var customerPayments = (await _unitOfWork.CustomerPayment.GetAll(p => p.PropertyNumber == propertyNumber)) // Fetch all customer payments .Where() // Filter by propertyNumber
-                    .OrderByDescending(t => t.DateOfPayment)
-                    .Select(p => new CustomerPaymentsSummaryDto
-                    {
-                        ReceiptNumber = p.ReceiptNumber!,
-                        Narration = p.Narration!,
-                        DateOfPayment = p.DateOfPayment,
-                        PaymentMode = p.PaymentMode!,
-                        PaymentCurrency = p.PaymentCurrency,
-                        AmountPaid = p.AmountPaid,
-                        ChequeNumber = p.ChequeNumber
-                    });
 
-            return customerPayments;
-        }
 
-        public async Task<CustomerPaymentsDto> CustomerPaymentDetailsSearchByReceiptNumber(string receiptNumber)
-        {
-            var customerPayments = (await _unitOfWork.CustomerPayment.GetAll(p => p.ReceiptNumber == receiptNumber))
-                    .OrderByDescending(t => t.DateOfPayment).FirstOrDefault();
-
-            return _mapper.Map<CustomerPaymentsDto>(customerPayments);
-        }
+       
     }
 }
 

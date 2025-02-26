@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Modules.Customers.Application.Dtos;
 using Modules.Customers.Domain.Entities;
 
@@ -37,14 +38,59 @@ namespace Modules.Customers.Application.UseCases
 
         }
 
-        public Task<IEnumerable<CustomerInvoiceDto>> CustomerInvoiceDetails(string invoiceNumber, string customerCode, string propertyNumber, string status, DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<CustomerInvoiceDto>> CustomerInvoiceDetails(string invoiceNumber, string customerCode, string propertyNumber, string status, int year)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var query = from invoice in await _unitOfWork.CustomerInvoice.GetAll()
+                        join items in await _unitOfWork.CustomerInvoiceItems.GetAll()
+                            on invoice.InvoiceNumber equals items.InvoiceNumber into invoiceItems
+                        select new CustomerInvoiceDto
+                        {
+                            InvoiceNumber = invoice.InvoiceNumber!,
+                            InvoiceDate = invoice.InvoiceDate,
+                            PropertyNumber = invoice.PropertyNumber!,
+                            Acreage = invoice.Acreage,
+                            TransactionCode = invoice.TransactionCode,
+                            TransactionNumber = invoice.TransactionNumber,
+                            ExpirationDate = invoice.ExpirationDate,
+                            CustomerCode = invoice.CustomerCode!,
+                            CustomerName = invoice.CustomerName,
+                            CustomerAddress = invoice.CustomerAddress,
+                            CustomerEmailAddress = invoice.CustomerEmailAddress,
+                            CustomerPhoneNumber = invoice.CustomerPhoneNumber,
+                            InvoiceAmount = invoice.InvoiceAmount,
+                            AmountPaid = invoice.AmountPaid,
+                            BalanceDue = invoice.BalanceDue,
+                            InvoiceStatus = invoice.InvoiceStatus,
+                            InvoiceItems = invoiceItems.Select(item => new CustomerInvoiceItemsDto
+                            {
+                                Description = item.Description!,
+                                Amount = item.Amount,
+                                Status = item.Status,
+                                AmountPaid = item.AmountPaid,
+                                BalanceDue = item.BalanceDue
+                            }).ToList()
+                        };
 
+            // Apply filters dynamically
+            if (!string.IsNullOrEmpty(invoiceNumber))
+                query = query.Where(i => i.InvoiceNumber == invoiceNumber);
+
+            if (!string.IsNullOrEmpty(customerCode))
+                query = query.Where(i => i.CustomerCode == customerCode);
+
+            if (!string.IsNullOrEmpty(status))
+                query = query.Where(i => i.InvoiceStatus == status);
+
+            if (!string.IsNullOrEmpty(year.ToString()))
+                query = query.Where(i => i.InvoiceDate.Year >= year);
+
+
+            return query.ToList();
 
         }
 
-        public async Task<IEnumerable<CustomerInvoiceSummaryReadDto>> CustomerInvoiceSummary(string invoiceNumber, string customerCode, string propertyNumber, string status, DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<CustomerInvoiceSummaryReadDto>> CustomerInvoiceSummary(string invoiceNumber, string customerCode, string propertyNumber, string status, int year)
         {
             //throw new NotImplementedException();
             var invoiceItemsQuery = (from a in await _unitOfWork.CustomerInvoiceItems.GetAll()
@@ -75,24 +121,20 @@ namespace Modules.Customers.Application.UseCases
                 invoiceItemsQuery = invoiceItemsQuery.Where(t => t.InvoiceStatus == status);
 
 
-            // Ensure both startDate and endDate are supplied together
-            if (startDate.HasValue && endDate.HasValue)
-            {
-                invoiceItemsQuery = invoiceItemsQuery.Where(t => t.InvoiceDate >= startDate && t.InvoiceDate <= endDate);
-            }
+            if (!string.IsNullOrEmpty(year.ToString()))
+                invoiceItemsQuery = invoiceItemsQuery.Where(t => t.InvoiceDate.Year >= year);
 
             // Order by latest DateOfPayment first
             invoiceItemsQuery = invoiceItemsQuery.OrderByDescending(t => t.InvoiceDate);
-
 
             return _mapper.Map<IEnumerable<CustomerInvoiceSummaryReadDto>>(invoiceItemsQuery.ToList()); 
 
         }
 
-
-
-
-
+        public Task<IEnumerable<CustomerInvoiceSummaryReadDto>> CustomerInvoiceSummary(string invoiceNumber, string customerCode, string propertyNumber, string status, int? year)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

@@ -638,6 +638,18 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
 
+        /// <summary>
+        /// Returns a list of customers
+        /// </summary>
+        [HttpGet]
+        [Route("GetCustomerList")]
+        public async Task<ActionResult<IEnumerable<CustomerListDto>>> GetCustomerList()
+        {
+            return Ok(await _customerMasterService.GetCustomerListAsync());
+        }
+        
+
+
     }
 }
 
