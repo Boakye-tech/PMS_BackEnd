@@ -15,7 +15,8 @@ namespace Modules.Users.Application.Dtos.Administration
         string? EmailAddress,
         string? PhoneNumber,
         string? RoleName,
-        string Status 
+        string Status,
+        DateTime RegistrationDate
     );
 
 

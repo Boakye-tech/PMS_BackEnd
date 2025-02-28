@@ -20,8 +20,8 @@ namespace Modules.Users.Presentation.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
 
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    //[Authorize(Policy = "Permission:Users.READ")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "Permission:Users.READ")]
 
     public class AdministrationController : ControllerBase
     {
@@ -54,9 +54,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
 
-        //[Authorize(Policy = "Permission:Users.CREATE")]
         [HttpPost]
         [Route("CreateChannel")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult<ChannelReadDto>> CreateChannel([FromBody] ChannelCreateDto values)
         {
             try
@@ -144,16 +144,14 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("AddApplicationModules")]
         public async Task<ActionResult> AddApplicationModules([FromBody] ApplicationModulesCreateDto values)
         {
-            var result = await _menuService.AddModules(values);
-            return Ok(result);
+            return Ok(await _menuService.AddModules(values));
         }
 
         [HttpPut]
         [Route("UpdateApplicationModules")]
         public async Task<ActionResult> UpdateApplicationModules([FromBody] ApplicationModulesDto values)
         {
-            var result = await _menuService.UpdateModules(values);
-            return Ok(result);
+            return Ok(await _menuService.UpdateModules(values));
         }
 
 
@@ -161,8 +159,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("AssignModulePermission")]
         public async Task<ActionResult> AssignModulePermission([FromBody] ApplicationModulesPermissionsDto values)
         {
-            var result = await _menuService.AssignModulePermission(values);
-            return Ok(result);
+            return Ok(await _menuService.AssignModulePermission(values));
         }
 
         [HttpGet]
@@ -176,8 +173,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("CreateSubMenuItems")]
         public async Task<ActionResult> CreateSubMenuItems([FromBody] SubMenuItemsCreateDto values)
         {
-            var result = await _menuService.CreateSubMenuItems(values);
-            return Ok(result);
+            return Ok(await _menuService.CreateSubMenuItems(values));
         }
 
 
@@ -186,10 +182,10 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("ApproveRole")]
+        [Authorize(Policy = "Permission:Users.APPROVE")]
         public async Task<ActionResult> ApproveRole([FromBody] RolesApprovalDto values)
         {
-            var result = await _adminService.ApproveUserRole(values);
-            return Ok(result);
+            return Ok(await _adminService.ApproveUserRole(values));
         }
 
         /// <summary>
@@ -197,10 +193,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("DisapproveRole")]
+        [Authorize(Policy = "Permission:Users.DISAPPROVE")]
         public async Task<ActionResult> DisapproveRole([FromBody] RolesApprovalDto values)
         {
-            var result = await _adminService.ApproveUserRole(values);
-            return Ok(result);
+            //var result = 
+            return Ok(await _adminService.ApproveUserRole(values));
+            
         }
 
         /// <summary>
@@ -229,6 +227,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateUserRole")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult> CreateUserRole([FromBody] RolesCreateDto values)
         {
             var result = await _adminService.CreateUserRole(values);
@@ -312,6 +311,8 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("AssignPermissionsToRole")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
+        //[Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult> AssignPermissionsToRole([FromBody] PermissionsAccessModulesDto values)
         {
             return Ok(await _menuService.AssignPermissionToRole(values));
@@ -339,8 +340,10 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _menuService.UpdatePermissionsAssignedToRole(values));
         }
 
+
         [HttpPut]
         [Route("VerifyUserAccount")]
+        [Authorize(Policy = "Permission:Users.VERIFY")]
         public async Task<ActionResult> VerifyUserAccount([FromBody] VerifyUserAccountDto values)
         {
             var result = await _adminService.VerifyCustomerAccount(values);
@@ -350,11 +353,22 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            var status = result.ErrorResponse!.StatusCode;
+
+            return status switch
+            {
+                204 => NoContent(),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                409 => Conflict(result.ErrorResponse),
+                _ => StatusCode(500, result),
+            };
         }
 
         [HttpPut]
         [Route("RejectUserAccount")]
+        [Authorize(Policy = "Permission:Users.REJECT")]
         public async Task<ActionResult> RejectUserAccount([FromBody] RejectUserAccountDto values)
         {
             var result = await _adminService.RejectCustomerAccount(values);
@@ -364,11 +378,23 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+
+            var status = result.ErrorResponse!.StatusCode;
+
+            return status switch
+            {
+                204 => NoContent(),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                409 => Conflict(result.ErrorResponse),
+                _ => StatusCode(500, result),
+            };
         }
 
         [HttpPut]
         [Route("ApproveUserAccount")]
+        [Authorize(Policy = "Permission:Users.APPROVE")]
         public async Task<ActionResult> ApproveUserAccount([FromBody] ApproveUserAccountDto values)
         {
             var result = await _adminService.ApproveUserAccount(values);
@@ -378,11 +404,24 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+
+            var status = result.ErrorResponse!.StatusCode;
+
+            return status switch
+            {
+                204 => NoContent(),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                409 => Conflict(result.ErrorResponse),
+                _ => StatusCode(500, result),
+            };
+            
         }
 
         [HttpPut]
         [Route("DisapproveUserAccount")]
+        [Authorize(Policy = "Permission:Users.DISAPPROVE")]
         public async Task<ActionResult> DisapproveUserAccount([FromBody] DisapprovedUserAccountDto values)
         {
             var result = await _adminService.DisapproveUserAccount(values);
@@ -392,11 +431,22 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            var status = result.ErrorResponse!.StatusCode;
+
+            return status switch
+            {
+                204 => NoContent(),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                409 => Conflict(result.ErrorResponse),
+                _ => StatusCode(500, result),
+            };
         }
 
         [HttpPut]
         [Route("ActivateUserAccount")]
+        [Authorize(Policy = "Permission:Users.ACTIVATE")]
         public async Task<ActionResult> ActivateUserAccount([FromBody] ActivateUserAccountDto values)
         {
             var result = await _adminService.ActivateUserAccount(values);
@@ -406,11 +456,22 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            var status = result.ErrorResponse!.StatusCode;
+
+            return status switch
+            {
+                204 => NoContent(),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                409 => Conflict(result.ErrorResponse),
+                _ => StatusCode(500, result),
+            };
         }
 
         [HttpPut]
         [Route("DeactivateUserAccount")]
+        [Authorize(Policy = "Permission:Users.DEACTIVATE")]
         public async Task<ActionResult> DectivateUserAccount([FromBody] DeactivateUserAccountDto values)
         {
             var result = await _adminService.DeactivateUserAccount(values);
@@ -420,7 +481,17 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
+            var status = result.ErrorResponse!.StatusCode;
+
+            return status switch
+            {
+                204 => NoContent(),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                409 => Conflict(result.ErrorResponse),
+                _ => StatusCode(500, result),
+            };
         }
 
 
@@ -461,6 +532,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateDepartment")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult<DepartmentReadDto>> CreateDepartment([FromBody] DepartmentCreateDto values)
         {
             try

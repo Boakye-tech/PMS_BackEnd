@@ -21,8 +21,9 @@ namespace Modules.Users.Presentation.Controllers.v1;
 [Produces("application/json")]
 
 [EnableRateLimiting("UsersModulePolicy")]
-//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-//[AllowAnonymous]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[AllowAnonymous]
+
 public class AccountController : ControllerBase
 {
     IUserAccountsService _userAccountsService;
@@ -137,6 +138,7 @@ public class AccountController : ControllerBase
     /// <response code="201">Returns the uniquely created user id for a newly registered application user</response>
     [HttpPost]
     [Route("Register/Staff")]
+    [Authorize(Policy = "Permission:Users.CREATE")]
     [ProducesResponseType(201, Type = typeof(RegistrationResponse))]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] StaffRegistrationRequestDto values)
     {
@@ -376,9 +378,20 @@ public class AccountController : ControllerBase
         {
             if (ModelState.IsValid)
             {
+                var result  = await _userAccountsService.RefreshBearerToken(request);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
 
-                var newTokens = await _userAccountsService.RefreshBearerToken(request);
-                return Ok(newTokens);
+                var status = result.ErrorResponse!.StatusCode;
+                return status switch
+                {
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    500 => StatusCode(500, result.ErrorResponse),
+                    _ => StatusCode(500, result),
+                };
             }
 
             return BadRequest();
@@ -394,10 +407,14 @@ public class AccountController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("Users/{userId}")]
-    public async Task<UserInformationDto> UserDetails(string userId)
+    //[Authorize(Policy = "Permission:Users.CREATE")]
+    public async Task<ActionResult> UserDetails(string userId)
     {
-        //return await _menuService.GetMenuActions();
-        return await _userAccountsService.UserDetails(userId);
+        var user = await _unitOfWork.Users.Get(u => u.Id == userId);
+        if (user is null)
+            return NotFound(new { message = "User id not found" });
+
+        return Ok(await _userAccountsService.UserDetails(userId));
     }
 
     /// <summary>
@@ -505,6 +522,7 @@ public class AccountController : ControllerBase
     [HttpPut]
     [AllowAnonymous]
     [Route("UpdateUserAccount")]
+
     //[ProducesResponseType(200, Type = typeof(TokenResponseDto))]
     public async Task<IActionResult> UpdateUserAccount([FromBody] UpdateUserDto UserUpdateRequest)
     {

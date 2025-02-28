@@ -19,6 +19,7 @@ namespace Modules.Users.Domain.Entities
         public string? PhoneNumber { get; set; }
         public string? RoleName { get; set; }
         public int Status { get; set; }
+        public DateTime RegistrationDate { get; set; }
     }
 
 

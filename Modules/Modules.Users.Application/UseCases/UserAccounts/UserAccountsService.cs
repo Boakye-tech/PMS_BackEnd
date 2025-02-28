@@ -181,7 +181,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         IsSuccess = false,
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
-                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusCode = StatusCodes.Status400BadRequest,
                             StatusMessage = $"User with email address '{resetPassword.Phone_OR_Email.ToLower()}' and OTP Token '{resetPassword.Token}' not verified."
                         }
                     };
@@ -318,7 +318,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         IsSuccess = false,
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
-                            StatusCode = StatusCodes.Status404NotFound,
+                            StatusCode = StatusCodes.Status400BadRequest,
                             StatusMessage = $"User with email address '{resetPassword.Phone_OR_Email.ToLower()}' and OTP Token '{resetPassword.Token}' not verified."
                         }
                     };
@@ -654,18 +654,63 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         {
             if (tokens is null)
             {
+                return new RefreshTokenResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new RefreshTokenErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest ,
+                        StatusMessage = "Bearer and refresh tokens cannot be null or empty"
+                    }
+                    
+                };
             }
 
             string oldAccessToken = tokens!.BearerToken;
-            string oldRefreshToken = tokens.RefreshToken;
+            //string oldRefreshToken = tokens.RefreshToken;
 
             var principal = _tokenService.GetClaimsPrincipalFromExpiredBearerToken(oldAccessToken);
-            var userId = principal.Identity!.Name;
+            var userId = principal.Claims.FirstOrDefault()!.Value;
 
-            var user = await _unitOfWork.Users.Get(u => u.Id == userId);
+            var user = await _userManager.FindByIdAsync(userId);
 
-            if (user is null || user.RefreshToken != tokens.RefreshToken || user.RefreshTokenExpires <= DateTime.UtcNow)
+            if (user is null)
             {
+                return new RefreshTokenResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new RefreshTokenErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status404NotFound,
+                        StatusMessage = "User id not found."
+                    }
+                };
+            }
+
+            if (user.RefreshToken != tokens.RefreshToken )
+            {
+                return new RefreshTokenResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new RefreshTokenErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status404NotFound,
+                        StatusMessage = "Refresh token provided does not exist or is invalid."
+                    }
+                };
+            }
+
+            if (user.RefreshTokenExpires <= DateTime.UtcNow)
+            {
+                return new RefreshTokenResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new RefreshTokenErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status404NotFound,
+                        StatusMessage = "Refresh token has expired."
+                    }
+                };
             }
 
             string? newBearerToken =  _tokenService.GetJwToken(user!, 3).Token;
@@ -677,10 +722,14 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             return new RefreshTokenResponseDto
             {
-                UserId = user.Id,
-                BearerToken = newBearerToken,
-                RefreshToken = newRefreshToken,
-                ExpiresAt = refreshTokenExpiresAt
+                IsSuccess = true,
+                SuccessResponse = new RefreshTokenSuccessResponseDto
+                {
+                    UserId = user.Id,
+                    BearerToken = newBearerToken,
+                    RefreshToken = newRefreshToken,
+                    ExpiresAt = refreshTokenExpiresAt
+                }
             };
         }
 

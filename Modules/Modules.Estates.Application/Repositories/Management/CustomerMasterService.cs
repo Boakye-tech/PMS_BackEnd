@@ -58,7 +58,7 @@ namespace Modules.Estates.Application.Repositories.Management
                                  join c in await _unitOfWork.Locality.GetAll()
                                  on a.LocalityId equals c.LocalityId into localityGroup
                                  from locality in localityGroup.DefaultIfEmpty() // Left join on Locality
-
+                                 orderby a.CreatedBy descending
                                  select new CustomerListDto
                                  {
                                      CustomerCode = a.CustomerCode,

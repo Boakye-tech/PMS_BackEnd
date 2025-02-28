@@ -418,7 +418,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             _unitOfWork.Users.Update(user);
             await _unitOfWork.Complete();
 
-            _logger.LogInformation($"User account with id '{user.Id}' has been successfully assigned to the role '{roleName!.Name!}' and successfully approved by approval officer with account id '{staff.Id}' and staff id '{staff.IdentificationNumber}'.", user.Id);
+           
+            _logger.LogInformation("User account with id '{UserId}' has been successfully assigned to the role '{RoleName}' and successfully approved by approval officer with account id '{StaffId}' and staff id '{StaffIdentificationNumber}'.",user.Id, roleName.Name, staff.Id, staff.IdentificationNumber);
             return new ApproveUserAccountResponseDto
             {
                 IsSuccess = true,
@@ -730,20 +731,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         {
            
             var staff_UserList = (from user in await _unitOfWork.StaffAccounts.GetAll()
-                        select new AdministrationStaffDto
-                        (
-                            user.Id,
-                            user.IdentificationNumber,
-                            user.FirstName,
-                            user.MiddleName,
-                            user.LastName,
-                            user.DepartmentName,
-                            user.UnitName,
-                            user.Email,
-                            user.PhoneNumber!,
-                            user.RoleName,
-                            RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString()
-                        )).ToList();
+                                  orderby user.RegistrationDate descending
+                                  select new AdministrationStaffDto
+                                (
+                                    user.Id,
+                                    user.IdentificationNumber,
+                                    user.FirstName,
+                                    user.MiddleName,
+                                    user.LastName,
+                                    user.DepartmentName,
+                                    user.UnitName,
+                                    user.Email,
+                                    user.PhoneNumber!,
+                                    user.RoleName,
+                                    RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString(),
+                                    user.RegistrationDate
+                                )).ToList();
 
             return staff_UserList;
 
@@ -754,6 +757,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             var customer_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Customer)
                                      join channel in await _unitOfWork.Channels.GetAll()
                                      on user.ChannelId equals channel.ChannelId
+                                     orderby user.RegistrationDate descending
                                      select new AdministrationCustomerDto
                                      (
                                         user.Id,
@@ -774,7 +778,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         public async Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners()
         {
             var partner_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Partners)
-                                     select new AdministrationPartnersDto
+                                    orderby user.RegistrationDate descending
+                                    select new AdministrationPartnersDto
                                      (
                                          user.Id,
                                          user.PartnerName!,
@@ -804,7 +809,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                       on user.Id equals usrole.UserId
                                   join role in await _unitOfWork.Roles.GetAll()
                                       on usrole.RoleId equals role.Id
-                                  where user.DepartmentId == departmentId 
+                                  where user.DepartmentId == departmentId
+                                  orderby user.RegistrationDate descending
                                   select new AdministrationStaffDto
                                   (
                                       user.Id,
@@ -817,7 +823,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                       user.Email!,
                                       user.PhoneNumber!,
                                       role.Name!,
-                                      RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString()
+                                      RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString(),
+                                      user.RegistrationDate
                                   )).ToList();
 
             return staff_UserList;
@@ -837,6 +844,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                   join role in await _unitOfWork.Roles.GetAll()
                                       on usrole.RoleId equals role.Id
                                   where user.UnitId == unitId
+                                  orderby user.RegistrationDate descending
                                   select new AdministrationStaffDto
                                   (
                                       user.Id,
@@ -849,7 +857,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                       user.Email!,
                                       user.PhoneNumber!,
                                       role.Name!,
-                                      RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString()
+                                      RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString(),
+                                      user.RegistrationDate
                                   )).ToList();
 
             return staff_UserList;

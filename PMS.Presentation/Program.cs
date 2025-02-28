@@ -51,33 +51,33 @@ builder.Services.AddAuthorization(options =>
     using var scope = builder.Services.BuildServiceProvider().CreateScope();
     var _userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
 
-    var actions = new List<string> { "CREATE", "READ", "UPDATE", "DELETE", "APPROVE" };
+    var actions = new List<string> { "CREATE", "READ", "UPDATE", "DELETE", "APPROVE", "VERIFY", "REJECT", "DISAPPROVE", "ACTIVATE", "DEACTIVATE" };
 
-    //var modulePermissions = (from a in _userDbContext.ApplicationModulesPermissions
-    //                         join b in _userDbContext.ApplicationModules
-    //                             on a.ModuleId equals b.ModuleId into modules
-    //                         from module in modules.DefaultIfEmpty() // Left Join on ApplicationModules
-    //                         join c in _userDbContext.Roles
-    //                             on a.RoleId equals c.Id into roles
-    //                         from role in roles.DefaultIfEmpty() // Left Join on Roles
-    //                         //where a.RoleId == roleId // Filter based on RoleId
-    //                         select new RoleModulesPermissionsDto
-    //                         {
-    //                             ModulePermissionId = a.ModulePermissionId,
-    //                             RoleId = a.RoleId,
-    //                             RoleName = role != null ? role.Name : "No Role",
-    //                             ModuleId = a.ModuleId,
-    //                             ModuleName = module != null ? module.ModuleName : "No Module",
-    //                             ModulePermission = a.ModulePermission
-    //                         }).ToList();
+    var modulePermissions = (from a in _userDbContext.ApplicationModulesPermissions
+                             join b in _userDbContext.ApplicationModules
+                                 on a.ModuleId equals b.ModuleId into modules
+                             from module in modules.DefaultIfEmpty() // Left Join on ApplicationModules
+                             join c in _userDbContext.Roles
+                                 on a.RoleId equals c.Id into roles
+                             from role in roles.DefaultIfEmpty() // Left Join on Roles
+                                                                 //where a.RoleId == roleId // Filter based on RoleId
+                             select new RoleModulesPermissionsDto
+                             {
+                                 ModulePermissionId = a.ModulePermissionId,
+                                 RoleId = a.RoleId,
+                                 RoleName = role != null ? role.Name : "No Role",
+                                 ModuleId = a.ModuleId,
+                                 ModuleName = module != null ? module.ModuleName : "No Module",
+                                 ModulePermission = a.ModulePermission
+                             }).ToList();
 
-    //foreach (var permission in modulePermissions)
-    //{
-    //    var policyName = $"Permission:{permission.ModuleName}.{permission.ModulePermission}";
+    foreach (var permission in modulePermissions)
+    {
+        var policyName = $"Permission:{permission.ModuleName}.{permission.ModulePermission}";
 
-    //    options.AddPolicy(policyName, policy =>
-    //        policy.RequireClaim($"Permission:{permission.ModuleName}:{permission.ModulePermission}", permission.ModulePermission!));
-    //}
+        options.AddPolicy(policyName, policy =>
+            policy.RequireClaim($"Permission:{permission.ModuleName}:{permission.ModulePermission}", permission.ModulePermission!));
+    }
 
 
     foreach (var module in _userDbContext.ApplicationModules)

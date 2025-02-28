@@ -1,1 +1,0 @@
-{"@t":"2025-02-02T06:35:18.8396580Z","@mt":"The WebRootPath was not found: {WebRootPath}. Static files may be unavailable.","@l":"Warning","WebRootPath":"/Users/macbook/Projects/PropertyManagementSolution/PMS.Presentation/wwwroot","EventId":{"Id":16,"Name":"WebRootPathNotFound"},"SourceContext":"Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware"}
