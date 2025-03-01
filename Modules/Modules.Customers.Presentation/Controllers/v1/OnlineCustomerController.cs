@@ -83,7 +83,7 @@ public class OnlineCustomerController : ControllerBase
     [HttpGet("CustomerPaymentSummary")]
     public async Task<IEnumerable<CustomerPaymentsSummaryDto>> CustomerPaymentSummary([FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? receiptNumber, [FromQuery] string? paymentMode, [FromQuery] int year)
     {
-        if (propertyNumber == null && paymentMode == null && customerCode == null && year.ToString().Length != 4)
+        if (propertyNumber == null && receiptNumber == null && paymentMode == null && customerCode == null && year.ToString().Length != 4)
         {
             return null!;
         }
@@ -96,7 +96,7 @@ public class OnlineCustomerController : ControllerBase
     [HttpGet("CustomerPaymentDetails")]
     public async Task<IEnumerable<CustomerPaymentsDto>> CustomerPaymentDetails([FromQuery] string? customerCode, [FromQuery] string? propertyNumber, [FromQuery] string? receiptNumber, [FromQuery] string? paymentMode, [FromQuery] int year)
     {
-        if (propertyNumber == null && paymentMode == null && customerCode == null && year.ToString().Length != 4)
+        if (propertyNumber == null && receiptNumber == null && paymentMode == null && customerCode == null && year.ToString().Length != 4)
         {
             return null!;
         }

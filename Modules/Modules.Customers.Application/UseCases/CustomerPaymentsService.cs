@@ -41,11 +41,11 @@ namespace Modules.Customers.Application.UseCases
             if (!string.IsNullOrEmpty(propertyNumber))
                 transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == propertyNumber);
 
-            if (!string.IsNullOrEmpty(propertyNumber))
-                transactionsQuery = transactionsQuery.Where(t => t.ReceiptNumber == receiptNumber);
+            if (!string.IsNullOrEmpty(receiptNumber))
+                transactionsQuery = transactionsQuery.Where(t => t.ReceiptNumber!.Contains(receiptNumber));
 
             if (!string.IsNullOrEmpty(paymentMode))
-                transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == paymentMode);
+                transactionsQuery = transactionsQuery.Where(t => t.PaymentMode == paymentMode);
 
             if (!string.IsNullOrEmpty(paymentYear.ToString()))
                 transactionsQuery = transactionsQuery.Where(t => t.DateOfPayment.Year >= paymentYear);
@@ -66,14 +66,14 @@ namespace Modules.Customers.Application.UseCases
             if (!string.IsNullOrEmpty(customerCode))
                 transactionsQuery = transactionsQuery.Where(t => t.CustomerCode == customerCode);
 
-            if (!string.IsNullOrEmpty(receiptNumber))
-                transactionsQuery = transactionsQuery.Where(t => t.ReceiptNumber == receiptNumber);
-
             if (!string.IsNullOrEmpty(propertyNumber))
                 transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == propertyNumber);
 
+            if (!string.IsNullOrEmpty(receiptNumber))
+                transactionsQuery = transactionsQuery.Where(t => t.ReceiptNumber == receiptNumber);
+
             if (!string.IsNullOrEmpty(paymentMode))
-                transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == paymentMode );
+                transactionsQuery = transactionsQuery.Where(t => t.PaymentMode == paymentMode );
 
             if (!string.IsNullOrEmpty(paymentYear.ToString()))
                 transactionsQuery = transactionsQuery.Where(t => t.DateOfPayment.Year >= paymentYear);
