@@ -150,7 +150,7 @@ namespace Modules.Users.Application.UseCases
                 return new MenusDto(menu.MenuId, menus.menuName, menu.Description, menu.IsOpen);
             }
 
-            return new MenusDto(StatusCodes.Status400BadRequest, "BadRequest", "404-BadRequest", false);
+            return new MenusDto(StatusCodes.Status400BadRequest, "BadRequest", "400-BadRequest", false);
         }
 
         public async Task<SubMenusDto> CreateSubMenu(SubMenusCreateDto subMenus)
@@ -166,7 +166,7 @@ namespace Modules.Users.Application.UseCases
                 return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName, _subMenu.Description, _subMenu.IsOpen);
             }
 
-            return new SubMenusDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "404-BadRequest",false);
+            return new SubMenusDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "400-BadRequest",false);
         }
 
         public void DeleteMenu(MenusDeleteDto menuid)
@@ -357,7 +357,7 @@ namespace Modules.Users.Application.UseCases
                 return new SubMenuItemsDto(_subMenuItems.MenuId, _subMenuItems.SubMenuId, _subMenuItems.SubMenuItemId , _subMenuItems.SubMenuItemName, _subMenuItems.Description);
             }
 
-            return new SubMenuItemsDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "404-BadRequest");
+            return new SubMenuItemsDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "400-BadRequest");
         }
 
         public Task<SubMenuItemsDto> UpdateSubMenuItems(SubMenuItemsUpdateDto updateSubMenuItems)

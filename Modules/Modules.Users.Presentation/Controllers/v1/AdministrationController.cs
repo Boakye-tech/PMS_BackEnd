@@ -56,7 +56,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateChannel")]
-        [Authorize(Policy = "Permission:Users.CREATE")]
+        [Authorize(Policy = "Permission:Users.CREATE", Roles = "MIS Officer, MISAdministrator")]
         public async Task<ActionResult<ChannelReadDto>> CreateChannel([FromBody] ChannelCreateDto values)
         {
             try
@@ -182,7 +182,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("ApproveRole")]
-        [Authorize(Policy = "Permission:Users.APPROVE")]
+        [Authorize(Policy = "Permission:Users.APPROVE", Roles = "MISAdministrator")]
         public async Task<ActionResult> ApproveRole([FromBody] RolesApprovalDto values)
         {
             return Ok(await _adminService.ApproveUserRole(values));
@@ -227,14 +227,14 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateUserRole")]
-        [Authorize(Policy = "Permission:Users.CREATE")]
+        [Authorize(Policy = "Permission:Users.CREATE", Roles = "MIS Officer")]
         public async Task<ActionResult> CreateUserRole([FromBody] RolesCreateDto values)
         {
             var result = await _adminService.CreateUserRole(values);
             
             if (result.Succeeded)
             {
-                return Ok(result.ToString());
+                return Ok( new { message = result.ToString() });
             }
 
             if (!result.Succeeded)
@@ -253,7 +253,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
             if (result.Succeeded)
             {
-                return Ok(result.ToString());
+                return Ok(new { message = result.ToString() });
             }
 
             if (!result.Succeeded)
@@ -311,7 +311,6 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("AssignPermissionsToRole")]
-        [Authorize(Policy = "Permission:Users.CREATE")]
         //[Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult> AssignPermissionsToRole([FromBody] PermissionsAccessModulesDto values)
         {
@@ -446,7 +445,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPut]
         [Route("ActivateUserAccount")]
-        [Authorize(Policy = "Permission:Users.ACTIVATE")]
+        [Authorize(Policy = "Permission:Users.ACTIVATE", Roles = "MIS Officer")]
         public async Task<ActionResult> ActivateUserAccount([FromBody] ActivateUserAccountDto values)
         {
             var result = await _adminService.ActivateUserAccount(values);
@@ -532,7 +531,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateDepartment")]
-        [Authorize(Policy = "Permission:Users.CREATE")]
+        [Authorize(Policy = "Permission:Users.CREATE", Roles = "MIS Officer, MISAdministrator")]
         public async Task<ActionResult<DepartmentReadDto>> CreateDepartment([FromBody] DepartmentCreateDto values)
         {
             try
@@ -597,6 +596,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateDepartmentUnit")]
+        [Authorize(Policy = "Permission:Users.CREATE", Roles = "MIS Officer, MISAdministrator")]
         public async Task<ActionResult<DepartmentUnitReadDto>> CreateDepartmentUnit([FromBody] DepartmentUnitCreateDto values)
         {
             try
@@ -661,6 +661,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateIdentificationType")]
+        [Authorize(Policy = "Permission:Users.CREATE", Roles = "MIS Officer, MISAdministrator")]
         public async Task<ActionResult<ChannelReadDto>> CreateIdentificationType([FromBody] IdentificationTypeDto values)
         {
             try
@@ -696,6 +697,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("StaffAccounts")]
+        [Authorize(Roles = "MIS Officer, MISAdministrator")]
         public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff()
         {
             return Ok(await _adminService.GetAdministrationStaff());
@@ -716,6 +718,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("ThirdPartyAccounts")]
+        [Authorize(Roles = "MIS Officer, MISAdministrator")] 
         public async Task<ActionResult<IEnumerable<AdministrationPartnersDto>>> GetAdministrationPartner()
         {
             return Ok(await _adminService.GetAdministrationPartners());

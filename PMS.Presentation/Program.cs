@@ -53,33 +53,6 @@ builder.Services.AddAuthorization(options =>
 
     var actions = new List<string> { "CREATE", "READ", "UPDATE", "DELETE", "APPROVE", "VERIFY", "REJECT", "DISAPPROVE", "ACTIVATE", "DEACTIVATE" };
 
-    var modulePermissions = (from a in _userDbContext.ApplicationModulesPermissions
-                             join b in _userDbContext.ApplicationModules
-                                 on a.ModuleId equals b.ModuleId into modules
-                             from module in modules.DefaultIfEmpty() // Left Join on ApplicationModules
-                             join c in _userDbContext.Roles
-                                 on a.RoleId equals c.Id into roles
-                             from role in roles.DefaultIfEmpty() // Left Join on Roles
-                                                                 //where a.RoleId == roleId // Filter based on RoleId
-                             select new RoleModulesPermissionsDto
-                             {
-                                 ModulePermissionId = a.ModulePermissionId,
-                                 RoleId = a.RoleId,
-                                 RoleName = role != null ? role.Name : "No Role",
-                                 ModuleId = a.ModuleId,
-                                 ModuleName = module != null ? module.ModuleName : "No Module",
-                                 ModulePermission = a.ModulePermission
-                             }).ToList();
-
-    foreach (var permission in modulePermissions)
-    {
-        var policyName = $"Permission:{permission.ModuleName}.{permission.ModulePermission}";
-
-        options.AddPolicy(policyName, policy =>
-            policy.RequireClaim($"Permission:{permission.ModuleName}:{permission.ModulePermission}", permission.ModulePermission!));
-    }
-
-
     foreach (var module in _userDbContext.ApplicationModules)
     {
         foreach (var action in actions)
@@ -87,10 +60,11 @@ builder.Services.AddAuthorization(options =>
             var policyName = $"Permission:{module.ModuleName}.{action}";
 
             options.AddPolicy(policyName, policy =>
-            policy.RequireClaim($"Permission:{module.ModuleName}:{action}", action));
+            policy.RequireClaim($"Permission:{module.ModuleName}.{action}", action));
         }
     }
 });
+
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
 
 builder.Services.AddAuthentication(a =>

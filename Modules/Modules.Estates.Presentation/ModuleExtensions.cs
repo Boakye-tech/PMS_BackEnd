@@ -1,4 +1,6 @@
 ﻿using System;
+using FluentValidation;
+using Modules.Estates.Application.Validations.Setup.Customer;
 
 namespace Modules.Estates.Presentation;
 
@@ -45,6 +47,16 @@ public static class ModuleExtensions
         services.AddScoped<ICustomerMasterService, CustomerMasterService>();
 
         services.AddHttpClient<IIdentificationTypeService, IdentificationTypeService>();
+
+        services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<IdentificationTypeDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<NationalityDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<OwnershipTypeDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<ResidentTypeDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<SocialMediaDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<TitleDtoValidator>();
+
 
         // Dependency Injection - Register AutoMapper 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

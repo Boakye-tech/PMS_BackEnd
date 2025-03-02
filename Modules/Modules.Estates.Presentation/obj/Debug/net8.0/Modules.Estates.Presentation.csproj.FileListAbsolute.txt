@@ -731,3 +731,6 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/Modules.Estates.Presentation.pdb
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/Modules.Estates.Presentation.genruntimeconfig.cache
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/obj/Debug/net8.0/ref/Modules.Estates.Presentation.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/FluentValidation.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
