@@ -182,3 +182,4 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/Modules.Billing.Presentation.pdb
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/Modules.Billing.Presentation.genruntimeconfig.cache
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/ref/Modules.Billing.Presentation.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Billing.Presentation/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll

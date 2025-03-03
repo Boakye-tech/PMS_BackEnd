@@ -31,7 +31,7 @@ public class CustomerTypeService : ICustomerTypeService
 
         if (response is null)
         {
-            return "400 - BadRequest";
+            return "BadRequest";
         }
 
         _unitOfWork.CustomerType.Delete(response);

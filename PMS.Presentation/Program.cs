@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Security;
 using System.Text;
 using Asp.Versioning;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Modules.Common.Infrastructure.Authentication;
 using Modules.Customers.Presentation;
 using Modules.Estates.Presentation;
 using Modules.Finance.Presentation;
@@ -63,6 +65,11 @@ builder.Services.AddAuthorization(options =>
             policy.RequireClaim($"Permission:{module.ModuleName}.{action}", action));
         }
     }
+
+    //USER SPECIFIC
+    options.AddPolicy("Permission:Users.CREATEROLE", policy => policy.RequireClaim("Permission:Users.CREATEROLE", "CREATEROLE"));
+    options.AddPolicy("Permission:Users.ASSIGNUSER", policy => policy.RequireClaim("Permission:Users.ASSIGNUSER", "ASSIGNUSER"));
+    options.AddPolicy("Permission:Users.ASSIGNPERM", policy => policy.RequireClaim("Permission:Users.ASSIGNPERM", "ASSIGNPERM"));
 });
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
@@ -165,6 +172,10 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{module}.xml"));
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{user_module}.xml"));
 });
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+
 
 
 var app = builder.Build();

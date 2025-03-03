@@ -574,3 +574,4 @@
 /Users/imac5k/Projects/PMS_BackEnd/PMS.Presentation/obj/Debug/net8.0/PMS.Presentation.pdb
 /Users/imac5k/Projects/PMS_BackEnd/PMS.Presentation/obj/Debug/net8.0/PMS.Presentation.genruntimeconfig.cache
 /Users/imac5k/Projects/PMS_BackEnd/PMS.Presentation/obj/Debug/net8.0/ref/PMS.Presentation.dll
+/Users/imac5k/Projects/PMS_BackEnd/PMS.Presentation/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll

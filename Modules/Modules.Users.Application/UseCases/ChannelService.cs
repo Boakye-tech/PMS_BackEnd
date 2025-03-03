@@ -25,6 +25,21 @@
             return new ChannelReadDto(Channel.ChannelId, Channel.ChannelName!);
         }
 
+        public async Task<string> DeleteChannelAsync(int value)
+        {
+            //throw new NotImplementedException();
+
+            var response = await _unitOfWork.Channels.Get(value);
+
+            if (response is null)
+                return "BadRequest";
+
+            _unitOfWork.Channels.Delete(response);
+            await _unitOfWork.Complete();
+
+            return "success";
+        }
+
         public async Task<IEnumerable<ChannelReadDto>> GetChannelAsync()
         {
             var response = await _unitOfWork.Channels.GetAll();
@@ -41,10 +56,24 @@
             throw new NotImplementedException();
         }
 
-        public Task<ChannelReadDto> UpdateChannelAsync(ChannelUpdateDto values)
+        public async Task<ChannelReadDto> UpdateChannelAsync(ChannelUpdateDto values)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            Channels Channel = new(values.ChannelId, values.ChannelName!)
+            {
+                ModifiedBy = values.ModifiedBy,
+                ModifiedOn = DateTime.Now
+            };
+
+            _unitOfWork.Channels.Update(Channel);
+            await _unitOfWork.Complete();
+
+            return new ChannelReadDto(Channel.ChannelId, Channel.ChannelName!);
+
         }
+
+
+
     }
 }
 
