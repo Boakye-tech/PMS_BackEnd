@@ -16,7 +16,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
     public partial class CustomerController : ControllerBase
     {
-        
+
         //readonly ICustomerMasterService _customerMasterService;
 
         //public CustomerController(ICustomerMasterService customerMasterService)
@@ -54,33 +54,34 @@ namespace Modules.Estates.Presentation.Controllers.v1
         //    }
         //}
 
-        //[HttpPost]
-        //[Route("AddIndividualCustomer")]
-        //public async Task<ActionResult<IndividualCustomerResponseDto>> AddIndividualCustomer([FromBody] IndividualCustomerDto values)
-        //{
-        //    try
-        //    {
-        //        return Ok(await _customerMasterService.CreateCustomer(values));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, ex.InnerException!.Message);
-        //    }
-        //}
+        [HttpPost]
+        [Route("AddIndividualCustomer")]
+        public async Task<ActionResult<IndividualCustomerResponseDto>> AddIndividualCustomer([FromBody] IndividualResidentCustomerDto values)
+        {
+            try
+            {
+                return Ok(await _customerMasterService.CreateCustomer(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
 
-        //[HttpPost]
-        //[Route("AddJointCustomer")]
-        //public async Task<ActionResult<IndividualCustomerResponseDto>> AddJointCustomer([FromBody] JointOwnershipCustomerDto values)
-        //{
-        //    try
-        //    {
-        //        return Ok(await _customerMasterService.CreateCustomer(values));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, ex.InnerException!.Message);
-        //    }
-        //}
+        [HttpPost]
+        [Route("AddJointCustomer")]
+        public ActionResult<IndividualCustomerResponseDto> AddJointCustomer([FromBody] JointOwnershipCustomerDto values)
+        {
+            try
+            {
+                return Ok();
+                //return Ok(await _customerMasterService.CreateCustomer(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
 
         //[HttpPost]
         //[Route("AddMultiCustomer")]
