@@ -326,12 +326,11 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Users.DELETE", Roles = "MISAdministrator")]
         public async Task<ActionResult> DeleteUserRole([FromBody] RolesDeleteDto values)
         {
-
-            //var userId = _userContextService.GetUserId();
-            //if (!string.Equals(userId, values))
-            //{
-            //    return Unauthorized();
-            //}
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.DeletedBy))
+            {
+                return Unauthorized();
+            }
 
             var result = await _adminService.DeleteUserRole(values);
 
@@ -446,6 +445,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPut]
         [Route("RejectUserAccount")]
         [Authorize(Policy = "Permission:Users.REJECT")]
+        [Obsolete]
         public async Task<ActionResult> RejectUserAccount([FromBody] RejectUserAccountDto values)
         {
             var userId = _userContextService.GetUserId();

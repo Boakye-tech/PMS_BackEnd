@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Common.Infrastructure.Authentication;
-using Modules.Estates.Application.Repositories.Setup.Customer;
-using Modules.Estates.Domain.Entities.Setup.Customer;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,7 +20,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
     [Produces("application/json")]
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Policy = "Permission:Customers.READs")]
+    [Authorize(Policy = "Permission:Customers.READ")]
 
 
     public partial class CustomerController : ControllerBase

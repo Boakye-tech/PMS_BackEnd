@@ -19,11 +19,6 @@
     <None Remove="Profiles\Customer\" />
     <None Remove="Services\Setups\" />
     <None Remove="Services\Setups\Customer\" />
-    <None Remove="Repositories\" />
-    <None Remove="Repositories\Setup\" />
-    <None Remove="Repositories\Setup\Property\" />
-    <None Remove="Repositories\Setup\Customer\" />
-    <None Remove="Repositories\Management\" />
     <None Remove="Interfaces\Management\" />
     <None Remove="DTO\Management\" />
     <None Remove="Profiles\Management\" />
@@ -33,6 +28,8 @@
     <None Remove="Validations\Setup\" />
     <None Remove="Validations\Setup\Customer\" />
     <None Remove="Validations\Setup\Property\" />
+    <None Remove="UseCases\" />
+    <None Remove="DomainServices\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -45,11 +42,6 @@
     <Folder Include="DTO\Setup\Customer\" />
     <Folder Include="Profiles\Property\" />
     <Folder Include="Profiles\Customer\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Repositories\Setup\" />
-    <Folder Include="Repositories\Setup\Property\" />
-    <Folder Include="Repositories\Setup\Customer\" />
-    <Folder Include="Repositories\Management\" />
     <Folder Include="Interfaces\Management\" />
     <Folder Include="DTO\Management\" />
     <Folder Include="Profiles\Management\" />
@@ -59,6 +51,8 @@
     <Folder Include="Validations\Setup\" />
     <Folder Include="Validations\Setup\Customer\" />
     <Folder Include="Validations\Setup\Property\" />
+    <Folder Include="UseCases\" />
+    <Folder Include="DomainServices\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

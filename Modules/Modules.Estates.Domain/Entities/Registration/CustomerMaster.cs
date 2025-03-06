@@ -1,5 +1,6 @@
 ﻿using System;
 using Modules.Estates.Domain.Entities.Setup.Property;
+using Modules.Estates.Domain.Interfaces.DomainServices;
 
 namespace Modules.Estates.Domain.Entities.Registration
 {
@@ -133,32 +134,183 @@ namespace Modules.Estates.Domain.Entities.Registration
 		}
 
         public CustomerMaster(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, string companyName, DateTime dateOfBirth, string tinNumber, string picture, int genderId,
-            int NationalityId, string PostalAddress, string ResidentialAddress, string DigitalAddress, string PrimaryMobileNumber, string SecondaryMobileNumber, string OfficeNumber, string WhatsAppNumber, string EmailAddress, string ResidentPermitNumber,
-            DateTime ResidentPermitDateIssued, DateTime ResidentPermitExpiryDate, int SocialMediaTypeId, string SocialMediaAccount, int IdentificationTypeId, string IdentificationTypeNumber, string IdentificationTypeImageOne, string IdentificationTypeImageTwo,
-            string Comments, string InterestExpressed, int DebtorStatus, string ParentCode, string ContactPerson_FullName, string ContactPerson_PhoneNumber, string ContactPerson_EmailAddress, string ContactPerson_Address, int ContactPerson_IdentificationTypeId,
-            string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImage, bool isDeleted)
+            int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress, string residentPermitNumber,
+            DateTime residentPermitDateIssued, DateTime residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber, string identificationTypeImageOne, string identificationTypeImageTwo,
+            string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,
+            string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImage, bool isDeleted, ICustomerDomainService customerDomainService)
         {
         }
 
 
-        public static CustomerMaster CreateUpdate(int CustomerMasterId, int CustomerTypeId, int ResidentTypeId, int LocalityId, string CustomerCode, int TitleId, string SurName, string OtherNames, string CompanyName, DateTime DateOfBirth, string TinNumber, string Picture, int GenderId, int NationalityId, string PostalAddress, string ResidentialAddress, string DigitalAddress, string PrimaryMobileNumber, string SecondaryMobileNumber, string OfficeNumber, string WhatsAppNumber, string EmailAddress, string ResidentPermitNumber, DateTime ResidentPermitDateIssued, DateTime ResidentPermitExpiryDate, int SocialMediaTypeId, string SocialMediaAccount, int IdentificationTypeId, string IdentificationTypeNumber, string IdentificationTypeImageOne, string IdentificationTypeImageTwo, string Comments, string InterestExpressed, int DebtorStatus, string ParentCode, string ContactPerson_FullName, string ContactPerson_PhoneNumber, string ContactPerson_EmailAddress, string ContactPerson_Address, int ContactPerson_IdentificationTypeId, string ContactPerson_IdentificationTypeNumber, string ContactPerson_IdentificationTypeImage, bool IsDeleted)
+        public static async Task<CustomerMaster> CreateUpdateAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, string companyName, DateTime dateOfBirth, string tinNumber, string picture, int genderId,
+            int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress, string residentPermitNumber,
+            DateTime residentPermitDateIssued, DateTime residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber, string identificationTypeImageOne, string identificationTypeImageTwo,
+            string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,
+            string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImage, bool isDeleted, ICustomerDomainService customerDomainService)
         {
-            if (string.IsNullOrWhiteSpace(landUseInitial) || string.IsNullOrWhiteSpace(localityInitial) || string.IsNullOrWhiteSpace(allocationTypeInitial) ||
-            string.IsNullOrWhiteSpace(plotNumber) || landUseId <= 0 || landUseTypeId <= 0 || localityId <= 0 || allocationTypeId <= 0) //string.IsNullOrWhiteSpace(blockNumber) || || string.IsNullOrWhiteSpace(landUseTypeInitial)
+            if (customerTypeId <= 0 || residentTypeId <= 0 || localityId <= 0 || nationalityId <= 0 || identificationTypeId <= 0 || string.IsNullOrWhiteSpace(surName) || string.IsNullOrWhiteSpace(otherNames) || string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(identificationTypeNumber) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress))
             {
                 throw new ArgumentException("Invalid customer registration data.");
             }
 
 
-            if (allocationTypeId <= 0)
+            if (customerTypeId <= 0)
             {
-                throw new ArgumentException("Allocation type id must be greater than zero.");
+                throw new ArgumentException("Customer type id must be greater than zero.");
             }
 
-            if (string.IsNullOrWhiteSpace(landUseInitial) || landUseInitial.Length > 3)
+            if (residentTypeId <= 0)
             {
-                throw new ArgumentException("Land use initial must not be null or exceed 3 characters.");
+                throw new ArgumentException("Resident type id must be greater than zero.");
             }
+
+            if (localityId <= 0)
+            {
+                throw new ArgumentException("Locality id must be greater than zero.");
+            }
+
+            if (!await customerDomainService.CustomerTypeExists(customerTypeId))
+                throw new ArgumentException("Invalid customer type id.");
+
+            if (!await customerDomainService.ResidentTypeExists(residentTypeId))
+                throw new ArgumentException("Invalid resident type id.");
+
+            if (!await customerDomainService.LocalityExists(localityId))
+                throw new ArgumentException("Invalid locality id.");
+
+
+            if (titleId > 0)
+            {
+                if (!await customerDomainService.TitleExists(titleId))
+                    throw new ArgumentException("Invalid title id.");
+            }
+
+            if (genderId <= 0)
+            {
+                throw new ArgumentException("Gender id must be greater than zero.");
+            }
+
+            if (nationalityId <= 0)
+            {
+                throw new ArgumentException("Nationality id must be greater than zero.");
+            }
+
+            if (socialMediaTypeId > 0)
+            {
+                if (!await customerDomainService.SocialMediaExists(socialMediaTypeId))
+                    throw new ArgumentException("Invalid social media type id.");
+            }
+
+            if (identificationTypeId <= 0)
+            {
+                throw new ArgumentException("Identification Type id must be greater than zero.");
+            }
+
+            if (!await customerDomainService.GenderExists(genderId))
+                throw new ArgumentException("Invalid gender id.");
+
+            if (!await customerDomainService.NationalityExists(nationalityId))
+                throw new ArgumentException("Invalid nationality id.");
+
+            if (!await customerDomainService.IdentificationTypeExists(identificationTypeId))
+                throw new ArgumentException("Invalid identification type id.");
+
+
+            if (string.IsNullOrWhiteSpace(surName) || string.IsNullOrWhiteSpace(otherNames) || string.IsNullOrWhiteSpace(companyName))
+            {
+                throw new ArgumentException("Surname, othernames and company name cannot be null or empty");
+            }
+
+
+            if (dateOfBirth == DateTime.MinValue)
+            {
+                throw new ArgumentException("Date of birth must not be an invalid date.");
+            }
+
+            if (string.IsNullOrWhiteSpace(postalAddress))
+            {
+                throw new ArgumentException("Postal address must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(residentialAddress))
+            {
+                throw new ArgumentException("Residential address must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(primaryMobileNumber))
+            {
+                throw new ArgumentException("Primary mobile number must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(emailAddress))
+            {
+                throw new ArgumentException("Email address must not be null or empty");
+            }
+
+
+            var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
+
+            if(customer_locality is null)
+            {
+                throw new ArgumentException("Customer locality provided does not exist");
+            }
+
+            int counter =+ customer_locality.CustomerCodeCounter;
+
+            string _customercode = $"{customer_locality.CustomerCode}{counter}";
+
+
+            return new CustomerMaster
+            {
+                CustomerMasterId = customerMasterId,
+                CustomerTypeId = customerTypeId,
+                ResidentTypeId = residentTypeId,
+                LocalityId = localityId,
+                CustomerCode = _customercode,
+                TitleId = titleId,
+                SurName = surName,
+                OtherNames = otherNames,
+                CompanyName = companyName,
+                DateOfBirth = dateOfBirth,
+                TinNumber = tinNumber,
+                Picture = picture,
+                GenderId = genderId,
+                NationalityId = nationalityId,
+                PostalAddress = postalAddress,
+                ResidentialAddress = residentialAddress,
+                DigitalAddress = digitalAddress,
+                PrimaryMobileNumber = primaryMobileNumber,
+                SecondaryMobileNumber = secondaryMobileNumber,
+                OfficeNumber = officeNumber,
+                WhatsAppNumber = whatsAppNumber,
+                EmailAddress = emailAddress,
+                ResidentPermitNumber = residentPermitNumber,
+                ResidentPermitDateIssued = residentPermitDateIssued,
+                ResidentPermitExpiryDate = residentPermitExpiryDate,
+                SocialMediaTypeId = socialMediaTypeId,
+                SocialMediaAccount = socialMediaAccount,
+                IdentificationTypeId =  identificationTypeId,
+                IdentificationTypeNumber =  identificationTypeNumber,
+                IdentificationTypeImageOne = identificationTypeImageOne,
+                IdentificationTypeImageTwo = identificationTypeImageTwo,
+                Comments =  comments,
+                InterestExpressed = interestExpressed,
+                DebtorStatus = debtorStatus,
+                ParentCode = parentCode,
+                ContactPerson_FullName =  contactPerson_FullName,
+                ContactPerson_PhoneNumber =  contactPerson_PhoneNumber,
+                ContactPerson_EmailAddress = contactPerson_EmailAddress,
+                ContactPerson_Address = contactPerson_Address,
+                ContactPerson_IdentificationTypeId = contactPerson_IdentificationTypeId,
+                ContactPerson_IdentificationTypeNumber  =  contactPerson_IdentificationTypeNumber,
+                ContactPerson_IdentificationTypeImage = contactPerson_IdentificationTypeImage,
+                IsDeleted = isDeleted
+
+            };
+
+
+
+
         }
 
 

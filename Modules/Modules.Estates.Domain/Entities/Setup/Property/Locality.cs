@@ -18,16 +18,19 @@ public class Locality : AuditableEntity
     [StringLength(5)]
     public string? CustomerCode { get; private set; }
 
+    public int CustomerCodeCounter { get; set; }
 
-    public Locality(int localityId, string? localityInitial, string? localityName, string? customerCode)
+
+    public Locality(int localityId, string? localityInitial, string? localityName, string? customerCode, int customerCodeCounter)
     {
         LocalityId = localityId;
         LocalityInitial = localityInitial;
         LocalityName = localityName;
         CustomerCode = customerCode;
+        CustomerCodeCounter = customerCodeCounter;
     }
 
-    public static Locality Create(int localityId, string localityInitial, string localityName, string customerCode)
+    public static Locality Create(int localityId, string localityInitial, string localityName, string customerCode, int customerCodeCounter)
     {
         if (string.IsNullOrWhiteSpace(localityInitial) || string.IsNullOrWhiteSpace(localityName) || string.IsNullOrWhiteSpace(customerCode) || localityId < 0)
         {
@@ -59,12 +62,12 @@ public class Locality : AuditableEntity
             throw new ArgumentException("Customer Code must not be null or exceed 5 characters.");
         }
 
-        return new Locality(localityId, localityInitial, localityName, customerCode);
+        return new Locality(localityId, localityInitial, localityName, customerCode, customerCodeCounter);
     }
 
-    public static Locality Update(int localityId, string localityInitial, string localityName, string customerCode)
+    public static Locality Update(int localityId, string localityInitial, string localityName, string customerCode,int customerCodeCounter)
     {
-        if (string.IsNullOrWhiteSpace(localityInitial) || string.IsNullOrWhiteSpace(localityName) || string.IsNullOrWhiteSpace(customerCode) || localityId < 0)
+        if (string.IsNullOrWhiteSpace(localityInitial) || string.IsNullOrWhiteSpace(localityName) || string.IsNullOrWhiteSpace(customerCode) || localityId < 0 || customerCodeCounter < 0)
         {
             throw new ArgumentException("Invalid Locality Data.");
         }
@@ -89,7 +92,12 @@ public class Locality : AuditableEntity
             throw new ArgumentException("Customer Code must not be null or exceed 5 characters.");
         }
 
-        return new Locality(localityId, localityInitial, localityName, customerCode);
+        if (customerCodeCounter <= -1)
+        {
+            throw new ArgumentException("Customer Code counter must be greater than zero.");
+        }
+
+        return new Locality(localityId, localityInitial, localityName, customerCode, customerCodeCounter);
     }
 
 }
