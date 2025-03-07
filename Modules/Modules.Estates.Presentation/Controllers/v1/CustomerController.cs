@@ -658,36 +658,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         //------------------
-        [HttpPost]
-        [Route("AddProspectiveCustomer")]
-        public async Task<ActionResult<ProspectiveCustomerResponseDto>> AddProspectiveCustomer([FromBody] ProspectiveCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
-
-        [HttpPost]
-        [Route("AddCompanyCustomer")]
-        [Authorize(Policy = "Permission:Customers.CREATE", Roles = "Estates Officer, Estates Manager")]
-        public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CompanyCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
-
-
+       
         /// <summary>
         /// Returns a list of customers
         /// </summary>

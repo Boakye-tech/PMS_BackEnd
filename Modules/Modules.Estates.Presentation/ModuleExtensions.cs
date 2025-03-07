@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentValidation;
-using Modules.Estates.Application.Validations.Setup.Customer;
+using Modules.Estates.Application.Interfaces.ModuleServices;
+using Modules.Estates.Application.UseCases.ModuleServices;
 
 namespace Modules.Estates.Presentation;
 
@@ -33,7 +34,7 @@ public static class ModuleExtensions
         services.AddScoped<IActivityTypeService, ActivityTypeService>();
 
         services.AddScoped<IPropertyMasterService, PropertyMasterService>();
-
+        services.AddScoped<ICustomerDomainService, CustomerDomainService>();
 
         services.AddScoped<ICustomerTypeService, CustomerTypeService>();
         services.AddScoped<IGenderService, GenderService>();
@@ -47,6 +48,9 @@ public static class ModuleExtensions
         services.AddScoped<ICustomerMasterService, CustomerMasterService>();
 
         services.AddHttpClient<IIdentificationTypeService, IdentificationTypeService>();
+
+        services.AddHttpClient<IModuleCommunicationServices, ModuleCommunicationServices>();
+
 
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();

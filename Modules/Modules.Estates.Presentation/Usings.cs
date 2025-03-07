@@ -15,3 +15,6 @@ global using Modules.Estates.Application.DTO.Management.Customer;
 global using Modules.Estates.Application.DTO.Setup.Customer;
 global using Modules.Estates.Application.DTO.Setup.Property;
 
+global using Modules.Estates.Application.DomainServices;
+global using Modules.Estates.Application.Validations.Setup.Customer;
+global using Modules.Estates.Domain.Interfaces.DomainServices;

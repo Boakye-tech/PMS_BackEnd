@@ -322,15 +322,17 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
         [HttpDelete]
-        [Route("DeleteUserRole")]
+        [Route("DeleteUserRole/{roleId}")]
         [Authorize(Policy = "Permission:Users.DELETE", Roles = "MISAdministrator")]
-        public async Task<ActionResult> DeleteUserRole([FromBody] RolesDeleteDto values)
+        public async Task<ActionResult> DeleteUserRole(string roleId)
         {
             var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.DeletedBy))
-            {
-                return Unauthorized();
-            }
+            //if (!string.Equals(userId, values.DeletedBy))
+            //{
+            //    return Unauthorized();
+            //}
+
+            RolesDeleteDto values = new RolesDeleteDto(roleId, userId!);
 
             var result = await _adminService.DeleteUserRole(values);
 

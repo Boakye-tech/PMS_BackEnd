@@ -14,8 +14,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public required int LocalityId { get; set; }
 
-        //[StringLength(10)]
-        //public required string? CustomerCode { get; set; }
+        [StringLength(10)]
+        public string? CustomerCode { get; set; }
 
         public required int TitleId { get; set; }
 

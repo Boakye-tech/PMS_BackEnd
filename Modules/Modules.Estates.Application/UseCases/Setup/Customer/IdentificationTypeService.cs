@@ -30,7 +30,6 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
 
             //send to user module
             var payload = new IdentificationTypeDto(request.IdentificationTypeId, request.IdentificationTypes!);
-
             string json_payload = JsonSerializer.Serialize(payload);
             var _httpContent = new StringContent(json_payload, Encoding.UTF8, "application/json");
             HttpResponseMessage _response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Administration/CreateIdentificationType", _httpContent);

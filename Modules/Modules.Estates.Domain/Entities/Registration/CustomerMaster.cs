@@ -1,6 +1,7 @@
 ﻿using System;
 using Modules.Estates.Domain.Entities.Setup.Property;
 using Modules.Estates.Domain.Interfaces.DomainServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Modules.Estates.Domain.Entities.Registration
 {
@@ -148,7 +149,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,
             string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImage, bool isDeleted, ICustomerDomainService customerDomainService)
         {
-            if (customerTypeId <= 0 || residentTypeId <= 0 || localityId <= 0 || nationalityId <= 0 || identificationTypeId <= 0 || string.IsNullOrWhiteSpace(surName) || string.IsNullOrWhiteSpace(otherNames) || string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(identificationTypeNumber) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress))
+            if (customerTypeId <= 0 || residentTypeId <= 0 || localityId <= 0 || nationalityId <= 0 || identificationTypeId <= 0 || string.IsNullOrWhiteSpace(surName) || string.IsNullOrWhiteSpace(otherNames) || string.IsNullOrWhiteSpace(identificationTypeNumber) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress))
             {
                 throw new ArgumentException("Invalid customer registration data.");
             }
@@ -216,7 +217,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Invalid identification type id.");
 
 
-            if (string.IsNullOrWhiteSpace(surName) || string.IsNullOrWhiteSpace(otherNames) || string.IsNullOrWhiteSpace(companyName))
+            if (string.IsNullOrWhiteSpace(surName) && string.IsNullOrWhiteSpace(otherNames) && string.IsNullOrWhiteSpace(companyName))
             {
                 throw new ArgumentException("Surname, othernames and company name cannot be null or empty");
             }
@@ -255,9 +256,14 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Customer locality provided does not exist");
             }
 
-            int counter =+ customer_locality.CustomerCodeCounter;
+            int counter = customer_locality.CustomerCodeCounter;
+            counter++;
 
-            string _customercode = $"{customer_locality.CustomerCode}{counter}";
+            string incrementedNumber = counter.ToString("D4");
+
+            string locality_customerCode = customer_locality.CustomerCode!;
+
+            string _customercode = $"{locality_customerCode}{incrementedNumber}";
 
 
             return new CustomerMaster

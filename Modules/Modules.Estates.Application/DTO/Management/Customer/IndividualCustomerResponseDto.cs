@@ -62,7 +62,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [EmailAddress]
         public required string EmailAddress { get; set; }
 
-        public int SocialMediaTypeId { get; set; }
+        public string? SocialMediaPlatform { get; set; }
 
         [StringLength(50)]
         public string? SocialMediaAccount { get; set; }

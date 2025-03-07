@@ -30,6 +30,9 @@
     <None Remove="Validations\Setup\Property\" />
     <None Remove="UseCases\" />
     <None Remove="DomainServices\" />
+    <None Remove="Interfaces\ModuleServices\" />
+    <None Remove="DTO\Management\ModuleServices\" />
+    <None Remove="UseCases\ModuleServices\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -53,6 +56,9 @@
     <Folder Include="Validations\Setup\Property\" />
     <Folder Include="UseCases\" />
     <Folder Include="DomainServices\" />
+    <Folder Include="Interfaces\ModuleServices\" />
+    <Folder Include="DTO\Management\ModuleServices\" />
+    <Folder Include="UseCases\ModuleServices\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
