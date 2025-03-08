@@ -40,6 +40,8 @@ namespace Modules.Users.Infrastructure
 
         public DbSet<IdentificationType> IdentificationType { get; set; }
 
+        //public DbSet<Actions> MenuActions { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -73,12 +75,10 @@ namespace Modules.Users.Infrastructure
             builder.Entity<Menus>()
                 .HasIndex(m => m.MenuName)
                 .IsUnique(true);
-
            
             builder.Entity<SubMenuItems>()
                 .HasIndex(smi => smi.SubMenuItemName)
                 .IsUnique(true);
-
 
             builder.Entity<ApplicationModules>()
                 .HasIndex(am => new { am.ModuleId, am.ModuleName })
@@ -95,7 +95,9 @@ namespace Modules.Users.Infrastructure
                 .HasIndex(e => new { e.IdentificationTypeId, e.IdentificationTypes })
                 .IsUnique(true);
 
-
+            //builder.Entity<Actions>()
+            //    .HasIndex(a => a.ActionName)
+            //    .IsUnique(true);
 
 
             builder.ApplyConfiguration(new ChannelConfiguration());

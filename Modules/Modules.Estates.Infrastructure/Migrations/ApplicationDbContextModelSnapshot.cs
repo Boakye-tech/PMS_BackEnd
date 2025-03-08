@@ -38,12 +38,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("CompanyName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -101,12 +99,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DigitalAddress")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("EmailAddress")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -117,22 +113,18 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IdentificationTypeImageOne")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("IdentificationTypeImageTwo")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("IdentificationTypeNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("InterestExpressed")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -152,27 +144,22 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("OfficeNumber")
-                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("OtherNames")
-                        .IsRequired()
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("ParentCode")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Picture")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("PostalAddress")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -188,7 +175,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ResidentPermitNumber")
-                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
@@ -196,17 +182,14 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ResidentialAddress")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("SecondaryMobileNumber")
-                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("SocialMediaAccount")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -214,12 +197,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SurName")
-                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("TinNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -227,7 +208,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("WhatsAppNumber")
-                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
@@ -1798,6 +1778,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
+                    b.Property<int>("CustomerCodeCounter")
+                        .HasColumnType("int");
+
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -1833,6 +1816,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2A",
+                            CustomerCodeCounter = 1052,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C01",
                             LocalityName = "COMMUNITY 1",
@@ -1843,6 +1827,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2B",
+                            CustomerCodeCounter = 201,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C02",
                             LocalityName = "COMMUNITY 2",
@@ -1853,6 +1838,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2C",
+                            CustomerCodeCounter = 123,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C03",
                             LocalityName = "COMMUNITY 3",
@@ -1863,6 +1849,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2D",
+                            CustomerCodeCounter = 99,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C04",
                             LocalityName = "COMMUNITY 4",
@@ -1873,6 +1860,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2E",
+                            CustomerCodeCounter = 101,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C05",
                             LocalityName = "COMMUNITY 5",
@@ -1883,6 +1871,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2F",
+                            CustomerCodeCounter = 43,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C06",
                             LocalityName = "COMMUNITY 6",
@@ -1893,6 +1882,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 7,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2G",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C07",
                             LocalityName = "COMMUNITY 7",
@@ -1903,6 +1893,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 8,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2H",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C08",
                             LocalityName = "COMMUNITY 8",
@@ -1913,6 +1904,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 9,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2I",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C09",
                             LocalityName = "COMMUNITY 9",
@@ -1923,6 +1915,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 10,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2J",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C10",
                             LocalityName = "COMMUNITY 10",
@@ -1933,6 +1926,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 11,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2K",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C11",
                             LocalityName = "COMMUNITY 11",
@@ -1943,6 +1937,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 12,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2L",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C12",
                             LocalityName = "COMMUNITY 12",
@@ -1953,6 +1948,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 13,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2M",
+                            CustomerCodeCounter = 5,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C13",
                             LocalityName = "COMMUNITY 13",
@@ -1963,6 +1959,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 14,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2N",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C14",
                             LocalityName = "COMMUNITY 14",
@@ -1973,6 +1970,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 15,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2O",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C15",
                             LocalityName = "COMMUNITY 15",
@@ -1983,6 +1981,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 16,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2P",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C16",
                             LocalityName = "COMMUNITY 16",
@@ -1993,6 +1992,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 17,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2Q",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C17",
                             LocalityName = "COMMUNITY 17",
@@ -2003,6 +2003,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 18,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2R",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C18",
                             LocalityName = "COMMUNITY 18",
@@ -2013,6 +2014,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 19,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2S",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C19",
                             LocalityName = "COMMUNITY 19",
@@ -2023,6 +2025,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 20,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2T",
+                            CustomerCodeCounter = 76,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C20",
                             LocalityName = "COMMUNITY 20",
@@ -2033,6 +2036,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 21,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AL",
+                            CustomerCodeCounter = 51,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C21",
                             LocalityName = "COMMUNITY 21",
@@ -2043,6 +2047,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 22,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2VV",
+                            CustomerCodeCounter = 22,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C22",
                             LocalityName = "COMMUNITY 22",
@@ -2053,6 +2058,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 23,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AT",
+                            CustomerCodeCounter = 15,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C23",
                             LocalityName = "COMMUNITY 23",
@@ -2063,6 +2069,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 24,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AQ",
+                            CustomerCodeCounter = 51,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C24",
                             LocalityName = "COMMUNITY 24",
@@ -2073,6 +2080,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 25,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AP",
+                            CustomerCodeCounter = 53,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C25",
                             LocalityName = "COMMUNITY 25",
@@ -2083,6 +2091,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 26,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AR",
+                            CustomerCodeCounter = 31,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "C26",
                             LocalityName = "COMMUNITY 26",
@@ -2093,6 +2102,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 27,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2W",
+                            CustomerCodeCounter = 501,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "ASH",
                             LocalityName = "ASHIAMAN",
@@ -2103,6 +2113,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 28,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AJ",
+                            CustomerCodeCounter = 21,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "AK",
                             LocalityName = "AGYEI KODJO",
@@ -2113,6 +2124,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 29,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AM",
+                            CustomerCodeCounter = 411,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "ZN",
                             LocalityName = "ZENU",
@@ -2123,6 +2135,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 30,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2V",
+                            CustomerCodeCounter = 51,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "SAK",
                             LocalityName = "SAKUMONO",
@@ -2133,6 +2146,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 31,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AH",
+                            CustomerCodeCounter = 224,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "KLNG",
                             LocalityName = "KLANGON",
@@ -2143,6 +2157,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 32,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2BT",
+                            CustomerCodeCounter = 102,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "BT",
                             LocalityName = "BETHLEHEM",
@@ -2153,6 +2168,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 33,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2TE",
+                            CustomerCodeCounter = 51,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "TB",
                             LocalityName = "TSUI BLEOO",
@@ -2163,6 +2179,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 34,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AF",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "TM",
                             LocalityName = "TEMA MANHEAN",
@@ -2172,7 +2189,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         {
                             LocalityId = 35,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CustomerCode = "",
+                            CustomerCode = "2HI",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "HI",
                             LocalityName = "H/INDUSTRIAL MKT",
@@ -2183,6 +2201,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 36,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AG",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "KPN",
                             LocalityName = "KPONE",
@@ -2192,7 +2211,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         {
                             LocalityId = 37,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CustomerCode = "",
+                            CustomerCode = "2LA",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "LASH",
                             LocalityName = "LASHIBI",
@@ -2202,7 +2222,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         {
                             LocalityId = 38,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CustomerCode = "",
+                            CustomerCode = "2TC",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "TC",
                             LocalityName = "TOWN CENTER",
@@ -2213,6 +2234,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 39,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AC",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "VC",
                             LocalityName = "VERTICAL CENTER",
@@ -2223,6 +2245,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 40,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AB",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "LI",
                             LocalityName = "LIGHT INDUSTRIAL",
@@ -2233,6 +2256,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 41,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2AA",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "IND",
                             LocalityName = "HEAVY INDUSTRIAL",
@@ -2242,7 +2266,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         {
                             LocalityId = 42,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CustomerCode = "",
+                            CustomerCode = "2MK",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "HI/CMKT",
                             LocalityName = "KPONE CAR MKT",
@@ -2253,6 +2278,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 43,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2UA",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "UA",
                             LocalityName = "UNKNOWN AREA",
@@ -2263,6 +2289,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 44,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2CT",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "CH",
                             LocalityName = "CHINA TOWN",
@@ -2273,6 +2300,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 45,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2GC",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "GC",
                             LocalityName = "GOLF CITY",
@@ -2282,7 +2310,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         {
                             LocalityId = 46,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CustomerCode = "",
+                            CustomerCode = "2MI",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "MI",
                             LocalityName = "MOTORWAY INDUSTRIAL",
@@ -2293,6 +2322,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 47,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2SK",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "SK",
                             LocalityName = "SAKI TOWN",
@@ -2303,6 +2333,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 48,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2BM",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "BTM",
                             LocalityName = "BORTEYMAN",
@@ -2313,6 +2344,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LocalityId = 49,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerCode = "2SB",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "SBP",
                             LocalityName = "SEBREPOR",
@@ -2322,7 +2354,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         {
                             LocalityId = 50,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CustomerCode = "",
+                            CustomerCode = "2MS",
+                            CustomerCodeCounter = 103,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LocalityInitial = "MTK",
                             LocalityName = "MLITSAKPO",

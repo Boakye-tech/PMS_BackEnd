@@ -6,6 +6,7 @@ using System.Reflection;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Modules.Common.Infrastructure.Authentication;
 using Modules.Users.Application.Dtos.Entities;
 using Modules.Users.Application.Dtos.Entities.Menu;
 using Modules.Users.Application.Dtos.Entities.Permissions;
@@ -31,8 +32,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         readonly IDepartmentUnitService _departmentUnitService;
         readonly IChannelService _channelService;
         readonly IIdentificationTypeService _identificationTypeService;
+        private readonly IUserContextService _userContextService;
 
-        public AdministrationController(IAdministrationService adminService, IDepartmentService departmentService, IDepartmentUnitService departmentUnitService, IMenuService menuService, IChannelService channelService, IIdentificationTypeService identificationTypeService)
+        public AdministrationController(IAdministrationService adminService, IDepartmentService departmentService, IDepartmentUnitService departmentUnitService, IMenuService menuService, IChannelService channelService, IIdentificationTypeService identificationTypeService, IUserContextService userContextService)
         {
             _adminService = adminService;
             _menuService = menuService;
@@ -40,6 +42,7 @@ namespace Modules.Users.Presentation.Controllers.v1
             _departmentUnitService = departmentUnitService;
             _channelService = channelService;
             _identificationTypeService = identificationTypeService;
+            _userContextService = userContextService;
         }
 
         //----------------------CHANNELS------------
@@ -61,6 +64,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _channelService.AddChannelAsync(values));
             }
             catch (Exception ex)
@@ -71,15 +80,33 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPut]
         [Route("UpdateChannel")]
+        [Authorize(Policy = "Permission:Users.UPDATE")]
         public async Task<ActionResult<ChannelReadDto>> UpdateChannel([FromBody] ChannelUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             return Ok(await _channelService.UpdateChannelAsync(values));
         }
 
         [HttpDelete("DeleteChannel/{channelId}")]
-        public void DeleteChannel(int channelId)
-        { }
-        
+        public async Task<ActionResult> DeleteChannel(int channelId)
+        {
+            //return Ok()
+
+            var response = await _channelService.DeleteChannelAsync(channelId);
+
+            if (response == "success")
+            {
+                return Ok(await _channelService.DeleteChannelAsync(channelId));
+            }
+
+            return BadRequest();
+        }
+
 
 
         [HttpGet]
@@ -105,6 +132,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateMenus")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult> CreateMenus([FromBody] MenusDto values)
         {
             var result = await _menuService.CreateMenu(values);
@@ -120,6 +148,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateSubMenus")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult> CreateSubMenus([FromBody] SubMenusCreateDto values)
         {
             var result = await _menuService.CreateSubMenu(values);
@@ -135,6 +164,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpGet]
         [Route("GetApplicationModules")]
+        [AllowAnonymous]
         public async Task<IEnumerable<ApplicationModulesDto>> GetApplicationModules()
         {
             return await _menuService.GetModules();
@@ -142,6 +172,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("AddApplicationModules")]
+        [AllowAnonymous]
         public async Task<ActionResult> AddApplicationModules([FromBody] ApplicationModulesCreateDto values)
         {
             return Ok(await _menuService.AddModules(values));
@@ -149,6 +180,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPut]
         [Route("UpdateApplicationModules")]
+        [AllowAnonymous]
         public async Task<ActionResult> UpdateApplicationModules([FromBody] ApplicationModulesDto values)
         {
             return Ok(await _menuService.UpdateModules(values));
@@ -157,6 +189,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("AssignModulePermission")]
+        [AllowAnonymous]
         public async Task<ActionResult> AssignModulePermission([FromBody] ApplicationModulesPermissionsDto values)
         {
             return Ok(await _menuService.AssignModulePermission(values));
@@ -164,6 +197,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpGet]
         [Route("GetAssignedModulesPermissions/{roleId}")]
+        [AllowAnonymous]
         public async Task<IEnumerable<RoleModulesPermissionsDto>> GetApplicationModulesPermissions(string roleId)
         {
             return await _menuService.GetModulesPermissions(roleId);
@@ -171,6 +205,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateSubMenuItems")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult> CreateSubMenuItems([FromBody] SubMenuItemsCreateDto values)
         {
             return Ok(await _menuService.CreateSubMenuItems(values));
@@ -182,9 +217,14 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("ApproveRole")]
-        [Authorize(Policy = "Permission:Users.APPROVE")]
+        [Authorize(Policy = "Permission:Users.APPROVE", Roles = "MISAdministrator")]
         public async Task<ActionResult> ApproveRole([FromBody] RolesApprovalDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ApprovedBy))
+            {
+                return Unauthorized();
+            }
             return Ok(await _adminService.ApproveUserRole(values));
         }
 
@@ -193,10 +233,14 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("DisapproveRole")]
-        [Authorize(Policy = "Permission:Users.DISAPPROVE")]
+        [Authorize(Policy = "Permission:Users.DISAPPROVE", Roles = "MISAdministrator")]
         public async Task<ActionResult> DisapproveRole([FromBody] RolesApprovalDto values)
         {
-            //var result = 
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ApprovedBy))
+            {
+                return Unauthorized();
+            }
             return Ok(await _adminService.ApproveUserRole(values));
             
         }
@@ -227,14 +271,20 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateUserRole")]
-        [Authorize(Policy = "Permission:Users.CREATE")]
+        [Authorize(Policy = "Permission:Users.CREATEROLE")]
         public async Task<ActionResult> CreateUserRole([FromBody] RolesCreateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.CreatedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _adminService.CreateUserRole(values);
             
             if (result.Succeeded)
             {
-                return Ok(result.ToString());
+                return Ok( new { message = result.ToString() });
             }
 
             if (!result.Succeeded)
@@ -247,13 +297,20 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPut]
         [Route("UpdateUserRole")]
+        [Authorize(Policy = "Permission:Users.UPDATE")]
         public async Task<ActionResult> UpdateUserRole([FromBody] RolesUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _adminService.UpdateUserRole(values);
 
             if (result.Succeeded)
             {
-                return Ok(result.ToString());
+                return Ok(new { message = result.ToString() });
             }
 
             if (!result.Succeeded)
@@ -265,9 +322,18 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
         [HttpDelete]
-        [Route("DeleteUserRole")]
-        public async Task<ActionResult> DeleteUserRole([FromBody] RolesDeleteDto values)
+        [Route("DeleteUserRole/{roleId}")]
+        [Authorize(Policy = "Permission:Users.DELETE", Roles = "MISAdministrator")]
+        public async Task<ActionResult> DeleteUserRole(string roleId)
         {
+            var userId = _userContextService.GetUserId();
+            //if (!string.Equals(userId, values.DeletedBy))
+            //{
+            //    return Unauthorized();
+            //}
+
+            RolesDeleteDto values = new RolesDeleteDto(roleId, userId!);
+
             var result = await _adminService.DeleteUserRole(values);
 
             if (result.Succeeded)
@@ -290,10 +356,17 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("AssignRoleToUser")]
+        [Authorize(Policy = "Permission:Users.ASSIGNUSER")]
         public async Task<ActionResult> AssignRoleToUser([FromBody] AssignUserRoleDto values)
         {
-            var result = await _menuService.AssignUserRole(values);
+            //var userId = _userContextService.GetUserId();
+            //if (!string.Equals(userId, values.))
+            //{
+            //    return Unauthorized();
+            //}
 
+            var result = await _menuService.AssignUserRole(values);
+            
             if(result is null)
             {
                 return BadRequest($"Email Address {values.EmailAddress} provided does not exist");
@@ -311,8 +384,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("AssignPermissionsToRole")]
-        [Authorize(Policy = "Permission:Users.CREATE")]
-        //[Authorize(Policy = "Permission:Users.CREATE")]
+        [Authorize(Policy = "Permission:Users.ASSIGNPERM")]
         public async Task<ActionResult> AssignPermissionsToRole([FromBody] PermissionsAccessModulesDto values)
         {
             return Ok(await _menuService.AssignPermissionToRole(values));
@@ -346,6 +418,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Users.VERIFY")]
         public async Task<ActionResult> VerifyUserAccount([FromBody] VerifyUserAccountDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.verifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _adminService.VerifyCustomerAccount(values);
 
             if(result.IsSuccess)
@@ -369,8 +447,15 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPut]
         [Route("RejectUserAccount")]
         [Authorize(Policy = "Permission:Users.REJECT")]
+        [Obsolete]
         public async Task<ActionResult> RejectUserAccount([FromBody] RejectUserAccountDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.RejectedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _adminService.RejectCustomerAccount(values);
 
             if (result.IsSuccess)
@@ -397,6 +482,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Users.APPROVE")]
         public async Task<ActionResult> ApproveUserAccount([FromBody] ApproveUserAccountDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ApprovedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _adminService.ApproveUserAccount(values);
 
             if (result.IsSuccess)
@@ -424,6 +515,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Users.DISAPPROVE")]
         public async Task<ActionResult> DisapproveUserAccount([FromBody] DisapprovedUserAccountDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.DisapprovedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _adminService.DisapproveUserAccount(values);
 
             if (result.IsSuccess)
@@ -446,9 +543,15 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPut]
         [Route("ActivateUserAccount")]
-        [Authorize(Policy = "Permission:Users.ACTIVATE")]
+        [Authorize(Policy = "Permission:Users.ACTIVATE", Roles = "MIS Officer")]
         public async Task<ActionResult> ActivateUserAccount([FromBody] ActivateUserAccountDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.activatedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _adminService.ActivateUserAccount(values);
 
             if (result.IsSuccess)
@@ -474,6 +577,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Users.DEACTIVATE")]
         public async Task<ActionResult> DectivateUserAccount([FromBody] DeactivateUserAccountDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.DeactivatedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _adminService.DeactivateUserAccount(values);
 
             if (result.IsSuccess)
@@ -537,6 +646,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _departmentService.AddDepartmentAsync(values));
             }
             catch (Exception ex)
@@ -549,6 +664,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("UpdateDepartment")]
         public async Task<ActionResult<DepartmentReadDto>> UpdateDepartment([FromBody] DepartmentUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             return Ok(await _departmentService.UpdateDepartmentAsync(values));
         }
 
@@ -597,10 +718,16 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateDepartmentUnit")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult<DepartmentUnitReadDto>> CreateDepartmentUnit([FromBody] DepartmentUnitCreateDto values)
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
                 return Ok(await _departmentUnitService.AddDepartmentUnitAsync(values));
             }
             catch (Exception ex)
@@ -613,6 +740,12 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("UpdateDepartmentUnit")]
         public async Task<ActionResult<DepartmentReadDto>> UpdateDepartmentUnit([FromBody] DepartmentUnitUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             return Ok(await _departmentUnitService.UpdateDepartmentUnitAsync(values));
         }
 
@@ -661,6 +794,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("CreateIdentificationType")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
         public async Task<ActionResult<ChannelReadDto>> CreateIdentificationType([FromBody] IdentificationTypeDto values)
         {
             try
@@ -678,15 +812,31 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("UpdateIdentificationType")]
         public async Task<ActionResult<ChannelReadDto>> UpdateIdentificationType([FromBody] IdentificationTypeDto values)
         {
-            await _identificationTypeService.UpdateIdentificationTypeAsync(values);
-            return Ok(new { response = "200" });
+            //var userId = _userContextService.GetUserId();
+            //if (!string.Equals(userId, values.))
+            //{
+            //    return Unauthorized();
+            //}
+
+            var result = await _identificationTypeService.UpdateIdentificationTypeAsync(values);
+
+            if(result is null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(new { response = result });
         }
 
         [HttpDelete("DeleteIdentificationType/{identificationTypeId}")]
         public async Task<ActionResult> DeleteIdentificationType(int identificationTypeId)
         {
-            await _identificationTypeService.DeleteIdentificationTypeAsync(identificationTypeId);
-            return Ok(new { response = "200" });
+            var result = await _identificationTypeService.DeleteIdentificationTypeAsync(identificationTypeId);
+
+            if (result != "success")
+                return BadRequest();
+
+            return Ok(new { response = result });
         }
 
 
@@ -696,6 +846,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("StaffAccounts")]
+        [Authorize(Roles = "MIS Officer, MISAdministrator")]
         public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff()
         {
             return Ok(await _adminService.GetAdministrationStaff());
@@ -716,6 +867,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("ThirdPartyAccounts")]
+        [Authorize(Roles = "MIS Officer, MISAdministrator")] 
         public async Task<ActionResult<IEnumerable<AdministrationPartnersDto>>> GetAdministrationPartner()
         {
             return Ok(await _adminService.GetAdministrationPartners());

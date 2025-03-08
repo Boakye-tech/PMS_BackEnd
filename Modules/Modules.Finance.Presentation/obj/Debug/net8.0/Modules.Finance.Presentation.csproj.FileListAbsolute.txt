@@ -208,6 +208,7 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.Identity.Client.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Finance.Presentation/bin/Debug/net8.0/Microsoft.Identity.Client.Extensions.Msal.dll

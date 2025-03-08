@@ -14,11 +14,13 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public int LocalityId { get; set; }
 
-        //[StringLength(10)]
-        //public string CustomerCode { get; set; }
+        [StringLength(10)]
+        public string? CustomerCode { get; set; }
        
-        [StringLength(100)]
+        [StringLength(150)]
         public string? CompanyName { get; set; }
+
+        public int NationalityId { get; set; }
 
         [EmailAddress]
         public string? EmailAddress { get; set; }
@@ -82,17 +84,12 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(12)]
         public string? ContactPerson_Address { get; set; }
 
-
         public int ContactPerson_IdentificationTypeId { get; set; }
 
         [StringLength(20)]
         public string? ContactPerson_IdentificationTypeNumber { get; set; }
 
-        [StringLength(255)]
-        public string? IdentificationTypeImageOne { get; set; }
-
-        [StringLength(255)]
-        public string? IdentificationTypeImageTwo { get; set; }
+        public string[]? ContactPerson_IdentificationImages { get; set; }
     }
 
 

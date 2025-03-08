@@ -14,8 +14,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public required int LocalityId { get; set; }
 
-        //[StringLength(10)]
-        //public required string? CustomerCode { get; set; }
+        [StringLength(10)]
+        public string? CustomerCode { get; set; }
 
         public required int TitleId { get; set; }
 
@@ -72,11 +72,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(20)]
         public string? IdentificationTypeNumber { get; set; }
 
-        [StringLength(255)]
-        public string? IdentificationTypeImageOne { get; set; }
-
-        [StringLength(255)]
-        public string? IdentificationTypeImageTwo { get; set; }
+        public string[]? IdentificationImages { get; set; }
 
         [StringLength(255)]
         public string? Comments { get; set; }
@@ -88,9 +84,12 @@ namespace Modules.Estates.Application.DTO.Management.Customer
     }
 
     public record IndividualResidentCustomerDto : IndividualCustomerDto
-    { }
+    {
+        public IndividualNonResidentCustomerDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
+    }
 
-    public record IndividualNonResidentCustomerDto : IndividualCustomerDto
+    public record IndividualNonResidentCustomerDto
     {
         [StringLength(255)]
         public string? ContactPerson_FullName { get; set; }
@@ -107,14 +106,11 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public int ContactPerson_IdentificationTypeId { get; set; }
 
-        [StringLength(20)]
-        public string? ContactPerson_IdentificationTypeNumber { get; set; }
-
-        [StringLength(255)]
-        public string? ContactPerson_IdentificationTypeImage { get; set; }
+        public string[]? ContactPerson_IdentificationImages { get; set; }
     }
 
-    public record IndividualExpatriateCustomerDto : IndividualCustomerDto
+
+    public record IndividualExpatriateCustomerDto
     {
         [StringLength(30)]
         public string? ResidentPermitNumber { get; set; }
@@ -123,6 +119,46 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public DateTime ResidentPermitExpiryDate { get; set; }
     }
+
+
+
+    //public record IndividualResidentCustomerDto : IndividualCustomerDto
+    //{
+
+    //}
+    //public record IndividualNonResidentCustomerDto : IndividualCustomerDto
+    //{
+    //    [StringLength(255)]
+    //    public string? ContactPerson_FullName { get; set; }
+
+    //    [StringLength(12)]
+    //    public string? ContactPerson_PhoneNumber { get; set; }
+
+    //    [StringLength(255)]
+    //    [EmailAddress]
+    //    public string? ContactPerson_EmailAddress { get; set; }
+
+    //    [StringLength(12)]
+    //    public string? ContactPerson_Address { get; set; }
+
+    //    public int ContactPerson_IdentificationTypeId { get; set; }
+
+    //    [StringLength(20)]
+    //    public string? ContactPerson_IdentificationTypeNumber { get; set; }
+
+    //    [StringLength(255)]
+    //    public string? ContactPerson_IdentificationTypeImage { get; set; }
+    //}
+
+    //public record IndividualExpatriateCustomerDto : IndividualCustomerDto
+    //{
+    //    [StringLength(30)]
+    //    public string? ResidentPermitNumber { get; set; }
+
+    //    public DateTime ResidentPermitDateIssued { get; set; }
+
+    //    public DateTime ResidentPermitExpiryDate { get; set; }
+    //}
 
 }
 

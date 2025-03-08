@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "XiGnKIDqRpURdzwY8L4uhvOLa0hKLw4vIaF9tRish4eJqeNdwIybp+/HK+RrL4mFvXwsocpy9KjOOLmfPEMzQQ==",
+  "dgSpecHash": "rUFIkmDMpbE+9upr7A93helyBs8VzMSW3coIbO8utoJqltp5pR9jyICWDlNi+V+9blr6H99//hloDi0jZ5HGKg==",
   "success": true,
   "projectFilePath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Application/Modules.Estates.Application.csproj",
   "expectedPackageFiles": [
     "/Users/imac5k/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/fluentvalidation/11.5.1/fluentvalidation.11.5.1.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.5.1/fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.11/microsoft.aspnetcore.authentication.jwtbearer.8.0.11.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore/8.0.6/microsoft.entityframeworkcore.8.0.6.nupkg.sha512",

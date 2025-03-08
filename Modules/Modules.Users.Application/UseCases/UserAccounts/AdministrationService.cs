@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -65,9 +66,19 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             if (validationResult.IsValid)
             {
                 ApplicationIdentityRole? identityRole = await _roleManager.FindByIdAsync(roleId.RoleId!);
-                IdentityResult result = await _roleManager.DeleteAsync(identityRole!);
 
-                return result;
+                if(identityRole!.Status != (int)RegistrationStatus.Approved)
+                {
+
+                    identityRole.DeletedBy = roleId.DeletedBy;
+                    identityRole.DeletedOn = DateTime.UtcNow;
+                    identityRole.Status = (int)RegistrationStatus.Rejected;
+
+                    IdentityResult result = await _roleManager.UpdateAsync(identityRole);
+
+                    return result;
+
+                }
             }
 
             return null!;
@@ -135,11 +146,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public IEnumerable<RolesDto> GetApprovedUserRoles()
         {
-            //return _roleManager.Roles
-            //    .Where(r => r.Status == (int)RegistrationStatus.Approved)
-            //    .Select(role => new RolesDto(role.Id, role.Name!, role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
             return _roleManager.Roles
                 .Where(r => r.Status == (int)RegistrationStatus.Approved)
+                .OrderByDescending(role => role.ApprovedOn)
                 .Select(role => new RolesDto(
                     role.Id,
                     role.Name!,
@@ -154,8 +163,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         .FirstOrDefault() ?? "Unknown",  // Handle null case
                     role.ApprovedOn,
                     RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString()
-                ))
-                .ToList();
+                )).ToList();
         }
 
         public IEnumerable<RolesDto> GetUserRoles()
@@ -163,6 +171,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             //return _roleManager.Roles.Select(role => new RolesDto(role.Id, role.Name!,  role.CreatedBy!, role.CreatedOn, role.ApprovedBy!, role.ApprovedOn, RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString())).ToList();
 
             return _roleManager.Roles
+                .Where(r => r.Status != (int)RegistrationStatus.Rejected)
+                .OrderByDescending(role => role.CreatedOn)
                 .Select(role => new RolesDto(
                         role.Id,
                         role.Name!,
@@ -177,8 +187,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                             .FirstOrDefault() ?? "Unknown",  // Handle null case
                         role.ApprovedOn,
                         RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString()
-                    ))
-                    .ToList();
+                    )).ToList();
         }
 
         public async Task<CustomerVerificationResponseDto> VerifyCustomerAccount(VerifyUserAccountDto accountVerification)
@@ -451,20 +460,20 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            if ((RegistrationStatus)user.Status != RegistrationStatus.Approved)
-            {
-                _logger.LogWarning($"User account with id '{accountDisapproval.UserId}' has not been approved. Account cannot be disapproved", accountDisapproval.UserId);
-                return new DisapprovedUserAccountResponseDto
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new DisapprovedUserAccountErrorResponseDto
-                    {
-                        StatusCode = StatusCodes.Status404NotFound,
-                        StatusMessage = $"User account with id '{accountDisapproval.UserId}' has not been approved. Account cannot be disapproved"
-                    }
-                };
+            //if ((RegistrationStatus)user.Status != RegistrationStatus.Approved)
+            //{
+            //    _logger.LogWarning($"User account with id '{accountDisapproval.UserId}' has not been approved. Account cannot be disapproved", accountDisapproval.UserId);
+            //    return new DisapprovedUserAccountResponseDto
+            //    {
+            //        IsSuccess = false,
+            //        ErrorResponse = new DisapprovedUserAccountErrorResponseDto
+            //        {
+            //            StatusCode = StatusCodes.Status404NotFound,
+            //            StatusMessage = $"User account with id '{accountDisapproval.UserId}' has not been approved. Account cannot be disapproved"
+            //        }
+            //    };
 
-            }
+            //}
 
             var staff = await _userManager.FindByIdAsync(accountDisapproval.DisapprovedBy);
             if (staff is null)

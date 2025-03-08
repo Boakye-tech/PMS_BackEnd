@@ -1,9 +1,4 @@
-﻿using System;
-using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
-using Modules.Estates.Application.Repositories.Setup.Property;
-using Modules.Estates.Domain;
-using Modules.Estates.Infrastructure.UnitOfWork;
-using PMS.Presentation.Controllers;
+﻿using PMS.Presentation.Controllers;
 
 namespace PMS.Presentation.Extensions;
 

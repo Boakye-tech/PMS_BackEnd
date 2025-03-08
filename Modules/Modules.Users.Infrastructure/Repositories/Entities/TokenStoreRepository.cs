@@ -272,7 +272,7 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
 
             foreach (var permission in claims)
             {
-                allClaims.Add(new Claim($"Permission:{permission.ModuleName}:{permission.ModulePermission}", permission.ModulePermission!));
+                allClaims.Add(new Claim($"Permission:{permission.ModuleName}.{permission.ModulePermission}", permission.ModulePermission!));
             }
 
             //allClaims.AddRange(claims);
@@ -356,9 +356,6 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                                          ModuleName = module != null ? module.ModuleName : "No Module",
                                          ModulePermission = a.ModulePermission
                                      }).ToList();
-
-
-
 
             return modulePermissions;
 

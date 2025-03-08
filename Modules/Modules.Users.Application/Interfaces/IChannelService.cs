@@ -8,6 +8,8 @@ namespace Modules.Users.Application.Interfaces
         Task<IEnumerable<ChannelReadDto>> GetChannelAsync();
         Task<ChannelReadDto> GetChannelAsync(int value);
         Task<ChannelReadDto> GetChannelAsync(string value);
+
+        Task<string> DeleteChannelAsync(int value);
     }
 }
 

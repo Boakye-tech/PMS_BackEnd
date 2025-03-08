@@ -28,6 +28,8 @@ namespace Modules.Users.Domain.Interfaces
 
         IIdentificationTypeRepository IdentificationType { get; }
 
+        //IMenuActionsRepository ActionsRepository { get; }
+
         Task<int> Complete();
     }
 }

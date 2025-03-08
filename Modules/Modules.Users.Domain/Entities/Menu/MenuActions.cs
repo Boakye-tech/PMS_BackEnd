@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Users.Domain.Entities.Menu
 {
-	//public class MenuActions
+	//public class Actions
 	//{
 	//	[Key]
 	//	[Required]
@@ -13,25 +13,25 @@ namespace Modules.Users.Domain.Entities.Menu
 	//	[StringLength(255)]
 	//	public string ActionName { get; set; }
 
- //       [StringLength(255)]
- //       public string Description { get; set; }
+	//	[StringLength(255)]
+	//	public string Description { get; set; }
 
- //       public MenuActions(int actionId, string actionName, string description)
+	//	public Actions(int actionId, string actionName, string description)
 	//	{
 	//		ActionId = actionId;
 	//		ActionName = actionName;
 	//		Description = description;
 	//	}
 
-	//	public static MenuActions CreateMenuActions(int actionId, string actionName, string description)
+	//	public static Actions CreateActions(int actionId, string actionName, string description)
 	//	{
- //           if (string.IsNullOrWhiteSpace(actionName) || actionId < 0)
- //           {
- //               throw new ArgumentException("Invalid menu action data.");
- //           }
+	//		if (string.IsNullOrWhiteSpace(actionName) || actionId < 0)
+	//		{
+	//			throw new ArgumentException("Invalid actions data.");
+	//		}
 
- //           return new MenuActions(actionId, actionName, description);
- //       }
+	//		return new Actions(actionId, actionName, description);
+	//	}
 	//}
 }
 

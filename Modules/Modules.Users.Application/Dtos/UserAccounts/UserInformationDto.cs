@@ -64,7 +64,9 @@ namespace Modules.Users.Application.Dtos.UserAccounts
     public record StaffUserInformationDto : UserInformationDto
     { 
         public string? StaffIdentificationNumber { get; set; }
+        public int DepartmentId { get; set; }
         public string? Department { get; set; }
+        public int UnitId { get; set; }
         public string? Unit { get; set; }
         public string? ProfilePicture { get; set; }
         public IList<string>? UsersRoles { get; set; }
@@ -74,7 +76,9 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         {
             UserId = user.Id;
             StaffIdentificationNumber = user.IdentificationNumber;
+            DepartmentId = user.DepartmentId;
             Department = department;
+            UnitId = user.UnitId;
             Unit = unit;
             FirstName = user.FirstName;
             MiddleName = user.MiddleName;

@@ -28,7 +28,7 @@ namespace Modules.Users.Application.UseCases
 
             if (response is null)
             {
-                return "400 - BadRequest";
+                return "BadRequest";
             }
 
             _unitOfWork.IdentificationType.Delete(response);

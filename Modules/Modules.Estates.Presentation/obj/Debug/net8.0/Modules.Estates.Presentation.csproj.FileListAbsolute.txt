@@ -577,6 +577,9 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Azure.Core.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Azure.Identity.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/FluentValidation.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Humanizer.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
@@ -596,6 +599,7 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.Identity.Client.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Estates.Presentation/bin/Debug/net8.0/Microsoft.Identity.Client.Extensions.Msal.dll

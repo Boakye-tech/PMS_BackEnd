@@ -23,6 +23,8 @@
     <None Remove="Interfaces\Entities\Setup\Property\" />
     <None Remove="Entities\Registration\" />
     <None Remove="Interfaces\Registration\" />
+    <None Remove="Interfaces\DomainServices\" />
+    <None Remove="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -36,5 +38,7 @@
     <Folder Include="Interfaces\Entities\Setup\Property\" />
     <Folder Include="Entities\Registration\" />
     <Folder Include="Interfaces\Registration\" />
+    <Folder Include="Interfaces\DomainServices\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 </Project>

@@ -14,8 +14,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public required int LocalityId { get; set; }
 
-        //[StringLength(10)]
-        //public string? CustomerCode { get; set; }
+        [StringLength(10)]
+        public string? CustomerCode { get; set; }
 
         public int TitleId { get; set; }
 
@@ -128,7 +128,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public string? EmailAddress { get; set; }
 
         [StringLength(20)]
-        public int SocialMediaTypeId { get; set; }
+        public string? SocialMediaType{ get; set; }
 
         [StringLength(50)]
         public string? SocialMediaAccount { get; set; }

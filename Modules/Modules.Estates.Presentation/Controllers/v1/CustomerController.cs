@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.Repositories.Setup.Customer;
-using Modules.Estates.Domain.Entities.Setup.Customer;
+using Modules.Common.Infrastructure.Authentication;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,6 +18,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
+
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "Permission:Customers.READ")]
+
+
     public partial class CustomerController : ControllerBase
     {
         readonly ICustomerTypeService _customerTypeService;
@@ -28,8 +36,10 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
         readonly ICustomerMasterService _customerMasterService;
 
-        public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService,
-                                  IResidentTypeService residentTypeService, ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService)
+        private readonly IUserContextService _userContextService;
+
+        public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService,
+                                  ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService)
         {
             _customerTypeService = customerTypeService;
             _genderService = genderService;
@@ -40,7 +50,8 @@ namespace Modules.Estates.Presentation.Controllers.v1
             _titleService = titleService;
 
             _customerMasterService = customerMasterService;
-            _ownershipTypeService = ownershipTypeService; ;
+            _ownershipTypeService = ownershipTypeService;
+            _userContextService = userContextService;
         }
 
         //----------------------CUSTOMER TYPES------------
@@ -73,10 +84,18 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPost]
         [Route("CreateCustomerType")]
+        [Authorize(Policy = "Permission:Customers.CREATE")] 
         public async Task<ActionResult<CustomerTypeReadDto>> CreateCustomerType([FromBody] CustomerTypeCreateDto values)
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if(!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _customerTypeService.AddCustomerTypeAsync(values));
             }
             catch (Exception ex)
@@ -102,15 +121,24 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPut]
         [Route("UpdateCustomerType")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")] 
         public async Task<ActionResult<CustomerTypeReadDto>> UpdateCustomerType([FromBody] CustomerTypeUpdateDto values)
         {
             return Ok(await _customerTypeService.UpdateCustomerTypeAsync(values));
         }
 
         [HttpDelete("DeleteCustomerType/{customerTypeId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteCustomerType(int customerTypeId)
         {
-            return Ok(await _customerTypeService.DeleteCustomerTyeAsync(customerTypeId));
+            var response = await _customerTypeService.DeleteCustomerTyeAsync(customerTypeId);
+
+            if(response == "success")
+            {
+                return Ok(await _customerTypeService.DeleteCustomerTyeAsync(customerTypeId));
+            }
+
+            return BadRequest();
         }
 
         //----------------------GENDER------------
@@ -155,6 +183,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPost]
         [Route("CreateGender")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
         public async Task<ActionResult<GenderReadDto>> CreateGender([FromBody] GenderCreateDto values)
         {
             try
@@ -184,12 +213,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPut]
         [Route("UpdateGender")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<GenderReadDto>> UpdateGender([FromBody] GenderUpdateDto values)
         {
             return Ok(await _genderService.UpdateGenderAsync(values));
         }
 
         [HttpDelete("DeleteGender/{genderId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteGender(int genderId)
         {
             return Ok(await _genderService.DeleteGenderAsync(genderId));
@@ -224,6 +255,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPost]
         [Route("CreateIdentificationType")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
         public async Task<ActionResult<IdentificationTypeReadDto>> CreateIdentificationType([FromBody] IdentificationTypeCreateDto values)
         {
             try
@@ -253,12 +285,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPut]
         [Route("UpdateIdentificationType")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<IdentificationTypeReadDto>> UpdateCustomerType([FromBody] IdentificationTypeUpdateDto values)
         {
             return Ok(await _identificationTypeService.UpdateIdentificationTypeAsync(values));
         }
 
         [HttpDelete("DeleteIdentificationType/{identificationTypeId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteIdentificationType(int identificationTypeId)
         {
             return Ok(await _identificationTypeService.DeleteIdentificationTypeAsync(identificationTypeId));
@@ -292,6 +326,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPost]
         [Route("CreateNationality")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
         public async Task<ActionResult<NationalityReadDto>> CreateNationality([FromBody] NationalityCreateDto values)
         {
             try
@@ -320,12 +355,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPut]
         [Route("UpdateNationality")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<NationalityReadDto>> UpdateNationality([FromBody] NationalityUpdateDto values)
         {
             return Ok(await _nationalityService.UpdateNationalityAsync(values));
         }
 
         [HttpDelete("DeleteNationality/{nationalityId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteNationality(int nationalityId)
         {
             return Ok(await _nationalityService.DeleteNationalityAsync(nationalityId));
@@ -359,6 +396,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPost]
         [Route("CreateResidentType")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
         public async Task<ActionResult<ResidentTypeReadDto>> CreateResidentType([FromBody] ResidentTypeCreateDto values)
         {
             try
@@ -388,12 +426,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPut]
         [Route("UpdateResidentType")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<ResidentTypeReadDto>> UpdateResidentType([FromBody] ResidentTypeUpdateDto values)
         {
             return Ok(await _residentTypeService.UpdateResidentTypeAsync(values));
         }
 
         [HttpDelete("DeleteResidentType/{residentTypeId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteResidentType(int residentTypeId)
         {
             return Ok(await _residentTypeService.DeleteResidentTypeAsync(residentTypeId));
@@ -415,6 +455,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("AddSocialMedia")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
         public async Task<ActionResult<SocialMediaReadDto>> AddSocialMedia([FromBody] SocialMediaCreateDto values)
         {
             try
@@ -432,12 +473,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpPut]
         [Route("UpdateSocialMedia")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<SocialMediaReadDto>> UpdateSocialMedia([FromBody] SocialMediaUpdateDto values)
         {
             return Ok(await _socialMediaService.UpdateSocialMediaAsync(values));
         }
 
         [HttpDelete("DeleteSocialMedia/{socialMediaId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteSocialMedia(int socialMediaId)
         {
             return Ok(await _socialMediaService.DeleteSocialMediaAsync(socialMediaId));
@@ -485,6 +528,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPost]
         [Route("CreateTitle")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
         public async Task<ActionResult<TitleReadDto>> CreateTitle([FromBody] TitleCreateDto values)
         {
             try
@@ -514,12 +558,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPut]
         [Route("UpdateTitle")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<TitleReadDto>> UpdateTitle([FromBody] TitleUpdateDto values)
         {
             return Ok(await _titleService.UpdateTitleAsync(values));
         }
 
         [HttpDelete("DeleteTitle/{titleId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteTitle(int titleId)
         {
             return Ok(await _titleService.DeleteTitleAsync(titleId));
@@ -568,6 +614,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPost]
         [Route("CreateOwnershipType")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
         public async Task<ActionResult<TitleReadDto>> CreateOwnershipType([FromBody] OwnershipTypeCreateDto values)
         {
             try
@@ -597,47 +644,21 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPut]
         [Route("UpdateOwnershipType")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<OwnershipTypeReadDto>> UpdateOwnershipType([FromBody] OwnershipTypeUpdateDto values)
         {
             return Ok(await _ownershipTypeService.UpdateOwnershipTypeAsync(values));
         }
 
         [HttpDelete("DeleteOwnershipType/{ownershipTypeId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteOwnershipType(int ownershipTypeId)
         {
             return Ok(await _ownershipTypeService.DeleteOwnershipTypeAsync(ownershipTypeId));
         }
 
         //------------------
-        [HttpPost]
-        [Route("AddProspectiveCustomer")]
-        public async Task<ActionResult<ProspectiveCustomerResponseDto>> AddProspectiveCustomer([FromBody] ProspectiveCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
-
-        [HttpPost]
-        [Route("AddCompanyCustomer")]
-        public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CompanyCustomerDto values)
-        {
-            try
-            {
-                return Ok(await _customerMasterService.CreateCustomer(values));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
-
-
+       
         /// <summary>
         /// Returns a list of customers
         /// </summary>
