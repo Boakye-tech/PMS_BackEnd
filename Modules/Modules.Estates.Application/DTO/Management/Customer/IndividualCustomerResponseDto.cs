@@ -72,11 +72,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(20)]
         public string? IdentificationTypeNumber { get; set; }
 
-        [StringLength(255)]
-        public string? IdentificationTypeImageOne { get; set; }
-
-        [StringLength(255)]
-        public string? IdentificationTypeImageTwo { get; set; }
+        public string[]? IdentificationImages { get; set; }
 
         [StringLength(255)]
         public string? Comments { get; set; }
@@ -108,8 +104,9 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(20)]
         public string? ContactPerson_IdentificationTypeNumber { get; set; }
 
-        [StringLength(255)]
-        public string? ContactPerson_IdentificationTypeImage { get; set; }
+        //[StringLength(255)]
+        //public string? ContactPerson_IdentificationTypeImage { get; set; }
+        public string[]? ContactPerson_IdentificationImages { get; set; }
     }
 
     public record IndividualExpatriateCustomerResponseDto : IndividualCustomerResponseDto
