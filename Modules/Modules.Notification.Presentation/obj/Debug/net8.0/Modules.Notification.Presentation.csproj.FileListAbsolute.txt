@@ -213,6 +213,7 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Identity.Stores.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/bin/Debug/net8.0/Microsoft.Identity.Client.dll
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/bin/Debug/net8.0/Microsoft.Identity.Client.Extensions.Msal.dll
@@ -348,4 +349,3 @@
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/obj/Debug/net8.0/Modules.Notification.Presentation.pdb
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/obj/Debug/net8.0/Modules.Notification.Presentation.genruntimeconfig.cache
 /Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/obj/Debug/net8.0/ref/Modules.Notification.Presentation.dll
-/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
