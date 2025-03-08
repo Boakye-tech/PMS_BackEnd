@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "kvQWLPruyXVggc/Yy6dHbVfsyamMUxymE0zHfimN4Gfol4fToPUgxjoQq3yjNen5s1lB5X1ZvlJkqUEr451Trg==",
+  "dgSpecHash": "poBcDjn8Nu2HWWqBseiMR7tL3Qcas400IqCCQoQaH8Pk0j/SgphSht6h1Zodv0SvJQNEBQL57Nf52TlO1jo2WQ==",
   "success": true,
   "projectFilePath": "/Users/imac5k/Projects/PMS_BackEnd/PMS.Presentation/PMS.Presentation.csproj",
   "expectedPackageFiles": [
@@ -26,7 +26,7 @@
     "/Users/imac5k/.nuget/packages/microsoft.aspnetcore.http/2.3.0/microsoft.aspnetcore.http.2.3.0.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.aspnetcore.http.abstractions/2.3.0/microsoft.aspnetcore.http.abstractions.2.3.0.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.aspnetcore.http.features/2.3.0/microsoft.aspnetcore.http.features.2.3.0.nupkg.sha512",
-    "/Users/imac5k/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/8.0.6/microsoft.aspnetcore.identity.entityframeworkcore.8.0.6.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/8.0.11/microsoft.aspnetcore.identity.entityframeworkcore.8.0.11.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.aspnetcore.identity.ui/8.0.12/microsoft.aspnetcore.identity.ui.8.0.12.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.aspnetcore.webutilities/2.3.0/microsoft.aspnetcore.webutilities.2.3.0.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

@@ -438,7 +438,7 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.11, )"
             },
             "System.ComponentModel.Annotations": {
               "target": "Package",
@@ -752,7 +752,7 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.11, )"
             },
             "System.ComponentModel.Annotations": {
               "target": "Package",
@@ -1665,11 +1665,11 @@
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.11, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.11, )"
             },
             "System.ComponentModel.Annotations": {
               "target": "Package",
