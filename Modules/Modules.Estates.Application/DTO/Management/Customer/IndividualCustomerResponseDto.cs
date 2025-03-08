@@ -82,7 +82,9 @@ namespace Modules.Estates.Application.DTO.Management.Customer
     }
 
     public record IndividualResidentCustomerResponseDto : IndividualCustomerResponseDto
-    { }
+    {
+
+    }
 
     public record IndividualNonResidentCustomerResponseDto : IndividualCustomerResponseDto
     {
