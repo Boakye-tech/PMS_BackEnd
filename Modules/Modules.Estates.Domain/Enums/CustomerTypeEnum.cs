@@ -3,11 +3,11 @@ using System.ComponentModel;
 
 namespace Modules.Estates.Domain.Enums
 {
-	public enum CustomerTypeEnum
-	{
-		COMPANY = 1,
+    public enum CustomerTypeEnum
+    {
+        COMPANY = 1,
 
-		INDIVIDUAL = 2,
+        INDIVIDUAL = 2,
 
         [Description("NON-RESIDENT")]
         JOINT_OWNERSHIP = 3,

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Modules.Users.Domain.Entities
 {
-	public class ApplicationIdentityUser : IdentityUser
+    public class ApplicationIdentityUser : IdentityUser
 	{
         [StringLength(10)]
         public string? IdentificationNumber { get; set; }
