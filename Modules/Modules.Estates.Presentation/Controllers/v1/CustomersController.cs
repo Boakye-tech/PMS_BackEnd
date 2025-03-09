@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Application.Enums;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -59,6 +60,49 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                if(values.CustomerTypeId == (int)CustomerTypeEnum.INDIVIDUAL && values.ResidentTypeId == (int)ResidentTypeEnum.EXPATRIATE)
+                {
+                    if (values.Expatriate is null)
+                    {
+                        return BadRequest("Expatriate details cannot be null or empty.");
+                    }
+
+                    if (string.IsNullOrWhiteSpace(values.Expatriate!.ResidentPermitNumber))
+                    {
+                        return BadRequest("Resident permit number cannot be null or empty.");
+                    }
+
+                   
+                }
+
+                if (values.CustomerTypeId == (int)CustomerTypeEnum.INDIVIDUAL && values.ResidentTypeId == (int)ResidentTypeEnum.NON_RESIDENT)
+                {
+                    if (values.NonResident is null)
+                    {
+                        return BadRequest("Non-resident contact person details cannot be null or empty.");
+                    }
+
+                    if (string.IsNullOrWhiteSpace(values.NonResident!.ContactPerson_FullName))
+                    {
+                        return BadRequest("Contact person's fullname cannot be null or empty.");
+                    }
+
+                    if (string.IsNullOrWhiteSpace(values.NonResident!.ContactPerson_EmailAddress))
+                    {
+                        return BadRequest("Contact person's email address cannot be null or empty.");
+                    }
+
+                    if (string.IsNullOrWhiteSpace(values.NonResident!.ContactPerson_PhoneNumber))
+                    {
+                        return BadRequest("Contact person's phone number cannot be null or empty.");
+                    }
+
+                }
+
+                //if (values.CustomerTypeId == (int)CustomerTypeEnum.INDIVIDUAL && values.ResidentTypeId == (int)ResidentTypeEnum.RESIDENT)
+                //{
+                //}
+
                 return Ok(await _customerMasterService.CreateCustomer(values));
             }
             catch (Exception ex)
