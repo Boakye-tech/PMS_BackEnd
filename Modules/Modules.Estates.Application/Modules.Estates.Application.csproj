@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Interfaces\" />
+    <None Remove="DTO\" />
+    <None Remove="DTO\Setup\" />
+    <None Remove="Profiles\" />
+    <None Remove="Interfaces\Entities\Setup\Customer\" />
+    <None Remove="Interfaces\Entities\Setup\Property\" />
+    <None Remove="DTO\Setup\Property\" />
+    <None Remove="DTO\Setup\Customer\" />
+    <None Remove="Profiles\Property\" />
+    <None Remove="Profiles\Customer\" />
+    <None Remove="Services\Setups\" />
+    <None Remove="Services\Setups\Customer\" />
+    <None Remove="Interfaces\Management\" />
+    <None Remove="DTO\Management\" />
+    <None Remove="Profiles\Management\" />
+    <None Remove="DTO\Management\Property\" />
+    <None Remove="DTO\Management\Customer\" />
+    <None Remove="Validations\" />
+    <None Remove="Validations\Setup\" />
+    <None Remove="Validations\Setup\Customer\" />
+    <None Remove="Validations\Setup\Property\" />
+    <None Remove="UseCases\" />
+    <None Remove="DomainServices\" />
+    <None Remove="Interfaces\ModuleServices\" />
+    <None Remove="DTO\Management\ModuleServices\" />
+    <None Remove="UseCases\ModuleServices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="DTO\" />
+    <Folder Include="DTO\Setup\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="Interfaces\Entities\Setup\Customer\" />
+    <Folder Include="Interfaces\Entities\Setup\Property\" />
+    <Folder Include="DTO\Setup\Property\" />
+    <Folder Include="DTO\Setup\Customer\" />
+    <Folder Include="Profiles\Property\" />
+    <Folder Include="Profiles\Customer\" />
+    <Folder Include="Interfaces\Management\" />
+    <Folder Include="DTO\Management\" />
+    <Folder Include="Profiles\Management\" />
+    <Folder Include="DTO\Management\Property\" />
+    <Folder Include="DTO\Management\Customer\" />
+    <Folder Include="Validations\" />
+    <Folder Include="Validations\Setup\" />
+    <Folder Include="Validations\Setup\Customer\" />
+    <Folder Include="Validations\Setup\Property\" />
+    <Folder Include="UseCases\" />
+    <Folder Include="DomainServices\" />
+    <Folder Include="Interfaces\ModuleServices\" />
+    <Folder Include="DTO\Management\ModuleServices\" />
+    <Folder Include="UseCases\ModuleServices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Estates.Domain\Modules.Estates.Domain.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,7 @@
+﻿@Modules.Billing.Presentation_HostAddress = http://localhost:5118
+
+GET {{Modules.Billing.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
