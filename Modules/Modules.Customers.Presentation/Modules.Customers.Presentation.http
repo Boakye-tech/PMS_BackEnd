@@ -1,7 +1,0 @@
-﻿@Modules.Customers.Presntation_HostAddress = http://localhost:5288
-
-GET {{Modules.Customers.Presntation_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
-
