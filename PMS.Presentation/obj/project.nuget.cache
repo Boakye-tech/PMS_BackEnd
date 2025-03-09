@@ -1,6 +1,10 @@
 {
   "version": 2,
+<<<<<<< HEAD
+  "dgSpecHash": "lgqhbKVYL2pRvBAXPunZYLYHB+vgmcqCdy6HI074wrGAESLalZJ55L5flItotVsq/wJSMenbFaiGJKpVz7TVng==",
+=======
   "dgSpecHash": "poBcDjn8Nu2HWWqBseiMR7tL3Qcas400IqCCQoQaH8Pk0j/SgphSht6h1Zodv0SvJQNEBQL57Nf52TlO1jo2WQ==",
+>>>>>>> c2abe003589161cc732e22bbb6c7909bff9238e7
   "success": true,
   "projectFilePath": "/Users/imac5k/Projects/PMS_BackEnd/PMS.Presentation/PMS.Presentation.csproj",
   "expectedPackageFiles": [
