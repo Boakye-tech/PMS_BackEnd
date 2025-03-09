@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/Modules.Billing.Presentation.props" />
-</Project>
