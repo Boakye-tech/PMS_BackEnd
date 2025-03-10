@@ -27,11 +27,33 @@ namespace Modules.Estates.Presentation.Controllers.v1
         //------------------
         [HttpPost]
         [Route("AddProspectiveCustomer")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
         public async Task<ActionResult<ProspectiveCustomerResponseDto>> AddProspectiveCustomer([FromBody] ProspectiveCustomerDto values)
         {
             try
             {
-                return Ok(await _customerMasterService.CreateCustomer(values));
+                //return Ok(await _customerMasterService.CreateCustomer(values));
+
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _customerMasterService.CreateCustomer(values);
+                if (result.IsSuccess == true)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.StatusCode;
+                return status switch
+                {
+                    204 => NoContent(),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(500, result.ErrorResponse),
+                };
             }
             catch (Exception ex)
             {
@@ -41,12 +63,34 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("AddCompanyCustomer")]
-        [Authorize(Policy = "Permission:Customers.CREATE", Roles = "Estates Officer, Estates Manager")]
-        public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CompanyCustomerDto values)
+        [Authorize(Policy = "Permission:Customers.CREATE")]
+        public async Task<ActionResult> AddCompanyCustomer([FromBody] CompanyCustomerDto values)
         {
             try
             {
-                return Ok(await _customerMasterService.CreateCustomer(values));
+                //if(ModelState.IsValid)
+
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _customerMasterService.CreateCustomer(values);
+                if(result.IsSuccess == true)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.StatusCode;
+                return status switch
+                {
+                    204 => NoContent(),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(500, result.ErrorResponse),
+                };
+
             }
             catch (Exception ex)
             {

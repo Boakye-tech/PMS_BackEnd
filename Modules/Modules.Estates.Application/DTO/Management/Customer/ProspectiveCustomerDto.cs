@@ -58,7 +58,6 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [EmailAddress]
         public required string EmailAddress { get; set; }
 
-        [StringLength(20)]
         public int SocialMediaTypeId { get; set; }
 
         [StringLength(50)]
@@ -140,6 +139,20 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public string? Comments { get; set; }
 
     }
+
+    public record ProspectiveCustomerErrorResponseDto : BaseResponseDto
+    {
+    }
+
+    public record ProspectiveCustomerRegistrationResponseDto
+    {
+        public bool IsSuccess { get; set; }
+        public ProspectiveCustomerResponseDto? SuccessResponse { get; set; }
+        public ProspectiveCustomerErrorResponseDto? ErrorResponse { get; set; }
+
+    }
+
+
 
 
 
