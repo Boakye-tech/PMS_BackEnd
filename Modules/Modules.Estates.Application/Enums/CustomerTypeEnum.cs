@@ -9,10 +9,10 @@ namespace Modules.Estates.Application.Enums
 
         INDIVIDUAL = 2,
 
-        [Description("NON-RESIDENT")]
+        [Description("JOINT-OWNERSHIP")]
         JOINT_OWNERSHIP = 3,
 
-        [Description("NON-RESIDENT")]
+        [Description("MULTI-OWNERSHIP")]
         MULTI_OWNERSHIP = 4,
 
         PROSPECTIVE = 5

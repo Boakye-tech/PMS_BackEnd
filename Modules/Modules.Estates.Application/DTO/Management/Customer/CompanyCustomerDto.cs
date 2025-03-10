@@ -81,7 +81,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [EmailAddress]
         public string? ContactPerson_EmailAddress { get; set; }
 
-        [StringLength(12)]
+        [StringLength(255)]
         public string? ContactPerson_Address { get; set; }
 
         public int ContactPerson_IdentificationTypeId { get; set; }
@@ -150,10 +150,46 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(255)]
         public string? Comments { get; set; }
 
-        public CompanyContactPerson? ContactPerson { get; set; }
+        public CompanyContactPersonResponseDto? ContactPerson { get; set; }
 
     }
 
+    public record CompanyContactPersonResponseDto
+    {
+        [StringLength(255)]
+        public string? ContactPerson_FullName { get; set; }
 
+        [StringLength(12)]
+        public string? ContactPerson_PhoneNumber { get; set; }
+
+        [StringLength(255)]
+        [EmailAddress]
+        public string? ContactPerson_EmailAddress { get; set; }
+
+        [StringLength(255)]
+        public string? ContactPerson_Address { get; set; }
+
+        public string? ContactPerson_IdentificationType { get; set; }
+
+        [StringLength(20)]
+        public string? ContactPerson_IdentificationTypeNumber { get; set; }
+
+        public string[]? ContactPerson_IdentificationImages { get; set; }
+    }
+
+
+
+    public record CompanyRegistrationResponseDto
+    {
+        public bool IsSuccess { get; set; }
+        public CompanyCustomerResponseDto? SuccessResponse { get; set; }
+        public CompanyRegistrationErrorResponseDto? ErrorResponse { get; set; }
+    }
+
+    public record CompanyRegistrationErrorResponseDto : BaseResponseDto
+    {
+    }
+
+    
 }
 

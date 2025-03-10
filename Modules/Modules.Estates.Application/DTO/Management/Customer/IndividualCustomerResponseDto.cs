@@ -83,10 +83,12 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
     public record IndividualResidentCustomerResponseDto : IndividualCustomerResponseDto
     {
+        public IndividualNonResidentCustomerResponseDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerResponseDto? Expatriate { get; set; }
 
     }
 
-    public record IndividualNonResidentCustomerResponseDto : IndividualCustomerResponseDto
+    public record IndividualNonResidentCustomerResponseDto //: IndividualCustomerResponseDto
     {
         [StringLength(255)]
         public string? ContactPerson_FullName { get; set; }
@@ -98,10 +100,10 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [EmailAddress]
         public string? ContactPerson_EmailAddress { get; set; }
 
-        [StringLength(12)]
+        [StringLength(255)]
         public string? ContactPerson_Address { get; set; }
 
-        public int ContactPerson_IdentificationTypeId { get; set; }
+        public string? ContactPerson_IdentificationType { get; set; }
 
         [StringLength(20)]
         public string? ContactPerson_IdentificationTypeNumber { get; set; }
@@ -111,14 +113,14 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public string[]? ContactPerson_IdentificationImages { get; set; }
     }
 
-    public record IndividualExpatriateCustomerResponseDto : IndividualCustomerResponseDto
+    public record IndividualExpatriateCustomerResponseDto //: IndividualCustomerResponseDto
     {
         [StringLength(30)]
         public string? ResidentPermitNumber { get; set; }
 
-        public DateTime ResidentPermitDateIssued { get; set; }
+        public DateTime? ResidentPermitDateIssued { get; set; }
 
-        public DateTime ResidentPermitExpiryDate { get; set; }
+        public DateTime? ResidentPermitExpiryDate { get; set; }
     }
 
 

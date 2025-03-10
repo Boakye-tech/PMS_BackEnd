@@ -98,7 +98,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public string? ContactPerson_PhoneNumber { get; set; }
 
         [StringLength(255)]
-        [EmailAddress]
+        //[EmailAddress]
         public string? ContactPerson_EmailAddress { get; set; }
 
         [StringLength(12)]
@@ -117,9 +117,9 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(30)]
         public string? ResidentPermitNumber { get; set; }
 
-        public DateTime ResidentPermitDateIssued { get; set; }
+        public DateTime? ResidentPermitDateIssued { get; set; }
 
-        public DateTime ResidentPermitExpiryDate { get; set; }
+        public DateTime? ResidentPermitExpiryDate { get; set; }
     }
 
 
