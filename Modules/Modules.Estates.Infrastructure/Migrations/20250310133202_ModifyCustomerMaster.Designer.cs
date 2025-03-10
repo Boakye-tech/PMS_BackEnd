@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Modules.Estates.Infrastructure;
 
@@ -11,9 +12,11 @@ using Modules.Estates.Infrastructure;
 namespace Modules.Estates.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250310133202_ModifyCustomerMaster")]
+    partial class ModifyCustomerMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,8 +49,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ContactPerson_Address")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("ContactPerson_EmailAddress")
                         .HasMaxLength(255)
@@ -184,10 +187,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
-                    b.Property<DateTime?>("ResidentPermitDateIssued")
+                    b.Property<DateTime>("ResidentPermitDateIssued")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ResidentPermitExpiryDate")
+                    b.Property<DateTime>("ResidentPermitExpiryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ResidentPermitNumber")

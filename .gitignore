@@ -1,5 +1,10 @@
 ﻿**/bin/
 **/obj/
+bin/
+obj/
+*/bin/
+*/obj/
+
 
 # globs
 Makefile.in

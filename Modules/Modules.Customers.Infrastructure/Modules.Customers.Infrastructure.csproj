@@ -17,6 +17,7 @@
     <None Remove="Persistence\Repositories\Entities\" />
     <None Remove="Extensions\" />
     <None Remove="Services\Azure\" />
+    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BackgroundJobs\" />
@@ -29,6 +30,7 @@
     <Folder Include="Persistence\Repositories\Entities\" />
     <Folder Include="Extensions\" />
     <Folder Include="Services\Azure\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Customers.Domain\Modules.Customers.Domain.csproj" />

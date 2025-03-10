@@ -37,6 +37,7 @@
     <None Remove="OpenAPI\" />
     <None Remove="Controllers\v1\" />
     <None Remove="Controllers\v2\" />
+    <None Remove="Logs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
@@ -44,5 +45,6 @@
     <Folder Include="OpenAPI\" />
     <Folder Include="Controllers\v1\" />
     <Folder Include="Controllers\v2\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
 </Project>

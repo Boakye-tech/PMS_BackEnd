@@ -124,6 +124,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")] 
         public async Task<ActionResult<CustomerTypeReadDto>> UpdateCustomerType([FromBody] CustomerTypeUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
+
             return Ok(await _customerTypeService.UpdateCustomerTypeAsync(values));
         }
 
@@ -188,6 +194,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _genderService.AddGenderAsync(values));
             }
             catch (Exception ex)
@@ -216,6 +229,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<GenderReadDto>> UpdateGender([FromBody] GenderUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
+
             return Ok(await _genderService.UpdateGenderAsync(values));
         }
 
@@ -260,6 +279,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _identificationTypeService.AddIdentificationTypeAsync(values));
             }
             catch (Exception ex)
@@ -288,6 +313,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<IdentificationTypeReadDto>> UpdateCustomerType([FromBody] IdentificationTypeUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
             return Ok(await _identificationTypeService.UpdateIdentificationTypeAsync(values));
         }
 
@@ -331,6 +361,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdby))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _nationalityService.AddNationalityAsync(values));
             }
             catch (Exception ex)
@@ -358,6 +394,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<NationalityReadDto>> UpdateNationality([FromBody] NationalityUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedby))
+            {
+                return Unauthorized();
+            }
             return Ok(await _nationalityService.UpdateNationalityAsync(values));
         }
 
@@ -401,6 +442,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
                 return Ok(await _residentTypeService.AddResidentTypeAsync(values));
             }
             catch (Exception ex)
@@ -429,6 +475,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<ResidentTypeReadDto>> UpdateResidentType([FromBody] ResidentTypeUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
             return Ok(await _residentTypeService.UpdateResidentTypeAsync(values));
         }
 
@@ -460,6 +511,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _socialMediaService.AddSocialMediaAsync(values));
             }
             catch (Exception ex)
@@ -476,6 +534,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<SocialMediaReadDto>> UpdateSocialMedia([FromBody] SocialMediaUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
             return Ok(await _socialMediaService.UpdateSocialMediaAsync(values));
         }
 
@@ -533,6 +596,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdby))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _titleService.AddTitleAsync(values));
             }
             catch (Exception ex)
@@ -561,6 +630,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<TitleReadDto>> UpdateTitle([FromBody] TitleUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedby))
+            {
+                return Unauthorized();
+            }
             return Ok(await _titleService.UpdateTitleAsync(values));
         }
 
@@ -619,6 +693,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdby))
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(await _ownershipTypeService.AddOwnershipTypeAsync(values));
             }
             catch (Exception ex)
@@ -647,6 +727,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<OwnershipTypeReadDto>> UpdateOwnershipType([FromBody] OwnershipTypeUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedby))
+            {
+                return Unauthorized();
+            }
             return Ok(await _ownershipTypeService.UpdateOwnershipTypeAsync(values));
         }
 
