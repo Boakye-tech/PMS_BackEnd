@@ -3,8 +3,8 @@ using System.ComponentModel;
 
 namespace Modules.Estates.Domain.Enums
 {
-	public enum ResidentTypeEnum
-	{
+    public enum ResidentTypeEnum
+    {
         EXPATRIATE = 1,
 
         [Description("NON-RESIDENT")]

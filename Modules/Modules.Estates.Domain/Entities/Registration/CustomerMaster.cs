@@ -2,7 +2,6 @@
 using Modules.Estates.Domain.Entities.Setup.Property;
 using Modules.Estates.Domain.Enums;
 using Modules.Estates.Domain.Interfaces.DomainServices;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Modules.Estates.Domain.Entities.Registration
 {

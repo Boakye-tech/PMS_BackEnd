@@ -1,6 +1,10 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "VPmNlTY0FNn1gkwVRTKgniX1Pb/RXzrXETJQApvNcSG7fP8dIQNqZuS83B+k/tb5yZlvSxvLTNTI8iTwFMtkMA==",
+=======
+  "dgSpecHash": "VU4+RphW2FkDY4OHOHW38wJJP1T3pmNzFImePKDf1RwnJW7Vm3jhnVglnfMQB0o7hzNnnHYsHor9IUyXqfL7hw==",
+>>>>>>> c2abe003589161cc732e22bbb6c7909bff9238e7
   "success": true,
   "projectFilePath": "/Users/imac5k/Projects/PMS_BackEnd/Modules/Modules.Notification.Presentation/Modules.Notification.Presentation.csproj",
   "expectedPackageFiles": [
@@ -27,8 +31,15 @@
     "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore/8.0.11/microsoft.entityframeworkcore.8.0.11.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore.abstractions/8.0.11/microsoft.entityframeworkcore.abstractions.8.0.11.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore.analyzers/8.0.11/microsoft.entityframeworkcore.analyzers.8.0.11.nupkg.sha512",
+<<<<<<< HEAD
     "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore.relational/8.0.11/microsoft.entityframeworkcore.relational.8.0.11.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore.sqlserver/8.0.11/microsoft.entityframeworkcore.sqlserver.8.0.11.nupkg.sha512",
+=======
+    "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore.design/8.0.11/microsoft.entityframeworkcore.design.8.0.11.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore.relational/8.0.11/microsoft.entityframeworkcore.relational.8.0.11.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore.sqlserver/8.0.11/microsoft.entityframeworkcore.sqlserver.8.0.11.nupkg.sha512",
+    "/Users/imac5k/.nuget/packages/microsoft.entityframeworkcore.tools/8.0.11/microsoft.entityframeworkcore.tools.8.0.11.nupkg.sha512",
+>>>>>>> c2abe003589161cc732e22bbb6c7909bff9238e7
     "/Users/imac5k/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.extensions.caching.abstractions/8.0.0/microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
     "/Users/imac5k/.nuget/packages/microsoft.extensions.caching.memory/8.0.1/microsoft.extensions.caching.memory.8.0.1.nupkg.sha512",

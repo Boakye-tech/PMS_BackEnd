@@ -106,6 +106,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public int ContactPerson_IdentificationTypeId { get; set; }
 
+        public string? ContactPerson_IdentificationTypeNumber { get; set; }
+
         public string[]? ContactPerson_IdentificationImages { get; set; }
     }
 
