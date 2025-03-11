@@ -238,14 +238,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Customer locality provided does not exist");
             }
 
-
-            //int counter = customer_locality.CustomerCodeCounter;
-            //counter++;
-
-            //string incrementedNumber = counter.ToString("D4");
-
             string code = new Random().Next(0, 10000).ToString();
-
 
             string locality_customerCode = customer_locality.LocalityInitial!;
             string _customercode = $"{locality_customerCode}{code}";
@@ -309,7 +302,7 @@ namespace Modules.Estates.Domain.Entities.Registration
 
 
         public static async Task<CustomerMaster> CreateCompanyAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, string companyName, int nationalityId, string companyAddress, string digitalAddress, string primaryMobileNumber,
-                                                                    string secondaryMobileNumber,string officeNumber, string whatsAppNumber, string emailAddress, string businessRegistrationNumber, string tinNumber,int socialMediaTypeId, string socialMediaAccount,
+                                                                    string secondaryMobileNumber,string officeNumber, string whatsAppNumber, string emailAddress, string businessRegistrationNumber, string tinNumber,int socialMediaTypeId, string socialMediaAccount, string identificationTypeImageOne, string identificationTypeImageTwo,
                                                                     string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,string contactPerson_IdentificationTypeNumber,
                                                                     string contactPerson_IdentificationTypeImageOne, string contactPerson_IdentificationTypeImageTwo, string comments, bool isDeleted, ICustomerDomainService customerDomainService)
         {
@@ -377,7 +370,6 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Email address must not be null or empty");
             }
 
-
             var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
 
             if (customer_locality is null)
@@ -425,8 +417,11 @@ namespace Modules.Estates.Domain.Entities.Registration
                 SocialMediaAccount = socialMediaAccount,
                 IdentificationTypeId = 0,
                 IdentificationTypeNumber = businessRegistrationNumber,
-                IdentificationTypeImageOne = string.Empty,
-                IdentificationTypeImageTwo = string.Empty,
+                IdentificationTypeImageOne = identificationTypeImageOne,
+                IdentificationTypeImageTwo = identificationTypeImageTwo,
+                IdentificationTypeImageThree = string.Empty,
+                IdentificationTypeImageFour = string.Empty,
+                IdentificationTypeImageFive = string.Empty,
                 Comments = comments,
                 InterestExpressed = string.Empty,
                 DebtorStatus = 0,
@@ -442,8 +437,6 @@ namespace Modules.Estates.Domain.Entities.Registration
                 IsDeleted = false
 
             };
-
-
 
 
         }

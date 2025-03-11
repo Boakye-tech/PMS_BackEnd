@@ -132,6 +132,37 @@ namespace Modules.Estates.Application.UseCases.Management
         public async Task<CompanyRegistrationResponseDto> CreateCustomer(CompanyCustomerDto values) 
         {
             string _socialMediaPlatform = string.Empty; string _residentType = string.Empty;
+            string _imageOne = string.Empty; string _imageTwo = string.Empty;
+            string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
+            int imageCount;
+
+            imageCount = values.IdentificationImages!.Count();
+            switch (imageCount)
+            {
+                case 1:
+                    _imageOne = values.IdentificationImages![0];
+                    break;
+
+                case 2:
+                    _imageOne = values.IdentificationImages![0];
+                    _imageTwo = values.IdentificationImages![1];
+                    break;
+            }
+
+
+            imageCount = values.ContactPerson!.ContactPerson_IdentificationImages!.Count();
+            switch (imageCount)
+            {
+                case 1:
+                    c_imageOne = values.IdentificationImages![0];
+                    break;
+
+                case 2:
+                    c_imageOne = values.IdentificationImages![0];
+                    c_imageTwo = values.IdentificationImages![1];
+                    break;
+            }
+
 
             try
             {
@@ -155,15 +186,16 @@ namespace Modules.Estates.Application.UseCases.Management
                         tinNumber: values.TinNumber!,
                         socialMediaTypeId: values.SocialMediaTypeId,
                         socialMediaAccount: values.SocialMediaAccount!,
-
+                        identificationTypeImageOne: _imageOne,
+                        identificationTypeImageTwo: _imageTwo,
                         contactPerson_FullName: values.ContactPerson!.ContactPerson_FullName!,
                         contactPerson_PhoneNumber: values.ContactPerson.ContactPerson_PhoneNumber!,
                         contactPerson_EmailAddress: values.ContactPerson.ContactPerson_EmailAddress!,
                         contactPerson_Address: values.ContactPerson.ContactPerson_Address!,
                         contactPerson_IdentificationTypeId: values.ContactPerson.ContactPerson_IdentificationTypeId,
                         contactPerson_IdentificationTypeNumber: values.ContactPerson.ContactPerson_IdentificationTypeNumber!,
-                        contactPerson_IdentificationTypeImageOne: values.ContactPerson.ContactPerson_IdentificationImages![0],
-                        contactPerson_IdentificationTypeImageTwo: values.ContactPerson.ContactPerson_IdentificationImages![1] ,
+                        contactPerson_IdentificationTypeImageOne: c_imageOne,
+                        contactPerson_IdentificationTypeImageTwo: c_imageTwo,
                         comments: values.Comments!,
                         isDeleted: false,
                         _domainService
@@ -219,6 +251,7 @@ namespace Modules.Estates.Application.UseCases.Management
                     Picture = customer.Picture,
                     SocialMediaType = _socialMediaPlatform,
                     SocialMediaAccount = customer.SocialMediaAccount,
+                    IdentificationImages = new string[] { customer.IdentificationTypeImageOne!, customer.IdentificationTypeImageTwo! },
                     DebtorStatus = customer.DebtorStatus.ToString(),
                     Comments = customer.Comments,
 
@@ -234,6 +267,36 @@ namespace Modules.Estates.Application.UseCases.Management
                     }
                 };
 
+                //prepare payload and call api
+                OnlineCustomerDetailsDto customer_payload = new OnlineCustomerDetailsDto
+                {
+                    CustomerType = _customerType,
+                    ResidentType = _residentType,
+                    Locality = _localityName!,
+                    CustomerCode = customer.CustomerCode!,
+                    CustomerName = customer.CompanyName!,
+                    Picture = customer.Picture,
+                    Gender = string.Empty,
+                    Nationality = _nationality,
+                    PostalAddress = customer.PostalAddress,
+                    ResidentialAddress = customer.ResidentialAddress,
+                    DigitalAddress = customer.DigitalAddress,
+                    PrimaryMobileNumber = customer.PrimaryMobileNumber!,
+                    SecondaryMobileNumber = customer.SecondaryMobileNumber,
+                    OfficeNumber = customer.OfficeNumber,
+                    WhatsAppNumber = customer.WhatsAppNumber,
+                    EmailAddress = customer.EmailAddress!,
+                    SocialMediaType = _socialMediaPlatform,
+                    SocialMediaAccount = customer.SocialMediaAccount
+                };
+
+                var result = await _moduleComms.SendCustomerDetailsAsync(customer_payload);
+                if (!result)
+                {
+                    _logger.LogWarning($"Failed to send customer details to online customer module {customer_payload.CustomerCode}", customer_payload.CustomerCode);
+                }
+
+
                 return new CompanyRegistrationResponseDto { IsSuccess = true, SuccessResponse = registeredCustomer };
             }
             catch (Exception ex)
@@ -245,55 +308,86 @@ namespace Modules.Estates.Application.UseCases.Management
 
         public async Task<IndividualResidentCustomerResponseDto> CreateCustomer(IndividualResidentCustomerDto values)
         {
+            string _imageOne = string.Empty; string _imageTwo = string.Empty;
+            string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
+            int imageCount;
+
+            imageCount = values.IdentificationImages!.Count();
+            switch (imageCount)
+            {
+                case 1:
+                    _imageOne = values.IdentificationImages![0];
+                    break;
+
+                case 2:
+                    _imageOne = values.IdentificationImages![0];
+                    _imageTwo = values.IdentificationImages![1];
+                    break;
+            }
+
+
+            imageCount = values.NonResident!.ContactPerson_IdentificationImages!.Count();
+            switch (imageCount)
+            {
+                case 1:
+                    c_imageOne = values.IdentificationImages![0];
+                    break;
+
+                case 2:
+                    c_imageOne = values.IdentificationImages![0];
+                    c_imageTwo = values.IdentificationImages![1];
+                    break;
+            }
+
             //throw new NotImplementedException();
             CustomerMaster customer = await CustomerMaster.CreateIndividualAsync
                 (
-                    customerMasterId : values.CustomerMasterId,
-                    customerTypeId : values.CustomerTypeId,
-                    residentTypeId : values.ResidentTypeId,
-                    localityId  : values.LocalityId,
-                    customerCode  : values.CustomerCode!,
-                    titleId  : values.TitleId,
-                    surName  : values.SurName,
-                    otherNames  : values.OtherNames,
+                    customerMasterId: values.CustomerMasterId,
+                    customerTypeId: values.CustomerTypeId,
+                    residentTypeId: values.ResidentTypeId,
+                    localityId: values.LocalityId,
+                    customerCode: values.CustomerCode!,
+                    titleId: values.TitleId,
+                    surName: values.SurName,
+                    otherNames: values.OtherNames,
                     //companyName  : string.Empty,
-                    dateOfBirth  : values.DateOfBirth,
-                    tinNumber  : values.TinNumber!,
-                    picture  : values.Picture!,
-                    genderId  : values.GenderId,
-                    nationalityId  : values.NationalityId,
-                    postalAddress  : values.PostalAddress!,
-                    residentialAddress  : values.ResidentialAddress!,
-                    digitalAddress  : values.DigitalAddress!,
-                    primaryMobileNumber  : values.PrimaryMobileNumber!,
-                    secondaryMobileNumber  : values.SecondaryMobileNumber!,
-                    officeNumber  : values.OfficeNumber!,
-                    whatsAppNumber  : values.WhatsAppNumber!,
-                    emailAddress  : values.EmailAddress,
-                    residentPermitNumber  : values.Expatriate!.ResidentPermitNumber!,
-                    residentPermitDateIssued  : values.Expatriate!.ResidentPermitDateIssued!, //Convert.ToDateTime("1900-01-01"),
-                    residentPermitExpiryDate  : values.Expatriate!.ResidentPermitExpiryDate!, //Convert.ToDateTime("1900-01-01"),
-                    socialMediaTypeId  : values.SocialMediaTypeId,
-                    socialMediaAccount  : values.SocialMediaAccount!,
-                    identificationTypeId  : values.IdentificationTypeId,
-                    identificationTypeNumber  : values.IdentificationTypeNumber!,
-                    identificationTypeImageOne  : values.IdentificationImages![0]!,
-                    identificationTypeImageTwo  : values.IdentificationImages[1]!,
-                    comments  : values.Comments!,
-                    interestExpressed  : string.Empty,
-                    debtorStatus  : 0,
-                    parentCode  : string.Empty,
-                    contactPerson_FullName  : string.Empty,
-                    contactPerson_PhoneNumber  : string.Empty,
-                    contactPerson_EmailAddress  : string.Empty,
-                    contactPerson_Address  : string.Empty,
-                    contactPerson_IdentificationTypeId  : 0,
-                    contactPerson_IdentificationTypeNumber  : string.Empty,
-                    contactPerson_IdentificationTypeImageOne  : string.Empty,
-                    contactPerson_IdentificationTypeImageTwo: string.Empty,
-                    isDeleted : false,
+                    dateOfBirth: values.DateOfBirth,
+                    tinNumber: values.TinNumber!,
+                    picture: values.Picture!,
+                    genderId: values.GenderId,
+                    nationalityId: values.NationalityId,
+                    postalAddress: values.PostalAddress!,
+                    residentialAddress: values.ResidentialAddress!,
+                    digitalAddress: values.DigitalAddress!,
+                    primaryMobileNumber: values.PrimaryMobileNumber!,
+                    secondaryMobileNumber: values.SecondaryMobileNumber!,
+                    officeNumber: values.OfficeNumber!,
+                    whatsAppNumber: values.WhatsAppNumber!,
+                    emailAddress: values.EmailAddress,
+                    residentPermitNumber: values.Expatriate!.ResidentPermitNumber!,
+                    residentPermitDateIssued: values.Expatriate!.ResidentPermitDateIssued!, //Convert.ToDateTime("1900-01-01"),
+                    residentPermitExpiryDate: values.Expatriate!.ResidentPermitExpiryDate!, //Convert.ToDateTime("1900-01-01"),
+                    socialMediaTypeId: values.SocialMediaTypeId,
+                    socialMediaAccount: values.SocialMediaAccount!,
+                    identificationTypeId: values.IdentificationTypeId,
+                    identificationTypeNumber: values.IdentificationTypeNumber!,
+                    identificationTypeImageOne: _imageOne,
+                    identificationTypeImageTwo: _imageTwo,
+                    comments: values.Comments!,
+                    interestExpressed: string.Empty,
+                    debtorStatus: 0,
+                    parentCode: string.Empty,
+                    contactPerson_FullName: values.NonResident.ContactPerson_FullName!,
+                    contactPerson_PhoneNumber: values.NonResident.ContactPerson_PhoneNumber!,
+                    contactPerson_EmailAddress: values.NonResident.ContactPerson_EmailAddress!,
+                    contactPerson_Address: values.NonResident.ContactPerson_Address!,
+                    contactPerson_IdentificationTypeId: values.NonResident.ContactPerson_IdentificationTypeId,
+                    contactPerson_IdentificationTypeNumber: values.NonResident.ContactPerson_IdentificationTypeNumber!,
+                    contactPerson_IdentificationTypeImageOne: c_imageOne,
+                    contactPerson_IdentificationTypeImageTwo: c_imageOne,
+                    isDeleted: false,
                     _domainService
-                );
+                ); 
 
             customer.CreatedBy = values.CreatedBy;
             customer.CreatedOn = DateTime.UtcNow;
@@ -332,8 +426,8 @@ namespace Modules.Estates.Application.UseCases.Management
             }
 
             var customername = string.Concat(_title," ",customer.OtherNames," ",customer.SurName);
-            //prepare payload and call api
 
+            //prepare payload and call api
             OnlineCustomerDetailsDto customer_payload = new OnlineCustomerDetailsDto
             {
                 CustomerType = _customerType,

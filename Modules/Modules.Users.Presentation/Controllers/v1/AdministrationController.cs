@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using Asp.Versioning;
+using Azure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Modules.Common.Infrastructure.Authentication;
@@ -70,7 +71,15 @@ namespace Modules.Users.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                return Ok(await _channelService.AddChannelAsync(values));
+                var result = await _channelService.AddChannelAsync(values);
+                if (result is null)
+                {
+                    return BadRequest(result);
+                }
+
+                return StatusCode(StatusCodes.Status201Created, result);
+
+                //return Ok(await _channelService.AddChannelAsync(values));
             }
             catch (Exception ex)
             {
@@ -89,7 +98,13 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Unauthorized();
             }
 
-            return Ok(await _channelService.UpdateChannelAsync(values));
+            var result = await _channelService.UpdateChannelAsync(values);
+            if (result is null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
 
         [HttpDelete("DeleteChannel/{channelId}")]
@@ -652,7 +667,14 @@ namespace Modules.Users.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                return Ok(await _departmentService.AddDepartmentAsync(values));
+                var result = await _departmentService.AddDepartmentAsync(values);
+                if(result is null)
+                {
+                    return BadRequest(result);
+                }
+
+                return StatusCode(StatusCodes.Status201Created, result);
+                
             }
             catch (Exception ex)
             {
@@ -662,12 +684,19 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPut]
         [Route("UpdateDepartment")]
+        [Authorize(Policy = "Permission:Users.UPDATE")]
         public async Task<ActionResult<DepartmentReadDto>> UpdateDepartment([FromBody] DepartmentUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.ModifiedBy))
             {
                 return Unauthorized();
+            }
+
+            var result = _departmentService.GetDepartmentAsync(values.DepartmentId);
+            if(result is null)
+            {
+                return BadRequest();
             }
 
             return Ok(await _departmentService.UpdateDepartmentAsync(values));
@@ -728,7 +757,15 @@ namespace Modules.Users.Presentation.Controllers.v1
                 {
                     return Unauthorized();
                 }
-                return Ok(await _departmentUnitService.AddDepartmentUnitAsync(values));
+
+                var result = await _departmentUnitService.AddDepartmentUnitAsync(values);
+                if (result is null)
+                {
+                    return BadRequest(result);
+                }
+
+                return StatusCode(StatusCodes.Status201Created, result);
+
             }
             catch (Exception ex)
             {
@@ -744,6 +781,12 @@ namespace Modules.Users.Presentation.Controllers.v1
             if (!string.Equals(userId, values.ModifiedBy))
             {
                 return Unauthorized();
+            }
+
+            var result = _departmentUnitService.GetDepartmentUnitAsync(values.UnitId);
+            if (result is null)
+            {
+                return BadRequest();
             }
 
             return Ok(await _departmentUnitService.UpdateDepartmentUnitAsync(values));
@@ -799,8 +842,15 @@ namespace Modules.Users.Presentation.Controllers.v1
         {
             try
             {
-                await _identificationTypeService.AddIdentificationTypeAsync(values);
-                return Ok( new { response = "200" });
+                
+                var result = await _identificationTypeService.AddIdentificationTypeAsync(values);
+                if (result is null)
+                {
+                    return BadRequest(result);
+                }
+
+                return StatusCode(StatusCodes.Status201Created, new { response = result });
+                
             }
             catch (Exception ex)
             {
@@ -812,11 +862,6 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("UpdateIdentificationType")]
         public async Task<ActionResult<ChannelReadDto>> UpdateIdentificationType([FromBody] IdentificationTypeDto values)
         {
-            //var userId = _userContextService.GetUserId();
-            //if (!string.Equals(userId, values.))
-            //{
-            //    return Unauthorized();
-            //}
 
             var result = await _identificationTypeService.UpdateIdentificationTypeAsync(values);
 

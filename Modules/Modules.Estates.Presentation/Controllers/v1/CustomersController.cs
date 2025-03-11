@@ -104,7 +104,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
-                if(values.CustomerTypeId == (int)CustomerTypeEnum.INDIVIDUAL && values.ResidentTypeId == (int)ResidentTypeEnum.EXPATRIATE)
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
+                if (values.CustomerTypeId == (int)CustomerTypeEnum.INDIVIDUAL && values.ResidentTypeId == (int)ResidentTypeEnum.EXPATRIATE)
                 {
                     if (values.Expatriate is null)
                     {

@@ -195,6 +195,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             //throw new NotImplementedException();
             var user = await _userManager.FindByIdAsync(accountVerification.UserId!);
 
+            
             if(user is null)
             {
                 _logger.LogWarning($"User account with id {accountVerification.UserId} not found.", accountVerification.UserId);
@@ -209,7 +210,23 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 };
             }
 
-            if((RegistrationStatus)user.Status != RegistrationStatus.Pending)
+
+            if((UserAccountType)user.UserType != UserAccountType.Customer)
+            {
+                _logger.LogWarning($"User account with id {accountVerification.UserId} is not a customer account type. Account cannot be verified", accountVerification.UserId);
+                return new CustomerVerificationResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new CustomerVerificationErrorResponseDto
+                    {
+                        StatusCode = StatusCodes.Status404NotFound,
+                        StatusMessage = $"User account with id {accountVerification.UserId} is not a customer account type. Account cannot be verified"
+                    }
+                };
+            }
+
+
+            if ((RegistrationStatus)user.Status != RegistrationStatus.Pending)
             {
                 _logger.LogWarning($"User account with id {accountVerification.UserId} is not in a pending state. Account cannot be verified", accountVerification.UserId);
                 return new CustomerVerificationResponseDto

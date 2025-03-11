@@ -150,64 +150,71 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
 
         public async Task<string> VerifyToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode)
         {
-            if(string.IsNullOrWhiteSpace(mobilePhoneNumber_OR_emailAddress) is true && string.IsNullOrWhiteSpace(tokenCode) is true)
+            try
             {
-                return "Invalid mobile phone number or email address provided";
-            }
+                if (string.IsNullOrWhiteSpace(mobilePhoneNumber_OR_emailAddress) is true && string.IsNullOrWhiteSpace(tokenCode) is true)
+                {
+                    return "Invalid mobile phone number or email address provided";
+                }
 
-            if (emailRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+                if (emailRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+                {
+                    emailAddress = mobilePhoneNumber_OR_emailAddress;
+                }
+
+                if (emailAddress == string.Empty && !phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+                {
+                    return "Invalid mobile phone number provided";
+                }
+
+                if (phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+                {
+                    mobilePhoneNumber = mobilePhoneNumber_OR_emailAddress;
+                }
+
+                if (emailAddress == string.Empty && mobilePhoneNumber == string.Empty)
+                {
+                    return "Invalid mobile phone number or email address provided";
+                }
+
+                var checkToken = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode);
+                if (checkToken is null)
+                {
+                    return "Invalid OTP. Please enter the correct OTP.";
+                }
+
+
+                var checkTokenExpiry = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode && t.ExpiryDate <= DateTime.UtcNow);
+                if (checkTokenExpiry is not null)
+                {
+                    return "Sorry the OTP provided has expired, please request for a new OTP.";
+                }
+
+                var checkVerified = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode && t.IsVerified == true);
+                if (checkVerified is not null)
+                {
+                    return "Sorry the OTP provided has already been used, please request for a new OTP.";
+                }
+
+
+                var result = _userDbContext.TokenStore.FirstOrDefault(t => t.Token == tokenCode && t.IsVerified == false && t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress);
+                if (result is null)
+                {
+                    return "Not Verified";
+                }
+
+                result!.IsVerified = true;
+                result.VerifiedDate = DateTime.UtcNow;
+
+                _userDbContext.TokenStore.Update(result);
+                await _userDbContext.SaveChangesAsync();
+
+                return "Verified";
+            }
+            catch (Exception ex)
             {
-                emailAddress = mobilePhoneNumber_OR_emailAddress;
+                return $"500 - {ex.InnerException!.Message}";
             }
-
-            if (emailAddress == string.Empty && !phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
-            {
-                return "Invalid mobile phone number provided";
-            }
-
-            if (phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
-            {
-                mobilePhoneNumber = mobilePhoneNumber_OR_emailAddress;
-            }
-
-            if (emailAddress == string.Empty && mobilePhoneNumber == string.Empty)
-            {
-                return "Invalid mobile phone number or email address provided";
-            }
-
-            var checkToken = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode);
-            if (checkToken is null)
-            {
-                return "Invalid OTP. Please enter the correct OTP.";
-            }
-
-
-            var checkTokenExpiry = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode && t.ExpiryDate <= DateTime.UtcNow);
-            if (checkTokenExpiry is not null)
-            {
-                return "Sorry the OTP provided has expired, please request for a new OTP.";
-            }
-
-            var checkVerified = _userDbContext.TokenStore.SingleOrDefault(t => t.Token == tokenCode && t.IsVerified == true);
-            if (checkVerified is not null)
-            {
-                return "Sorry the OTP provided has already been used, please request for a new OTP.";
-            }
-
-
-            var result = _userDbContext.TokenStore.SingleOrDefault(t => t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress && t.Token == tokenCode && t.IsVerified == false);
-            if (result is null) 
-            {
-                return "Not Verified";
-            }
-
-            result!.IsVerified = true;
-            result.VerifiedDate = DateTime.UtcNow;
-
-            _userDbContext.TokenStore.Update(result);
-            await _userDbContext.SaveChangesAsync();
-
-            return "Verified";
         }
 
         public string VerifyTokenExpiry(string mobilePhoneNumber_OR_emailAddress, string tokenCode)

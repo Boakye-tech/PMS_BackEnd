@@ -7,7 +7,7 @@ namespace Modules.Users.Application.Validations.UserAccounts
     {
 		public CustomerRegistrationRequestDtoValidator()
 		{
-            RuleFor(x => x.CustomerCode).NotEmpty().Length(6, 8).Matches(@"^[1-9][A-Z]{1,2}\d{4}$").WithMessage("Invalid Customer Code. Please provide a valid code.");
+            RuleFor(x => x.CustomerCode).NotEmpty().Length(6, 7).Matches(@"^[1-9][A-Z]{1,2}\d{3,4}$").WithMessage("Invalid Customer Code. Please provide a valid code.");
             RuleFor(x => x.FirstName).NotEmpty().Length(2, 50).WithMessage("Customer firstname is required");
             RuleFor(x => x.LastName).NotEmpty().Length(2, 100).WithMessage("Customer lastName is required");
             RuleFor(x => x.PhoneNumber).NotEmpty().Length(9, 12).Matches("^([0-9]{10})$").WithMessage("Invalid Phone Number.");

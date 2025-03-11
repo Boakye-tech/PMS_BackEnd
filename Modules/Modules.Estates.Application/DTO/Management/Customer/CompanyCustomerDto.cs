@@ -62,6 +62,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(255)]
         public string? Comments { get; set; }
 
+        public string[]? IdentificationImages { get; set; }
+
         public CompanyContactPerson? ContactPerson { get; set; }
 
         [StringLength(50)]
@@ -144,6 +146,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         [StringLength(50)]
         public string? SocialMediaAccount { get; set; }
+
+        public string[]? IdentificationImages { get; set; }
 
         public string? DebtorStatus { get; set; }
 
