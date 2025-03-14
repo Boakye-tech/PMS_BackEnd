@@ -18,11 +18,30 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+if (builder.Environment.IsDevelopment())
+{
+    var solutionLevelConfigPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", "appsettings.Development.json");
+
+    if (File.Exists(solutionLevelConfigPath))
+    {
+        builder.Configuration.AddJsonFile(solutionLevelConfigPath, optional: false, reloadOnChange: true);
+    }
+}
+
+if (builder.Environment.IsProduction())
+{
+    var solutionLevelConfigPath = Path.Combine(Directory.GetCurrentDirectory() ?? "", "appsettings.json");
+    Console.WriteLine($"Config Path: {solutionLevelConfigPath}");
+    if (File.Exists(solutionLevelConfigPath))
+    {
+        builder.Configuration.AddJsonFile(solutionLevelConfigPath, optional: false, reloadOnChange: true);
+    }
+}
+
 // Add services to the container.
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
-
-// Add services to the container.
 
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 

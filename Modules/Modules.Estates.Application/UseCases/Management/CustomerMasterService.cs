@@ -198,6 +198,7 @@ namespace Modules.Estates.Application.UseCases.Management
                         contactPerson_IdentificationTypeImageTwo: c_imageTwo,
                         comments: values.Comments!,
                         isDeleted: false,
+                        isPrimary: true,
                         _domainService
                     );
                 customer.PostalAddress = values.CompanyAddress;
@@ -386,6 +387,7 @@ namespace Modules.Estates.Application.UseCases.Management
                     contactPerson_IdentificationTypeImageOne: c_imageOne,
                     contactPerson_IdentificationTypeImageTwo: c_imageOne,
                     isDeleted: false,
+                    isPrimary: true,
                     _domainService
                 ); 
 
@@ -503,15 +505,11 @@ namespace Modules.Estates.Application.UseCases.Management
             };
         }
 
-        //public Task<IndividualNonResidentCustomerResponseDto> CreateCustomer(IndividualNonResidentCustomerDto values)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<IndividualExpatriateCustomerResponseDto> CreateCustomer(IndividualExpatriateCustomerDto values)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public Task<string> CreateCustomer(JointOwnershipCustomerDto values)
+        {
+            throw new NotImplementedException();
+            
+        }
 
         public Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync()
         {
@@ -520,8 +518,6 @@ namespace Modules.Estates.Application.UseCases.Management
 
         public async Task<IEnumerable<CustomerListDto>> GetCustomerListAsync()
         {
-            //throw new NotImplementedException();
-
             var customersQuery = from a in await _unitOfWork.CustomerMaster.GetAll()
                                  join b in await _unitOfWork.Title.GetAll()
                                  on a.TitleId equals b.TitleId into titleGroup
@@ -534,21 +530,12 @@ namespace Modules.Estates.Application.UseCases.Management
                                  select new CustomerListDto
                                  {
                                      CustomerCode = a.CustomerCode,
-                                     //Title = title != null ? title.Titles : null, // Handle NULL values from left join
-                                     //SurName = a.SurName,
-                                     //OtherNames = a.OtherNames,
-                                     //CompanyName = a.CompanyName,
-                                     FullName = string.Concat(title != null ? title.Titles : null, a.SurName, a.OtherNames, a.CompanyName),
+                                     FullName = string.Concat(title != null ? title.Titles : null," ", a.SurName, " ", a.OtherNames, " ", a.CompanyName),
                                      Locality = locality != null ? locality.LocalityName : string.Empty, // Handle NULL values from left join
                                      EmailAddress = a.EmailAddress,
                                      PrimaryMobileNumber = a.PrimaryMobileNumber,
                                      DebtorStatus = a.DebtorStatus == 90 ? "STOP DEBIT" : string.Empty 
                                  };
-
-            // Execute asynchronously
-            //var customers = customersQuery.ToList();// .ToListAsync();
-
-            //return customers;
 
             return customersQuery.ToList();
 

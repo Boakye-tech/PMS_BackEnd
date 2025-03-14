@@ -10,7 +10,7 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\PMS.Presentation\bin\Release\net8.0\Modules.Estates.Presentation.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net8.0\Modules.Estates.Presentation.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
@@ -47,4 +47,15 @@
     <Folder Include="Controllers\v2\" />
     <Folder Include="Logs\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\*.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </None>
+</ItemGroup>
+
+
+
+
 </Project>

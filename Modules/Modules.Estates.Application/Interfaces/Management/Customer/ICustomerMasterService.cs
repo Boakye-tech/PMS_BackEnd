@@ -9,7 +9,9 @@ namespace Modules.Estates.Application.Interfaces.Management.Customer
         Task<CompanyRegistrationResponseDto> CreateCustomer(CompanyCustomerDto values);
 
         Task<IndividualResidentCustomerResponseDto> CreateCustomer(IndividualResidentCustomerDto values);
-        //Task<IndividualNonResidentCustomerResponseDto> CreateCustomer(IndividualNonResidentCustomerDto values);
+
+        Task<string> CreateCustomer(JointOwnershipCustomerDto values);
+
         //Task<IndividualExpatriateCustomerResponseDto> CreateCustomer(IndividualExpatriateCustomerDto values);
 
         Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync();

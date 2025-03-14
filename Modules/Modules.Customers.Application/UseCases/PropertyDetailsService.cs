@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 
 namespace Modules.Customers.Application.UseCases
@@ -60,6 +61,7 @@ namespace Modules.Customers.Application.UseCases
             string[] images = new string[] { propertydetails!.ImageOne!, propertydetails.ImageTwo!, propertydetails.ImageThree!, propertydetails.ImageFour!, propertydetails.ImageFive! };
             PropertyDetailsReadDto propertyDetails = _mapper.Map<PropertyDetailsReadDto>(propertydetails);
             propertyDetails.PropertyImages = images;
+            propertyDetails.Address = $"{propertyDetails.Locality} - BLOCK {propertyDetails.BlockNumber}, PLOT NUMBER {propertyDetails.PlotNumber}";
 
             return propertyDetails; 
 

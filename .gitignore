@@ -6,6 +6,31 @@ obj/
 */obj/
 
 
+**/appsettings.users.json
+**/appsettings.users.Development.json
+
+**/appsettings.notification.json
+**/appsettings.notification.Development.json
+
+**/appsettings.finance.json
+**/appsettings.finance.Development.json
+
+**/appsettings.estates.json
+**/appsettings.estates.Development.json
+
+**/appsettings.customers.json
+**/appsettings.customers.Development.json
+
+**/appsettings.billing.json
+**/appsettings.billing.Development.json
+
+
+**/appsettings.Development.json
+
+
+
+
+
 # globs
 Makefile.in
 *.userprefs

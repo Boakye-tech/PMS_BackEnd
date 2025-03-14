@@ -8,7 +8,29 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("appsettings.billing.json", optional: false, reloadOnChange: true);
+if (builder.Environment.IsDevelopment())
+{
+    var currentDirectory = Directory.GetCurrentDirectory();
+    var solutionDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName ?? "";
+    var solutionLevelConfigPath = Path.Combine(solutionDirectory, "appsettings.Development.json");
+
+    if (File.Exists(solutionLevelConfigPath))
+    {
+        builder.Configuration.AddJsonFile(solutionLevelConfigPath, optional: false, reloadOnChange: true);
+    }
+}
+
+if (builder.Environment.IsProduction())
+{
+    var currentDirectory = Directory.GetCurrentDirectory();
+    var solutionDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName ?? "";
+    var solutionLevelConfigPath = Path.Combine(solutionDirectory, "appsettings.json");
+
+    if (File.Exists(solutionLevelConfigPath))
+    {
+        builder.Configuration.AddJsonFile(solutionLevelConfigPath, optional: false, reloadOnChange: true);
+    }
+}
 
 //Add Serilog Configuration
 //builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));

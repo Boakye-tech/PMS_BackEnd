@@ -163,10 +163,16 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
         [HttpPost]
         [Route("AddJointCustomer")]
-        public ActionResult<IndividualCustomerResponseDto> AddJointCustomer([FromBody] JointOwnershipCustomerDto values)
+        public ActionResult AddJointCustomer([FromBody] JointOwnershipCustomerDto values)
         {
             try
             {
+                var cnt = values.CoLesse!.Count();
+                if (cnt == 0)
+                {
+                    return BadRequest("Co-lesse cannot be empty or null");
+                }
+
                 return Ok();
                 //return Ok(await _customerMasterService.CreateCustomer(values));
             }
