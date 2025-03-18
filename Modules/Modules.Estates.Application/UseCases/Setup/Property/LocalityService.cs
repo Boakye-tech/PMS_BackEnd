@@ -11,7 +11,7 @@ public class LocalityService : ILocalityService
         _mapper = mapper;
     }
 
-    public async Task<LocalityReadDto> AddLocalityAsync(LocalityCreateDto values)
+    public async Task<LocalityReadDto> CreateLocalityAsync(LocalityCreateDto values)
     {
         Locality locality = new(values.LocalityId, values.LocalityInitial!, values.LocalityName!,values.CustomerCode, values.CustomerCodeCounter)
         {
@@ -58,5 +58,13 @@ public class LocalityService : ILocalityService
         return new LocalityReadDto(locality.LocalityId, locality.LocalityInitial!, locality.LocalityName!, locality.CustomerCode!, locality.CustomerCodeCounter);
 
     }
+
+    public async Task<string> DeleteLocality(int localityId)
+    {
+        var locality = await _unitOfWork.Locality.Get(localityId);
+        _unitOfWork.Locality.Delete(locality!);
+        return "success";
+    }
+
 }
 

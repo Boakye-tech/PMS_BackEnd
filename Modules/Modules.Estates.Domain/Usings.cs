@@ -8,5 +8,9 @@ global using Modules.Estates.Domain.Entities.Registration;
 global using Modules.Estates.Domain.Interfaces.Entities.Setup.Property;
 global using Modules.Estates.Domain.Interfaces.Entities.Setup.Customer;
 
-
+global using Modules.Estates.Domain.Enums;
+global using Modules.Estates.Domain.Interfaces.DomainServices;
+global using Modules.Estates.Domain.Events;
+global using Modules.Estates.Domain.Events.Customer;
+global using Modules.Estates.Domain.Constants;
 

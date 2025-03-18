@@ -5,7 +5,7 @@ using Modules.Estates.Application.DTO.Management.Property;
 using Modules.Estates.Application.Interfaces.Management.Property;
 using Modules.Estates.Domain.Entities.Registration;
 
-namespace Modules.Estates.Application.UseCases.Management
+namespace Modules.Estates.Application.UseCases.Management.Property
 {
 	public class PropertyMasterService : IPropertyMasterService
 	{

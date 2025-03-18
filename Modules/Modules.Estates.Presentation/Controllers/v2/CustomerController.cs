@@ -342,7 +342,7 @@ namespace Modules.Estates.Presentation.Controllers.v2
 
         [HttpPost]
         [Route("AddCompanyCustomer")]
-        public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CompanyCustomerDto values)
+        public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CreateCompanyCustomerDto values)
         {
             try
             {

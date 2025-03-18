@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Threading.Tasks;
 using Asp.Versioning;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Common.Infrastructure.Authentication;
+using Modules.Estates.Application.Enums;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -742,8 +745,30 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _ownershipTypeService.DeleteOwnershipTypeAsync(ownershipTypeId));
         }
 
+
+        //----marital status from enum
+        [HttpGet]
+        [Route("MaritalStatus")]
+        //[AllowAnonymous]
+        public IActionResult MaritalStatus()
+        {
+            var statuses = Enum.GetValues(typeof(MaritalStatusEnum))
+                                   .Cast<MaritalStatusEnum>()
+                                   .Select(e => new
+                                   {
+                                       Id = (int)e,
+                                       Name = e.ToString(),
+                                       DisplayName = e.GetType()
+                                                     .GetField(e.ToString())!
+                                                      .GetCustomAttribute<DescriptionAttribute>()?
+                                                      .Description
+
+                                   });
+            return Ok(statuses);
+        }
+
         //------------------
-       
+
         /// <summary>
         /// Returns a list of customers
         /// </summary>

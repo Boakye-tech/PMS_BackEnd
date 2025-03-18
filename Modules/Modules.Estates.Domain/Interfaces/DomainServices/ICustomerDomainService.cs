@@ -11,6 +11,7 @@ namespace Modules.Estates.Domain.Interfaces.DomainServices
         Task<bool> NationalityExists(int nationalityId);
         Task<bool> SocialMediaExists(int socialMediaTypeId);
         Task<bool> IdentificationTypeExists(int identificationTypeId);
+        Task<bool> CustomerExists(int CustomerMasterId);
 
         Task<Locality> GetLocalityDetails(int localityId);
     }

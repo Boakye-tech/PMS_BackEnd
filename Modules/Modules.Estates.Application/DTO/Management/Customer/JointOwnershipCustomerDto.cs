@@ -5,6 +5,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 {
 	public record JointOwnershipCustomerDto : IndividualCustomerDto
     {
+        public string? CreatedBy { get; set; }
         public string? MaritalStatus { get; set; }
         public DateTime? DateOfMarriage { get; set; }
 
@@ -15,13 +16,24 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
     }
 
-    public record CoLesseCustomerDto : JointCustomerDto //IndividualCustomerDto
+    public record UpdateJointOwnershipCustomerDto : IndividualCustomerDto
+    {
+        public string? ModifiedBy { get; set; }
+        public string? MaritalStatus { get; set; }
+        public DateTime? DateOfMarriage { get; set; }
+
+        public IndividualNonResidentCustomerDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
+
+        public IEnumerable<CoLesseCustomerDto>? CoLesse { get; set; }
+
+    }
+
+    public record CoLesseCustomerDto : JointCustomerDto 
     {
         public IndividualNonResidentCustomerDto? NonResident { get; set; }
         public IndividualExpatriateCustomerDto? Expatriate { get; set; }
     }
-
-
 
 
     public record JointCustomerDto

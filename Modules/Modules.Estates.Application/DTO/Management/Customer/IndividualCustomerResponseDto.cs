@@ -88,7 +88,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
     }
 
-    public record IndividualNonResidentCustomerResponseDto //: IndividualCustomerResponseDto
+    public record IndividualNonResidentCustomerResponseDto 
     {
         [StringLength(255)]
         public string? ContactPerson_FullName { get; set; }
@@ -108,12 +108,10 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(20)]
         public string? ContactPerson_IdentificationTypeNumber { get; set; }
 
-        //[StringLength(255)]
-        //public string? ContactPerson_IdentificationTypeImage { get; set; }
         public string[]? ContactPerson_IdentificationImages { get; set; }
     }
 
-    public record IndividualExpatriateCustomerResponseDto //: IndividualCustomerResponseDto
+    public record IndividualExpatriateCustomerResponseDto 
     {
         [StringLength(30)]
         public string? ResidentPermitNumber { get; set; }

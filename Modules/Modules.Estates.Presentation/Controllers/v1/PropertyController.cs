@@ -928,7 +928,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _localityService.AddLocalityAsync(values));
+            return Ok(await _localityService.CreateLocalityAsync(values));
         }
         catch (Exception ex)
         {

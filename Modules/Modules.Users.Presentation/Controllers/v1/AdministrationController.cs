@@ -558,7 +558,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         [HttpPut]
         [Route("ActivateUserAccount")]
-        [Authorize(Policy = "Permission:Users.ACTIVATE", Roles = "MIS Officer")]
+        [Authorize(Policy = "Permission:Users.ACTIVATE")] //, Roles = "MIS Officer"
         public async Task<ActionResult> ActivateUserAccount([FromBody] ActivateUserAccountDto values)
         {
             var userId = _userContextService.GetUserId();

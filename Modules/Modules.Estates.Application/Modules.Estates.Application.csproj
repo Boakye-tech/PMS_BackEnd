@@ -34,6 +34,8 @@
     <None Remove="DTO\Management\ModuleServices\" />
     <None Remove="UseCases\ModuleServices\" />
     <None Remove="Enums\" />
+    <None Remove="UseCases\Management\Customer\" />
+    <None Remove="UseCases\Management\Property\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -61,6 +63,8 @@
     <Folder Include="DTO\Management\ModuleServices\" />
     <Folder Include="UseCases\ModuleServices\" />
     <Folder Include="Enums\" />
+    <Folder Include="UseCases\Management\Customer\" />
+    <Folder Include="UseCases\Management\Property\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

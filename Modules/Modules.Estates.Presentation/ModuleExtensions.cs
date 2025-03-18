@@ -1,7 +1,9 @@
 ﻿using System;
 using FluentValidation;
 using Modules.Estates.Application.Interfaces.ModuleServices;
+using Modules.Estates.Application.Services;
 using Modules.Estates.Application.UseCases.ModuleServices;
+using Modules.Estates.Domain.Events;
 
 namespace Modules.Estates.Presentation;
 
@@ -47,8 +49,9 @@ public static class ModuleExtensions
 
         services.AddScoped<ICustomerMasterService, CustomerMasterService>();
 
-        services.AddHttpClient<IIdentificationTypeService, IdentificationTypeService>();
+        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 
+        services.AddHttpClient<IIdentificationTypeService, IdentificationTypeService>();
         services.AddHttpClient<IModuleCommunicationServices, ModuleCommunicationServices>();
 
 

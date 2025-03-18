@@ -62,6 +62,8 @@ public class ApplicationDbContext : ModuleDbContext
             .HasIndex(cm => cm.CustomerCode)
             .IsUnique(true);
 
+        modelBuilder.Entity<CustomerMaster>().Ignore(x => x.DomainEvents);
+
         //modelBuilder.Entity<ApartmentTypes>
 
         //modelBuilder.ApplyConfiguration(new AllocationTypeConfiguration());
