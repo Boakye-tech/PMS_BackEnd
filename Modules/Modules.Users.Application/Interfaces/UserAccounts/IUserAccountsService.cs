@@ -38,7 +38,7 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 
         //Task<bool> ActivateCustomerAccount(UserRequestParameter mobileNumber);
 
-        Task<GenericResponseDto> UpdateAccountDetails(UpdateUserDto values);
+        Task<UpdateAccountDetailsResponseDto> UpdateAccountDetails(UpdateUserDto values);
     }
 }
 

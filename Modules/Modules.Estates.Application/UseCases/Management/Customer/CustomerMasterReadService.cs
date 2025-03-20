@@ -120,7 +120,9 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 SocialMediaType = _socialMediaPlatform,
                 SocialMediaAccount = customer.SocialMediaAccount,
                 IdentificationImages = new string[] { customer.IdentificationTypeImageOne!, customer.IdentificationTypeImageTwo! },
-                DebtorStatus = customer.DebtorStatus.ToString(),
+                DebtorStatus = customer.DebtorStatus == 0 ? "Active" :
+                               customer.DebtorStatus == 1 ? "Pending" :
+                               customer.DebtorStatus == 90 ? "STOP DEBIT" : "Unknown",
                 Comments = customer.Comments,
 
                 ContactPerson = new CompanyContactPersonResponseDto
@@ -192,7 +194,9 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 IdentificationImages = new string[] { customer.IdentificationTypeImageOne!, customer.IdentificationTypeImageTwo!, },
                 IdentificationTypeNumber = customer.IdentificationTypeNumber,
                 Comments = customer.Comments,
-                DebtorStatus = customer.DebtorStatus.ToString(),
+                DebtorStatus = customer.DebtorStatus == 0 ? "Active" :
+                               customer.DebtorStatus == 1 ? "Pending" :
+                               customer.DebtorStatus == 90 ? "STOP DEBIT" : "Unknown",
                 NonResident = new IndividualNonResidentCustomerResponseDto
                 {
                     ContactPerson_FullName = customer.ContactPerson_FullName,
@@ -210,78 +214,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
         public async Task<JointOwnershipCustomerResponseDto> GetJointCustomerDetails(string customerCode)
         {
             var pr_customer = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
-
-            if (!string.IsNullOrWhiteSpace(pr_customer!.ParentCode))
-            {
-                customerCode = pr_customer.ParentCode;
-            }
-
-            var co_customers = await _unitOfWork.CustomerMaster.GetAll(cm => cm.ParentCode == customerCode);
             pr_customer = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
-
-            List<CoLesseCustomerResponseDto> coLesses = new List<CoLesseCustomerResponseDto>();
-
-            foreach (var customer in co_customers)
-            {
-                string co_socialMediaPlatform = string.Empty; string co_contactperson_identification = string.Empty;
-
-                //get dynamic variables
-                var co_title = (await _unitOfWork.Title.Get(t => t.TitleId == customer!.TitleId))!.Titles;
-                var co_gender = (await _unitOfWork.Gender.Get(g => g.GenderId == customer!.GenderId))!.GenderType;
-                var co_nationality = (await _unitOfWork.Nationality.Get(n => n.NationalityId == customer!.NationalityId))!.Nationalities;
-                var co_identificationType = (await _unitOfWork.IdentificationType.Get(i => i.IdentificationTypeId == customer!.IdentificationTypeId))!.IdentificationTypes;
-
-                if (customer!.SocialMediaTypeId > 0)
-                {
-                    co_socialMediaPlatform = (await _unitOfWork.SocialMedia.Get(s => s.SocialMediaId == customer.SocialMediaTypeId))!.SocialMediaPlatform;
-                }
-
-                if (customer.ContactPerson_IdentificationTypeId != 0)
-                {
-                    co_contactperson_identification = (await _unitOfWork.IdentificationType.Get(i => i.IdentificationTypeId == customer.ContactPerson_IdentificationTypeId))!.IdentificationTypes!;
-                }
-
-                var co_lesse = new CoLesseCustomerResponseDto
-                {
-                    CustomerMasterId = customer.CustomerMasterId,
-                    CustomerCode = customer.CustomerCode,
-                    Title = co_title,
-                    SurName = customer.SurName!,
-                    OtherNames = customer.OtherNames!,
-                    DateOfBirth = customer.DateOfBirth,
-                    TinNumber = customer.TinNumber,
-                    Picture = customer.Picture,
-                    Gender = co_gender,
-                    Nationality = co_nationality,
-                    PostalAddress = customer.PostalAddress,
-                    ResidentialAddress = customer.ResidentialAddress,
-                    DigitalAddress = customer.DigitalAddress,
-                    PrimaryMobileNumber = customer.PrimaryMobileNumber,
-                    SecondaryMobileNumber = customer.SecondaryMobileNumber,
-                    OfficeNumber = customer.OfficeNumber,
-                    WhatsAppNumber = customer.WhatsAppNumber,
-                    EmailAddress = customer.EmailAddress!,
-                    SocialMediaPlatform = co_socialMediaPlatform,
-                    SocialMediaAccount = customer.SocialMediaAccount,
-                    IdentificationType = co_identificationType,
-                    IdentificationImages = new string[] { customer.IdentificationTypeImageOne!, customer.IdentificationTypeImageTwo!, },
-                    IdentificationTypeNumber = customer.IdentificationTypeNumber,
-                    NonResident = new IndividualNonResidentCustomerResponseDto
-                    {
-                        ContactPerson_FullName = customer.ContactPerson_FullName,
-                        ContactPerson_Address = customer.ContactPerson_Address,
-                        ContactPerson_EmailAddress = customer.ContactPerson_EmailAddress,
-                        ContactPerson_PhoneNumber = customer.ContactPerson_PhoneNumber,
-                        ContactPerson_IdentificationTypeNumber = customer.ContactPerson_IdentificationTypeNumber,
-                        ContactPerson_IdentificationType = co_contactperson_identification,
-                        ContactPerson_IdentificationImages = new string[] { customer.ContactPerson_IdentificationTypeImageOne!, customer.ContactPerson_IdentificationTypeImageTwo! }
-                    },
-                    Expatriate = new IndividualExpatriateCustomerResponseDto { ResidentPermitNumber = customer.ResidentPermitNumber, ResidentPermitDateIssued = customer.ResidentPermitDateIssued!, ResidentPermitExpiryDate = customer.ResidentPermitExpiryDate }
-                };
-
-                coLesses.Add(co_lesse);
-            }
-
 
             string _socialMediaPlatform = string.Empty; string _contactperson_identification = string.Empty;
 
@@ -335,7 +268,9 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 MaritalStatus = pr_customer.MaritalStatus,
                 DateOfMarriage = pr_customer.DateOfMarriage,
                 Comments = pr_customer.Comments,
-                DebtorStatus = pr_customer.DebtorStatus.ToString(),
+                DebtorStatus = pr_customer.DebtorStatus == 0 ? "Active" :
+                               pr_customer.DebtorStatus == 1 ? "Pending" :
+                               pr_customer.DebtorStatus == 90 ? "STOP DEBIT" : "Unknown",
                 NonResident = new IndividualNonResidentCustomerResponseDto
                 {
                     ContactPerson_FullName = pr_customer.ContactPerson_FullName,
@@ -347,7 +282,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     ContactPerson_IdentificationImages = new string[] { pr_customer.ContactPerson_IdentificationTypeImageOne!, pr_customer.ContactPerson_IdentificationTypeImageTwo! }
                 },
                 Expatriate = new IndividualExpatriateCustomerResponseDto { ResidentPermitNumber = pr_customer.ResidentPermitNumber, ResidentPermitDateIssued = pr_customer.ResidentPermitDateIssued!, ResidentPermitExpiryDate = pr_customer.ResidentPermitExpiryDate },
-                CoLesse = coLesses
             };
 
 
@@ -356,81 +290,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<MultiOwnershipCustomerResponseDto> GetMultiCustomerDetails(string customerCode)
         {
-            //throw new NotImplementedException();
-
             var pr_customer = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
-
-            if (!string.IsNullOrWhiteSpace(pr_customer!.ParentCode))
-            {
-                customerCode = pr_customer.ParentCode;
-            }
-
-            var co_customers = await _unitOfWork.CustomerMaster.GetAll(cm => cm.ParentCode == customerCode);
-            pr_customer = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
-
-            List<DependantCustomerResponseDto> dependants = new List<DependantCustomerResponseDto>();
-
-            foreach (var customer in co_customers)
-            {
-                string co_socialMediaPlatform = string.Empty; string co_contactperson_identification = string.Empty;
-
-                //get dynamic variables
-                var co_title = (await _unitOfWork.Title.Get(t => t.TitleId == customer!.TitleId))!.Titles;
-                var co_gender = (await _unitOfWork.Gender.Get(g => g.GenderId == customer!.GenderId))!.GenderType;
-                var co_nationality = (await _unitOfWork.Nationality.Get(n => n.NationalityId == customer!.NationalityId))!.Nationalities;
-                var co_identificationType = (await _unitOfWork.IdentificationType.Get(i => i.IdentificationTypeId == customer!.IdentificationTypeId))!.IdentificationTypes;
-
-                if (customer!.SocialMediaTypeId > 0)
-                {
-                    co_socialMediaPlatform = (await _unitOfWork.SocialMedia.Get(s => s.SocialMediaId == customer.SocialMediaTypeId))!.SocialMediaPlatform;
-                }
-
-                if (customer.ContactPerson_IdentificationTypeId != 0)
-                {
-                    co_contactperson_identification = (await _unitOfWork.IdentificationType.Get(i => i.IdentificationTypeId == customer.ContactPerson_IdentificationTypeId))!.IdentificationTypes!;
-                }
-
-                var dependant = new DependantCustomerResponseDto
-                {
-                    CustomerMasterId = customer.CustomerMasterId,
-                    CustomerCode = customer.CustomerCode,
-                    Title = co_title,
-                    SurName = customer.SurName!,
-                    OtherNames = customer.OtherNames!,
-                    DateOfBirth = customer.DateOfBirth,
-                    TinNumber = customer.TinNumber,
-                    Picture = customer.Picture,
-                    Gender = co_gender,
-                    Nationality = co_nationality,
-                    PostalAddress = customer.PostalAddress,
-                    ResidentialAddress = customer.ResidentialAddress,
-                    DigitalAddress = customer.DigitalAddress,
-                    PrimaryMobileNumber = customer.PrimaryMobileNumber,
-                    SecondaryMobileNumber = customer.SecondaryMobileNumber,
-                    OfficeNumber = customer.OfficeNumber,
-                    WhatsAppNumber = customer.WhatsAppNumber,
-                    EmailAddress = customer.EmailAddress!,
-                    SocialMediaPlatform = co_socialMediaPlatform,
-                    SocialMediaAccount = customer.SocialMediaAccount,
-                    IdentificationType = co_identificationType,
-                    IdentificationImages = new string[] { customer.IdentificationTypeImageOne!, customer.IdentificationTypeImageTwo!, },
-                    IdentificationTypeNumber = customer.IdentificationTypeNumber,
-                    NonResident = new IndividualNonResidentCustomerResponseDto
-                    {
-                        ContactPerson_FullName = customer.ContactPerson_FullName,
-                        ContactPerson_Address = customer.ContactPerson_Address,
-                        ContactPerson_EmailAddress = customer.ContactPerson_EmailAddress,
-                        ContactPerson_PhoneNumber = customer.ContactPerson_PhoneNumber,
-                        ContactPerson_IdentificationTypeNumber = customer.ContactPerson_IdentificationTypeNumber,
-                        ContactPerson_IdentificationType = co_contactperson_identification,
-                        ContactPerson_IdentificationImages = new string[] { customer.ContactPerson_IdentificationTypeImageOne!, customer.ContactPerson_IdentificationTypeImageTwo! }
-                    },
-                    Expatriate = new IndividualExpatriateCustomerResponseDto { ResidentPermitNumber = customer.ResidentPermitNumber, ResidentPermitDateIssued = customer.ResidentPermitDateIssued!, ResidentPermitExpiryDate = customer.ResidentPermitExpiryDate }
-                };
-
-                dependants.Add(dependant);
-            }
-
 
             string _socialMediaPlatform = string.Empty; string _contactperson_identification = string.Empty;
 
@@ -484,7 +344,9 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 MaritalStatus = pr_customer.MaritalStatus,
                 DateOfMarriage = pr_customer.DateOfMarriage,
                 Comments = pr_customer.Comments,
-                DebtorStatus = pr_customer.DebtorStatus.ToString(),
+                DebtorStatus = pr_customer.DebtorStatus == 0 ? "Active" :
+                               pr_customer.DebtorStatus == 1 ? "Pending" :
+                               pr_customer.DebtorStatus == 90 ? "STOP DEBIT" : "Unknown",
                 NonResident = new IndividualNonResidentCustomerResponseDto
                 {
                     ContactPerson_FullName = pr_customer.ContactPerson_FullName,
@@ -496,7 +358,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     ContactPerson_IdentificationImages = new string[] { pr_customer.ContactPerson_IdentificationTypeImageOne!, pr_customer.ContactPerson_IdentificationTypeImageTwo! }
                 },
                 Expatriate = new IndividualExpatriateCustomerResponseDto { ResidentPermitNumber = pr_customer.ResidentPermitNumber, ResidentPermitDateIssued = pr_customer.ResidentPermitDateIssued!, ResidentPermitExpiryDate = pr_customer.ResidentPermitExpiryDate },
-                Dependant = dependants
             };
 
 

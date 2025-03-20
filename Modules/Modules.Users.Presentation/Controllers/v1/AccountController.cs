@@ -41,7 +41,7 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a list of identification types
+    /// Returns a list of available identification types
     /// </summary>
     [HttpGet]
     [Route("GetIdentificationTypes")]
@@ -51,14 +51,28 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
+    /// Returns a list of available channels
+    /// </summary>
+    [HttpGet]
+    [Route("GetChannels")]
+    public async Task<ActionResult<IEnumerable<ChannelReadDto>>> GetChannels()
+    {
+        return Ok((await _unitOfWork.Channels.GetAll()).Select(c => new ChannelReadDto(c.ChannelId, c.ChannelName!)));
+
+    }
+
+    /// <summary>
     /// Registers a new customer user.
     /// </summary>
     /// <remarks>Returns the registration status and user id. The email/phone and password used in a successful registration will be required to access and generated a json web token and a refresh token that will be used for authoriation and authentication purposes</remarks>
-    /// <response code="200">Returns the uniquely created user id for a newly registered application user</response>
+    /// <response code="201">Returns the uniquely created user id for a newly registered application user</response>
     [HttpPost]
     [Route("Register/Customer")]
-    [ProducesResponseType(201, Type = typeof(RegistrationResponse))]
-    public async Task<ActionResult<RegistrationResponse>> Register([FromBody] CustomerRegistrationRequestDto values)
+    [ProducesResponseType(201, Type = typeof(RegistrationSuccessResponse))]
+    [ProducesResponseType(400, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(404, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(409, Type = typeof(RegistrationErrorResponse))]
+    public async Task<ActionResult> Register([FromBody] CustomerRegistrationRequestDto values)
     {
         if (ModelState.IsValid)
         {
@@ -139,7 +153,10 @@ public class AccountController : ControllerBase
     [HttpPost]
     [Route("Register/Staff")]
     [Authorize(Policy = "Permission:Users.CREATE")]
-    [ProducesResponseType(201, Type = typeof(RegistrationResponse))]
+    [ProducesResponseType(201, Type = typeof(RegistrationSuccessResponse))]
+    [ProducesResponseType(400, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(404, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(409, Type = typeof(RegistrationErrorResponse))]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] StaffRegistrationRequestDto values)
     {
         if (ModelState.IsValid)
@@ -522,8 +539,7 @@ public class AccountController : ControllerBase
     [HttpPut]
     [AllowAnonymous]
     [Route("UpdateUserAccount")]
-
-    //[ProducesResponseType(200, Type = typeof(TokenResponseDto))]
+    [ProducesResponseType(200, Type = typeof(UserInformationDto))]
     public async Task<IActionResult> UpdateUserAccount([FromBody] UpdateUserDto UserUpdateRequest)
     {
         try
@@ -531,12 +547,15 @@ public class AccountController : ControllerBase
             if (ModelState.IsValid)
             {
                 var result = await _userAccountsService.UpdateAccountDetails(UserUpdateRequest);
-                if (result.response != "success")
-                {
-                    return BadRequest(new { message = result.response });
-                }
-                return Ok(new { message = result.response });
 
+                if (result.success is not null)
+                {
+                    return Ok(result.success);
+                }
+                else
+                {
+                    return BadRequest(result.error);
+                }
             }
 
             return NotFound();

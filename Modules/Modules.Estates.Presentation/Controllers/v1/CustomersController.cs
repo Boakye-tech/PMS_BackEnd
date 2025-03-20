@@ -478,11 +478,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                var cnt = values.CoLesse!.Count();
-                if (cnt == 0)
-                {
-                    return BadRequest("Co-Lesse cannot be empty or null");
-                }
+                //var cnt = values.CoLesse!.Count();
+                //if (cnt == 0)
+                //{
+                //    return BadRequest("Co-Lesse cannot be empty or null");
+                //}
 
                 if (values.CustomerTypeId == (int)CustomerTypeEnum.JOINT_OWNERSHIP && values.ResidentTypeId == (int)ResidentTypeEnum.EXPATRIATE)
                 {
@@ -542,11 +542,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                var cnt = values.Dependent!.Count();
-                if (cnt == 0)
-                {
-                    return BadRequest("Dependant cannot be empty or null");
-                }
+                //var cnt = values.Dependent!.Count();
+                //if (cnt == 0)
+                //{
+                //    return BadRequest("Dependant cannot be empty or null");
+                //}
 
                 if (values.CustomerTypeId == (int)CustomerTypeEnum.MULTI_OWNERSHIP && values.ResidentTypeId == (int)ResidentTypeEnum.EXPATRIATE)
                 {

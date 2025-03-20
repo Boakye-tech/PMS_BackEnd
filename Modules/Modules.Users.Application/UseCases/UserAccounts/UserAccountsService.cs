@@ -478,7 +478,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         {
                             UserId = user.Id,
                             IsFirstTime = user.IsFirstTime,
-                            BearerToken = _tokenService.GetJwToken(user, 3).Token!,
+                            BearerToken = _tokenService.GetJwToken(user, 8).Token!,
                             RefreshToken = _tokenService.GetJwRefreshToken().Token!,
                             ExpiresAt = _tokenService.GetJwRefreshToken().Expires 
                         }
@@ -979,23 +979,23 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return null!;
         }
 
-        public async Task<GenericResponseDto> UpdateAccountDetails(UpdateUserDto values)
+        public async Task<UpdateAccountDetailsResponseDto> UpdateAccountDetails(UpdateUserDto values)
         {
-
+            
             if(values is null)
             {
-                return new GenericResponseDto("The update request caanot be null or empty");
+                return new UpdateAccountDetailsResponseDto { error = new GenericResponseDto("The update request cannot be null or empty"), success = null! };
             }
 
             var user = await _userManager.FindByIdAsync(values.UserId);
             if(user is null)
             {
-                return new GenericResponseDto("User id not found");
+                return new UpdateAccountDetailsResponseDto { error = new GenericResponseDto("User id not found"), success = null! };
             }
 
             if(string.IsNullOrWhiteSpace(values.UserId) || string.IsNullOrWhiteSpace(values.PhoneNumber) || string.IsNullOrWhiteSpace(values.ProfilePicture) || string.IsNullOrWhiteSpace(values.MiddleName))
             {
-                return new GenericResponseDto("At least two values must be supplied.");
+                return new UpdateAccountDetailsResponseDto { error = new GenericResponseDto("At least two values must be supplied."), success = null! };
             }
 
             if(!string.IsNullOrWhiteSpace(values.PhoneNumber))
@@ -1014,15 +1014,11 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
 
             await _userManager.UpdateAsync(user);
-            return new GenericResponseDto("success");
 
+            //return await UserDetails(values.UserId);
+
+            return new UpdateAccountDetailsResponseDto { error = null, success = await UserDetails(values.UserId)};
         }
-
-
-
-
-
-
 
 
 

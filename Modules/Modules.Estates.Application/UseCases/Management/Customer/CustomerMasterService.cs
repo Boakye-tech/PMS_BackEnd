@@ -852,7 +852,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 return 404;
             }
 
-            customer!.IsDeleted = false;
+            customer!.IsDeleted = true;
             customer.DeletedBy = values.deletedBy;
             customer.DeletedOn = DateTime.UtcNow;
 
@@ -863,7 +863,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             {
                 foreach (var co_customer in co_customers)
                 {
-                    co_customer!.IsDeleted = false;
+                    co_customer!.IsDeleted = true;
                     co_customer.DeletedBy = values.deletedBy;
                     co_customer.DeletedOn = DateTime.UtcNow;
 

@@ -11,7 +11,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public IndividualNonResidentCustomerResponseDto? NonResident { get; set; }
         public IndividualExpatriateCustomerResponseDto? Expatriate { get; set; }
 
-        public IEnumerable<DependantCustomerResponseDto>? Dependant { get; set; }
+        //public IEnumerable<DependantCustomerResponseDto>? Dependant { get; set; }
 
     }
 
