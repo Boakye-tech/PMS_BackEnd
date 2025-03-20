@@ -16,6 +16,7 @@ jobs:
     env:
       ENV_SUFFIX: ${{ github.ref == 'refs/heads/develop' && 'dev' || 'staging' }}
       DB_CONNECTION_STRING: ${{ github.ref == 'refs/heads/develop' && secrets.DB_CONNECTION_STRING_DEV || secrets.DB_CONNECTION_STRING_STAGING }}
+      ASPNETCORE_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'Production' || github.ref == 'refs/heads/staging' && 'Staging' || 'Development' }}
 
     steps:
       - name: Set up JDK 17
@@ -74,6 +75,123 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"MindSpringsGhana_pms-api" /o:"mindspringsghana" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Configure Environment Settings
+        shell: pwsh
+        run: |
+          Write-Host "Setting ASPNETCORE_ENVIRONMENT to: $env:ASPNETCORE_ENVIRONMENT"
+          
+          # Update all launchSettings.json files
+          Get-ChildItem -Path ${{ github.workspace }} -Recurse -Filter "launchSettings.json" | ForEach-Object {
+            Write-Host "Updating settings file: $($_.FullName)"
+            
+            $content = Get-Content $_.FullName -Raw | ConvertFrom-Json
+            
+            # Update all profiles that have ASPNETCORE_ENVIRONMENT
+            $content.profiles.PSObject.Properties | ForEach-Object {
+              if ($_.Value.PSObject.Properties['environmentVariables'] -and 
+                  $_.Value.environmentVariables.PSObject.Properties['ASPNETCORE_ENVIRONMENT']) {
+                $_.Value.environmentVariables.ASPNETCORE_ENVIRONMENT = $env:ASPNETCORE_ENVIRONMENT
+              }
+            }
+            
+            $content | ConvertTo-Json -Depth 10 | Set-Content $_.FullName
+          }
+
+      - name: Configure Application Settings
+        shell: pwsh
+        run: |
+          # Find appsettings.tpl.json in root
+          $settingsFile = Get-ChildItem -Path ${{ github.workspace }} -Filter "appsettings.tpl.json" -Recurse | Select-Object -First 1
+          
+          if (-not $settingsFile) {
+            Write-Error "Could not find appsettings.tpl.json in repository"
+            exit 1
+          }
+          
+          Write-Host "Found settings file at: $($settingsFile.FullName)"
+          
+          # Process the template file
+          $template = Get-Content $settingsFile.FullName -Raw | ConvertFrom-Json
+          
+          # Update connection strings
+          $template.ConnectionStrings.MsSQLConnection_LocalHost = '${{ env.DB_CONNECTION_STRING }}'
+          $template.ConnectionStrings.MsSQLConnection = '${{ env.DB_CONNECTION_STRING }}'
+          $template.ConnectionStrings.MsSQLConnection_Staging = '${{ env.DB_CONNECTION_STRING }}'
+          $template.ConnectionStrings.MsSQLConnection_Production = '${{ env.DB_CONNECTION_STRING }}'
+          
+          # Update JWT token
+          $template.JwTokenKey.TokenKey = '${{ secrets.TOKEN_KEY }}'
+          
+          # Update O365 Mail Settings
+          $o365Secrets = @{
+            'HOST' = '${{ secrets.O356MAILSENDER_HOST }}'
+            'PORT' = '${{ secrets.O356MAILSENDER_PORT }}'
+            'ENABLESSL' = '${{ secrets.O356MAILSENDER_ENABLESSL }}'
+            'USERNAME' = '${{ secrets.O356MAILSENDER_USERNAME }}'
+            'PASSWORD' = '${{ secrets.O356MAILSENDER_PASSWORD }}'
+          }
+          
+          $template.O356mailSender.PSObject.Properties.Name | ForEach-Object {
+            $newName = $_ -replace 'O356mailSender_',''
+            Add-Member -InputObject $template.O356mailSender -MemberType NoteProperty -Name $newName -Value $o365Secrets[$newName.ToUpper()] -Force
+            $template.O356mailSender.PSObject.Properties.Remove($_)
+          }
+          
+          # Update Gmail Settings
+          $gmailSecrets = @{
+            'HOST' = '${{ secrets.GMAILSENDER_HOST }}'
+            'PORT' = '${{ secrets.GMAILSENDER_PORT }}'
+            'ENABLESSL' = '${{ secrets.GMAILSENDER_ENABLESSL }}'
+            'USERNAME' = '${{ secrets.GMAILSENDER_USERNAME }}'
+            'PASSWORD' = '${{ secrets.GMAILSENDER_PASSWORD }}'
+          }
+          
+          $template.GmailSender.PSObject.Properties.Name | ForEach-Object {
+            $newName = $_ -replace 'GmailSender_',''
+            Add-Member -InputObject $template.GmailSender -MemberType NoteProperty -Name $newName -Value $gmailSecrets[$newName.ToUpper()] -Force
+            $template.GmailSender.PSObject.Properties.Remove($_)
+          }
+          
+          # Update mNotify Settings
+          $mNotifySecrets = @{
+            'BASEURL' = '${{ secrets.MNOTIFYSMS_BASEURL }}'
+            'USERKEY' = '${{ secrets.MNOTIFYSMS_USERKEY }}'
+            'SENDERID' = '${{ secrets.MNOTIFYSMS_SENDERID }}'
+          }
+          
+          $template.mNotifySMS.PSObject.Properties.Name | ForEach-Object {
+            $newName = $_ -replace 'mNotifySMS_',''
+            Add-Member -InputObject $template.mNotifySMS -MemberType NoteProperty -Name $newName -Value $mNotifySecrets[$newName.ToUpper()] -Force
+            $template.mNotifySMS.PSObject.Properties.Remove($_)
+          }
+          
+          # Update BecSMS Settings
+          $becSmsSecrets = @{
+            'BASEURL' = '${{ secrets.BECSMS_BASEURL }}'
+            'APIKEY' = '${{ secrets.BECSMS_APIKEY }}'
+            'SENDERID' = '${{ secrets.BECSMS_SENDERID }}'
+          }
+          
+          $template.becsms.PSObject.Properties.Name | ForEach-Object {
+            $newName = $_ -replace 'becsms_',''
+            Add-Member -InputObject $template.becsms -MemberType NoteProperty -Name $newName -Value $becSmsSecrets[$newName.ToUpper()] -Force
+            $template.becsms.PSObject.Properties.Remove($_)
+          }
+          
+          # Update ModuleUrl BaseUrl based on branch
+          $template.ModuleUrl.BaseUrl = if ($env:GITHUB_REF -eq 'refs/heads/develop') {
+            '${{ secrets.BASEURL_DEV }}'
+          } elseif ($env:GITHUB_REF -eq 'refs/heads/staging') {
+            '${{ secrets.BASEURL_STAGING }}'
+          } else {
+            '${{ secrets.BASEURL_PROD }}'
+          }
+          
+          # Save as appsettings.json in the same directory as template
+          $outputPath = Join-Path $settingsFile.DirectoryName "appsettings.json"
+          $template | ConvertTo-Json -Depth 10 | Set-Content $outputPath
+          Write-Host "Created appsettings.json at: $outputPath"
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
@@ -151,6 +269,7 @@ jobs:
             }
           }
         shell: pwsh
+        continue-on-error: true
 
       - name: Update All Databases  
         if: >

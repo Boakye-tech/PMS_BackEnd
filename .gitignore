@@ -26,8 +26,10 @@ obj/
 
 
 **/appsettings.Development.json
+appsettings.json
 
-
+# Logs
+Logs/
 
 
 
