@@ -126,7 +126,7 @@ jobs:
           # Update O365 Mail Settings
           $o365Secrets = @{
             'HOST' = '${{ secrets.O356MAILSENDER_HOST }}'
-            'PORT' = '${{ secrets.O356MAILSENDER_PORT }}'
+            'PORT' = [int]'${{ secrets.O356MAILSENDER_PORT }}'
             'ENABLESSL' = '${{ secrets.O356MAILSENDER_ENABLESSL }}'
             'USERNAME' = '${{ secrets.O356MAILSENDER_USERNAME }}'
             'PASSWORD' = '${{ secrets.O356MAILSENDER_PASSWORD }}'
@@ -141,7 +141,7 @@ jobs:
           # Update Gmail Settings
           $gmailSecrets = @{
             'HOST' = '${{ secrets.GMAILSENDER_HOST }}'
-            'PORT' = '${{ secrets.GMAILSENDER_PORT }}'
+            'PORT' = [int]'${{ secrets.GMAILSENDER_PORT }}'
             'ENABLESSL' = '${{ secrets.GMAILSENDER_ENABLESSL }}'
             'USERNAME' = '${{ secrets.GMAILSENDER_USERNAME }}'
             'PASSWORD' = '${{ secrets.GMAILSENDER_PASSWORD }}'
