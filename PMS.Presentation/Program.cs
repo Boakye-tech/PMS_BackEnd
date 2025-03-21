@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -60,29 +61,29 @@ var user_module = "Modules.Users.Presentation";
 //var finance_module = "Modules.Finance.Presentation";
 //var notification_module = "Modules.Notification.Presentation";
 
-builder.Services.AddAuthorization(options =>
-{
-    using var scope = builder.Services.BuildServiceProvider().CreateScope();
-    var _userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+//builder.Services.AddAuthorization(options =>
+//{
+//    using var scope = builder.Services.BuildServiceProvider().CreateScope();
+//    var _userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
 
-    var actions = new List<string> { "CREATE", "READ", "UPDATE", "DELETE", "APPROVE", "VERIFY", "REJECT", "DISAPPROVE", "ACTIVATE", "DEACTIVATE" };
+//    var actions = new List<string> { "CREATE", "READ", "UPDATE", "DELETE", "APPROVE", "VERIFY", "REJECT", "DISAPPROVE", "ACTIVATE", "DEACTIVATE" };
 
-    foreach (var module in _userDbContext.ApplicationModules)
-    {
-        foreach (var action in actions)
-        {
-            var policyName = $"Permission:{module.ModuleName}.{action}";
+//    foreach (var module in _userDbContext.ApplicationModules)
+//    {
+//        foreach (var action in actions)
+//        {
+//            var policyName = $"Permission:{module.ModuleName}.{action}";
 
-            options.AddPolicy(policyName, policy =>
-            policy.RequireClaim($"Permission:{module.ModuleName}.{action}", action));
-        }
-    }
+//            options.AddPolicy(policyName, policy =>
+//            policy.RequireClaim($"Permission:{module.ModuleName}.{action}", action));
+//        }
+//    }
 
-    //USER SPECIFIC
-    options.AddPolicy("Permission:Users.CREATEROLE", policy => policy.RequireClaim("Permission:Users.CREATEROLE", "CREATEROLE"));
-    options.AddPolicy("Permission:Users.ASSIGNUSER", policy => policy.RequireClaim("Permission:Users.ASSIGNUSER", "ASSIGNUSER"));
-    options.AddPolicy("Permission:Users.ASSIGNPERM", policy => policy.RequireClaim("Permission:Users.ASSIGNPERM", "ASSIGNPERM"));
-});
+//    //USER SPECIFIC
+//    options.AddPolicy("Permission:Users.CREATEROLE", policy => policy.RequireClaim("Permission:Users.CREATEROLE", "CREATEROLE"));
+//    options.AddPolicy("Permission:Users.ASSIGNUSER", policy => policy.RequireClaim("Permission:Users.ASSIGNUSER", "ASSIGNUSER"));
+//    options.AddPolicy("Permission:Users.ASSIGNPERM", policy => policy.RequireClaim("Permission:Users.ASSIGNPERM", "ASSIGNPERM"));
+//});
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
 
@@ -193,6 +194,31 @@ builder.Services.AddScoped<IUserContextService, UserContextService>();
 var app = builder.Build();
 
 app.UseStaticFiles();
+
+using(var scope = app.Services.CreateScope())
+{
+    var _userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+    var authorizationOptions = app.Services.GetRequiredService<IOptions<AuthorizationOptions>>().Value;
+
+    var actions = new List<string> { "CREATE", "READ", "UPDATE", "DELETE", "APPROVE", "VERIFY", "REJECT", "DISAPPROVE", "ACTIVATE", "DEACTIVATE" };
+
+    foreach (var app_module in _userDbContext.ApplicationModules)
+    {
+        foreach (var action in actions)
+        {
+            var policyName = $"Permission:{app_module.ModuleName}.{action}";
+
+            authorizationOptions.AddPolicy(policyName, policy =>
+            policy.RequireClaim($"Permission:{app_module.ModuleName}.{action}", action));
+        }
+    }
+
+    //USER SPECIFIC
+    authorizationOptions.AddPolicy("Permission:Users.CREATEROLE", policy => policy.RequireClaim("Permission:Users.CREATEROLE", "CREATEROLE"));
+    authorizationOptions.AddPolicy("Permission:Users.ASSIGNUSER", policy => policy.RequireClaim("Permission:Users.ASSIGNUSER", "ASSIGNUSER"));
+    authorizationOptions.AddPolicy("Permission:Users.ASSIGNPERM", policy => policy.RequireClaim("Permission:Users.ASSIGNPERM", "ASSIGNPERM"));
+};
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

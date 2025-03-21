@@ -1,0 +1,16 @@
+﻿/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Controllers/InternalControllerFeatureProvider.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Controllers/MainEntryController.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Extensions/ServiceCollectionExtensions.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/OpenAPI/SwaggerConfigureOptions.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/OpenAPI/SwaggerDefaultValues.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/obj/Debug/net8.0/PMS.Presentation.GlobalUsings.g.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/obj/Debug/net8.0/PMS.Presentation.AssemblyInfo.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/obj/Debug/net8.0/PMS.Presentation.MvcApplicationPartsAssemblyInfo.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/appsettings.json
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Logs/log-20250320.txt
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Modules.Customers.Presentation.xml
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/PMS.Presentation.http
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Properties/launchSettings.json
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Properties/PublishProfiles/FolderProfile.pubxml

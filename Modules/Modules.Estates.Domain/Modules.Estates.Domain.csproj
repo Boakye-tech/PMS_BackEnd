@@ -28,6 +28,7 @@
     <None Remove="ValueObjects\Customer\" />
     <None Remove="ValueObjects\Property\" />
     <None Remove="Events\Property\" />
+    <None Remove="Interfaces\Management\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -46,5 +47,6 @@
     <Folder Include="ValueObjects\Customer\" />
     <Folder Include="ValueObjects\Property\" />
     <Folder Include="Events\Property\" />
+    <Folder Include="Interfaces\Management\" />
   </ItemGroup>
 </Project>

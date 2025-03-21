@@ -192,6 +192,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             string createdBy,
             ICustomerDomainService customerDomainService)
         {
+
             if (customerTypeId <= 0 || localityId <= 0 || string.IsNullOrWhiteSpace(surName) && string.IsNullOrWhiteSpace(otherNames) && string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress) || string.IsNullOrWhiteSpace(interestExpressed))
             {
                 throw new ArgumentException("Invalid prospective customer registration data.");
@@ -261,10 +262,9 @@ namespace Modules.Estates.Domain.Entities.Registration
             {
                 throw new ArgumentException("Comments must not be null or empty");
             }
-
             var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
-
-            if (customer_locality is null)
+            var locality = await customerDomainService.LocalityExists(localityId);
+            if (locality is false)
             {
                 throw new ArgumentException("Customer locality provided does not exist");
             }
@@ -322,7 +322,8 @@ namespace Modules.Estates.Domain.Entities.Registration
                 ContactPerson_IdentificationTypeNumber = string.Empty,
                 ContactPerson_IdentificationTypeImageOne = string.Empty,
                 ContactPerson_IdentificationTypeImageTwo = string.Empty,
-                IsDeleted = false
+                IsDeleted = false,
+                CreatedBy = createdBy
             };
 
             customer._domainEvents.Add(new CustomerCreatedEvent(
@@ -332,6 +333,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 createdBy));
 
             return customer;
+
         }
 
         public static async Task<CustomerMaster> CreateCompanyAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, string companyName, int nationalityId, string companyAddress, string digitalAddress, string primaryMobileNumber,

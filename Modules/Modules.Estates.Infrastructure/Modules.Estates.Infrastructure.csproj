@@ -29,6 +29,7 @@
     <None Remove="Repositories\Entities\Setup\Property\" />
     <None Remove="Extensions\" />
     <None Remove="Repositories\Registration\" />
+    <None Remove="Repositories\Management\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitOfWork\" />
@@ -41,6 +42,7 @@
     <Folder Include="Repositories\Entities\Setup\Property\" />
     <Folder Include="Extensions\" />
     <Folder Include="Repositories\Registration\" />
+    <Folder Include="Repositories\Management\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />

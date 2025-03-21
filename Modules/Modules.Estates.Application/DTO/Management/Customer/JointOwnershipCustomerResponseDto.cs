@@ -10,9 +10,6 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public IndividualNonResidentCustomerResponseDto? NonResident { get; set; }
         public IndividualExpatriateCustomerResponseDto? Expatriate { get; set; }
-
-        //public IEnumerable<CoLesseCustomerResponseDto>? CoLesse { get; set; }
-
     }
 
     public record CoLesseCustomerResponseDto : JointCustomerResponseDto
@@ -28,6 +25,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         [StringLength(10)]
         public string? CustomerCode { get; set; }
+
+        public int TitleId { get; set; }
 
         public required string Title { get; set; }
 
@@ -45,7 +44,11 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(255)]
         public string? Picture { get; set; }
 
+        public int GenderId { get; set; }
+
         public string? Gender { get; set; }
+
+        public int NationalityId { get; set; }
 
         public string? Nationality { get; set; }
 
@@ -74,10 +77,14 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [EmailAddress]
         public required string EmailAddress { get; set; }
 
+        public int SocialMediaTypeId { get; set; }
+
         public string? SocialMediaPlatform { get; set; }
 
         [StringLength(50)]
         public string? SocialMediaAccount { get; set; }
+
+        public int IdentificationTypeId { get; set; }
 
         public string? IdentificationType { get; set; }
 

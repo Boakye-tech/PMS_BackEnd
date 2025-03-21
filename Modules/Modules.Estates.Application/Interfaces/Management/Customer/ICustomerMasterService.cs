@@ -30,6 +30,9 @@ namespace Modules.Estates.Application.Interfaces.Management.Customer
         Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateMultiOwnershipCustomerDto values);
 
         Task<int> DeleteCustomerAsync(DeleteCustomerRequestDto values);
+
+        Task<int> StopCustomerDebitAsync(StopDebitRequestDto values);
+
     }
 }
 

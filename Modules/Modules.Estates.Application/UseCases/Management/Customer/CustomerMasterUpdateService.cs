@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Modules.Estates.Application.DTO;
 using Modules.Estates.Application.DTO.Management;
+using Modules.Estates.Domain.Entities.Management;
 using Modules.Estates.Domain.Entities.Setup.Customer;
 using Modules.Estates.Domain.Entities.Setup.Property;
 using Modules.Estates.Domain.Events;
@@ -524,11 +525,48 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             return new CustomerRegistrationResponseDto { IsSuccess = true, SuccessResponse = registeredCustomer };
         }
 
+        public async Task<int> StopCustomerDebitAsync(StopDebitRequestDto values)
+        {
+            //throw new NotImplementedException();
+            if(values is null)
+            {
+                return 400;
+            }
+
+            //check if customer exist
+            var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values!.CustomerCode);
+            if(customer is null)
+            {
+                return 404;
+            }
+
+            var debitDetails = new StopDebit
+            {
+                StopDebitId = 0,
+                CustomerCode = values!.CustomerCode,
+                PropertyNumber = values.PropertyNumber,
+                DebtorStatus = values.DebtorStatus,
+                ActionBy = values.ActionBy,
+                ActionOn = DateTime.UtcNow
+            };
+
+            //update customer master
+            customer!.DebtorStatus = values.DebtorStatus;
+            customer.ModifiedBy = values.ActionBy;
+            customer.ModifiedOn = DateTime.UtcNow;
+
+            _unitOfWork.CustomerMaster.Update(customer);
+            _unitOfWork.StopDebit.Insert(debitDetails);
+
+            await _unitOfWork.Complete();
+
+            return 200;
+
+        }
 
 
-        
 
-        
+
 
 
     }

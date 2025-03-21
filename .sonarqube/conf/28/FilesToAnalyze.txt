@@ -1,0 +1,13 @@
+﻿/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Controllers/v1/BillingController.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Controllers/v2/BillingController.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerConfigureOptions.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerDefaultValues.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/Modules.Billing.Presentation.GlobalUsings.g.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/Modules.Billing.Presentation.AssemblyInfo.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/obj/Debug/net8.0/Modules.Billing.Presentation.MvcApplicationPartsAssemblyInfo.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/appsettings.billing.Development.json
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/appsettings.billing.json
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Modules.Billing.Presentation.http
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Properties/launchSettings.json

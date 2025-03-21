@@ -27,13 +27,11 @@
   <ItemGroup>
     <None Remove="Extensions\" />
     <None Remove="Properties\PublishProfiles\" />
-    <None Remove="Logs\" />
     <None Remove="OpenAPI\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="Logs\" />
     <Folder Include="OpenAPI\" />
   </ItemGroup>
   <ItemGroup>

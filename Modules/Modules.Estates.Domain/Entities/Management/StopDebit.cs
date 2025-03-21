@@ -16,7 +16,7 @@ namespace Modules.Estates.Domain.Entities.Management
         public string? Reasons { get; set; }
 
         public int DebtorStatus { get; set; }
-        
+
         public DateTime ActionOn { get; set; }
 
         [StringLength(36)]

@@ -1,0 +1,11 @@
+﻿/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Dtos/SendNotificationRequest.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Dtos/Sms/BecsmsResponseDataDto.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Dtos/Sms/BecsmsResponseDto.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Dtos/Sms/MNotifySmsRequestDto.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Dtos/Sms/MNotifySmsResponseDto.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Dtos/Sms/MNotifySmsResponseSummaryDto.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Dtos/Sms/SendSmsRequestDto.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Interfaces/ISmsSender.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/UseCases/SendNotificationCommand.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/UseCases/SendNotificationHandler.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Application/Usings.cs

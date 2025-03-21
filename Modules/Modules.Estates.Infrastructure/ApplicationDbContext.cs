@@ -46,6 +46,9 @@ public class ApplicationDbContext : ModuleDbContext
 
     public DbSet<OwnershipType> OwnershipType { get; set; }
 
+    public DbSet<StopDebit> StopDebit { get; set; }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

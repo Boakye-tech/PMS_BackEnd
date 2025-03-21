@@ -339,34 +339,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
             
         }
 
-        [HttpDelete("DeleteCustomer/{customerCode}/{deletedBy}")]
-        [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteCustomer(string customerCode, string deletedBy)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(customerCode) && string.IsNullOrWhiteSpace(deletedBy))
-                {
-                    return BadRequest("Customer code and or deleted by cannot be empty or null");
-                }
-
-                var values = new DeleteCustomerRequestDto(customerCode, deletedBy);
-                var response = await _customerMasterService.DeleteCustomerAsync(values);
-
-                return response switch
-                {
-                    200 => Ok("Deleted successfully."),
-                    400 => BadRequest(),
-                    404 => NotFound("Customer code provided cannot be found"),
-                    _ => StatusCode(500, "Internal Server Error"),
-                };
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.InnerException!.Message);
-            }
-        }
-
 
         [HttpPut]
         [Route("UpdateCompanyCustomer")]
@@ -593,7 +565,95 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        [HttpDelete("DeleteCustomer/{customerCode}/{deletedBy}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
+        public async Task<ActionResult> DeleteCustomer(string customerCode, string deletedBy)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(customerCode) && string.IsNullOrWhiteSpace(deletedBy))
+                {
+                    return BadRequest("Customer code and or deleted by cannot be empty or null");
+                }
 
+                var values = new DeleteCustomerRequestDto(customerCode, deletedBy);
+                var response = await _customerMasterService.DeleteCustomerAsync(values);
+
+                return response switch
+                {
+                    200 => Ok("Deleted successfully."),
+                    400 => BadRequest(),
+                    404 => NotFound("Customer code provided cannot be found"),
+                    _ => StatusCode(500, "Internal Server Error"),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("StopCustomerDebit")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> StopCustomerDebit([FromBody] StopDebitRequestDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ActionBy))
+                {
+                    return Unauthorized();
+                }
+
+                var status = await _customerMasterService.StopCustomerDebitAsync(values);
+
+                return status switch
+                {
+                    200 => Ok("success"),
+                    400 => BadRequest(),
+                    404 => NotFound($"Customer code {values.CustomerCode} not found"),
+                    500 => StatusCode(500,"unsuccessful"),
+                    _ => StatusCode(500, "Internal Server Error"),
+                }; ;
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("UnstopCustomerDebit")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> UnstopCustomerDebit([FromBody] StopDebitRequestDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ActionBy))
+                {
+                    return Unauthorized();
+                }
+
+                var status = await _customerMasterService.StopCustomerDebitAsync(values);
+
+                return status switch
+                {
+                    200 => Ok("success"),
+                    400 => BadRequest(),
+                    404 => NotFound($"Customer code {values.CustomerCode} not found"),
+                    500 => StatusCode(500, "unsuccessful"),
+                    _ => StatusCode(500, "Internal Server Error"),
+                }; ;
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
 
     }
 }

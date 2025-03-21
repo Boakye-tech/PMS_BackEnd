@@ -1,4 +1,5 @@
-﻿namespace Modules.Estates.Infrastructure.UnitOfWork;
+﻿
+namespace Modules.Estates.Infrastructure.UnitOfWork;
 
 public class UnitOfWork: IUnitOfWork
 {
@@ -60,6 +61,8 @@ public class UnitOfWork: IUnitOfWork
 
         OwnershipType = new OwnershipTypeRepository(_dbContext);
 
+        StopDebit = new StopDebitRepository(_dbContext);
+
     }
 
 
@@ -114,6 +117,10 @@ public class UnitOfWork: IUnitOfWork
     public IActivityTypeRepository ActivityType { get; private set; }
 
     public IOwnershipTypeRepository OwnershipType { get; private set; }
+
+    //Mar 20 '25
+    public IStopDebitRepository StopDebit { get; private set; }
+
 
     public Task<int> Complete()
     {

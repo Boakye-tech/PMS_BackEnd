@@ -8,9 +8,15 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [Key]
         public int CustomerMasterId { get; set; }
 
+        public int CustomerTypeId { get; set; }
+
         public string? CustomerType { get; set; }
 
+        public int ResidentTypeId { get; set; }
+
         public string? ResidentType { get; set; }
+
+        public int LocalityId { get; set; }
 
         public string? Locality { get; set; }
 
@@ -50,6 +56,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(255)]
         public string? Picture { get; set; }
 
+        public int SocialMediaTypeId { get; set; }
+
         public string? SocialMediaType { get; set; }
 
         [StringLength(50)]
@@ -80,6 +88,8 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         [StringLength(255)]
         public string? ContactPerson_Address { get; set; }
+
+        public int ContactPerson_IdentificationTypeId { get; set; }
 
         public string? ContactPerson_IdentificationType { get; set; }
 
