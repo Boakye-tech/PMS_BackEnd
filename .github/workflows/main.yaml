@@ -193,6 +193,11 @@ jobs:
           $template | ConvertTo-Json -Depth 10 | Set-Content $outputPath
           Write-Host "Created appsettings.json at: $outputPath"
 
+          # Create development settings file
+          $devOutputPath = Join-Path $settingsFile.DirectoryName "appsettings.Development.json"
+          $template | ConvertTo-Json -Depth 10 | Set-Content $devOutputPath
+          Write-Host "Created appsettings.Development.json at: $devOutputPath"
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
