@@ -234,13 +234,15 @@ public class AccountController : ControllerBase
         }
     }
 
+    
+
     /// <summary>
     /// reset the password for a forgotten registered user account via their registered email address or registered mobile phone number
     /// </summary>
     [HttpPost]
     [AllowAnonymous]
     [Route("ResetPassword")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequest)
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequest) 
     {
         try
         {

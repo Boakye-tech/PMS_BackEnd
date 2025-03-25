@@ -42,6 +42,7 @@
     <None Remove="Controllers\v2\" />
     <None Remove="OpenAPI\" />
     <None Remove="Filters\" />
+    <None Remove="bin\Debug\net8.0\bin\Debug\net8.0\bin\Debug\net8.0\bin\Debug\net8.0\Modules.Notification.Presentation.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\v1\" />
@@ -49,12 +50,5 @@
     <Folder Include="OpenAPI\" />
     <Folder Include="Filters\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Include="**\*.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-    </None>
-</ItemGroup>
 
 </Project>

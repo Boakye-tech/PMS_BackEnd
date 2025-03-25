@@ -15,3 +15,4 @@ global using Modules.Estates.Application.DTO.Management.ModuleServices;
 global using Modules.Estates.Application.Interfaces.Management.Customer;
 global using Modules.Estates.Application.Interfaces.ModuleServices;
 global using Modules.Estates.Application.DTO;
+global using Modules.Estates.Application.DTO.Management;
