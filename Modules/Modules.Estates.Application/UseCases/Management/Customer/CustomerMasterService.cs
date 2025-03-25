@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
+using Modules.Estates.Application.Enums;
+using Modules.Estates.Domain.Entities.Setup.Customer;
 
 namespace Modules.Estates.Application.UseCases.Management.Customer
 {
@@ -13,6 +15,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
         private readonly IModuleCommunicationServices _moduleComms;
         private readonly ILogger<CustomerMasterService> _logger;
         private readonly IDomainEventDispatcher _domainEventDispatcher;
+
 
         public CustomerMasterService(IUnitOfWork unitOfWork, IMapper mapper, ICustomerDomainService domainService, IModuleCommunicationServices moduleComms, ILogger<CustomerMasterService> logger, IDomainEventDispatcher domainEventDispatcher)
         {
@@ -64,7 +67,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     );
 
                 customer.CreatedOn = DateTime.UtcNow;
-                customer.DebtorStatus = 1;
+                customer.DebtorStatus = (int)DebtorStatusEnum.APPROVED;
 
                 _unitOfWork.CustomerMaster.Insert(customer);
                 await _unitOfWork.Complete();
@@ -202,7 +205,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 customer.ResidentialAddress = values.CompanyAddress;
                 customer.CreatedBy = values.CreatedBy;
                 customer.CreatedOn = DateTime.UtcNow;
-                customer.DebtorStatus = 1;
+                customer.DebtorStatus = (int)DebtorStatusEnum.PENDING;
 
                 _unitOfWork.CustomerMaster.Insert(customer);
 
@@ -224,7 +227,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             }
             catch (Exception ex)
             {
-                var err = new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                var err = new BaseResponseDto { StatusCode = 500, StatusMessage = ex.Message };
                 return new CustomerRegistrationResponseDto { IsSuccess = false, ErrorResponse = err };
             }
         }
@@ -339,7 +342,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
                 customer.CreatedBy = values.CreatedBy;
                 customer.CreatedOn = DateTime.UtcNow;
-                customer.DebtorStatus = 1;
+                customer.DebtorStatus = (int)DebtorStatusEnum.PENDING;
 
                 _unitOfWork.CustomerMaster.Insert(customer);
 
@@ -485,7 +488,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
             customer.CreatedBy = values.CreatedBy;
             customer.CreatedOn = DateTime.UtcNow;
-            customer.DebtorStatus = 1;
+            customer.DebtorStatus = (int)DebtorStatusEnum.PENDING;
 
             List<CustomerMaster> jointCustomers = new List<CustomerMaster>
             {
@@ -528,7 +531,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                         break;
                 }
                 count++;
-                //throw new NotImplementedException();
+
                 CustomerMaster co_customer = await CustomerMaster.CreateJointAsync
                     (
                         customerMasterId: values.CustomerMasterId,
@@ -586,13 +589,12 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 co_customer.CustomerCode = $"{customer.CustomerCode!}-{count.ToString("D2")}";
                 co_customer.CreatedBy = values.CreatedBy;
                 co_customer.CreatedOn = DateTime.UtcNow;
-                co_customer.DebtorStatus = 1;
+                co_customer.DebtorStatus = (int)DebtorStatusEnum.PENDING;
 
                 jointCustomers.Add(co_customer);
             }
 
             _unitOfWork.CustomerMaster.InsertRange(jointCustomers);
-            //await _unitOfWork.Complete();
 
             //update counter
             var _locality = await _unitOfWork.Locality.Get(values.LocalityId);
@@ -725,7 +727,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
             customer.CreatedBy = values.CreatedBy;
             customer.CreatedOn = DateTime.UtcNow;
-            customer.DebtorStatus = 1;
+            customer.DebtorStatus = (int)DebtorStatusEnum.PENDING;
 
             List<CustomerMaster> jointCustomers = new List<CustomerMaster>
             {
@@ -812,7 +814,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 co_customer.CustomerCode = $"{customer.CustomerCode!}-{count.ToString("D2")}";
                 co_customer.CreatedBy = values.CreatedBy;
                 co_customer.CreatedOn = DateTime.UtcNow;
-                co_customer.DebtorStatus = 1;
+                co_customer.DebtorStatus = (int)DebtorStatusEnum.PENDING;
 
                 jointCustomers.Add(co_customer);
             }
@@ -840,12 +842,8 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             return new CustomerRegistrationResponseDto { IsSuccess = true, SuccessResponse = registeredCustomer };
         }
 
-
-
         public async Task<int> DeleteCustomerAsync(DeleteCustomerRequestDto values)
         {
-            //throw new NotImplementedException();
-
             var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values.customerCode);
             if(customer is null)
             {
@@ -876,7 +874,104 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             return 200;
         }
 
-       
+        public async Task<int> ApproveCustomerAsync(ApproveCustomerDto values)
+        {
+            //throw new NotImplementedException();
+            var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values.customerCode);
+            if (customer is null)
+            {
+                return 404;
+            }
+
+            customer!.DebtorStatus = (int)DebtorStatusEnum.APPROVED;
+            customer.ApprovedBy = values.approvedBy;
+            customer.ApprovedOn = DateTime.UtcNow;
+
+            _unitOfWork.CustomerMaster.Update(customer);
+            await _unitOfWork.Complete();
+
+            
+            //get dynamic variables
+            var _customerType = (await _unitOfWork.CustomerType.Get(c => c.CustomerTypeId == customer.CustomerTypeId))!.CustomerTypes;
+            var _residentType = (await _unitOfWork.ResidentType.Get(r => r.ResidentTypeId == customer.ResidentTypeId))!.ResidentTypes;
+            var _locality = (await _unitOfWork.Locality.Get(l => l.LocalityId == customer.LocalityId))!.LocalityName;
+            var _title = (await _unitOfWork.Title.Get(t => t.TitleId == customer.TitleId))!.Titles;
+            var _gender = (await _unitOfWork.Gender.Get(g => g.GenderId == customer.GenderId))!.GenderType;
+            var _nationality = (await _unitOfWork.Nationality.Get(n => n.NationalityId == customer.NationalityId))!.Nationalities;
+            var _socialMediaPlatform = (await _unitOfWork.SocialMedia.Get(s => s.SocialMediaId == customer.SocialMediaTypeId))!.SocialMediaPlatform;
+
+
+            //prepare payload and call api
+            if (customer.CustomerTypeId == (int)CustomerTypeEnum.COMPANY)
+            {
+                OnlineCustomerDetailsDto customer_payload = new OnlineCustomerDetailsDto
+                {
+                    CustomerType = _customerType,
+                    ResidentType = _residentType,
+                    Locality = _locality!,
+                    CustomerCode = customer.CustomerCode!,
+                    CustomerName = customer.CompanyName!,
+                    Picture = customer.Picture,
+                    Gender = string.Empty,
+                    Nationality = _nationality,
+                    PostalAddress = customer.PostalAddress,
+                    ResidentialAddress = customer.ResidentialAddress,
+                    DigitalAddress = customer.DigitalAddress,
+                    PrimaryMobileNumber = customer.PrimaryMobileNumber!,
+                    SecondaryMobileNumber = customer.SecondaryMobileNumber,
+                    OfficeNumber = customer.OfficeNumber,
+                    WhatsAppNumber = customer.WhatsAppNumber,
+                    EmailAddress = customer.EmailAddress!,
+                    SocialMediaType = _socialMediaPlatform,
+                    SocialMediaAccount = customer.SocialMediaAccount
+                };
+
+
+                var result = await _moduleComms.SendCustomerDetailsAsync(customer_payload);
+                if (!result)
+                {
+                    _logger.LogWarning($"Failed to send customer details to online customer module {customer_payload.CustomerCode}", customer_payload.CustomerCode);
+                }
+            }
+            else
+            {
+                var customername = string.Concat(_title, " ", customer.OtherNames, " ", customer.SurName);
+
+                OnlineCustomerDetailsDto customer_payload = new OnlineCustomerDetailsDto
+                {
+                    CustomerType = _customerType,
+                    ResidentType = _residentType,
+                    Locality = _locality!,
+                    CustomerCode = customer.CustomerCode!,
+                    CustomerName = customername,
+                    Picture = customer.Picture,
+                    Gender = _gender,
+                    Nationality = _nationality,
+                    PostalAddress = customer.PostalAddress,
+                    ResidentialAddress = customer.ResidentialAddress,
+                    DigitalAddress = customer.DigitalAddress,
+                    PrimaryMobileNumber = customer.PrimaryMobileNumber!,
+                    SecondaryMobileNumber = customer.SecondaryMobileNumber,
+                    OfficeNumber = customer.OfficeNumber,
+                    WhatsAppNumber = customer.WhatsAppNumber,
+                    EmailAddress = customer.EmailAddress!,
+                    SocialMediaType = _socialMediaPlatform,
+                    SocialMediaAccount = customer.SocialMediaAccount
+                };
+
+
+                var result = await _moduleComms.SendCustomerDetailsAsync(customer_payload);
+                if (!result)
+                {
+                    _logger.LogWarning($"Failed to send customer details to online customer module {customer_payload.CustomerCode}", customer_payload.CustomerCode);
+                }
+            }
+
+            return 200;
+
+        }
+
+
     }
 }
 

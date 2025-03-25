@@ -12,228 +12,165 @@
       },
       "results": [
         {
-          "ruleId": "S125",
+          "ruleId": "CS1591",
           "level": "warning",
-          "message": "Remove this commented out code.",
+          "message": "Missing XML comment for publicly visible type or member 'BillingController'",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Controllers/v1/BillingController.cs",
                 "region": {
-                  "startLine": 27,
-                  "startColumn": 5,
-                  "endLine": 27,
-                  "endColumn": 8
+                  "startLine": 10,
+                  "startColumn": 14,
+                  "endLine": 10,
+                  "endColumn": 31
                 }
               }
             }
           ],
           "properties": {
-            "warningLevel": 1
+            "warningLevel": 4
           }
         },
         {
-          "ruleId": "S125",
+          "ruleId": "CS1591",
           "level": "warning",
-          "message": "Remove this commented out code.",
+          "message": "Missing XML comment for publicly visible type or member 'BillingController'",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Controllers/v2/BillingController.cs",
                 "region": {
-                  "startLine": 38,
-                  "startColumn": 13,
-                  "endLine": 38,
-                  "endColumn": 161
+                  "startLine": 10,
+                  "startColumn": 14,
+                  "endLine": 10,
+                  "endColumn": 31
                 }
               }
             }
           ],
           "properties": {
-            "warningLevel": 1
+            "warningLevel": 4
           }
         },
         {
-          "ruleId": "S125",
+          "ruleId": "CS1591",
           "level": "warning",
-          "message": "Remove this commented out code.",
+          "message": "Missing XML comment for publicly visible type or member 'SwaggerConfigureOptions'",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerConfigureOptions.cs",
                 "region": {
-                  "startLine": 52,
-                  "startColumn": 13,
-                  "endLine": 52,
-                  "endColumn": 161
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
-                "region": {
-                  "startLine": 68,
-                  "startColumn": 20,
-                  "endLine": 68,
-                  "endColumn": 42
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
-                "region": {
-                  "startLine": 79,
-                  "startColumn": 1,
-                  "endLine": 79,
-                  "endColumn": 99
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
-                "region": {
-                  "startLine": 99,
-                  "startColumn": 5,
-                  "endLine": 99,
-                  "endColumn": 131
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
-                "region": {
-                  "startLine": 111,
-                  "startColumn": 1,
-                  "endLine": 111,
-                  "endColumn": 9
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S2068",
-          "level": "warning",
-          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/appsettings.notification.json",
-                "region": {
-                  "startLine": 3,
-                  "startColumn": 35,
-                  "endLine": 3,
-                  "endColumn": 166
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S2068",
-          "level": "warning",
-          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/appsettings.notification.json",
-                "region": {
-                  "startLine": 4,
-                  "startColumn": 33,
-                  "endLine": 4,
-                  "endColumn": 157
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S2068",
-          "level": "warning",
-          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/appsettings.notification.json",
-                "region": {
-                  "startLine": 5,
-                  "startColumn": 25,
-                  "endLine": 5,
-                  "endColumn": 141
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S2068",
-          "level": "warning",
-          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/appsettings.notification.json",
-                "region": {
-                  "startLine": 13,
+                  "startLine": 11,
                   "startColumn": 18,
-                  "endLine": 13,
-                  "endColumn": 34
+                  "endLine": 11,
+                  "endColumn": 41
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS1591",
+          "level": "warning",
+          "message": "Missing XML comment for publicly visible type or member 'SwaggerConfigureOptions.SwaggerConfigureOptions(IApiVersionDescriptionProvider)'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerConfigureOptions.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 16,
+                  "endLine": 14,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS1591",
+          "level": "warning",
+          "message": "Missing XML comment for publicly visible type or member 'SwaggerConfigureOptions.Configure(SwaggerGenOptions)'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerConfigureOptions.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 21,
+                  "endLine": 16,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS1591",
+          "level": "warning",
+          "message": "Missing XML comment for publicly visible type or member 'SwaggerDefaultValues'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerDefaultValues.cs",
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 18,
+                  "endLine": 10,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "CS1591",
+          "level": "warning",
+          "message": "Missing XML comment for publicly visible type or member 'SwaggerDefaultValues.Apply(OpenApiOperation, OperationFilterContext)'",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerDefaultValues.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 21,
+                  "endLine": 12,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 4
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 1,
+                  "endLine": 36,
+                  "endColumn": 116
                 }
               }
             }
@@ -243,18 +180,102 @@
           }
         },
         {
-          "ruleId": "S2068",
+          "ruleId": "S125",
           "level": "warning",
-          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
+          "message": "Remove this commented out code.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/appsettings.notification.json",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 20,
-                  "startColumn": 18,
-                  "endLine": 20,
-                  "endColumn": 28
+                  "startLine": 45,
+                  "startColumn": 13,
+                  "endLine": 45,
+                  "endColumn": 160
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 13,
+                  "endLine": 48,
+                  "endColumn": 162
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 13,
+                  "endLine": 59,
+                  "endColumn": 160
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 13,
+                  "endLine": 62,
+                  "endColumn": 162
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S125",
+          "level": "warning",
+          "message": "Remove this commented out code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
+                "region": {
+                  "startLine": 97,
+                  "startColumn": 5,
+                  "endLine": 97,
+                  "endColumn": 24
                 }
               }
             }
@@ -270,7 +291,7 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
                   "startLine": 1,
                   "startColumn": 1,
@@ -283,110 +304,110 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 4,
+                  "startLine": 11,
                   "startColumn": 1,
-                  "endLine": 4,
+                  "endLine": 11,
                   "endColumn": 3
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 10,
+                  "startLine": 17,
                   "startColumn": 5,
-                  "endLine": 10,
+                  "endLine": 17,
                   "endColumn": 7
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 16,
+                  "startLine": 23,
                   "startColumn": 1,
-                  "endLine": 16,
+                  "endLine": 23,
                   "endColumn": 3
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 22,
+                  "startLine": 29,
                   "startColumn": 5,
-                  "endLine": 22,
+                  "endLine": 29,
                   "endColumn": 7
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 33,
+                  "startLine": 40,
                   "startColumn": 1,
-                  "endLine": 33,
+                  "endLine": 40,
                   "endColumn": 3
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 35,
+                  "startLine": 42,
                   "startColumn": 5,
-                  "endLine": 35,
+                  "endLine": 42,
                   "endColumn": 11
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 47,
+                  "startLine": 54,
                   "startColumn": 1,
-                  "endLine": 47,
+                  "endLine": 54,
                   "endColumn": 3
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 49,
+                  "startLine": 56,
                   "startColumn": 5,
-                  "endLine": 49,
+                  "endLine": 56,
                   "endColumn": 11
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 116,
+                  "startLine": 95,
                   "startColumn": 1,
-                  "endLine": 116,
+                  "endLine": 95,
                   "endColumn": 3
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 131,
+                  "startLine": 112,
                   "startColumn": 9,
-                  "endLine": 131,
+                  "endLine": 112,
                   "endColumn": 16
                 }
               }
@@ -409,129 +430,13 @@
           }
         },
         {
-          "ruleId": "S4487",
-          "level": "warning",
-          "message": "Remove this unread private field '_logger' or refactor the code to use its value.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
-                "region": {
-                  "startLine": 15,
-                  "startColumn": 54,
-                  "endLine": 15,
-                  "endColumn": 61
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S4487",
-          "level": "warning",
-          "message": "Remove this unread private field '_logger' or refactor the code to use its value.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v2/NotificationController.cs",
-                "region": {
-                  "startLine": 15,
-                  "startColumn": 54,
-                  "endLine": 15,
-                  "endColumn": 61
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S6968",
-          "level": "warning",
-          "message": "Annotate this method with ProducesResponseType containing the return type for successful responses.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
-                "region": {
-                  "startLine": 52,
-                  "startColumn": 26,
-                  "endLine": 52,
-                  "endColumn": 45
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
-                "region": {
-                  "startLine": 66,
-                  "startColumn": 16,
-                  "endLine": 66,
-                  "endColumn": 25
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1,
-            "customProperties": {
-              "0": null
-            }
-          }
-        },
-        {
-          "ruleId": "S6968",
-          "level": "warning",
-          "message": "Annotate this method with ProducesResponseType containing the return type for successful responses.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
-                "region": {
-                  "startLine": 73,
-                  "startColumn": 26,
-                  "endLine": 73,
-                  "endColumn": 47
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
-                "region": {
-                  "startLine": 87,
-                  "startColumn": 16,
-                  "endLine": 87,
-                  "endColumn": 25
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1,
-            "customProperties": {
-              "0": null
-            }
-          }
-        },
-        {
           "ruleId": "S3267",
           "level": "warning",
           "message": "Loops should be simplified using the \"Where\" LINQ method",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/OpenAPI/SwaggerDefaultValues.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerDefaultValues.cs",
                 "region": {
                   "startLine": 22,
                   "startColumn": 45,
@@ -544,7 +449,7 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/OpenAPI/SwaggerDefaultValues.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerDefaultValues.cs",
                 "region": {
                   "startLine": 24,
                   "startColumn": 25,
@@ -562,38 +467,17 @@
           }
         },
         {
-          "ruleId": "S5122",
-          "level": "warning",
-          "message": "Make sure this permissive CORS policy is safe here.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
-                "region": {
-                  "startLine": 65,
-                  "startColumn": 13,
-                  "endLine": 65,
-                  "endColumn": 37
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
           "ruleId": "S6966",
           "level": "warning",
           "message": "Await RunAsync instead.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs",
                 "region": {
-                  "startLine": 148,
+                  "startLine": 127,
                   "startColumn": 1,
-                  "endLine": 148,
+                  "endLine": 127,
                   "endColumn": 10
                 }
               }
@@ -605,6 +489,21 @@
         }
       ],
       "rules": {
+        "CS1591": {
+          "id": "CS1591",
+          "shortDescription": "Missing XML comment for publicly visible type or member",
+          "fullDescription": "The /doc compiler option was specified, but one or more constructs did not have comments.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1591)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
         "S125": {
           "id": "S125",
           "shortDescription": "Sections of code should not be commented out",
@@ -618,22 +517,6 @@
               "C#",
               "MainSourceScope",
               "TestSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
-        "S2068": {
-          "id": "S2068",
-          "shortDescription": "Hard-coded credentials are security-sensitive",
-          "fullDescription": "Because it is easy to extract strings from an application source code or binary, credentials should not be hard-coded. This is particularly true for applications that are distributed or that are open-source.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2068",
-          "properties": {
-            "category": "Blocker Security Hotspot",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
               "SonarWay"
             ]
           }
@@ -671,39 +554,6 @@
             ]
           }
         },
-        "S4487": {
-          "id": "S4487",
-          "shortDescription": "Unread \"private\" fields should be removed",
-          "fullDescription": "Private fields which are written but never read are a case of \"dead store\". Changing the value of such a field is useless and most probably indicates an error in the code.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-4487",
-          "properties": {
-            "category": "Critical Code Smell",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
-              "TestSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
-        "S5122": {
-          "id": "S5122",
-          "shortDescription": "Having a permissive Cross-Origin Resource Sharing policy is security-sensitive",
-          "fullDescription": "Having a permissive Cross-Origin Resource Sharing policy is security-sensitive. It has led in the past to the following vulnerabilities:",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-5122",
-          "properties": {
-            "category": "Minor Security Hotspot",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
         "S6966": {
           "id": "S6966",
           "shortDescription": "Awaitable method should be used",
@@ -717,22 +567,6 @@
               "C#",
               "MainSourceScope",
               "TestSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
-        "S6968": {
-          "id": "S6968",
-          "shortDescription": "Actions that return a value should be annotated with ProducesResponseTypeAttribute containing the return type",
-          "fullDescription": "In an ASP.NET Core Web API, controller actions can optionally return a result value. If a controller action returns a value in the happy path, for example ControllerBase.Ok(Object), annotating the action with one of the [ProducesResponseType] overloads that describe the type is recommended.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6968",
-          "properties": {
-            "category": "Major Code Smell",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
               "SonarWay"
             ]
           }

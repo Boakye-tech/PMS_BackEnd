@@ -12,983 +12,17 @@
       },
       "results": [
         {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'FileManagerController'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/FileManagerController.cs",
-                "region": {
-                  "startLine": 11,
-                  "startColumn": 14,
-                  "endLine": 11,
-                  "endColumn": 35
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'FileManagerController.FileManagerController(IAzureBlobService)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/FileManagerController.cs",
-                "region": {
-                  "startLine": 16,
-                  "startColumn": 12,
-                  "endLine": 16,
-                  "endColumn": 33
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'FileManagerController.UploadFileDocuments(IFormFile)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/FileManagerController.cs",
-                "region": {
-                  "startLine": 26,
-                  "startColumn": 38,
-                  "endLine": 26,
-                  "endColumn": 57
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'FileManagerController.DeleteUploadFile(string)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/FileManagerController.cs",
-                "region": {
-                  "startLine": 48,
-                  "startColumn": 38,
-                  "endLine": 48,
-                  "endColumn": 54
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 12,
-                  "startColumn": 14,
-                  "endLine": 12,
-                  "endColumn": 38
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.OnlineCustomerController(ILogger<OnlineCustomerController>, IPropertyDetailsService, ICustomerDetailsService, ICustomerTransactionsService, ICustomerInvoiceService, ICustomerPaymentsService)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 21,
-                  "startColumn": 12,
-                  "endLine": 21,
-                  "endColumn": 36
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.AvailableProperties()'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 32,
-                  "startColumn": 69,
-                  "endLine": 32,
-                  "endColumn": 88
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.MobileView(string)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 39,
-                  "startColumn": 66,
-                  "endLine": 39,
-                  "endColumn": 76
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.WebView(string)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 45,
-                  "startColumn": 63,
-                  "endLine": 45,
-                  "endColumn": 70
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.PropertyDetails(string)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 51,
-                  "startColumn": 47,
-                  "endLine": 51,
-                  "endColumn": 62
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.CustomerTransactions(string, string)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 58,
-                  "startColumn": 65,
-                  "endLine": 58,
-                  "endColumn": 85
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.CustomerStatement(string?, string?, string?, string?, int)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 72,
-                  "startColumn": 65,
-                  "endLine": 72,
-                  "endColumn": 82
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.CustomerPaymentSummary(string?, string?, string?, string?, int)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 84,
-                  "startColumn": 64,
-                  "endLine": 84,
-                  "endColumn": 86
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.CustomerPaymentDetails(string?, string?, string?, string?, int)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 97,
-                  "startColumn": 57,
-                  "endLine": 97,
-                  "endColumn": 79
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.CustomerInvoiceSummary(string?, string?, string?, string?, int)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 110,
-                  "startColumn": 67,
-                  "endLine": 110,
-                  "endColumn": 89
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.CustomerInvoiceDetails(string?, string?, string?, string?, int)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 122,
-                  "startColumn": 56,
-                  "endLine": 122,
-                  "endColumn": 78
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.CustomerDetails(CustomerDetailsDto)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 136,
-                  "startColumn": 43,
-                  "endLine": 136,
-                  "endColumn": 58
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.PropertyDetails(PropertyDetailsDto)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 142,
-                  "startColumn": 43,
-                  "endLine": 142,
-                  "endColumn": 58
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.AddCustomerTransactions(CustomerTransactionsDto)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 148,
-                  "startColumn": 43,
-                  "endLine": 148,
-                  "endColumn": 66
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.AddCustomerInvoices(CustomerInvoiceDto)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 155,
-                  "startColumn": 44,
-                  "endLine": 155,
-                  "endColumn": 63
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.AddCustomerPayments(CustomerPaymentsDto)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 161,
-                  "startColumn": 43,
-                  "endLine": 161,
-                  "endColumn": 62
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'FileManagerController'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/FileManagerController.cs",
-                "region": {
-                  "startLine": 11,
-                  "startColumn": 14,
-                  "endLine": 11,
-                  "endColumn": 35
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'FileManagerController.FileManagerController(IAzureBlobService)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/FileManagerController.cs",
-                "region": {
-                  "startLine": 16,
-                  "startColumn": 12,
-                  "endLine": 16,
-                  "endColumn": 33
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'FileManagerController.UploadFileDocuments(IFormFile)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/FileManagerController.cs",
-                "region": {
-                  "startLine": 26,
-                  "startColumn": 38,
-                  "endLine": 26,
-                  "endColumn": 57
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 11,
-                  "startColumn": 14,
-                  "endLine": 11,
-                  "endColumn": 38
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.OnlineCustomerController(ILogger<OnlineCustomerController>, IPropertyDetailsService)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 16,
-                  "startColumn": 12,
-                  "endLine": 16,
-                  "endColumn": 36
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.MobileView(string)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 35,
-                  "startColumn": 66,
-                  "endLine": 35,
-                  "endColumn": 76
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.WebView(string)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 41,
-                  "startColumn": 63,
-                  "endLine": 41,
-                  "endColumn": 70
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.PropertyDetails(string)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 47,
-                  "startColumn": 47,
-                  "endLine": 47,
-                  "endColumn": 62
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.CustomerDetails(CustomerDetailsDto)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 54,
-                  "startColumn": 32,
-                  "endLine": 54,
-                  "endColumn": 47
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'OnlineCustomerController.PropertyDetails(PropertyDetailsDto)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 43,
-                  "endLine": 60,
-                  "endColumn": 58
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'HttpGlobalExceptionFilter'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Filters/HttpGlobalExceptionFilter.cs",
-                "region": {
-                  "startLine": 7,
-                  "startColumn": 14,
-                  "endLine": 7,
-                  "endColumn": 39
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'HttpGlobalExceptionFilter._logger'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Filters/HttpGlobalExceptionFilter.cs",
-                "region": {
-                  "startLine": 9,
-                  "startColumn": 56,
-                  "endLine": 9,
-                  "endColumn": 63
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'HttpGlobalExceptionFilter.HttpGlobalExceptionFilter(ILogger<HttpGlobalExceptionFilter>)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Filters/HttpGlobalExceptionFilter.cs",
-                "region": {
-                  "startLine": 11,
-                  "startColumn": 12,
-                  "endLine": 11,
-                  "endColumn": 37
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'HttpGlobalExceptionFilter.TryHandleAsync(HttpContext, Exception, CancellationToken)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Filters/HttpGlobalExceptionFilter.cs",
-                "region": {
-                  "startLine": 16,
-                  "startColumn": 34,
-                  "endLine": 16,
-                  "endColumn": 48
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'ModuleExtensions'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/ModuleExtensions.cs",
-                "region": {
-                  "startLine": 6,
-                  "startColumn": 22,
-                  "endLine": 6,
-                  "endColumn": 38
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'ModuleExtensions.AddCustomerModule(IServiceCollection, IConfiguration)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/ModuleExtensions.cs",
-                "region": {
-                  "startLine": 8,
-                  "startColumn": 42,
-                  "endLine": 8,
-                  "endColumn": 59
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'SwaggerConfigureOptions'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/OpenAPI/SwaggerConfigureOptions.cs",
-                "region": {
-                  "startLine": 11,
-                  "startColumn": 18,
-                  "endLine": 11,
-                  "endColumn": 41
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'SwaggerConfigureOptions.SwaggerConfigureOptions(IApiVersionDescriptionProvider)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/OpenAPI/SwaggerConfigureOptions.cs",
-                "region": {
-                  "startLine": 14,
-                  "startColumn": 16,
-                  "endLine": 14,
-                  "endColumn": 39
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'SwaggerConfigureOptions.Configure(SwaggerGenOptions)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/OpenAPI/SwaggerConfigureOptions.cs",
-                "region": {
-                  "startLine": 16,
-                  "startColumn": 21,
-                  "endLine": 16,
-                  "endColumn": 30
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'SwaggerDefaultValues'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/OpenAPI/SwaggerDefaultValues.cs",
-                "region": {
-                  "startLine": 10,
-                  "startColumn": 18,
-                  "endLine": 10,
-                  "endColumn": 38
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "CS1591",
-          "level": "warning",
-          "message": "Missing XML comment for publicly visible type or member 'SwaggerDefaultValues.Apply(OpenApiOperation, OperationFilterContext)'",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/OpenAPI/SwaggerDefaultValues.cs",
-                "region": {
-                  "startLine": 12,
-                  "startColumn": 21,
-                  "endLine": 12,
-                  "endColumn": 26
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 4
-          }
-        },
-        {
-          "ruleId": "S2068",
-          "level": "warning",
-          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/appsettings.customers.json",
-                "region": {
-                  "startLine": 3,
-                  "startColumn": 35,
-                  "endLine": 3,
-                  "endColumn": 166
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S2068",
-          "level": "warning",
-          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/appsettings.customers.json",
-                "region": {
-                  "startLine": 4,
-                  "startColumn": 33,
-                  "endLine": 4,
-                  "endColumn": 157
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S2068",
-          "level": "warning",
-          "message": "\"password\" detected here, make sure this is not a hard-coded credential.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/appsettings.customers.json",
-                "region": {
-                  "startLine": 5,
-                  "startColumn": 25,
-                  "endLine": 5,
-                  "endColumn": 142
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
           "ruleId": "S125",
           "level": "warning",
           "message": "Remove this commented out code.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
                 "region": {
-                  "startLine": 151,
-                  "startColumn": 9,
-                  "endLine": 151,
-                  "endColumn": 17
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 24,
+                  "startLine": 27,
                   "startColumn": 5,
-                  "endLine": 24,
+                  "endLine": 27,
                   "endColumn": 8
                 }
               }
@@ -1005,33 +39,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 63,
-                  "startColumn": 10,
-                  "endLine": 63,
-                  "endColumn": 18
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/ModuleExtensions.cs",
-                "region": {
-                  "startLine": 21,
+                  "startLine": 38,
                   "startColumn": 13,
-                  "endLine": 21,
-                  "endColumn": 95
+                  "endLine": 38,
+                  "endColumn": 161
                 }
               }
             }
@@ -1047,33 +60,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 18,
-                  "startColumn": 1,
-                  "endLine": 18,
-                  "endColumn": 106
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
-                "region": {
-                  "startLine": 54,
+                  "startLine": 52,
                   "startColumn": 13,
-                  "endLine": 54,
-                  "endColumn": 160
+                  "endLine": 52,
+                  "endColumn": 161
                 }
               }
             }
@@ -1089,12 +81,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
                   "startLine": 68,
-                  "startColumn": 13,
+                  "startColumn": 20,
                   "endLine": 68,
-                  "endColumn": 160
+                  "endColumn": 42
                 }
               }
             }
@@ -1110,33 +102,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 84,
-                  "startColumn": 13,
-                  "endLine": 84,
-                  "endColumn": 35
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
-                "region": {
-                  "startLine": 88,
+                  "startLine": 79,
                   "startColumn": 1,
-                  "endLine": 88,
-                  "endColumn": 84
+                  "endLine": 79,
+                  "endColumn": 99
                 }
               }
             }
@@ -1152,12 +123,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 155,
+                  "startLine": 99,
                   "startColumn": 5,
-                  "endLine": 155,
-                  "endColumn": 24
+                  "endLine": 99,
+                  "endColumn": 131
                 }
               }
             }
@@ -1167,18 +138,18 @@
           }
         },
         {
-          "ruleId": "S1135",
+          "ruleId": "S125",
           "level": "warning",
-          "message": "Complete the task associated to this 'TODO' comment.",
+          "message": "Remove this commented out code.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 102,
-                  "startColumn": 17,
-                  "endLine": 102,
-                  "endColumn": 21
+                  "startLine": 111,
+                  "startColumn": 1,
+                  "endLine": 111,
+                  "endColumn": 9
                 }
               }
             }
@@ -1194,7 +165,7 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
                   "startLine": 1,
                   "startColumn": 1,
@@ -1207,29 +178,51 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 21,
+                  "startLine": 4,
                   "startColumn": 1,
-                  "endLine": 21,
+                  "endLine": 4,
                   "endColumn": 3
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 27,
+                  "startLine": 10,
                   "startColumn": 5,
-                  "endLine": 27,
+                  "endLine": 10,
                   "endColumn": 7
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 1,
+                  "endLine": 16,
+                  "endColumn": 3
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 5,
+                  "endLine": 22,
+                  "endColumn": 7
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
                   "startLine": 33,
                   "startColumn": 1,
@@ -1240,77 +233,55 @@
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 39,
+                  "startLine": 35,
                   "startColumn": 5,
-                  "endLine": 39,
-                  "endColumn": 7
+                  "endLine": 35,
+                  "endColumn": 11
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
+                "region": {
+                  "startLine": 47,
+                  "startColumn": 1,
+                  "endLine": 47,
+                  "endColumn": 3
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
                   "startLine": 49,
-                  "startColumn": 1,
+                  "startColumn": 5,
                   "endLine": 49,
-                  "endColumn": 3
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
-                "region": {
-                  "startLine": 51,
-                  "startColumn": 5,
-                  "endLine": 51,
                   "endColumn": 11
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 63,
+                  "startLine": 116,
                   "startColumn": 1,
-                  "endLine": 63,
+                  "endLine": 116,
                   "endColumn": 3
                 }
               }
             },
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 65,
-                  "startColumn": 5,
-                  "endLine": 65,
-                  "endColumn": 11
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
-                "region": {
-                  "startLine": 153,
-                  "startColumn": 1,
-                  "endLine": 153,
-                  "endColumn": 3
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
-                "region": {
-                  "startLine": 170,
+                  "startLine": 131,
                   "startColumn": 9,
-                  "endLine": 170,
+                  "endLine": 131,
                   "endColumn": 16
                 }
               }
@@ -1339,55 +310,18 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v2/NotificationController.cs",
                 "region": {
-                  "startLine": 13,
-                  "startColumn": 56,
-                  "endLine": 13,
-                  "endColumn": 63
+                  "startLine": 15,
+                  "startColumn": 54,
+                  "endLine": 15,
+                  "endColumn": 61
                 }
               }
             }
           ],
           "properties": {
             "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S4136",
-          "level": "warning",
-          "message": "All 'PropertyDetails' method overloads should be adjacent.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 47,
-                  "startColumn": 47,
-                  "endLine": 47,
-                  "endColumn": 62
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v2/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 43,
-                  "endLine": 60,
-                  "endColumn": 58
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1,
-            "customProperties": {
-              "0": "Non-adjacent overload"
-            }
           }
         },
         {
@@ -1397,12 +331,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
                 "region": {
-                  "startLine": 14,
-                  "startColumn": 56,
-                  "endLine": 14,
-                  "endColumn": 63
+                  "startLine": 15,
+                  "startColumn": 54,
+                  "endLine": 15,
+                  "endColumn": 61
                 }
               }
             }
@@ -1412,18 +346,18 @@
           }
         },
         {
-          "ruleId": "S4136",
+          "ruleId": "S6968",
           "level": "warning",
-          "message": "All 'PropertyDetails' method overloads should be adjacent.",
+          "message": "Annotate this method with ProducesResponseType containing the return type for successful responses.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
                 "region": {
-                  "startLine": 51,
-                  "startColumn": 47,
-                  "endLine": 51,
-                  "endColumn": 62
+                  "startLine": 52,
+                  "startColumn": 26,
+                  "endLine": 52,
+                  "endColumn": 45
                 }
               }
             }
@@ -1431,12 +365,12 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
                 "region": {
-                  "startLine": 142,
-                  "startColumn": 43,
-                  "endLine": 142,
-                  "endColumn": 58
+                  "startLine": 66,
+                  "startColumn": 16,
+                  "endLine": 66,
+                  "endColumn": 25
                 }
               }
             }
@@ -1444,7 +378,7 @@
           "properties": {
             "warningLevel": 1,
             "customProperties": {
-              "0": "Non-adjacent overload"
+              "0": null
             }
           }
         },
@@ -1455,7 +389,7 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/OpenAPI/SwaggerDefaultValues.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/OpenAPI/SwaggerDefaultValues.cs",
                 "region": {
                   "startLine": 22,
                   "startColumn": 45,
@@ -1468,7 +402,7 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/OpenAPI/SwaggerDefaultValues.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/OpenAPI/SwaggerDefaultValues.cs",
                 "region": {
                   "startLine": 24,
                   "startColumn": 25,
@@ -1486,39 +420,18 @@
           }
         },
         {
-          "ruleId": "S1125",
+          "ruleId": "S6968",
           "level": "warning",
-          "message": "Remove the unnecessary Boolean literal(s).",
+          "message": "Annotate this method with ProducesResponseType containing the return type for successful responses.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/FileManagerController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
                 "region": {
-                  "startLine": 52,
-                  "startColumn": 53,
-                  "endLine": 52,
-                  "endColumn": 60
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S6960",
-          "level": "warning",
-          "message": "This controller has multiple responsibilities and could be split into 5 smaller controllers.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 12,
-                  "startColumn": 14,
-                  "endLine": 12,
-                  "endColumn": 38
+                  "startLine": 73,
+                  "startColumn": 26,
+                  "endLine": 73,
+                  "endColumn": 47
                 }
               }
             }
@@ -1526,166 +439,12 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs",
                 "region": {
-                  "startLine": 136,
-                  "startColumn": 43,
-                  "endLine": 136,
-                  "endColumn": 58
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 155,
-                  "startColumn": 44,
-                  "endLine": 155,
-                  "endColumn": 63
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 122,
-                  "startColumn": 56,
-                  "endLine": 122,
-                  "endColumn": 78
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 110,
-                  "startColumn": 67,
-                  "endLine": 110,
-                  "endColumn": 89
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 161,
-                  "startColumn": 43,
-                  "endLine": 161,
-                  "endColumn": 62
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 97,
-                  "startColumn": 57,
-                  "endLine": 97,
-                  "endColumn": 79
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 84,
-                  "startColumn": 64,
-                  "endLine": 84,
-                  "endColumn": 86
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 32,
-                  "startColumn": 69,
-                  "endLine": 32,
-                  "endColumn": 88
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 39,
-                  "startColumn": 66,
-                  "endLine": 39,
-                  "endColumn": 76
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 51,
-                  "startColumn": 47,
-                  "endLine": 51,
-                  "endColumn": 62
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 142,
-                  "startColumn": 43,
-                  "endLine": 142,
-                  "endColumn": 58
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 45,
-                  "startColumn": 63,
-                  "endLine": 45,
-                  "endColumn": 70
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 148,
-                  "startColumn": 43,
-                  "endLine": 148,
-                  "endColumn": 66
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 72,
-                  "startColumn": 65,
-                  "endLine": 72,
-                  "endColumn": 82
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Controllers/v1/OnlineCustomerController.cs",
-                "region": {
-                  "startLine": 58,
-                  "startColumn": 65,
-                  "endLine": 58,
-                  "endColumn": 85
+                  "startLine": 87,
+                  "startColumn": 16,
+                  "endLine": 87,
+                  "endColumn": 25
                 }
               }
             }
@@ -1693,21 +452,7 @@
           "properties": {
             "warningLevel": 1,
             "customProperties": {
-              "0": "May belong to responsibility #1.",
-              "1": "May belong to responsibility #2.",
-              "10": "May belong to responsibility #4.",
-              "11": "May belong to responsibility #4.",
-              "12": "May belong to responsibility #5.",
-              "13": "May belong to responsibility #5.",
-              "14": "May belong to responsibility #5.",
-              "2": "May belong to responsibility #2.",
-              "3": "May belong to responsibility #2.",
-              "4": "May belong to responsibility #3.",
-              "5": "May belong to responsibility #3.",
-              "6": "May belong to responsibility #3.",
-              "7": "May belong to responsibility #4.",
-              "8": "May belong to responsibility #4.",
-              "9": "May belong to responsibility #4."
+              "0": null
             }
           }
         },
@@ -1718,11 +463,11 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 81,
+                  "startLine": 65,
                   "startColumn": 13,
-                  "endLine": 81,
+                  "endLine": 65,
                   "endColumn": 37
                 }
               }
@@ -1739,11 +484,11 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Presentation/Program.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs",
                 "region": {
-                  "startLine": 185,
+                  "startLine": 148,
                   "startColumn": 1,
-                  "endLine": 185,
+                  "endLine": 148,
                   "endColumn": 10
                 }
               }
@@ -1755,55 +500,6 @@
         }
       ],
       "rules": {
-        "CS1591": {
-          "id": "CS1591",
-          "shortDescription": "Missing XML comment for publicly visible type or member",
-          "fullDescription": "The /doc compiler option was specified, but one or more constructs did not have comments.",
-          "defaultLevel": "warning",
-          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1591)",
-          "properties": {
-            "category": "Compiler",
-            "isEnabledByDefault": true,
-            "tags": [
-              "Compiler",
-              "Telemetry"
-            ]
-          }
-        },
-        "S1125": {
-          "id": "S1125",
-          "shortDescription": "Boolean literals should not be redundant",
-          "fullDescription": "A boolean literal can be represented in two different ways: true or false. They can be combined with logical operators (!, &&, ||, ==, !=) to produce logical expressions that represent truth values. However, comparing a boolean literal to a variable or expression that evaluates to a boolean value is unnecessary and can make the code harder to read and understand. The more complex a boolean expression is, the harder it will be for developers to understand its meaning and expected behavior, and it will favour the introduction of new bugs.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1125",
-          "properties": {
-            "category": "Minor Code Smell",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
-              "TestSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
-        "S1135": {
-          "id": "S1135",
-          "shortDescription": "Track uses of \"TODO\" tags",
-          "fullDescription": "Developers often use TODO tags to mark areas in the code where additional work or improvements are needed but are not implemented immediately. However, these TODO tags sometimes get overlooked or forgotten, leading to incomplete or unfinished code. This rule aims to identify and address unattended TODO tags to ensure a clean and maintainable codebase. This description explores why this is a problem and how it can be fixed to improve the overall code quality.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1135",
-          "properties": {
-            "category": "Info Code Smell",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
-              "TestSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
         "S125": {
           "id": "S125",
           "shortDescription": "Sections of code should not be commented out",
@@ -1817,22 +513,6 @@
               "C#",
               "MainSourceScope",
               "TestSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
-        "S2068": {
-          "id": "S2068",
-          "shortDescription": "Hard-coded credentials are security-sensitive",
-          "fullDescription": "Because it is easy to extract strings from an application source code or binary, credentials should not be hard-coded. This is particularly true for applications that are distributed or that are open-source.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2068",
-          "properties": {
-            "category": "Blocker Security Hotspot",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
               "SonarWay"
             ]
           }
@@ -1862,23 +542,6 @@
           "properties": {
             "category": "Critical Code Smell",
             "isEnabledByDefault": false,
-            "tags": [
-              "C#",
-              "MainSourceScope",
-              "TestSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
-        "S4136": {
-          "id": "S4136",
-          "shortDescription": "Method overloads should be grouped together",
-          "fullDescription": "For clarity, all overloads of the same method should be grouped together. That lets both users and maintainers quickly understand all the current available options.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-4136",
-          "properties": {
-            "category": "Minor Code Smell",
-            "isEnabledByDefault": true,
             "tags": [
               "C#",
               "MainSourceScope",
@@ -1920,22 +583,6 @@
             ]
           }
         },
-        "S6960": {
-          "id": "S6960",
-          "shortDescription": "Controllers should not have mixed responsibilities",
-          "fullDescription": "ASP.NET controllers should not have mixed responsibilities. Following the Single Responsibility Principle (SRP), they should be kept lean and focused on a single, separate concern. In short, they should have a single reason to change.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6960",
-          "properties": {
-            "category": "Major Code Smell",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
         "S6966": {
           "id": "S6966",
           "shortDescription": "Awaitable method should be used",
@@ -1949,6 +596,22 @@
               "C#",
               "MainSourceScope",
               "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S6968": {
+          "id": "S6968",
+          "shortDescription": "Actions that return a value should be annotated with ProducesResponseTypeAttribute containing the return type",
+          "fullDescription": "In an ASP.NET Core Web API, controller actions can optionally return a result value. If a controller action returns a value in the happy path, for example ControllerBase.Ok(Object), annotating the action with one of the [ProducesResponseType] overloads that describe the type is recommended.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6968",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
               "SonarWay"
             ]
           }

@@ -1,5 +1,4 @@
-f
-d/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Usings.csﬁ
+ﬁ
 
 t/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Interfaces/IUnitOfWork.cs
 	namespace 	
@@ -76,7 +75,731 @@ Interfaces# -
 ) 
 ; 
 } 
-} ê
+} â
+q/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Enums/InvoiceStatus.cs
+	namespace 	
+Modules
+ 
+. 
+	Customers 
+. 
+Domain "
+." #
+Enums# (
+{ 
+public 
+enum 
+InvoiceStatus 
+{ 
+Pending 	
+=	 
+
+$num
+ 
+, 
+PartiallyPaid 
+= 
+$num 
+, 
+Paid 
+= 
+$num 
+, 	
+Overdue		 	
+=			 
+
+$num		
+ 
+}
+
+ 
+} ÖV
+{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerTransactions.cs
+	namespace 	
+Modules
+ 
+. 
+	Customers 
+. 
+Domain "
+." #
+Entities# +
+{ 
+public 
+class  
+CustomerTransactions "
+{		 
+[
+
+ 	
+Key
+
+	 
+]
+
+ 
+public 
+int !
+CustomerTransactionId (
+{) *
+get+ .
+;. /
+set0 3
+;3 4
+}5 6
+[ 	
+Required	 
+] 
+[ 	
+StringLength	 
+( 
+$num 
+) 
+] 
+public 
+required 
+string 
+VoucherNumber ,
+{- .
+get/ 2
+;2 3
+set4 7
+;7 8
+}9 :
+[ 	
+Required	 
+] 
+[ 	
+StringLength	 
+( 
+$num 
+) 
+] 
+public 
+required 
+string 
+PropertyNumber -
+{. /
+get0 3
+;3 4
+set5 8
+;8 9
+}: ;
+[ 	
+Required	 
+] 
+[ 	
+StringLength	 
+( 
+$num 
+) 
+] 
+public 
+required 
+string 
+CustomerCode +
+{, -
+get. 1
+;1 2
+set3 6
+;6 7
+}8 9
+[ 	
+Required	 
+] 
+public 
+required 
+DateTime  
+TransactionDate! 0
+{1 2
+get3 6
+;6 7
+set8 ;
+;; <
+}= >
+[ 	
+StringLength	 
+( 
+$num 
+) 
+] 
+public 
+string 
+? 
+ReferenceNumber &
+{' (
+get) ,
+;, -
+set. 1
+;1 2
+}3 4
+[ 	
+StringLength	 
+( 
+$num 
+) 
+] 
+public   
+string   
+?   
+ChequeNumber   #
+{  $ %
+get  & )
+;  ) *
+set  + .
+;  . /
+}  0 1
+["" 	
+StringLength""	 
+("" 
+$num"" 
+)"" 
+]"" 
+public## 
+required## 
+string## 
+	Narration## (
+{##) *
+get##+ .
+;##. /
+set##0 3
+;##3 4
+}##5 6
+[%% 	
+Required%%	 
+]%% 
+public&& 
+required&& 
+double&& 
+Amount&& %
+{&&& '
+get&&( +
+;&&+ ,
+set&&- 0
+;&&0 1
+}&&2 3
+public(( 
+required(( 
+int(( 
+AccountCode(( '
+{((( )
+get((* -
+;((- .
+set((/ 2
+;((2 3
+}((4 5
+[** 	
+Required**	 
+]** 
+[++ 	
+StringLength++	 
+(++ 
+$num++ 
+)++ 
+]++ 
+public,, 
+required,, 
+string,, 
+TransactionType,, .
+{,,/ 0
+get,,1 4
+;,,4 5
+set,,6 9
+;,,9 :
+},,; <
+[.. 	
+Required..	 
+].. 
+[// 	
+StringLength//	 
+(// 
+$num// 
+)// 
+]// 
+public00 
+required00 
+string00 
+VoucherType00 *
+{00+ ,
+get00- 0
+;000 1
+set002 5
+;005 6
+}007 8
+public77  
+CustomerTransactions77 #
+(77# $
+)77$ %
+{88 	
+}99 	
+public<<  
+CustomerTransactions<< #
+(<<# $
+int<<$ '!
+customerTransactionId<<( =
+,<<= >
+string<<? E
+voucherNumber<<F S
+,<<S T
+string<<U [
+propertyNumber<<\ j
+,<<j k
+string<<l r
+customerCode<<s 
+,	<< Ä
+DateTime
+<<Å â
+transactionDate
+<<ä ô
+,
+<<ô ö
+string
+<<õ °
+?
+<<° ¢
+referenceNumber
+<<£ ≤
+,
+<<≤ ≥
+string
+<<¥ ∫
+?
+<<∫ ª
+chequeNumber
+<<º »
+,
+<<» …
+string
+<<  –
+	narration
+<<— ⁄
+,
+<<⁄ €
+double
+<<‹ ‚
+amount
+<<„ È
+,
+<<È Í
+int
+<<Î Ó
+accountCode
+<<Ô ˙
+,
+<<˙ ˚
+string
+<<¸ Ç
+transactionType
+<<É í
+,
+<<í ì
+string
+<<î ö
+voucherType
+<<õ ¶
+)
+<<¶ ß
+{== 	
+}>> 	
+public@@ 
+static@@  
+CustomerTransactions@@ *"
+AddCustomerTransaction@@+ A
+(@@A B
+int@@B E!
+customerTransactionId@@F [
+,@@[ \
+string@@] c
+voucherNumber@@d q
+,@@q r
+string@@s y
+propertyNumber	@@z à
+,
+@@à â
+string
+@@ä ê
+customerCode
+@@ë ù
+,
+@@ù û
+DateTime
+@@ü ß
+transactionDate
+@@® ∑
+,
+@@∑ ∏
+string
+@@π ø
+?
+@@ø ¿
+referenceNumber
+@@¡ –
+,
+@@– —
+string
+@@“ ÿ
+?
+@@ÿ Ÿ
+chequeNumber
+@@⁄ Ê
+,
+@@Ê Á
+string
+@@Ë Ó
+	narration
+@@Ô ¯
+,
+@@¯ ˘
+double
+@@˙ Ä
+amount
+@@Å á
+,
+@@á à
+int
+@@â å
+accountCode
+@@ç ò
+,
+@@ò ô
+string
+@@ö †
+transactionType
+@@° ∞
+,
+@@∞ ±
+string
+@@≤ ∏
+voucherType
+@@π ƒ
+)
+@@ƒ ≈
+{AA 	
+ifBB 
+(BB 
+stringBB 
+.BB 
+IsNullOrWhiteSpaceBB )
+(BB) *
+voucherNumberBB* 7
+)BB7 8
+||BB9 ;
+stringBB< B
+.BBB C
+IsNullOrWhiteSpaceBBC U
+(BBU V
+propertyNumberBBV d
+)BBd e
+||BBf h
+stringBBi o
+.BBo p
+IsNullOrWhiteSpace	BBp Ç
+(
+BBÇ É
+customerCode
+BBÉ è
+)
+BBè ê
+||
+BBë ì
+string
+BBî ö
+.
+BBö õ 
+IsNullOrWhiteSpace
+BBõ ≠
+(
+BB≠ Æ
+transactionType
+BBÆ Ω
+)
+BBΩ æ
+||
+BBø ¡
+string
+BB¬ »
+.
+BB» … 
+IsNullOrWhiteSpace
+BB… €
+(
+BB€ ‹
+voucherType
+BB‹ Á
+)
+BBÁ Ë
+||
+BBÈ Î
+string
+BBÏ Ú
+.
+BBÚ Û 
+IsNullOrWhiteSpace
+BBÛ Ö
+(
+BBÖ Ü
+	narration
+BBÜ è
+)
+BBè ê
+||
+BBë ì
+amount
+BBî ö
+<
+BBõ ú
+$num
+BBù û
+||
+BBü °
+accountCode
+BB¢ ≠
+<
+BBÆ Ø
+$num
+BB∞ ±
+)
+BB± ≤
+{CC 
+throwDD 
+newDD 
+ArgumentExceptionDD +
+(DD+ ,
+$strDD, X
+)DDX Y
+;DDY Z
+}EE 
+ifHH 
+(HH 
+stringHH 
+.HH 
+IsNullOrWhiteSpaceHH )
+(HH) *
+voucherNumberHH* 7
+)HH7 8
+)HH8 9
+{II 
+throwJJ 
+newJJ 
+ArgumentExceptionJJ +
+(JJ+ ,
+$strJJ, W
+)JJW X
+;JJX Y
+}KK 
+ifMM 
+(MM 
+stringMM 
+.MM 
+IsNullOrWhiteSpaceMM )
+(MM) *
+propertyNumberMM* 8
+)MM8 9
+)MM9 :
+{NN 
+throwOO 
+newOO 
+ArgumentExceptionOO +
+(OO+ ,
+$strOO, X
+)OOX Y
+;OOY Z
+}PP 
+ifRR 
+(RR 
+stringRR 
+.RR 
+IsNullOrWhiteSpaceRR )
+(RR) *
+customerCodeRR* 6
+)RR6 7
+)RR7 8
+{SS 
+throwTT 
+newTT 
+ArgumentExceptionTT +
+(TT+ ,
+$strTT, V
+)TTV W
+;TTW X
+}UU 
+ifWW 
+(WW 
+stringWW 
+.WW 
+IsNullOrWhiteSpaceWW )
+(WW) *
+	narrationWW* 3
+)WW3 4
+)WW4 5
+{XX 
+throwYY 
+newYY 
+ArgumentExceptionYY +
+(YY+ ,
+$strYY, R
+)YYR S
+;YYS T
+}ZZ 
+if\\ 
+(\\ 
+transactionDate\\ 
+==\\  "
+DateTime\\# +
+.\\+ ,
+MinValue\\, 4
+)\\4 5
+{]] 
+throw^^ 
+new^^ 
+ArgumentException^^ +
+(^^+ ,
+$str^^, [
+)^^[ \
+;^^\ ]
+}__ 
+ifaa 
+(aa 
+amountaa 
+<=aa 
+$numaa 
+)aa 
+{bb 
+throwcc 
+newcc 
+ArgumentExceptioncc +
+(cc+ ,
+$strcc, [
+)cc[ \
+;cc\ ]
+}dd 
+ifff 
+(ff 
+accountCodeff 
+<=ff 
+$numff  
+)ff  !
+{gg 
+throwhh 
+newhh 
+ArgumentExceptionhh +
+(hh+ ,
+$strhh, U
+)hhU V
+;hhV W
+}ii 
+ifkk 
+(kk 
+stringkk 
+.kk 
+IsNullOrWhiteSpacekk )
+(kk) *
+transactionTypekk* 9
+)kk9 :
+)kk: ;
+{ll 
+throwmm 
+newmm 
+ArgumentExceptionmm +
+(mm+ ,
+$strmm, Y
+)mmY Z
+;mmZ [
+}nn 
+ifpp 
+(pp 
+stringpp 
+.pp 
+IsNullOrWhiteSpacepp )
+(pp) *
+voucherTypepp* 5
+)pp5 6
+)pp6 7
+{qq 
+throwrr 
+newrr 
+ArgumentExceptionrr +
+(rr+ ,
+$strrr, U
+)rrU V
+;rrV W
+}ss 
+returnvv 
+newvv  
+CustomerTransactionsvv +
+{ww !
+CustomerTransactionIdxx %
+=xx& '!
+customerTransactionIdxx( =
+,xx= >
+VoucherNumberyy 
+=yy 
+voucherNumberyy  -
+,yy- .
+PropertyNumberzz 
+=zz  
+propertyNumberzz! /
+,zz/ 0
+CustomerCode{{ 
+={{ 
+customerCode{{ +
+,{{+ ,
+TransactionDate|| 
+=||  !
+transactionDate||" 1
+,||1 2
+ReferenceNumber}} 
+=}}  !
+referenceNumber}}" 1
+,}}1 2
+ChequeNumber~~ 
+=~~ 
+chequeNumber~~ +
+,~~+ ,
+	Narration 
+= 
+	narration %
+,% &
+Amount
+ÄÄ 
+=
+ÄÄ 
+amount
+ÄÄ 
+,
+ÄÄ  
+AccountCode
+ÅÅ 
+=
+ÅÅ 
+accountCode
+ÅÅ )
+,
+ÅÅ) *
+TransactionType
+ÇÇ 
+=
+ÇÇ  !
+transactionType
+ÇÇ" 1
+,
+ÇÇ1 2
+VoucherType
+ÉÉ 
+=
+ÉÉ 
+voucherType
+ÉÉ )
+}
+ÑÑ 
+;
+ÑÑ 
+}
+ÜÜ 	
+}
+áá 
+}ãã f
+d/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Usings.csê
 t/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Interfaces/IRepository.cs
 	namespace 	
 Modules
@@ -481,45 +1204,7 @@ s/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Custo
 }		 
 }
 
- â
-q/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Enums/InvoiceStatus.cs
-	namespace 	
-Modules
- 
-. 
-	Customers 
-. 
-Domain "
-." #
-Enums# (
-{ 
-public 
-enum 
-InvoiceStatus 
-{ 
-Pending 	
-=	 
-
-$num
- 
-, 
-PartiallyPaid 
-= 
-$num 
-, 
-Paid 
-= 
-$num 
-, 	
-Overdue		 	
-=			 
-
-$num		
- 
-}
-
- 
-} ÎØ
+ ÎØ
 v/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/PropertyDetails.cs
 	namespace 	
 Modules
@@ -2166,692 +2851,7 @@ imageThree
 ÈÈ 	
 }
 ÌÌ 
-}ÚÚ ÖV
-{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerTransactions.cs
-	namespace 	
-Modules
- 
-. 
-	Customers 
-. 
-Domain "
-." #
-Entities# +
-{ 
-public 
-class  
-CustomerTransactions "
-{		 
-[
-
- 	
-Key
-
-	 
-]
-
- 
-public 
-int !
-CustomerTransactionId (
-{) *
-get+ .
-;. /
-set0 3
-;3 4
-}5 6
-[ 	
-Required	 
-] 
-[ 	
-StringLength	 
-( 
-$num 
-) 
-] 
-public 
-required 
-string 
-VoucherNumber ,
-{- .
-get/ 2
-;2 3
-set4 7
-;7 8
-}9 :
-[ 	
-Required	 
-] 
-[ 	
-StringLength	 
-( 
-$num 
-) 
-] 
-public 
-required 
-string 
-PropertyNumber -
-{. /
-get0 3
-;3 4
-set5 8
-;8 9
-}: ;
-[ 	
-Required	 
-] 
-[ 	
-StringLength	 
-( 
-$num 
-) 
-] 
-public 
-required 
-string 
-CustomerCode +
-{, -
-get. 1
-;1 2
-set3 6
-;6 7
-}8 9
-[ 	
-Required	 
-] 
-public 
-required 
-DateTime  
-TransactionDate! 0
-{1 2
-get3 6
-;6 7
-set8 ;
-;; <
-}= >
-[ 	
-StringLength	 
-( 
-$num 
-) 
-] 
-public 
-string 
-? 
-ReferenceNumber &
-{' (
-get) ,
-;, -
-set. 1
-;1 2
-}3 4
-[ 	
-StringLength	 
-( 
-$num 
-) 
-] 
-public   
-string   
-?   
-ChequeNumber   #
-{  $ %
-get  & )
-;  ) *
-set  + .
-;  . /
-}  0 1
-["" 	
-StringLength""	 
-("" 
-$num"" 
-)"" 
-]"" 
-public## 
-required## 
-string## 
-	Narration## (
-{##) *
-get##+ .
-;##. /
-set##0 3
-;##3 4
-}##5 6
-[%% 	
-Required%%	 
-]%% 
-public&& 
-required&& 
-double&& 
-Amount&& %
-{&&& '
-get&&( +
-;&&+ ,
-set&&- 0
-;&&0 1
-}&&2 3
-public(( 
-required(( 
-int(( 
-AccountCode(( '
-{((( )
-get((* -
-;((- .
-set((/ 2
-;((2 3
-}((4 5
-[** 	
-Required**	 
-]** 
-[++ 	
-StringLength++	 
-(++ 
-$num++ 
-)++ 
-]++ 
-public,, 
-required,, 
-string,, 
-TransactionType,, .
-{,,/ 0
-get,,1 4
-;,,4 5
-set,,6 9
-;,,9 :
-},,; <
-[.. 	
-Required..	 
-].. 
-[// 	
-StringLength//	 
-(// 
-$num// 
-)// 
-]// 
-public00 
-required00 
-string00 
-VoucherType00 *
-{00+ ,
-get00- 0
-;000 1
-set002 5
-;005 6
-}007 8
-public77  
-CustomerTransactions77 #
-(77# $
-)77$ %
-{88 	
-}99 	
-public<<  
-CustomerTransactions<< #
-(<<# $
-int<<$ '!
-customerTransactionId<<( =
-,<<= >
-string<<? E
-voucherNumber<<F S
-,<<S T
-string<<U [
-propertyNumber<<\ j
-,<<j k
-string<<l r
-customerCode<<s 
-,	<< Ä
-DateTime
-<<Å â
-transactionDate
-<<ä ô
-,
-<<ô ö
-string
-<<õ °
-?
-<<° ¢
-referenceNumber
-<<£ ≤
-,
-<<≤ ≥
-string
-<<¥ ∫
-?
-<<∫ ª
-chequeNumber
-<<º »
-,
-<<» …
-string
-<<  –
-	narration
-<<— ⁄
-,
-<<⁄ €
-double
-<<‹ ‚
-amount
-<<„ È
-,
-<<È Í
-int
-<<Î Ó
-accountCode
-<<Ô ˙
-,
-<<˙ ˚
-string
-<<¸ Ç
-transactionType
-<<É í
-,
-<<í ì
-string
-<<î ö
-voucherType
-<<õ ¶
-)
-<<¶ ß
-{== 	
-}>> 	
-public@@ 
-static@@  
-CustomerTransactions@@ *"
-AddCustomerTransaction@@+ A
-(@@A B
-int@@B E!
-customerTransactionId@@F [
-,@@[ \
-string@@] c
-voucherNumber@@d q
-,@@q r
-string@@s y
-propertyNumber	@@z à
-,
-@@à â
-string
-@@ä ê
-customerCode
-@@ë ù
-,
-@@ù û
-DateTime
-@@ü ß
-transactionDate
-@@® ∑
-,
-@@∑ ∏
-string
-@@π ø
-?
-@@ø ¿
-referenceNumber
-@@¡ –
-,
-@@– —
-string
-@@“ ÿ
-?
-@@ÿ Ÿ
-chequeNumber
-@@⁄ Ê
-,
-@@Ê Á
-string
-@@Ë Ó
-	narration
-@@Ô ¯
-,
-@@¯ ˘
-double
-@@˙ Ä
-amount
-@@Å á
-,
-@@á à
-int
-@@â å
-accountCode
-@@ç ò
-,
-@@ò ô
-string
-@@ö †
-transactionType
-@@° ∞
-,
-@@∞ ±
-string
-@@≤ ∏
-voucherType
-@@π ƒ
-)
-@@ƒ ≈
-{AA 	
-ifBB 
-(BB 
-stringBB 
-.BB 
-IsNullOrWhiteSpaceBB )
-(BB) *
-voucherNumberBB* 7
-)BB7 8
-||BB9 ;
-stringBB< B
-.BBB C
-IsNullOrWhiteSpaceBBC U
-(BBU V
-propertyNumberBBV d
-)BBd e
-||BBf h
-stringBBi o
-.BBo p
-IsNullOrWhiteSpace	BBp Ç
-(
-BBÇ É
-customerCode
-BBÉ è
-)
-BBè ê
-||
-BBë ì
-string
-BBî ö
-.
-BBö õ 
-IsNullOrWhiteSpace
-BBõ ≠
-(
-BB≠ Æ
-transactionType
-BBÆ Ω
-)
-BBΩ æ
-||
-BBø ¡
-string
-BB¬ »
-.
-BB» … 
-IsNullOrWhiteSpace
-BB… €
-(
-BB€ ‹
-voucherType
-BB‹ Á
-)
-BBÁ Ë
-||
-BBÈ Î
-string
-BBÏ Ú
-.
-BBÚ Û 
-IsNullOrWhiteSpace
-BBÛ Ö
-(
-BBÖ Ü
-	narration
-BBÜ è
-)
-BBè ê
-||
-BBë ì
-amount
-BBî ö
-<
-BBõ ú
-$num
-BBù û
-||
-BBü °
-accountCode
-BB¢ ≠
-<
-BBÆ Ø
-$num
-BB∞ ±
-)
-BB± ≤
-{CC 
-throwDD 
-newDD 
-ArgumentExceptionDD +
-(DD+ ,
-$strDD, X
-)DDX Y
-;DDY Z
-}EE 
-ifHH 
-(HH 
-stringHH 
-.HH 
-IsNullOrWhiteSpaceHH )
-(HH) *
-voucherNumberHH* 7
-)HH7 8
-)HH8 9
-{II 
-throwJJ 
-newJJ 
-ArgumentExceptionJJ +
-(JJ+ ,
-$strJJ, W
-)JJW X
-;JJX Y
-}KK 
-ifMM 
-(MM 
-stringMM 
-.MM 
-IsNullOrWhiteSpaceMM )
-(MM) *
-propertyNumberMM* 8
-)MM8 9
-)MM9 :
-{NN 
-throwOO 
-newOO 
-ArgumentExceptionOO +
-(OO+ ,
-$strOO, X
-)OOX Y
-;OOY Z
-}PP 
-ifRR 
-(RR 
-stringRR 
-.RR 
-IsNullOrWhiteSpaceRR )
-(RR) *
-customerCodeRR* 6
-)RR6 7
-)RR7 8
-{SS 
-throwTT 
-newTT 
-ArgumentExceptionTT +
-(TT+ ,
-$strTT, V
-)TTV W
-;TTW X
-}UU 
-ifWW 
-(WW 
-stringWW 
-.WW 
-IsNullOrWhiteSpaceWW )
-(WW) *
-	narrationWW* 3
-)WW3 4
-)WW4 5
-{XX 
-throwYY 
-newYY 
-ArgumentExceptionYY +
-(YY+ ,
-$strYY, R
-)YYR S
-;YYS T
-}ZZ 
-if\\ 
-(\\ 
-transactionDate\\ 
-==\\  "
-DateTime\\# +
-.\\+ ,
-MinValue\\, 4
-)\\4 5
-{]] 
-throw^^ 
-new^^ 
-ArgumentException^^ +
-(^^+ ,
-$str^^, [
-)^^[ \
-;^^\ ]
-}__ 
-ifaa 
-(aa 
-amountaa 
-<=aa 
-$numaa 
-)aa 
-{bb 
-throwcc 
-newcc 
-ArgumentExceptioncc +
-(cc+ ,
-$strcc, [
-)cc[ \
-;cc\ ]
-}dd 
-ifff 
-(ff 
-accountCodeff 
-<=ff 
-$numff  
-)ff  !
-{gg 
-throwhh 
-newhh 
-ArgumentExceptionhh +
-(hh+ ,
-$strhh, U
-)hhU V
-;hhV W
-}ii 
-ifkk 
-(kk 
-stringkk 
-.kk 
-IsNullOrWhiteSpacekk )
-(kk) *
-transactionTypekk* 9
-)kk9 :
-)kk: ;
-{ll 
-throwmm 
-newmm 
-ArgumentExceptionmm +
-(mm+ ,
-$strmm, Y
-)mmY Z
-;mmZ [
-}nn 
-ifpp 
-(pp 
-stringpp 
-.pp 
-IsNullOrWhiteSpacepp )
-(pp) *
-voucherTypepp* 5
-)pp5 6
-)pp6 7
-{qq 
-throwrr 
-newrr 
-ArgumentExceptionrr +
-(rr+ ,
-$strrr, U
-)rrU V
-;rrV W
-}ss 
-returnvv 
-newvv  
-CustomerTransactionsvv +
-{ww !
-CustomerTransactionIdxx %
-=xx& '!
-customerTransactionIdxx( =
-,xx= >
-VoucherNumberyy 
-=yy 
-voucherNumberyy  -
-,yy- .
-PropertyNumberzz 
-=zz  
-propertyNumberzz! /
-,zz/ 0
-CustomerCode{{ 
-={{ 
-customerCode{{ +
-,{{+ ,
-TransactionDate|| 
-=||  !
-transactionDate||" 1
-,||1 2
-ReferenceNumber}} 
-=}}  !
-referenceNumber}}" 1
-,}}1 2
-ChequeNumber~~ 
-=~~ 
-chequeNumber~~ +
-,~~+ ,
-	Narration 
-= 
-	narration %
-,% &
-Amount
-ÄÄ 
-=
-ÄÄ 
-amount
-ÄÄ 
-,
-ÄÄ  
-AccountCode
-ÅÅ 
-=
-ÅÅ 
-accountCode
-ÅÅ )
-,
-ÅÅ) *
-TransactionType
-ÇÇ 
-=
-ÇÇ  !
-transactionType
-ÇÇ" 1
-,
-ÇÇ1 2
-VoucherType
-ÉÉ 
-=
-ÉÉ 
-voucherType
-ÉÉ )
-}
-ÑÑ 
-;
-ÑÑ 
-}
-ÜÜ 	
-}
-áá 
-}ãã ¨å
+}ÚÚ ¨å
 w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerPayments.cs
 	namespace 	
 Modules

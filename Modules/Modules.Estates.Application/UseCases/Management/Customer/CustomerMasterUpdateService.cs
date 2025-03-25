@@ -527,7 +527,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<int> StopCustomerDebitAsync(StopDebitRequestDto values)
         {
-            //throw new NotImplementedException();
             if(values is null)
             {
                 return 400;

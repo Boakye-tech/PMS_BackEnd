@@ -1,846 +1,605 @@
-o
-m/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Usings.cs≥d
-n/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs
-var 
-builder 
-= 
-WebApplication 
-. 
-CreateBuilder *
-(* +
-args+ /
-)/ 0
-;0 1
-if 
-( 
-builder 
-. 
-Environment 
-. 
-IsDevelopment %
-(% &
-)& '
-)' (
-{ 
-var 
-currentDirectory 
-= 
-	Directory $
-.$ %
-GetCurrentDirectory% 8
-(8 9
-)9 :
-;: ;
-var 
-solutionDirectory 
-= 
-	Directory %
-.% &
-	GetParent& /
-(/ 0
-currentDirectory0 @
-)@ A
-?A B
-.B C
-ParentC I
-?I J
-.J K
-FullNameK S
-??T V
-$strW Y
-;Y Z
-var #
-solutionLevelConfigPath 
-=  !
-Path" &
-.& '
-Combine' .
-(. /
-solutionDirectory/ @
-,@ A
-$strB `
-)` a
-;a b
-if
-
- 
-(
-
- 
-File
-
- 
-.
-
- 
-Exists
-
- 
-(
-
- #
-solutionLevelConfigPath
-
- +
-)
-
-+ ,
-)
-
-, -
-{ 
-builder 
-. 
-Configuration 
-. 
-AddJsonFile )
-() *#
-solutionLevelConfigPath* A
-,A B
-optionalC K
-:K L
-falseM R
-,R S
-reloadOnChangeT b
-:b c
-trued h
-)h i
-;i j
-} 
-} 
-if 
-( 
-builder 
-. 
-Environment 
-. 
-IsProduction $
-($ %
-)% &
-)& '
-{ 
-var 
-currentDirectory 
-= 
-	Directory $
-.$ %
-GetCurrentDirectory% 8
-(8 9
-)9 :
-;: ;
-var 
-solutionDirectory 
-= 
-	Directory %
-.% &
-	GetParent& /
-(/ 0
-currentDirectory0 @
-)@ A
-?A B
-.B C
-ParentC I
-?I J
-.J K
-FullNameK S
-??T V
-$strW Y
-;Y Z
-var #
-solutionLevelConfigPath 
-=  !
-Path" &
-.& '
-Combine' .
-(. /
-solutionDirectory/ @
-,@ A
-$strB T
-)T U
-;U V
-if 
-( 
-File 
-. 
-Exists 
-( #
-solutionLevelConfigPath +
-)+ ,
-), -
-{ 
-builder 
-. 
-Configuration 
-. 
-AddJsonFile )
-() *#
-solutionLevelConfigPath* A
-,A B
-optionalC K
-:K L
-falseM R
-,R S
-reloadOnChangeT b
-:b c
-trued h
-)h i
-;i j
-} 
-} 
-builder 
-. 
-Host 
-. 
-
-UseSerilog 
-( 
-( 
-context  
-,  !
-configuration" /
-)/ 0
-=>1 3
-configuration4 A
-.A B
-ReadFromB J
-.J K
-ConfigurationK X
-(X Y
-contextY `
-.` a
-Configurationa n
-)n o
-)o p
-;p q
-if!! 
-(!! 
-builder!! 
-.!! 
-Environment!! 
-.!! 
-IsDevelopment!! %
-(!!% &
-)!!& '
-)!!' (
-{"" 
-switch## 
+ƒQ
+i/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Program.cs
+var		 
+builder		 
+=		 
+WebApplication		 
+.		 
+CreateBuilder		 *
+(		* +
+args		+ /
+)		/ 0
+;		0 1
+if 
+( 
+builder 
+. 
+Environment 
+. 
+IsDevelopment %
+(% &
+)& '
+)' (
+{ 
+var 
+currentDirectory 
+= 
+	Directory $
+.$ %
+GetCurrentDirectory% 8
+(8 9
+)9 :
+;: ;
+var 
+solutionDirectory 
+= 
+	Directory %
+.% &
+	GetParent& /
+(/ 0
+currentDirectory0 @
+)@ A
+?A B
+.B C
+ParentC I
+?I J
+.J K
+FullNameK S
+??T V
+$strW Y
+;Y Z
+var #
+solutionLevelConfigPath 
+=  !
+Path" &
+.& '
+Combine' .
+(. /
+solutionDirectory/ @
+,@ A
+$strB `
+)` a
+;a b
+if 
+( 
+File 
+. 
+Exists 
+( #
+solutionLevelConfigPath +
+)+ ,
+), -
+{ 
+builder 
+. 
+Configuration 
+. 
+AddJsonFile )
+() *#
+solutionLevelConfigPath* A
+,A B
+optionalC K
+:K L
+falseM R
+,R S
+reloadOnChangeT b
+:b c
+trued h
+)h i
+;i j
+} 
+} 
+if 
+( 
+builder 
+. 
+Environment 
+. 
+IsProduction $
+($ %
+)% &
+)& '
+{ 
+var 
+currentDirectory 
+= 
+	Directory $
+.$ %
+GetCurrentDirectory% 8
+(8 9
+)9 :
+;: ;
+var 
+solutionDirectory 
+= 
+	Directory %
+.% &
+	GetParent& /
+(/ 0
+currentDirectory0 @
+)@ A
+?A B
+.B C
+ParentC I
+?I J
+.J K
+FullNameK S
+??T V
+$strW Y
+;Y Z
+var #
+solutionLevelConfigPath 
+=  !
+Path" &
+.& '
+Combine' .
+(. /
+solutionDirectory/ @
+,@ A
+$strB T
+)T U
+;U V
+if 
+( 
+File 
+. 
+Exists 
+( #
+solutionLevelConfigPath +
+)+ ,
+), -
+{ 
+builder 
+. 
+Configuration 
+. 
+AddJsonFile )
+() *#
+solutionLevelConfigPath* A
+,A B
+optionalC K
+:K L
+falseM R
+,R S
+reloadOnChangeT b
+:b c
+trued h
+)h i
+;i j
+}   
+}!! 
+if(( 
+((( 
+builder(( 
+.(( 
+Environment(( 
+.(( 
+IsDevelopment(( %
+(((% &
+)((& '
+)((' (
+{)) 
+switch** 
 
-(## 
-builder## 
-.## 
-Configuration## !
-.##! "
+(** 
+builder** 
+.** 
+Configuration** !
+.**! "
 
-GetSection##" ,
-(##, -
-$str##- 7
-)##7 8
-.##8 9
+GetSection**" ,
+(**, -
+$str**- 7
+)**7 8
+.**8 9
 
-GetSection##9 C
-(##C D
-$str##D V
-)##V W
-.##W X
-Value##X ]
-)##] ^
-{$$ 
-case%% 
-$str%% 
-:%% 
-break'' 
-;'' 
-case(( 
-$str(( 
-:(( 
-builder)) 
-.)) 
-Services)) 
-.)) 
-AddDbContext)) )
-<))) *!
-NotificationDbContext))* ?
->))? @
-())@ A
-options))A H
-=>))I K
-options))L S
-.))S T
-UseSqlServer))T `
-())` a
-builder))a h
-.))h i
-Configuration))i v
-.))v w 
-GetConnectionString	))w ä
-(
-))ä ã
-$str
-))ã ú
-)
-))ú ù
-)
-))ù û
-)
-))û ü
-;
-))ü †
-break** 
-;** 
-}++ 
-}-- 
-if// 
-(// 
-builder// 
-.// 
-Environment// 
-.// 
-IsProduction// $
-(//$ %
-)//% &
-)//& '
-{00 
-switch11 
+GetSection**9 C
+(**C D
+$str**D V
+)**V W
+.**W X
+Value**X ]
+)**] ^
+{++ 
+case,, 
+$str,, 
+:,, 
+break.. 
+;.. 
+case// 
+$str// 
+:// 
+break11 
+;11 
+}22 
+}44 
+if66 
+(66 
+builder66 
+.66 
+Environment66 
+.66 
+IsProduction66 $
+(66$ %
+)66% &
+)66& '
+{77 
+switch88 
 
-(11 
-builder11 
-.11 
-Configuration11 !
-.11! "
+(88 
+builder88 
+.88 
+Configuration88 !
+.88! "
 
-GetSection11" ,
-(11, -
-$str11- 7
-)117 8
-.118 9
+GetSection88" ,
+(88, -
+$str88- 7
+)887 8
+.888 9
 
-GetSection119 C
-(11C D
-$str11D V
-)11V W
-.11W X
-Value11X ]
-)11] ^
-{22 
-case33 
-$str33 
-:33 
-break55 
-;55 
-case66 
-$str66 
-:66 
-builder77 
-.77 
-Services77 
-.77 
-AddDbContext77 )
-<77) *!
-NotificationDbContext77* ?
->77? @
-(77@ A
-options77A H
-=>77I K
-options77L S
-.77S T
-UseSqlServer77T `
-(77` a
-builder77a h
-.77h i
-Configuration77i v
-.77v w 
-GetConnectionString	77w ä
-(
-77ä ã
-$str
-77ã ú
-)
-77ú ù
-)
-77ù û
-)
-77û ü
-;
-77ü †
-break88 
-;88 
-}99 
-}:: 
-builder<< 
-.<< 
-Services<< 
-.<< 
-AddCors<< 
-(<< 
-o<< 
-=><< 
-{== 
-o>> 
-.>> 
-AddDefaultPolicy>> 
-(>> 
-builder?? 
-=>?? 
-{@@ 	
-builderAA 
-.AA 
-AllowAnyOriginAA "
-(AA" #
-)AA# $
-.BB 
-AllowAnyHeaderBB "
-(BB" #
-)BB# $
-.CC 
-AllowAnyMethodCC "
-(CC" #
-)CC# $
-;CC$ %
-}EE 	
-)EE	 
-
-;EE
- 
-}FF 
-)FF 
-;FF 
-builderHH 
-.HH 
-ServicesHH 
-.HH !
-AddNotificationModuleHH &
-(HH& '
-builderHH' .
-.HH. /
-ConfigurationHH/ <
-)HH< =
-;HH= >
-builderKK 
-.KK 
-ServicesKK 
-.KK 
-AddExceptionHandlerKK $
-<KK$ %%
-HttpGlobalExceptionFilterKK% >
->KK> ?
-(KK? @
-)KK@ A
-;KKA B
-builderLL 
-.LL 
-ServicesLL 
-.LL 
-AddProblemDetailsLL "
-(LL" #
-)LL# $
-;LL$ %
-builderNN 
-.NN 
-ServicesNN 
-.NN 
-AddControllersNN 
-(NN  
-)NN  !
-;NN! "
-builderQQ 
-.QQ 
-ServicesQQ 
-.RR 
-AddApiVersioningRR 
-(RR 
-optionsRR 
-=>RR  
-{SS 
-optionsTT 
-.TT 
-DefaultApiVersionTT !
-=TT" #
-newTT$ '
+GetSection889 C
+(88C D
+$str88D V
+)88V W
+.88W X
+Value88X ]
+)88] ^
+{99 
+case:: 
+$str:: 
+::: 
+break<< 
+;<< 
+case== 
+$str== 
+:== 
+break?? 
+;?? 
+}@@ 
+}AA 
+builderEE 
+.EE 
+ServicesEE 
+.EE 
+AddControllersEE 
+(EE  
+)EE  !
+;EE! "
+builderFF 
+.FF 
+ServicesFF 
+.GG 
+AddApiVersioningGG 
+(GG 
+optionsGG 
+=>GG  
+{HH 
+optionsII 
+.II 
+DefaultApiVersionII !
+=II" #
+newII$ '
 
-ApiVersionTT( 2
-(TT2 3
-$numTT3 4
-,TT4 5
-$numTT6 7
-)TT7 8
-;TT8 9
-optionsUU 
-.UU /
-#AssumeDefaultVersionWhenUnspecifiedUU 3
-=UU4 5
-trueUU6 :
-;UU: ;
-optionsVV 
-.VV 
-ReportApiVersionsVV !
-=VV" #
-trueVV$ (
-;VV( )
-}WW 
-)WW 
-.XX 
-AddApiExplorerXX 
-(XX 
-optionsXX 
-=>XX 
-{YY 
-optionsZZ 
-.ZZ 
-GroupNameFormatZZ 
-=ZZ  !
-$strZZ" *
-;ZZ* +
-options[[ 
-.[[ %
-SubstituteApiVersionInUrl[[ )
-=[[* +
-true[[, 0
-;[[0 1
-}\\ 
-)\\ 
-;\\ 
-builder^^ 
-.^^ 
-Services^^ 
-.^^ #
-AddEndpointsApiExplorer^^ (
-(^^( )
-)^^) *
-;^^* +
-builder__ 
-.__ 
-Services__ 
-.__ 
-AddTransient__ 
-<__ 
-IConfigureOptions__ /
-<__/ 0
-SwaggerGenOptions__0 A
->__A B
-,__B C#
-SwaggerConfigureOptions__D [
->__[ \
-(__\ ]
-)__] ^
-;__^ _
-builder`` 
-.`` 
-Services`` 
-.`` 
-AddSwaggerGen`` 
-(`` 
-options`` &
-=>``' )
-{aa 
-optionsbb 
-.bb 
-OperationFilterbb 
-<bb  
-SwaggerDefaultValuesbb 0
->bb0 1
-(bb1 2
-)bb2 3
-;bb3 4
-}ee 
-)ee 
-;ee 
-varqq 
-appqq 
-=qq 	
-builderqq
+ApiVersionII( 2
+(II2 3
+$numII3 4
+,II4 5
+$numII6 7
+)II7 8
+;II8 9
+optionsJJ 
+.JJ /
+#AssumeDefaultVersionWhenUnspecifiedJJ 3
+=JJ4 5
+trueJJ6 :
+;JJ: ;
+optionsKK 
+.KK 
+ReportApiVersionsKK !
+=KK" #
+trueKK$ (
+;KK( )
+}LL 
+)LL 
+.MM 
+AddApiExplorerMM 
+(MM 
+optionsMM 
+=>MM 
+{NN 
+optionsOO 
+.OO 
+GroupNameFormatOO 
+=OO  !
+$strOO" *
+;OO* +
+optionsPP 
+.PP %
+SubstituteApiVersionInUrlPP )
+=PP* +
+truePP, 0
+;PP0 1
+}QQ 
+)QQ 
+;QQ 
+builderSS 
+.SS 
+ServicesSS 
+.SS #
+AddEndpointsApiExplorerSS (
+(SS( )
+)SS) *
+;SS* +
+builderTT 
+.TT 
+ServicesTT 
+.TT 
+AddTransientTT 
+<TT 
+IConfigureOptionsTT /
+<TT/ 0
+SwaggerGenOptionsTT0 A
+>TTA B
+,TTB C#
+SwaggerConfigureOptionsTTD [
+>TT[ \
+(TT\ ]
+)TT] ^
+;TT^ _
+builderUU 
+.UU 
+ServicesUU 
+.UU 
+AddSwaggerGenUU 
+(UU 
+optionsUU &
+=>UU' )
+{VV 
+optionsWW 
+.WW 
+OperationFilterWW 
+<WW  
+SwaggerDefaultValuesWW 0
+>WW0 1
+(WW1 2
+)WW2 3
+;WW3 4
+optionsXX 
+.XX 
+IncludeXmlCommentsXX 
+(XX 
+PathXX #
+.XX# $
+CombineXX$ +
+(XX+ ,
+
+AppContextXX, 6
+.XX6 7
+BaseDirectoryXX7 D
+,XXD E
+$"XXF H
+{XXH I
+AssemblyXXI Q
+.XXQ R 
+GetExecutingAssemblyXXR f
+(XXf g
+)XXg h
+.XXh i
+GetNameXXi p
+(XXp q
+)XXq r
+.XXr s
+NameXXs w
+}XXw x
+$strXXx |
+"XX| }
+)XX} ~
+)XX~ 
+;	XX Ä
+}ZZ 
+)ZZ 
+;ZZ 
+var\\ 
+app\\ 
+=\\ 	
+builder\\
  
-.qq 
-Buildqq 
-(qq 
-)qq 
-;qq 
-iftt 
-(tt 
-apptt 
-.tt 
-Environmenttt 
-.tt 
-IsDevelopmenttt !
-(tt! "
-)tt" #
-)tt# $
-{uu 
-appvv 
-.vv 
+.\\ 
+Build\\ 
+(\\ 
+)\\ 
+;\\ 
+if__ 
+(__ 
+app__ 
+.__ 
+Environment__ 
+.__ 
+IsDevelopment__ !
+(__! "
+)__" #
+)__# $
+{`` 
+appcc 
+.cc 
 
-UseSwaggervv 
-(vv 
-optionsvv 
-=>vv 
-{ww 
-optionsxx 
-.xx 
-PreSerializeFiltersxx #
-.xx# $
-Addxx$ '
-(xx' (
-(xx( )
-swaggerxx) 0
-,xx0 1
-reqxx2 5
-)xx5 6
-=>xx7 9
-{yy 	
-swaggerzz 
-.zz 
-Serverszz 
-=zz 
-newzz !
-Listzz" &
-<zz& '
-OpenApiServerzz' 4
->zz4 5
-(zz5 6
-)zz6 7
-{zz8 9
-newzz: =
-OpenApiServerzz> K
-(zzK L
-)zzL M
-{zzN O
-UrlzzP S
-=zzT U
-$"zzV X
-$strzzX `
-{zz` a
-reqzza d
-.zzd e
-Hostzze i
-}zzi j
-"zzj k
-}zzl m
-}zzn o
-;zzo p
-}{{ 	
-){{	 
+UseSwaggercc 
+(cc 
+optionscc 
+=>cc 
+{dd 
+optionsee 
+.ee 
+PreSerializeFiltersee #
+.ee# $
+Addee$ '
+(ee' (
+(ee( )
+swaggeree) 0
+,ee0 1
+reqee2 5
+)ee5 6
+=>ee7 9
+{ff 	
+swaggergg 
+.gg 
+Serversgg 
+=gg 
+newgg !
+Listgg" &
+<gg& '
+OpenApiServergg' 4
+>gg4 5
+(gg5 6
+)gg6 7
+{gg8 9
+newgg: =
+OpenApiServergg> K
+(ggK L
+)ggL M
+{ggN O
+UrlggP S
+=ggT U
+$"ggV X
+$strggX `
+{gg` a
+reqgga d
+.ggd e
+Hostgge i
+}ggi j
+"ggj k
+}ggl m
+}ggn o
+;ggo p
+}hh 	
+)hh	 
 
-;{{
+;hh
  
-}|| 
-)|| 
-;|| 
-app 
-. 
-UseSwaggerUI 
-( 
-options 
-=> 
-{
-ÄÄ 
-var
-ÅÅ $
-ApiVersionDescriptions
-ÅÅ "
-=
-ÅÅ# $
-app
-ÅÅ% (
-.
-ÅÅ( )!
-DescribeApiVersions
-ÅÅ) <
-(
-ÅÅ< =
-)
-ÅÅ= >
-;
-ÅÅ> ?
-foreach
-ÉÉ 
-(
-ÉÉ 
-var
-ÉÉ 
-desc
-ÉÉ 
-in
-ÉÉ $
-ApiVersionDescriptions
-ÉÉ 3
-)
-ÉÉ3 4
-{
-ÑÑ 	
-options
-ÖÖ 
-.
-ÖÖ 
-SwaggerEndpoint
-ÖÖ #
-(
-ÖÖ# $
-$"
-ÖÖ$ &
-$str
-ÖÖ& 1
-{
-ÖÖ1 2
-desc
-ÖÖ2 6
-.
-ÖÖ6 7
-	GroupName
-ÖÖ7 @
-}
-ÖÖ@ A
-$str
-ÖÖA N
+}ii 
+)ii 
+;ii 
+appll 
+.ll 
+UseSwaggerUIll 
+(ll 
+optionsll 
+=>ll 
+{mm 
+varnn "
+ApiVersionDescriptionsnn "
+=nn# $
+appnn% (
+.nn( )
+DescribeApiVersionsnn) <
+(nn< =
+)nn= >
+;nn> ?
+foreachpp 
+(pp 
+varpp 
+descpp 
+inpp "
+ApiVersionDescriptionspp 3
+)pp3 4
+{qq 	
+optionsrr 
+.rr 
+SwaggerEndpointrr #
+(rr# $
+$"rr$ &
+$strrr& 1
+{rr1 2
+descrr2 6
+.rr6 7
+	GroupNamerr7 @
+}rr@ A
+$strrrA N
+"rrN O
+,rrO P
+$"rrQ S
+$strrrS d
+{rrd e
+descrre i
+.rri j
+
+ApiVersionrrj t
+.rrt u
+ToStringrru }
+(rr} ~
+)rr~ 
+}	rr Ä
 "
-ÖÖN O
-,
-ÖÖO P
-$"
-ÖÖQ S
-$str
-ÖÖS d
-{
-ÖÖd e
-desc
-ÖÖe i
-.
-ÖÖi j
+rrÄ Å
+)
+rrÅ Ç
+;
+rrÇ É
+optionsss 
+.ss $
+DefaultModelsExpandDepthss ,
+(ss, -
+-ss- .
+$numss. /
+)ss/ 0
+;ss0 1
+optionstt 
+.tt 
+DocExpansiontt  
+(tt  !
+Swashbucklett! ,
+.tt, -
 
-ApiVersion
-ÖÖj t
-.
-ÖÖt u
-ToString
-ÖÖu }
-(
-ÖÖ} ~
-)
-ÖÖ~ 
-}ÖÖ Ä
-"ÖÖÄ Å
-)ÖÖÅ Ç
-;ÖÖÇ É
-options
-ÜÜ 
-.
-ÜÜ &
-DefaultModelsExpandDepth
-ÜÜ ,
-(
-ÜÜ, -
--
-ÜÜ- .
-$num
-ÜÜ. /
-)
-ÜÜ/ 0
-;
-ÜÜ0 1
-options
-áá 
-.
-áá 
-DocExpansion
-áá  
-(
-áá  !
-Swashbuckle
-áá! ,
-.
-áá, -
-
-AspNetCore
-áá- 7
-.
-áá7 8
-	SwaggerUI
-áá8 A
-.
-ááA B
-DocExpansion
-ááB N
-.
-ááN O
-None
-ááO S
-)
-ááS T
-;
-ááT U
-}
-àà 	
-}
-ââ 
-)
-ââ 
-;
-ââ 
-}ää 
-appåå 
-.
-åå !
-UseHttpsRedirection
-åå 
-(
-åå 
-)
-åå 
-;
-åå 
-appéé 
-.
-éé 
-UseAuthorization
-éé 
-(
-éé 
-)
-éé 
-;
-éé 
-appêê 
-.
-êê 
-UseCors
-êê 
-(
-êê 
-)
-êê 
-;
-êê 
-appíí 
-.
-íí 
-MapControllers
-íí 
-(
-íí 
-)
-íí 
-;
-íí 
-appîî 
-.
-îî 
-Run
-îî 
-(
-îî 
-)
-îî 	
-;
-îî	 
-Ê%
-É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/OpenAPI/SwaggerDefaultValues.cs
+AspNetCorett- 7
+.tt7 8
+	SwaggerUItt8 A
+.ttA B
+DocExpansionttB N
+.ttN O
+NonettO S
+)ttS T
+;ttT U
+}uu 	
+}vv 
+)vv 
+;vv 
+}ww 
+appyy 
+.yy 
+UseHttpsRedirectionyy 
+(yy 
+)yy 
+;yy 
+app{{ 
+.{{ 
+UseAuthorization{{ 
+({{ 
+){{ 
+;{{ 
+app}} 
+.}} 
+MapControllers}} 
+(}} 
+)}} 
+;}} 
+app 
+. 
+Run 
+( 
+) 	
+;	 
+€%
+~/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerDefaultValues.cs
 	namespace 	
 Modules
  
-. 
-Notification 
-. 
-Presentation +
-.+ ,
-OpenAPI, 3
+. 
+Billing 
+. 
+Presentation &
+.& '
+OpenAPI' .
 {		 
 public
 
@@ -1098,17 +857,17 @@ IsRequired442 <
 }55 
 }66 	
 }77 
-}88 Æ
-Ü/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/OpenAPI/SwaggerConfigureOptions.cs
+}88 §
+Å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/OpenAPI/SwaggerConfigureOptions.cs
 	namespace		 	
 Modules		
  
-.		 
-Notification		 
-.		 
-Presentation		 +
-.		+ ,
-OpenAPI		, 3
+.		 
+Billing		 
+.		 
+Presentation		 &
+.		& '
+OpenAPI		' .
 {
 
  
@@ -1190,8 +949,8 @@ SwaggerDoc "
 { 
 Title 
 = 
-$str J
-,J K
+$str D
+,D E
 Version 
 = 
 description %
@@ -1280,763 +1039,112 @@ Dictionary""! +
 ;-- 
 }.. 	
 }11 
-}22 ı
-w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/ModuleExtensions.cs
-	namespace 	
-Modules
- 
-. 
-Notification 
-. 
-Presentation +
-{ 
-public 
-
-static 
-class 
-ModuleExtensions (
-{ 
-public		 
-static		 
-IServiceCollection		 (!
-AddNotificationModule		) >
-(		> ?
-this		? C
-IServiceCollection		D V
-services		W _
-,		_ `
-IConfiguration		a o
-configuration		p }
-)		} ~
-{
-
- 	
-services 
-. )
-AddNotificationInfrastructure .
-(. /
-configuration/ <
-)< =
-;= >
-services 
-. 
-
-AddMediatR 
-(  
-cfg  #
-=>$ &
-cfg' *
-.* +
-AsTransient+ 6
-(6 7
-)7 8
-,8 9
-typeof: @
-(@ A#
-SendNotificationHandlerA X
-)X Y
-.Y Z
-AssemblyZ b
-)b c
-;c d
-services 
-. 
-	AddScoped 
-< #
-INotificationRepository 6
-,6 7"
-NotificationRepository8 N
->N O
-(O P
-)P Q
-;Q R
-services 
-. 
-	AddScoped 
-< 
-INotificationSender 2
-,2 3
-NotificationService4 G
->G H
-(H I
-)I J
-;J K
-services 
-. 
-	AddScoped 
-< 
-
-ISmsSender )
-,) *
-	SmsSender+ 4
->4 5
-(5 6
-)6 7
-;7 8
-return 
-services 
-; 
-} 	
-} 
-} §
-à/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Filters/HttpGlobalExceptionFilter.cs
+}22 ∑
+Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Controllers/v2/BillingController.cs
 	namespace 	
 Modules
  
-. 
-Notification 
-. 
-Presentation +
-.+ ,
-Filters, 3
-{ 
-public 
-
-class %
-HttpGlobalExceptionFilter *
-:+ ,
-IExceptionHandler- >
-{ 
-public 
-readonly 
-ILogger 
-<  %
-HttpGlobalExceptionFilter  9
->9 :
-_logger; B
-;B C
-public
-
- %
-HttpGlobalExceptionFilter
-
- (
-(
-
-( )
-ILogger
-
-) 0
-<
-
-0 1%
-HttpGlobalExceptionFilter
-
-1 J
->
-
-J K
-logger
-
-L R
-)
-
-R S
-{ 	
-_logger 
-= 
-logger 
-; 
-} 	
-public 
-async 
-	ValueTask 
-< 
-bool #
-># $
-TryHandleAsync% 3
-(3 4
-HttpContext4 ?
-httpContext@ K
-,K L
-	ExceptionM V
-	exceptionW `
-,` a
-CancellationTokenb s
-cancellationToken	t Ö
-)
-Ö Ü
-{ 	
-_logger 
-. 
-LogError 
-( 
-	exception &
-,& '
-$str( G
-,G H
-	exceptionI R
-.R S
-MessageS Z
-)Z [
-;[ \
-var 
-problemDetails 
-=  
-new! $
-ProblemDetails% 3
-{ 
-Status 
-= 
-StatusCodes $
-.$ %(
-Status500InternalServerError% A
-,A B
-Title 
-= 
-$str &
-,& '
-Detail 
-= 
-	exception "
-." #
-InnerException# 1
-!1 2
-.2 3
-Message3 :
-} 
-; 
-httpContext 
-. 
-Response  
-.  !
+. 
+Billing 
+. 
+Presentation &
+.& '
+Controllers' 2
+.2 3
+v23 5
+;5 6
+[ 
+ApiController 
+] 
+[ 
 
-StatusCode! +
-=, -
-problemDetails. <
-.< =
-Status= C
-.C D
-ValueD I
-;I J
-await 
-httpContext 
-. 
-Response &
-.& '
-WriteAsJsonAsync' 7
-(7 8
-problemDetails8 F
-,F G
-cancellationTokenH Y
-)Y Z
-;Z [
-return 
-true 
-; 
-}   	
-}!! 
-}## ˛
-å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v2/NotificationController.cs
-	namespace 	
-Modules
- 
-. 
-Notification 
-. 
-Presentation +
-.+ ,
-Controllers, 7
-.7 8
-v28 :
-;: ;
-[		 
-ApiController		 
-]		 
-[
-
- 
-
-ApiVersion
-
- 
-(
-
- 
-$str
-
- 
-)
-
- 
-]
-
- 
-[ 
-Route 
-( 
-$str /
-)/ 0
-]0 1
-[ 
-Produces 	
-(	 
+ApiVersion 
+( 
+$str 
+) 
+] 
+[ 
+Route 
+( 
+$str /
+)/ 0
+]0 1
+[		 
+Produces		 	
+(			 
 
-$str
+$str		
  
-) 
-] 
-public 
-class "
-NotificationController #
-:$ %
-ControllerBase& 4
-{ 
-private 
-readonly 
-ILogger 
-< "
-NotificationController 3
->3 4
-_logger5 <
-;< =
-private 
-readonly 
-	IMediator 
-	_mediator (
-;( )
-public 
-"
-NotificationController !
-(! "
-ILogger" )
-<* +"
-NotificationController+ A
->A B
-loggerC I
-,I J
-	IMediatorK T
-mediatorU ]
-)] ^
-{ 
-_logger 
-= 
-logger 
-; 
-	_mediator 
-= 
-mediator 
-; 
-} 
-[ 
-HttpPost 
-] 
-public 
-
-async 
-Task 
-< 
-IActionResult #
-># $
-SendNotification% 5
-(5 6
-[6 7
-FromBody7 ?
-]? @#
-SendNotificationRequestA X
-requestY `
-)` a
-{ 
-var 
-notificationId 
-= 
-await "
-	_mediator# ,
-., -
-Send- 1
-(1 2
-new2 5#
-SendNotificationCommand6 M
-(M N
-requestN U
-)U V
-)V W
-;W X
-return 
-Ok 
-( 
-notificationId  
-)  !
-;! "
-} 
-} ‘1
-å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Controllers/v1/NotificationController.cs
-	namespace 	
-Modules
+)		 
+]		 
+public
+
+ 
+class
+
+ 
+BillingController
+
+ 
+:
+
+  
+ControllerBase
+
+! /
+{ 
+} ∑
+Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Presentation/Controllers/v1/BillingController.cs
+	namespace 	
+Modules
  
-. 
-Notification 
-. 
-Presentation +
-.+ ,
-Controllers, 7
-.7 8
-v18 :
-;: ;
-[		 
-ApiController		 
-]		 
-[
-
- 
+. 
+Billing 
+. 
+Presentation &
+.& '
+Controllers' 2
+.2 3
+v13 5
+;5 6
+[ 
+ApiController 
+] 
+[ 
 
-ApiVersion
-
- 
-(
-
- 
-$str
-
- 
-)
-
- 
-]
-
- 
-[ 
-Route 
-( 
-$str /
-)/ 0
-]0 1
-[ 
-Produces 	
-(	 
+ApiVersion 
+( 
+$str 
+) 
+] 
+[ 
+Route 
+( 
+$str /
+)/ 0
+]0 1
+[		 
+Produces		 	
+(			 
 
-$str
+$str		
  
-) 
-] 
-public 
-class "
-NotificationController #
-:$ %
-ControllerBase& 4
-{ 
-private 
-readonly 
-ILogger 
-< "
-NotificationController 3
->3 4
-_logger5 <
-;< =
-private 
-readonly 
-	IMediator 
-	_mediator (
-;( )
-public 
-"
-NotificationController !
-(! "
-ILogger" )
-<* +"
-NotificationController+ A
->A B
-loggerC I
-,I J
-	IMediatorK T
-mediatorU ]
-)] ^
-{ 
-_logger 
-= 
-logger 
-; 
-	_mediator 
-= 
-mediator 
-; 
-} 
-[11 
-HttpGet11 
-]11 
-[22 
-Route22 
-
-(22
- 
-$str22 
-)22 
-]22 
-[33 
-AllowAnonymous33 
-]33 
-public44 
-
-IActionResult44 
-GetNotificationType44 ,
-(44, -
-)44- .
-{55 
-var66 
-types66 
-=66 
-Enum66 
-.66 
-	GetValues66 "
-(66" #
-typeof66# )
-(66) *
-NotificationType66* :
-)66: ;
-)66; <
-.77  
-Cast77  $
-<77$ %
-NotificationType77% 5
->775 6
-(776 7
-)777 8
-.88  
-Select88  &
-(88& '
-e88' (
-=>88) +
-new88, /
-{99  
-Id::# %
-=::& '
-(::( )
-int::) ,
-)::, -
-e::- .
-,::. /
-Name;;# '
-=;;( )
-e;;* +
-.;;+ ,
-ToString;;, 4
-(;;4 5
-);;5 6
-,;;6 7
-DisplayName<<# .
-=<</ 0
-e<<1 2
-.<<2 3
-GetType<<3 :
-(<<: ;
-)<<; <
-.==1 2
-GetField==2 :
-(==: ;
-e==; <
-.==< =
-ToString=== E
-(==E F
-)==F G
-)==G H
-!==H I
-.>>1 2
-GetCustomAttribute>>2 D
-<>>D E 
-DescriptionAttribute>>E Y
->>>Y Z
-(>>Z [
-)>>[ \
-?>>\ ]
-.??1 2
-Description??2 =
-}AA  
-)AA  !
-;AA! "
-returnBB 
-OkBB 
-(BB 
-typesBB 
-)BB 
-;BB 
-}CC 
-[FF 
-HttpGetFF 
-]FF 
-[GG 
-RouteGG 
-
-(GG
- 
-$strGG 
-)GG  
-]GG  !
-[HH 
-AllowAnonymousHH 
-]HH 
-publicII 
-
-IActionResultII !
-GetNotificationStatusII .
-(II. /
-)II/ 0
-{JJ 
-varKK 
-typesKK 
-=KK 
-EnumKK 
-.KK 
-	GetValuesKK "
-(KK" #
-typeofKK# )
-(KK) *
-NotificationStatusKK* <
-)KK< =
-)KK= >
-.LL  
-CastLL  $
-<LL$ %
-NotificationStatusLL% 7
->LL7 8
-(LL8 9
-)LL9 :
-.MM  
-SelectMM  &
-(MM& '
-eMM' (
-=>MM) +
-newMM, /
-{NN  
-IdOO# %
-=OO& '
-(OO( )
-intOO) ,
-)OO, -
-eOO- .
-,OO. /
-NamePP# '
-=PP( )
-ePP* +
-.PP+ ,
-ToStringPP, 4
-(PP4 5
-)PP5 6
-,PP6 7
-DisplayNameQQ# .
-=QQ/ 0
-eQQ1 2
-.QQ2 3
-GetTypeQQ3 :
-(QQ: ;
-)QQ; <
-.RR1 2
-GetFieldRR2 :
-(RR: ;
-eRR; <
-.RR< =
-ToStringRR= E
-(RRE F
-)RRF G
-)RRG H
-!RRH I
-.SS1 2
-GetCustomAttributeSS2 D
-<SSD E 
-DescriptionAttributeSSE Y
->SSY Z
-(SSZ [
-)SS[ \
-?SS\ ]
-.TT1 2
-DescriptionTT2 =
-}VV  
-)VV  !
-;VV! "
-returnWW 
-OkWW 
-(WW 
-typesWW 
-)WW 
-;WW 
-}XX 
-[]] 
-HttpPost]] 
-]]] 
-[^^ 
-Route^^ 
-
-(^^
- 
-$str^^ 
-)^^ 
-]^^ 
-public__ 
-
-async__ 
-Task__ 
-<__ 
-IActionResult__ #
->__# $
-SendNotification__% 5
-(__5 6
-[__6 7
-FromBody__7 ?
-]__? @&
-SendNotificationRequestDto__A [
-values__\ b
-)__b c
-{`` #
-SendNotificationRequestaa 
-requestaa  '
-=aa( )
-newaa* -#
-SendNotificationRequestaa. E
-(aaE F
-valuesaaF L
-.aaL M
-UserIdaaM S
-,aaS T
-$"aaU W
-{aaW X
-valuesaaX ^
-.aa^ _
-Subjectaa_ f
-}aaf g
-$straag h
-{aah i
-valuesaai o
-.aao p
-DisplayNameaap {
-}aa{ |
-"aa| }
-,aa} ~
-values	aa Ö
-.
-aaÖ Ü
-Message
-aaÜ ç
-,
-aaç é
-values
-aaè ï
-.
-aaï ñ
-Type
-aañ ö
-)
-aaö õ
-;
-aaõ ú
-varcc 
-notificationIdcc 
-=cc 
-awaitcc "
-	_mediatorcc# ,
-.cc, -
-Sendcc- 1
-(cc1 2
-newcc2 5#
-SendNotificationCommandcc6 M
-(ccM N
-requestccN U
-)ccU V
-)ccV W
-;ccW X
-returndd 
-Okdd 
-(dd 
-notificationIddd  
-)dd  !
-;dd! "
-}ff 
-}gg 
+)		 
+]		 
+public
+
+ 
+class
+
+ 
+BillingController
+
+ 
+:
+
+  
+ControllerBase
+
+! /
+{ 
+} 

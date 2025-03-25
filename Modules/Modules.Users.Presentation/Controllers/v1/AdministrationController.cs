@@ -1,19 +1,8 @@
-﻿// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Reflection;
 using Asp.Versioning;
 using Azure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Modules.Common.Infrastructure.Authentication;
-using Modules.Users.Application.Dtos.Entities;
-using Modules.Users.Application.Dtos.Entities.Menu;
-using Modules.Users.Application.Dtos.Entities.Permissions;
-using Modules.Users.Application.Enums;
-using Modules.Users.Application.UseCases;
-using Modules.Users.Domain.Entities;
+
 
 namespace Modules.Users.Presentation.Controllers.v1
 {
@@ -78,8 +67,6 @@ namespace Modules.Users.Presentation.Controllers.v1
                 }
 
                 return StatusCode(StatusCodes.Status201Created, result);
-
-                //return Ok(await _channelService.AddChannelAsync(values));
             }
             catch (Exception ex)
             {
@@ -110,8 +97,6 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpDelete("DeleteChannel/{channelId}")]
         public async Task<ActionResult> DeleteChannel(int channelId)
         {
-            //return Ok()
-
             var response = await _channelService.DeleteChannelAsync(channelId);
 
             if (response == "success")
@@ -266,11 +251,44 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetApprovedUserRoles")]
-        public IEnumerable<RolesDto> GetApprovedUserRoles()
+        public async Task<List<RolesDto>> GetApprovedUserRoles()
         {
-            return _adminService.GetApprovedUserRoles();
+            return await _adminService.GetApprovedUserRoles();
         }
 
+        /// <summary>
+        /// Returns all approved system user roles based on a specific department
+        /// </summary>
+        // GET: api/values
+        [HttpGet]
+        [Route("GetDepartmentUserRoles/{departmentId}")]
+        public async Task<List<RolesDto>> GetDepartmentUserRoles(int departmentId)
+        {
+            return await _adminService.GetDepartmentUserRoles(departmentId);
+        }
+
+        /// <summary>
+        /// Returns all approved system user roles based on a specific department unit
+        /// </summary>
+        // GET: api/values
+        [HttpGet]
+        [Route("GetDepartmentUnitUserRoles/{unitId}")]
+        public async Task<List<RolesDto>> GetDepartmentUnitUserRoles(int unitId)
+        {
+            return await _adminService.GetDepartmentUnitUserRoles(unitId);
+        }
+
+        /// <summary>
+        /// Returns all the rejected system user roles
+        /// </summary>
+        // GET: api/values
+        [HttpGet]
+        [Route("GetRejectedUserRoles")]
+        [Obsolete]
+        public async Task<List<RolesDto>> GetRejectedUserRoles()
+        {
+            return await _adminService.GetRejectedUserRoles();
+        }
 
         /// <summary>
         /// Returns all system user roles
@@ -278,10 +296,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetUserRoles")]
-        //public IEnumerable<IdentityRole> GetUserRoles()
-        public IEnumerable<RolesDto> GetUserRoles()
+        public async Task<List<RolesDto>> GetUserRoles()
         {
-            return _adminService.GetUserRoles();
+            return await _adminService.GetUserRoles();
         }
 
         [HttpPost]
@@ -364,7 +381,6 @@ namespace Modules.Users.Presentation.Controllers.v1
             return BadRequest(result);
         }
 
-        //approve role
 
         /// <summary>
         /// assigns an existing role to an existing user
@@ -446,7 +462,6 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
             var status = result.ErrorResponse!.StatusCode;
 
             return status switch
@@ -478,8 +493,6 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
-
             var status = result.ErrorResponse!.StatusCode;
 
             return status switch
@@ -509,8 +522,6 @@ namespace Modules.Users.Presentation.Controllers.v1
             {
                 return Ok(result.SuccessResponse);
             }
-
-            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
 
             var status = result.ErrorResponse!.StatusCode;
 
@@ -543,7 +554,6 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
             var status = result.ErrorResponse!.StatusCode;
 
             return status switch
@@ -574,7 +584,6 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
             var status = result.ErrorResponse!.StatusCode;
 
             return status switch
@@ -605,7 +614,6 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return Ok(result.SuccessResponse);
             }
 
-            //return Problem(result.ErrorResponse?.StatusMessage ?? "An unexpected error occurred.");
             var status = result.ErrorResponse!.StatusCode;
 
             return status switch

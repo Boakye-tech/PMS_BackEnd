@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
-  <ProjectName>Modules.Common.Infrastructure</ProjectName>
+  <ProjectName>Modules.Billing.Domain</ProjectName>
   <ProjectLanguage>C#</ProjectLanguage>
   <ProjectType>Product</ProjectType>
-  <ProjectGuid>9842f69d-ecfe-449c-bfbe-4f995bc8a87b</ProjectGuid>
-  <FullPath>/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/Modules.Common.Infrastructure.csproj</FullPath>
+  <ProjectGuid>b79e344a-5ab2-4e2e-a895-cbe953fdd45d</ProjectGuid>
+  <FullPath>/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Modules.Billing.Domain.csproj</FullPath>
   <IsExcluded>false</IsExcluded>
   <AnalysisResults>
     <AnalysisResult Id="FilesToAnalyze" Location="/Users/imac5k/Projects/PropertyManagementSolution/pms-api/.sonarqube/conf/5/FilesToAnalyze.txt" />

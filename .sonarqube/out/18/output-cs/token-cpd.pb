@@ -1,13 +1,13 @@
-Ç
-j/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Infrastructure/Class1.cs
+Á
+g/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Application/Class1.cs
 	namespace 	
 Modules
  
 . 
 Billing 
-. 
-Infrastructure (
-;( )
+. 
+Application %
+;% &
 public 
 class 
 Class1 

@@ -450,7 +450,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         }
 
-        
+       
     }
 }
 

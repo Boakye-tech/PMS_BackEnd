@@ -1,3 +1,5 @@
-﻿/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/Authentication/IUserContextService.cs
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/Authentication/UserContextService.cs
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/ModuleDbContext.cs
+﻿/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillGenerationBaseEntity.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillingTypes.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/NonRentalBilling.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/RentalBilling.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Usings.cs

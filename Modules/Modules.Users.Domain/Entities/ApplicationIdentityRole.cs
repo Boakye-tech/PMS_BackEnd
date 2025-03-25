@@ -5,6 +5,8 @@ namespace Modules.Users.Domain.Entities
 {
 	public class ApplicationIdentityRole : IdentityRole
 	{
+        public int DepartmentId { get; set; }
+        public int UnitId { get; set; }
         public DateTime CreatedOn { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime ModifiedOn { get; set; }

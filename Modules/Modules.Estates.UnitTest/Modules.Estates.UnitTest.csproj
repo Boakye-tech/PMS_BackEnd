@@ -37,8 +37,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="DomainLayer\" />
+    <None Remove="DomainLayer\Setups\" />
+    <None Remove="ApplicationLayer\" />
+    <None Remove="ApplicationLayer\Services\" />
+    <None Remove="PresentationLayer\" />
+    <None Remove="InfrastructureLayer\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DomainLayer\" />
+    <Folder Include="DomainLayer\Setups\" />
+    <Folder Include="ApplicationLayer\" />
+    <Folder Include="ApplicationLayer\Services\" />
+    <Folder Include="PresentationLayer\" />
+    <Folder Include="InfrastructureLayer\" />
   </ItemGroup>
 </Project>

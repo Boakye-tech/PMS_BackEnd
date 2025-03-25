@@ -38,6 +38,7 @@
     <None Remove="Controllers\v1\" />
     <None Remove="Controllers\v2\" />
     <None Remove="Logs\" />
+    <None Remove="Constants\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filters\" />
@@ -46,6 +47,7 @@
     <Folder Include="Controllers\v1\" />
     <Folder Include="Controllers\v2\" />
     <Folder Include="Logs\" />
+    <Folder Include="Constants\" />
   </ItemGroup>
 
   <ItemGroup>

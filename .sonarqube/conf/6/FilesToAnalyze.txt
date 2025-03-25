@@ -1,2 +1,3 @@
-﻿/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Presentation/OpenAPI/SwaggerConfigureOptions.cs
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Presentation/OpenAPI/SwaggerDefaultValues.cs
+﻿/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/Authentication/IUserContextService.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/Authentication/UserContextService.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/ModuleDbContext.cs

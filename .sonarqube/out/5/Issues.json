@@ -12,18 +12,31 @@
       },
       "results": [
         {
-          "ruleId": "S125",
+          "ruleId": "CS8618",
           "level": "warning",
-          "message": "Remove this commented out code.",
+          "message": "Non-nullable property 'BillingTypeInitial' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/Authentication/UserContextService.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillingTypes.cs",
                 "region": {
-                  "startLine": 18,
-                  "startColumn": 13,
-                  "endLine": 18,
-                  "endColumn": 51
+                  "startLine": 25,
+                  "startColumn": 10,
+                  "endLine": 25,
+                  "endColumn": 22
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillingTypes.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 23,
+                  "endLine": 12,
+                  "endColumn": 41
                 }
               }
             }
@@ -33,18 +46,99 @@
           }
         },
         {
-          "ruleId": "S125",
+          "ruleId": "CS8618",
           "level": "warning",
-          "message": "Remove this commented out code.",
+          "message": "Non-nullable property 'BillingType' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Infrastructure/ModuleDbContext.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillingTypes.cs",
                 "region": {
                   "startLine": 25,
-                  "startColumn": 5,
+                  "startColumn": 10,
                   "endLine": 25,
-                  "endColumn": 8
+                  "endColumn": 22
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillingTypes.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 23,
+                  "endLine": 16,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'Cycle' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillingTypes.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 10,
+                  "endLine": 25,
+                  "endColumn": 22
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillingTypes.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 23,
+                  "endLine": 20,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "Non-nullable property 'BillingTypeInitial' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillGenerationBaseEntity.cs",
+                "region": {
+                  "startLine": 67,
+                  "startColumn": 16,
+                  "endLine": 67,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Domain/Entities/BillGenerationBaseEntity.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 23,
+                  "endLine": 14,
+                  "endColumn": 41
                 }
               }
             }
@@ -55,20 +149,17 @@
         }
       ],
       "rules": {
-        "S125": {
-          "id": "S125",
-          "shortDescription": "Sections of code should not be commented out",
-          "fullDescription": "Commented-out code distracts the focus from the actual executed code. It creates a noise that increases maintenance code. And because it is never executed, it quickly becomes out of date and invalid.",
+        "CS8618": {
+          "id": "CS8618",
+          "shortDescription": "Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.",
           "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-125",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8618)",
           "properties": {
-            "category": "Major Code Smell",
+            "category": "Compiler",
             "isEnabledByDefault": true,
             "tags": [
-              "C#",
-              "MainSourceScope",
-              "TestSourceScope",
-              "SonarWay"
+              "Compiler",
+              "Telemetry"
             ]
           }
         }

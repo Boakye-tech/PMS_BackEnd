@@ -33,6 +33,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Customer
 
         Task<int> StopCustomerDebitAsync(StopDebitRequestDto values);
 
+        Task<int> ApproveCustomerAsync(ApproveCustomerDto values);
+
     }
 }
 

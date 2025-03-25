@@ -7,8 +7,12 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 	public interface IAdministrationService
 	{
         //IEnumerable<IdentityRole> GetUserRoles();
-        IEnumerable<RolesDto> GetApprovedUserRoles();
-        IEnumerable<RolesDto> GetUserRoles();
+        Task<List<RolesDto>> GetApprovedUserRoles();
+        Task<List<RolesDto>> GetDepartmentUserRoles(int departmentId);
+        Task<List<RolesDto>> GetDepartmentUnitUserRoles(int unit);
+        Task<List<RolesDto>> GetRejectedUserRoles();
+
+        Task<List<RolesDto>> GetUserRoles();
         Task<IdentityResult> CreateUserRole(RolesCreateDto role);
         Task<IdentityResult> UpdateUserRole(RolesUpdateDto role);
         Task<IdentityResult> DeleteUserRole(RolesDeleteDto roleId);

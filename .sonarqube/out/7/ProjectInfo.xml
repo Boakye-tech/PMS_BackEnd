@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
-  <ProjectName>Modules.Notification.Domain</ProjectName>
+  <ProjectName>Modules.Common.Presentation</ProjectName>
   <ProjectLanguage>C#</ProjectLanguage>
   <ProjectType>Product</ProjectType>
-  <ProjectGuid>1b88f298-e166-44a7-ab48-b2a8bf4887fe</ProjectGuid>
-  <FullPath>/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Modules.Notification.Domain.csproj</FullPath>
+  <ProjectGuid>7ae4b78a-c2eb-4f3f-9863-0b728647cb6c</ProjectGuid>
+  <FullPath>/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Presentation/Modules.Common.Presentation.csproj</FullPath>
   <IsExcluded>false</IsExcluded>
   <AnalysisResults>
     <AnalysisResult Id="FilesToAnalyze" Location="/Users/imac5k/Projects/PropertyManagementSolution/pms-api/.sonarqube/conf/7/FilesToAnalyze.txt" />

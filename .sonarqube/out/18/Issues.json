@@ -18,7 +18,7 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Infrastructure/Class1.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Billing.Application/Class1.cs",
                 "region": {
                   "startLine": 3,
                   "startColumn": 14,

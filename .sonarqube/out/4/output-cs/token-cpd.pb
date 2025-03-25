@@ -1,163 +1,4 @@
-É
-v/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Setup/PaymentMode.cs
-	namespace 	
-Modules
- 
-. 
-Finance 
-. 
-Domain  
-.  !
-Entities! )
-.) *
-Setup* /
-{ 
-public 
-class 
-PaymentMode 
-: 
-AuditableEntity +
-{ 
-[ 	
-Key	 
-] 
-[ 	
-Required	 
-] 
-public		 
-int		 
-PaymentModeId		  
-{		! "
-get		# &
-;		& '
-private		( /
-set		0 3
-;		3 4
-}		5 6
-[ 	
-Required	 
-] 
-[ 	
-StringLength	 
-( 
-$num 
-) 
-] 
-public 
-string 
-? 
-PaymentModes #
-{$ %
-get& )
-;) *
-private+ 2
-set3 6
-;6 7
-}8 9
-public 
-PaymentMode 
-( 
-int 
-PaymentModeId ,
-,, -
-string. 4
-PaymentModes5 A
-)A B
-{ 	
-this 
-. 
-PaymentModeId 
-=  
-PaymentModeId! .
-;. /
-this 
-. 
-PaymentModes 
-= 
-PaymentModes  ,
-;, -
-} 	
-public 
-static 
-PaymentMode !
-CreateUpdate" .
-(. /
-int/ 2
-paymentModeId3 @
-,@ A
-stringB H
-paymentModeI T
-)T U
-{ 	
-if 
-( 
-string 
-. 
-IsNullOrWhiteSpace )
-() *
-paymentMode* 5
-)5 6
-||7 9
-paymentModeId: G
-<H I
-$numJ K
-)K L
-{ 
-throw 
-new 
-ArgumentException +
-(+ ,
-$str, H
-)H I
-;I J
-} 
-if 
-( 
-paymentModeId 
-<=  
-$num! "
-)" #
-throw 
-new 
-ArgumentException +
-(+ ,
-$str, \
-)\ ]
-;] ^
-if 
-( 
-string 
-. 
-IsNullOrWhiteSpace )
-() *
-paymentMode* 5
-)5 6
-||7 9
-paymentMode: E
-.E F
-LengthF L
->M N
-$numO Q
-)Q R
-throw   
-new   
-ArgumentException   +
-(  + ,
-$str  , h
-)  h i
-;  i j
-return"" 
-new"" 
-PaymentMode"" "
-(""" #
-paymentModeId""# 0
-,""0 1
-paymentMode""2 =
-)""= >
-;""> ?
-}## 	
-}$$ 
-}%% d
+d
 b/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Usings.cs‰
 r/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Interfaces/IUnitOfWork.cs
 	namespace 	
@@ -719,265 +560,7 @@ Interfaces! +
 BankBranch5 ?
 >? @
 { 
-} $
-w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Setup/InvoiceTypes.cs
-	namespace 	
-Modules
- 
-. 
-Finance 
-. 
-Domain  
-.  !
-Entities! )
-.) *
-Setup* /
-{ 
-public 
-class 
-InvoiceTypes 
-: 
-AuditableEntity ,
-{ 
-[ 	
-Key	 
-] 
-[		 	
-Required			 
-]		 
-public
-
- 
-int
-
- 
-InvoiceTypesId
-
- !
-{
-
-" #
-get
-
-$ '
-;
-
-' (
-set
-
-) ,
-;
-
-, -
-}
-
-. /
-[ 	
-Required	 
-] 
-[ 	
-StringLength	 
-( 
-$num 
-) 
-] 
-public 
-string 
-? 
-InvoiceInitials &
-{' (
-get) ,
-;, -
-set. 1
-;1 2
-}3 4
-[ 	
-Required	 
-] 
-[ 	
-StringLength	 
-( 
-$num 
-) 
-] 
-public 
-string 
-? 
-InvoiceDescriptions *
-{+ ,
-get- 0
-;0 1
-set2 5
-;5 6
-}7 8
-[ 	
-Required	 
-] 
-public 
-double 
-InvoiceAmount #
-{$ %
-get& )
-;) *
-set+ .
-;. /
-}0 1
-public 
-InvoiceTypes 
-( 
-int 
-invoiceTypesId  .
-,. /
-string/ 5
-invoiceInitials6 E
-,E F
-stringG M
-invoiceDescriptionsN a
-,a b
-doublec i
-invoiceAmountj w
-)w x
-{ 	
-InvoiceTypesId 
-= 
-invoiceTypesId +
-;+ ,
-InvoiceInitials 
-= 
-invoiceInitials -
-;- .
-InvoiceDescriptions 
-=  !
-invoiceDescriptions" 5
-;5 6
-InvoiceAmount 
-= 
-invoiceAmount )
-;) *
-} 	
-public   
-static   
-InvoiceTypes   "
-CreateUpdate  # /
-(  / 0
-int  0 3
-invoiceTypesId  4 B
-,  B C
-string  D J
-invoiceInitials  K Z
-,  Z [
-string  \ b
-invoiceDescriptions  c v
-,  v w
-double  x ~
-invoiceAmount	   Œ
-)
-  Œ 
-{!! 	
-if"" 
-("" 
-string"" 
-."" 
-IsNullOrWhiteSpace"" )
-("") *
-invoiceInitials""* 9
-)""9 :
-||""; =
-string""> D
-.""D E
-IsNullOrWhiteSpace""E W
-(""W X
-invoiceDescriptions""X k
-)""k l
-||""m o
-invoiceAmount""p }
-<""~ 
-$num
-""€ 
-)
-""‚ ƒ
-{## 
-throw$$ 
-new$$ 
-ArgumentException$$ +
-($$+ ,
-$str$$, H
-)$$H I
-;$$I J
-}%% 
-if'' 
-('' 
-string'' 
-.'' 
-IsNullOrWhiteSpace'' )
-('') *
-invoiceInitials''* 9
-)''9 :
-||''; =
-invoiceInitials''> M
-.''M N
-Length''N T
->''U V
-$num''W X
-)''X Y
-throw(( 
-new(( 
-ArgumentException(( +
-(((+ ,
-$str((, l
-)((l m
-;((m n
-if** 
-(** 
-invoiceAmount** 
-<=**  
-$num**! "
-)**" #
-throw++ 
-new++ 
-ArgumentException++ +
-(+++ ,
-$str++, \
-)++\ ]
-;++] ^
-if.. 
-(.. 
-string.. 
-... 
-IsNullOrWhiteSpace.. )
-(..) *
-invoiceDescriptions..* =
-)..= >
-||..? A
-invoiceDescriptions..B U
-...U V
-Length..V \
->..] ^
-$num.._ a
-)..a b
-throw// 
-new// 
-ArgumentException// +
-(//+ ,
-$str//, p
-)//p q
-;//q r
-return11 
-new11 
-InvoiceTypes11 #
-(11# $
-invoiceTypesId11$ 2
-,112 3
-invoiceInitials114 C
-,11C D
-invoiceDescriptions11E X
-,11X Y
-invoiceAmount11Z g
-)11g h
-;11h i
-}22 	
-}66 
-}<< ½
+} ½
 s/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Setup/Services.cs
 	namespace 	
 Modules
@@ -1434,7 +1017,424 @@ v/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finan
 ;$$> ?
 }%% 	
 }&& 
-}''  $
+}'' É
+v/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Setup/PaymentMode.cs
+	namespace 	
+Modules
+ 
+. 
+Finance 
+. 
+Domain  
+.  !
+Entities! )
+.) *
+Setup* /
+{ 
+public 
+class 
+PaymentMode 
+: 
+AuditableEntity +
+{ 
+[ 	
+Key	 
+] 
+[ 	
+Required	 
+] 
+public		 
+int		 
+PaymentModeId		  
+{		! "
+get		# &
+;		& '
+private		( /
+set		0 3
+;		3 4
+}		5 6
+[ 	
+Required	 
+] 
+[ 	
+StringLength	 
+( 
+$num 
+) 
+] 
+public 
+string 
+? 
+PaymentModes #
+{$ %
+get& )
+;) *
+private+ 2
+set3 6
+;6 7
+}8 9
+public 
+PaymentMode 
+( 
+int 
+PaymentModeId ,
+,, -
+string. 4
+PaymentModes5 A
+)A B
+{ 	
+this 
+. 
+PaymentModeId 
+=  
+PaymentModeId! .
+;. /
+this 
+. 
+PaymentModes 
+= 
+PaymentModes  ,
+;, -
+} 	
+public 
+static 
+PaymentMode !
+CreateUpdate" .
+(. /
+int/ 2
+paymentModeId3 @
+,@ A
+stringB H
+paymentModeI T
+)T U
+{ 	
+if 
+( 
+string 
+. 
+IsNullOrWhiteSpace )
+() *
+paymentMode* 5
+)5 6
+||7 9
+paymentModeId: G
+<H I
+$numJ K
+)K L
+{ 
+throw 
+new 
+ArgumentException +
+(+ ,
+$str, H
+)H I
+;I J
+} 
+if 
+( 
+paymentModeId 
+<=  
+$num! "
+)" #
+throw 
+new 
+ArgumentException +
+(+ ,
+$str, \
+)\ ]
+;] ^
+if 
+( 
+string 
+. 
+IsNullOrWhiteSpace )
+() *
+paymentMode* 5
+)5 6
+||7 9
+paymentMode: E
+.E F
+LengthF L
+>M N
+$numO Q
+)Q R
+throw   
+new   
+ArgumentException   +
+(  + ,
+$str  , h
+)  h i
+;  i j
+return"" 
+new"" 
+PaymentMode"" "
+(""" #
+paymentModeId""# 0
+,""0 1
+paymentMode""2 =
+)""= >
+;""> ?
+}## 	
+}$$ 
+}%% $
+w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Setup/InvoiceTypes.cs
+	namespace 	
+Modules
+ 
+. 
+Finance 
+. 
+Domain  
+.  !
+Entities! )
+.) *
+Setup* /
+{ 
+public 
+class 
+InvoiceTypes 
+: 
+AuditableEntity ,
+{ 
+[ 	
+Key	 
+] 
+[		 	
+Required			 
+]		 
+public
+
+ 
+int
+
+ 
+InvoiceTypesId
+
+ !
+{
+
+" #
+get
+
+$ '
+;
+
+' (
+set
+
+) ,
+;
+
+, -
+}
+
+. /
+[ 	
+Required	 
+] 
+[ 	
+StringLength	 
+( 
+$num 
+) 
+] 
+public 
+string 
+? 
+InvoiceInitials &
+{' (
+get) ,
+;, -
+set. 1
+;1 2
+}3 4
+[ 	
+Required	 
+] 
+[ 	
+StringLength	 
+( 
+$num 
+) 
+] 
+public 
+string 
+? 
+InvoiceDescriptions *
+{+ ,
+get- 0
+;0 1
+set2 5
+;5 6
+}7 8
+[ 	
+Required	 
+] 
+public 
+double 
+InvoiceAmount #
+{$ %
+get& )
+;) *
+set+ .
+;. /
+}0 1
+public 
+InvoiceTypes 
+( 
+int 
+invoiceTypesId  .
+,. /
+string/ 5
+invoiceInitials6 E
+,E F
+stringG M
+invoiceDescriptionsN a
+,a b
+doublec i
+invoiceAmountj w
+)w x
+{ 	
+InvoiceTypesId 
+= 
+invoiceTypesId +
+;+ ,
+InvoiceInitials 
+= 
+invoiceInitials -
+;- .
+InvoiceDescriptions 
+=  !
+invoiceDescriptions" 5
+;5 6
+InvoiceAmount 
+= 
+invoiceAmount )
+;) *
+} 	
+public   
+static   
+InvoiceTypes   "
+CreateUpdate  # /
+(  / 0
+int  0 3
+invoiceTypesId  4 B
+,  B C
+string  D J
+invoiceInitials  K Z
+,  Z [
+string  \ b
+invoiceDescriptions  c v
+,  v w
+double  x ~
+invoiceAmount	   Œ
+)
+  Œ 
+{!! 	
+if"" 
+("" 
+string"" 
+."" 
+IsNullOrWhiteSpace"" )
+("") *
+invoiceInitials""* 9
+)""9 :
+||""; =
+string""> D
+.""D E
+IsNullOrWhiteSpace""E W
+(""W X
+invoiceDescriptions""X k
+)""k l
+||""m o
+invoiceAmount""p }
+<""~ 
+$num
+""€ 
+)
+""‚ ƒ
+{## 
+throw$$ 
+new$$ 
+ArgumentException$$ +
+($$+ ,
+$str$$, H
+)$$H I
+;$$I J
+}%% 
+if'' 
+('' 
+string'' 
+.'' 
+IsNullOrWhiteSpace'' )
+('') *
+invoiceInitials''* 9
+)''9 :
+||''; =
+invoiceInitials''> M
+.''M N
+Length''N T
+>''U V
+$num''W X
+)''X Y
+throw(( 
+new(( 
+ArgumentException(( +
+(((+ ,
+$str((, l
+)((l m
+;((m n
+if** 
+(** 
+invoiceAmount** 
+<=**  
+$num**! "
+)**" #
+throw++ 
+new++ 
+ArgumentException++ +
+(+++ ,
+$str++, \
+)++\ ]
+;++] ^
+if.. 
+(.. 
+string.. 
+... 
+IsNullOrWhiteSpace.. )
+(..) *
+invoiceDescriptions..* =
+)..= >
+||..? A
+invoiceDescriptions..B U
+...U V
+Length..V \
+>..] ^
+$num.._ a
+)..a b
+throw// 
+new// 
+ArgumentException// +
+(//+ ,
+$str//, p
+)//p q
+;//q r
+return11 
+new11 
+InvoiceTypes11 #
+(11# $
+invoiceTypesId11$ 2
+,112 3
+invoiceInitials114 C
+,11C D
+invoiceDescriptions11E X
+,11X Y
+invoiceAmount11Z g
+)11g h
+;11h i
+}22 	
+}66 
+}<<  $
 p/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Setup/Forms.cs
 	namespace 	
 Modules
@@ -2986,270 +2986,7 @@ o/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finan
 ;##- .
 }$$ 	
 }66 
-}99 ®
-
-|/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Management/InvoiceItems.cs
-	namespace 	
-Modules
- 
-. 
-Finance 
-. 
-Domain  
-.  !
-Entities! )
-.) *
-
-Management* 4
-{ 
-public 
-class 
-InvoiceItems 
-{ 
-public 
-int 
-InvoiceItemsId !
-{" #
-get$ '
-;' (
-set) ,
-;, -
-}. /
-public 
-string 
-InvoiceNumber #
-{$ %
-get& )
-;) *
-set+ .
-;. /
-}0 1
-public
-
- 
-string
-
- 
-Description
-
- !
-{
-
-" #
-get
-
-$ '
-;
-
-' (
-set
-
-) ,
-;
-
-, -
-}
-
-. /
-public 
-double 
-Amount 
-{ 
-get "
-;" #
-set$ '
-;' (
-}) *
-public 
-int 
-Status 
-{ 
-get 
-;  
-set! $
-;$ %
-}& '
-public 
-InvoiceItems 
-( 
-) 
-{ 
-} 
-} 
-} Ê
-w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Management/Invoice.cs
-	namespace 	
-Modules
- 
-. 
-Finance 
-. 
-Domain  
-.  !
-Entities! )
-.) *
-
-Management* 4
-{ 
-public 
-class 
-Invoice 
-{ 
-[ 	
-Key	 
-] 
-public		 
-int		 
-	InvoiceId		 
-{		 
-get		 "
-;		" #
-set		$ '
-;		' (
-}		) *
-public 
-string 
-InvoiceNumber #
-{$ %
-get& )
-;) *
-set+ .
-;. /
-}0 1
-public 
-DateTime	 
-InvoiceDate 
-{ 
-get  #
-;# $
-set% (
-;( )
-}* +
-public 
-string 
-PropertyNumber $
-{% &
-get' *
-;* +
-set, /
-;/ 0
-}1 2
-public 
-double 
-Acreage 
-{ 
-get  #
-;# $
-set% (
-;( )
-}* +
-public 
-string 
-TransactionCode %
-{& '
-get( +
-;+ ,
-set- 0
-;0 1
-}2 3
-public 
-string 
-TransactionNumber '
-{( )
-get* -
-;- .
-set/ 2
-;2 3
-}4 5
-public 
-DateTime 
-ExpirationDate &
-{' (
-get) ,
-;, -
-set. 1
-;1 2
-}3 4
-public 
-string 
-CustomerCode "
-{# $
-get% (
-;( )
-set* -
-;- .
-}/ 0
-public 
-string 
-CustomerName "
-{# $
-get% (
-;( )
-set* -
-;- .
-}/ 0
-public 
-string 
-CustomerAddress %
-{& '
-get( +
-;+ ,
-set- 0
-;0 1
-}2 3
-public 
-string  
-CustomerEmailAddress *
-{+ ,
-get- 0
-;0 1
-set2 5
-;5 6
-}7 8
-public!! 
-string!! 
-CustomerPhoneNumber!! )
-{!!* +
-get!!, /
-;!!/ 0
-set!!1 4
-;!!4 5
-}!!6 7
-public## 
-double## 
-InvoiceAmount## #
-{##$ %
-get##& )
-;##) *
-set##+ .
-;##. /
-}##0 1
-public%% 
-int%% 
-Status%% 
-{%% 
-get%% 
-;%%  
-set%%! $
-;%%$ %
-}%%& '
-public'' 
-string'' 
-	CreatedBy'' 
-{''  !
-get''" %
-;''% &
-set''' *
-;''* +
-}'', -
-public++ 
-Invoice++ 
-(++ 
-)++ 
-{,, 
-}-- 
-}.. 
-}22 Ô,
+}99 Ô,
 y/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Management/DebitNote.cs
 	namespace 	
 Modules
@@ -3570,7 +3307,270 @@ BaseAmount33  
 {MM 
 }NN 
 }OO 
-}PP Ú,
+}PP ®
+
+|/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Management/InvoiceItems.cs
+	namespace 	
+Modules
+ 
+. 
+Finance 
+. 
+Domain  
+.  !
+Entities! )
+.) *
+
+Management* 4
+{ 
+public 
+class 
+InvoiceItems 
+{ 
+public 
+int 
+InvoiceItemsId !
+{" #
+get$ '
+;' (
+set) ,
+;, -
+}. /
+public 
+string 
+InvoiceNumber #
+{$ %
+get& )
+;) *
+set+ .
+;. /
+}0 1
+public
+
+ 
+string
+
+ 
+Description
+
+ !
+{
+
+" #
+get
+
+$ '
+;
+
+' (
+set
+
+) ,
+;
+
+, -
+}
+
+. /
+public 
+double 
+Amount 
+{ 
+get "
+;" #
+set$ '
+;' (
+}) *
+public 
+int 
+Status 
+{ 
+get 
+;  
+set! $
+;$ %
+}& '
+public 
+InvoiceItems 
+( 
+) 
+{ 
+} 
+} 
+} Ê
+w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Management/Invoice.cs
+	namespace 	
+Modules
+ 
+. 
+Finance 
+. 
+Domain  
+.  !
+Entities! )
+.) *
+
+Management* 4
+{ 
+public 
+class 
+Invoice 
+{ 
+[ 	
+Key	 
+] 
+public		 
+int		 
+	InvoiceId		 
+{		 
+get		 "
+;		" #
+set		$ '
+;		' (
+}		) *
+public 
+string 
+InvoiceNumber #
+{$ %
+get& )
+;) *
+set+ .
+;. /
+}0 1
+public 
+DateTime	 
+InvoiceDate 
+{ 
+get  #
+;# $
+set% (
+;( )
+}* +
+public 
+string 
+PropertyNumber $
+{% &
+get' *
+;* +
+set, /
+;/ 0
+}1 2
+public 
+double 
+Acreage 
+{ 
+get  #
+;# $
+set% (
+;( )
+}* +
+public 
+string 
+TransactionCode %
+{& '
+get( +
+;+ ,
+set- 0
+;0 1
+}2 3
+public 
+string 
+TransactionNumber '
+{( )
+get* -
+;- .
+set/ 2
+;2 3
+}4 5
+public 
+DateTime 
+ExpirationDate &
+{' (
+get) ,
+;, -
+set. 1
+;1 2
+}3 4
+public 
+string 
+CustomerCode "
+{# $
+get% (
+;( )
+set* -
+;- .
+}/ 0
+public 
+string 
+CustomerName "
+{# $
+get% (
+;( )
+set* -
+;- .
+}/ 0
+public 
+string 
+CustomerAddress %
+{& '
+get( +
+;+ ,
+set- 0
+;0 1
+}2 3
+public 
+string  
+CustomerEmailAddress *
+{+ ,
+get- 0
+;0 1
+set2 5
+;5 6
+}7 8
+public!! 
+string!! 
+CustomerPhoneNumber!! )
+{!!* +
+get!!, /
+;!!/ 0
+set!!1 4
+;!!4 5
+}!!6 7
+public## 
+double## 
+InvoiceAmount## #
+{##$ %
+get##& )
+;##) *
+set##+ .
+;##. /
+}##0 1
+public%% 
+int%% 
+Status%% 
+{%% 
+get%% 
+;%%  
+set%%! $
+;%%$ %
+}%%& '
+public'' 
+string'' 
+	CreatedBy'' 
+{''  !
+get''" %
+;''% &
+set''' *
+;''* +
+}'', -
+public++ 
+Invoice++ 
+(++ 
+)++ 
+{,, 
+}-- 
+}.. 
+}22 Ú,
 z/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Management/CreditNote.cs
 	namespace 	
 Modules

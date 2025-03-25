@@ -21,11 +21,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
-
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Authorize(Policy = "Permission:Customers.READ")]
 
 
+    /// <summary>
+    /// Presentation controller to handle all customer management related routes
+    /// </summary>
     public partial class CustomerController : ControllerBase
     {
         readonly ICustomerTypeService _customerTypeService;
@@ -36,10 +38,8 @@ namespace Modules.Estates.Presentation.Controllers.v1
         readonly ISocialMediaService _socialMediaService;
         readonly ITitleService _titleService;
         readonly IOwnershipTypeService _ownershipTypeService;
-
         readonly ICustomerMasterService _customerMasterService;
-
-        private readonly IUserContextService _userContextService;
+        readonly IUserContextService _userContextService;
 
         public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService,
                                   ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService)
@@ -51,7 +51,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
             _residentTypeService = residentTypeService;
             _socialMediaService = socialMediaService;
             _titleService = titleService;
-
             _customerMasterService = customerMasterService;
             _ownershipTypeService = ownershipTypeService;
             _userContextService = userContextService;
@@ -136,6 +135,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _customerTypeService.UpdateCustomerTypeAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing customer type
+        /// </summary>
         [HttpDelete("DeleteCustomerType/{customerTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteCustomerType(int customerTypeId)
@@ -161,6 +163,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _genderService.GetGenderAsync());
         }
 
+        /// <summary>
+        /// Returns an existing gender based on the name
+        /// </summary>
         [HttpGet]
         [Route("GetGender/{value}")]
         private async Task<ActionResult<GenderReadDto>> GetGender(string value)
@@ -168,6 +173,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _genderService.GetGenderAsync(value));
         }
 
+        /// <summary>
+        /// Returns an existing gender based on the id
+        /// </summary>
         [HttpGet]
         [Route("GetGender/{genderId}")]
         public async Task<ActionResult<GenderReadDto>> GetGender(int genderId)
@@ -241,6 +249,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _genderService.UpdateGenderAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing gender based on the id
+        /// </summary>
         [HttpDelete("DeleteGender/{genderId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteGender(int genderId)
@@ -324,6 +335,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _identificationTypeService.UpdateIdentificationTypeAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing identification type based on the id
+        /// </summary>
         [HttpDelete("DeleteIdentificationType/{identificationTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteIdentificationType(int identificationTypeId)
@@ -405,6 +419,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _nationalityService.UpdateNationalityAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing nationality based on the id
+        /// </summary>
         [HttpDelete("DeleteNationality/{nationalityId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteNationality(int nationalityId)
@@ -486,6 +503,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _residentTypeService.UpdateResidentTypeAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing resident type based on the id
+        /// </summary>
         [HttpDelete("DeleteResidentType/{residentTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteResidentType(int residentTypeId)
@@ -545,6 +565,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _socialMediaService.UpdateSocialMediaAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing social media based on the id
+        /// </summary>
         [HttpDelete("DeleteSocialMedia/{socialMediaId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteSocialMedia(int socialMediaId)
@@ -563,6 +586,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _titleService.GetTitleAsync());
         }
 
+        /// <summary>
+        /// Returns details of exisitng titles based on the name
+        /// </summary>
         [HttpGet]
         [Route("GetTitle/{value}")]
         private async Task<ActionResult<TitleReadDto>> GetTitle(string value)
@@ -570,6 +596,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _titleService.GetTitleAsync(value));
         }
 
+        /// <summary>
+        /// Returns details of exisitng titles based on the id
+        /// </summary>
         [HttpGet]
         [Route("GetTitles/{titleId}")]
         public async Task<ActionResult<TitleReadDto>> GetTitleById(int titleId)
@@ -641,6 +670,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _titleService.UpdateTitleAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing title based on the id
+        /// </summary>
         [HttpDelete("DeleteTitle/{titleId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteTitle(int titleId)
@@ -660,6 +692,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _ownershipTypeService.GetOwnershipTypeAsync());
         }
 
+        /// <summary>
+        /// Returns an exisitng ownership type based on the name
+        /// </summary>
         [HttpGet]
         [Route("GetOwnershipTypes/{value}")]
         private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipTypes(string value)
@@ -667,6 +702,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _ownershipTypeService.GetOwnershipTypeAsync(value));
         }
 
+        /// <summary>
+        /// Returns an exisitng ownership type based on the id
+        /// </summary>
         [HttpGet]
         [Route("GetOwnershipType/{ownershipTypeId}")]
         public async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipType(int ownershipTypeId)
@@ -738,6 +776,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _ownershipTypeService.UpdateOwnershipTypeAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing title based on the id
+        /// </summary>
         [HttpDelete("DeleteOwnershipType/{ownershipTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteOwnershipType(int ownershipTypeId)
@@ -746,10 +787,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
 
-        //----marital status from enum
+        /// <summary>
+        /// Returns a list of marital status
+        /// </summary>
         [HttpGet]
         [Route("MaritalStatus")]
-        //[AllowAnonymous]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public IActionResult MaritalStatus()
         {
             var statuses = Enum.GetValues(typeof(MaritalStatusEnum))
@@ -767,7 +810,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(statuses);
         }
 
-        //------------------
 
         /// <summary>
         /// Returns a list of customers

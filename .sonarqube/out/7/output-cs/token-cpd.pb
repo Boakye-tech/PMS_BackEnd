@@ -1,451 +1,470 @@
-i
-g/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Usings.csï
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Interfaces/INotificationSender.cs
-	namespace 	
-Modules
+Ÿ%
+}/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Presentation/OpenAPI/SwaggerDefaultValues.cs
+	namespace 	
+Modules
  
-. 
-Notification 
-. 
-Domain %
-.% &
-
-Interfaces& 0
-{ 
-public 
-	interface 
-INotificationSender %
-{ 
-Task 
-< 
-bool 
-> 
-	SendAsync 
-( 
-Notifications *
-notification+ 7
-)7 8
-;8 9
-Task 
-< 
-string 
-> 
-Send 
-( 
-Notifications '
-notification( 4
-)4 5
-;5 6
-}		 
-}
-
- ·
-É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Interfaces/INotificationRepository.cs
-	namespace 	
-Modules
- 
-. 
-Notification 
-. 
-Domain %
-.% &
-
-Interfaces& 0
-{ 
-public 
-	interface #
-INotificationRepository )
-{ 
-Task 
-AddAsync 
-( 
-Notifications #
-notification_msg$ 4
-)4 5
-;5 6
-Task		 
-<		 
-IEnumerable		 
-<		 
-Notifications		 &
->		& '
->		' ((
-GetPendingNotificationsAsync		) E
-(		E F
-)		F G
-;		G H
-Task
-
- 
-UpdateStatusAsync
-
- 
-(
-
- 
-Guid
-
- #
-notificationId
-
-$ 2
-,
-
-2 3
-NotificationStatus
-
-4 F
-status
-
-G M
-)
-
-M N
-;
-
-N O
-} 
-} è
-w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Enums/NotificationType.cs
-	namespace 	
-Modules
- 
-. 
-Notification 
-. 
-Domain %
-.% &
-Enums& +
-{ 
-public 
-enum 
-NotificationType 
-{ 
-Email 
-= 
-$num 
-, 
-SMS 
-= 
-$num 
-, 
-Push 
-= 
-$num 
-, 
-InApp		 
-=		 
-$num		 
-}
-
- 
-public 
-
-static 
-class -
-!RegistrationStatusEnumDescription 9
-{ 
-public 
-static 
-NotificationType & 
-NotificationTypeEnum' ;
-(; <
-int< ?
-input@ E
-)E F
-{ 	
-if 
-( 
-Enum 
-. 
-	IsDefined 
-( 
-typeof %
-(% &
-NotificationType& 6
-)6 7
-,7 8
-input9 >
-)> ?
-)? @
-{ 
-return 
-( 
-NotificationType (
-)( )
-input) .
-;. /
-} 
-else 
-{ 
-throw 
-new 
-ArgumentException +
-(+ ,
-$str, S
-)S T
-;T U
-} 
-} 	
-} 
-} ›
-y/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Enums/NotificationStatus.cs
-	namespace 	
-Modules
- 
-. 
-Notification 
-. 
-Domain %
-.% &
-Enums& +
-{ 
-public 
-enum 
-NotificationStatus 
-{ 
-Pending 
-= 
-$num 
-, 
-Sent 
-= 
-$num 
-, 
-Failed 
-= 
-$num 
-}		 
-public 
-
-static 
-class -
-!NotificationStatusEnumDescription 9
-{ 
-public 
-static 
-NotificationStatus ("
-NotificationStatusEnum) ?
-(? @
-int@ C
-inputD I
-)I J
-{ 	
-if 
-( 
-Enum 
-. 
-	IsDefined 
-( 
-typeof %
-(% &
-NotificationStatus& 8
-)8 9
-,9 :
-input; @
-)@ A
-)A B
-{ 
-return 
-( 
-NotificationStatus *
-)* +
-input+ 0
-;0 1
-} 
-else 
-{ 
-throw 
-new 
-ArgumentException +
-(+ ,
-$str, T
-)T U
-;U V
-} 
-} 	
-} 
-} è
-w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Entities/Notifications.cs
-	namespace 	
-Modules
- 
-. 
-Notification 
-. 
-Domain %
-.% &
-Entities& .
-{ 
-public 
-class 
-Notifications 
-{ 
-public 
-Guid 
-Id 
-{ 
-get 
-; 
-private %
-set& )
-;) *
-}+ ,
-public 
-string 
-? 
-UserId 
-{ 
-get  #
-;# $
-private% ,
-set- 0
-;0 1
-}2 3
-public		 
-string		 
-?		 
-Subject		 
-{		  
-get		! $
-;		$ %
-private		& -
-set		. 1
-;		1 2
-}		3 4
+. 
+Common 
+. 
+Presentation %
+.% &
+OpenAPI& -
+{		 
 public
 
- 
-string
+ 
+
+class
 
- 
-?
+  
+SwaggerDefaultValues
 
- 
-Message
+ %
+:
 
- 
-{
+& '
+IOperationFilter
 
-  
-get
-
-! $
-;
-
-$ %
-private
-
-& -
-set
-
-. 1
-;
-
-1 2
-}
-
-3 4
-public 
-NotificationType 
-Type  $
-{% &
-get' *
-;* +
-private, 3
-set4 7
-;7 8
-}9 :
-public 
-NotificationStatus !
-Status" (
-{) *
-get+ .
-;. /
-set0 3
-;3 4
-}5 6
-public 
-DateTime 
-	CreatedAt !
-{" #
-get$ '
-;' (
-private) 0
-set1 4
-;4 5
-}6 7
-private 
-Notifications 
-( 
-) 
-{  !
-}" #
-public 
-Notifications 
-( 
-string #
-userId$ *
-,* +
-string, 2
-subject3 :
-,: ;
-string< B
-messageC J
-,J K
-NotificationTypeL \
-type] a
-)a b
-{ 	
-Id 
-= 
-Guid 
-. 
-NewGuid 
-( 
-) 
-;  
-UserId 
-= 
-userId 
-; 
-Subject 
-= 
-subject 
-; 
-Message 
-= 
-message 
-; 
-Type 
-= 
-type 
-; 
-Status 
-= 
-NotificationStatus '
-.' (
-Pending( /
-;/ 0
-	CreatedAt 
-= 
-DateTime  
-.  !
-UtcNow! '
-;' (
-} 	
-public 
-void 
+( 8
+{ 
+public 
+void 
+Apply 
+( 
+OpenApiOperation *
+	operation+ 4
+,4 5"
+OperationFilterContext6 L
+contextM T
+)T U
+{ 	
+var 
+apiDescription 
+=  
+context! (
+.( )
+ApiDescription) 7
+;7 8
+	operation 
+. 
 
-MarkAsSent 
-( 
-)  
-=>! #
-Status$ *
-=+ ,
-NotificationStatus- ?
-.? @
-Sent@ D
-;D E
-} 
-} 
+Deprecated  
+|=! #
+apiDescription$ 2
+.2 3
+IsDeprecated3 ?
+(? @
+)@ A
+;A B
+foreach 
+( 
+var 
+responseType %
+in& (
+context) 0
+.0 1
+ApiDescription1 ?
+.? @"
+SupportedResponseTypes@ V
+)V W
+{ 
+var 
+responseKey 
+=  !
+responseType" .
+.. /
+IsDefaultResponse/ @
+?A B
+$strC L
+:M N
+responseTypeO [
+.[ \
+
+StatusCode\ f
+.f g
+ToStringg o
+(o p
+)p q
+;q r
+var 
+response 
+= 
+	operation (
+.( )
+	Responses) 2
+[2 3
+responseKey3 >
+]> ?
+;? @
+foreach 
+( 
+var 
+contentType (
+in) +
+response, 4
+.4 5
+Content5 <
+.< =
+Keys= A
+)A B
+{ 
+if 
+( 
+responseType $
+.$ %
+ApiResponseFormats% 7
+.7 8
+All8 ;
+(; <
+x< =
+=>> @
+xA B
+.B C
+	MediaTypeC L
+!=M O
+contentTypeP [
+)[ \
+)\ ]
+{ 
+response  
+.  !
+Content! (
+.( )
+Remove) /
+(/ 0
+contentType0 ;
+); <
+;< =
+} 
+} 
+} 
+if 
+( 
+	operation 
+. 
+
+Parameters $
+==% '
+null( ,
+), -
+{   
+return!! 
+;!! 
+}"" 
+foreach$$ 
+($$ 
+var$$ 
+	parameter$$ "
+in$$# %
+	operation$$& /
+.$$/ 0
+
+Parameters$$0 :
+)$$: ;
+{%% 
+var&& 
+description&& 
+=&&  !
+apiDescription&&" 0
+.&&0 1!
+ParameterDescriptions&&1 F
+.&&F G
+First&&G L
+(&&L M
+p&&M N
+=>&&O Q
+p&&R S
+.&&S T
+Name&&T X
+==&&Y [
+	parameter&&\ e
+.&&e f
+Name&&f j
+)&&j k
+;&&k l
+	parameter(( 
+.(( 
+Description(( %
+??=((& )
+description((* 5
+.((5 6
+ModelMetadata((6 C
+?((C D
+.((D E
+Description((E P
+;((P Q
+if** 
+(** 
+	parameter** 
+.** 
+Schema** $
+.**$ %
+Default**% ,
+==**- /
+null**0 4
+&&**5 7
+description++  
+.++  !
+DefaultValue++! -
+!=++. 0
+null++1 5
+&&++6 8
+description,,  
+.,,  !
+DefaultValue,,! -
+is,,. 0
+not,,1 4
+DBNull,,5 ;
+&&,,< >
+description--  
+.--  !
+ModelMetadata--! .
+is--/ 1
+ModelMetadata--2 ?
+modelMetadata--@ M
+)--M N
+{.. 
+var00 
+json00 
+=00 
+JsonSerializer00 -
+.00- .
+	Serialize00. 7
+(007 8
+description008 C
+.00C D
+DefaultValue00D P
+,00P Q
+modelMetadata00R _
+.00_ `
+	ModelType00` i
+)00i j
+;00j k
+	parameter11 
+.11 
+Schema11 $
+.11$ %
+Default11% ,
+=11- .
+OpenApiAnyFactory11/ @
+.11@ A
+CreateFromJson11A O
+(11O P
+json11P T
+)11T U
+;11U V
+}22 
+	parameter44 
+.44 
+Required44 "
+|=44# %
+description44& 1
+.441 2
+
+IsRequired442 <
+;44< =
+}55 
+}66 	
+}77 
+}88 Æ
+Ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Common.Presentation/OpenAPI/SwaggerConfigureOptions.cs
+	namespace
+
+ 	
+Modules
+
+
+ 
+.
+
+ 
+Common
+
+ 
+.
+
+ 
+Presentation
+
+ %
+.
+
+% &
+OpenAPI
+
+& -
+{ 
+public 
+
+class #
+SwaggerConfigureOptions (
+:) *
+IConfigureOptions+ <
+<< =
+SwaggerGenOptions= N
+>N O
+{ 
+private 
+readonly *
+IApiVersionDescriptionProvider 7
+	_provider8 A
+;A B
+public #
+SwaggerConfigureOptions &
+(& '*
+IApiVersionDescriptionProvider' E
+providerF N
+)N O
+=>P R
+	_providerS \
+=] ^
+provider_ g
+;g h
+public 
+void 
+	Configure 
+( 
+SwaggerGenOptions /
+options0 7
+)7 8
+{ 	
+foreach 
+( 
+var 
+desc 
+in  
+	_provider! *
+.* +"
+ApiVersionDescriptions+ A
+)A B
+{ 
+options 
+. 
+
+SwaggerDoc "
+(" #
+desc# '
+.' (
+	GroupName( 1
+,1 2#
+CreateInfoForApiVersion3 J
+(J K
+descK O
+)O P
+)P Q
+;Q R
+} 
+} 	
+private 
+static 
+OpenApiInfo "#
+CreateInfoForApiVersion# :
+(: ;!
+ApiVersionDescription; P
+descriptionQ \
+)\ ]
+{ 	
+var 
+info 
+= 
+new 
+OpenApiInfo &
+{ 
+Title 
+= 
+$str *
+,* +
+Version 
+= 
+description %
+.% &
+
+ApiVersion& 0
+.0 1
+ToString1 9
+(9 :
+): ;
+,; <
+Description 
+= 
+$str X
+,X Y
+Contact   
+=   
+new   
+OpenApiContact   ,
+{  - .
+Name  / 3
+=  4 5
+$str  6 S
+,  S T
+Email  U Z
+=  [ \
+$str	  ] É
+}
+  Ñ Ö
+,
+  Ö Ü
+License!! 
+=!! 
+new!! 
+OpenApiLicense!! ,
+{!!- .
+Name!!/ 3
+=!!4 5
+$str!!6 T
+}!!U V
+,!!V W
+
+Extensions## 
+=## 
+new##  
+
+Dictionary##! +
+<##+ ,
+string##, 2
+,##2 3
+IOpenApiExtension##4 E
+>##E F
+{$$ 
+{%% 
+$str%% %
+,%%% &
+new%%' *
+OpenApiObject%%+ 8
+{&&  !
+{''$ %
+$str''% *
+,''* +
+new'', /
+OpenApiString''0 =
+(''= >
+$str	''> ô
+)
+''ô ö
+}
+''ö õ
+,
+''õ ú
+{(($ %
+$str((& /
+,((/ 0
+new((1 4
+OpenApiString((5 B
+(((B C
+$str	((C û
+)
+((û ü
+}
+((ü †
+}))  !
+}** 
+}++ 
+},, 
+;,, 
+return.. 
+info.. 
+;.. 
+}// 	
+}22 
+}33 
