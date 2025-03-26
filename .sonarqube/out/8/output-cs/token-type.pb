@@ -1,8 +1,4 @@
-ý
-w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Enums/NotificationType.cs
- 
- 	      		  
-   9   &< ?   %& 6  (    +, S—
+—
 /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Interfaces/INotificationSender.cs
  
  	   %   *   '
@@ -18,7 +14,11 @@ g/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notif
 
  #
 
-4 Fñ
+4 Fý
+w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Enums/NotificationType.cs
+ 
+ 	      		  
+   9   &< ?   %& 6  (    +, Sñ
 y/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Enums/NotificationStatus.cs
  
  	       

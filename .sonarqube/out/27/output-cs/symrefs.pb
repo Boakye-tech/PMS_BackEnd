@@ -68,7 +68,18 @@ i/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finan
 && ((* 5++  ,,  --  008 C44& 1
 &&M N&&R S
 --@ M00R _
-00 11P Tª
+00 11P T™
+Å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/OpenAPI/SwaggerConfigureOptions.cs
+
+ (
+8 AS \! *
+F N_ g
+
+ 
+0 7 
+# :3 J
+Q \ %
+ -- ª
 r/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/ModuleExtensions.cs
 
  (
@@ -89,18 +100,7 @@ r/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finan
 @ K  (
 W ` &I R "
 	t ÖH Y
- . <8 F™
-Å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/OpenAPI/SwaggerConfigureOptions.cs
-
- (
-8 AS \! *
-F N_ g
-
- 
-0 7 
-# :3 J
-Q \ %
- -- ﬁ
+ . <8 Fﬁ
 Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/Controllers/v2/FinanceController.cs
 
  "(

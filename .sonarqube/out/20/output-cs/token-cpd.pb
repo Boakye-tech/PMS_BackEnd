@@ -1,4 +1,237 @@
-n
+ï"
+‰/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/UnitOfWork.cs
+	namespace 	
+Modules
+ 
+. 
+	Customers 
+. 
+Infrastructure *
+.* +
+Persistence+ 6
+.6 7
+Repositories7 C
+{ 
+public 
+class 
+
+UnitOfWork 
+: 
+IUnitOfWork &
+{ 
+private 
+bool 
+disposedValue "
+;" #
+private		 
+readonly		  
+ApplicationDBContext		 -
+
+_dbContext		. 8
+;		8 9
+public 
+
+UnitOfWork 
+(  
+ApplicationDBContext .
+	dbContext/ 8
+)8 9
+{ 
+
+_dbContext 
+= 
+	dbContext "
+;" #
+CustomerDetails 
+= 
+new !%
+CustomerDetailsRepository" ;
+(; <
+
+_dbContext< F
+)F G
+;G H
+PropertyDetails 
+= 
+new !%
+PropertyDetailsRepository" ;
+(; <
+
+_dbContext< F
+)F G
+;G H
+CustomerInvoice 
+= 
+new !%
+CustomerInvoiceRepository" ;
+(; <
+
+_dbContext< F
+)F G
+;G H 
+CustomerInvoiceItems  
+=! "
+new# &*
+CustomerInvoiceItemsRepository' E
+(E F
+
+_dbContextF P
+)P Q
+;Q R
+CustomerPayment 
+= 
+new !&
+CustomerPaymentsRepository" <
+(< =
+
+_dbContext= G
+)G H
+;H I
+CustomerTransaction 
+=  !
+new" %*
+CustomerTransactionsRepository& D
+(D E
+
+_dbContextE O
+)O P
+;P Q
+} 	
+public &
+ICustomerDetailsRepository )
+CustomerDetails* 9
+{: ;
+get< ?
+;? @
+privateA H
+setI L
+;L M
+}N O
+public &
+ICustomerInvoiceRepository )
+CustomerInvoice* 9
+{: ;
+get< ?
+;? @
+privateA H
+setI L
+;L M
+}N O
+public +
+ICustomerInvoiceItemsRepository . 
+CustomerInvoiceItems/ C
+{D E
+getF I
+;I J
+privateK R
+setS V
+;V W
+}X Y
+public '
+ICustomerPaymentsRepository *
+CustomerPayment+ :
+{; <
+get= @
+;@ A
+privateB I
+setJ M
+;M N
+}O P
+public   +
+ICustomerTransactionsRepository   .
+CustomerTransaction  / B
+{  C D
+get  E H
+;  H I
+private  J Q
+set  R U
+;  U V
+}  W X
+public"" &
+IPropertyDetailsRepository"" )
+PropertyDetails""* 9
+{"": ;
+get""< ?
+;""? @
+private""A H
+set""I L
+;""L M
+}""N O
+public%% 
+Task%% 
+<%% 
+int%% 
+>%% 
+Complete%% !
+(%%! "
+)%%" #
+{&& 	
+return'' 
+
+_dbContext'' 
+.'' 
+SaveChangesAsync'' .
+(''. /
+)''/ 0
+;''0 1
+}(( 	
+	protected** 
+virtual** 
+void** 
+Dispose** &
+(**& '
+bool**' +
+	disposing**, 5
+)**5 6
+{++ 	
+if,, 
+(,, 
+!,, 
+disposedValue,, 
+),, 
+{-- 
+if.. 
+(.. 
+	disposing.. 
+).. 
+{// 
+
+_dbContext11 
+.11 
+Dispose11 &
+(11& '
+)11' (
+;11( )
+}22 
+disposedValue66 
+=66 
+true66  $
+;66$ %
+}77 
+}88 	
+public:: 
+void:: 
+Dispose:: 
+(:: 
+):: 
+{;; 	
+Dispose== 
+(== 
+	disposing== 
+:== 
+true== #
+)==# $
+;==$ %
+GC>> 
+.>> 
+SuppressFinalize>> 
+(>>  
+this>>  $
+)>>$ %
+;>>% &
+}?? 	
+}@@ 
+}AA n
 l/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Usings.csÂ*
 …/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Services/Azure/AzureBlobService.cs
 	namespace 	
@@ -283,240 +516,7 @@ blobClient44  *
 }>> 
 }AA 	
 }DD 
-}EE ï"
-‰/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/UnitOfWork.cs
-	namespace 	
-Modules
- 
-. 
-	Customers 
-. 
-Infrastructure *
-.* +
-Persistence+ 6
-.6 7
-Repositories7 C
-{ 
-public 
-class 
-
-UnitOfWork 
-: 
-IUnitOfWork &
-{ 
-private 
-bool 
-disposedValue "
-;" #
-private		 
-readonly		  
-ApplicationDBContext		 -
-
-_dbContext		. 8
-;		8 9
-public 
-
-UnitOfWork 
-(  
-ApplicationDBContext .
-	dbContext/ 8
-)8 9
-{ 
-
-_dbContext 
-= 
-	dbContext "
-;" #
-CustomerDetails 
-= 
-new !%
-CustomerDetailsRepository" ;
-(; <
-
-_dbContext< F
-)F G
-;G H
-PropertyDetails 
-= 
-new !%
-PropertyDetailsRepository" ;
-(; <
-
-_dbContext< F
-)F G
-;G H
-CustomerInvoice 
-= 
-new !%
-CustomerInvoiceRepository" ;
-(; <
-
-_dbContext< F
-)F G
-;G H 
-CustomerInvoiceItems  
-=! "
-new# &*
-CustomerInvoiceItemsRepository' E
-(E F
-
-_dbContextF P
-)P Q
-;Q R
-CustomerPayment 
-= 
-new !&
-CustomerPaymentsRepository" <
-(< =
-
-_dbContext= G
-)G H
-;H I
-CustomerTransaction 
-=  !
-new" %*
-CustomerTransactionsRepository& D
-(D E
-
-_dbContextE O
-)O P
-;P Q
-} 	
-public &
-ICustomerDetailsRepository )
-CustomerDetails* 9
-{: ;
-get< ?
-;? @
-privateA H
-setI L
-;L M
-}N O
-public &
-ICustomerInvoiceRepository )
-CustomerInvoice* 9
-{: ;
-get< ?
-;? @
-privateA H
-setI L
-;L M
-}N O
-public +
-ICustomerInvoiceItemsRepository . 
-CustomerInvoiceItems/ C
-{D E
-getF I
-;I J
-privateK R
-setS V
-;V W
-}X Y
-public '
-ICustomerPaymentsRepository *
-CustomerPayment+ :
-{; <
-get= @
-;@ A
-privateB I
-setJ M
-;M N
-}O P
-public   +
-ICustomerTransactionsRepository   .
-CustomerTransaction  / B
-{  C D
-get  E H
-;  H I
-private  J Q
-set  R U
-;  U V
-}  W X
-public"" &
-IPropertyDetailsRepository"" )
-PropertyDetails""* 9
-{"": ;
-get""< ?
-;""? @
-private""A H
-set""I L
-;""L M
-}""N O
-public%% 
-Task%% 
-<%% 
-int%% 
->%% 
-Complete%% !
-(%%! "
-)%%" #
-{&& 	
-return'' 
-
-_dbContext'' 
-.'' 
-SaveChangesAsync'' .
-(''. /
-)''/ 0
-;''0 1
-}(( 	
-	protected** 
-virtual** 
-void** 
-Dispose** &
-(**& '
-bool**' +
-	disposing**, 5
-)**5 6
-{++ 	
-if,, 
-(,, 
-!,, 
-disposedValue,, 
-),, 
-{-- 
-if.. 
-(.. 
-	disposing.. 
-).. 
-{// 
-
-_dbContext11 
-.11 
-Dispose11 &
-(11& '
-)11' (
-;11( )
-}22 
-disposedValue66 
-=66 
-true66  $
-;66$ %
-}77 
-}88 	
-public:: 
-void:: 
-Dispose:: 
-(:: 
-):: 
-{;; 	
-Dispose== 
-(== 
-	disposing== 
-:== 
-true== #
-)==# $
-;==$ %
-GC>> 
-.>> 
-SuppressFinalize>> 
-(>>  
-this>>  $
-)>>$ %
-;>>% &
-}?? 	
-}@@ 
-}AA œE
+}EE œE
 ‰/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Repository.cs
 	namespace 	
 Modules
@@ -1194,50 +1194,6 @@ Repository+ 5
 }		 
 }
 
- º
-¡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/CustomerInvoiceRepository.cs
-	namespace 	
-Modules
- 
-. 
-	Customers 
-. 
-Infrastructure *
-.* +
-Persistence+ 6
-.6 7
-Repositories7 C
-.C D
-EntitiesD L
-{ 
-public 
-class %
-CustomerInvoiceRepository '
-:( )
-
-Repository* 4
-<4 5
-CustomerInvoice5 D
->D E
-,E F&
-ICustomerInvoiceRepositoryG a
-{ 
-public %
-CustomerInvoiceRepository	 "
-(" # 
-ApplicationDBContext# 7
-	dbContext8 A
-)A B
-:C D
-baseE I
-(I J
-	dbContextJ S
-)S T
-{ 	
-} 
-}		 
-}
-
  Ó
 ¦/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/CustomerInvoiceItemsRepository.cs
 	namespace 	
@@ -1277,6 +1233,50 @@ Repository/ 9
 (N O
 	dbContextO X
 )X Y
+{ 	
+} 
+}		 
+}
+
+ º
+¡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/CustomerInvoiceRepository.cs
+	namespace 	
+Modules
+ 
+. 
+	Customers 
+. 
+Infrastructure *
+.* +
+Persistence+ 6
+.6 7
+Repositories7 C
+.C D
+EntitiesD L
+{ 
+public 
+class %
+CustomerInvoiceRepository '
+:( )
+
+Repository* 4
+<4 5
+CustomerInvoice5 D
+>D E
+,E F&
+ICustomerInvoiceRepositoryG a
+{ 
+public %
+CustomerInvoiceRepository	 "
+(" # 
+ApplicationDBContext# 7
+	dbContext8 A
+)A B
+:C D
+baseE I
+(I J
+	dbContextJ S
+)S T
 { 	
 } 
 }		 

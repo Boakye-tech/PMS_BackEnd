@@ -1,0 +1,13 @@
+ª
+Ø/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/Modules.Finance.Presentation.MvcApplicationPartsAssemblyInfo.csutf-8®
+ú/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/Modules.Finance.Presentation.AssemblyInfo.csutf-8™
+û/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.csutf-8™
+û/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/obj/Debug/net8.0/Modules.Finance.Presentation.GlobalUsings.g.csutf-8q
+h/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/Usings.csutf-8r
+i/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/Program.csutf-8á
+~/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/OpenAPI/SwaggerDefaultValues.csutf-8ã
+Å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/OpenAPI/SwaggerConfigureOptions.csutf-8{
+r/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/ModuleExtensions.csutf-8å
+Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/Controllers/v2/FinanceController.csutf-8ç
+É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/Filters/HttpGlobalExceptionFilter.csutf-8å
+Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Presentation/Controllers/v1/FinanceController.csutf-8

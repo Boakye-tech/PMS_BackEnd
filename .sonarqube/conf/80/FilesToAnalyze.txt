@@ -1,0 +1,12 @@
+﻿/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Extensions/ServiceCollectionExtensions.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/ApplicationDBContext.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/CustomerDetailsRepository.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/CustomerInvoiceItemsRepository.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/CustomerInvoiceRepository.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/CustomerPaymentsRepository.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/CustomerTransactionsRepository.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Entities/PropertyDetailsRepository.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/Repository.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Persistence/Repositories/UnitOfWork.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Services/Azure/AzureBlobService.cs
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Infrastructure/Usings.cs

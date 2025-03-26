@@ -8,7 +8,7 @@
         "version": "4.10.0.0",
         "fileVersion": "4.10.0-3.24216.12 (3af0081a)",
         "semanticVersion": "4.10.0",
-        "language": "en"
+        "language": "en-GH"
       },
       "results": [
         {
@@ -684,16 +684,16 @@
         {
           "ruleId": "S107",
           "level": "warning",
-          "message": "Constructor has 19 parameters, which is greater than the 7 authorized.",
+          "message": "Constructor has 18 parameters, which is greater than the 7 authorized.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerDetails.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/PropertyDetails.cs",
                 "region": {
-                  "startLine": 73,
+                  "startLine": 145,
                   "startColumn": 31,
-                  "endLine": 74,
-                  "endColumn": 158
+                  "endLine": 146,
+                  "endColumn": 147
                 }
               }
             }
@@ -705,116 +705,16 @@
         {
           "ruleId": "S107",
           "level": "warning",
-          "message": "Constructor has 16 parameters, which is greater than the 7 authorized.",
+          "message": "Constructor has 12 parameters, which is greater than the 7 authorized.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerInvoice.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerTransactions.cs",
                 "region": {
-                  "startLine": 59,
-                  "startColumn": 31,
+                  "startLine": 60,
+                  "startColumn": 36,
                   "endLine": 60,
-                  "endColumn": 142
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S107",
-          "level": "warning",
-          "message": "Method has 19 parameters, which is greater than the 7 authorized.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerDetails.cs",
-                "region": {
-                  "startLine": 79,
-                  "startColumn": 57,
-                  "endLine": 80,
-                  "endColumn": 158
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S107",
-          "level": "warning",
-          "message": "Constructor has 24 parameters, which is greater than the 7 authorized.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerPayments.cs",
-                "region": {
-                  "startLine": 86,
-                  "startColumn": 32,
-                  "endLine": 87,
-                  "endColumn": 282
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S1764",
-          "level": "warning",
-          "message": "Correct one of the identical expressions on both sides of operator '||'.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerInvoiceItems.cs",
-                "region": {
-                  "startLine": 38,
-                  "startColumn": 61,
-                  "endLine": 38,
-                  "endColumn": 101
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerInvoiceItems.cs",
-                "region": {
-                  "startLine": 38,
-                  "startColumn": 17,
-                  "endLine": 38,
-                  "endColumn": 57
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1,
-            "customProperties": {
-              "0": null
-            }
-          }
-        },
-        {
-          "ruleId": "S107",
-          "level": "warning",
-          "message": "Method has 16 parameters, which is greater than the 7 authorized.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerInvoice.cs",
-                "region": {
-                  "startLine": 65,
-                  "startColumn": 56,
-                  "endLine": 66,
-                  "endColumn": 196
+                  "endColumn": 296
                 }
               }
             }
@@ -1041,18 +941,97 @@
           }
         },
         {
+          "ruleId": "S1764",
+          "level": "warning",
+          "message": "Correct one of the identical expressions on both sides of operator '||'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerInvoiceItems.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 61,
+                  "endLine": 38,
+                  "endColumn": 101
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerInvoiceItems.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 17,
+                  "endLine": 38,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null
+            }
+          }
+        },
+        {
           "ruleId": "S107",
           "level": "warning",
-          "message": "Constructor has 18 parameters, which is greater than the 7 authorized.",
+          "message": "Constructor has 24 parameters, which is greater than the 7 authorized.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerPayments.cs",
+                "region": {
+                  "startLine": 86,
+                  "startColumn": 32,
+                  "endLine": 87,
+                  "endColumn": 282
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S107",
+          "level": "warning",
+          "message": "Constructor has 16 parameters, which is greater than the 7 authorized.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerInvoice.cs",
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 31,
+                  "endLine": 60,
+                  "endColumn": 142
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S107",
+          "level": "warning",
+          "message": "Method has 22 parameters, which is greater than the 7 authorized.",
           "locations": [
             {
               "resultFile": {
                 "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/PropertyDetails.cs",
                 "region": {
-                  "startLine": 145,
-                  "startColumn": 31,
-                  "endLine": 146,
-                  "endColumn": 147
+                  "startLine": 151,
+                  "startColumn": 57,
+                  "endLine": 153,
+                  "endColumn": 84
                 }
               }
             }
@@ -1085,27 +1064,6 @@
         {
           "ruleId": "S107",
           "level": "warning",
-          "message": "Constructor has 12 parameters, which is greater than the 7 authorized.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerTransactions.cs",
-                "region": {
-                  "startLine": 60,
-                  "startColumn": 36,
-                  "endLine": 60,
-                  "endColumn": 296
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S107",
-          "level": "warning",
           "message": "Method has 12 parameters, which is greater than the 7 authorized.",
           "locations": [
             {
@@ -1127,16 +1085,58 @@
         {
           "ruleId": "S107",
           "level": "warning",
-          "message": "Method has 22 parameters, which is greater than the 7 authorized.",
+          "message": "Method has 16 parameters, which is greater than the 7 authorized.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/PropertyDetails.cs",
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerInvoice.cs",
                 "region": {
-                  "startLine": 151,
+                  "startLine": 65,
+                  "startColumn": 56,
+                  "endLine": 66,
+                  "endColumn": 196
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S107",
+          "level": "warning",
+          "message": "Constructor has 19 parameters, which is greater than the 7 authorized.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerDetails.cs",
+                "region": {
+                  "startLine": 73,
+                  "startColumn": 31,
+                  "endLine": 74,
+                  "endColumn": 158
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S107",
+          "level": "warning",
+          "message": "Method has 19 parameters, which is greater than the 7 authorized.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerDetails.cs",
+                "region": {
+                  "startLine": 79,
                   "startColumn": 57,
-                  "endLine": 153,
-                  "endColumn": 84
+                  "endLine": 80,
+                  "endColumn": 158
                 }
               }
             }

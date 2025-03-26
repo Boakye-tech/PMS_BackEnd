@@ -1,4 +1,5 @@
-÷
+f
+d/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Usings.cs÷
 t/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Interfaces/IUnitOfWork.cs
 
  
@@ -17,86 +18,7 @@ t/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Custo
 
 # 2
 
- 
-q/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Enums/InvoiceStatus.cs
-
- f
-d/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Usings.cs®
-{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerTransactions.cs
- "@@ *
- (xx %
- ,yy 
- -zz 
- +{{ 
-! 0|| 
- &}} 
-   #~~ 
-## ( 
-&& %
-ÄÄ 
-(( '
-ÅÅ 
-,, .
-ÇÇ 
-00 *
-ÉÉ 
-
-<<( =
-
-<<F S
-
-<<\ j
-
-<<s 
-
-<<ä ô
-
-<<£ ≤
-
-<<º »
-
-<<— ⁄
-
-<<„ È
-
-<<Ô ˙
-
-<<É í
-
-<<õ ¶
-
-@@+ A
-@@F [xx( =(
-@@d qBB* 7HH* 7yy  -)
-	@@z àBBV dMM* 8zz! /,
-
-@@ë ù
-BBÉ èRR* 6{{ + 
-
-@@® ∑\\ ||" 1
-
-@@¡ –}}" 1
-
-@@⁄ Ê~~ +,
-
-@@Ô ¯
-BBÜ èWW* 3 %.
-
-@@Å á
-BBî öaa 
-ÄÄ .
-
-@@ç ò
-BB¢ ≠ff 
-ÅÅ ).
-
-@@° ∞
-BBÆ Ωkk* 9
-ÇÇ" 1.
-
-@@π ƒ
-BB‹ Ápp* 5
-ÉÉ )œ
+ œ
 t/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Interfaces/IRepository.cs
 
  ™
@@ -172,7 +94,10 @@ t/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Custo
  %Å
 s/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Enums/StatementPeriod.cs
 
- ©
+ 
+q/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Enums/InvoiceStatus.cs
+
+ ©
 v/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/PropertyDetails.cs
   
 óó %
@@ -365,7 +290,82 @@ v/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Custo
 ÁÁ %
 
 ôô> J
-‚‚ +ˆ
+‚‚ +®
+{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerTransactions.cs
+ "@@ *
+ (xx %
+ ,yy 
+ -zz 
+ +{{ 
+! 0|| 
+ &}} 
+   #~~ 
+## ( 
+&& %
+ÄÄ 
+(( '
+ÅÅ 
+,, .
+ÇÇ 
+00 *
+ÉÉ 
+
+<<( =
+
+<<F S
+
+<<\ j
+
+<<s 
+
+<<ä ô
+
+<<£ ≤
+
+<<º »
+
+<<— ⁄
+
+<<„ È
+
+<<Ô ˙
+
+<<É í
+
+<<õ ¶
+
+@@+ A
+@@F [xx( =(
+@@d qBB* 7HH* 7yy  -)
+	@@z àBBV dMM* 8zz! /,
+
+@@ë ù
+BBÉ èRR* 6{{ + 
+
+@@® ∑\\ ||" 1
+
+@@¡ –}}" 1
+
+@@⁄ Ê~~ +,
+
+@@Ô ¯
+BBÜ èWW* 3 %.
+
+@@Å á
+BBî öaa 
+ÄÄ .
+
+@@ç ò
+BB¢ ≠ff 
+ÅÅ ).
+
+@@° ∞
+BBÆ Ωkk* 9
+ÇÇ" 1.
+
+@@π ƒ
+BB‹ Ápp* 5
+ÉÉ )ˆ
 w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Entities/CustomerPayments.cs
  [[ &
  $

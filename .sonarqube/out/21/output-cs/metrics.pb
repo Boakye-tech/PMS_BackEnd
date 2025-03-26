@@ -1,105 +1,22 @@
-«
-–/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Registration/CustomerMasterRepository.cs 8r
-	
-
-j/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Usings.csr	
-¥
-y/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/UnitOfWork/UnitOfWork.cs# :8<j
-syˆŒ”rf	
-!#%')+-/13579;<>@BEGIKMOQSUWY[]_acegikmoqtuwz}~€‚ƒ„…†‡‰Š’“•–—˜x‚)!#%')+-/13579;<>@„†‰•–×
-{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Repository.cs 8jr1	
- !"#%&()*,-/01235689;=?ACDEx‚!%*,-/12568;=?AC«
-–/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Registration/PropertyMasterRepository.cs 8r
-	
-¤
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Management/StopDebitRepository.cs 8r
-	
-´
-Ÿ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/PropertyTypeRepository.cs 8r
-	
-¶
-¡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/PropertyHeightRepository.cs 8r
-	
-°
-›/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/PlotSizeRepository.cs 8r
-	
-³
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Customer/SocialMediaRepository.cs 8r
-	
-­
-›/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/LocalityRepository.cs 8r°
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/LandUseTypeRepository.cs 8r¬
-š/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/LandUseRepository.cs 8r¶
-¡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/FloorNumberingRepository.cs 8r
-	
-²
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/FacilitiesRepository.cs 8r
-	
-±
-œ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/BlockUnitRepository.cs 8r
-	
-±
-œ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/BlockTypeRepository.cs 8r
-	
-²
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/BlockSidesRepository.cs 8r
-	
-³
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/BlockNumberRepository.cs 8r
-	
-´
-¡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/ApartmentTypesRepository.cs 8r	³
-¡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/AllocationTypeRepository.cs 8r´
-Ÿ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/ActivityTypeRepository.cs 8r
-	
-°
-›/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Property/ActivityRepository.cs 8r
-	
-­
-˜/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Customer/TitleRepository.cs 8r
-	
-´
-Ÿ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Customer/ResidentTypeRepository.cs 8r
-	
-µ
- /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Customer/OwnershipTypeRepository.cs 8r
-	
-³
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Customer/NationalityRepository.cs 8r
-	
-º
-¥/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Customer/IdentificationTypeRepository.cs 8r
-	
-®
-™/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Customer/GenderRepository.cs 8r
-	
-±
-Ÿ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Repositories/Entities/Setup/Customer/CustomerTypeRepository.cs 8rÛ
-“/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Migrations/20250313154632_Modify_CustomerMaster.cs 8j%r-	
- !"#&'()*+-./02345678‚(-2â
-•/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Migrations/20250310190204_Modified_CustomerMaster.cs 8j!r2	
-"#$%&'()*+,-/0123456789:;‚$*/5Î
-”/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Migrations/20250310140046_ModifiedCustomerMaster.cs 8j
-r#	 !"#$%&'()*‚ï
-’/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Migrations/20250310133202_ModifyCustomerMaster.csi 8j
-¸r´	 !"#$%&()*+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQSTUVWXYZ[\]^_`abcdefghjklmnopqrstuvwxyz{|~€‚ƒ„…†‡ˆ‰Š‹Œ’“”•–—˜™š›œ ¡¢£¤¥¦§¨©ª«¬­®¯°±²´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ€‚ƒ„…†‡ˆ‰‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÛÜİŞßàáâãäåæçèéêëìíïğñòóôõö÷øùúûüışÿ€‚„…†‡ˆ‰Š‹Œ‘’“”•–—˜š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ÙÚÛÜİŞßàáâãäåæçèéêëíîïğñòóôõö÷øùúûüışÿ‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÖ×ØÙÚÛÜİŞßàáâãäåæçèêëìíîïğñòóôõö÷øùúûüşÿ€‚ƒ„…†‡ˆ‰Š‹Œ’“”•–—˜™šœŸ ¡¢£¤¥¦§©ª«¬­®¯°±²³´µ¶¸¹º»¼½¾¿ÀÁÂÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãåæçèéêëìíîïğñòóôõö÷øùúûüışÿ€‚ƒ„…‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖ×ØÙÚÜİŞßàáãäåæçèêëìíîïñòóôõöøùúûüıÿ€‚ƒ„†‡ˆ‰Š‹‘’”•–—˜™›œŸ ¢£¤¥¦§©ª«¬­®°±²³´µ¶¹º»¼½¿ÀÁÃÄÅÇÈÉËÌÍÏĞÑÓÔÕ×ØÙÛÜİßàáãäåçèéëìíïğñóôõ÷øùûüıÿ€ƒ„…‡ˆ‰‹Œ‘“”•—˜™›œŸ ¡£¤¥¦§¨‚‘	 !#%(+-/012345679;>ACEFGHIJKLNPSVXZ[\]^_`abcegjmoqrstuvwy{~ƒ…†‡ˆ‰Š‹’•—™› £¥§¨©ª«¬­¯±´·¹»¼½¾¿ÀÁÃÅÈËÍÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ€‚ƒ„†ˆ‹’“”•–—˜šœŸ¢¤¦§¨©ª«¬®°³¶¸º»¼½¾¿ÀÂÄÇÊÌÎÏĞÑÒÓÔÖØÛŞàâãäåæçèêìïòôö÷øùúûüıÿ„‡‰‹Œ‘’“•—šŸ¡¢£¤¥¦§¨©ª¬®±´¶¸¹º»¼½¾ÀÂÅÈÊÌÍÎÏĞÑÒÔÖÙÜŞàáâãäåæèêíğòôõö÷øùúüş„†ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»½¿ÂÅÇÉÊËÌÍÎÏÑÓÖÙÛİŞßàáâãåçêíïñòóôõö÷ùûşƒ…†‡ˆ‰Š‹’•—˜™œŸ¡¢£¤¥¦©¬®¯°±²³´µ¸»½¾¿ÀÁÄÇÉÊËÌÍÎÑÔÖ×ØÙÚÛÜİŞßàáâåèêëìíîïğñòóôõö÷øùúûüışÿ€‚ƒ„‡ŠŒ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾ÁÄÆÇÈÉÊËÌÍÎÑÔÖ×ØÙÜãêîñøÿ†”˜›Ÿ¢©°»¿ÃÇËÏÓ×Ûßãçëïó÷ûÿƒ‡‹“—›Ÿ£ª
-Š/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Extensions/ServiceCollectionExtensions.cs 8r	
-‚±
-‹/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/ResidentTypeConfiguration.cs 8r	‚°
-‹/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/PropertyTypeConfiguration.cs 8r
-‚
-Ö
-‡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/LocalityConfiguration.cs 8r= !"#$%&'()*+,-./0123456789:;<=?@A‚Á
-Š/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/LandUseTypeConfiguration.cs 8r% !"#$%'()+-.‚Â
-†/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/LandUseConfiguration.cs 8jr
- !"#$%&'()*+,-.‚
-³
-‹/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/CustomerTypeConfiguration.cs 8r	‚®
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/ApartmentTypesConfiguration.cs 8r	‚	±
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/AllocationTypeConfiguration.cs 8r
-‚
-­
-‹/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/ActivityTypeConfiguration.cs 8r‚¦
-‡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/Configuration/ActivityConfiguration.cs 8r‚Ó
-x/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Infrastructure/ApplicationDbContext.cs <8<j9FHIJKLMNPQr5	
- !"#$%&')*,-/1457:<=>@ABDSUVWXZ‚7:<=@ADW
+‚
+f/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/Usings.csr
+Õ
+g/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/Program.csR8$j
+(,2AQgqrsyrˆ	
+ "#$%&)-./0135678:<=>?@BCDEFGIJKLMNOPRSVXZ[\]^_`abcdehijklmouwz{|}~€‚…†‡‰Š‹Œ’”•–˜šœx ‚L "$)-/367<>BDEIKLNVXZ[]^_acdhijlmuwz|~€…‡‰‹Œ’”•–˜šœÓ
+|/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/OpenAPI/SwaggerDefaultValues.cs 8j/r/	
+ !"$%&(*+,-.01245678x‚!$&(*+,-014¿
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/OpenAPI/SwaggerConfigureOptions.cs 8r+	
+ "#$%&'()*+-.12x‚-Ÿ
+p/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/ModuleExtensions.cs/ 8j"'+/024568:<>?BCDFGHIJ`z{|rP	
+ #$%()*,PQSTUVWXYZ\abdghiklmopqrsvwxyz{|}~‚…†‡ˆ‚1 #$%()PQSTUVWXYZ\abdghiklmopqrsvxz{|}‚…³
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/Filters/HttpGlobalExceptionFilter.cs 8r	!"#‚Î
+‡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/Controllers/v2/AdministrationController.cs= 8.jLMNO‘’´»r»	
+"#$%&')*+,-.012345689:;<=?@ABCDEPQRSTUWXYZ[]^_`bcdeghjklmnpqrsuvwxz{}~€ƒ„…†ˆ‰Š‹“”•–—™š›œŸ ¡£¥¨©ª«¬­¯°±²³µ·¸¹º¼½¿ÀÁÂÃÅÆÇÈÊËÍÎÏĞÑÓÔÕÖØÙÛÜİŞßáâãäæçéêëìíïğñòôõ÷øùúûışÿ€‚ƒ…†‡ˆ‰‹Œ‘”•x‚d&-45<CDT[]_bdgnpruwzƒ…ˆŠ—™› £¬³¼ÃÅÇÊÑÓÕØßáãæíïñôûıÿ‚‰‹Ö
+€/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/Controllers/v2/AccountController.cs= 8j) ./0FGH€‚ÂÃÄİŞßãêö÷øür½	!"#$%&'(*,123456789:;<>?@ABCDIJKLMNOPQTUWXYZ[\]^_abdghijklmnoqrtvxyz{|}~ƒ„…†‡ˆ‰Š‹Œ‘’“”•–˜š›œŸ ¡£¤¥¦§¨ª¬®¯°±²³´µ¸º»¼½¾¿ÀÅÆÇÈÉÊËÌÎÏÑÒÓÕÖ×ØÙÚÛàáâäåæçèéêëìîïğñòóôùúûışÿ€‚ƒ„…‡ˆ‰Š‹Œ‘x‚[%'*8:;>BTW[\]^abgklmnqrx|”•˜šŸ£§¨¬®±³º¾ÎÑÒÕÙèêëîòƒ„‡‹³
+‡/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/Controllers/v1/AdministrationController.csÒ ?8ˆjˆ&'()×ØÙçèéøùúûƒ„…†‘™š›œ¥¦§¨êì‚ƒ‰ŠŒ­»ö÷øù‚ƒÔÕÖ×ÂÃÄÅ‚ƒŒ–—˜¢£¤¬­®rÊ
+	
+ !"#$*+,-./23456789:;<=?@ABCEFGHIJKMNOPQRSTUVXYZ[\^_abcdfghiklpqrstuwxyz{|~€‚ƒ…†‡ˆ‰Š‹Œ‘’“•–—˜™š›œŸ ¡¢£¥¦§¨©ª«­®¯°±²³µ¶·¸¹º»¾¿ÀÁÂÃÄÆÇÈÉÊËÌÎÏĞÑÒÓÔÚÛÜİŞßàáâãäåêëìíîïğñòóôöüışÿ€‡ˆ‰Š‹Œ’“”•–—Ÿ ¡¢£©ª«¬­®°±²³´µ¶·¸¹»½¾¿ÀÂÃÄÅÇÈÊËÌÍÎÏĞÑÒÓÕ×ØÙÚÜİŞßáâäåæçèéïñóôõöøùúûış„…†‡ˆ‘’“”–—˜™› ¡¢£¤¥¦¨©ª«¬®°±²³´µ·¸¹º»¼¿ÀÁÂÃÄÅÆÇÈÊÌÍÎÏÑÓÔÕÖ×ØÙÚÛİŞßàáâãäåæçéëìíîğòóôõö÷øùúüışÿ€‚ƒ„…‡‰Š‹Œ‘’“”•–—™›œŸ ¡¢£¤¦¨©ª«­¯°±²³´µ¶·¹º»¼½¾¿ÀÁÂÄÆÇÈÉËÍÎÏĞÑÒÓÔÕ×ØÙÚÛÜİŞßàâäåæçéëìíîïğñòóúûüışÿ„…†‡ˆ‰‹Œ’“”•–—™š›œŸ ¡¢£¤¦§¨©ª¬®¯°±²³µ¶·¸¹º»¼½¾ÀÁÂÃÄÆÇÉÊËÌÍÎÏĞÑÒØÙÚÛÜİßàáâãäæçèéêëíîïğñòôõö÷øùúûüışÿ‚ƒ„…‡‰Š‹Œ‘’“”•–—˜š›œ ¡£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼¾¿ÀÆÇÈÉÊËÎÏĞÑÒÓÔÖ×ØÙÚÜŞßàáâãåæçèêìíîïñòôõö÷ùúüı„…†‡ˆ‰Š‘’“”™š›œŸ¥¦§¨©ª¯°±²³´·¸x4‚Á !"#.9:<?@BEIRSUXY[^dfhkt{‚Š‹’š›¢ª²ºÃËÓßàâäïğòô€‹–¢­µ¶¸»½¿ÂÄÇÏĞÒÕ×ÙÜŞáéñóõøúı‘“–˜›¥¬´»ÄÅÇÊÌÎÑÓÕÖ×ØÙãäæéëíğòôõö÷ø‚„‡‰‹’“”•– ¡£¦¨ª­¯±²³´µ¾¿ÁÄÆÈËÍÏĞÑÒÓÜİßâäæéëíîïğñşˆ– ¡£¦§©¬±º»½ÀÁÃÆÌÍÏÑÜãêñûüş‚„‡Œ”•—š› ¦§©«³µ¸¹º¿ÊÖ×ÙÜáêìîñ÷ùúü‰“©³§
+
+€/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Presentation/Controllers/v1/AccountController.cs” 8WjT+,-567@ABCDlmnop”•–—˜ÁÂÃïğñ±²³´µ¶Üƒ„…¨©ª­·¸¹çèéš›œr‘	
+ !$%&')./012389:;<>EFGHIJKLMNOQRSTVXYZ[\]^_`abcdfhjqrstuvwxy{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’™š›œŸ ¡¢£¤¦§¨©«­®¯°±²³´µ¶·¸¹»½¾ÄÅÆÇÈÉÊËÌÍÎÏĞÑÓÕÖ×ØÙÚÛÜİŞßàáãåæçèéêëòóôõö÷øùûüşÿ€‚ƒ„‡ˆ‰Š’“”•—™š›œŸ ¡¢£¤¥§©ª«¬­®¯·¸¹º»¼½¾¿ÀÂÃÄÅÆÈÉÊÌÍÎÏĞÑÓÔÕÖ×ØÙÚÛŞßáâãåæçèéêìíîïğñòóôõöùûüışÿ€†‡ˆ‰Š‹Œ‘’“”–—˜™š›œ ¡¢£¤¥¦«¬®¯°±²´µº»¼½¾¿ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏĞÑÔÕÖ×ØÙÚÛÜİßàáâãäåêëìíîïğñòóôõ÷øúûüışÿ€‚…†‡ˆ‰Š‹Œ‘’“”•–˜Ÿ ¡¢£¤¥¦§©ª«¬­®¯°±³´µ¶·¸º¼xZ‚«&'2<MOQSVX[]_acdhwy{}€‚…‡‰‹‘¢¤¦¨«­°²´¶¸¹½ËÍÎĞÓÕØÚÜŞàáåéû€‚ƒ‡‰’”—™œ ¢¤¥©­¿ÄÅÈÊÌÏÑÓÕÖ×ØÙÚáãåèêìîïğñòóûÿ‘“–—™š›œ ¤°±²´ÂÄÇÉËÌÎĞÔÖ×ÙÛßãòô÷úüıÿ…‡ˆŠŒ‘•¥§©«¯³·

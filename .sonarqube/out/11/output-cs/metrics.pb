@@ -1,71 +1,114 @@
-¶
-á/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Profiles/CustomerTransactionsProfile.cs 8r	
+Ü
+z/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/PaymentTypeDto.csr©
+ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/PaymentTypeDtoValidator.cs 8r	
 Ç
-t
-i/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Usings.csr	ˇ
-ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/PropertyDetails/PropertyDetailsDto.cs \8\rj
-!"$&()+,.013468:;=>@ACDFGIJLMOPRTVXZ[]^`acdfgijlmoprsuwx}~ÄÅÉÑÜáâäåçéèú
-á/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/UseCases/CustomerInvoiceItemsService.cs 8r
-	
-£
-Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/UseCases/PropertyDetailsService.cs 8j<r]	
- "#$%&'()*+,-01345689;=>?@BDFGHIJKLMNOPQRSTUVWXYZ[]_abcdefghijmoqrstuvÇ1$%'()*+,05;=>?@BHIJKLNOPQSTVWXY]cdfghims¶
-á/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/UseCases/CustomerTransactionsService.cs 8j	BTWgrP	
- !"#$%&'()*+,-/02368:<=?CDFGIJLMOPQRUXYZ[\]^_`abcdefgilrsxÇ4 !"#$%&'()+,/02368?CDFGIJLMOQUXZ[\]^_`abcefiá
-É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/UseCases/CustomerPaymentsService.cs! 8j"QT^rB	 !$&')*,-/023589=>?BCEFHIKLNORUVWXYZ[\]^`blmx
-Ç*$&')*,-/02358?BCEFHIKLNORUWXYZ[\]`ñ
-Ö/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Interfaces/ICustomerInvoiceService.csr
-
-ÿ
-Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/UseCases/CustomerInvoiceService.cs" 8j+K_crs	
- #%')*,-./0123456789:;<=>?@ABCDEFGHILMOPRSUVY[]^`abcdefghijklmoprsuvxy|}ÄÇÑÜáàâäãx
-ÇG#%,-.123456789:;<=>?@ACDEFGLMOPRSUVY`abcfghijkloprsuvxy|}ÄÇà™
-î/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/PropertyDetails/PropertySummaryMobileViewDto.cs 8r	Ω
-Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/UseCases/CustomerDetailsService.cs 8jr	 !#$%&'(Ç	 %†
-Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Profiles/PropertyDetailsProfile.cs 8r	
-Ç	¢
-É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Profiles/CustomerPaymentsProfile.cs 8r	
+ß
+Ñ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/FormsDtoValidator.cs 8r	
+Ç
+p
+g/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Usings.csrä
+~/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/ChartOfAccountsDto.csr¬
+|/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/PaymentModeService.cs 8r*
+ !"$%&')*+,./0123Ç !&+0¡
+}/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/InvoiceTypesService.cs
+ 8j r&
+!"$&'()+,-./0Ç!"(-¶
+á/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/PayPointDtoValidator.cs 8r	
+Ç
+©
+ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/PaymentModeDtoValidator.cs 8r	
+Ç
+¨
+ã/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/InvoiceTypesDtoValidator.cs 8r	
+Ç
+«
+Ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/ChartOfAccountsService.cs 8r*
+ !"$%&')*+,./0123Ç !&+0ª
+ñ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/CurrencyAndExchangeRateDtoValidator.cs 8r	
+Ç
+≠
+é/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/ChartOfAccountsDtoValidator.cs 8r	
 Ç
+≠
+å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/BankSortCodesDtoValidator.cs 8r	
+Ç
+¢
+É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/BankDtoValidator.cs 8r	
+Ç
+™
+â/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Validations/Setup/BankBranchDtoValidator.cs 8r	
+Ç
+¿
+{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/BankBranchService.cs 8r)
+!"#%&'(*+,-/01234Ç!"',1ö
+á/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IBankSortCodesService.csr	
+¿
+z/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/PayPointsService.cs 8r*
+ !"$%&')*+,./0123Ç !&+0¬
+|/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/PaymentTypeService.cs 8r*
+ !"$%&')*+,./0123Ç !&+0º
+v/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/FormsService.cs 8r*
+ !"$%&')*+,./0123Ç !&+0ú
+â/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IChartOfAccountsService.csr	
+œ
+à/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/CurrencyAndExchangeRateService.cs 8r*
+ !"$%&')*+,./0123Ç !&+0ƒ
+~/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/BankSortCodesService.cs 8r*
+ !"$%&')*+,./0123Ç !&+0Ã
+u/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/BankService.cs 8j1r2
+ !"$%&'(*+,-/02345689;<=>Ç !&',24589;†
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/PaypointProfile.cs 8r	
+Ç	
+§
+Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/PaymentTypeProfile.cs 8r	
+Ç	
+§
+Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/PaymentModeProfile.cs 8r	
+Ç	
 •
-Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Profiles/CustomerInvoiceProfile.cs 8r	
-Ç
-¶
-á/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Profiles/CustomerInvoiceItemsProfile.cs 8r	
-Ç
-†
-Ç/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Profiles/CustomerDetailsProfile.cs 8r	
-Ç	
-ò
-à/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Interfaces/Services/IAzureBlobService.csr		û
-Ö/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Interfaces/IPropertyDetailsService.csjr	
-õ
-ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Interfaces/ICustomerTransactionsService.csr
-
-°
-Ü/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Interfaces/ICustomerPaymentsService.csj	r
-ò
-ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Interfaces/ICustomerInvoiceItemsService.csró
-Ö/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Interfaces/ICustomerDetailsService.csr	
-®
-ë/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/PropertyDetails/PropertySummaryWebViewDto.cs 
-8
-r	
-Ø
-ó/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/PropertyDetails/AvailablePropertySummaryViewDto.cs 8r	
-È
-é/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/PropertyDetails/PropertyDetailsReadDto.cs R8RrP	 "$&')*,./124689;<>?ABDEGHJKMNPRTVXY[\^_abdeghjkmnpqsuwxyå
-z/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/GenericResponseDto.cs 8rÈ
-ê/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/PropertyDetails/PropertyDetailsCreateDto.cs N8NrN	 "$&')*,./124689;<>?ABDEGHJKMNPRTVXY[\^_abdeghjkmnpqstu∏
-z/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/CustomerInvoiceDto.cs :8:r4	!#%')+,/0124679:<=?ACEFGHJLMOQSTº
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/CustomerTransactionsDto.cs ,8,r3	!"$%&)*+,./124578:;=>@BDEGHIM¡
-{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/CustomerPaymentsDto.cs >8>jMr7	 "$&(*,./124578:;=?@ACDEFHIKMOQSTVXï
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/CustomerInvoiceItemsDto.cs 
-8
-r	
-¥
-é/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/CustomerDetails/CustomerDetailsReadDto.cs $8$r
- "$&')+,-∫
-ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/CustomerDetails/CustomerDetailsDto.cs $8$r%
- "#%&()+,./024567¿
-ê/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Dtos/CustomerDetails/CustomerDetailsCreateDto.cs $8$r%
- "#%&()+,./024567
+É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/InvoiceTypesProfile.cs 8r	
+Ç	
+ú
+{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/FormProfile.cs 8r	
+Ç	
+∞
+é/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/CurrencyAndExchangeRateProfile.cs 8r	
+Ç	
+®
+Ü/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/ChartOfAccountsProfile.cs 8r	
+Ç	
+¶
+Ñ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/BankSortCodesProfile.cs 8r	
+Ç	
+ú
+{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/BankProfile.cs 8r	
+Ç	
+£
+Å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Profiles/Setup/BankBranchProfile.cs 8r	
+Ç	
+ñ
+É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IPayPointsService.csr	
+ò
+Ö/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IPaymentTypeService.csr	
+ò
+Ö/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IPaymentModeService.csr	
+õ
+Ü/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IInvoiceTypesService.csj
+r	ë
+/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IFormsService.csr	
+§
+ë/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/ICurrencyAndExchangeRateService.csr	
+ê
+~/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IBankService.csr	
+ó
+Ñ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Interfaces/Setup/IBankBranchService.csr	
+Ä
+w/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/ServicesDto.csrÑ
+x/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/PaypointsDto.csrÜ
+z/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/PaymentModeDto.csrâ
+{/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/InvoiceTypesDto.csr	Ä
+t/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/FormsDto.csrì
+Ü/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/CurrencyAndExchangeRateDto.csrà
+|/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/BankSortCodesDto.csr
+s/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/BankDto.csrÖ
+y/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/Dtos/Setup/BankBranchDto.csr

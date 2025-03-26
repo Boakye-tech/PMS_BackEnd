@@ -8,7 +8,7 @@
         "version": "4.10.0.0",
         "fileVersion": "4.10.0-3.24216.12 (3af0081a)",
         "semanticVersion": "4.10.0",
-        "language": "en"
+        "language": "en-GH"
       },
       "results": [
         {
@@ -20,52 +20,10 @@
               "resultFile": {
                 "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
                 "region": {
-                  "startLine": 61,
-                  "startColumn": 1,
-                  "endLine": 61,
-                  "endColumn": 55
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
-                "region": {
-                  "startLine": 127,
+                  "startLine": 102,
                   "startColumn": 20,
-                  "endLine": 127,
+                  "endLine": 102,
                   "endColumn": 42
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S125",
-          "level": "warning",
-          "message": "Remove this commented out code.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
-                "region": {
-                  "startLine": 131,
-                  "startColumn": 1,
-                  "endLine": 131,
-                  "endColumn": 37
                 }
               }
             }
@@ -83,31 +41,10 @@
               "resultFile": {
                 "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
                 "region": {
-                  "startLine": 102,
+                  "startLine": 77,
                   "startColumn": 15,
-                  "endLine": 102,
+                  "endLine": 77,
                   "endColumn": 19
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S4663",
-          "level": "warning",
-          "message": "Remove this empty comment",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
-                "region": {
-                  "startLine": 269,
-                  "startColumn": 1,
-                  "endLine": 271,
-                  "endColumn": 4
                 }
               }
             }
@@ -267,9 +204,9 @@
               "resultFile": {
                 "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
                 "region": {
-                  "startLine": 220,
+                  "startLine": 194,
                   "startColumn": 2,
-                  "endLine": 220,
+                  "endLine": 194,
                   "endColumn": 3
                 }
               }
@@ -288,9 +225,9 @@
               "resultFile": {
                 "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
                 "region": {
-                  "startLine": 205,
+                  "startLine": 179,
                   "startColumn": 32,
-                  "endLine": 205,
+                  "endLine": 179,
                   "endColumn": 65
                 }
               }
@@ -309,9 +246,9 @@
               "resultFile": {
                 "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
                 "region": {
-                  "startLine": 124,
+                  "startLine": 99,
                   "startColumn": 13,
-                  "endLine": 124,
+                  "endLine": 99,
                   "endColumn": 37
                 }
               }
@@ -330,9 +267,9 @@
               "resultFile": {
                 "uri": "file:///Users/imac5k/Projects/PropertyManagementSolution/pms-api/PMS.Presentation/Program.cs",
                 "region": {
-                  "startLine": 266,
+                  "startLine": 240,
                   "startColumn": 1,
-                  "endLine": 266,
+                  "endLine": 240,
                   "endColumn": 10
                 }
               }
@@ -417,22 +354,6 @@
           "fullDescription": "When a loop is filtering, selecting or aggregating, those functions can be handled with a clearer, more concise LINQ expression instead.",
           "defaultLevel": "warning",
           "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3267",
-          "properties": {
-            "category": "Minor Code Smell",
-            "isEnabledByDefault": true,
-            "tags": [
-              "C#",
-              "MainSourceScope",
-              "SonarWay"
-            ]
-          }
-        },
-        "S4663": {
-          "id": "S4663",
-          "shortDescription": "Comments should not be empty",
-          "fullDescription": "Empty comments, as shown in the example, hurt readability and might indicate an oversight.",
-          "defaultLevel": "warning",
-          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-4663",
           "properties": {
             "category": "Minor Code Smell",
             "isEnabledByDefault": true,
