@@ -1005,7 +1005,15 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             if (!string.IsNullOrWhiteSpace(values.ProfilePicture))
             {
-                user.ProfilePicture = values.ProfilePicture;
+                if (!string.IsNullOrWhiteSpace(user.SelfieImage))
+                {
+                    user.SelfieImage = values.ProfilePicture;
+                }
+
+                if (!string.IsNullOrWhiteSpace(user.PassportPicture))
+                {
+                    user.PassportPicture = values.ProfilePicture;
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(values.MiddleName))
@@ -1014,8 +1022,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
 
             await _userManager.UpdateAsync(user);
-
-            //return await UserDetails(values.UserId);
 
             return new UpdateAccountDetailsResponseDto { error = null, success = await UserDetails(values.UserId)};
         }

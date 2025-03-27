@@ -57,11 +57,14 @@ public class UnitOfWork: IUnitOfWork
         PropertyMaster = new PropertyMasterRepository(_dbContext);
 
         Activity = new ActivityRepository(_dbContext);
+
         ActivityType = new ActivityTypeRepository(_dbContext);
 
         OwnershipType = new OwnershipTypeRepository(_dbContext);
 
         StopDebit = new StopDebitRepository(_dbContext);
+
+        InterestExpressed = new InterestExpressedRepository(_dbContext);
 
     }
 
@@ -114,6 +117,7 @@ public class UnitOfWork: IUnitOfWork
 
     //jan 2 '25
     public IActivityRepository Activity { get; private set; }
+
     public IActivityTypeRepository ActivityType { get; private set; }
 
     public IOwnershipTypeRepository OwnershipType { get; private set; }
@@ -121,6 +125,8 @@ public class UnitOfWork: IUnitOfWork
     //Mar 20 '25
     public IStopDebitRepository StopDebit { get; private set; }
 
+    //Mar 26 '25
+    public IInterestExpressedRepository InterestExpressed { get; private set; }
 
     public Task<int> Complete()
     {

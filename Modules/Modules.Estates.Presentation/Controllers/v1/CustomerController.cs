@@ -40,9 +40,10 @@ namespace Modules.Estates.Presentation.Controllers.v1
         readonly IOwnershipTypeService _ownershipTypeService;
         readonly ICustomerMasterService _customerMasterService;
         readonly IUserContextService _userContextService;
+        readonly IInterestExpressedService _interestExpressedService;
 
         public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService,
-                                  ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService)
+                                  ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService, IInterestExpressedService interestExpressedService)
         {
             _customerTypeService = customerTypeService;
             _genderService = genderService;
@@ -54,6 +55,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             _customerMasterService = customerMasterService;
             _ownershipTypeService = ownershipTypeService;
             _userContextService = userContextService;
+            _interestExpressedService = interestExpressedService;
         }
 
         //----------------------CUSTOMER TYPES------------
@@ -730,7 +732,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateOwnershipType")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult<TitleReadDto>> CreateOwnershipType([FromBody] OwnershipTypeCreateDto values)
+        public async Task<ActionResult<OwnershipTypeReadDto>> CreateOwnershipType([FromBody] OwnershipTypeCreateDto values)
         {
             try
             {
@@ -820,7 +822,93 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             return Ok(await _customerMasterService.GetCustomerListAsync());
         }
-        
+
+        //----------------------INTEREST EXPRESSED------------
+        /// <summary>
+        /// Returns a list of options for prospective customer interest expressed
+        /// </summary>
+        [HttpGet]
+        [Route("GetInterestExpressed")]
+        public async Task<ActionResult<IEnumerable<InterestExpressedReadDto>>> GetInterestExpressed()
+        {
+            return Ok(await _interestExpressedService.GetInterestExpressedAsync());
+        }
+
+
+        /// <summary>
+        ///  Create a new customer interest expressed option
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateInterestExpressed
+        /// 
+        /// {
+        ///    "interestExpressedId": 0,
+        ///    "customerInterestExpressed": "INTERESTED IN BUYING A SERVICED PLOT",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateInterestExpressed")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
+        public async Task<ActionResult<InterestExpressedReadDto>> CreateInterestExpressed([FromBody] InterestExpressedCreateDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(await _interestExpressedService.CreateInterestExpressedAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Modify details of exisitng customer interest expressed option
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /UpdateInterestExpressed
+        /// 
+        /// {
+        ///    "ownershipTypeId": 3,
+        ///    "ownershipType": "TO ENQUIRE ABOUT SITE 3 APARTMENTS",
+        ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateInterestExpressed")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult<InterestExpressedReadDto>> UpdateInterestExpressed([FromBody] InterestExpressedUpdateDto values)
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
+
+            return Ok(await _interestExpressedService.UpdateInterestExpressedAsync(values));
+        }
+
+        /// <summary>
+        /// Removes an existing customer interest expressed option based on the id
+        /// </summary>
+        [HttpDelete("DeleteInterestExpressed/{interestExpressedId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
+        public async Task<ActionResult> DeleteInterestExpressed(int interestExpressedId)
+        {
+            return Ok(await _interestExpressedService.DeleteInterestExpressedAsync(interestExpressedId));
+        }
 
 
     }

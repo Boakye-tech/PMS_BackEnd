@@ -50,15 +50,21 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             var registeredCustomer = new ProspectiveCustomerResponseDto
             {
                 InterestExpressed = customer.InterestExpressed!,
+                CustomerTypeId = customer.CustomerTypeId,
                 CustomerType = _customerType,
+                ResidentTypeId = customer.ResidentTypeId,
                 ResidentType = _residentType,
+                LocalityId = customer.LocalityId,
                 Locality = _locality,
                 CustomerCode = customer.CustomerCode,
+                TitleId = customer.TitleId,
                 Title = _title,
                 SurName = customer.SurName!,
                 OtherNames = customer.OtherNames!,
                 CompanyName = customer.CompanyName!,
+                GenderId = customer.GenderId,
                 Gender = _gender,
+                NationalityId = customer.NationalityId,
                 Nationality = _nationality,
                 PostalAddress = customer.PostalAddress,
                 ResidentialAddress = customer.ResidentialAddress,
@@ -68,6 +74,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 OfficeNumber = customer.OfficeNumber,
                 WhatsAppNumber = customer.WhatsAppNumber,
                 EmailAddress = customer.EmailAddress!,
+                SocialMediaTypeId = customer.SocialMediaTypeId,
                 SocialMediaType = _socialMediaPlatform,
                 SocialMediaAccount = customer.SocialMediaAccount,
 
@@ -118,6 +125,8 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 OfficeNumber = customer.OfficeNumber,
                 WhatsAppNumber = customer.WhatsAppNumber,
                 BusinessRegistrationNumber = customer.IdentificationTypeNumber,
+                NationalityId = customer.NationalityId,
+                Nationality = _nationality,
                 TinNumber = customer.TinNumber,
                 Picture = customer.Picture,
                 SocialMediaTypeId = customer.SocialMediaTypeId,
@@ -450,7 +459,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         }
 
-       
+        
     }
 }
 

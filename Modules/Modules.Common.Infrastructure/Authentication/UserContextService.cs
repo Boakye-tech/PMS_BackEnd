@@ -20,6 +20,13 @@ namespace Modules.Common.Infrastructure.Authentication
             return user?.FindFirst(ClaimTypes.NameIdentifier)?.Value
                    ?? user?.FindFirst("sub")?.Value;
         }
+
+        public bool? GetUserRole(string roleName)
+        {
+            return _httpContextAccessor.HttpContext?.User.IsInRole(roleName);
+        }
+
+
     }
 }
 

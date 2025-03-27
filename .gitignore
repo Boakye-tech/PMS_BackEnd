@@ -28,6 +28,13 @@ obj/
 **/appsettings.Development.json
 appsettings.json
 
+.sonarqube/
+coverage.opencover.xml
+coverage.cobertura.xml
+TestResults/
+report/
+SonarQube/
+
 # Logs
 Logs/
 

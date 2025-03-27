@@ -1,1 +1,0 @@
-/Users/imac5k/Projects/PropertyManagementSolution/pms-api/.sonarqube/out/25

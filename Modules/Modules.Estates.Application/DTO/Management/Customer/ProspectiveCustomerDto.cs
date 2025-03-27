@@ -69,9 +69,18 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         [StringLength(255)]
         public string? Comments { get; set; }
+        
+    }
 
+
+    public record ProspectiveCustomerCreateDto : ProspectiveCustomerDto
+    {
         public string? CreatedBy { get; set; }
     }
 
+    public record UpdateProspectiveCustomerDto : ProspectiveCustomerDto
+    {
+        public string? ModifiedBy { get; set; }
+    }
 }
 

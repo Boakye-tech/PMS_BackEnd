@@ -20,3 +20,6 @@ global using Modules.Notification.Presentation;
 global using Modules.Notification.Presentation.Filters;
 global using Modules.Notification.Presentation.OpenAPI;
 
+
+global using FirebaseAdmin;
+global using Google.Apis.Auth.OAuth2;

@@ -48,6 +48,8 @@ public class ApplicationDbContext : ModuleDbContext
 
     public DbSet<StopDebit> StopDebit { get; set; }
 
+    public DbSet<InterestExpressed> InterestExpressed { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

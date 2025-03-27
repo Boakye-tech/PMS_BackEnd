@@ -50,6 +50,10 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(20)]
         public string? BusinessRegistrationNumber { get; set; }
 
+        public int NationalityId { get; set; }
+
+        public string? Nationality { get; set; }
+
         [StringLength(20)]
         public string? TinNumber { get; set; }
 

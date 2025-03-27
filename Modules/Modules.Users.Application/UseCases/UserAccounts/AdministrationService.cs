@@ -175,7 +175,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 roleDtos.Add(new RolesDto(
                     role.Id,
                     role.Name!,
+                    role.DepartmentId,
                     department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
                     unit?.UnitName ?? string.Empty,
                     createdByUser ?? string.Empty,
                     role.CreatedOn,
@@ -215,7 +217,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 roleDtos.Add(new RolesDto(
                     role.Id,
                     role.Name!,
+                    role.DepartmentId,
                     department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
                     unit?.UnitName ?? string.Empty,
                     createdByUser ?? string.Empty,
                     role.CreatedOn,
@@ -255,7 +259,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 roleDtos.Add(new RolesDto(
                     role.Id,
                     role.Name!,
+                    role.DepartmentId,
                     department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
                     unit?.UnitName ?? string.Empty,
                     createdByUser ?? string.Empty,
                     role.CreatedOn,
@@ -295,7 +301,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 roleDtos.Add(new RolesDto(
                     role.Id,
                     role.Name!,
-                    department?.DepartmentName ?? string.Empty, 
+                    role.DepartmentId,
+                    department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
                     unit?.UnitName ?? string.Empty,  
                     createdByUser ?? string.Empty,
                     role.CreatedOn,
@@ -310,8 +318,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<List<RolesDto>> GetUserRoles()
         {
+
             var roles = await _roleManager.Roles
-                 //.Where(r => r.Status == (int)RegistrationStatus.Rejected)
                  .OrderByDescending(role => role.CreatedOn)
                  .ToListAsync();
 
@@ -335,7 +343,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 roleDtos.Add(new RolesDto(
                     role.Id,
                     role.Name!,
+                    role.DepartmentId,
                     department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
                     unit?.UnitName ?? string.Empty,
                     createdByUser ?? string.Empty,
                     role.CreatedOn,
@@ -347,9 +357,98 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             return roleDtos;
         }
+
+        public async Task<List<RolesDto>> GetUserRoles(int departmentId)
+        {
+
+            var roles = await _roleManager.Roles
+                 .Where(r => r.DepartmentId == departmentId)
+                 .OrderByDescending(role => role.CreatedOn)
+                 .ToListAsync();
+
+            var roleDtos = new List<RolesDto>();
+
+            foreach (var role in roles)
+            {
+                var department = await _unitOfWork.Department.Get(role.DepartmentId);
+                var unit = await _unitOfWork.DepartmentUnit.Get(role.UnitId);
+
+                var createdByUser = await _userManager.Users
+                    .Where(u => u.Id == role.CreatedBy)
+                    .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                    .FirstOrDefaultAsync();
+
+                var approvedByUser = await _userManager.Users
+                    .Where(u => u.Id == role.ApprovedBy)
+                    .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                    .FirstOrDefaultAsync();
+
+                roleDtos.Add(new RolesDto(
+                    role.Id,
+                    role.Name!,
+                    role.DepartmentId,
+                    department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
+                    unit?.UnitName ?? string.Empty,
+                    createdByUser ?? string.Empty,
+                    role.CreatedOn,
+                    approvedByUser ?? string.Empty,
+                    role.ApprovedOn,
+                    RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString()
+                ));
+            }
+
+            return roleDtos;
+        }
+
+        public async Task<List<RolesDto>> GetUnitUserRoles(int unitId)
+        {
+
+            var roles = await _roleManager.Roles
+                 .Where(r => r.UnitId == unitId)
+                 .OrderByDescending(role => role.CreatedOn)
+                 .ToListAsync();
+
+            var roleDtos = new List<RolesDto>();
+
+            foreach (var role in roles)
+            {
+                var department = await _unitOfWork.Department.Get(role.DepartmentId);
+                var unit = await _unitOfWork.DepartmentUnit.Get(role.UnitId);
+
+                var createdByUser = await _userManager.Users
+                    .Where(u => u.Id == role.CreatedBy)
+                    .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                    .FirstOrDefaultAsync();
+
+                var approvedByUser = await _userManager.Users
+                    .Where(u => u.Id == role.ApprovedBy)
+                    .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                    .FirstOrDefaultAsync();
+
+                roleDtos.Add(new RolesDto(
+                    role.Id,
+                    role.Name!,
+                    role.DepartmentId,
+                    department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
+                    unit?.UnitName ?? string.Empty,
+                    createdByUser ?? string.Empty,
+                    role.CreatedOn,
+                    approvedByUser ?? string.Empty,
+                    role.ApprovedOn,
+                    RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString()
+                ));
+            }
+
+            return roleDtos;
+        }
+
+
+
+
         public async Task<CustomerVerificationResponseDto> VerifyCustomerAccount(VerifyUserAccountDto accountVerification)
         {
-            //throw new NotImplementedException();
             var user = await _userManager.FindByIdAsync(accountVerification.UserId!);
 
             

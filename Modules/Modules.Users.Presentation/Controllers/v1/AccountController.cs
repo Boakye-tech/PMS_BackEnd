@@ -37,7 +37,6 @@ public class AccountController : ControllerBase
     {
         _userAccountsService = userAccountsService;
         _unitOfWork = unitOfWork;
-
     }
 
     /// <summary>
@@ -345,8 +344,6 @@ public class AccountController : ControllerBase
                                 500 => StatusCode(500, result.errorResponse),
                                 _ => StatusCode(500, result),
                             };
-                            //return Ok(result);
-
                     }
                 }
 

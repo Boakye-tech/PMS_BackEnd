@@ -23,7 +23,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("AddProspectiveCustomer")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult> AddProspectiveCustomer([FromBody] ProspectiveCustomerDto values)
+        public async Task<ActionResult> AddProspectiveCustomer([FromBody] ProspectiveCustomerCreateDto values)
         {
             try
             {
@@ -278,6 +278,53 @@ namespace Modules.Estates.Presentation.Controllers.v1
             
         }
 
+        /// <summary>
+        /// <Modify or update existing company customer details
+        /// </summary>
+        [HttpPut]
+        [Route("UpdateProspectiveCustomer")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> UpdateProspectiveCustomer([FromBody] UpdateProspectiveCustomerDto values)
+        {
+            try
+            {
+                //if(ModelState.IsValid)
+
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ModifiedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var validationError = ValidateCustomerDetails(values);
+                if (validationError is not null)
+                {
+                    return BadRequest(validationError);
+                }
+
+                var result = await _customerMasterService.UpdateCustomer(values);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.StatusCode;
+                return status switch
+                {
+                    204 => NoContent(),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(500, result.ErrorResponse),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+
 
         /// <summary>
         /// <Modify or update existing company customer details
@@ -422,13 +469,19 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateCustomerDetails")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        public async Task<ActionResult> UpdateCustomerDetails([FromBody] UpdateJointOwnershipCustomerDto values)
+        public async Task<ActionResult> UpdateCustomerDetails([FromBody] UpdateIndividualResidentCustomerDto values)
         {
             try
             {
                 if (!IsAuthorized(values.ModifiedBy!))
                 {
                     return Unauthorized();
+                }
+
+                var validationError = ValidateCustomerDetails(values);
+                if (validationError is not null)
+                {
+                    return BadRequest(validationError);
                 }
 
                 return Ok(await _customerMasterService.UpdateCustomer(values));
@@ -491,12 +544,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
                 return status switch
                 {
-                    200 => Ok("success"),
+                    200 => Ok( new{ response = "success" }),
                     400 => BadRequest(),
-                    404 => NotFound($"Customer code {values.CustomerCode} not found"),
-                    500 => StatusCode(500,"unsuccessful"),
-                    _ => StatusCode(500, "Internal Server Error"),
-                }; ;
+                    404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
+                    500 => StatusCode(500, new { response = "unsuccessful" }),
+                    _ => StatusCode(500, new { response = "Internal Server Error" }),
+                };
 
             }
             catch (Exception ex)
@@ -525,11 +578,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
                 return status switch
                 {
-                    200 => Ok("success"),
+                    200 => Ok(new { response = "success" }),
                     400 => BadRequest(),
-                    404 => NotFound($"Customer code {values.CustomerCode} not found"),
-                    500 => StatusCode(500, "unsuccessful"),
-                    _ => StatusCode(500, "Internal Server Error"),
+                    404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
+                    500 => StatusCode(500, new { response = "unsuccessful" }),
+                    _ => StatusCode(500, new { response = "Internal Server Error" }),
                 };
 
             }

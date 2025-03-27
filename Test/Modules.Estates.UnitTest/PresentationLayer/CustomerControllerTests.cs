@@ -27,6 +27,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
         private readonly Mock<IOwnershipTypeService> _ownershipTypeServiceMock;
         private readonly Mock<ICustomerMasterService> _customerMasterServiceMock;
         private readonly Mock<IUserContextService> _userContextServiceMock;
+        private readonly Mock<IInterestExpressedService> _interestContextServiceMock;
         private readonly CustomerController _controller;
 
         public CustomerControllerTests()
@@ -41,6 +42,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             _ownershipTypeServiceMock = new Mock<IOwnershipTypeService>();
             _customerMasterServiceMock = new Mock<ICustomerMasterService>();
             _userContextServiceMock = new Mock<IUserContextService>();
+            _interestContextServiceMock = new Mock<IInterestExpressedService>();
 
             _controller = new CustomerController(
                 _customerTypeServiceMock.Object,
@@ -52,7 +54,8 @@ namespace Modules.Estates.UnitTest.PresentationLayer
                 _titleServiceMock.Object,
                 _customerMasterServiceMock.Object,
                 _ownershipTypeServiceMock.Object,
-                _userContextServiceMock.Object
+                _userContextServiceMock.Object,
+                _interestContextServiceMock.Object
             );
         }
 
@@ -241,7 +244,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
         {
             // Arrange
             var userId = "testUser";
-            var dto = new ProspectiveCustomerDto
+            var dto = new ProspectiveCustomerCreateDto
             {
 
                 CustomerMasterId = 1,

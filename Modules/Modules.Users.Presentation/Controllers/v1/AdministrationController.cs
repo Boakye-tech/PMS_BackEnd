@@ -2,6 +2,7 @@
 using System.Reflection;
 using Asp.Versioning;
 using Azure;
+using Modules.Users.Domain.Entities;
 
 
 namespace Modules.Users.Presentation.Controllers.v1
@@ -251,9 +252,20 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetApprovedUserRoles")]
-        public async Task<List<RolesDto>> GetApprovedUserRoles()
+        public async Task<List<RolesDto>> GetApprovedUserRoles([FromQuery] int departmentId, [FromQuery] int unitId)
         {
-            return await _adminService.GetApprovedUserRoles();
+            if ((bool)_userContextService.GetUserRole("MISAdministrator")!)
+            {
+                return await _adminService.GetApprovedUserRoles();
+            }
+
+            if(unitId != 0)
+            {
+                return await _adminService.GetDepartmentUnitUserRoles(unitId);
+            }
+
+            return await _adminService.GetDepartmentUserRoles(departmentId);
+
         }
 
         /// <summary>
@@ -262,6 +274,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetDepartmentUserRoles/{departmentId}")]
+        [Obsolete]
         public async Task<List<RolesDto>> GetDepartmentUserRoles(int departmentId)
         {
             return await _adminService.GetDepartmentUserRoles(departmentId);
@@ -273,6 +286,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetDepartmentUnitUserRoles/{unitId}")]
+        [Obsolete]
         public async Task<List<RolesDto>> GetDepartmentUnitUserRoles(int unitId)
         {
             return await _adminService.GetDepartmentUnitUserRoles(unitId);
@@ -296,9 +310,20 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetUserRoles")]
-        public async Task<List<RolesDto>> GetUserRoles()
+        public async Task<List<RolesDto>> GetUserRoles([FromQuery] int departmentId, [FromQuery] int unitId)
         {
-            return await _adminService.GetUserRoles();
+            if ((bool)_userContextService.GetUserRole("MISAdministrator")!)
+            {
+                return await _adminService.GetUserRoles();
+            }
+
+            if (unitId != 0)
+            {
+                return await _adminService.GetUnitUserRoles(unitId);
+            }
+
+            return await _adminService.GetUserRoles(departmentId);
+
         }
 
         [HttpPost]

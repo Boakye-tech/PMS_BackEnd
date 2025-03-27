@@ -1,18915 +1,0 @@
-j
-h/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Usings.csˆ_
-o/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/UserDbContext.cs
-	namespace
-
- 	
-Modules
-
-
- 
-.
-
- 
-Users
-
- 
-.
-
- 
-Infrastructure
-
- &
-{ 
-public 
-class 
-UserDbContext 
-: 
-IdentityDbContext /
-</ 0#
-ApplicationIdentityUser0 G
-,G H#
-ApplicationIdentityRoleI `
-,` a
-stringb h
-,h i
-IdentityUserClaimj {
-<{ |
-string	| Ç
->
-Ç É
-,
-É Ñ)
-ApplicationIdentityUserRole
-Ö †
-,
-† °
-IdentityUserLogin
-¢ ≥
-<
-≥ ¥
-string
-¥ ∫
->
-∫ ª
-,
-ª º
-IdentityRoleClaim
-Ω Œ
-<
-Œ œ
-string
-œ ’
->
-’ ÷
-,
-÷ ◊
-IdentityUserToken
-ÿ È
-<
-È Í
-string
-Í 
->
- Ò
->
-Ò Ú
-{ 
-public 
-UserDbContext	 
-( 
-DbContextOptions '
-<' (
-UserDbContext( 5
->5 6
-options7 >
-)> ?
-:@ A
-baseB F
-(F G
-optionsG N
-)N O
-{ 	
-} 
-public 
-DbSet 
-< #
-ApplicationIdentityUser ,
->, -
-UserDetails. 9
-{: ;
-get< ?
-;? @
-setA D
-;D E
-}F G
-public 
-DbSet 
-< #
-ApplicationIdentityRole ,
->, -
-roles. 3
-{4 5
-get6 9
-;9 :
-set; >
-;> ?
-}@ A
-public 
-DbSet 
-< '
-ApplicationIdentityUserRole 0
->0 1
-	userRoles2 ;
-{< =
-get> A
-;A B
-setC F
-;F G
-}H I
-public 
-DbSet 
-< 
-Channels 
-> 
-Channels '
-{( )
-get* -
-;- .
-set/ 2
-;2 3
-}4 5
-public 
-DbSet 
-< 
-
-Department 
->  
-
-Department! +
-{, -
-get. 1
-;1 2
-set3 6
-;6 7
-}8 9
-public 
-DbSet 
-< 
-DepartmentUnit #
-># $
-DepartmentUnit% 3
-{4 5
-get6 9
-;9 :
-set; >
-;> ?
-}@ A
-public 
-DbSet 
-< 
-
-TokenStore 
->  
-
-TokenStore! +
-{, -
-get. 1
-;1 2
-set3 6
-;6 7
-}8 9
-public 
-DbSet 
-< 
-Menus 
-> 
-Menus !
-{" #
-get$ '
-;' (
-set) ,
-;, -
-}. /
-public 
-DbSet 
-< 
-SubMenus 
-> 
-SubMenus '
-{( )
-get* -
-;- .
-set/ 2
-;2 3
-}4 5
-public 
-DbSet 
-< 
-SubMenuItems !
->! "
-SubMenuItems# /
-{0 1
-get2 5
-;5 6
-set7 :
-;: ;
-}< =
-public   
-DbSet   
-<   
-AccessPermissions   &
->  & '
-Permissions  ( 3
-{  4 5
-get  6 9
-;  9 :
-set  ; >
-;  > ?
-}  @ A
-public!! 
-DbSet!! 
-<!! 
-SubPermissions!! #
->!!# $
-SubPermissions!!% 3
-{!!4 5
-get!!6 9
-;!!9 :
-set!!; >
-;!!> ?
-}!!@ A
-public"" 
-DbSet"" 
-<"" 
-SubPermissionsItems"" (
->""( )
-SubPermissionsItems""* =
-{""> ?
-get""@ C
-;""C D
-set""E H
-;""H I
-}""J K
-public$$ 
-DbSet$$ 
-<$$ 
-StaffAccounts$$ "
->$$" #
-StaffAccounts$$$ 1
-{$$2 3
-get$$4 7
-;$$7 8
-set$$9 <
-;$$< =
-}$$> ?
-public&& 
-DbSet&& 
-<&& 
-ApplicationModules&& '
->&&' (
-ApplicationModules&&) ;
-{&&< =
-get&&> A
-;&&A B
-set&&C F
-;&&F G
-}&&H I
-public'' 
-DbSet'' 
-<'' )
-ApplicationModulesPermissions'' 2
->''2 3)
-ApplicationModulesPermissions''4 Q
-{''R S
-get''T W
-;''W X
-set''Y \
-;''\ ]
-}''^ _
-public)) 
-DbSet)) 
-<)) 
-IdentificationType)) '
->))' (
-IdentificationType))) ;
-{))< =
-get))> A
-;))A B
-set))C F
-;))F G
-}))H I
-	protected.. 
-override.. 
-void.. 
-OnModelCreating..  /
-(../ 0
-ModelBuilder..0 <
-builder..= D
-)..D E
-{// 	
-base11 
-.11 
-OnModelCreating11  
-(11  !
-builder11! (
-)11( )
-;11) *
-builder33 
-.33 
-Entity33 
-<33 
-IdentityRoleClaim33 ,
-<33, -
-string33- 3
->333 4
->334 5
-(335 6
-)336 7
-.337 8
-ToTable338 ?
-(33? @
-$str33@ L
-,33L M
-$str33N S
-)33S T
-;33T U
-builder44 
-.44 
-Entity44 
-<44 #
-ApplicationIdentityRole44 2
->442 3
-(443 4
-)444 5
-.445 6
-ToTable446 =
-(44= >
-$str44> E
-,44E F
-$str44G L
-)44L M
-;44M N
-builder55 
-.55 
-Entity55 
-<55 
-IdentityUserClaim55 ,
-<55, -
-string55- 3
->553 4
->554 5
-(555 6
-)556 7
-.557 8
-ToTable558 ?
-(55? @
-$str55@ L
-,55L M
-$str55N S
-)55S T
-;55T U
-builder66 
-.66 
-Entity66 
-<66 
-IdentityUserLogin66 ,
-<66, -
-string66- 3
->663 4
->664 5
-(665 6
-)666 7
-.667 8
-ToTable668 ?
-(66? @
-$str66@ L
-,66L M
-$str66N S
-)66S T
-;66T U
-builder77 
-.77 
-Entity77 
-<77 '
-ApplicationIdentityUserRole77 6
->776 7
-(777 8
-)778 9
-.779 :
-ToTable77: A
-(77A B
-$str77B M
-,77M N
-$str77O T
-)77T U
-;77U V
-builder88 
-.88 
-Entity88 
-<88 #
-ApplicationIdentityUser88 2
->882 3
-(883 4
-)884 5
-.885 6
-ToTable886 =
-(88= >
-$str88> E
-,88E F
-$str88G L
-)88L M
-;88M N
-builder99 
-.99 
-Entity99 
-<99 
-IdentityUserToken99 ,
-<99, -
-string99- 3
->993 4
->994 5
-(995 6
-)996 7
-.997 8
-ToTable998 ?
-(99? @
-$str99@ L
-,99L M
-$str99N S
-)99S T
-;99T U
-builder;; 
-.;; 
-Entity;; 
-<;; 
-Channels;; #
->;;# $
-(;;$ %
-);;% &
-.<< 
-HasIndex<< 
-(<< 
-c<< 
-=><< 
-c<<  
-.<<  !
-ChannelName<<! ,
-)<<, -
-.== 
-IsUnique== 
-(== 
-true== 
-)== 
-;==  
-builder?? 
-.?? 
-Entity?? 
-<?? 
-
-Department?? %
->??% &
-(??& '
-)??' (
-.@@ 
-HasIndex@@ 
-(@@ 
-d@@ 
-=>@@ 
-d@@  
-.@@  !
-DepartmentName@@! /
-)@@/ 0
-.AA 
-IsUniqueAA 
-(AA 
-trueAA 
-)AA 
-;AA  
-builderCC 
-.CC 
-EntityCC 
-<CC 
-DepartmentUnitCC )
->CC) *
-(CC* +
-)CC+ ,
-.DD 
-HasIndexDD 
-(DD 
-duDD 
-=>DD 
-duDD  "
-.DD" #
-UnitNameDD# +
-)DD+ ,
-.EE 
-IsUniqueEE 
-(EE 
-trueEE 
-)EE 
-;EE  
-builderGG 
-.GG 
-EntityGG 
-<GG 
-
-TokenStoreGG %
->GG% &
-(GG& '
-)GG' (
-.HH 
-HasIndexHH 
-(HH 
-tsHH 
-=>HH 
-tsHH  "
-.HH" #
-TokenHH# (
-)HH( )
-.II 
-IsUniqueII 
-(II 
-)II 
-;II 
-builderKK 
-.KK 
-EntityKK 
-<KK 
-MenusKK  
->KK  !
-(KK! "
-)KK" #
-.LL 
-HasIndexLL 
-(LL 
-mLL 
-=>LL 
-mLL  
-.LL  !
-MenuNameLL! )
-)LL) *
-.MM 
-IsUniqueMM 
-(MM 
-trueMM 
-)MM 
-;MM  
-builderOO 
-.OO 
-EntityOO 
-<OO 
-SubMenuItemsOO '
->OO' (
-(OO( )
-)OO) *
-.PP 
-HasIndexPP 
-(PP 
-smiPP 
-=>PP  
-smiPP! $
-.PP$ %
-SubMenuItemNamePP% 4
-)PP4 5
-.QQ 
-IsUniqueQQ 
-(QQ 
-trueQQ 
-)QQ 
-;QQ  
-builderSS 
-.SS 
-EntitySS 
-<SS 
-ApplicationModulesSS -
->SS- .
-(SS. /
-)SS/ 0
-.TT 
-HasIndexTT 
-(TT 
-amTT 
-=>TT 
-newTT  #
-{TT$ %
-amTT& (
-.TT( )
-ModuleIdTT) 1
-,TT1 2
-amTT3 5
-.TT5 6
-
-ModuleNameTT6 @
-}TTA B
-)TTB C
-.UU 
-IsUniqueUU 
-(UU 
-trueUU 
-)UU 
-;UU  
-builderWW 
-.WW 
-EntityWW 
-<WW 
-IdentificationTypeWW -
->WW- .
-(WW. /
-)WW/ 0
-.XX 
-HasKeyXX 
-(XX 
-eXX 
-=>XX 
-eXX 
-.XX  
-IdentificationTypeIdXX 3
-)XX3 4
-;XX4 5
-builderZZ 
-.ZZ 
-EntityZZ 
-<ZZ 
-IdentificationTypeZZ -
->ZZ- .
-(ZZ. /
-)ZZ/ 0
-.[[ 
-Property[[ 
-([[ 
-e[[ 
-=>[[ 
-e[[  
-.[[  ! 
-IdentificationTypeId[[! 5
-)[[5 6
-.\\ 
-ValueGeneratedNever\\ $
-(\\$ %
-)\\% &
-;\\& '
-builder^^ 
-.^^ 
-Entity^^ 
-<^^ 
-IdentificationType^^ -
->^^- .
-(^^. /
-)^^/ 0
-.__ 
-HasIndex__ 
-(__ 
-e__ 
-=>__ 
-new__ "
-{__# $
-e__% &
-.__& ' 
-IdentificationTypeId__' ;
-,__; <
-e__= >
-.__> ?
-IdentificationTypes__? R
-}__S T
-)__T U
-.`` 
-IsUnique`` 
-(`` 
-true`` 
-)`` 
-;``  
-buildergg 
-.gg 
-ApplyConfigurationgg &
-(gg& '
-newgg' * 
-ChannelConfigurationgg+ ?
-(gg? @
-)gg@ A
-)ggA B
-;ggB C
-builderhh 
-.hh 
-ApplyConfigurationhh &
-(hh& '
-newhh' *$
-DepartmentsConfigurationhh+ C
-(hhC D
-)hhD E
-)hhE F
-;hhF G
-builderii 
-.ii 
-ApplyConfigurationii &
-(ii& '
-newii' *)
-DepartmentsUnitsConfigurationii+ H
-(iiH I
-)iiI J
-)iiJ K
-;iiK L
-}ll 	
-}mm 
-}nn ¡
-É/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/UsersRolesRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-{ 
-public 
-class  
-UsersRolesRepository "
-:# $
-
-Repository% /
-</ 0'
-ApplicationIdentityUserRole0 K
->K L
-,L M!
-IUsersRolesRepositoryN c
-{ 
-public  
-UsersRolesRepository	 
-( 
-UserDbContext +
-	dbContext, 5
-)5 6
-:7 8
-base9 =
-(= >
-	dbContext> G
-)G H
-{ 
-} 
-}		 
-}
-
- §
-}/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/UserRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-{ 
-public 
-class 
-UserRepository 
-: 
-
-Repository )
-<) *#
-ApplicationIdentityUser* A
->A B
-,B C
-IUserRepositoryD S
-{ 
-public 
-UserRepository	 
-( 
-UserDbContext %
-	dbContext& /
-)/ 0
-:1 2
-base3 7
-(7 8
-	dbContext8 A
-)A B
-{ 
-} 
-}		 
-}
-
- ¯H
-y/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/UnitOfWork.cs
-	namespace
-
- 	
-Modules
-
-
- 
-.
-
- 
-Users
-
- 
-.
-
- 
-Infrastructure
-
- &
-.
-
-& '
-Repositories
-
-' 3
-{ 
-public 
-class 
-
-UnitOfWork 
-: 
-IUnitOfWork &
-{ 
-private 
-bool 
-disposedValue "
-;" #
-private 
-IConfiguration 
-_configuration -
-{. /
-get0 3
-;3 4
-}5 6
-private 
-readonly 
-UserDbContext &
-
-_dbContext' 1
-;1 2
-readonly 
-UserManager 
-< #
-ApplicationIdentityUser 4
->4 5
-_userManager6 B
-;B C
-private 
-readonly 
-
-HttpClient #
-_httpClient$ /
-;/ 0
-public 
-
-UnitOfWork 
-( 
-UserDbContext '
-	dbContext( 1
-,1 2
-UserManager3 >
-<> ?#
-ApplicationIdentityUser? V
->V W
-userManagerX c
-,c d
-IConfigurationf t
-configuration	u Ç
-,
-Ç É
-
-HttpClient
-Ñ é
-
-httpClient
-è ô
-)
-ô ö
-{ 	
-
-_dbContext 
-= 
-	dbContext "
-;" #
-_userManager 
-= 
-userManager &
-;& '
-_configuration 
-= 
-configuration *
-;* +
-_httpClient 
-= 
-
-httpClient $
-;$ %
-
-Department 
-= 
-new  
-DepartmentRepository 1
-(1 2
-	dbContext2 ;
-); <
-;< =
-DepartmentUnit   
-=   
-new    $
-DepartmentUnitRepository  ! 9
-(  9 :
-	dbContext  : C
-)  C D
-;  D E
-Channels!! 
-=!! 
-new!! 
-ChannelsRepository!! -
-(!!- .
-	dbContext!!. 7
-)!!7 8
-;!!8 9
-
-TokenStore"" 
-="" 
-new""  
-TokenStoreRepository"" 1
-(""1 2
-	dbContext""2 ;
-,""; <
-_userManager""= I
-!""I J
-,""J K
-_configuration""L Z
-!""Z [
-,""[ \
-_httpClient""] h
-)""h i
-;""i j
-Users$$ 
-=$$ 
-new$$ 
-UserRepository$$ &
-($$& '
-	dbContext$$' 0
-)$$0 1
-;$$1 2
-Roles%% 
-=%% 
-new%% 
-RolesRepository%% '
-(%%' (
-	dbContext%%( 1
-)%%1 2
-;%%2 3
-
-UsersRoles&& 
-=&& 
-new&&  
-UsersRolesRepository&& 1
-(&&1 2
-	dbContext&&2 ;
-)&&; <
-;&&< =
-Menus(( 
-=(( 
-new(( 
-MenusRepository(( '
-(((' (
-	dbContext((( 1
-)((1 2
-;((2 3
-SubMenus)) 
-=)) 
-new)) 
-SubMenusRepository)) -
-())- .
-	dbContext)). 7
-)))7 8
-;))8 9
-SubMenuItems** 
-=** 
-new** "
-SubMenuItemsRepository** 5
-(**5 6
-	dbContext**6 ?
-)**? @
-;**@ A
-AcccessPermissions,, 
-=,,  
-new,,! $!
-PermissionsRepository,,% :
-(,,: ;
-	dbContext,,; D
-),,D E
-;,,E F
-SubPermissions-- 
-=-- 
-new--  $
-SubPermissionsRepository--! 9
-(--9 :
-	dbContext--: C
-)--C D
-;--D E
-SubPermissionsItems.. 
-=..  !
-new.." %)
-SubPermissionsItemsRepository..& C
-(..C D
-	dbContext..D M
-)..M N
-;..N O
-StaffAccounts// 
-=// 
-new// #
-StaffAccountsRepository//  7
-(//7 8
-	dbContext//8 A
-)//A B
-;//B C
-ApplicationModules11 
-=11  
-new11! $(
-ApplicationModulesRepository11% A
-(11A B
-	dbContext11B K
-)11K L
-;11L M)
-ApplicationModulesPermissions22 )
-=22* +
-new22, /3
-'ApplicationModulesPermissionsRepository220 W
-(22W X
-	dbContext22X a
-)22a b
-;22b c
-IdentificationType44 
-=44  
-new44! $(
-IdentificationTypeRepository44% A
-(44A B
-	dbContext44B K
-)44K L
-;44L M
-}77 	
-public:: !
-IDepartmentRepository:: $
-
-Department::% /
-{::0 1
-get::2 5
-;::5 6
-private::7 >
-set::? B
-;::B C
-}::D E
-public;; %
-IDepartmentUnitRepository;; (
-DepartmentUnit;;) 7
-{;;8 9
-get;;: =
-;;;= >
-private;;? F
-set;;G J
-;;;J K
-};;L M
-public<< 
-IChannelsRepository<< "
-Channels<<# +
-{<<, -
-get<<. 1
-;<<1 2
-private<<3 :
-set<<; >
-;<<> ?
-}<<@ A
-public== !
-ITokenStoreRepository== $
-
-TokenStore==% /
-{==0 1
-get==2 5
-;==5 6
-private==7 >
-set==? B
-;==B C
-}==D E
-public?? 
-IUserRepository?? 
-Users?? $
-{??% &
-get??' *
-;??* +
-private??, 3
-set??4 7
-;??7 8
-}??9 :
-public@@ 
-IRolesRepository@@ 
-Roles@@  %
-{@@& '
-get@@( +
-;@@+ ,
-private@@- 4
-set@@5 8
-;@@8 9
-}@@: ;
-publicAA !
-IUsersRolesRepositoryAA $
-
-UsersRolesAA% /
-{AA0 1
-getAA2 5
-;AA5 6
-privateAA7 >
-setAA? B
-;AAB C
-}AAD E
-publicCC 
-IMenusRepositoryCC 
-MenusCC  %
-{CC& '
-getCC( +
-;CC+ ,
-privateCC- 4
-setCC5 8
-;CC8 9
-}CC: ;
-publicDD 
-ISubMenusRepositoryDD "
-SubMenusDD# +
-{DD, -
-getDD. 1
-;DD1 2
-privateDD3 :
-setDD; >
-;DD> ?
-}DD@ A
-publicEE #
-ISubMenuItemsRepositoryEE &
-SubMenuItemsEE' 3
-{EE4 5
-getEE6 9
-;EE9 :
-privateEE; B
-setEEC F
-;EEF G
-}EEH I
-publicGG "
-IPermissionsRepositoryGG %
-AcccessPermissionsGG& 8
-{GG9 :
-getGG; >
-;GG> ?
-privateGG@ G
-setGGH K
-;GGK L
-}GGM N
-publicHH %
-ISubPermissionsRepositoryHH (
-SubPermissionsHH) 7
-{HH8 9
-getHH: =
-;HH= >
-privateHH? F
-setHHG J
-;HHJ K
-}HHL M
-publicII *
-ISubPermissionsItemsRepositoryII -
-SubPermissionsItemsII. A
-{IIB C
-getIID G
-;IIG H
-privateIII P
-setIIQ T
-;IIT U
-}IIV W
-publicKK $
-IStaffAccountsRepositoryKK '
-StaffAccountsKK( 5
-{KK6 7
-getKK8 ;
-;KK; <
-privateKK= D
-setKKE H
-;KKH I
-}KKJ K
-publicMM )
-IApplicationModulesRepositoryMM ,
-ApplicationModulesMM- ?
-{MM@ A
-getMMB E
-;MME F
-privateMMG N
-setMMO R
-;MMR S
-}MMT U
-publicNN 4
-(IApplicationModulesPermissionsRepositoryNN 7)
-ApplicationModulesPermissionsNN8 U
-{NNV W
-getNNX [
-;NN[ \
-privateNN] d
-setNNe h
-;NNh i
-}NNj k
-publicPP )
-IIdentificationTypeRepositoryPP ,
-IdentificationTypePP- ?
-{PP@ A
-getPPB E
-;PPE F
-privatePPG N
-setPPO R
-;PPR S
-}PPT U
-publicTT 
-TaskTT 
-<TT 
-intTT 
->TT 
-CompleteTT !
-(TT! "
-)TT" #
-{UU 	
-returnVV 
-
-_dbContextVV 
-.VV 
-SaveChangesAsyncVV .
-(VV. /
-)VV/ 0
-;VV0 1
-}WW 	
-	protectedYY 
-virtualYY 
-voidYY 
-DisposeYY &
-(YY& '
-boolYY' +
-	disposingYY, 5
-)YY5 6
-{ZZ 	
-if[[ 
-([[ 
-![[ 
-disposedValue[[ 
-)[[ 
-{\\ 
-if]] 
-(]] 
-	disposing]] 
-)]] 
-{^^ 
-
-_dbContext`` 
-.`` 
-Dispose`` &
-(``& '
-)``' (
-;``( )
-}aa 
-disposedValueee 
-=ee 
-trueee  $
-;ee$ %
-}ff 
-}gg 	
-publicii 
-voidii 
-Disposeii 
-(ii 
-)ii 
-{jj 	
-Disposell 
-(ll 
-	disposingll 
-:ll 
-truell #
-)ll# $
-;ll$ %
-GCmm 
-.mm 
-SuppressFinalizemm 
-(mm  
-thismm  $
-)mm$ %
-;mm% &
-}nn 	
-}oo 
-}pp ®
-~/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/RolesRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-{ 
-public 
-class 
-RolesRepository 
-: 
-
-Repository  *
-<* +#
-ApplicationIdentityRole+ B
->B C
-,C D
-IRolesRepositoryE U
-{ 
-public 
-RolesRepository	 
-( 
-UserDbContext &
-	dbContext' 0
-)0 1
-:2 3
-base4 8
-(8 9
-	dbContext9 B
-)B C
-{ 
-} 
-}		 
-}
-
- ø
-Ü/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/StaffAccountsRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-{ 
-public 
-class #
-StaffAccountsRepository %
-:& '
-
-Repository( 2
-<2 3
-StaffAccounts3 @
->@ A
-,A B$
-IStaffAccountsRepositoryC [
-{ 
-public #
-StaffAccountsRepository	  
-(  !
-UserDbContext! .
-	dbContext/ 8
-)8 9
-:: ;
-base< @
-(@ A
-	dbContextA J
-)J K
-{ 	
-} 
-}		 
-}
-
- ˛@
-y/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Repository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-{ 
-public 
-
-class 
-
-Repository 
-< 
-TEntity #
-># $
-:% &
-IRepository' 2
-<2 3
-TEntity3 :
->: ;
-where< A
-TEntityB I
-:J K
-classL Q
-{		 
-	protected
-
- 
-readonly
-
- 
-	DbContext
-
- $
-
-_dbContext
-
-% /
-;
-
-/ 0
-public 
-
-Repository 
-( 
-	DbContext #
-	dbContext$ -
-)- .
-{ 	
-
-_dbContext 
-= 
-	dbContext "
-;" #
-} 	
-public 
-void 
-Delete 
-( 
-TEntity "
-entity# )
-)) *
-=>+ -
-
-_dbContext. 8
-.8 9
-Set9 <
-<< =
-TEntity= D
->D E
-(E F
-)F G
-.G H
-RemoveH N
-(N O
-entityO U
-)U V
-;V W
-public 
-void 
-DeleteRange 
-(  
-IEnumerable  +
-<+ ,
-TEntity, 3
->3 4
-entities5 =
-)= >
-=>? A
-
-_dbContextB L
-.L M
-SetM P
-<P Q
-TEntityQ X
->X Y
-(Y Z
-)Z [
-.[ \
-RemoveRange\ g
-(g h
-entitiesh p
-)p q
-;q r
-public 
-async 
-Task 
-< 
-TEntity !
-?! "
->" #
-Get$ '
-(' (
-int( +
-id, .
-). /
-=>0 2
-await3 8
-
-_dbContext9 C
-.C D
-SetD G
-<G H
-TEntityH O
->O P
-(P Q
-)Q R
-.R S
-	FindAsyncS \
-(\ ]
-id] _
-)_ `
-;` a
-public 
-async 
-Task 
-< 
-TEntity !
-?! "
->" #
-Get$ '
-(' (
-
-Expression( 2
-<2 3
-Func3 7
-<7 8
-TEntity8 ?
-,? @
-boolA E
->E F
->F G
-
-expressionH R
-,R S
-ListT X
-<X Y
-stringY _
->_ `
-?` a
-includesb j
-=k l
-nullm q
-)q r
-{ 	
-
-IQueryable 
-< 
-TEntity 
-> 
-entities  (
-=) *
-
-_dbContext+ 5
-.5 6
-Set6 9
-<9 :
-TEntity: A
->A B
-(B C
-)C D
-;D E
-if 
-( 
-includes 
-!= 
-null  
-)  !
-{ 
-foreach 
-( 
-var 
-includeProp (
-in) +
-includes, 4
-)4 5
-{ 
-entities 
-= 
-entities '
-.' (
-Include( /
-(/ 0
-includeProp0 ;
-); <
-;< =
-}   
-}!! 
-return## 
-await## 
-entities## !
-.##! "
-AsNoTracking##" .
-(##. /
-)##/ 0
-.##0 1
-FirstOrDefaultAsync##1 D
-(##D E
-
-expression##E O
-)##O P
-;##P Q
-}$$ 	
-public&& 
-async&& 
-Task&& 
-<&& 
-IList&& 
-<&&  
-TEntity&&  '
->&&' (
->&&( )
-GetAll&&* 0
-(&&0 1
-
-Expression&&1 ;
-<&&; <
-Func&&< @
-<&&@ A
-TEntity&&A H
-,&&H I
-bool&&J N
->&&N O
->&&O P
-?&&P Q
-
-expression&&R \
-=&&] ^
-null&&_ c
-,&&c d
-Func&&e i
-<&&i j
-
-IQueryable&&j t
-<&&t u
-TEntity&&u |
->&&| }
-,&&} ~
-IOrderedQueryable	&& ê
-<
-&&ê ë
-TEntity
-&&ë ò
->
-&&ò ô
->
-&&ô ö
-?
-&&ö õ
-orderBy
-&&ú £
-=
-&&§ •
-null
-&&¶ ™
-,
-&&™ ´
-List
-&&¨ ∞
-<
-&&∞ ±
-string
-&&± ∑
->
-&&∑ ∏
-?
-&&∏ π
-includes
-&&∫ ¬
-=
-&&√ ƒ
-null
-&&≈ …
-)
-&&…  
-{'' 	
-
-IQueryable(( 
-<(( 
-TEntity(( 
->(( 
-query((  %
-=((& '
-
-_dbContext((( 2
-.((2 3
-Set((3 6
-<((6 7
-TEntity((7 >
->((> ?
-(((? @
-)((@ A
-;((A B
-if** 
-(** 
-
-expression** 
-!=** 
-null** "
-)**" #
-query++ 
-=++ 
-query++ 
-.++ 
-Where++ #
-(++# $
-
-expression++$ .
-)++. /
-;++/ 0
-if-- 
-(-- 
-includes-- 
-!=-- 
-null--  
-)--  !
-{.. 
-foreach// 
-(// 
-var// 
-includeProperty// ,
-in//- /
-includes//0 8
-)//8 9
-query00 
-=00 
-query00 !
-.00! "
-Include00" )
-(00) *
-includeProperty00* 9
-)009 :
-;00: ;
-}11 
-if33 
-(33 
-orderBy33 
-!=33 
-null33 
-)33  
-query44 
-=44 
-orderBy44 
-(44  
-query44  %
-)44% &
-;44& '
-return66 
-await66 
-query66 
-.66 
-AsNoTracking66 +
-(66+ ,
-)66, -
-.66- .
-ToListAsync66. 9
-(669 :
-)66: ;
-;66; <
-}77 	
-public99 
-async99 
-Task99 
-<99 
-IList99 
-<99  
-TEntity99  '
->99' (
->99( )
-GetAll99* 0
-(990 1
-)991 2
-=>993 5
-await996 ;
-
-_dbContext99< F
-.99F G
-Set99G J
-<99J K
-TEntity99K R
->99R S
-(99S T
-)99T U
-.99U V
-ToListAsync99V a
-(99a b
-)99b c
-;99c d
-public;; 
-async;; 
-void;; 
-Insert;;  
-(;;  !
-TEntity;;! (
-entity;;) /
-);;/ 0
-=>;;1 3
-await;;4 9
-
-_dbContext;;: D
-.;;D E
-Set;;E H
-<;;H I
-TEntity;;I P
->;;P Q
-(;;Q R
-);;R S
-.;;S T
-AddAsync;;T \
-(;;\ ]
-entity;;] c
-);;c d
-;;;d e
-public== 
-async== 
-void== 
-InsertRange== %
-(==% &
-IEnumerable==& 1
-<==1 2
-TEntity==2 9
->==9 :
-entities==; C
-)==C D
-=>==E G
-await==H M
-
-_dbContext==N X
-.==X Y
-Set==Y \
-<==\ ]
-TEntity==] d
->==d e
-(==e f
-)==f g
-.==g h
-AddRangeAsync==h u
-(==u v
-entities==v ~
-)==~ 
-;	== Ä
-public?? 
-void?? 
-Update?? 
-(?? 
-TEntity?? "
-entity??# )
-)??) *
-=>??+ -
-
-_dbContext??. 8
-.??8 9
-Set??9 <
-<??< =
-TEntity??= D
->??D E
-(??E F
-)??F G
-.??G H
-Update??H N
-(??N O
-entity??O U
-)??U V
-;??V W
-publicAA 
-voidAA 
-UpdateRangeAA 
-(AA  
-IEnumerableAA  +
-<AA+ ,
-TEntityAA, 3
->AA3 4
-entitiesAA5 =
-)AA= >
-=>AA? A
-
-_dbContextAAB L
-.AAL M
-SetAAM P
-<AAP Q
-TEntityAAQ X
->AAX Y
-(AAY Z
-)AAZ [
-.AA[ \
-UpdateRangeAA\ g
-(AAg h
-entitiesAAh p
-)AAp q
-;AAq r
-}BB 
-}DD â°
-å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/TokenStoreRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-{ 
-public 
-class  
-TokenStoreRepository "
-:# $
-
-Repository% /
-</ 0
-
-TokenStore0 :
->: ;
-,; <!
-ITokenStoreRepository= R
-{ 
-string 
-mobilePhoneNumber  
-=! "
-string# )
-.) *
-Empty* /
-,/ 0
-emailAddress1 =
-=> ?
-string@ F
-.F G
-EmptyG L
-;L M
-Regex 
-
-emailRegex 
-= 
-new 
-Regex $
-($ %
-$str% B
-)B C
-;C D
-Regex 
-
-phoneRegex 
-= 
-new 
-Regex $
-($ %
-$str% h
-)h i
-;i j
-private 
-IConfiguration 
-_configuration -
-{. /
-get0 3
-;3 4
-}5 6
-private 
-readonly 
-UserDbContext &
-_userDbContext' 5
-;5 6
-readonly 
-UserManager 
-< #
-ApplicationIdentityUser 4
->4 5
-_userManager6 B
-;B C
-private   
-readonly   
-
-HttpClient   #
-_httpClient  $ /
-;  / 0
-public##  
-TokenStoreRepository## #
-(### $
-UserDbContext##$ 1
-	dbContext##2 ;
-,##; <
-UserManager##= H
-<##H I#
-ApplicationIdentityUser##I `
->##` a
-userManager##b m
-,##m n
-IConfiguration##p ~
-configuration	## å
-,
-##å ç
-
-HttpClient
-##é ò
-
-httpClient
-##ô £
-)
-##£ §
-:
-##• ¶
-base
-##ß ´
-(
-##´ ¨
-	dbContext
-##¨ µ
-)
-##µ ∂
-{$$ 	
-_userDbContext%% 
-=%% 
-	dbContext%% &
-;%%& '
-_userManager&& 
-=&& 
-userManager&& &
-;&&& '
-_configuration(( 
-=(( 
-configuration(( *
-;((* +
-_httpClient)) 
-=)) 
-
-httpClient)) $
-;))$ %
-}** 	
-private,, 
-async,, 
-Task,, $
-SendTokenViaNotification,, 3
-(,,3 4
-string,,4 :
-userid,,; A
-,,,A B
-string,,C I
-token,,J O
-),,O P
-{-- 	#
-ApplicationIdentityUser.. #
-?..# $
-user..% )
-=..* +
-null.., 0
-;..0 1
-if00 
-(00 
-
-emailRegex00 
-.00 
-IsMatch00 "
-(00" #
-userid00# )
-)00) *
-)00* +
-{11 
-user22 
-=22 
-_userDbContext22 %
-.22% &
-Users22& +
-.22+ ,
-FirstOrDefault22, :
-(22: ;
-e22; <
-=>22= ?
-e22@ A
-.22A B
-Email22B G
-==22H J
-userid22K Q
-)22Q R
-;22R S
-}33 
-if55 
-(55 
-
-phoneRegex55 
-.55 
-IsMatch55 "
-(55" #
-userid55# )
-)55) *
-)55* +
-{66 
-user77 
-=77 
-_userDbContext77 %
-.77% &
-Users77& +
-.77+ ,
-FirstOrDefault77, :
-(77: ;
-e77; <
-=>77= ?
-e77@ A
-.77A B
-PhoneNumber77B M
-==77N P
-userid77Q W
-)77W X
-;77X Y
-}88 
-var:: 
-sb:: 
-=:: 
-new:: 
-StringBuilder:: &
-(::& '
-)::' (
-;::( )
-sb<< 
-.<< 
-
-AppendLine<< 
-(<< 
-$"<< 
-$str<< !
-{<<! "
-user<<" &
-!<<& '
-.<<' (
-	FirstName<<( 1
-}<<1 2
-$str<<2 3
-{<<3 4
-user<<4 8
-.<<8 9
-LastName<<9 A
-}<<A B
-$str<<B G
-"<<G H
-)<<H I
-;<<I J
-sb== 
-.== 
-
-AppendLine== 
-(== 
-$str==  
-)==  !
-;==! "
-sb>> 
-.>> 
-
-AppendLine>> 
-(>> 
-$">> 
-$str	>> π
-"
->>π ∫
-)
->>∫ ª
-;
->>ª º
-sb?? 
-.?? 
-
-AppendLine?? 
-(?? 
-$str??  
-)??  !
-;??! "
-sb@@ 
-.@@ 
-
-AppendLine@@ 
-(@@ 
-$"@@ 
-$str@@ )
-{@@) *
-token@@* /
-}@@/ 0
-$str@@0 8
-"@@8 9
-)@@9 :
-;@@: ;
-sbAA 
-.AA 
-
-AppendLineAA 
-(AA 
-$strAA  
-)AA  !
-;AA! "
-sbBB 
-.BB 
-
-AppendLineBB 
-(BB 
-$"BB 
-$str	BB ã
-"
-BBã å
-)
-BBå ç
-;
-BBç é
-sbCC 
-.CC 
-
-AppendLineCC 
-(CC 
-$strCC  
-)CC  !
-;CC! "
-sbDD 
-.DD 
-
-AppendLineDD 
-(DD 
-$"DD 
-$str	DD Ç
-"
-DDÇ É
-)
-DDÉ Ñ
-;
-DDÑ Ö
-sbEE 
-.EE 
-
-AppendLineEE 
-(EE 
-$strEE  
-)EE  !
-;EE! "
-sbFF 
-.FF 
-
-AppendLineFF 
-(FF 
-$"FF 
-$strFF =
-"FF= >
-)FF> ?
-;FF? @
-sbGG 
-.GG 
-
-AppendLineGG 
-(GG 
-$strGG  
-)GG  !
-;GG! "
-sbHH 
-.HH 
-
-AppendLineHH 
-(HH 
-$"HH 
-$strHH -
-"HH- .
-)HH. /
-;HH/ 0
-sbII 
-.II 
-
-AppendLineII 
-(II 
-$strII  
-)II  !
-;II! "
-sbJJ 
-.JJ 
-
-AppendLineJJ 
-(JJ 
-$"JJ 
-$strJJ ,
-"JJ, -
-)JJ- .
-;JJ. /
-sbKK 
-.KK 
-
-AppendLineKK 
-(KK 
-$"KK 
-$strKK .
-"KK. /
-)KK/ 0
-;KK0 1
-sbLL 
-.LL 
-
-AppendLineLL 
-(LL 
-$"LL 
-$strLL *
-"LL* +
-)LL+ ,
-;LL, -
-varOO 
-email_payloadOO 
-=OO 
-newOO  #
-{OO$ %
-userIdOO& ,
-=OO- .
-userOO/ 3
-.OO3 4
-EmailOO4 9
-,OO9 :
-displayNameOO; F
-=OOG H
-$strOOI X
-,OOX Y
-subjectOOZ a
-=OOb c
-$strOOd v
-,OOv w
-messageOOx 
-=
-OOÄ Å
-sb
-OOÇ Ñ
-.
-OOÑ Ö
-ToString
-OOÖ ç
-(
-OOç é
-)
-OOé è
-,
-OOè ê
-type
-OOë ï
-=
-OOñ ó
-$num
-OOò ô
-}
-OOö õ
-;
-OOõ ú
-varPP 
-sms_payloadPP 
-=PP 
-newPP !
-{PP" #
-userIdPP$ *
-=PP+ ,
-userPP- 1
-.PP1 2
-PhoneNumberPP2 =
-,PP= >
-displayNamePP? J
-=PPK L
-stringPPM S
-.PPS T
-EmptyPPT Y
-,PPY Z
-subjectPP[ b
-=PPc d
-stringPPe k
-.PPk l
-EmptyPPl q
-,PPq r
-messagePPs z
-=PP{ |
-$"PP} 
-$str	PP é
-{
-PPé è
-token
-PPè î
-}
-PPî ï
-$str
-PPï ”
-"
-PP” ‘
-,
-PP’ ÷
-type
-PP◊ €
-=
-PP‹ ›
-$num
-PPﬁ ﬂ
-}
-PP‡ ·
-;
-PP· ‚
-stringSS 
-json_smspayloadSS "
-=SS# $
-JsonSerializerSS% 3
-.SS3 4
-	SerializeSS4 =
-(SS= >
-sms_payloadSS> I
-)SSI J
-;SSJ K
-varTT 
-sms_httpContentTT 
-=TT  !
-newTT" %
-StringContentTT& 3
-(TT3 4
-json_smspayloadTT4 C
-,TTC D
-EncodingTTE M
-.TTM N
-UTF8TTN R
-,TTR S
-$strTTT f
-)TTf g
-;TTg h
-HttpResponseMessageUU 
-sms_responseUU  ,
-=UU- .
-awaitUU/ 4
-_httpClientUU5 @
-.UU@ A
-	PostAsyncUUA J
-(UUJ K
-$str	UUK ú
-,
-UUú ù
-sms_httpContent
-UUû ≠
-)
-UU≠ Æ
-;
-UUÆ Ø
-varVV 
-
-result_smsVV 
-=VV 
-sms_responseVV )
-.VV) *
-IsSuccessStatusCodeVV* =
-;VV= >
-stringXX 
-json_emailpayloadXX $
-=XX% &
-JsonSerializerXX' 5
-.XX5 6
-	SerializeXX6 ?
-(XX? @
-email_payloadXX@ M
-)XXM N
-;XXN O
-varYY 
-email_httpContentYY !
-=YY" #
-newYY$ '
-StringContentYY( 5
-(YY5 6
-json_emailpayloadYY6 G
-,YYG H
-EncodingYYI Q
-.YYQ R
-UTF8YYR V
-,YYV W
-$strYYX j
-)YYj k
-;YYk l
-HttpResponseMessageZZ 
-responseZZ  (
-=ZZ) *
-awaitZZ+ 0
-_httpClientZZ1 <
-.ZZ< =
-	PostAsyncZZ= F
-(ZZF G
-$str	ZZG ò
-,
-ZZò ô
-email_httpContent
-ZZö ´
-)
-ZZ´ ¨
-;
-ZZ¨ ≠
-var[[ 
-result[[ 
-=[[ 
-response[[ !
-.[[! "
-IsSuccessStatusCode[[" 5
-;[[5 6
-}]] 	
-public__ 
-async__ 
-Task__ 
-<__ 
-string__  
->__  !
-GetToken__" *
-(__* +
-string__+ 1-
-!mobilePhoneNumber_OR_emailAddress__2 S
-,__S T
-int__U X
-ExpiryMinutes__Y f
-)__f g
-{`` 	
-stringaa 
-tokenaa 
-=aa 
-Applicationaa &
-.aa& '
-Helpersaa' .
-.aa. /
-NumberGeneratoraa/ >
-.aa> ?
-	Generatoraa? H
-(aaH I
-$numaaI J
-)aaJ K
-;aaK L
-ifdd 
-(dd 
-
-emailRegexdd 
-.dd 
-IsMatchdd "
-(dd" #-
-!mobilePhoneNumber_OR_emailAddressdd# D
-)ddD E
-)ddE F
-{ee 
-emailAddressff 
-=ff -
-!mobilePhoneNumber_OR_emailAddressff @
-;ff@ A
-vargg 
-usergg 
-=gg 
-awaitgg  
-_userManagergg! -
-.gg- .
-FindByEmailAsyncgg. >
-(gg> ?
-emailAddressgg? K
-)ggK L
-;ggL M
-ifhh 
-(hh 
-userhh 
-ishh 
-nullhh 
-)hh  
-{ii 
-returnjj 
-$"jj 
-$strjj 1
-{jj1 2
-emailAddressjj2 >
-}jj> ?
-$strjj? Y
-"jjY Z
-;jjZ [
-}kk 
-}ll 
-ifnn 
-(nn 
-emailAddressnn 
-==nn 
-stringnn  &
-.nn& '
-Emptynn' ,
-&&nn- /
-!nn0 1
-
-phoneRegexnn1 ;
-.nn; <
-IsMatchnn< C
-(nnC D-
-!mobilePhoneNumber_OR_emailAddressnnD e
-)nne f
-)nnf g
-{oo 
-returnpp 
-$strpp =
-;pp= >
-}qq 
-ifss 
-(ss 
-
-phoneRegexss 
-.ss 
-IsMatchss "
-(ss" #-
-!mobilePhoneNumber_OR_emailAddressss# D
-)ssD E
-)ssE F
-{tt 
-mobilePhoneNumberuu !
-=uu" #-
-!mobilePhoneNumber_OR_emailAddressuu$ E
-;uuE F
-varvv 
-uservv 
-=vv 
-_userDbContextvv )
-.vv) *
-Usersvv* /
-.vv/ 0
-FirstOrDefaultvv0 >
-(vv> ?
-uvv? @
-=>vvA C
-uvvD E
-.vvE F
-PhoneNumbervvF Q
-==vvR T
-mobilePhoneNumbervvU f
-)vvf g
-;vvg h
-ifww 
-(ww 
-userww 
-isww 
-nullww  
-)ww  !
-{xx 
-returnyy 
-$"yy 
-$stryy 7
-{yy7 8
-mobilePhoneNumberyy8 I
-}yyI J
-$stryyJ d
-"yyd e
-;yye f
-}zz 
-}|| 
-if~~ 
-(~~ 
-emailAddress~~ 
-==~~ 
-string~~ %
-.~~% &
-Empty~~& +
-&&~~, .
-mobilePhoneNumber~~/ @
-==~~A C
-string~~D J
-.~~J K
-Empty~~K P
-)~~P Q
-{ 
-return
-ÄÄ 
-$str
-ÄÄ N
-;
-ÄÄN O
-}
-ÅÅ 
-
-TokenStore
-ÑÑ 
-
-tokenStore
-ÑÑ !
-=
-ÑÑ" #
-new
-ÑÑ$ '
-
-TokenStore
-ÑÑ( 2
-(
-ÑÑ2 3
-)
-ÑÑ3 4
-{
-ÖÖ 
-TokenStoreId
-ÜÜ 
-=
-ÜÜ 
-$num
-ÜÜ  
-,
-ÜÜ  !
-EmailAddress
-áá 
-=
-áá 
-emailAddress
-áá +
-,
-áá+ ,
-MobilePhoneNumber
-àà !
-=
-àà" #
-mobilePhoneNumber
-àà$ 5
-,
-àà5 6
-Token
-ââ 
-=
-ââ 
-token
-ââ 
-,
-ââ 
-CreatedDate
-ää 
-=
-ää 
-DateTime
-ää &
-.
-ää& '
-Now
-ää' *
-,
-ää* +
-
-ExpiryDate
-ãã 
-=
-ãã 
-DateTime
-ãã %
-.
-ãã% &
-Now
-ãã& )
-.
-ãã) *
-
-AddMinutes
-ãã* 4
-(
-ãã4 5
-ExpiryMinutes
-ãã5 B
-)
-ããB C
-,
-ããC D
-
-IsVerified
-åå 
-=
-åå 
-false
-åå "
-}
-çç 
-;
-çç 
-_userDbContext
-èè 
-.
-èè 
-
-TokenStore
-èè %
-.
-èè% &
-Add
-èè& )
-(
-èè) *
-
-tokenStore
-èè* 4
-)
-èè4 5
-;
-èè5 6
-await
-êê 
-_userDbContext
-êê  
-.
-êê  !
-SaveChangesAsync
-êê! 1
-(
-êê1 2
-)
-êê2 3
-;
-êê3 4
-await
-íí 
-this
-íí 
-.
-íí &
-SendTokenViaNotification
-íí /
-(
-íí/ 0/
-!mobilePhoneNumber_OR_emailAddress
-íí0 Q
-,
-ííQ R
-token
-ííS X
-)
-ííX Y
-;
-ííY Z
-return
-îî 
-token
-îî 
-;
-îî 
-}
-ïï 	
-public
-óó 
-async
-óó 
-Task
-óó 
-<
-óó 
-string
-óó  
->
-óó  !
-VerifyToken
-óó" -
-(
-óó- .
-string
-óó. 4/
-!mobilePhoneNumber_OR_emailAddress
-óó5 V
-,
-óóV W
-string
-óóX ^
-	tokenCode
-óó_ h
-)
-óóh i
-{
-òò 	
-try
-ôô 
-{
-öö 
-if
-õõ 
-(
-õõ 
-string
-õõ 
-.
-õõ  
-IsNullOrWhiteSpace
-õõ -
-(
-õõ- ./
-!mobilePhoneNumber_OR_emailAddress
-õõ. O
-)
-õõO P
-is
-õõQ S
-true
-õõT X
-&&
-õõY [
-string
-õõ\ b
-.
-õõb c 
-IsNullOrWhiteSpace
-õõc u
-(
-õõu v
-	tokenCode
-õõv 
-)õõ Ä
-isõõÅ É
-trueõõÑ à
-)õõà â
-{
-úú 
-return
-ùù 
-$str
-ùù R
-;
-ùùR S
-}
-ûû 
-if
-†† 
-(
-†† 
-
-emailRegex
-†† 
-.
-†† 
-IsMatch
-†† &
-(
-††& '/
-!mobilePhoneNumber_OR_emailAddress
-††' H
-)
-††H I
-)
-††I J
-{
-°° 
-emailAddress
-¢¢  
-=
-¢¢! "/
-!mobilePhoneNumber_OR_emailAddress
-¢¢# D
-;
-¢¢D E
-}
-££ 
-if
-•• 
-(
-•• 
-emailAddress
-••  
-==
-••! #
-string
-••$ *
-.
-••* +
-Empty
-••+ 0
-&&
-••1 3
-!
-••4 5
-
-phoneRegex
-••5 ?
-.
-••? @
-IsMatch
-••@ G
-(
-••G H/
-!mobilePhoneNumber_OR_emailAddress
-••H i
-)
-••i j
-)
-••j k
-{
-¶¶ 
-return
-ßß 
-$str
-ßß A
-;
-ßßA B
-}
-®® 
-if
-™™ 
-(
-™™ 
-
-phoneRegex
-™™ 
-.
-™™ 
-IsMatch
-™™ &
-(
-™™& '/
-!mobilePhoneNumber_OR_emailAddress
-™™' H
-)
-™™H I
-)
-™™I J
-{
-´´ 
-mobilePhoneNumber
-¨¨ %
-=
-¨¨& '/
-!mobilePhoneNumber_OR_emailAddress
-¨¨( I
-;
-¨¨I J
-}
-≠≠ 
-if
-ØØ 
-(
-ØØ 
-emailAddress
-ØØ  
-==
-ØØ! #
-string
-ØØ$ *
-.
-ØØ* +
-Empty
-ØØ+ 0
-&&
-ØØ1 3
-mobilePhoneNumber
-ØØ4 E
-==
-ØØF H
-string
-ØØI O
-.
-ØØO P
-Empty
-ØØP U
-)
-ØØU V
-{
-∞∞ 
-return
-±± 
-$str
-±± R
-;
-±±R S
-}
-≤≤ 
-var
-¥¥ 
-
-checkToken
-¥¥ 
-=
-¥¥  
-_userDbContext
-¥¥! /
-.
-¥¥/ 0
-
-TokenStore
-¥¥0 :
-.
-¥¥: ;
-SingleOrDefault
-¥¥; J
-(
-¥¥J K
-t
-¥¥K L
-=>
-¥¥M O
-t
-¥¥P Q
-.
-¥¥Q R
-Token
-¥¥R W
-==
-¥¥X Z
-	tokenCode
-¥¥[ d
-)
-¥¥d e
-;
-¥¥e f
-if
-µµ 
-(
-µµ 
-
-checkToken
-µµ 
-is
-µµ !
-null
-µµ" &
-)
-µµ& '
-{
-∂∂ 
-return
-∑∑ 
-$str
-∑∑ G
-;
-∑∑G H
-}
-∏∏ 
-var
-ªª 
-checkTokenExpiry
-ªª $
-=
-ªª% &
-_userDbContext
-ªª' 5
-.
-ªª5 6
-
-TokenStore
-ªª6 @
-.
-ªª@ A
-SingleOrDefault
-ªªA P
-(
-ªªP Q
-t
-ªªQ R
-=>
-ªªS U
-t
-ªªV W
-.
-ªªW X
-Token
-ªªX ]
-==
-ªª^ `
-	tokenCode
-ªªa j
-&&
-ªªk m
-t
-ªªn o
-.
-ªªo p
-
-ExpiryDate
-ªªp z
-<=
-ªª{ }
-DateTimeªª~ Ü
-.ªªÜ á
-UtcNowªªá ç
-)ªªç é
-;ªªé è
-if
-ºº 
-(
-ºº 
-checkTokenExpiry
-ºº $
-is
-ºº% '
-not
-ºº( +
-null
-ºº, 0
-)
-ºº0 1
-{
-ΩΩ 
-return
-ææ 
-$str
-ææ ^
-;
-ææ^ _
-}
-øø 
-var
-¡¡ 
-checkVerified
-¡¡ !
-=
-¡¡" #
-_userDbContext
-¡¡$ 2
-.
-¡¡2 3
-
-TokenStore
-¡¡3 =
-.
-¡¡= >
-SingleOrDefault
-¡¡> M
-(
-¡¡M N
-t
-¡¡N O
-=>
-¡¡P R
-t
-¡¡S T
-.
-¡¡T U
-Token
-¡¡U Z
-==
-¡¡[ ]
-	tokenCode
-¡¡^ g
-&&
-¡¡h j
-t
-¡¡k l
-.
-¡¡l m
-
-IsVerified
-¡¡m w
-==
-¡¡x z
-true
-¡¡{ 
-)¡¡ Ä
-;¡¡Ä Å
-if
-¬¬ 
-(
-¬¬ 
-checkVerified
-¬¬ !
-is
-¬¬" $
-not
-¬¬% (
-null
-¬¬) -
-)
-¬¬- .
-{
-√√ 
-return
-ƒƒ 
-$str
-ƒƒ h
-;
-ƒƒh i
-}
-≈≈ 
-var
-»» 
-result
-»» 
-=
-»» 
-_userDbContext
-»» +
-.
-»»+ ,
-
-TokenStore
-»», 6
-.
-»»6 7
-FirstOrDefault
-»»7 E
-(
-»»E F
-t
-»»F G
-=>
-»»H J
-t
-»»K L
-.
-»»L M
-Token
-»»M R
-==
-»»S U
-	tokenCode
-»»V _
-&&
-»»` b
-t
-»»c d
-.
-»»d e
-
-IsVerified
-»»e o
-==
-»»p r
-false
-»»s x
-&&
-»»y {
-t
-»»| }
-.
-»»} ~ 
-MobilePhoneNumber»»~ è
-==»»ê í1
-!mobilePhoneNumber_OR_emailAddress»»ì ¥
-||»»µ ∑
-t»»∏ π
-.»»π ∫
-EmailAddress»»∫ ∆
-==»»« …1
-!mobilePhoneNumber_OR_emailAddress»»  Î
-)»»Î Ï
-;»»Ï Ì
-if
-…… 
-(
-…… 
-result
-…… 
-is
-…… 
-null
-…… "
-)
-……" #
-{
-   
-return
-ÀÀ 
-$str
-ÀÀ )
-;
-ÀÀ) *
-}
-ÃÃ 
-result
-ŒŒ 
-!
-ŒŒ 
-.
-ŒŒ 
-
-IsVerified
-ŒŒ "
-=
-ŒŒ# $
-true
-ŒŒ% )
-;
-ŒŒ) *
-result
-œœ 
-.
-œœ 
-VerifiedDate
-œœ #
-=
-œœ$ %
-DateTime
-œœ& .
-.
-œœ. /
-UtcNow
-œœ/ 5
-;
-œœ5 6
-_userDbContext
-—— 
-.
-—— 
-
-TokenStore
-—— )
-.
-——) *
-Update
-——* 0
-(
-——0 1
-result
-——1 7
-)
-——7 8
-;
-——8 9
-await
-““ 
-_userDbContext
-““ $
-.
-““$ %
-SaveChangesAsync
-““% 5
-(
-““5 6
-)
-““6 7
-;
-““7 8
-return
-‘‘ 
-$str
-‘‘ !
-;
-‘‘! "
-}
-’’ 
-catch
-÷÷ 
-(
-÷÷ 
-	Exception
-÷÷ 
-ex
-÷÷ 
-)
-÷÷  
-{
-◊◊ 
-return
-ÿÿ 
-$"
-ÿÿ 
-$str
-ÿÿ 
-{
-ÿÿ  
-ex
-ÿÿ  "
-.
-ÿÿ" #
-InnerException
-ÿÿ# 1
-!
-ÿÿ1 2
-.
-ÿÿ2 3
-Message
-ÿÿ3 :
-}
-ÿÿ: ;
-"
-ÿÿ; <
-;
-ÿÿ< =
-}
-ŸŸ 
-}
-⁄⁄ 	
-public
-‹‹ 
-string
-‹‹ 
-VerifyTokenExpiry
-‹‹ '
-(
-‹‹' (
-string
-‹‹( ./
-!mobilePhoneNumber_OR_emailAddress
-‹‹/ P
-,
-‹‹P Q
-string
-‹‹R X
-	tokenCode
-‹‹Y b
-)
-‹‹b c
-{
-›› 	
-if
-ﬁﬁ 
-(
-ﬁﬁ 
-string
-ﬁﬁ 
-.
-ﬁﬁ  
-IsNullOrWhiteSpace
-ﬁﬁ )
-(
-ﬁﬁ) */
-!mobilePhoneNumber_OR_emailAddress
-ﬁﬁ* K
-)
-ﬁﬁK L
-is
-ﬁﬁM O
-true
-ﬁﬁP T
-&&
-ﬁﬁU W
-string
-ﬁﬁX ^
-.
-ﬁﬁ^ _ 
-IsNullOrWhiteSpace
-ﬁﬁ_ q
-(
-ﬁﬁq r
-	tokenCode
-ﬁﬁr {
-)
-ﬁﬁ{ |
-is
-ﬁﬁ} 
-trueﬁﬁÄ Ñ
-)ﬁﬁÑ Ö
-{
-ﬂﬂ 
-return
-‡‡ 
-$str
-‡‡ N
-;
-‡‡N O
-}
-·· 
-if
-„„ 
-(
-„„ 
-
-emailRegex
-„„ 
-.
-„„ 
-IsMatch
-„„ "
-(
-„„" #/
-!mobilePhoneNumber_OR_emailAddress
-„„# D
-)
-„„D E
-)
-„„E F
-{
-‰‰ 
-emailAddress
-ÂÂ 
-=
-ÂÂ /
-!mobilePhoneNumber_OR_emailAddress
-ÂÂ @
-;
-ÂÂ@ A
-}
-ÊÊ 
-if
-ËË 
-(
-ËË 
-emailAddress
-ËË 
-==
-ËË 
-string
-ËË  &
-.
-ËË& '
-Empty
-ËË' ,
-&&
-ËË- /
-!
-ËË0 1
-
-phoneRegex
-ËË1 ;
-.
-ËË; <
-IsMatch
-ËË< C
-(
-ËËC D/
-!mobilePhoneNumber_OR_emailAddress
-ËËD e
-)
-ËËe f
-)
-ËËf g
-{
-ÈÈ 
-return
-ÍÍ 
-$str
-ÍÍ =
-;
-ÍÍ= >
-}
-ÎÎ 
-if
-ÌÌ 
-(
-ÌÌ 
-
-phoneRegex
-ÌÌ 
-.
-ÌÌ 
-IsMatch
-ÌÌ "
-(
-ÌÌ" #/
-!mobilePhoneNumber_OR_emailAddress
-ÌÌ# D
-)
-ÌÌD E
-)
-ÌÌE F
-{
-ÓÓ 
-mobilePhoneNumber
-ÔÔ !
-=
-ÔÔ" #/
-!mobilePhoneNumber_OR_emailAddress
-ÔÔ$ E
-;
-ÔÔE F
-}
- 
-if
-ÚÚ 
-(
-ÚÚ 
-emailAddress
-ÚÚ 
-==
-ÚÚ 
-string
-ÚÚ  &
-.
-ÚÚ& '
-Empty
-ÚÚ' ,
-&&
-ÚÚ- /
-mobilePhoneNumber
-ÚÚ0 A
-==
-ÚÚB D
-string
-ÚÚE K
-.
-ÚÚK L
-Empty
-ÚÚL Q
-)
-ÚÚQ R
-{
-ÛÛ 
-return
-ÙÙ 
-$str
-ÙÙ N
-;
-ÙÙN O
-}
-ıı 
-var
-¯¯ 
-result
-¯¯ 
-=
-¯¯ 
-_userDbContext
-¯¯ '
-.
-¯¯' (
-
-TokenStore
-¯¯( 2
-.
-˘˘ 
-SingleOrDefault
-˘˘  
-(
-˘˘  !
-t
-˘˘! "
-=>
-˘˘# %
-(
-˙˙ 
-t
-˙˙ 
-.
-˙˙ 
-MobilePhoneNumber
-˙˙ (
-==
-˙˙) +/
-!mobilePhoneNumber_OR_emailAddress
-˙˙, M
-||
-˙˙N P
-t
-˙˙Q R
-.
-˙˙R S
-EmailAddress
-˙˙S _
-==
-˙˙` b0
-!mobilePhoneNumber_OR_emailAddress˙˙c Ñ
-)˙˙Ñ Ö
-&&˙˙Ü à
-t
-˚˚ 
-.
-˚˚ 
-Token
-˚˚ 
-==
-˚˚ 
-	tokenCode
-˚˚  )
-&&
-˚˚* ,
-t
-˚˚- .
-.
-˚˚. /
-
-ExpiryDate
-˚˚/ 9
->=
-˚˚: <
-DateTime
-˚˚= E
-.
-˚˚E F
-UtcNow
-˚˚F L
-)
-˚˚L M
-;
-˚˚M N
-if
-˝˝ 
-(
-˝˝ 
-result
-˝˝ 
-is
-˝˝ 
-null
-˝˝ 
-)
-˝˝ 
-{
-˛˛ 
-return
-ˇˇ 
-$str
-ˇˇ %
-;
-ˇˇ% &
-}
-ÄÄ 
-return
-ÉÉ 
-$str
-ÉÉ 
-;
-ÉÉ 
-}
-ÑÑ 	
-public
-ÜÜ 
-JwTokenResponse
-ÜÜ 
-
-GetJwToken
-ÜÜ )
-(
-ÜÜ) *%
-ApplicationIdentityUser
-ÜÜ* A
-user
-ÜÜB F
-,
-ÜÜF G
-int
-ÜÜH K
-validityInHours
-ÜÜL [
-)
-ÜÜ[ \
-{
-áá 	
-var
-àà 
-	userRoles
-àà 
-=
-àà 
-_userManager
-àà (
-.
-àà( )
-GetRolesAsync
-àà) 6
-(
-àà6 7
-user
-àà7 ;
-)
-àà; <
-.
-àà< =
-Result
-àà= C
-.
-ààC D
-FirstOrDefault
-ààD R
-(
-ààR S
-)
-ààS T
-;
-ààT U
-var
-ââ 
-roleId
-ââ 
-=
-ââ 
-_userDbContext
-ââ '
-.
-ââ' (
-roles
-ââ( -
-.
-ää' (
-Where
-ää( -
-(
-ää- .
-r
-ää. /
-=>
-ää0 2
-r
-ää3 4
-.
-ää4 5
-Name
-ää5 9
-==
-ää: <
-	userRoles
-ää= F
-!
-ääF G
-)
-ääG H
-.
-ãã' (
-Select
-ãã( .
-(
-ãã. /
-r
-ãã/ 0
-=>
-ãã1 3
-r
-ãã4 5
-.
-ãã5 6
-Id
-ãã6 8
-)
-ãã8 9
-.
-åå' (
-FirstOrDefault
-åå( 6
-(
-åå6 7
-)
-åå7 8
-;
-åå8 9
-var
-éé 
-claims
-éé 
-=
-éé 
-this
-éé 
-.
-éé #
-GetModulesPermissions
-éé 3
-(
-éé3 4
-roleId
-éé4 :
-!
-éé: ;
-)
-éé; <
-;
-éé< =
-var
-êê 
-	allClaims
-êê 
-=
-êê 
-new
-êê 
-List
-êê  $
-<
-êê$ %
-Claim
-êê% *
->
-êê* +
-{
-ëë 
-new
-íí 
-Claim
-íí !
-(
-íí! "
-
-ClaimTypes
-íí" ,
-.
-íí, -
-NameIdentifier
-íí- ;
-,
-íí; <
-user
-íí= A
-.
-ííA B
-Id
-ííB D
-)
-ííD E
-,
-ííE F
-new
-ìì 
-Claim
-ìì !
-(
-ìì! "
-
-ClaimTypes
-ìì" ,
-.
-ìì, -
-Role
-ìì- 1
-,
-ìì1 2
-	userRoles
-ìì3 <
-!
-ìì< =
-)
-ìì= >
-,
-ìì> ?
-new
-îî 
-Claim
-îî !
-(
-îî! "
-
-ClaimTypes
-îî" ,
-.
-îî, -
-Email
-îî- 2
-,
-îî2 3
-user
-îî4 8
-.
-îî8 9
-Email
-îî9 >
-!
-îî> ?
-)
-îî? @
-,
-îî@ A
-new
-ïï 
-Claim
-ïï !
-(
-ïï! "
-
-ClaimTypes
-ïï" ,
-.
-ïï, -
-MobilePhone
-ïï- 8
-,
-ïï8 9
-user
-ïï: >
-.
-ïï> ?
-PhoneNumber
-ïï? J
-!
-ïïJ K
-)
-ïïK L
-}
-ññ 
-;
-ññ 
-foreach
-òò 
-(
-òò 
-var
-òò 
-
-permission
-òò #
-in
-òò$ &
-claims
-òò' -
-)
-òò- .
-{
-ôô 
-	allClaims
-öö 
-.
-öö 
-Add
-öö 
-(
-öö 
-new
-öö !
-Claim
-öö" '
-(
-öö' (
-$"
-öö( *
-$str
-öö* 5
-{
-öö5 6
-
-permission
-öö6 @
-.
-öö@ A
-
-ModuleName
-ööA K
-}
-ööK L
-$str
-ööL M
-{
-ööM N
-
-permission
-ööN X
-.
-ööX Y
-ModulePermission
-ööY i
-}
-ööi j
-"
-ööj k
-,
-öök l
-
-permission
-ööm w
-.
-ööw x
-ModulePermissionööx à
-!ööà â
-)ööâ ä
-)ööä ã
-;ööã å
-}
-õõ 
-var
-üü 
-tokenHandler
-üü 
-=
-üü 
-new
-üü "%
-JwtSecurityTokenHandler
-üü# :
-(
-üü: ;
-)
-üü; <
-;
-üü< =
-var
-†† 
-key
-†† 
-=
-†† 
-Encoding
-†† 
-.
-†† 
-ASCII
-†† $
-.
-††$ %
-GetBytes
-††% -
-(
-††- .
-_configuration
-††. <
-[
-††< =
-$str
-††= R
-]
-††R S
-!
-††S T
-)
-††T U
-;
-††U V
-var
-¢¢ 
-tokenDescriptor
-¢¢ 
-=
-¢¢  !
-new
-¢¢" %%
-SecurityTokenDescriptor
-¢¢& =
-{
-££ 
-Subject
-§§ 
-=
-§§ 
-new
-§§ 
-ClaimsIdentity
-§§ ,
-(
-§§, -
-	allClaims
-§§- 6
-)
-§§6 7
-,
-§§7 8
-Expires
-•• 
-=
-•• 
-DateTime
-•• "
-.
-••" #
-UtcNow
-••# )
-.
-••) *
-AddHours
-••* 2
-(
-••2 3
-validityInHours
-••3 B
-)
-••B C
-,
-••C D 
-SigningCredentials
-¶¶ "
-=
-¶¶# $
-new
-¶¶% ( 
-SigningCredentials
-¶¶) ;
-(
-¶¶; <
-new
-¶¶< ?"
-SymmetricSecurityKey
-¶¶@ T
-(
-¶¶T U
-key
-¶¶U X
-)
-¶¶X Y
-,
-¶¶Y Z 
-SecurityAlgorithms
-¶¶[ m
-.
-¶¶m n
-
-HmacSha256
-¶¶n x
-)
-¶¶x y
-}
-ßß 
-;
-ßß 
-var
-®® 
-token
-®® 
-=
-®® 
-tokenHandler
-®® $
-.
-®®$ %
-CreateToken
-®®% 0
-(
-®®0 1
-tokenDescriptor
-®®1 @
-)
-®®@ A
-;
-®®A B
-var
-©© 
-tokenString
-©© 
-=
-©© 
-tokenHandler
-©© *
-.
-©©* +
-
-WriteToken
-©©+ 5
-(
-©©5 6
-token
-©©6 ;
-)
-©©; <
-;
-©©< =
-return
-´´ 
-new
-´´ 
-JwTokenResponse
-´´ &
-{
-¨¨ 
-Token
-≠≠ 
-=
-≠≠ 
-tokenString
-≠≠ #
-.
-≠≠# $
-ToString
-≠≠$ ,
-(
-≠≠, -
-)
-≠≠- .
-,
-≠≠. /
-	ExpiresAt
-ÆÆ 
-=
-ÆÆ 
-tokenDescriptor
-ÆÆ +
-.
-ÆÆ+ ,
-Expires
-ÆÆ, 3
-}
-ØØ 
-;
-ØØ 
-}
-∞∞ 	
-public
-≤≤ 
-RefreshToken
-≤≤ 
-GetJwRefreshToken
-≤≤ -
-(
-≤≤- .
-)
-≤≤. /
-{
-≥≥ 	
-var
-¥¥ 
-randomNumber
-¥¥ 
-=
-¥¥ 
-new
-¥¥ "
-byte
-¥¥# '
-[
-¥¥' (
-$num
-¥¥( *
-]
-¥¥* +
-;
-¥¥+ ,
-using
-µµ 
-(
-µµ 
-var
-µµ 
-rng
-µµ 
-=
-µµ #
-RandomNumberGenerator
-µµ 2
-.
-µµ2 3
-Create
-µµ3 9
-(
-µµ9 :
-)
-µµ: ;
-)
-µµ; <
-{
-∂∂ 
-rng
-∑∑ 
-.
-∑∑ 
-GetBytes
-∑∑ 
-(
-∑∑ 
-randomNumber
-∑∑ )
-)
-∑∑) *
-;
-∑∑* +
-return
-∏∏ 
-new
-∏∏ 
-RefreshToken
-∏∏ '
-{
-ππ 
-Token
-∫∫ 
-=
-∫∫ 
-Convert
-∫∫ #
-.
-∫∫# $
-ToBase64String
-∫∫$ 2
-(
-∫∫2 3
-randomNumber
-∫∫3 ?
-)
-∫∫? @
-,
-∫∫@ A
-Expires
-ªª 
-=
-ªª 
-DateTime
-ªª &
-.
-ªª& '
-UtcNow
-ªª' -
-.
-ªª- .
-AddDays
-ªª. 5
-(
-ªª5 6
-$num
-ªª6 7
-)
-ªª7 8
-,
-ªª8 9
-Created
-ºº 
-=
-ºº 
-DateTime
-ºº &
-.
-ºº& '
-UtcNow
-ºº' -
-}
-ΩΩ 
-;
-ΩΩ 
-}
-ææ 
-}
-øø 	
-public
-¬¬ 
-ClaimsPrincipal
-¬¬ 6
-(GetClaimsPrincipalFromExpiredBearerToken
-¬¬ G
-(
-¬¬G H
-string
-¬¬H N
-bearerToken
-¬¬O Z
-)
-¬¬Z [
-{
-√√ 	
-var
-ƒƒ 
-key
-ƒƒ 
-=
-ƒƒ 
-Encoding
-ƒƒ 
-.
-ƒƒ 
-ASCII
-ƒƒ $
-.
-ƒƒ$ %
-GetBytes
-ƒƒ% -
-(
-ƒƒ- .
-_configuration
-ƒƒ. <
-[
-ƒƒ< =
-$str
-ƒƒ= R
-]
-ƒƒR S
-!
-ƒƒS T
-)
-ƒƒT U
-;
-ƒƒU V
-var
-≈≈ '
-tokenValidationParameters
-≈≈ )
-=
-≈≈* +
-new
-≈≈, /'
-TokenValidationParameters
-≈≈0 I
-{
-∆∆ 
-ValidateIssuer
-«« 
-=
-««  
-false
-««! &
-,
-««& '
-ValidateAudience
-»»  
-=
-»»! "
-false
-»»# (
-,
-»»( )
-ValidateLifetime
-……  
-=
-……! "
-false
-……# (
-,
-……( )&
-ValidateIssuerSigningKey
-   (
-=
-  ) *
-true
-  + /
-,
-  / 0
-IssuerSigningKey
-ÀÀ  
-=
-ÀÀ! "
-new
-ÀÀ# &"
-SymmetricSecurityKey
-ÀÀ' ;
-(
-ÀÀ; <
-key
-ÀÀ< ?
-)
-ÀÀ? @
-,
-ÀÀ@ A
-	ClockSkew
-ÃÃ 
-=
-ÃÃ 
-TimeSpan
-ÃÃ $
-.
-ÃÃ$ %
-Zero
-ÃÃ% )
-}
-ÕÕ 
-;
-ÕÕ 
-var
-œœ 
-tokenHandler
-œœ 
-=
-œœ 
-new
-œœ "%
-JwtSecurityTokenHandler
-œœ# :
-(
-œœ: ;
-)
-œœ; <
-;
-œœ< =
-var
-–– 
-	principal
-–– 
-=
-–– 
-tokenHandler
-–– (
-.
-––( )
-ValidateToken
-––) 6
-(
-––6 7
-bearerToken
-––7 B
-,
-––B C'
-tokenValidationParameters
-––D ]
-,
-––] ^
-out
-––_ b
-SecurityToken
-––c p
-securityToken
-––q ~
-)
-––~ 
-;–– Ä
-JwtSecurityToken
-—— 
-?
-—— 
-jwtSecurityToken
-—— .
-=
-——/ 0
-securityToken
-——1 >
-as
-——? A
-JwtSecurityToken
-——B R
-;
-——R S
-if
-““ 
-(
-““ 
-jwtSecurityToken
-““  
-==
-““! #
-null
-““$ (
-||
-““) +
-!
-““, -
-jwtSecurityToken
-““- =
-.
-““= >
-Header
-““> D
-.
-““D E
-Alg
-““E H
-.
-““H I
-Equals
-““I O
-(
-““O P 
-SecurityAlgorithms
-““P b
-.
-““b c
-
-HmacSha256
-““c m
-,
-““m n
-StringComparison
-““o 
-.““ Ä*
-InvariantCultureIgnoreCase““Ä ö
-)““ö õ
-)““õ ú
-{
-”” 
-throw
-‘‘ 
-new
-‘‘ $
-SecurityTokenException
-‘‘ 0
-(
-‘‘0 1
-$str
-‘‘1 @
-)
-‘‘@ A
-;
-‘‘A B
-}
-’’ 
-return
-◊◊ 
-	principal
-◊◊ 
-;
-◊◊ 
-}
-ÿÿ 	
-private
-⁄⁄ 
-IEnumerable
-⁄⁄ 
-<
-⁄⁄ '
-RoleModulesPermissionsDto
-⁄⁄ 5
->
-⁄⁄5 6#
-GetModulesPermissions
-⁄⁄7 L
-(
-⁄⁄L M
-string
-⁄⁄M S
-roleId
-⁄⁄T Z
-)
-⁄⁄Z [
-{
-€€ 	
-var
-›› 
-modulePermissions
-›› !
-=
-››" #
-(
-››$ %
-from
-››% )
-a
-››* +
-in
-››, .
-_userDbContext
-››/ =
-.
-››= >+
-ApplicationModulesPermissions
-››> [
-join
-ﬁﬁ% )
-b
-ﬁﬁ* +
-in
-ﬁﬁ, .
-_userDbContext
-ﬁﬁ/ =
-.
-ﬁﬁ= > 
-ApplicationModules
-ﬁﬁ> P
-on
-ﬂﬂ) +
-a
-ﬂﬂ, -
-.
-ﬂﬂ- .
-ModuleId
-ﬂﬂ. 6
-equals
-ﬂﬂ7 =
-b
-ﬂﬂ> ?
-.
-ﬂﬂ? @
-ModuleId
-ﬂﬂ@ H
-into
-ﬂﬂI M
-modules
-ﬂﬂN U
-from
-‡‡% )
-module
-‡‡* 0
-in
-‡‡1 3
-modules
-‡‡4 ;
-.
-‡‡; <
-DefaultIfEmpty
-‡‡< J
-(
-‡‡J K
-)
-‡‡K L
-join
-··% )
-c
-··* +
-in
-··, .
-_userDbContext
-··/ =
-.
-··= >
-Roles
-··> C
-on
-‚‚) +
-a
-‚‚, -
-.
-‚‚- .
-RoleId
-‚‚. 4
-equals
-‚‚5 ;
-c
-‚‚< =
-.
-‚‚= >
-Id
-‚‚> @
-into
-‚‚A E
-roles
-‚‚F K
-from
-„„% )
-role
-„„* .
-in
-„„/ 1
-roles
-„„2 7
-.
-„„7 8
-DefaultIfEmpty
-„„8 F
-(
-„„F G
-)
-„„G H
-where
-‰‰% *
-a
-‰‰+ ,
-.
-‰‰, -
-RoleId
-‰‰- 3
-==
-‰‰4 6
-roleId
-‰‰7 =
-select
-ÂÂ% +
-new
-ÂÂ, /'
-RoleModulesPermissionsDto
-ÂÂ0 I
-{
-ÊÊ% & 
-ModulePermissionId
-ÁÁ) ;
-=
-ÁÁ< =
-a
-ÁÁ> ?
-.
-ÁÁ? @ 
-ModulePermissionId
-ÁÁ@ R
-,
-ÁÁR S
-RoleId
-ËË) /
-=
-ËË0 1
-a
-ËË2 3
-.
-ËË3 4
-RoleId
-ËË4 :
-,
-ËË: ;
-RoleName
-ÈÈ) 1
-=
-ÈÈ2 3
-role
-ÈÈ4 8
-!=
-ÈÈ9 ;
-null
-ÈÈ< @
-?
-ÈÈA B
-role
-ÈÈC G
-.
-ÈÈG H
-Name
-ÈÈH L
-:
-ÈÈM N
-$str
-ÈÈO X
-,
-ÈÈX Y
-ModuleId
-ÍÍ) 1
-=
-ÍÍ2 3
-a
-ÍÍ4 5
-.
-ÍÍ5 6
-ModuleId
-ÍÍ6 >
-,
-ÍÍ> ?
-
-ModuleName
-ÎÎ) 3
-=
-ÎÎ4 5
-module
-ÎÎ6 <
-!=
-ÎÎ= ?
-null
-ÎÎ@ D
-?
-ÎÎE F
-module
-ÎÎG M
-.
-ÎÎM N
-
-ModuleName
-ÎÎN X
-:
-ÎÎY Z
-$str
-ÎÎ[ f
-,
-ÎÎf g
-ModulePermission
-ÏÏ) 9
-=
-ÏÏ: ;
-a
-ÏÏ< =
-.
-ÏÏ= >
-ModulePermission
-ÏÏ> N
-}
-ÌÌ% &
-)
-ÌÌ& '
-.
-ÌÌ' (
-ToList
-ÌÌ( .
-(
-ÌÌ. /
-)
-ÌÌ/ 0
-;
-ÌÌ0 1
-return
-ÔÔ 
-modulePermissions
-ÔÔ $
-;
-ÔÔ$ %
-}
-ÒÒ 	
-}
-ÛÛ 
-}ÙÙ ¶
-ú/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/Permissions/SubPermissionsRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-.< =
-Permissions= H
-{ 
-public 
-class $
-SubPermissionsRepository &
-:& '
-
-Repository( 2
-<2 3
-SubPermissions3 A
->A B
-,B C%
-ISubPermissionsRepositoryD ]
-{ 
-public $
-SubPermissionsRepository	 !
-(! "
-UserDbContext" /
-	dbContext0 9
-)9 :
-:; <
-base= A
-(A B
-	dbContextB K
-)K L
-{ 
-} 
-}		 
-}
-
- ø
-°/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/Permissions/SubPermissionsItemsRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-.< =
-Permissions= H
-{ 
-public 
-class )
-SubPermissionsItemsRepository +
-:+ ,
-
-Repository- 7
-<7 8
-SubPermissionsItems8 K
->K L
-,L M*
-ISubPermissionsItemsRepositoryN l
-{ 
-public )
-SubPermissionsItemsRepository	 &
-(& '
-UserDbContext' 4
-	dbContext5 >
-)> ?
-:@ A
-baseB F
-(F G
-	dbContextG P
-)P Q
-{ 
-} 
-}		 
-}
-
- ù
-ô/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/Permissions/PermissionsRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-.< =
-Permissions= H
-{ 
-public 
-class !
-PermissionsRepository #
-:# $
-
-Repository% /
-</ 0
-AccessPermissions0 A
->A B
-,B C"
-IPermissionsRepositoryD Z
-{ 
-public !
-PermissionsRepository	 
-( 
-UserDbContext ,
-	dbContext- 6
-)6 7
-:8 9
-base: >
-(> ?
-	dbContext? H
-)H I
-{		 	
-}
-
- 
-} 
-} ˙
-è/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/Menu/SubMenusRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-.< =
-Menu= A
-{ 
-public 
-
-class 
-SubMenusRepository #
-:$ %
-
-Repository& 0
-<0 1
-SubMenus1 9
->9 :
-,: ;
-ISubMenusRepository< O
-{		 
-public
-
- 
-SubMenusRepository
-
-	 
-(
-
- 
-UserDbContext
-
- )
-	dbContext
-
-* 3
-)
-
-3 4
-:
-
-5 6
-base
-
-7 ;
-(
-
-; <
-	dbContext
-
-< E
-)
-
-E F
-{ 	
-} 
-} 
-} é
-ì/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/Menu/SubMenuItemsRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-.< =
-Menu= A
-{ 
-public 
-
-class "
-SubMenuItemsRepository '
-:( )
-
-Repository* 4
-<4 5
-SubMenuItems5 A
->A B
-,B C#
-ISubMenuItemsRepositoryD [
-{		 
-public
-
- "
-SubMenuItemsRepository
-
-	 
-(
-
-  
-UserDbContext
-
-  -
-	dbContext
-
-. 7
-)
-
-7 8
-:
-
-9 :
-base
-
-; ?
-(
-
-? @
-	dbContext
-
-@ I
-)
-
-I J
-{ 	
-} 
-} 
-} Î
-å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/Menu/MenusRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-.< =
-Menu= A
-{ 
-public 
-class 
-MenusRepository 
-: 
-
-Repository  *
-<* +
-Menus+ 0
->0 1
-,1 2
-IMenusRepository3 C
-{ 
-public		 
-MenusRepository			 
-(		 
-UserDbContext		 &
-	dbContext		' 0
-)		0 1
-:		2 3
-base		4 8
-(		8 9
-	dbContext		9 B
-)		B C
-{
-
- 
-} 
-} 
-} ï
-í/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/Menu/MenuActionsRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-.< =
-Menu= A
-{ 
-} Ü
-î/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/IdentificationTypeRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-{ 
-public 
-
-class (
-IdentificationTypeRepository -
-:. /
-
-Repository0 :
-<: ;
-IdentificationType; M
->M N
-,N O)
-IIdentificationTypeRepositoryP m
-{ 
-public (
-IdentificationTypeRepository +
-(+ ,
-UserDbContext, 9
-	dbContext: C
-)C D
-:E F
-baseG K
-(K L
-	dbContextL U
-)U V
-{ 	
-} 	
-}		 
-}
-
- Ú
-ê/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/DepartmentUnitRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-{ 
-public 
-class $
-DepartmentUnitRepository &
-:' (
-
-Repository) 3
-<3 4
-DepartmentUnit4 B
->B C
-,C D%
-IDepartmentUnitRepositoryE ^
-{ 
-public $
-DepartmentUnitRepository	 !
-(! "
-UserDbContext" /
-	dbContext0 9
-)9 :
-:; <
-base= A
-(A B
-	dbContextB K
-)K L
-{		 
-}
-
- 
-} 
-} ﬁ
-å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/DepartmentRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-{ 
-public 
-class  
-DepartmentRepository "
-:# $
-
-Repository% /
-</ 0
-
-Department0 :
->: ;
-,; <!
-IDepartmentRepository= R
-{ 
-public  
-DepartmentRepository	 
-( 
-UserDbContext +
-	dbContext, 5
-)5 6
-:7 8
-base9 =
-(= >
-	dbContext> G
-)G H
-{		 
-}
-
- 
-} 
-} ‘
-ä/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/ChannelsRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-{ 
-public 
-class 
-ChannelsRepository  
-:! "
-
-Repository# -
-<- .
-Channels. 6
->6 7
-,7 8
-IChannelsRepository9 L
-{ 
-public 
-ChannelsRepository	 
-( 
-UserDbContext )
-	dbContext* 3
-)3 4
-:5 6
-base7 ;
-(; <
-	dbContext< E
-)E F
-{ 	
-} 
-}		 
-}
-
- Ü
-î/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/ApplicationModulesRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-{ 
-public 
-class (
-ApplicationModulesRepository *
-:+ ,
-
-Repository- 7
-<7 8
-ApplicationModules8 J
->J K
-,K L)
-IApplicationModulesRepositoryM j
-{ 
-public (
-ApplicationModulesRepository	 %
-(% &
-UserDbContext& 3
-	dbContext4 =
-)= >
-:? @
-baseA E
-(E F
-	dbContextF O
-)O P
-{ 	
-} 
-}		 
-}
-
- æ
-ü/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Repositories/Entities/ApplicationModulesPermissionsRepository.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Repositories' 3
-.3 4
-Entities4 <
-{ 
-public 
-class 3
-'ApplicationModulesPermissionsRepository 5
-:6 7
-
-Repository8 B
-<B C)
-ApplicationModulesPermissionsC `
->` a
-,a b5
-(IApplicationModulesPermissionsRepository	c ã
-{ 
-public 3
-'ApplicationModulesPermissionsRepository	 0
-(0 1
-UserDbContext1 >
-	dbContext? H
-)H I
-:J K
-baseL P
-(P Q
-	dbContextQ Z
-)Z [
-{ 	
-} 
-}		 
-}
-
- ˛H
-å/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Migrations/20250325154629_ModifyRolesTable.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-
-Migrations' 1
-{ 
-public 
-
-partial 
-class 
-ModifyRolesTable )
-:* +
-	Migration, 5
-{		 
-	protected 
-override 
-void 
-Up  "
-(" #
-MigrationBuilder# 3
-migrationBuilder4 D
-)D E
-{ 	
-migrationBuilder 
-. 
-EnsureSchema )
-() *
-name 
-: 
-$str 
-) 
-; 
-migrationBuilder 
-. 
-CreateTable (
-(( )
-name 
-: 
-$str *
-,* +
-columns 
-: 
-table 
-=> !
-new" %
-{ 
-ModuleId 
-= 
-table $
-.$ %
-Column% +
-<+ ,
-string, 2
->2 3
-(3 4
-type4 8
-:8 9
-$str: H
-,H I
-	maxLengthJ S
-:S T
-$numU W
-,W X
-nullableY a
-:a b
-falsec h
-)h i
-,i j
-
-ModuleName 
-=  
-table! &
-.& '
-Column' -
-<- .
-string. 4
->4 5
-(5 6
-type6 :
-:: ;
-$str< J
-,J K
-	maxLengthL U
-:U V
-$numW Y
-,Y Z
-nullable[ c
-:c d
-truee i
-)i j
-} 
-, 
-constraints 
-: 
-table "
-=># %
-{ 
-table 
-. 
-
-PrimaryKey $
-($ %
-$str% <
-,< =
-x> ?
-=>@ B
-xC D
-.D E
-ModuleIdE M
-)M N
-;N O
-} 
-) 
-; 
-migrationBuilder 
-. 
-CreateTable (
-(( )
-name 
-: 
-$str 5
-,5 6
-columns 
-: 
-table 
-=> !
-new" %
-{ 
-ModulePermissionId   &
-=  ' (
-table  ) .
-.  . /
-Column  / 5
-<  5 6
-int  6 9
->  9 :
-(  : ;
-type  ; ?
-:  ? @
-$str  A F
-,  F G
-nullable  H P
-:  P Q
-false  R W
-)  W X
-.!! 
-
-Annotation!! #
-(!!# $
-$str!!$ 8
-,!!8 9
-$str!!: @
-)!!@ A
-,!!A B
-RoleId"" 
-="" 
-table"" "
-.""" #
-Column""# )
-<"") *
-string""* 0
->""0 1
-(""1 2
-type""2 6
-:""6 7
-$str""8 F
-,""F G
-	maxLength""H Q
-:""Q R
-$num""S U
-,""U V
-nullable""W _
-:""_ `
-true""a e
-)""e f
-,""f g
-ModuleId## 
-=## 
-table## $
-.##$ %
-Column##% +
-<##+ ,
-string##, 2
->##2 3
-(##3 4
-type##4 8
-:##8 9
-$str##: H
-,##H I
-	maxLength##J S
-:##S T
-$num##U W
-,##W X
-nullable##Y a
-:##a b
-true##c g
-)##g h
-,##h i
-ModulePermission$$ $
-=$$% &
-table$$' ,
-.$$, -
-Column$$- 3
-<$$3 4
-string$$4 :
->$$: ;
-($$; <
-type$$< @
-:$$@ A
-$str$$B P
-,$$P Q
-	maxLength$$R [
-:$$[ \
-$num$$] _
-,$$_ `
-nullable$$a i
-:$$i j
-true$$k o
-)$$o p
-}%% 
-,%% 
-constraints&& 
-:&& 
-table&& "
-=>&&# %
-{'' 
-table(( 
-.(( 
-
-PrimaryKey(( $
-((($ %
-$str((% G
-,((G H
-x((I J
-=>((K M
-x((N O
-.((O P
-ModulePermissionId((P b
-)((b c
-;((c d
-})) 
-))) 
-;)) 
-migrationBuilder++ 
-.++ 
-CreateTable++ (
-(++( )
-name,, 
-:,, 
-$str,,  
-,,,  !
-columns-- 
-:-- 
-table-- 
-=>-- !
-new--" %
-{.. 
-	ChannelId// 
-=// 
-table//  %
-.//% &
-Column//& ,
-<//, -
-int//- 0
->//0 1
-(//1 2
-type//2 6
-://6 7
-$str//8 =
-,//= >
-nullable//? G
-://G H
-false//I N
-)//N O
-.00 
-
-Annotation00 #
-(00# $
-$str00$ 8
-,008 9
-$str00: @
-)00@ A
-,00A B
-ChannelName11 
-=11  !
-table11" '
-.11' (
-Column11( .
-<11. /
-string11/ 5
->115 6
-(116 7
-type117 ;
-:11; <
-$str11= K
-,11K L
-	maxLength11M V
-:11V W
-$num11X Z
-,11Z [
-nullable11\ d
-:11d e
-false11f k
-)11k l
-,11l m
-	CreatedOn22 
-=22 
-table22  %
-.22% &
-Column22& ,
-<22, -
-DateTime22- 5
->225 6
-(226 7
-type227 ;
-:22; <
-$str22= H
-,22H I
-nullable22J R
-:22R S
-false22T Y
-)22Y Z
-,22Z [
-	CreatedBy33 
-=33 
-table33  %
-.33% &
-Column33& ,
-<33, -
-string33- 3
->333 4
-(334 5
-type335 9
-:339 :
-$str33; J
-,33J K
-nullable33L T
-:33T U
-true33V Z
-)33Z [
-,33[ \
-
-ModifiedOn44 
-=44  
-table44! &
-.44& '
-Column44' -
-<44- .
-DateTime44. 6
->446 7
-(447 8
-type448 <
-:44< =
-$str44> I
-,44I J
-nullable44K S
-:44S T
-false44U Z
-)44Z [
-,44[ \
-
-ModifiedBy55 
-=55  
-table55! &
-.55& '
-Column55' -
-<55- .
-string55. 4
->554 5
-(555 6
-type556 :
-:55: ;
-$str55< K
-,55K L
-nullable55M U
-:55U V
-true55W [
-)55[ \
-,55\ ]
-	DeletedOn66 
-=66 
-table66  %
-.66% &
-Column66& ,
-<66, -
-DateTime66- 5
->665 6
-(666 7
-type667 ;
-:66; <
-$str66= H
-,66H I
-nullable66J R
-:66R S
-false66T Y
-)66Y Z
-,66Z [
-	DeletedBy77 
-=77 
-table77  %
-.77% &
-Column77& ,
-<77, -
-string77- 3
->773 4
-(774 5
-type775 9
-:779 :
-$str77; J
-,77J K
-nullable77L T
-:77T U
-true77V Z
-)77Z [
-}88 
-,88 
-constraints99 
-:99 
-table99 "
-=>99# %
-{:: 
-table;; 
-.;; 
-
-PrimaryKey;; $
-(;;$ %
-$str;;% 2
-,;;2 3
-x;;4 5
-=>;;6 8
-x;;9 :
-.;;: ;
-	ChannelId;;; D
-);;D E
-;;;E F
-}<< 
-)<< 
-;<< 
-migrationBuilder>> 
-.>> 
-CreateIndex>> (
-(>>( )
-name?? 
-:?? 
-$str?? @
-,??@ A
-table@@ 
-:@@ 
-$str@@ *
-,@@* +
-columnsAA 
-:AA 
-newAA 
-[AA 
-]AA 
-{AA 
-$strAA  *
-,AA* +
-$strAA, 8
-}AA9 :
-,AA: ;
-uniqueBB 
-:BB 
-trueBB 
-,BB 
-filterCC 
-:CC 
-$strCC 1
-)CC1 2
-;CC2 3
-migrationBuilderEE 
-.EE 
-CreateIndexEE (
-(EE( )
-nameFF 
-:FF 
-$strFF /
-,FF/ 0
-tableGG 
-:GG 
-$strGG !
-,GG! "
-columnHH 
-:HH 
-$strHH %
-,HH% &
-uniqueII 
-:II 
-trueII 
-)II 
-;II 
-}JJ 	
-	protectedMM 
-overrideMM 
-voidMM 
-DownMM  $
-(MM$ %
-MigrationBuilderMM% 5
-migrationBuilderMM6 F
-)MMF G
-{NN 	
-migrationBuilderOO 
-.OO 
-	DropTableOO &
-(OO& '
-namePP 
-:PP 
-$strPP *
-)PP* +
-;PP+ ,
-migrationBuilderRR 
-.RR 
-	DropTableRR &
-(RR& '
-nameSS 
-:SS 
-$strSS 5
-)SS5 6
-;SS6 7
-migrationBuilderUU 
-.UU 
-	DropTableUU &
-(UU& '
-nameVV 
-:VV 
-$strVV  
-)VV  !
-;VV! "
-}WW 	
-}XX 
-}YY ⁄„
-é/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Migrations/20250325154330_ModifiedRolesTable.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-
-Migrations' 1
-{		 
-public 
-
-partial 
-class 
-ModifiedRolesTable +
-:, -
-	Migration. 7
-{ 
-	protected 
-override 
-void 
-Up  "
-(" #
-MigrationBuilder# 3
-migrationBuilder4 D
-)D E
-{ 	
-migrationBuilder 
-. 
-EnsureSchema )
-() *
-name 
-: 
-$str 
-) 
-; 
-migrationBuilder 
-. 
-CreateTable (
-(( )
-name 
-: 
-$str *
-,* +
-columns 
-: 
-table 
-=> !
-new" %
-{ 
-ModuleId 
-= 
-table $
-.$ %
-Column% +
-<+ ,
-string, 2
->2 3
-(3 4
-type4 8
-:8 9
-$str: H
-,H I
-	maxLengthJ S
-:S T
-$numU W
-,W X
-nullableY a
-:a b
-falsec h
-)h i
-,i j
-
-ModuleName 
-=  
-table! &
-.& '
-Column' -
-<- .
-string. 4
->4 5
-(5 6
-type6 :
-:: ;
-$str< J
-,J K
-	maxLengthL U
-:U V
-$numW Y
-,Y Z
-nullable[ c
-:c d
-truee i
-)i j
-} 
-, 
-constraints 
-: 
-table "
-=># %
-{ 
-table 
-. 
-
-PrimaryKey $
-($ %
-$str% <
-,< =
-x> ?
-=>@ B
-xC D
-.D E
-ModuleIdE M
-)M N
-;N O
-} 
-) 
-; 
-migrationBuilder 
-. 
-CreateTable (
-(( )
-name   
-:   
-$str   5
-,  5 6
-columns!! 
-:!! 
-table!! 
-=>!! !
-new!!" %
-{"" 
-ModulePermissionId## &
-=##' (
-table##) .
-.##. /
-Column##/ 5
-<##5 6
-int##6 9
->##9 :
-(##: ;
-type##; ?
-:##? @
-$str##A F
-,##F G
-nullable##H P
-:##P Q
-false##R W
-)##W X
-.$$ 
-
-Annotation$$ #
-($$# $
-$str$$$ 8
-,$$8 9
-$str$$: @
-)$$@ A
-,$$A B
-RoleId%% 
-=%% 
-table%% "
-.%%" #
-Column%%# )
-<%%) *
-string%%* 0
->%%0 1
-(%%1 2
-type%%2 6
-:%%6 7
-$str%%8 F
-,%%F G
-	maxLength%%H Q
-:%%Q R
-$num%%S U
-,%%U V
-nullable%%W _
-:%%_ `
-true%%a e
-)%%e f
-,%%f g
-ModuleId&& 
-=&& 
-table&& $
-.&&$ %
-Column&&% +
-<&&+ ,
-string&&, 2
->&&2 3
-(&&3 4
-type&&4 8
-:&&8 9
-$str&&: H
-,&&H I
-	maxLength&&J S
-:&&S T
-$num&&U W
-,&&W X
-nullable&&Y a
-:&&a b
-true&&c g
-)&&g h
-,&&h i
-ModulePermission'' $
-=''% &
-table''' ,
-.'', -
-Column''- 3
-<''3 4
-string''4 :
->'': ;
-(''; <
-type''< @
-:''@ A
-$str''B P
-,''P Q
-	maxLength''R [
-:''[ \
-$num''] _
-,''_ `
-nullable''a i
-:''i j
-true''k o
-)''o p
-}(( 
-,(( 
-constraints)) 
-:)) 
-table)) "
-=>))# %
-{** 
-table++ 
-.++ 
-
-PrimaryKey++ $
-(++$ %
-$str++% G
-,++G H
-x++I J
-=>++K M
-x++N O
-.++O P
-ModulePermissionId++P b
-)++b c
-;++c d
-},, 
-),, 
-;,, 
-migrationBuilder.. 
-... 
-CreateTable.. (
-(..( )
-name// 
-:// 
-$str//  
-,//  !
-columns00 
-:00 
-table00 
-=>00 !
-new00" %
-{11 
-	ChannelId22 
-=22 
-table22  %
-.22% &
-Column22& ,
-<22, -
-int22- 0
->220 1
-(221 2
-type222 6
-:226 7
-$str228 =
-,22= >
-nullable22? G
-:22G H
-false22I N
-)22N O
-.33 
-
-Annotation33 #
-(33# $
-$str33$ 8
-,338 9
-$str33: @
-)33@ A
-,33A B
-ChannelName44 
-=44  !
-table44" '
-.44' (
-Column44( .
-<44. /
-string44/ 5
->445 6
-(446 7
-type447 ;
-:44; <
-$str44= K
-,44K L
-	maxLength44M V
-:44V W
-$num44X Z
-,44Z [
-nullable44\ d
-:44d e
-false44f k
-)44k l
-,44l m
-	CreatedOn55 
-=55 
-table55  %
-.55% &
-Column55& ,
-<55, -
-DateTime55- 5
->555 6
-(556 7
-type557 ;
-:55; <
-$str55= H
-,55H I
-nullable55J R
-:55R S
-false55T Y
-)55Y Z
-,55Z [
-	CreatedBy66 
-=66 
-table66  %
-.66% &
-Column66& ,
-<66, -
-string66- 3
->663 4
-(664 5
-type665 9
-:669 :
-$str66; J
-,66J K
-nullable66L T
-:66T U
-true66V Z
-)66Z [
-,66[ \
-
-ModifiedOn77 
-=77  
-table77! &
-.77& '
-Column77' -
-<77- .
-DateTime77. 6
->776 7
-(777 8
-type778 <
-:77< =
-$str77> I
-,77I J
-nullable77K S
-:77S T
-false77U Z
-)77Z [
-,77[ \
-
-ModifiedBy88 
-=88  
-table88! &
-.88& '
-Column88' -
-<88- .
-string88. 4
->884 5
-(885 6
-type886 :
-:88: ;
-$str88< K
-,88K L
-nullable88M U
-:88U V
-true88W [
-)88[ \
-,88\ ]
-	DeletedOn99 
-=99 
-table99  %
-.99% &
-Column99& ,
-<99, -
-DateTime99- 5
->995 6
-(996 7
-type997 ;
-:99; <
-$str99= H
-,99H I
-nullable99J R
-:99R S
-false99T Y
-)99Y Z
-,99Z [
-	DeletedBy:: 
-=:: 
-table::  %
-.::% &
-Column::& ,
-<::, -
-string::- 3
->::3 4
-(::4 5
-type::5 9
-:::9 :
-$str::; J
-,::J K
-nullable::L T
-:::T U
-true::V Z
-)::Z [
-};; 
-,;; 
-constraints<< 
-:<< 
-table<< "
-=><<# %
-{== 
-table>> 
-.>> 
-
-PrimaryKey>> $
-(>>$ %
-$str>>% 2
-,>>2 3
-x>>4 5
-=>>>6 8
-x>>9 :
-.>>: ;
-	ChannelId>>; D
-)>>D E
-;>>E F
-}?? 
-)?? 
-;?? 
-migrationBuilderAA 
-.AA 
-CreateTableAA (
-(AA( )
-nameBB 
-:BB 
-$strBB "
-,BB" #
-columnsCC 
-:CC 
-tableCC 
-=>CC !
-newCC" %
-{DD 
-DepartmentIdEE  
-=EE! "
-tableEE# (
-.EE( )
-ColumnEE) /
-<EE/ 0
-intEE0 3
->EE3 4
-(EE4 5
-typeEE5 9
-:EE9 :
-$strEE; @
-,EE@ A
-nullableEEB J
-:EEJ K
-falseEEL Q
-)EEQ R
-.FF 
-
-AnnotationFF #
-(FF# $
-$strFF$ 8
-,FF8 9
-$strFF: @
-)FF@ A
-,FFA B
-DepartmentNameGG "
-=GG# $
-tableGG% *
-.GG* +
-ColumnGG+ 1
-<GG1 2
-stringGG2 8
->GG8 9
-(GG9 :
-typeGG: >
-:GG> ?
-$strGG@ N
-,GGN O
-	maxLengthGGP Y
-:GGY Z
-$numGG[ ]
-,GG] ^
-nullableGG_ g
-:GGg h
-falseGGi n
-)GGn o
-,GGo p
-	CreatedOnHH 
-=HH 
-tableHH  %
-.HH% &
-ColumnHH& ,
-<HH, -
-DateTimeHH- 5
->HH5 6
-(HH6 7
-typeHH7 ;
-:HH; <
-$strHH= H
-,HHH I
-nullableHHJ R
-:HHR S
-falseHHT Y
-)HHY Z
-,HHZ [
-	CreatedByII 
-=II 
-tableII  %
-.II% &
-ColumnII& ,
-<II, -
-stringII- 3
->II3 4
-(II4 5
-typeII5 9
-:II9 :
-$strII; J
-,IIJ K
-nullableIIL T
-:IIT U
-trueIIV Z
-)IIZ [
-,II[ \
-
-ModifiedOnJJ 
-=JJ  
-tableJJ! &
-.JJ& '
-ColumnJJ' -
-<JJ- .
-DateTimeJJ. 6
->JJ6 7
-(JJ7 8
-typeJJ8 <
-:JJ< =
-$strJJ> I
-,JJI J
-nullableJJK S
-:JJS T
-falseJJU Z
-)JJZ [
-,JJ[ \
-
-ModifiedByKK 
-=KK  
-tableKK! &
-.KK& '
-ColumnKK' -
-<KK- .
-stringKK. 4
->KK4 5
-(KK5 6
-typeKK6 :
-:KK: ;
-$strKK< K
-,KKK L
-nullableKKM U
-:KKU V
-trueKKW [
-)KK[ \
-,KK\ ]
-	DeletedOnLL 
-=LL 
-tableLL  %
-.LL% &
-ColumnLL& ,
-<LL, -
-DateTimeLL- 5
->LL5 6
-(LL6 7
-typeLL7 ;
-:LL; <
-$strLL= H
-,LLH I
-nullableLLJ R
-:LLR S
-falseLLT Y
-)LLY Z
-,LLZ [
-	DeletedByMM 
-=MM 
-tableMM  %
-.MM% &
-ColumnMM& ,
-<MM, -
-stringMM- 3
->MM3 4
-(MM4 5
-typeMM5 9
-:MM9 :
-$strMM; J
-,MMJ K
-nullableMML T
-:MMT U
-trueMMV Z
-)MMZ [
-}NN 
-,NN 
-constraintsOO 
-:OO 
-tableOO "
-=>OO# %
-{PP 
-tableQQ 
-.QQ 
-
-PrimaryKeyQQ $
-(QQ$ %
-$strQQ% 4
-,QQ4 5
-xQQ6 7
-=>QQ8 :
-xQQ; <
-.QQ< =
-DepartmentIdQQ= I
-)QQI J
-;QQJ K
-}RR 
-)RR 
-;RR 
-migrationBuilderTT 
-.TT 
-CreateTableTT (
-(TT( )
-nameUU 
-:UU 
-$strUU &
-,UU& '
-columnsVV 
-:VV 
-tableVV 
-=>VV !
-newVV" %
-{WW 
-UnitIdXX 
-=XX 
-tableXX "
-.XX" #
-ColumnXX# )
-<XX) *
-intXX* -
->XX- .
-(XX. /
-typeXX/ 3
-:XX3 4
-$strXX5 :
-,XX: ;
-nullableXX< D
-:XXD E
-falseXXF K
-)XXK L
-.YY 
-
-AnnotationYY #
-(YY# $
-$strYY$ 8
-,YY8 9
-$strYY: @
-)YY@ A
-,YYA B
-DepartmentIdZZ  
-=ZZ! "
-tableZZ# (
-.ZZ( )
-ColumnZZ) /
-<ZZ/ 0
-intZZ0 3
->ZZ3 4
-(ZZ4 5
-typeZZ5 9
-:ZZ9 :
-$strZZ; @
-,ZZ@ A
-nullableZZB J
-:ZZJ K
-falseZZL Q
-)ZZQ R
-,ZZR S
-UnitName[[ 
-=[[ 
-table[[ $
-.[[$ %
-Column[[% +
-<[[+ ,
-string[[, 2
->[[2 3
-([[3 4
-type[[4 8
-:[[8 9
-$str[[: H
-,[[H I
-	maxLength[[J S
-:[[S T
-$num[[U W
-,[[W X
-nullable[[Y a
-:[[a b
-false[[c h
-)[[h i
-,[[i j
-	CreatedOn\\ 
-=\\ 
-table\\  %
-.\\% &
-Column\\& ,
-<\\, -
-DateTime\\- 5
->\\5 6
-(\\6 7
-type\\7 ;
-:\\; <
-$str\\= H
-,\\H I
-nullable\\J R
-:\\R S
-false\\T Y
-)\\Y Z
-,\\Z [
-	CreatedBy]] 
-=]] 
-table]]  %
-.]]% &
-Column]]& ,
-<]], -
-string]]- 3
->]]3 4
-(]]4 5
-type]]5 9
-:]]9 :
-$str]]; J
-,]]J K
-nullable]]L T
-:]]T U
-true]]V Z
-)]]Z [
-,]][ \
-
-ModifiedOn^^ 
-=^^  
-table^^! &
-.^^& '
-Column^^' -
-<^^- .
-DateTime^^. 6
->^^6 7
-(^^7 8
-type^^8 <
-:^^< =
-$str^^> I
-,^^I J
-nullable^^K S
-:^^S T
-false^^U Z
-)^^Z [
-,^^[ \
-
-ModifiedBy__ 
-=__  
-table__! &
-.__& '
-Column__' -
-<__- .
-string__. 4
->__4 5
-(__5 6
-type__6 :
-:__: ;
-$str__< K
-,__K L
-nullable__M U
-:__U V
-true__W [
-)__[ \
-,__\ ]
-	DeletedOn`` 
-=`` 
-table``  %
-.``% &
-Column``& ,
-<``, -
-DateTime``- 5
->``5 6
-(``6 7
-type``7 ;
-:``; <
-$str``= H
-,``H I
-nullable``J R
-:``R S
-false``T Y
-)``Y Z
-,``Z [
-	DeletedByaa 
-=aa 
-tableaa  %
-.aa% &
-Columnaa& ,
-<aa, -
-stringaa- 3
->aa3 4
-(aa4 5
-typeaa5 9
-:aa9 :
-$straa; J
-,aaJ K
-nullableaaL T
-:aaT U
-trueaaV Z
-)aaZ [
-}bb 
-,bb 
-constraintscc 
-:cc 
-tablecc "
-=>cc# %
-{dd 
-tableee 
-.ee 
-
-PrimaryKeyee $
-(ee$ %
-$stree% 8
-,ee8 9
-xee: ;
-=>ee< >
-xee? @
-.ee@ A
-UnitIdeeA G
-)eeG H
-;eeH I
-}ff 
-)ff 
-;ff 
-migrationBuilderhh 
-.hh 
-CreateTablehh (
-(hh( )
-nameii 
-:ii 
-$strii *
-,ii* +
-columnsjj 
-:jj 
-tablejj 
-=>jj !
-newjj" %
-{kk  
-IdentificationTypeIdll (
-=ll) *
-tablell+ 0
-.ll0 1
-Columnll1 7
-<ll7 8
-intll8 ;
->ll; <
-(ll< =
-typell= A
-:llA B
-$strllC H
-,llH I
-nullablellJ R
-:llR S
-falsellT Y
-)llY Z
-,llZ [
-IdentificationTypesmm '
-=mm( )
-tablemm* /
-.mm/ 0
-Columnmm0 6
-<mm6 7
-stringmm7 =
->mm= >
-(mm> ?
-typemm? C
-:mmC D
-$strmmE S
-,mmS T
-	maxLengthmmU ^
-:mm^ _
-$nummm` b
-,mmb c
-nullablemmd l
-:mml m
-falsemmn s
-)mms t
-}nn 
-,nn 
-constraintsoo 
-:oo 
-tableoo "
-=>oo# %
-{pp 
-tableqq 
-.qq 
-
-PrimaryKeyqq $
-(qq$ %
-$strqq% <
-,qq< =
-xqq> ?
-=>qq@ B
-xqqC D
-.qqD E 
-IdentificationTypeIdqqE Y
-)qqY Z
-;qqZ [
-}rr 
-)rr 
-;rr 
-migrationBuildertt 
-.tt 
-CreateTablett (
-(tt( )
-nameuu 
-:uu 
-$struu 
-,uu 
-columnsvv 
-:vv 
-tablevv 
-=>vv !
-newvv" %
-{ww 
-MenuIdxx 
-=xx 
-tablexx "
-.xx" #
-Columnxx# )
-<xx) *
-intxx* -
->xx- .
-(xx. /
-typexx/ 3
-:xx3 4
-$strxx5 :
-,xx: ;
-nullablexx< D
-:xxD E
-falsexxF K
-)xxK L
-.yy 
-
-Annotationyy #
-(yy# $
-$stryy$ 8
-,yy8 9
-$stryy: @
-)yy@ A
-,yyA B
-MenuNamezz 
-=zz 
-tablezz $
-.zz$ %
-Columnzz% +
-<zz+ ,
-stringzz, 2
->zz2 3
-(zz3 4
-typezz4 8
-:zz8 9
-$strzz: I
-,zzI J
-	maxLengthzzK T
-:zzT U
-$numzzV Y
-,zzY Z
-nullablezz[ c
-:zzc d
-falsezze j
-)zzj k
-,zzk l
-Description{{ 
-={{  !
-table{{" '
-.{{' (
-Column{{( .
-<{{. /
-string{{/ 5
->{{5 6
-({{6 7
-type{{7 ;
-:{{; <
-$str{{= L
-,{{L M
-	maxLength{{N W
-:{{W X
-$num{{Y \
-,{{\ ]
-nullable{{^ f
-:{{f g
-false{{h m
-){{m n
-,{{n o
-IsOpen|| 
-=|| 
-table|| "
-.||" #
-Column||# )
-<||) *
-bool||* .
->||. /
-(||/ 0
-type||0 4
-:||4 5
-$str||6 ;
-,||; <
-nullable||= E
-:||E F
-false||G L
-)||L M
-}}} 
-,}} 
-constraints~~ 
-:~~ 
-table~~ "
-=>~~# %
-{ 
-table
-ÄÄ 
-.
-ÄÄ 
-
-PrimaryKey
-ÄÄ $
-(
-ÄÄ$ %
-$str
-ÄÄ% /
-,
-ÄÄ/ 0
-x
-ÄÄ1 2
-=>
-ÄÄ3 5
-x
-ÄÄ6 7
-.
-ÄÄ7 8
-MenuId
-ÄÄ8 >
-)
-ÄÄ> ?
-;
-ÄÄ? @
-}
-ÅÅ 
-)
-ÅÅ 
-;
-ÅÅ 
-migrationBuilder
-ÉÉ 
-.
-ÉÉ 
-CreateTable
-ÉÉ (
-(
-ÉÉ( )
-name
-ÑÑ 
-:
-ÑÑ 
-$str
-ÑÑ #
-,
-ÑÑ# $
-columns
-ÖÖ 
-:
-ÖÖ 
-table
-ÖÖ 
-=>
-ÖÖ !
-new
-ÖÖ" %
-{
-ÜÜ 
-PermissionsId
-áá !
-=
-áá" #
-table
-áá$ )
-.
-áá) *
-Column
-áá* 0
-<
-áá0 1
-int
-áá1 4
->
-áá4 5
-(
-áá5 6
-type
-áá6 :
-:
-áá: ;
-$str
-áá< A
-,
-ááA B
-nullable
-ááC K
-:
-ááK L
-false
-ááM R
-)
-ááR S
-.
-àà 
-
-Annotation
-àà #
-(
-àà# $
-$str
-àà$ 8
-,
-àà8 9
-$str
-àà: @
-)
-àà@ A
-,
-ààA B
-RoleId
-ââ 
-=
-ââ 
-table
-ââ "
-.
-ââ" #
-Column
-ââ# )
-<
-ââ) *
-string
-ââ* 0
->
-ââ0 1
-(
-ââ1 2
-type
-ââ2 6
-:
-ââ6 7
-$str
-ââ8 F
-,
-ââF G
-	maxLength
-ââH Q
-:
-ââQ R
-$num
-ââS U
-,
-ââU V
-nullable
-ââW _
-:
-ââ_ `
-false
-ââa f
-)
-ââf g
-,
-ââg h
-
-ModuleName
-ää 
-=
-ää  
-table
-ää! &
-.
-ää& '
-Column
-ää' -
-<
-ää- .
-string
-ää. 4
->
-ää4 5
-(
-ää5 6
-type
-ää6 :
-:
-ää: ;
-$str
-ää< K
-,
-ääK L
-	maxLength
-ääM V
-:
-ääV W
-$num
-ääX [
-,
-ää[ \
-nullable
-ää] e
-:
-ääe f
-false
-ääg l
-)
-ääl m
-,
-ääm n
-NoAccess
-ãã 
-=
-ãã 
-table
-ãã $
-.
-ãã$ %
-Column
-ãã% +
-<
-ãã+ ,
-bool
-ãã, 0
->
-ãã0 1
-(
-ãã1 2
-type
-ãã2 6
-:
-ãã6 7
-$str
-ãã8 =
-,
-ãã= >
-nullable
-ãã? G
-:
-ããG H
-false
-ããI N
-)
-ããN O
-,
-ããO P
-Create
-åå 
-=
-åå 
-table
-åå "
-.
-åå" #
-Column
-åå# )
-<
-åå) *
-bool
-åå* .
->
-åå. /
-(
-åå/ 0
-type
-åå0 4
-:
-åå4 5
-$str
-åå6 ;
-,
-åå; <
-nullable
-åå= E
-:
-ååE F
-false
-ååG L
-)
-ååL M
-,
-ååM N
-Read
-çç 
-=
-çç 
-table
-çç  
-.
-çç  !
-Column
-çç! '
-<
-çç' (
-bool
-çç( ,
->
-çç, -
-(
-çç- .
-type
-çç. 2
-:
-çç2 3
-$str
-çç4 9
-,
-çç9 :
-nullable
-çç; C
-:
-ççC D
-false
-ççE J
-)
-ççJ K
-,
-ççK L
-Update
-éé 
-=
-éé 
-table
-éé "
-.
-éé" #
-Column
-éé# )
-<
-éé) *
-bool
-éé* .
->
-éé. /
-(
-éé/ 0
-type
-éé0 4
-:
-éé4 5
-$str
-éé6 ;
-,
-éé; <
-nullable
-éé= E
-:
-ééE F
-false
-ééG L
-)
-ééL M
-,
-ééM N
-Delete
-èè 
-=
-èè 
-table
-èè "
-.
-èè" #
-Column
-èè# )
-<
-èè) *
-bool
-èè* .
->
-èè. /
-(
-èè/ 0
-type
-èè0 4
-:
-èè4 5
-$str
-èè6 ;
-,
-èè; <
-nullable
-èè= E
-:
-èèE F
-false
-èèG L
-)
-èèL M
-,
-èèM N
-Approve
-êê 
-=
-êê 
-table
-êê #
-.
-êê# $
-Column
-êê$ *
-<
-êê* +
-bool
-êê+ /
->
-êê/ 0
-(
-êê0 1
-type
-êê1 5
-:
-êê5 6
-$str
-êê7 <
-,
-êê< =
-nullable
-êê> F
-:
-êêF G
-false
-êêH M
-)
-êêM N
-}
-ëë 
-,
-ëë 
-constraints
-íí 
-:
-íí 
-table
-íí "
-=>
-íí# %
-{
-ìì 
-table
-îî 
-.
-îî 
-
-PrimaryKey
-îî $
-(
-îî$ %
-$str
-îî% 5
-,
-îî5 6
-x
-îî7 8
-=>
-îî9 ;
-x
-îî< =
-.
-îî= >
-PermissionsId
-îî> K
-)
-îîK L
-;
-îîL M
-}
-ïï 
-)
-ïï 
-;
-ïï 
-migrationBuilder
-óó 
-.
-óó 
-CreateTable
-óó (
-(
-óó( )
-name
-òò 
-:
-òò 
-$str
-òò 
-,
-òò 
-schema
-ôô 
-:
-ôô 
-$str
-ôô 
-,
-ôô 
-columns
-öö 
-:
-öö 
-table
-öö 
-=>
-öö !
-new
-öö" %
-{
-õõ 
-Id
-úú 
-=
-úú 
-table
-úú 
-.
-úú 
-Column
-úú %
-<
-úú% &
-string
-úú& ,
->
-úú, -
-(
-úú- .
-type
-úú. 2
-:
-úú2 3
-$str
-úú4 C
-,
-úúC D
-nullable
-úúE M
-:
-úúM N
-false
-úúO T
-)
-úúT U
-,
-úúU V
-DepartmentId
-ùù  
-=
-ùù! "
-table
-ùù# (
-.
-ùù( )
-Column
-ùù) /
-<
-ùù/ 0
-int
-ùù0 3
->
-ùù3 4
-(
-ùù4 5
-type
-ùù5 9
-:
-ùù9 :
-$str
-ùù; @
-,
-ùù@ A
-nullable
-ùùB J
-:
-ùùJ K
-false
-ùùL Q
-)
-ùùQ R
-,
-ùùR S
-UnitId
-ûû 
-=
-ûû 
-table
-ûû "
-.
-ûû" #
-Column
-ûû# )
-<
-ûû) *
-int
-ûû* -
->
-ûû- .
-(
-ûû. /
-type
-ûû/ 3
-:
-ûû3 4
-$str
-ûû5 :
-,
-ûû: ;
-nullable
-ûû< D
-:
-ûûD E
-false
-ûûF K
-)
-ûûK L
-,
-ûûL M
-	CreatedOn
-üü 
-=
-üü 
-table
-üü  %
-.
-üü% &
-Column
-üü& ,
-<
-üü, -
-DateTime
-üü- 5
->
-üü5 6
-(
-üü6 7
-type
-üü7 ;
-:
-üü; <
-$str
-üü= H
-,
-üüH I
-nullable
-üüJ R
-:
-üüR S
-false
-üüT Y
-)
-üüY Z
-,
-üüZ [
-	CreatedBy
-†† 
-=
-†† 
-table
-††  %
-.
-††% &
-Column
-††& ,
-<
-††, -
-string
-††- 3
->
-††3 4
-(
-††4 5
-type
-††5 9
-:
-††9 :
-$str
-††; J
-,
-††J K
-nullable
-††L T
-:
-††T U
-true
-††V Z
-)
-††Z [
-,
-††[ \
-
-ModifiedOn
-°° 
-=
-°°  
-table
-°°! &
-.
-°°& '
-Column
-°°' -
-<
-°°- .
-DateTime
-°°. 6
->
-°°6 7
-(
-°°7 8
-type
-°°8 <
-:
-°°< =
-$str
-°°> I
-,
-°°I J
-nullable
-°°K S
-:
-°°S T
-false
-°°U Z
-)
-°°Z [
-,
-°°[ \
-
-ModifiedBy
-¢¢ 
-=
-¢¢  
-table
-¢¢! &
-.
-¢¢& '
-Column
-¢¢' -
-<
-¢¢- .
-string
-¢¢. 4
->
-¢¢4 5
-(
-¢¢5 6
-type
-¢¢6 :
-:
-¢¢: ;
-$str
-¢¢< K
-,
-¢¢K L
-nullable
-¢¢M U
-:
-¢¢U V
-true
-¢¢W [
-)
-¢¢[ \
-,
-¢¢\ ]
-	DeletedOn
-££ 
-=
-££ 
-table
-££  %
-.
-££% &
-Column
-££& ,
-<
-££, -
-DateTime
-££- 5
->
-££5 6
-(
-££6 7
-type
-££7 ;
-:
-££; <
-$str
-££= H
-,
-££H I
-nullable
-££J R
-:
-££R S
-false
-££T Y
-)
-££Y Z
-,
-££Z [
-	DeletedBy
-§§ 
-=
-§§ 
-table
-§§  %
-.
-§§% &
-Column
-§§& ,
-<
-§§, -
-string
-§§- 3
->
-§§3 4
-(
-§§4 5
-type
-§§5 9
-:
-§§9 :
-$str
-§§; J
-,
-§§J K
-nullable
-§§L T
-:
-§§T U
-true
-§§V Z
-)
-§§Z [
-,
-§§[ \
-
-ApprovedOn
-•• 
-=
-••  
-table
-••! &
-.
-••& '
-Column
-••' -
-<
-••- .
-DateTime
-••. 6
->
-••6 7
-(
-••7 8
-type
-••8 <
-:
-••< =
-$str
-••> I
-,
-••I J
-nullable
-••K S
-:
-••S T
-false
-••U Z
-)
-••Z [
-,
-••[ \
-
-ApprovedBy
-¶¶ 
-=
-¶¶  
-table
-¶¶! &
-.
-¶¶& '
-Column
-¶¶' -
-<
-¶¶- .
-string
-¶¶. 4
->
-¶¶4 5
-(
-¶¶5 6
-type
-¶¶6 :
-:
-¶¶: ;
-$str
-¶¶< K
-,
-¶¶K L
-nullable
-¶¶M U
-:
-¶¶U V
-true
-¶¶W [
-)
-¶¶[ \
-,
-¶¶\ ]
-Status
-ßß 
-=
-ßß 
-table
-ßß "
-.
-ßß" #
-Column
-ßß# )
-<
-ßß) *
-short
-ßß* /
->
-ßß/ 0
-(
-ßß0 1
-type
-ßß1 5
-:
-ßß5 6
-$str
-ßß7 A
-,
-ßßA B
-nullable
-ßßC K
-:
-ßßK L
-false
-ßßM R
-)
-ßßR S
-,
-ßßS T
-Name
-®® 
-=
-®® 
-table
-®®  
-.
-®®  !
-Column
-®®! '
-<
-®®' (
-string
-®®( .
->
-®®. /
-(
-®®/ 0
-type
-®®0 4
-:
-®®4 5
-$str
-®®6 E
-,
-®®E F
-	maxLength
-®®G P
-:
-®®P Q
-$num
-®®R U
-,
-®®U V
-nullable
-®®W _
-:
-®®_ `
-true
-®®a e
-)
-®®e f
-,
-®®f g
-NormalizedName
-©© "
-=
-©©# $
-table
-©©% *
-.
-©©* +
-Column
-©©+ 1
-<
-©©1 2
-string
-©©2 8
->
-©©8 9
-(
-©©9 :
-type
-©©: >
-:
-©©> ?
-$str
-©©@ O
-,
-©©O P
-	maxLength
-©©Q Z
-:
-©©Z [
-$num
-©©\ _
-,
-©©_ `
-nullable
-©©a i
-:
-©©i j
-true
-©©k o
-)
-©©o p
-,
-©©p q
-ConcurrencyStamp
-™™ $
-=
-™™% &
-table
-™™' ,
-.
-™™, -
-Column
-™™- 3
-<
-™™3 4
-string
-™™4 :
->
-™™: ;
-(
-™™; <
-type
-™™< @
-:
-™™@ A
-$str
-™™B Q
-,
-™™Q R
-nullable
-™™S [
-:
-™™[ \
-true
-™™] a
-)
-™™a b
-}
-´´ 
-,
-´´ 
-constraints
-¨¨ 
-:
-¨¨ 
-table
-¨¨ "
-=>
-¨¨# %
-{
-≠≠ 
-table
-ÆÆ 
-.
-ÆÆ 
-
-PrimaryKey
-ÆÆ $
-(
-ÆÆ$ %
-$str
-ÆÆ% /
-,
-ÆÆ/ 0
-x
-ÆÆ1 2
-=>
-ÆÆ3 5
-x
-ÆÆ6 7
-.
-ÆÆ7 8
-Id
-ÆÆ8 :
-)
-ÆÆ: ;
-;
-ÆÆ; <
-}
-ØØ 
-)
-ØØ 
-;
-ØØ 
-migrationBuilder
-±± 
-.
-±± 
-CreateTable
-±± (
-(
-±±( )
-name
-≤≤ 
-:
-≤≤ 
-$str
-≤≤ %
-,
-≤≤% &
-columns
-≥≥ 
-:
-≥≥ 
-table
-≥≥ 
-=>
-≥≥ !
-new
-≥≥" %
-{
-¥¥ 
-Id
-µµ 
-=
-µµ 
-table
-µµ 
-.
-µµ 
-Column
-µµ %
-<
-µµ% &
-string
-µµ& ,
->
-µµ, -
-(
-µµ- .
-type
-µµ. 2
-:
-µµ2 3
-$str
-µµ4 C
-,
-µµC D
-nullable
-µµE M
-:
-µµM N
-true
-µµO S
-)
-µµS T
-,
-µµT U"
-IdentificationNumber
-∂∂ (
-=
-∂∂) *
-table
-∂∂+ 0
-.
-∂∂0 1
-Column
-∂∂1 7
-<
-∂∂7 8
-string
-∂∂8 >
->
-∂∂> ?
-(
-∂∂? @
-type
-∂∂@ D
-:
-∂∂D E
-$str
-∂∂F U
-,
-∂∂U V
-nullable
-∂∂W _
-:
-∂∂_ `
-true
-∂∂a e
-)
-∂∂e f
-,
-∂∂f g
-	FirstName
-∑∑ 
-=
-∑∑ 
-table
-∑∑  %
-.
-∑∑% &
-Column
-∑∑& ,
-<
-∑∑, -
-string
-∑∑- 3
->
-∑∑3 4
-(
-∑∑4 5
-type
-∑∑5 9
-:
-∑∑9 :
-$str
-∑∑; J
-,
-∑∑J K
-nullable
-∑∑L T
-:
-∑∑T U
-true
-∑∑V Z
-)
-∑∑Z [
-,
-∑∑[ \
-
-MiddleName
-∏∏ 
-=
-∏∏  
-table
-∏∏! &
-.
-∏∏& '
-Column
-∏∏' -
-<
-∏∏- .
-string
-∏∏. 4
->
-∏∏4 5
-(
-∏∏5 6
-type
-∏∏6 :
-:
-∏∏: ;
-$str
-∏∏< K
-,
-∏∏K L
-nullable
-∏∏M U
-:
-∏∏U V
-true
-∏∏W [
-)
-∏∏[ \
-,
-∏∏\ ]
-LastName
-ππ 
-=
-ππ 
-table
-ππ $
-.
-ππ$ %
-Column
-ππ% +
-<
-ππ+ ,
-string
-ππ, 2
->
-ππ2 3
-(
-ππ3 4
-type
-ππ4 8
-:
-ππ8 9
-$str
-ππ: I
-,
-ππI J
-nullable
-ππK S
-:
-ππS T
-true
-ππU Y
-)
-ππY Z
-,
-ππZ [
-DepartmentName
-∫∫ "
-=
-∫∫# $
-table
-∫∫% *
-.
-∫∫* +
-Column
-∫∫+ 1
-<
-∫∫1 2
-string
-∫∫2 8
->
-∫∫8 9
-(
-∫∫9 :
-type
-∫∫: >
-:
-∫∫> ?
-$str
-∫∫@ O
-,
-∫∫O P
-nullable
-∫∫Q Y
-:
-∫∫Y Z
-true
-∫∫[ _
-)
-∫∫_ `
-,
-∫∫` a
-UnitName
-ªª 
-=
-ªª 
-table
-ªª $
-.
-ªª$ %
-Column
-ªª% +
-<
-ªª+ ,
-string
-ªª, 2
->
-ªª2 3
-(
-ªª3 4
-type
-ªª4 8
-:
-ªª8 9
-$str
-ªª: I
-,
-ªªI J
-nullable
-ªªK S
-:
-ªªS T
-true
-ªªU Y
-)
-ªªY Z
-,
-ªªZ [
-Email
-ºº 
-=
-ºº 
-table
-ºº !
-.
-ºº! "
-Column
-ºº" (
-<
-ºº( )
-string
-ºº) /
->
-ºº/ 0
-(
-ºº0 1
-type
-ºº1 5
-:
-ºº5 6
-$str
-ºº7 F
-,
-ººF G
-nullable
-ººH P
-:
-ººP Q
-true
-ººR V
-)
-ººV W
-,
-ººW X
-PhoneNumber
-ΩΩ 
-=
-ΩΩ  !
-table
-ΩΩ" '
-.
-ΩΩ' (
-Column
-ΩΩ( .
-<
-ΩΩ. /
-string
-ΩΩ/ 5
->
-ΩΩ5 6
-(
-ΩΩ6 7
-type
-ΩΩ7 ;
-:
-ΩΩ; <
-$str
-ΩΩ= L
-,
-ΩΩL M
-nullable
-ΩΩN V
-:
-ΩΩV W
-true
-ΩΩX \
-)
-ΩΩ\ ]
-,
-ΩΩ] ^
-RoleName
-ææ 
-=
-ææ 
-table
-ææ $
-.
-ææ$ %
-Column
-ææ% +
-<
-ææ+ ,
-string
-ææ, 2
->
-ææ2 3
-(
-ææ3 4
-type
-ææ4 8
-:
-ææ8 9
-$str
-ææ: I
-,
-ææI J
-nullable
-ææK S
-:
-ææS T
-true
-ææU Y
-)
-ææY Z
-,
-ææZ [
-Status
-øø 
-=
-øø 
-table
-øø "
-.
-øø" #
-Column
-øø# )
-<
-øø) *
-int
-øø* -
->
-øø- .
-(
-øø. /
-type
-øø/ 3
-:
-øø3 4
-$str
-øø5 :
-,
-øø: ;
-nullable
-øø< D
-:
-øøD E
-false
-øøF K
-)
-øøK L
-,
-øøL M
-RegistrationDate
-¿¿ $
-=
-¿¿% &
-table
-¿¿' ,
-.
-¿¿, -
-Column
-¿¿- 3
-<
-¿¿3 4
-DateTime
-¿¿4 <
->
-¿¿< =
-(
-¿¿= >
-type
-¿¿> B
-:
-¿¿B C
-$str
-¿¿D O
-,
-¿¿O P
-nullable
-¿¿Q Y
-:
-¿¿Y Z
-false
-¿¿[ `
-)
-¿¿` a
-}
-¡¡ 
-,
-¡¡ 
-constraints
-¬¬ 
-:
-¬¬ 
-table
-¬¬ "
-=>
-¬¬# %
-{
-√√ 
-}
-ƒƒ 
-)
-ƒƒ 
-;
-ƒƒ 
-migrationBuilder
-∆∆ 
-.
-∆∆ 
-CreateTable
-∆∆ (
-(
-∆∆( )
-name
-«« 
-:
-«« 
-$str
-«« $
-,
-««$ %
-columns
-»» 
-:
-»» 
-table
-»» 
-=>
-»» !
-new
-»»" %
-{
-…… 
-SubMenuItemId
-   !
-=
-  " #
-table
-  $ )
-.
-  ) *
-Column
-  * 0
-<
-  0 1
-int
-  1 4
->
-  4 5
-(
-  5 6
-type
-  6 :
-:
-  : ;
-$str
-  < A
-,
-  A B
-nullable
-  C K
-:
-  K L
-false
-  M R
-)
-  R S
-.
-ÀÀ 
-
-Annotation
-ÀÀ #
-(
-ÀÀ# $
-$str
-ÀÀ$ 8
-,
-ÀÀ8 9
-$str
-ÀÀ: @
-)
-ÀÀ@ A
-,
-ÀÀA B
-MenuId
-ÃÃ 
-=
-ÃÃ 
-table
-ÃÃ "
-.
-ÃÃ" #
-Column
-ÃÃ# )
-<
-ÃÃ) *
-int
-ÃÃ* -
->
-ÃÃ- .
-(
-ÃÃ. /
-type
-ÃÃ/ 3
-:
-ÃÃ3 4
-$str
-ÃÃ5 :
-,
-ÃÃ: ;
-nullable
-ÃÃ< D
-:
-ÃÃD E
-false
-ÃÃF K
-)
-ÃÃK L
-,
-ÃÃL M
-	SubMenuId
-ÕÕ 
-=
-ÕÕ 
-table
-ÕÕ  %
-.
-ÕÕ% &
-Column
-ÕÕ& ,
-<
-ÕÕ, -
-int
-ÕÕ- 0
->
-ÕÕ0 1
-(
-ÕÕ1 2
-type
-ÕÕ2 6
-:
-ÕÕ6 7
-$str
-ÕÕ8 =
-,
-ÕÕ= >
-nullable
-ÕÕ? G
-:
-ÕÕG H
-false
-ÕÕI N
-)
-ÕÕN O
-,
-ÕÕO P
-SubMenuItemName
-ŒŒ #
-=
-ŒŒ$ %
-table
-ŒŒ& +
-.
-ŒŒ+ ,
-Column
-ŒŒ, 2
-<
-ŒŒ2 3
-string
-ŒŒ3 9
->
-ŒŒ9 :
-(
-ŒŒ: ;
-type
-ŒŒ; ?
-:
-ŒŒ? @
-$str
-ŒŒA P
-,
-ŒŒP Q
-	maxLength
-ŒŒR [
-:
-ŒŒ[ \
-$num
-ŒŒ] `
-,
-ŒŒ` a
-nullable
-ŒŒb j
-:
-ŒŒj k
-false
-ŒŒl q
-)
-ŒŒq r
-,
-ŒŒr s
-Description
-œœ 
-=
-œœ  !
-table
-œœ" '
-.
-œœ' (
-Column
-œœ( .
-<
-œœ. /
-string
-œœ/ 5
->
-œœ5 6
-(
-œœ6 7
-type
-œœ7 ;
-:
-œœ; <
-$str
-œœ= L
-,
-œœL M
-	maxLength
-œœN W
-:
-œœW X
-$num
-œœY \
-,
-œœ\ ]
-nullable
-œœ^ f
-:
-œœf g
-false
-œœh m
-)
-œœm n
-}
-–– 
-,
-–– 
-constraints
-—— 
-:
-—— 
-table
-—— "
-=>
-——# %
-{
-““ 
-table
-”” 
-.
-”” 
-
-PrimaryKey
-”” $
-(
-””$ %
-$str
-””% 6
-,
-””6 7
-x
-””8 9
-=>
-””: <
-x
-””= >
-.
-””> ?
-SubMenuItemId
-””? L
-)
-””L M
-;
-””M N
-}
-‘‘ 
-)
-‘‘ 
-;
-‘‘ 
-migrationBuilder
-÷÷ 
-.
-÷÷ 
-CreateTable
-÷÷ (
-(
-÷÷( )
-name
-◊◊ 
-:
-◊◊ 
-$str
-◊◊  
-,
-◊◊  !
-columns
-ÿÿ 
-:
-ÿÿ 
-table
-ÿÿ 
-=>
-ÿÿ !
-new
-ÿÿ" %
-{
-ŸŸ 
-	SubMenuId
-⁄⁄ 
-=
-⁄⁄ 
-table
-⁄⁄  %
-.
-⁄⁄% &
-Column
-⁄⁄& ,
-<
-⁄⁄, -
-int
-⁄⁄- 0
->
-⁄⁄0 1
-(
-⁄⁄1 2
-type
-⁄⁄2 6
-:
-⁄⁄6 7
-$str
-⁄⁄8 =
-,
-⁄⁄= >
-nullable
-⁄⁄? G
-:
-⁄⁄G H
-false
-⁄⁄I N
-)
-⁄⁄N O
-.
-€€ 
-
-Annotation
-€€ #
-(
-€€# $
-$str
-€€$ 8
-,
-€€8 9
-$str
-€€: @
-)
-€€@ A
-,
-€€A B
-MenuId
-‹‹ 
-=
-‹‹ 
-table
-‹‹ "
-.
-‹‹" #
-Column
-‹‹# )
-<
-‹‹) *
-int
-‹‹* -
->
-‹‹- .
-(
-‹‹. /
-type
-‹‹/ 3
-:
-‹‹3 4
-$str
-‹‹5 :
-,
-‹‹: ;
-nullable
-‹‹< D
-:
-‹‹D E
-false
-‹‹F K
-)
-‹‹K L
-,
-‹‹L M
-SubMenuName
-›› 
-=
-››  !
-table
-››" '
-.
-››' (
-Column
-››( .
-<
-››. /
-string
-››/ 5
->
-››5 6
-(
-››6 7
-type
-››7 ;
-:
-››; <
-$str
-››= L
-,
-››L M
-	maxLength
-››N W
-:
-››W X
-$num
-››Y \
-,
-››\ ]
-nullable
-››^ f
-:
-››f g
-false
-››h m
-)
-››m n
-,
-››n o
-Description
-ﬁﬁ 
-=
-ﬁﬁ  !
-table
-ﬁﬁ" '
-.
-ﬁﬁ' (
-Column
-ﬁﬁ( .
-<
-ﬁﬁ. /
-string
-ﬁﬁ/ 5
->
-ﬁﬁ5 6
-(
-ﬁﬁ6 7
-type
-ﬁﬁ7 ;
-:
-ﬁﬁ; <
-$str
-ﬁﬁ= L
-,
-ﬁﬁL M
-	maxLength
-ﬁﬁN W
-:
-ﬁﬁW X
-$num
-ﬁﬁY \
-,
-ﬁﬁ\ ]
-nullable
-ﬁﬁ^ f
-:
-ﬁﬁf g
-false
-ﬁﬁh m
-)
-ﬁﬁm n
-,
-ﬁﬁn o
-IsOpen
-ﬂﬂ 
-=
-ﬂﬂ 
-table
-ﬂﬂ "
-.
-ﬂﬂ" #
-Column
-ﬂﬂ# )
-<
-ﬂﬂ) *
-bool
-ﬂﬂ* .
->
-ﬂﬂ. /
-(
-ﬂﬂ/ 0
-type
-ﬂﬂ0 4
-:
-ﬂﬂ4 5
-$str
-ﬂﬂ6 ;
-,
-ﬂﬂ; <
-nullable
-ﬂﬂ= E
-:
-ﬂﬂE F
-false
-ﬂﬂG L
-)
-ﬂﬂL M
-}
-‡‡ 
-,
-‡‡ 
-constraints
-·· 
-:
-·· 
-table
-·· "
-=>
-··# %
-{
-‚‚ 
-table
-„„ 
-.
-„„ 
-
-PrimaryKey
-„„ $
-(
-„„$ %
-$str
-„„% 2
-,
-„„2 3
-x
-„„4 5
-=>
-„„6 8
-x
-„„9 :
-.
-„„: ;
-	SubMenuId
-„„; D
-)
-„„D E
-;
-„„E F
-}
-‰‰ 
-)
-‰‰ 
-;
-‰‰ 
-migrationBuilder
-ÊÊ 
-.
-ÊÊ 
-CreateTable
-ÊÊ (
-(
-ÊÊ( )
-name
-ÁÁ 
-:
-ÁÁ 
-$str
-ÁÁ &
-,
-ÁÁ& '
-columns
-ËË 
-:
-ËË 
-table
-ËË 
-=>
-ËË !
-new
-ËË" %
-{
-ÈÈ 
-SubPermissionsId
-ÍÍ $
-=
-ÍÍ% &
-table
-ÍÍ' ,
-.
-ÍÍ, -
-Column
-ÍÍ- 3
-<
-ÍÍ3 4
-int
-ÍÍ4 7
->
-ÍÍ7 8
-(
-ÍÍ8 9
-type
-ÍÍ9 =
-:
-ÍÍ= >
-$str
-ÍÍ? D
-,
-ÍÍD E
-nullable
-ÍÍF N
-:
-ÍÍN O
-false
-ÍÍP U
-)
-ÍÍU V
-.
-ÎÎ 
-
-Annotation
-ÎÎ #
-(
-ÎÎ# $
-$str
-ÎÎ$ 8
-,
-ÎÎ8 9
-$str
-ÎÎ: @
-)
-ÎÎ@ A
-,
-ÎÎA B
-PermissionsId
-ÏÏ !
-=
-ÏÏ" #
-table
-ÏÏ$ )
-.
-ÏÏ) *
-Column
-ÏÏ* 0
-<
-ÏÏ0 1
-int
-ÏÏ1 4
->
-ÏÏ4 5
-(
-ÏÏ5 6
-type
-ÏÏ6 :
-:
-ÏÏ: ;
-$str
-ÏÏ< A
-,
-ÏÏA B
-nullable
-ÏÏC K
-:
-ÏÏK L
-false
-ÏÏM R
-)
-ÏÏR S
-,
-ÏÏS T
-RoleId
-ÌÌ 
-=
-ÌÌ 
-table
-ÌÌ "
-.
-ÌÌ" #
-Column
-ÌÌ# )
-<
-ÌÌ) *
-string
-ÌÌ* 0
->
-ÌÌ0 1
-(
-ÌÌ1 2
-type
-ÌÌ2 6
-:
-ÌÌ6 7
-$str
-ÌÌ8 F
-,
-ÌÌF G
-	maxLength
-ÌÌH Q
-:
-ÌÌQ R
-$num
-ÌÌS U
-,
-ÌÌU V
-nullable
-ÌÌW _
-:
-ÌÌ_ `
-false
-ÌÌa f
-)
-ÌÌf g
-,
-ÌÌg h
-SectionName
-ÓÓ 
-=
-ÓÓ  !
-table
-ÓÓ" '
-.
-ÓÓ' (
-Column
-ÓÓ( .
-<
-ÓÓ. /
-string
-ÓÓ/ 5
->
-ÓÓ5 6
-(
-ÓÓ6 7
-type
-ÓÓ7 ;
-:
-ÓÓ; <
-$str
-ÓÓ= L
-,
-ÓÓL M
-	maxLength
-ÓÓN W
-:
-ÓÓW X
-$num
-ÓÓY \
-,
-ÓÓ\ ]
-nullable
-ÓÓ^ f
-:
-ÓÓf g
-false
-ÓÓh m
-)
-ÓÓm n
-,
-ÓÓn o
-NoAccess
-ÔÔ 
-=
-ÔÔ 
-table
-ÔÔ $
-.
-ÔÔ$ %
-Column
-ÔÔ% +
-<
-ÔÔ+ ,
-bool
-ÔÔ, 0
->
-ÔÔ0 1
-(
-ÔÔ1 2
-type
-ÔÔ2 6
-:
-ÔÔ6 7
-$str
-ÔÔ8 =
-,
-ÔÔ= >
-nullable
-ÔÔ? G
-:
-ÔÔG H
-false
-ÔÔI N
-)
-ÔÔN O
-,
-ÔÔO P
-Create
- 
-=
- 
-table
- "
-.
-" #
-Column
-# )
-<
-) *
-bool
-* .
->
-. /
-(
-/ 0
-type
-0 4
-:
-4 5
-$str
-6 ;
-,
-; <
-nullable
-= E
-:
-E F
-false
-G L
-)
-L M
-,
-M N
-Read
-ÒÒ 
-=
-ÒÒ 
-table
-ÒÒ  
-.
-ÒÒ  !
-Column
-ÒÒ! '
-<
-ÒÒ' (
-bool
-ÒÒ( ,
->
-ÒÒ, -
-(
-ÒÒ- .
-type
-ÒÒ. 2
-:
-ÒÒ2 3
-$str
-ÒÒ4 9
-,
-ÒÒ9 :
-nullable
-ÒÒ; C
-:
-ÒÒC D
-false
-ÒÒE J
-)
-ÒÒJ K
-,
-ÒÒK L
-Update
-ÚÚ 
-=
-ÚÚ 
-table
-ÚÚ "
-.
-ÚÚ" #
-Column
-ÚÚ# )
-<
-ÚÚ) *
-bool
-ÚÚ* .
->
-ÚÚ. /
-(
-ÚÚ/ 0
-type
-ÚÚ0 4
-:
-ÚÚ4 5
-$str
-ÚÚ6 ;
-,
-ÚÚ; <
-nullable
-ÚÚ= E
-:
-ÚÚE F
-false
-ÚÚG L
-)
-ÚÚL M
-,
-ÚÚM N
-Delete
-ÛÛ 
-=
-ÛÛ 
-table
-ÛÛ "
-.
-ÛÛ" #
-Column
-ÛÛ# )
-<
-ÛÛ) *
-bool
-ÛÛ* .
->
-ÛÛ. /
-(
-ÛÛ/ 0
-type
-ÛÛ0 4
-:
-ÛÛ4 5
-$str
-ÛÛ6 ;
-,
-ÛÛ; <
-nullable
-ÛÛ= E
-:
-ÛÛE F
-false
-ÛÛG L
-)
-ÛÛL M
-,
-ÛÛM N
-Approve
-ÙÙ 
-=
-ÙÙ 
-table
-ÙÙ #
-.
-ÙÙ# $
-Column
-ÙÙ$ *
-<
-ÙÙ* +
-bool
-ÙÙ+ /
->
-ÙÙ/ 0
-(
-ÙÙ0 1
-type
-ÙÙ1 5
-:
-ÙÙ5 6
-$str
-ÙÙ7 <
-,
-ÙÙ< =
-nullable
-ÙÙ> F
-:
-ÙÙF G
-false
-ÙÙH M
-)
-ÙÙM N
-}
-ıı 
-,
-ıı 
-constraints
-ˆˆ 
-:
-ˆˆ 
-table
-ˆˆ "
-=>
-ˆˆ# %
-{
-˜˜ 
-table
-¯¯ 
-.
-¯¯ 
-
-PrimaryKey
-¯¯ $
-(
-¯¯$ %
-$str
-¯¯% 8
-,
-¯¯8 9
-x
-¯¯: ;
-=>
-¯¯< >
-x
-¯¯? @
-.
-¯¯@ A
-SubPermissionsId
-¯¯A Q
-)
-¯¯Q R
-;
-¯¯R S
-}
-˘˘ 
-)
-˘˘ 
-;
-˘˘ 
-migrationBuilder
-˚˚ 
-.
-˚˚ 
-CreateTable
-˚˚ (
-(
-˚˚( )
-name
-¸¸ 
-:
-¸¸ 
-$str
-¸¸ +
-,
-¸¸+ ,
-columns
-˝˝ 
-:
-˝˝ 
-table
-˝˝ 
-=>
-˝˝ !
-new
-˝˝" %
-{
-˛˛ #
-SubPermissionsItemsId
-ˇˇ )
-=
-ˇˇ* +
-table
-ˇˇ, 1
-.
-ˇˇ1 2
-Column
-ˇˇ2 8
-<
-ˇˇ8 9
-int
-ˇˇ9 <
->
-ˇˇ< =
-(
-ˇˇ= >
-type
-ˇˇ> B
-:
-ˇˇB C
-$str
-ˇˇD I
-,
-ˇˇI J
-nullable
-ˇˇK S
-:
-ˇˇS T
-false
-ˇˇU Z
-)
-ˇˇZ [
-.
-ÄÄ 
-
-Annotation
-ÄÄ #
-(
-ÄÄ# $
-$str
-ÄÄ$ 8
-,
-ÄÄ8 9
-$str
-ÄÄ: @
-)
-ÄÄ@ A
-,
-ÄÄA B
-PermissionsId
-ÅÅ !
-=
-ÅÅ" #
-table
-ÅÅ$ )
-.
-ÅÅ) *
-Column
-ÅÅ* 0
-<
-ÅÅ0 1
-int
-ÅÅ1 4
->
-ÅÅ4 5
-(
-ÅÅ5 6
-type
-ÅÅ6 :
-:
-ÅÅ: ;
-$str
-ÅÅ< A
-,
-ÅÅA B
-nullable
-ÅÅC K
-:
-ÅÅK L
-false
-ÅÅM R
-)
-ÅÅR S
-,
-ÅÅS T
-SubPermissionsId
-ÇÇ $
-=
-ÇÇ% &
-table
-ÇÇ' ,
-.
-ÇÇ, -
-Column
-ÇÇ- 3
-<
-ÇÇ3 4
-int
-ÇÇ4 7
->
-ÇÇ7 8
-(
-ÇÇ8 9
-type
-ÇÇ9 =
-:
-ÇÇ= >
-$str
-ÇÇ? D
-,
-ÇÇD E
-nullable
-ÇÇF N
-:
-ÇÇN O
-false
-ÇÇP U
-)
-ÇÇU V
-,
-ÇÇV W
-RoleId
-ÉÉ 
-=
-ÉÉ 
-table
-ÉÉ "
-.
-ÉÉ" #
-Column
-ÉÉ# )
-<
-ÉÉ) *
-string
-ÉÉ* 0
->
-ÉÉ0 1
-(
-ÉÉ1 2
-type
-ÉÉ2 6
-:
-ÉÉ6 7
-$str
-ÉÉ8 F
-,
-ÉÉF G
-	maxLength
-ÉÉH Q
-:
-ÉÉQ R
-$num
-ÉÉS U
-,
-ÉÉU V
-nullable
-ÉÉW _
-:
-ÉÉ_ `
-false
-ÉÉa f
-)
-ÉÉf g
-,
-ÉÉg h
-ItemName
-ÑÑ 
-=
-ÑÑ 
-table
-ÑÑ $
-.
-ÑÑ$ %
-Column
-ÑÑ% +
-<
-ÑÑ+ ,
-string
-ÑÑ, 2
->
-ÑÑ2 3
-(
-ÑÑ3 4
-type
-ÑÑ4 8
-:
-ÑÑ8 9
-$str
-ÑÑ: I
-,
-ÑÑI J
-	maxLength
-ÑÑK T
-:
-ÑÑT U
-$num
-ÑÑV Y
-,
-ÑÑY Z
-nullable
-ÑÑ[ c
-:
-ÑÑc d
-false
-ÑÑe j
-)
-ÑÑj k
-,
-ÑÑk l
-NoAccess
-ÖÖ 
-=
-ÖÖ 
-table
-ÖÖ $
-.
-ÖÖ$ %
-Column
-ÖÖ% +
-<
-ÖÖ+ ,
-bool
-ÖÖ, 0
->
-ÖÖ0 1
-(
-ÖÖ1 2
-type
-ÖÖ2 6
-:
-ÖÖ6 7
-$str
-ÖÖ8 =
-,
-ÖÖ= >
-nullable
-ÖÖ? G
-:
-ÖÖG H
-false
-ÖÖI N
-)
-ÖÖN O
-,
-ÖÖO P
-Create
-ÜÜ 
-=
-ÜÜ 
-table
-ÜÜ "
-.
-ÜÜ" #
-Column
-ÜÜ# )
-<
-ÜÜ) *
-bool
-ÜÜ* .
->
-ÜÜ. /
-(
-ÜÜ/ 0
-type
-ÜÜ0 4
-:
-ÜÜ4 5
-$str
-ÜÜ6 ;
-,
-ÜÜ; <
-nullable
-ÜÜ= E
-:
-ÜÜE F
-false
-ÜÜG L
-)
-ÜÜL M
-,
-ÜÜM N
-Read
-áá 
-=
-áá 
-table
-áá  
-.
-áá  !
-Column
-áá! '
-<
-áá' (
-bool
-áá( ,
->
-áá, -
-(
-áá- .
-type
-áá. 2
-:
-áá2 3
-$str
-áá4 9
-,
-áá9 :
-nullable
-áá; C
-:
-ááC D
-false
-ááE J
-)
-ááJ K
-,
-ááK L
-Update
-àà 
-=
-àà 
-table
-àà "
-.
-àà" #
-Column
-àà# )
-<
-àà) *
-bool
-àà* .
->
-àà. /
-(
-àà/ 0
-type
-àà0 4
-:
-àà4 5
-$str
-àà6 ;
-,
-àà; <
-nullable
-àà= E
-:
-ààE F
-false
-ààG L
-)
-ààL M
-,
-ààM N
-Delete
-ââ 
-=
-ââ 
-table
-ââ "
-.
-ââ" #
-Column
-ââ# )
-<
-ââ) *
-bool
-ââ* .
->
-ââ. /
-(
-ââ/ 0
-type
-ââ0 4
-:
-ââ4 5
-$str
-ââ6 ;
-,
-ââ; <
-nullable
-ââ= E
-:
-ââE F
-false
-ââG L
-)
-ââL M
-,
-ââM N
-Approve
-ää 
-=
-ää 
-table
-ää #
-.
-ää# $
-Column
-ää$ *
-<
-ää* +
-bool
-ää+ /
->
-ää/ 0
-(
-ää0 1
-type
-ää1 5
-:
-ää5 6
-$str
-ää7 <
-,
-ää< =
-nullable
-ää> F
-:
-ääF G
-false
-ääH M
-)
-ääM N
-}
-ãã 
-,
-ãã 
-constraints
-åå 
-:
-åå 
-table
-åå "
-=>
-åå# %
-{
-çç 
-table
-éé 
-.
-éé 
-
-PrimaryKey
-éé $
-(
-éé$ %
-$str
-éé% =
-,
-éé= >
-x
-éé? @
-=>
-ééA C
-x
-ééD E
-.
-ééE F#
-SubPermissionsItemsId
-ééF [
-)
-éé[ \
-;
-éé\ ]
-}
-èè 
-)
-èè 
-;
-èè 
-migrationBuilder
-ëë 
-.
-ëë 
-CreateTable
-ëë (
-(
-ëë( )
-name
-íí 
-:
-íí 
-$str
-íí "
-,
-íí" #
-columns
-ìì 
-:
-ìì 
-table
-ìì 
-=>
-ìì !
-new
-ìì" %
-{
-îî 
-TokenStoreId
-ïï  
-=
-ïï! "
-table
-ïï# (
-.
-ïï( )
-Column
-ïï) /
-<
-ïï/ 0
-int
-ïï0 3
->
-ïï3 4
-(
-ïï4 5
-type
-ïï5 9
-:
-ïï9 :
-$str
-ïï; @
-,
-ïï@ A
-nullable
-ïïB J
-:
-ïïJ K
-false
-ïïL Q
-)
-ïïQ R
-.
-ññ 
-
-Annotation
-ññ #
-(
-ññ# $
-$str
-ññ$ 8
-,
-ññ8 9
-$str
-ññ: @
-)
-ññ@ A
-,
-ññA B
-MobilePhoneNumber
-óó %
-=
-óó& '
-table
-óó( -
-.
-óó- .
-Column
-óó. 4
-<
-óó4 5
-string
-óó5 ;
->
-óó; <
-(
-óó< =
-type
-óó= A
-:
-óóA B
-$str
-óóC Q
-,
-óóQ R
-	maxLength
-óóS \
-:
-óó\ ]
-$num
-óó^ `
-,
-óó` a
-nullable
-óób j
-:
-óój k
-true
-óól p
-)
-óóp q
-,
-óóq r
-EmailAddress
-òò  
-=
-òò! "
-table
-òò# (
-.
-òò( )
-Column
-òò) /
-<
-òò/ 0
-string
-òò0 6
->
-òò6 7
-(
-òò7 8
-type
-òò8 <
-:
-òò< =
-$str
-òò> L
-,
-òòL M
-	maxLength
-òòN W
-:
-òòW X
-$num
-òòY [
-,
-òò[ \
-nullable
-òò] e
-:
-òòe f
-true
-òòg k
-)
-òòk l
-,
-òòl m
-Token
-ôô 
-=
-ôô 
-table
-ôô !
-.
-ôô! "
-Column
-ôô" (
-<
-ôô( )
-string
-ôô) /
->
-ôô/ 0
-(
-ôô0 1
-type
-ôô1 5
-:
-ôô5 6
-$str
-ôô7 E
-,
-ôôE F
-	maxLength
-ôôG P
-:
-ôôP Q
-$num
-ôôR T
-,
-ôôT U
-nullable
-ôôV ^
-:
-ôô^ _
-true
-ôô` d
-)
-ôôd e
-,
-ôôe f
-CreatedDate
-öö 
-=
-öö  !
-table
-öö" '
-.
-öö' (
-Column
-öö( .
-<
-öö. /
-DateTime
-öö/ 7
->
-öö7 8
-(
-öö8 9
-type
-öö9 =
-:
-öö= >
-$str
-öö? J
-,
-ööJ K
-nullable
-ööL T
-:
-ööT U
-false
-ööV [
-)
-öö[ \
-,
-öö\ ]
-
-ExpiryDate
-õõ 
-=
-õõ  
-table
-õõ! &
-.
-õõ& '
-Column
-õõ' -
-<
-õõ- .
-DateTime
-õõ. 6
->
-õõ6 7
-(
-õõ7 8
-type
-õõ8 <
-:
-õõ< =
-$str
-õõ> I
-,
-õõI J
-nullable
-õõK S
-:
-õõS T
-false
-õõU Z
-)
-õõZ [
-,
-õõ[ \
-
-IsVerified
-úú 
-=
-úú  
-table
-úú! &
-.
-úú& '
-Column
-úú' -
-<
-úú- .
-bool
-úú. 2
->
-úú2 3
-(
-úú3 4
-type
-úú4 8
-:
-úú8 9
-$str
-úú: ?
-,
-úú? @
-nullable
-úúA I
-:
-úúI J
-false
-úúK P
-)
-úúP Q
-,
-úúQ R
-VerifiedDate
-ùù  
-=
-ùù! "
-table
-ùù# (
-.
-ùù( )
-Column
-ùù) /
-<
-ùù/ 0
-DateTime
-ùù0 8
->
-ùù8 9
-(
-ùù9 :
-type
-ùù: >
-:
-ùù> ?
-$str
-ùù@ K
-,
-ùùK L
-nullable
-ùùM U
-:
-ùùU V
-false
-ùùW \
-)
-ùù\ ]
-}
-ûû 
-,
-ûû 
-constraints
-üü 
-:
-üü 
-table
-üü "
-=>
-üü# %
-{
-†† 
-table
-°° 
-.
-°° 
-
-PrimaryKey
-°° $
-(
-°°$ %
-$str
-°°% 4
-,
-°°4 5
-x
-°°6 7
-=>
-°°8 :
-x
-°°; <
-.
-°°< =
-TokenStoreId
-°°= I
-)
-°°I J
-;
-°°J K
-}
-¢¢ 
-)
-¢¢ 
-;
-¢¢ 
-migrationBuilder
-§§ 
-.
-§§ 
-CreateTable
-§§ (
-(
-§§( )
-name
-•• 
-:
-•• 
-$str
-•• 
-,
-•• 
-schema
-¶¶ 
-:
-¶¶ 
-$str
-¶¶ 
-,
-¶¶ 
-columns
-ßß 
-:
-ßß 
-table
-ßß 
-=>
-ßß !
-new
-ßß" %
-{
-®® 
-Id
-©© 
-=
-©© 
-table
-©© 
-.
-©© 
-Column
-©© %
-<
-©©% &
-string
-©©& ,
->
-©©, -
-(
-©©- .
-type
-©©. 2
-:
-©©2 3
-$str
-©©4 C
-,
-©©C D
-nullable
-©©E M
-:
-©©M N
-false
-©©O T
-)
-©©T U
-,
-©©U V"
-IdentificationNumber
-™™ (
-=
-™™) *
-table
-™™+ 0
-.
-™™0 1
-Column
-™™1 7
-<
-™™7 8
-string
-™™8 >
->
-™™> ?
-(
-™™? @
-type
-™™@ D
-:
-™™D E
-$str
-™™F T
-,
-™™T U
-	maxLength
-™™V _
-:
-™™_ `
-$num
-™™a c
-,
-™™c d
-nullable
-™™e m
-:
-™™m n
-true
-™™o s
-)
-™™s t
-,
-™™t u
-	FirstName
-´´ 
-=
-´´ 
-table
-´´  %
-.
-´´% &
-Column
-´´& ,
-<
-´´, -
-string
-´´- 3
->
-´´3 4
-(
-´´4 5
-type
-´´5 9
-:
-´´9 :
-$str
-´´; I
-,
-´´I J
-	maxLength
-´´K T
-:
-´´T U
-$num
-´´V X
-,
-´´X Y
-nullable
-´´Z b
-:
-´´b c
-true
-´´d h
-)
-´´h i
-,
-´´i j
-
-MiddleName
-¨¨ 
-=
-¨¨  
-table
-¨¨! &
-.
-¨¨& '
-Column
-¨¨' -
-<
-¨¨- .
-string
-¨¨. 4
->
-¨¨4 5
-(
-¨¨5 6
-type
-¨¨6 :
-:
-¨¨: ;
-$str
-¨¨< J
-,
-¨¨J K
-	maxLength
-¨¨L U
-:
-¨¨U V
-$num
-¨¨W Y
-,
-¨¨Y Z
-nullable
-¨¨[ c
-:
-¨¨c d
-true
-¨¨e i
-)
-¨¨i j
-,
-¨¨j k
-LastName
-≠≠ 
-=
-≠≠ 
-table
-≠≠ $
-.
-≠≠$ %
-Column
-≠≠% +
-<
-≠≠+ ,
-string
-≠≠, 2
->
-≠≠2 3
-(
-≠≠3 4
-type
-≠≠4 8
-:
-≠≠8 9
-$str
-≠≠: I
-,
-≠≠I J
-	maxLength
-≠≠K T
-:
-≠≠T U
-$num
-≠≠V Y
-,
-≠≠Y Z
-nullable
-≠≠[ c
-:
-≠≠c d
-true
-≠≠e i
-)
-≠≠i j
-,
-≠≠j k
-PartnerName
-ÆÆ 
-=
-ÆÆ  !
-table
-ÆÆ" '
-.
-ÆÆ' (
-Column
-ÆÆ( .
-<
-ÆÆ. /
-string
-ÆÆ/ 5
->
-ÆÆ5 6
-(
-ÆÆ6 7
-type
-ÆÆ7 ;
-:
-ÆÆ; <
-$str
-ÆÆ= L
-,
-ÆÆL M
-	maxLength
-ÆÆN W
-:
-ÆÆW X
-$num
-ÆÆY \
-,
-ÆÆ\ ]
-nullable
-ÆÆ^ f
-:
-ÆÆf g
-true
-ÆÆh l
-)
-ÆÆl m
-,
-ÆÆm n
-DepartmentId
-ØØ  
-=
-ØØ! "
-table
-ØØ# (
-.
-ØØ( )
-Column
-ØØ) /
-<
-ØØ/ 0
-int
-ØØ0 3
->
-ØØ3 4
-(
-ØØ4 5
-type
-ØØ5 9
-:
-ØØ9 :
-$str
-ØØ; @
-,
-ØØ@ A
-nullable
-ØØB J
-:
-ØØJ K
-false
-ØØL Q
-)
-ØØQ R
-,
-ØØR S
-UnitId
-∞∞ 
-=
-∞∞ 
-table
-∞∞ "
-.
-∞∞" #
-Column
-∞∞# )
-<
-∞∞) *
-int
-∞∞* -
->
-∞∞- .
-(
-∞∞. /
-type
-∞∞/ 3
-:
-∞∞3 4
-$str
-∞∞5 :
-,
-∞∞: ;
-nullable
-∞∞< D
-:
-∞∞D E
-false
-∞∞F K
-)
-∞∞K L
-,
-∞∞L M
-ProfilePicture
-±± "
-=
-±±# $
-table
-±±% *
-.
-±±* +
-Column
-±±+ 1
-<
-±±1 2
-string
-±±2 8
->
-±±8 9
-(
-±±9 :
-type
-±±: >
-:
-±±> ?
-$str
-±±@ O
-,
-±±O P
-	maxLength
-±±Q Z
-:
-±±Z [
-$num
-±±\ _
-,
-±±_ `
-nullable
-±±a i
-:
-±±i j
-true
-±±k o
-)
-±±o p
-,
-±±p q
-LastReceiptNumber
-≤≤ %
-=
-≤≤& '
-table
-≤≤( -
-.
-≤≤- .
-Column
-≤≤. 4
-<
-≤≤4 5
-string
-≤≤5 ;
->
-≤≤; <
-(
-≤≤< =
-type
-≤≤= A
-:
-≤≤A B
-$str
-≤≤C Q
-,
-≤≤Q R
-	maxLength
-≤≤S \
-:
-≤≤\ ]
-$num
-≤≤^ `
-,
-≤≤` a
-nullable
-≤≤b j
-:
-≤≤j k
-true
-≤≤l p
-)
-≤≤p q
-,
-≤≤q r
-LastReceiptImage
-≥≥ $
-=
-≥≥% &
-table
-≥≥' ,
-.
-≥≥, -
-Column
-≥≥- 3
-<
-≥≥3 4
-string
-≥≥4 :
->
-≥≥: ;
-(
-≥≥; <
-type
-≥≥< @
-:
-≥≥@ A
-$str
-≥≥B Q
-,
-≥≥Q R
-	maxLength
-≥≥S \
-:
-≥≥\ ]
-$num
-≥≥^ a
-,
-≥≥a b
-nullable
-≥≥c k
-:
-≥≥k l
-true
-≥≥m q
-)
-≥≥q r
-,
-≥≥r s"
-IdentificationTypeId
-¥¥ (
-=
-¥¥) *
-table
-¥¥+ 0
-.
-¥¥0 1
-Column
-¥¥1 7
-<
-¥¥7 8
-int
-¥¥8 ;
->
-¥¥; <
-(
-¥¥< =
-type
-¥¥= A
-:
-¥¥A B
-$str
-¥¥C H
-,
-¥¥H I
-nullable
-¥¥J R
-:
-¥¥R S
-false
-¥¥T Y
-)
-¥¥Y Z
-,
-¥¥Z [(
-IdentificationUniqueNumber
-µµ .
-=
-µµ/ 0
-table
-µµ1 6
-.
-µµ6 7
-Column
-µµ7 =
-<
-µµ= >
-string
-µµ> D
->
-µµD E
-(
-µµE F
-type
-µµF J
-:
-µµJ K
-$str
-µµL Z
-,
-µµZ [
-	maxLength
-µµ\ e
-:
-µµe f
-$num
-µµg i
-,
-µµi j
-nullable
-µµk s
-:
-µµs t
-true
-µµu y
-)
-µµy z
-,
-µµz {!
-IdentificationImage
-∂∂ '
-=
-∂∂( )
-table
-∂∂* /
-.
-∂∂/ 0
-Column
-∂∂0 6
-<
-∂∂6 7
-string
-∂∂7 =
->
-∂∂= >
-(
-∂∂> ?
-type
-∂∂? C
-:
-∂∂C D
-$str
-∂∂E T
-,
-∂∂T U
-	maxLength
-∂∂V _
-:
-∂∂_ `
-$num
-∂∂a d
-,
-∂∂d e
-nullable
-∂∂f n
-:
-∂∂n o
-true
-∂∂p t
-)
-∂∂t u
-,
-∂∂u v$
-IdentificationImageOne
-∑∑ *
-=
-∑∑+ ,
-table
-∑∑- 2
-.
-∑∑2 3
-Column
-∑∑3 9
-<
-∑∑9 :
-string
-∑∑: @
->
-∑∑@ A
-(
-∑∑A B
-type
-∑∑B F
-:
-∑∑F G
-$str
-∑∑H W
-,
-∑∑W X
-	maxLength
-∑∑Y b
-:
-∑∑b c
-$num
-∑∑d g
-,
-∑∑g h
-nullable
-∑∑i q
-:
-∑∑q r
-true
-∑∑s w
-)
-∑∑w x
-,
-∑∑x y
-SelfieImage
-∏∏ 
-=
-∏∏  !
-table
-∏∏" '
-.
-∏∏' (
-Column
-∏∏( .
-<
-∏∏. /
-string
-∏∏/ 5
->
-∏∏5 6
-(
-∏∏6 7
-type
-∏∏7 ;
-:
-∏∏; <
-$str
-∏∏= L
-,
-∏∏L M
-	maxLength
-∏∏N W
-:
-∏∏W X
-$num
-∏∏Y \
-,
-∏∏\ ]
-nullable
-∏∏^ f
-:
-∏∏f g
-true
-∏∏h l
-)
-∏∏l m
-,
-∏∏m n
-PassportPicture
-ππ #
-=
-ππ$ %
-table
-ππ& +
-.
-ππ+ ,
-Column
-ππ, 2
-<
-ππ2 3
-string
-ππ3 9
->
-ππ9 :
-(
-ππ: ;
-type
-ππ; ?
-:
-ππ? @
-$str
-ππA P
-,
-ππP Q
-	maxLength
-ππR [
-:
-ππ[ \
-$num
-ππ] `
-,
-ππ` a
-nullable
-ππb j
-:
-ππj k
-true
-ππl p
-)
-ππp q
-,
-ππq r
-	ChannelId
-∫∫ 
-=
-∫∫ 
-table
-∫∫  %
-.
-∫∫% &
-Column
-∫∫& ,
-<
-∫∫, -
-int
-∫∫- 0
->
-∫∫0 1
-(
-∫∫1 2
-type
-∫∫2 6
-:
-∫∫6 7
-$str
-∫∫8 =
-,
-∫∫= >
-nullable
-∫∫? G
-:
-∫∫G H
-false
-∫∫I N
-)
-∫∫N O
-,
-∫∫O P
-RegistrationDate
-ªª $
-=
-ªª% &
-table
-ªª' ,
-.
-ªª, -
-Column
-ªª- 3
-<
-ªª3 4
-DateTime
-ªª4 <
->
-ªª< =
-(
-ªª= >
-type
-ªª> B
-:
-ªªB C
-$str
-ªªD O
-,
-ªªO P
-nullable
-ªªQ Y
-:
-ªªY Z
-false
-ªª[ `
-)
-ªª` a
-,
-ªªa b
-Status
-ºº 
-=
-ºº 
-table
-ºº "
-.
-ºº" #
-Column
-ºº# )
-<
-ºº) *
-int
-ºº* -
->
-ºº- .
-(
-ºº. /
-type
-ºº/ 3
-:
-ºº3 4
-$str
-ºº5 :
-,
-ºº: ;
-nullable
-ºº< D
-:
-ººD E
-false
-ººF K
-)
-ººK L
-,
-ººL M$
-ContactPerson_FullName
-ΩΩ *
-=
-ΩΩ+ ,
-table
-ΩΩ- 2
-.
-ΩΩ2 3
-Column
-ΩΩ3 9
-<
-ΩΩ9 :
-string
-ΩΩ: @
->
-ΩΩ@ A
-(
-ΩΩA B
-type
-ΩΩB F
-:
-ΩΩF G
-$str
-ΩΩH W
-,
-ΩΩW X
-	maxLength
-ΩΩY b
-:
-ΩΩb c
-$num
-ΩΩd g
-,
-ΩΩg h
-nullable
-ΩΩi q
-:
-ΩΩq r
-true
-ΩΩs w
-)
-ΩΩw x
-,
-ΩΩx y!
-ContactPerson_Email
-ææ '
-=
-ææ( )
-table
-ææ* /
-.
-ææ/ 0
-Column
-ææ0 6
-<
-ææ6 7
-string
-ææ7 =
->
-ææ= >
-(
-ææ> ?
-type
-ææ? C
-:
-ææC D
-$str
-ææE T
-,
-ææT U
-	maxLength
-ææV _
-:
-ææ_ `
-$num
-ææa d
-,
-ææd e
-nullable
-ææf n
-:
-ææn o
-true
-ææp t
-)
-ææt u
-,
-ææu v'
-ContactPerson_PhoneNumber
-øø -
-=
-øø. /
-table
-øø0 5
-.
-øø5 6
-Column
-øø6 <
-<
-øø< =
-string
-øø= C
->
-øøC D
-(
-øøD E
-type
-øøE I
-:
-øøI J
-$str
-øøK Y
-,
-øøY Z
-	maxLength
-øø[ d
-:
-øød e
-$num
-øøf h
-,
-øøh i
-nullable
-øøj r
-:
-øør s
-true
-øøt x
-)
-øøx y
-,
-øøy z$
-ContactPerson_Position
-¿¿ *
-=
-¿¿+ ,
-table
-¿¿- 2
-.
-¿¿2 3
-Column
-¿¿3 9
-<
-¿¿9 :
-string
-¿¿: @
->
-¿¿@ A
-(
-¿¿A B
-type
-¿¿B F
-:
-¿¿F G
-$str
-¿¿H V
-,
-¿¿V W
-	maxLength
-¿¿X a
-:
-¿¿a b
-$num
-¿¿c e
-,
-¿¿e f
-nullable
-¿¿g o
-:
-¿¿o p
-true
-¿¿q u
-)
-¿¿u v
-,
-¿¿v w
-	CreatedBy
-¡¡ 
-=
-¡¡ 
-table
-¡¡  %
-.
-¡¡% &
-Column
-¡¡& ,
-<
-¡¡, -
-string
-¡¡- 3
->
-¡¡3 4
-(
-¡¡4 5
-type
-¡¡5 9
-:
-¡¡9 :
-$str
-¡¡; I
-,
-¡¡I J
-	maxLength
-¡¡K T
-:
-¡¡T U
-$num
-¡¡V X
-,
-¡¡X Y
-nullable
-¡¡Z b
-:
-¡¡b c
-true
-¡¡d h
-)
-¡¡h i
-,
-¡¡i j
-CreatedDate
-¬¬ 
-=
-¬¬  !
-table
-¬¬" '
-.
-¬¬' (
-Column
-¬¬( .
-<
-¬¬. /
-DateTime
-¬¬/ 7
->
-¬¬7 8
-(
-¬¬8 9
-type
-¬¬9 =
-:
-¬¬= >
-$str
-¬¬? J
-,
-¬¬J K
-nullable
-¬¬L T
-:
-¬¬T U
-false
-¬¬V [
-)
-¬¬[ \
-,
-¬¬\ ]
-
-ModifiedBy
-√√ 
-=
-√√  
-table
-√√! &
-.
-√√& '
-Column
-√√' -
-<
-√√- .
-string
-√√. 4
->
-√√4 5
-(
-√√5 6
-type
-√√6 :
-:
-√√: ;
-$str
-√√< J
-,
-√√J K
-	maxLength
-√√L U
-:
-√√U V
-$num
-√√W Y
-,
-√√Y Z
-nullable
-√√[ c
-:
-√√c d
-true
-√√e i
-)
-√√i j
-,
-√√j k
-ModifiedDate
-ƒƒ  
-=
-ƒƒ! "
-table
-ƒƒ# (
-.
-ƒƒ( )
-Column
-ƒƒ) /
-<
-ƒƒ/ 0
-DateTime
-ƒƒ0 8
->
-ƒƒ8 9
-(
-ƒƒ9 :
-type
-ƒƒ: >
-:
-ƒƒ> ?
-$str
-ƒƒ@ K
-,
-ƒƒK L
-nullable
-ƒƒM U
-:
-ƒƒU V
-false
-ƒƒW \
-)
-ƒƒ\ ]
-,
-ƒƒ] ^
-	DeletedBy
-≈≈ 
-=
-≈≈ 
-table
-≈≈  %
-.
-≈≈% &
-Column
-≈≈& ,
-<
-≈≈, -
-string
-≈≈- 3
->
-≈≈3 4
-(
-≈≈4 5
-type
-≈≈5 9
-:
-≈≈9 :
-$str
-≈≈; I
-,
-≈≈I J
-	maxLength
-≈≈K T
-:
-≈≈T U
-$num
-≈≈V X
-,
-≈≈X Y
-nullable
-≈≈Z b
-:
-≈≈b c
-true
-≈≈d h
-)
-≈≈h i
-,
-≈≈i j
-DeletedDate
-∆∆ 
-=
-∆∆  !
-table
-∆∆" '
-.
-∆∆' (
-Column
-∆∆( .
-<
-∆∆. /
-DateTime
-∆∆/ 7
->
-∆∆7 8
-(
-∆∆8 9
-type
-∆∆9 =
-:
-∆∆= >
-$str
-∆∆? J
-,
-∆∆J K
-nullable
-∆∆L T
-:
-∆∆T U
-false
-∆∆V [
-)
-∆∆[ \
-,
-∆∆\ ]
-
-VerifiedBy
-«« 
-=
-««  
-table
-««! &
-.
-««& '
-Column
-««' -
-<
-««- .
-string
-««. 4
->
-««4 5
-(
-««5 6
-type
-««6 :
-:
-««: ;
-$str
-««< J
-,
-««J K
-	maxLength
-««L U
-:
-««U V
-$num
-««W Y
-,
-««Y Z
-nullable
-««[ c
-:
-««c d
-true
-««e i
-)
-««i j
-,
-««j k
-VerifiedDate
-»»  
-=
-»»! "
-table
-»»# (
-.
-»»( )
-Column
-»») /
-<
-»»/ 0
-DateTime
-»»0 8
->
-»»8 9
-(
-»»9 :
-type
-»»: >
-:
-»»> ?
-$str
-»»@ K
-,
-»»K L
-nullable
-»»M U
-:
-»»U V
-false
-»»W \
-)
-»»\ ]
-,
-»»] ^
-
-RejectedBy
-…… 
-=
-……  
-table
-……! &
-.
-……& '
-Column
-……' -
-<
-……- .
-string
-……. 4
->
-……4 5
-(
-……5 6
-type
-……6 :
-:
-……: ;
-$str
-……< J
-,
-……J K
-	maxLength
-……L U
-:
-……U V
-$num
-……W Y
-,
-……Y Z
-nullable
-……[ c
-:
-……c d
-true
-……e i
-)
-……i j
-,
-……j k
-RejectedDate
-    
-=
-  ! "
-table
-  # (
-.
-  ( )
-Column
-  ) /
-<
-  / 0
-DateTime
-  0 8
->
-  8 9
-(
-  9 :
-type
-  : >
-:
-  > ?
-$str
-  @ K
-,
-  K L
-nullable
-  M U
-:
-  U V
-false
-  W \
-)
-  \ ]
-,
-  ] ^
-RejectedReasons
-ÀÀ #
-=
-ÀÀ$ %
-table
-ÀÀ& +
-.
-ÀÀ+ ,
-Column
-ÀÀ, 2
-<
-ÀÀ2 3
-string
-ÀÀ3 9
->
-ÀÀ9 :
-(
-ÀÀ: ;
-type
-ÀÀ; ?
-:
-ÀÀ? @
-$str
-ÀÀA P
-,
-ÀÀP Q
-	maxLength
-ÀÀR [
-:
-ÀÀ[ \
-$num
-ÀÀ] `
-,
-ÀÀ` a
-nullable
-ÀÀb j
-:
-ÀÀj k
-true
-ÀÀl p
-)
-ÀÀp q
-,
-ÀÀq r
-
-ApprovedBy
-ÃÃ 
-=
-ÃÃ  
-table
-ÃÃ! &
-.
-ÃÃ& '
-Column
-ÃÃ' -
-<
-ÃÃ- .
-string
-ÃÃ. 4
->
-ÃÃ4 5
-(
-ÃÃ5 6
-type
-ÃÃ6 :
-:
-ÃÃ: ;
-$str
-ÃÃ< J
-,
-ÃÃJ K
-	maxLength
-ÃÃL U
-:
-ÃÃU V
-$num
-ÃÃW Y
-,
-ÃÃY Z
-nullable
-ÃÃ[ c
-:
-ÃÃc d
-true
-ÃÃe i
-)
-ÃÃi j
-,
-ÃÃj k
-ApprovedDate
-ÕÕ  
-=
-ÕÕ! "
-table
-ÕÕ# (
-.
-ÕÕ( )
-Column
-ÕÕ) /
-<
-ÕÕ/ 0
-DateTime
-ÕÕ0 8
->
-ÕÕ8 9
-(
-ÕÕ9 :
-type
-ÕÕ: >
-:
-ÕÕ> ?
-$str
-ÕÕ@ K
-,
-ÕÕK L
-nullable
-ÕÕM U
-:
-ÕÕU V
-false
-ÕÕW \
-)
-ÕÕ\ ]
-,
-ÕÕ] ^
-DisapprovedBy
-ŒŒ !
-=
-ŒŒ" #
-table
-ŒŒ$ )
-.
-ŒŒ) *
-Column
-ŒŒ* 0
-<
-ŒŒ0 1
-string
-ŒŒ1 7
->
-ŒŒ7 8
-(
-ŒŒ8 9
-type
-ŒŒ9 =
-:
-ŒŒ= >
-$str
-ŒŒ? M
-,
-ŒŒM N
-	maxLength
-ŒŒO X
-:
-ŒŒX Y
-$num
-ŒŒZ \
-,
-ŒŒ\ ]
-nullable
-ŒŒ^ f
-:
-ŒŒf g
-true
-ŒŒh l
-)
-ŒŒl m
-,
-ŒŒm n
-DisapprovedDate
-œœ #
-=
-œœ$ %
-table
-œœ& +
-.
-œœ+ ,
-Column
-œœ, 2
-<
-œœ2 3
-DateTime
-œœ3 ;
->
-œœ; <
-(
-œœ< =
-type
-œœ= A
-:
-œœA B
-$str
-œœC N
-,
-œœN O
-nullable
-œœP X
-:
-œœX Y
-false
-œœZ _
-)
-œœ_ `
-,
-œœ` a 
-DisapprovedReasons
-–– &
-=
-––' (
-table
-––) .
-.
-––. /
-Column
-––/ 5
-<
-––5 6
-string
-––6 <
->
-––< =
-(
-––= >
-type
-––> B
-:
-––B C
-$str
-––D S
-,
-––S T
-	maxLength
-––U ^
-:
-––^ _
-$num
-––` c
-,
-––c d
-nullable
-––e m
-:
-––m n
-true
-––o s
-)
-––s t
-,
-––t u
-ActivatedBy
-—— 
-=
-——  !
-table
-——" '
-.
-——' (
-Column
-——( .
-<
-——. /
-string
-——/ 5
->
-——5 6
-(
-——6 7
-type
-——7 ;
-:
-——; <
-$str
-——= K
-,
-——K L
-	maxLength
-——M V
-:
-——V W
-$num
-——X Z
-,
-——Z [
-nullable
-——\ d
-:
-——d e
-true
-——f j
-)
-——j k
-,
-——k l
-ActivatedDate
-““ !
-=
-““" #
-table
-““$ )
-.
-““) *
-Column
-““* 0
-<
-““0 1
-DateTime
-““1 9
->
-““9 :
-(
-““: ;
-type
-““; ?
-:
-““? @
-$str
-““A L
-,
-““L M
-nullable
-““N V
-:
-““V W
-false
-““X ]
-)
-““] ^
-,
-““^ _
-DeactivatedBy
-”” !
-=
-””" #
-table
-””$ )
-.
-””) *
-Column
-””* 0
-<
-””0 1
-string
-””1 7
->
-””7 8
-(
-””8 9
-type
-””9 =
-:
-””= >
-$str
-””? M
-,
-””M N
-	maxLength
-””O X
-:
-””X Y
-$num
-””Z \
-,
-””\ ]
-nullable
-””^ f
-:
-””f g
-true
-””h l
-)
-””l m
-,
-””m n
-DeactivatedDate
-‘‘ #
-=
-‘‘$ %
-table
-‘‘& +
-.
-‘‘+ ,
-Column
-‘‘, 2
-<
-‘‘2 3
-DateTime
-‘‘3 ;
->
-‘‘; <
-(
-‘‘< =
-type
-‘‘= A
-:
-‘‘A B
-$str
-‘‘C N
-,
-‘‘N O
-nullable
-‘‘P X
-:
-‘‘X Y
-false
-‘‘Z _
-)
-‘‘_ `
-,
-‘‘` a 
-DeactivatedReasons
-’’ &
-=
-’’' (
-table
-’’) .
-.
-’’. /
-Column
-’’/ 5
-<
-’’5 6
-string
-’’6 <
->
-’’< =
-(
-’’= >
-type
-’’> B
-:
-’’B C
-$str
-’’D S
-,
-’’S T
-	maxLength
-’’U ^
-:
-’’^ _
-$num
-’’` c
-,
-’’c d
-nullable
-’’e m
-:
-’’m n
-true
-’’o s
-)
-’’s t
-,
-’’t u
-
-FirebaseId
-÷÷ 
-=
-÷÷  
-table
-÷÷! &
-.
-÷÷& '
-Column
-÷÷' -
-<
-÷÷- .
-string
-÷÷. 4
->
-÷÷4 5
-(
-÷÷5 6
-type
-÷÷6 :
-:
-÷÷: ;
-$str
-÷÷< K
-,
-÷÷K L
-	maxLength
-÷÷M V
-:
-÷÷V W
-$num
-÷÷X [
-,
-÷÷[ \
-nullable
-÷÷] e
-:
-÷÷e f
-true
-÷÷g k
-)
-÷÷k l
-,
-÷÷l m
-IsFirstTime
-◊◊ 
-=
-◊◊  !
-table
-◊◊" '
-.
-◊◊' (
-Column
-◊◊( .
-<
-◊◊. /
-bool
-◊◊/ 3
->
-◊◊3 4
-(
-◊◊4 5
-type
-◊◊5 9
-:
-◊◊9 :
-$str
-◊◊; @
-,
-◊◊@ A
-nullable
-◊◊B J
-:
-◊◊J K
-false
-◊◊L Q
-)
-◊◊Q R
-,
-◊◊R S
-UserType
-ÿÿ 
-=
-ÿÿ 
-table
-ÿÿ $
-.
-ÿÿ$ %
-Column
-ÿÿ% +
-<
-ÿÿ+ ,
-int
-ÿÿ, /
->
-ÿÿ/ 0
-(
-ÿÿ0 1
-type
-ÿÿ1 5
-:
-ÿÿ5 6
-$str
-ÿÿ7 <
-,
-ÿÿ< =
-nullable
-ÿÿ> F
-:
-ÿÿF G
-false
-ÿÿH M
-)
-ÿÿM N
-,
-ÿÿN O
-RefreshToken
-ŸŸ  
-=
-ŸŸ! "
-table
-ŸŸ# (
-.
-ŸŸ( )
-Column
-ŸŸ) /
-<
-ŸŸ/ 0
-string
-ŸŸ0 6
->
-ŸŸ6 7
-(
-ŸŸ7 8
-type
-ŸŸ8 <
-:
-ŸŸ< =
-$str
-ŸŸ> M
-,
-ŸŸM N
-nullable
-ŸŸO W
-:
-ŸŸW X
-true
-ŸŸY ]
-)
-ŸŸ] ^
-,
-ŸŸ^ _!
-RefreshTokenExpires
-⁄⁄ '
-=
-⁄⁄( )
-table
-⁄⁄* /
-.
-⁄⁄/ 0
-Column
-⁄⁄0 6
-<
-⁄⁄6 7
-DateTime
-⁄⁄7 ?
->
-⁄⁄? @
-(
-⁄⁄@ A
-type
-⁄⁄A E
-:
-⁄⁄E F
-$str
-⁄⁄G R
-,
-⁄⁄R S
-nullable
-⁄⁄T \
-:
-⁄⁄\ ]
-false
-⁄⁄^ c
-)
-⁄⁄c d
-,
-⁄⁄d e
-UserName
-€€ 
-=
-€€ 
-table
-€€ $
-.
-€€$ %
-Column
-€€% +
-<
-€€+ ,
-string
-€€, 2
->
-€€2 3
-(
-€€3 4
-type
-€€4 8
-:
-€€8 9
-$str
-€€: I
-,
-€€I J
-	maxLength
-€€K T
-:
-€€T U
-$num
-€€V Y
-,
-€€Y Z
-nullable
-€€[ c
-:
-€€c d
-true
-€€e i
-)
-€€i j
-,
-€€j k 
-NormalizedUserName
-‹‹ &
-=
-‹‹' (
-table
-‹‹) .
-.
-‹‹. /
-Column
-‹‹/ 5
-<
-‹‹5 6
-string
-‹‹6 <
->
-‹‹< =
-(
-‹‹= >
-type
-‹‹> B
-:
-‹‹B C
-$str
-‹‹D S
-,
-‹‹S T
-	maxLength
-‹‹U ^
-:
-‹‹^ _
-$num
-‹‹` c
-,
-‹‹c d
-nullable
-‹‹e m
-:
-‹‹m n
-true
-‹‹o s
-)
-‹‹s t
-,
-‹‹t u
-Email
-›› 
-=
-›› 
-table
-›› !
-.
-››! "
-Column
-››" (
-<
-››( )
-string
-››) /
->
-››/ 0
-(
-››0 1
-type
-››1 5
-:
-››5 6
-$str
-››7 F
-,
-››F G
-	maxLength
-››H Q
-:
-››Q R
-$num
-››S V
-,
-››V W
-nullable
-››X `
-:
-››` a
-true
-››b f
-)
-››f g
-,
-››g h
-NormalizedEmail
-ﬁﬁ #
-=
-ﬁﬁ$ %
-table
-ﬁﬁ& +
-.
-ﬁﬁ+ ,
-Column
-ﬁﬁ, 2
-<
-ﬁﬁ2 3
-string
-ﬁﬁ3 9
->
-ﬁﬁ9 :
-(
-ﬁﬁ: ;
-type
-ﬁﬁ; ?
-:
-ﬁﬁ? @
-$str
-ﬁﬁA P
-,
-ﬁﬁP Q
-	maxLength
-ﬁﬁR [
-:
-ﬁﬁ[ \
-$num
-ﬁﬁ] `
-,
-ﬁﬁ` a
-nullable
-ﬁﬁb j
-:
-ﬁﬁj k
-true
-ﬁﬁl p
-)
-ﬁﬁp q
-,
-ﬁﬁq r
-EmailConfirmed
-ﬂﬂ "
-=
-ﬂﬂ# $
-table
-ﬂﬂ% *
-.
-ﬂﬂ* +
-Column
-ﬂﬂ+ 1
-<
-ﬂﬂ1 2
-bool
-ﬂﬂ2 6
->
-ﬂﬂ6 7
-(
-ﬂﬂ7 8
-type
-ﬂﬂ8 <
-:
-ﬂﬂ< =
-$str
-ﬂﬂ> C
-,
-ﬂﬂC D
-nullable
-ﬂﬂE M
-:
-ﬂﬂM N
-false
-ﬂﬂO T
-)
-ﬂﬂT U
-,
-ﬂﬂU V
-PasswordHash
-‡‡  
-=
-‡‡! "
-table
-‡‡# (
-.
-‡‡( )
-Column
-‡‡) /
-<
-‡‡/ 0
-string
-‡‡0 6
->
-‡‡6 7
-(
-‡‡7 8
-type
-‡‡8 <
-:
-‡‡< =
-$str
-‡‡> M
-,
-‡‡M N
-nullable
-‡‡O W
-:
-‡‡W X
-true
-‡‡Y ]
-)
-‡‡] ^
-,
-‡‡^ _
-SecurityStamp
-·· !
-=
-··" #
-table
-··$ )
-.
-··) *
-Column
-··* 0
-<
-··0 1
-string
-··1 7
->
-··7 8
-(
-··8 9
-type
-··9 =
-:
-··= >
-$str
-··? N
-,
-··N O
-nullable
-··P X
-:
-··X Y
-true
-··Z ^
-)
-··^ _
-,
-··_ `
-ConcurrencyStamp
-‚‚ $
-=
-‚‚% &
-table
-‚‚' ,
-.
-‚‚, -
-Column
-‚‚- 3
-<
-‚‚3 4
-string
-‚‚4 :
->
-‚‚: ;
-(
-‚‚; <
-type
-‚‚< @
-:
-‚‚@ A
-$str
-‚‚B Q
-,
-‚‚Q R
-nullable
-‚‚S [
-:
-‚‚[ \
-true
-‚‚] a
-)
-‚‚a b
-,
-‚‚b c
-PhoneNumber
-„„ 
-=
-„„  !
-table
-„„" '
-.
-„„' (
-Column
-„„( .
-<
-„„. /
-string
-„„/ 5
->
-„„5 6
-(
-„„6 7
-type
-„„7 ;
-:
-„„; <
-$str
-„„= L
-,
-„„L M
-nullable
-„„N V
-:
-„„V W
-true
-„„X \
-)
-„„\ ]
-,
-„„] ^"
-PhoneNumberConfirmed
-‰‰ (
-=
-‰‰) *
-table
-‰‰+ 0
-.
-‰‰0 1
-Column
-‰‰1 7
-<
-‰‰7 8
-bool
-‰‰8 <
->
-‰‰< =
-(
-‰‰= >
-type
-‰‰> B
-:
-‰‰B C
-$str
-‰‰D I
-,
-‰‰I J
-nullable
-‰‰K S
-:
-‰‰S T
-false
-‰‰U Z
-)
-‰‰Z [
-,
-‰‰[ \
-TwoFactorEnabled
-ÂÂ $
-=
-ÂÂ% &
-table
-ÂÂ' ,
-.
-ÂÂ, -
-Column
-ÂÂ- 3
-<
-ÂÂ3 4
-bool
-ÂÂ4 8
->
-ÂÂ8 9
-(
-ÂÂ9 :
-type
-ÂÂ: >
-:
-ÂÂ> ?
-$str
-ÂÂ@ E
-,
-ÂÂE F
-nullable
-ÂÂG O
-:
-ÂÂO P
-false
-ÂÂQ V
-)
-ÂÂV W
-,
-ÂÂW X
-
-LockoutEnd
-ÊÊ 
-=
-ÊÊ  
-table
-ÊÊ! &
-.
-ÊÊ& '
-Column
-ÊÊ' -
-<
-ÊÊ- .
-DateTimeOffset
-ÊÊ. <
->
-ÊÊ< =
-(
-ÊÊ= >
-type
-ÊÊ> B
-:
-ÊÊB C
-$str
-ÊÊD T
-,
-ÊÊT U
-nullable
-ÊÊV ^
-:
-ÊÊ^ _
-true
-ÊÊ` d
-)
-ÊÊd e
-,
-ÊÊe f
-LockoutEnabled
-ÁÁ "
-=
-ÁÁ# $
-table
-ÁÁ% *
-.
-ÁÁ* +
-Column
-ÁÁ+ 1
-<
-ÁÁ1 2
-bool
-ÁÁ2 6
->
-ÁÁ6 7
-(
-ÁÁ7 8
-type
-ÁÁ8 <
-:
-ÁÁ< =
-$str
-ÁÁ> C
-,
-ÁÁC D
-nullable
-ÁÁE M
-:
-ÁÁM N
-false
-ÁÁO T
-)
-ÁÁT U
-,
-ÁÁU V
-AccessFailedCount
-ËË %
-=
-ËË& '
-table
-ËË( -
-.
-ËË- .
-Column
-ËË. 4
-<
-ËË4 5
-int
-ËË5 8
->
-ËË8 9
-(
-ËË9 :
-type
-ËË: >
-:
-ËË> ?
-$str
-ËË@ E
-,
-ËËE F
-nullable
-ËËG O
-:
-ËËO P
-false
-ËËQ V
-)
-ËËV W
-}
-ÈÈ 
-,
-ÈÈ 
-constraints
-ÍÍ 
-:
-ÍÍ 
-table
-ÍÍ "
-=>
-ÍÍ# %
-{
-ÎÎ 
-table
-ÏÏ 
-.
-ÏÏ 
-
-PrimaryKey
-ÏÏ $
-(
-ÏÏ$ %
-$str
-ÏÏ% /
-,
-ÏÏ/ 0
-x
-ÏÏ1 2
-=>
-ÏÏ3 5
-x
-ÏÏ6 7
-.
-ÏÏ7 8
-Id
-ÏÏ8 :
-)
-ÏÏ: ;
-;
-ÏÏ; <
-}
-ÌÌ 
-)
-ÌÌ 
-;
-ÌÌ 
-migrationBuilder
-ÔÔ 
-.
-ÔÔ 
-CreateTable
-ÔÔ (
-(
-ÔÔ( )
-name
- 
-:
- 
-$str
- "
-,
-" #
-schema
-ÒÒ 
-:
-ÒÒ 
-$str
-ÒÒ 
-,
-ÒÒ 
-columns
-ÚÚ 
-:
-ÚÚ 
-table
-ÚÚ 
-=>
-ÚÚ !
-new
-ÚÚ" %
-{
-ÛÛ 
-Id
-ÙÙ 
-=
-ÙÙ 
-table
-ÙÙ 
-.
-ÙÙ 
-Column
-ÙÙ %
-<
-ÙÙ% &
-int
-ÙÙ& )
->
-ÙÙ) *
-(
-ÙÙ* +
-type
-ÙÙ+ /
-:
-ÙÙ/ 0
-$str
-ÙÙ1 6
-,
-ÙÙ6 7
-nullable
-ÙÙ8 @
-:
-ÙÙ@ A
-false
-ÙÙB G
-)
-ÙÙG H
-.
-ıı 
-
-Annotation
-ıı #
-(
-ıı# $
-$str
-ıı$ 8
-,
-ıı8 9
-$str
-ıı: @
-)
-ıı@ A
-,
-ııA B
-RoleId
-ˆˆ 
-=
-ˆˆ 
-table
-ˆˆ "
-.
-ˆˆ" #
-Column
-ˆˆ# )
-<
-ˆˆ) *
-string
-ˆˆ* 0
->
-ˆˆ0 1
-(
-ˆˆ1 2
-type
-ˆˆ2 6
-:
-ˆˆ6 7
-$str
-ˆˆ8 G
-,
-ˆˆG H
-nullable
-ˆˆI Q
-:
-ˆˆQ R
-false
-ˆˆS X
-)
-ˆˆX Y
-,
-ˆˆY Z
-	ClaimType
-˜˜ 
-=
-˜˜ 
-table
-˜˜  %
-.
-˜˜% &
-Column
-˜˜& ,
-<
-˜˜, -
-string
-˜˜- 3
->
-˜˜3 4
-(
-˜˜4 5
-type
-˜˜5 9
-:
-˜˜9 :
-$str
-˜˜; J
-,
-˜˜J K
-nullable
-˜˜L T
-:
-˜˜T U
-true
-˜˜V Z
-)
-˜˜Z [
-,
-˜˜[ \
-
-ClaimValue
-¯¯ 
-=
-¯¯  
-table
-¯¯! &
-.
-¯¯& '
-Column
-¯¯' -
-<
-¯¯- .
-string
-¯¯. 4
->
-¯¯4 5
-(
-¯¯5 6
-type
-¯¯6 :
-:
-¯¯: ;
-$str
-¯¯< K
-,
-¯¯K L
-nullable
-¯¯M U
-:
-¯¯U V
-true
-¯¯W [
-)
-¯¯[ \
-}
-˘˘ 
-,
-˘˘ 
-constraints
-˙˙ 
-:
-˙˙ 
-table
-˙˙ "
-=>
-˙˙# %
-{
-˚˚ 
-table
-¸¸ 
-.
-¸¸ 
-
-PrimaryKey
-¸¸ $
-(
-¸¸$ %
-$str
-¸¸% 4
-,
-¸¸4 5
-x
-¸¸6 7
-=>
-¸¸8 :
-x
-¸¸; <
-.
-¸¸< =
-Id
-¸¸= ?
-)
-¸¸? @
-;
-¸¸@ A
-table
-˝˝ 
-.
-˝˝ 
-
-ForeignKey
-˝˝ $
-(
-˝˝$ %
-name
-˛˛ 
-:
-˛˛ 
-$str
-˛˛ :
-,
-˛˛: ;
-column
-ˇˇ 
-:
-ˇˇ 
-x
-ˇˇ  !
-=>
-ˇˇ" $
-x
-ˇˇ% &
-.
-ˇˇ& '
-RoleId
-ˇˇ' -
-,
-ˇˇ- .
-principalSchema
-ÄÄ '
-:
-ÄÄ' (
-$str
-ÄÄ) .
-,
-ÄÄ. /
-principalTable
-ÅÅ &
-:
-ÅÅ& '
-$str
-ÅÅ( /
-,
-ÅÅ/ 0
-principalColumn
-ÇÇ '
-:
-ÇÇ' (
-$str
-ÇÇ) -
-,
-ÇÇ- .
-onDelete
-ÉÉ  
-:
-ÉÉ  !
-ReferentialAction
-ÉÉ" 3
-.
-ÉÉ3 4
-Cascade
-ÉÉ4 ;
-)
-ÉÉ; <
-;
-ÉÉ< =
-}
-ÑÑ 
-)
-ÑÑ 
-;
-ÑÑ 
-migrationBuilder
-ÜÜ 
-.
-ÜÜ 
-CreateTable
-ÜÜ (
-(
-ÜÜ( )
-name
-áá 
-:
-áá 
-$str
-áá "
-,
-áá" #
-schema
-àà 
-:
-àà 
-$str
-àà 
-,
-àà 
-columns
-ââ 
-:
-ââ 
-table
-ââ 
-=>
-ââ !
-new
-ââ" %
-{
-ää 
-Id
-ãã 
-=
-ãã 
-table
-ãã 
-.
-ãã 
-Column
-ãã %
-<
-ãã% &
-int
-ãã& )
->
-ãã) *
-(
-ãã* +
-type
-ãã+ /
-:
-ãã/ 0
-$str
-ãã1 6
-,
-ãã6 7
-nullable
-ãã8 @
-:
-ãã@ A
-false
-ããB G
-)
-ããG H
-.
-åå 
-
-Annotation
-åå #
-(
-åå# $
-$str
-åå$ 8
-,
-åå8 9
-$str
-åå: @
-)
-åå@ A
-,
-ååA B
-UserId
-çç 
-=
-çç 
-table
-çç "
-.
-çç" #
-Column
-çç# )
-<
-çç) *
-string
-çç* 0
->
-çç0 1
-(
-çç1 2
-type
-çç2 6
-:
-çç6 7
-$str
-çç8 G
-,
-ççG H
-nullable
-ççI Q
-:
-ççQ R
-false
-ççS X
-)
-ççX Y
-,
-ççY Z
-	ClaimType
-éé 
-=
-éé 
-table
-éé  %
-.
-éé% &
-Column
-éé& ,
-<
-éé, -
-string
-éé- 3
->
-éé3 4
-(
-éé4 5
-type
-éé5 9
-:
-éé9 :
-$str
-éé; J
-,
-ééJ K
-nullable
-ééL T
-:
-ééT U
-true
-ééV Z
-)
-ééZ [
-,
-éé[ \
-
-ClaimValue
-èè 
-=
-èè  
-table
-èè! &
-.
-èè& '
-Column
-èè' -
-<
-èè- .
-string
-èè. 4
->
-èè4 5
-(
-èè5 6
-type
-èè6 :
-:
-èè: ;
-$str
-èè< K
-,
-èèK L
-nullable
-èèM U
-:
-èèU V
-true
-èèW [
-)
-èè[ \
-}
-êê 
-,
-êê 
-constraints
-ëë 
-:
-ëë 
-table
-ëë "
-=>
-ëë# %
-{
-íí 
-table
-ìì 
-.
-ìì 
-
-PrimaryKey
-ìì $
-(
-ìì$ %
-$str
-ìì% 4
-,
-ìì4 5
-x
-ìì6 7
-=>
-ìì8 :
-x
-ìì; <
-.
-ìì< =
-Id
-ìì= ?
-)
-ìì? @
-;
-ìì@ A
-table
-îî 
-.
-îî 
-
-ForeignKey
-îî $
-(
-îî$ %
-name
-ïï 
-:
-ïï 
-$str
-ïï :
-,
-ïï: ;
-column
-ññ 
-:
-ññ 
-x
-ññ  !
-=>
-ññ" $
-x
-ññ% &
-.
-ññ& '
-UserId
-ññ' -
-,
-ññ- .
-principalSchema
-óó '
-:
-óó' (
-$str
-óó) .
-,
-óó. /
-principalTable
-òò &
-:
-òò& '
-$str
-òò( /
-,
-òò/ 0
-principalColumn
-ôô '
-:
-ôô' (
-$str
-ôô) -
-,
-ôô- .
-onDelete
-öö  
-:
-öö  !
-ReferentialAction
-öö" 3
-.
-öö3 4
-Cascade
-öö4 ;
-)
-öö; <
-;
-öö< =
-}
-õõ 
-)
-õõ 
-;
-õõ 
-migrationBuilder
-ùù 
-.
-ùù 
-CreateTable
-ùù (
-(
-ùù( )
-name
-ûû 
-:
-ûû 
-$str
-ûû "
-,
-ûû" #
-schema
-üü 
-:
-üü 
-$str
-üü 
-,
-üü 
-columns
-†† 
-:
-†† 
-table
-†† 
-=>
-†† !
-new
-††" %
-{
-°° 
-LoginProvider
-¢¢ !
-=
-¢¢" #
-table
-¢¢$ )
-.
-¢¢) *
-Column
-¢¢* 0
-<
-¢¢0 1
-string
-¢¢1 7
->
-¢¢7 8
-(
-¢¢8 9
-type
-¢¢9 =
-:
-¢¢= >
-$str
-¢¢? N
-,
-¢¢N O
-nullable
-¢¢P X
-:
-¢¢X Y
-false
-¢¢Z _
-)
-¢¢_ `
-,
-¢¢` a
-ProviderKey
-££ 
-=
-££  !
-table
-££" '
-.
-££' (
-Column
-££( .
-<
-££. /
-string
-££/ 5
->
-££5 6
-(
-££6 7
-type
-££7 ;
-:
-££; <
-$str
-££= L
-,
-££L M
-nullable
-££N V
-:
-££V W
-false
-££X ]
-)
-££] ^
-,
-££^ _!
-ProviderDisplayName
-§§ '
-=
-§§( )
-table
-§§* /
-.
-§§/ 0
-Column
-§§0 6
-<
-§§6 7
-string
-§§7 =
->
-§§= >
-(
-§§> ?
-type
-§§? C
-:
-§§C D
-$str
-§§E T
-,
-§§T U
-nullable
-§§V ^
-:
-§§^ _
-true
-§§` d
-)
-§§d e
-,
-§§e f
-UserId
-•• 
-=
-•• 
-table
-•• "
-.
-••" #
-Column
-••# )
-<
-••) *
-string
-••* 0
->
-••0 1
-(
-••1 2
-type
-••2 6
-:
-••6 7
-$str
-••8 G
-,
-••G H
-nullable
-••I Q
-:
-••Q R
-false
-••S X
-)
-••X Y
-}
-¶¶ 
-,
-¶¶ 
-constraints
-ßß 
-:
-ßß 
-table
-ßß "
-=>
-ßß# %
-{
-®® 
-table
-©© 
-.
-©© 
-
-PrimaryKey
-©© $
-(
-©©$ %
-$str
-©©% 4
-,
-©©4 5
-x
-©©6 7
-=>
-©©8 :
-new
-©©; >
-{
-©©? @
-x
-©©A B
-.
-©©B C
-LoginProvider
-©©C P
-,
-©©P Q
-x
-©©R S
-.
-©©S T
-ProviderKey
-©©T _
-}
-©©` a
-)
-©©a b
-;
-©©b c
-table
-™™ 
-.
-™™ 
-
-ForeignKey
-™™ $
-(
-™™$ %
-name
-´´ 
-:
-´´ 
-$str
-´´ :
-,
-´´: ;
-column
-¨¨ 
-:
-¨¨ 
-x
-¨¨  !
-=>
-¨¨" $
-x
-¨¨% &
-.
-¨¨& '
-UserId
-¨¨' -
-,
-¨¨- .
-principalSchema
-≠≠ '
-:
-≠≠' (
-$str
-≠≠) .
-,
-≠≠. /
-principalTable
-ÆÆ &
-:
-ÆÆ& '
-$str
-ÆÆ( /
-,
-ÆÆ/ 0
-principalColumn
-ØØ '
-:
-ØØ' (
-$str
-ØØ) -
-,
-ØØ- .
-onDelete
-∞∞  
-:
-∞∞  !
-ReferentialAction
-∞∞" 3
-.
-∞∞3 4
-Cascade
-∞∞4 ;
-)
-∞∞; <
-;
-∞∞< =
-}
-±± 
-)
-±± 
-;
-±± 
-migrationBuilder
-≥≥ 
-.
-≥≥ 
-CreateTable
-≥≥ (
-(
-≥≥( )
-name
-¥¥ 
-:
-¥¥ 
-$str
-¥¥ !
-,
-¥¥! "
-schema
-µµ 
-:
-µµ 
-$str
-µµ 
-,
-µµ 
-columns
-∂∂ 
-:
-∂∂ 
-table
-∂∂ 
-=>
-∂∂ !
-new
-∂∂" %
-{
-∑∑ 
-UserId
-∏∏ 
-=
-∏∏ 
-table
-∏∏ "
-.
-∏∏" #
-Column
-∏∏# )
-<
-∏∏) *
-string
-∏∏* 0
->
-∏∏0 1
-(
-∏∏1 2
-type
-∏∏2 6
-:
-∏∏6 7
-$str
-∏∏8 G
-,
-∏∏G H
-nullable
-∏∏I Q
-:
-∏∏Q R
-false
-∏∏S X
-)
-∏∏X Y
-,
-∏∏Y Z
-RoleId
-ππ 
-=
-ππ 
-table
-ππ "
-.
-ππ" #
-Column
-ππ# )
-<
-ππ) *
-string
-ππ* 0
->
-ππ0 1
-(
-ππ1 2
-type
-ππ2 6
-:
-ππ6 7
-$str
-ππ8 G
-,
-ππG H
-nullable
-ππI Q
-:
-ππQ R
-false
-ππS X
-)
-ππX Y
-,
-ππY Z
-
-AssignedOn
-∫∫ 
-=
-∫∫  
-table
-∫∫! &
-.
-∫∫& '
-Column
-∫∫' -
-<
-∫∫- .
-DateTime
-∫∫. 6
->
-∫∫6 7
-(
-∫∫7 8
-type
-∫∫8 <
-:
-∫∫< =
-$str
-∫∫> I
-,
-∫∫I J
-nullable
-∫∫K S
-:
-∫∫S T
-false
-∫∫U Z
-)
-∫∫Z [
-,
-∫∫[ \
-
-AssignedBy
-ªª 
-=
-ªª  
-table
-ªª! &
-.
-ªª& '
-Column
-ªª' -
-<
-ªª- .
-string
-ªª. 4
->
-ªª4 5
-(
-ªª5 6
-type
-ªª6 :
-:
-ªª: ;
-$str
-ªª< K
-,
-ªªK L
-nullable
-ªªM U
-:
-ªªU V
-true
-ªªW [
-)
-ªª[ \
-,
-ªª\ ]
-
-ModifiedOn
-ºº 
-=
-ºº  
-table
-ºº! &
-.
-ºº& '
-Column
-ºº' -
-<
-ºº- .
-DateTime
-ºº. 6
->
-ºº6 7
-(
-ºº7 8
-type
-ºº8 <
-:
-ºº< =
-$str
-ºº> I
-,
-ººI J
-nullable
-ººK S
-:
-ººS T
-false
-ººU Z
-)
-ººZ [
-,
-ºº[ \
-
-ModifiedBy
-ΩΩ 
-=
-ΩΩ  
-table
-ΩΩ! &
-.
-ΩΩ& '
-Column
-ΩΩ' -
-<
-ΩΩ- .
-string
-ΩΩ. 4
->
-ΩΩ4 5
-(
-ΩΩ5 6
-type
-ΩΩ6 :
-:
-ΩΩ: ;
-$str
-ΩΩ< K
-,
-ΩΩK L
-nullable
-ΩΩM U
-:
-ΩΩU V
-true
-ΩΩW [
-)
-ΩΩ[ \
-,
-ΩΩ\ ]
-
-ApprovedOn
-ææ 
-=
-ææ  
-table
-ææ! &
-.
-ææ& '
-Column
-ææ' -
-<
-ææ- .
-DateTime
-ææ. 6
->
-ææ6 7
-(
-ææ7 8
-type
-ææ8 <
-:
-ææ< =
-$str
-ææ> I
-,
-ææI J
-nullable
-ææK S
-:
-ææS T
-false
-ææU Z
-)
-ææZ [
-,
-ææ[ \
-
-ApprovedBy
-øø 
-=
-øø  
-table
-øø! &
-.
-øø& '
-Column
-øø' -
-<
-øø- .
-string
-øø. 4
->
-øø4 5
-(
-øø5 6
-type
-øø6 :
-:
-øø: ;
-$str
-øø< K
-,
-øøK L
-nullable
-øøM U
-:
-øøU V
-true
-øøW [
-)
-øø[ \
-,
-øø\ ]
-Status
-¿¿ 
-=
-¿¿ 
-table
-¿¿ "
-.
-¿¿" #
-Column
-¿¿# )
-<
-¿¿) *
-short
-¿¿* /
->
-¿¿/ 0
-(
-¿¿0 1
-type
-¿¿1 5
-:
-¿¿5 6
-$str
-¿¿7 A
-,
-¿¿A B
-nullable
-¿¿C K
-:
-¿¿K L
-false
-¿¿M R
-)
-¿¿R S
-}
-¡¡ 
-,
-¡¡ 
-constraints
-¬¬ 
-:
-¬¬ 
-table
-¬¬ "
-=>
-¬¬# %
-{
-√√ 
-table
-ƒƒ 
-.
-ƒƒ 
-
-PrimaryKey
-ƒƒ $
-(
-ƒƒ$ %
-$str
-ƒƒ% 3
-,
-ƒƒ3 4
-x
-ƒƒ5 6
-=>
-ƒƒ7 9
-new
-ƒƒ: =
-{
-ƒƒ> ?
-x
-ƒƒ@ A
-.
-ƒƒA B
-UserId
-ƒƒB H
-,
-ƒƒH I
-x
-ƒƒJ K
-.
-ƒƒK L
-RoleId
-ƒƒL R
-}
-ƒƒS T
-)
-ƒƒT U
-;
-ƒƒU V
-table
-≈≈ 
-.
-≈≈ 
-
-ForeignKey
-≈≈ $
-(
-≈≈$ %
-name
-∆∆ 
-:
-∆∆ 
-$str
-∆∆ 9
-,
-∆∆9 :
-column
-«« 
-:
-«« 
-x
-««  !
-=>
-««" $
-x
-««% &
-.
-««& '
-RoleId
-««' -
-,
-««- .
-principalSchema
-»» '
-:
-»»' (
-$str
-»») .
-,
-»». /
-principalTable
-…… &
-:
-……& '
-$str
-……( /
-,
-……/ 0
-principalColumn
-   '
-:
-  ' (
-$str
-  ) -
-,
-  - .
-onDelete
-ÀÀ  
-:
-ÀÀ  !
-ReferentialAction
-ÀÀ" 3
-.
-ÀÀ3 4
-Cascade
-ÀÀ4 ;
-)
-ÀÀ; <
-;
-ÀÀ< =
-table
-ÃÃ 
-.
-ÃÃ 
-
-ForeignKey
-ÃÃ $
-(
-ÃÃ$ %
-name
-ÕÕ 
-:
-ÕÕ 
-$str
-ÕÕ 9
-,
-ÕÕ9 :
-column
-ŒŒ 
-:
-ŒŒ 
-x
-ŒŒ  !
-=>
-ŒŒ" $
-x
-ŒŒ% &
-.
-ŒŒ& '
-UserId
-ŒŒ' -
-,
-ŒŒ- .
-principalSchema
-œœ '
-:
-œœ' (
-$str
-œœ) .
-,
-œœ. /
-principalTable
-–– &
-:
-––& '
-$str
-––( /
-,
-––/ 0
-principalColumn
-—— '
-:
-——' (
-$str
-——) -
-,
-——- .
-onDelete
-““  
-:
-““  !
-ReferentialAction
-““" 3
-.
-““3 4
-Cascade
-““4 ;
-)
-““; <
-;
-““< =
-}
-”” 
-)
-”” 
-;
-”” 
-migrationBuilder
-’’ 
-.
-’’ 
-CreateTable
-’’ (
-(
-’’( )
-name
-÷÷ 
-:
-÷÷ 
-$str
-÷÷ "
-,
-÷÷" #
-schema
-◊◊ 
-:
-◊◊ 
-$str
-◊◊ 
-,
-◊◊ 
-columns
-ÿÿ 
-:
-ÿÿ 
-table
-ÿÿ 
-=>
-ÿÿ !
-new
-ÿÿ" %
-{
-ŸŸ 
-UserId
-⁄⁄ 
-=
-⁄⁄ 
-table
-⁄⁄ "
-.
-⁄⁄" #
-Column
-⁄⁄# )
-<
-⁄⁄) *
-string
-⁄⁄* 0
->
-⁄⁄0 1
-(
-⁄⁄1 2
-type
-⁄⁄2 6
-:
-⁄⁄6 7
-$str
-⁄⁄8 G
-,
-⁄⁄G H
-nullable
-⁄⁄I Q
-:
-⁄⁄Q R
-false
-⁄⁄S X
-)
-⁄⁄X Y
-,
-⁄⁄Y Z
-LoginProvider
-€€ !
-=
-€€" #
-table
-€€$ )
-.
-€€) *
-Column
-€€* 0
-<
-€€0 1
-string
-€€1 7
->
-€€7 8
-(
-€€8 9
-type
-€€9 =
-:
-€€= >
-$str
-€€? N
-,
-€€N O
-nullable
-€€P X
-:
-€€X Y
-false
-€€Z _
-)
-€€_ `
-,
-€€` a
-Name
-‹‹ 
-=
-‹‹ 
-table
-‹‹  
-.
-‹‹  !
-Column
-‹‹! '
-<
-‹‹' (
-string
-‹‹( .
->
-‹‹. /
-(
-‹‹/ 0
-type
-‹‹0 4
-:
-‹‹4 5
-$str
-‹‹6 E
-,
-‹‹E F
-nullable
-‹‹G O
-:
-‹‹O P
-false
-‹‹Q V
-)
-‹‹V W
-,
-‹‹W X
-Value
-›› 
-=
-›› 
-table
-›› !
-.
-››! "
-Column
-››" (
-<
-››( )
-string
-››) /
->
-››/ 0
-(
-››0 1
-type
-››1 5
-:
-››5 6
-$str
-››7 F
-,
-››F G
-nullable
-››H P
-:
-››P Q
-true
-››R V
-)
-››V W
-}
-ﬁﬁ 
-,
-ﬁﬁ 
-constraints
-ﬂﬂ 
-:
-ﬂﬂ 
-table
-ﬂﬂ "
-=>
-ﬂﬂ# %
-{
-‡‡ 
-table
-·· 
-.
-·· 
-
-PrimaryKey
-·· $
-(
-··$ %
-$str
-··% 4
-,
-··4 5
-x
-··6 7
-=>
-··8 :
-new
-··; >
-{
-··? @
-x
-··A B
-.
-··B C
-UserId
-··C I
-,
-··I J
-x
-··K L
-.
-··L M
-LoginProvider
-··M Z
-,
-··Z [
-x
-··\ ]
-.
-··] ^
-Name
-··^ b
-}
-··c d
-)
-··d e
-;
-··e f
-table
-‚‚ 
-.
-‚‚ 
-
-ForeignKey
-‚‚ $
-(
-‚‚$ %
-name
-„„ 
-:
-„„ 
-$str
-„„ :
-,
-„„: ;
-column
-‰‰ 
-:
-‰‰ 
-x
-‰‰  !
-=>
-‰‰" $
-x
-‰‰% &
-.
-‰‰& '
-UserId
-‰‰' -
-,
-‰‰- .
-principalSchema
-ÂÂ '
-:
-ÂÂ' (
-$str
-ÂÂ) .
-,
-ÂÂ. /
-principalTable
-ÊÊ &
-:
-ÊÊ& '
-$str
-ÊÊ( /
-,
-ÊÊ/ 0
-principalColumn
-ÁÁ '
-:
-ÁÁ' (
-$str
-ÁÁ) -
-,
-ÁÁ- .
-onDelete
-ËË  
-:
-ËË  !
-ReferentialAction
-ËË" 3
-.
-ËË3 4
-Cascade
-ËË4 ;
-)
-ËË; <
-;
-ËË< =
-}
-ÈÈ 
-)
-ÈÈ 
-;
-ÈÈ 
-migrationBuilder
-ÎÎ 
-.
-ÎÎ 
-
-InsertData
-ÎÎ '
-(
-ÎÎ' (
-table
-ÏÏ 
-:
-ÏÏ 
-$str
-ÏÏ !
-,
-ÏÏ! "
-columns
-ÌÌ 
-:
-ÌÌ 
-new
-ÌÌ 
-[
-ÌÌ 
-]
-ÌÌ 
-{
-ÌÌ  
-$str
-ÌÌ! ,
-,
-ÌÌ, -
-$str
-ÌÌ. ;
-,
-ÌÌ; <
-$str
-ÌÌ= H
-,
-ÌÌH I
-$str
-ÌÌJ U
-,
-ÌÌU V
-$str
-ÌÌW b
-,
-ÌÌb c
-$str
-ÌÌd o
-,
-ÌÌo p
-$str
-ÌÌq }
-,
-ÌÌ} ~
-$strÌÌ ã
-}ÌÌå ç
-,ÌÌç é
-values
-ÓÓ 
-:
-ÓÓ 
-new
-ÓÓ 
-object
-ÓÓ "
-[
-ÓÓ" #
-,
-ÓÓ# $
-]
-ÓÓ$ %
-{
-ÔÔ 
-{
- 
-$num
- 
-,
- 
-$str
-  
-,
-  !
-null
-" &
-,
-& '
-new
-( +
-DateTime
-, 4
-(
-4 5
-$num
-5 6
-,
-6 7
-$num
-8 9
-,
-9 :
-$num
-; <
-,
-< =
-$num
-> ?
-,
-? @
-$num
-A B
-,
-B C
-$num
-D E
-,
-E F
-$num
-G H
-,
-H I
-DateTimeKind
-J V
-.
-V W
-Unspecified
-W b
-)
-b c
-,
-c d
-null
-e i
-,
-i j
-new
-k n
-DateTime
-o w
-(
-w x
-$num
-x y
-,
-y z
-$num
-{ |
-,
-| }
-$num
-~ 
-, Ä
-$numÅ Ç
-,Ç É
-$numÑ Ö
-,Ö Ü
-$numá à
-,à â
-$numä ã
-,ã å
-DateTimeKindç ô
-.ô ö
-Unspecifiedö •
-)• ¶
-,¶ ß
-null® ¨
-,¨ ≠
-newÆ ±
-DateTime≤ ∫
-(∫ ª
-$numª º
-,º Ω
-$numæ ø
-,ø ¿
-$num¡ ¬
-,¬ √
-$numƒ ≈
-,≈ ∆
-$num« »
-,» …
-$num  À
-,À Ã
-$numÕ Œ
-,Œ œ
-DateTimeKind– ‹
-.‹ ›
-Unspecified› Ë
-)Ë È
-}Í Î
-,Î Ï
-{
-ÒÒ 
-$num
-ÒÒ 
-,
-ÒÒ 
-$str
-ÒÒ #
-,
-ÒÒ# $
-null
-ÒÒ% )
-,
-ÒÒ) *
-new
-ÒÒ+ .
-DateTime
-ÒÒ/ 7
-(
-ÒÒ7 8
-$num
-ÒÒ8 9
-,
-ÒÒ9 :
-$num
-ÒÒ; <
-,
-ÒÒ< =
-$num
-ÒÒ> ?
-,
-ÒÒ? @
-$num
-ÒÒA B
-,
-ÒÒB C
-$num
-ÒÒD E
-,
-ÒÒE F
-$num
-ÒÒG H
-,
-ÒÒH I
-$num
-ÒÒJ K
-,
-ÒÒK L
-DateTimeKind
-ÒÒM Y
-.
-ÒÒY Z
-Unspecified
-ÒÒZ e
-)
-ÒÒe f
-,
-ÒÒf g
-null
-ÒÒh l
-,
-ÒÒl m
-new
-ÒÒn q
-DateTime
-ÒÒr z
-(
-ÒÒz {
-$num
-ÒÒ{ |
-,
-ÒÒ| }
-$num
-ÒÒ~ 
-,ÒÒ Ä
-$numÒÒÅ Ç
-,ÒÒÇ É
-$numÒÒÑ Ö
-,ÒÒÖ Ü
-$numÒÒá à
-,ÒÒà â
-$numÒÒä ã
-,ÒÒã å
-$numÒÒç é
-,ÒÒé è
-DateTimeKindÒÒê ú
-.ÒÒú ù
-UnspecifiedÒÒù ®
-)ÒÒ® ©
-,ÒÒ© ™
-nullÒÒ´ Ø
-,ÒÒØ ∞
-newÒÒ± ¥
-DateTimeÒÒµ Ω
-(ÒÒΩ æ
-$numÒÒæ ø
-,ÒÒø ¿
-$numÒÒ¡ ¬
-,ÒÒ¬ √
-$numÒÒƒ ≈
-,ÒÒ≈ ∆
-$numÒÒ« »
-,ÒÒ» …
-$numÒÒ  À
-,ÒÒÀ Ã
-$numÒÒÕ Œ
-,ÒÒŒ œ
-$numÒÒ– —
-,ÒÒ— “
-DateTimeKindÒÒ” ﬂ
-.ÒÒﬂ ‡
-UnspecifiedÒÒ‡ Î
-)ÒÒÎ Ï
-}ÒÒÌ Ó
-}
-ÚÚ 
-)
-ÚÚ 
-;
-ÚÚ 
-migrationBuilder
-ÙÙ 
-.
-ÙÙ 
-
-InsertData
-ÙÙ '
-(
-ÙÙ' (
-table
-ıı 
-:
-ıı 
-$str
-ıı #
-,
-ıı# $
-columns
-ˆˆ 
-:
-ˆˆ 
-new
-ˆˆ 
-[
-ˆˆ 
-]
-ˆˆ 
-{
-ˆˆ  
-$str
-ˆˆ! /
-,
-ˆˆ/ 0
-$str
-ˆˆ1 <
-,
-ˆˆ< =
-$str
-ˆˆ> I
-,
-ˆˆI J
-$str
-ˆˆK V
-,
-ˆˆV W
-$str
-ˆˆX c
-,
-ˆˆc d
-$str
-ˆˆe u
-,
-ˆˆu v
-$strˆˆw É
-,ˆˆÉ Ñ
-$strˆˆÖ ë
-}ˆˆí ì
-,ˆˆì î
-values
-˜˜ 
-:
-˜˜ 
-new
-˜˜ 
-object
-˜˜ "
-[
-˜˜" #
-,
-˜˜# $
-]
-˜˜$ %
-{
-¯¯ 
-{
-˘˘ 
-$num
-˘˘ 
-,
-˘˘ 
-null
-˘˘ 
-,
-˘˘  
-new
-˘˘! $
-DateTime
-˘˘% -
-(
-˘˘- .
-$num
-˘˘. /
-,
-˘˘/ 0
-$num
-˘˘1 2
-,
-˘˘2 3
-$num
-˘˘4 5
-,
-˘˘5 6
-$num
-˘˘7 8
-,
-˘˘8 9
-$num
-˘˘: ;
-,
-˘˘; <
-$num
-˘˘= >
-,
-˘˘> ?
-$num
-˘˘@ A
-,
-˘˘A B
-DateTimeKind
-˘˘C O
-.
-˘˘O P
-Unspecified
-˘˘P [
-)
-˘˘[ \
-,
-˘˘\ ]
-null
-˘˘^ b
-,
-˘˘b c
-new
-˘˘d g
-DateTime
-˘˘h p
-(
-˘˘p q
-$num
-˘˘q r
-,
-˘˘r s
-$num
-˘˘t u
-,
-˘˘u v
-$num
-˘˘w x
-,
-˘˘x y
-$num
-˘˘z {
-,
-˘˘{ |
-$num
-˘˘} ~
-,
-˘˘~ 
-$num˘˘Ä Å
-,˘˘Å Ç
-$num˘˘É Ñ
-,˘˘Ñ Ö
-DateTimeKind˘˘Ü í
-.˘˘í ì
-Unspecified˘˘ì û
-)˘˘û ü
-,˘˘ü †
-$str˘˘° ™
-,˘˘™ ´
-null˘˘¨ ∞
-,˘˘∞ ±
-new˘˘≤ µ
-DateTime˘˘∂ æ
-(˘˘æ ø
-$num˘˘ø ¿
-,˘˘¿ ¡
-$num˘˘¬ √
-,˘˘√ ƒ
-$num˘˘≈ ∆
-,˘˘∆ «
-$num˘˘» …
-,˘˘…  
-$num˘˘À Ã
-,˘˘Ã Õ
-$num˘˘Œ œ
-,˘˘œ –
-$num˘˘— “
-,˘˘“ ”
-DateTimeKind˘˘‘ ‡
-.˘˘‡ ·
-Unspecified˘˘· Ï
-)˘˘Ï Ì
-}˘˘Ó Ô
-,˘˘Ô 
-{
-˙˙ 
-$num
-˙˙ 
-,
-˙˙ 
-null
-˙˙ 
-,
-˙˙  
-new
-˙˙! $
-DateTime
-˙˙% -
-(
-˙˙- .
-$num
-˙˙. /
-,
-˙˙/ 0
-$num
-˙˙1 2
-,
-˙˙2 3
-$num
-˙˙4 5
-,
-˙˙5 6
-$num
-˙˙7 8
-,
-˙˙8 9
-$num
-˙˙: ;
-,
-˙˙; <
-$num
-˙˙= >
-,
-˙˙> ?
-$num
-˙˙@ A
-,
-˙˙A B
-DateTimeKind
-˙˙C O
-.
-˙˙O P
-Unspecified
-˙˙P [
-)
-˙˙[ \
-,
-˙˙\ ]
-null
-˙˙^ b
-,
-˙˙b c
-new
-˙˙d g
-DateTime
-˙˙h p
-(
-˙˙p q
-$num
-˙˙q r
-,
-˙˙r s
-$num
-˙˙t u
-,
-˙˙u v
-$num
-˙˙w x
-,
-˙˙x y
-$num
-˙˙z {
-,
-˙˙{ |
-$num
-˙˙} ~
-,
-˙˙~ 
-$num˙˙Ä Å
-,˙˙Å Ç
-$num˙˙É Ñ
-,˙˙Ñ Ö
-DateTimeKind˙˙Ü í
-.˙˙í ì
-Unspecified˙˙ì û
-)˙˙û ü
-,˙˙ü †
-$str˙˙° ™
-,˙˙™ ´
-null˙˙¨ ∞
-,˙˙∞ ±
-new˙˙≤ µ
-DateTime˙˙∂ æ
-(˙˙æ ø
-$num˙˙ø ¿
-,˙˙¿ ¡
-$num˙˙¬ √
-,˙˙√ ƒ
-$num˙˙≈ ∆
-,˙˙∆ «
-$num˙˙» …
-,˙˙…  
-$num˙˙À Ã
-,˙˙Ã Õ
-$num˙˙Œ œ
-,˙˙œ –
-$num˙˙— “
-,˙˙“ ”
-DateTimeKind˙˙‘ ‡
-.˙˙‡ ·
-Unspecified˙˙· Ï
-)˙˙Ï Ì
-}˙˙Ó Ô
-}
-˚˚ 
-)
-˚˚ 
-;
-˚˚ 
-migrationBuilder
-˝˝ 
-.
-˝˝ 
-
-InsertData
-˝˝ '
-(
-˝˝' (
-table
-˛˛ 
-:
-˛˛ 
-$str
-˛˛ '
-,
-˛˛' (
-columns
-ˇˇ 
-:
-ˇˇ 
-new
-ˇˇ 
-[
-ˇˇ 
-]
-ˇˇ 
-{
-ˇˇ  
-$str
-ˇˇ! )
-,
-ˇˇ) *
-$str
-ˇˇ+ 6
-,
-ˇˇ6 7
-$str
-ˇˇ8 C
-,
-ˇˇC D
-$str
-ˇˇE P
-,
-ˇˇP Q
-$str
-ˇˇR ]
-,
-ˇˇ] ^
-$str
-ˇˇ_ m
-,
-ˇˇm n
-$str
-ˇˇo {
-,
-ˇˇ{ |
-$strˇˇ} â
-,ˇˇâ ä
-$strˇˇã ï
-}ˇˇñ ó
-,ˇˇó ò
-values
-ÄÄ 
-:
-ÄÄ 
-new
-ÄÄ 
-object
-ÄÄ "
-[
-ÄÄ" #
-,
-ÄÄ# $
-]
-ÄÄ$ %
-{
-ÅÅ 
-{
-ÇÇ 
-$num
-ÇÇ 
-,
-ÇÇ 
-null
-ÇÇ 
-,
-ÇÇ  
-new
-ÇÇ! $
-DateTime
-ÇÇ% -
-(
-ÇÇ- .
-$num
-ÇÇ. /
-,
-ÇÇ/ 0
-$num
-ÇÇ1 2
-,
-ÇÇ2 3
-$num
-ÇÇ4 5
-,
-ÇÇ5 6
-$num
-ÇÇ7 8
-,
-ÇÇ8 9
-$num
-ÇÇ: ;
-,
-ÇÇ; <
-$num
-ÇÇ= >
-,
-ÇÇ> ?
-$num
-ÇÇ@ A
-,
-ÇÇA B
-DateTimeKind
-ÇÇC O
-.
-ÇÇO P
-Unspecified
-ÇÇP [
-)
-ÇÇ[ \
-,
-ÇÇ\ ]
-null
-ÇÇ^ b
-,
-ÇÇb c
-new
-ÇÇd g
-DateTime
-ÇÇh p
-(
-ÇÇp q
-$num
-ÇÇq r
-,
-ÇÇr s
-$num
-ÇÇt u
-,
-ÇÇu v
-$num
-ÇÇw x
-,
-ÇÇx y
-$num
-ÇÇz {
-,
-ÇÇ{ |
-$num
-ÇÇ} ~
-,
-ÇÇ~ 
-$numÇÇÄ Å
-,ÇÇÅ Ç
-$numÇÇÉ Ñ
-,ÇÇÑ Ö
-DateTimeKindÇÇÜ í
-.ÇÇí ì
-UnspecifiedÇÇì û
-)ÇÇû ü
-,ÇÇü †
-$numÇÇ° §
-,ÇÇ§ •
-nullÇÇ¶ ™
-,ÇÇ™ ´
-newÇÇ¨ Ø
-DateTimeÇÇ∞ ∏
-(ÇÇ∏ π
-$numÇÇπ ∫
-,ÇÇ∫ ª
-$numÇÇº Ω
-,ÇÇΩ æ
-$numÇÇø ¿
-,ÇÇ¿ ¡
-$numÇÇ¬ √
-,ÇÇ√ ƒ
-$numÇÇ≈ ∆
-,ÇÇ∆ «
-$numÇÇ» …
-,ÇÇ…  
-$numÇÇÀ Ã
-,ÇÇÃ Õ
-DateTimeKindÇÇŒ ⁄
-.ÇÇ⁄ €
-UnspecifiedÇÇ€ Ê
-)ÇÇÊ Á
-,ÇÇÁ Ë
-$strÇÇÈ 
-}ÇÇÒ Ú
-,ÇÇÚ Û
-{
-ÉÉ 
-$num
-ÉÉ 
-,
-ÉÉ 
-null
-ÉÉ 
-,
-ÉÉ  
-new
-ÉÉ! $
-DateTime
-ÉÉ% -
-(
-ÉÉ- .
-$num
-ÉÉ. /
-,
-ÉÉ/ 0
-$num
-ÉÉ1 2
-,
-ÉÉ2 3
-$num
-ÉÉ4 5
-,
-ÉÉ5 6
-$num
-ÉÉ7 8
-,
-ÉÉ8 9
-$num
-ÉÉ: ;
-,
-ÉÉ; <
-$num
-ÉÉ= >
-,
-ÉÉ> ?
-$num
-ÉÉ@ A
-,
-ÉÉA B
-DateTimeKind
-ÉÉC O
-.
-ÉÉO P
-Unspecified
-ÉÉP [
-)
-ÉÉ[ \
-,
-ÉÉ\ ]
-null
-ÉÉ^ b
-,
-ÉÉb c
-new
-ÉÉd g
-DateTime
-ÉÉh p
-(
-ÉÉp q
-$num
-ÉÉq r
-,
-ÉÉr s
-$num
-ÉÉt u
-,
-ÉÉu v
-$num
-ÉÉw x
-,
-ÉÉx y
-$num
-ÉÉz {
-,
-ÉÉ{ |
-$num
-ÉÉ} ~
-,
-ÉÉ~ 
-$numÉÉÄ Å
-,ÉÉÅ Ç
-$numÉÉÉ Ñ
-,ÉÉÑ Ö
-DateTimeKindÉÉÜ í
-.ÉÉí ì
-UnspecifiedÉÉì û
-)ÉÉû ü
-,ÉÉü †
-$numÉÉ° §
-,ÉÉ§ •
-nullÉÉ¶ ™
-,ÉÉ™ ´
-newÉÉ¨ Ø
-DateTimeÉÉ∞ ∏
-(ÉÉ∏ π
-$numÉÉπ ∫
-,ÉÉ∫ ª
-$numÉÉº Ω
-,ÉÉΩ æ
-$numÉÉø ¿
-,ÉÉ¿ ¡
-$numÉÉ¬ √
-,ÉÉ√ ƒ
-$numÉÉ≈ ∆
-,ÉÉ∆ «
-$numÉÉ» …
-,ÉÉ…  
-$numÉÉÀ Ã
-,ÉÉÃ Õ
-DateTimeKindÉÉŒ ⁄
-.ÉÉ⁄ €
-UnspecifiedÉÉ€ Ê
-)ÉÉÊ Á
-,ÉÉÁ Ë
-$strÉÉÈ Ú
-}ÉÉÛ Ù
-,ÉÉÙ ı
-{
-ÑÑ 
-$num
-ÑÑ 
-,
-ÑÑ 
-null
-ÑÑ 
-,
-ÑÑ  
-new
-ÑÑ! $
-DateTime
-ÑÑ% -
-(
-ÑÑ- .
-$num
-ÑÑ. /
-,
-ÑÑ/ 0
-$num
-ÑÑ1 2
-,
-ÑÑ2 3
-$num
-ÑÑ4 5
-,
-ÑÑ5 6
-$num
-ÑÑ7 8
-,
-ÑÑ8 9
-$num
-ÑÑ: ;
-,
-ÑÑ; <
-$num
-ÑÑ= >
-,
-ÑÑ> ?
-$num
-ÑÑ@ A
-,
-ÑÑA B
-DateTimeKind
-ÑÑC O
-.
-ÑÑO P
-Unspecified
-ÑÑP [
-)
-ÑÑ[ \
-,
-ÑÑ\ ]
-null
-ÑÑ^ b
-,
-ÑÑb c
-new
-ÑÑd g
-DateTime
-ÑÑh p
-(
-ÑÑp q
-$num
-ÑÑq r
-,
-ÑÑr s
-$num
-ÑÑt u
-,
-ÑÑu v
-$num
-ÑÑw x
-,
-ÑÑx y
-$num
-ÑÑz {
-,
-ÑÑ{ |
-$num
-ÑÑ} ~
-,
-ÑÑ~ 
-$numÑÑÄ Å
-,ÑÑÅ Ç
-$numÑÑÉ Ñ
-,ÑÑÑ Ö
-DateTimeKindÑÑÜ í
-.ÑÑí ì
-UnspecifiedÑÑì û
-)ÑÑû ü
-,ÑÑü †
-$numÑÑ° §
-,ÑÑ§ •
-nullÑÑ¶ ™
-,ÑÑ™ ´
-newÑÑ¨ Ø
-DateTimeÑÑ∞ ∏
-(ÑÑ∏ π
-$numÑÑπ ∫
-,ÑÑ∫ ª
-$numÑÑº Ω
-,ÑÑΩ æ
-$numÑÑø ¿
-,ÑÑ¿ ¡
-$numÑÑ¬ √
-,ÑÑ√ ƒ
-$numÑÑ≈ ∆
-,ÑÑ∆ «
-$numÑÑ» …
-,ÑÑ…  
-$numÑÑÀ Ã
-,ÑÑÃ Õ
-DateTimeKindÑÑŒ ⁄
-.ÑÑ⁄ €
-UnspecifiedÑÑ€ Ê
-)ÑÑÊ Á
-,ÑÑÁ Ë
-$strÑÑÈ Ù
-}ÑÑı ˆ
-,ÑÑˆ ˜
-{
-ÖÖ 
-$num
-ÖÖ 
-,
-ÖÖ 
-null
-ÖÖ 
-,
-ÖÖ  
-new
-ÖÖ! $
-DateTime
-ÖÖ% -
-(
-ÖÖ- .
-$num
-ÖÖ. /
-,
-ÖÖ/ 0
-$num
-ÖÖ1 2
-,
-ÖÖ2 3
-$num
-ÖÖ4 5
-,
-ÖÖ5 6
-$num
-ÖÖ7 8
-,
-ÖÖ8 9
-$num
-ÖÖ: ;
-,
-ÖÖ; <
-$num
-ÖÖ= >
-,
-ÖÖ> ?
-$num
-ÖÖ@ A
-,
-ÖÖA B
-DateTimeKind
-ÖÖC O
-.
-ÖÖO P
-Unspecified
-ÖÖP [
-)
-ÖÖ[ \
-,
-ÖÖ\ ]
-null
-ÖÖ^ b
-,
-ÖÖb c
-new
-ÖÖd g
-DateTime
-ÖÖh p
-(
-ÖÖp q
-$num
-ÖÖq r
-,
-ÖÖr s
-$num
-ÖÖt u
-,
-ÖÖu v
-$num
-ÖÖw x
-,
-ÖÖx y
-$num
-ÖÖz {
-,
-ÖÖ{ |
-$num
-ÖÖ} ~
-,
-ÖÖ~ 
-$numÖÖÄ Å
-,ÖÖÅ Ç
-$numÖÖÉ Ñ
-,ÖÖÑ Ö
-DateTimeKindÖÖÜ í
-.ÖÖí ì
-UnspecifiedÖÖì û
-)ÖÖû ü
-,ÖÖü †
-$numÖÖ° §
-,ÖÖ§ •
-nullÖÖ¶ ™
-,ÖÖ™ ´
-newÖÖ¨ Ø
-DateTimeÖÖ∞ ∏
-(ÖÖ∏ π
-$numÖÖπ ∫
-,ÖÖ∫ ª
-$numÖÖº Ω
-,ÖÖΩ æ
-$numÖÖø ¿
-,ÖÖ¿ ¡
-$numÖÖ¬ √
-,ÖÖ√ ƒ
-$numÖÖ≈ ∆
-,ÖÖ∆ «
-$numÖÖ» …
-,ÖÖ…  
-$numÖÖÀ Ã
-,ÖÖÃ Õ
-DateTimeKindÖÖŒ ⁄
-.ÖÖ⁄ €
-UnspecifiedÖÖ€ Ê
-)ÖÖÊ Á
-,ÖÖÁ Ë
-$strÖÖÈ ı
-}ÖÖˆ ˜
-,ÖÖ˜ ¯
-{
-ÜÜ 
-$num
-ÜÜ 
-,
-ÜÜ 
-null
-ÜÜ 
-,
-ÜÜ  
-new
-ÜÜ! $
-DateTime
-ÜÜ% -
-(
-ÜÜ- .
-$num
-ÜÜ. /
-,
-ÜÜ/ 0
-$num
-ÜÜ1 2
-,
-ÜÜ2 3
-$num
-ÜÜ4 5
-,
-ÜÜ5 6
-$num
-ÜÜ7 8
-,
-ÜÜ8 9
-$num
-ÜÜ: ;
-,
-ÜÜ; <
-$num
-ÜÜ= >
-,
-ÜÜ> ?
-$num
-ÜÜ@ A
-,
-ÜÜA B
-DateTimeKind
-ÜÜC O
-.
-ÜÜO P
-Unspecified
-ÜÜP [
-)
-ÜÜ[ \
-,
-ÜÜ\ ]
-null
-ÜÜ^ b
-,
-ÜÜb c
-new
-ÜÜd g
-DateTime
-ÜÜh p
-(
-ÜÜp q
-$num
-ÜÜq r
-,
-ÜÜr s
-$num
-ÜÜt u
-,
-ÜÜu v
-$num
-ÜÜw x
-,
-ÜÜx y
-$num
-ÜÜz {
-,
-ÜÜ{ |
-$num
-ÜÜ} ~
-,
-ÜÜ~ 
-$numÜÜÄ Å
-,ÜÜÅ Ç
-$numÜÜÉ Ñ
-,ÜÜÑ Ö
-DateTimeKindÜÜÜ í
-.ÜÜí ì
-UnspecifiedÜÜì û
-)ÜÜû ü
-,ÜÜü †
-$numÜÜ° §
-,ÜÜ§ •
-nullÜÜ¶ ™
-,ÜÜ™ ´
-newÜÜ¨ Ø
-DateTimeÜÜ∞ ∏
-(ÜÜ∏ π
-$numÜÜπ ∫
-,ÜÜ∫ ª
-$numÜÜº Ω
-,ÜÜΩ æ
-$numÜÜø ¿
-,ÜÜ¿ ¡
-$numÜÜ¬ √
-,ÜÜ√ ƒ
-$numÜÜ≈ ∆
-,ÜÜ∆ «
-$numÜÜ» …
-,ÜÜ…  
-$numÜÜÀ Ã
-,ÜÜÃ Õ
-DateTimeKindÜÜŒ ⁄
-.ÜÜ⁄ €
-UnspecifiedÜÜ€ Ê
-)ÜÜÊ Á
-,ÜÜÁ Ë
-$strÜÜÈ Ú
-}ÜÜÛ Ù
-,ÜÜÙ ı
-{
-áá 
-$num
-áá 
-,
-áá 
-null
-áá 
-,
-áá  
-new
-áá! $
-DateTime
-áá% -
-(
-áá- .
-$num
-áá. /
-,
-áá/ 0
-$num
-áá1 2
-,
-áá2 3
-$num
-áá4 5
-,
-áá5 6
-$num
-áá7 8
-,
-áá8 9
-$num
-áá: ;
-,
-áá; <
-$num
-áá= >
-,
-áá> ?
-$num
-áá@ A
-,
-ááA B
-DateTimeKind
-ááC O
-.
-ááO P
-Unspecified
-ááP [
-)
-áá[ \
-,
-áá\ ]
-null
-áá^ b
-,
-ááb c
-new
-áád g
-DateTime
-ááh p
-(
-ááp q
-$num
-ááq r
-,
-áár s
-$num
-áát u
-,
-ááu v
-$num
-ááw x
-,
-ááx y
-$num
-ááz {
-,
-áá{ |
-$num
-áá} ~
-,
-áá~ 
-$numááÄ Å
-,ááÅ Ç
-$numááÉ Ñ
-,ááÑ Ö
-DateTimeKindááÜ í
-.ááí ì
-Unspecifiedááì û
-)ááû ü
-,ááü †
-$numáá° §
-,áá§ •
-nulláá¶ ™
-,áá™ ´
-newáá¨ Ø
-DateTimeáá∞ ∏
-(áá∏ π
-$numááπ ∫
-,áá∫ ª
-$numááº Ω
-,ááΩ æ
-$numááø ¿
-,áá¿ ¡
-$numáá¬ √
-,áá√ ƒ
-$numáá≈ ∆
-,áá∆ «
-$numáá» …
-,áá…  
-$numááÀ Ã
-,ááÃ Õ
-DateTimeKindááŒ ⁄
-.áá⁄ €
-Unspecifiedáá€ Ê
-)ááÊ Á
-,ááÁ Ë
-$strááÈ 
-}ááÒ Ú
-,ááÚ Û
-{
-àà 
-$num
-àà 
-,
-àà 
-null
-àà 
-,
-àà  
-new
-àà! $
-DateTime
-àà% -
-(
-àà- .
-$num
-àà. /
-,
-àà/ 0
-$num
-àà1 2
-,
-àà2 3
-$num
-àà4 5
-,
-àà5 6
-$num
-àà7 8
-,
-àà8 9
-$num
-àà: ;
-,
-àà; <
-$num
-àà= >
-,
-àà> ?
-$num
-àà@ A
-,
-ààA B
-DateTimeKind
-ààC O
-.
-ààO P
-Unspecified
-ààP [
-)
-àà[ \
-,
-àà\ ]
-null
-àà^ b
-,
-ààb c
-new
-ààd g
-DateTime
-ààh p
-(
-ààp q
-$num
-ààq r
-,
-ààr s
-$num
-ààt u
-,
-ààu v
-$num
-ààw x
-,
-ààx y
-$num
-ààz {
-,
-àà{ |
-$num
-àà} ~
-,
-àà~ 
-$numààÄ Å
-,ààÅ Ç
-$numààÉ Ñ
-,ààÑ Ö
-DateTimeKindààÜ í
-.ààí ì
-Unspecifiedààì û
-)ààû ü
-,ààü †
-$numàà° §
-,àà§ •
-nullàà¶ ™
-,àà™ ´
-newàà¨ Ø
-DateTimeàà∞ ∏
-(àà∏ π
-$numààπ ∫
-,àà∫ ª
-$numààº Ω
-,ààΩ æ
-$numààø ¿
-,àà¿ ¡
-$numàà¬ √
-,àà√ ƒ
-$numàà≈ ∆
-,àà∆ «
-$numàà» …
-,àà…  
-$numààÀ Ã
-,ààÃ Õ
-DateTimeKindààŒ ⁄
-.àà⁄ €
-Unspecifiedàà€ Ê
-)ààÊ Á
-,ààÁ Ë
-$strààÈ Ò
-}ààÚ Û
-,ààÛ Ù
-{
-ââ 
-$num
-ââ 
-,
-ââ 
-null
-ââ 
-,
-ââ  
-new
-ââ! $
-DateTime
-ââ% -
-(
-ââ- .
-$num
-ââ. /
-,
-ââ/ 0
-$num
-ââ1 2
-,
-ââ2 3
-$num
-ââ4 5
-,
-ââ5 6
-$num
-ââ7 8
-,
-ââ8 9
-$num
-ââ: ;
-,
-ââ; <
-$num
-ââ= >
-,
-ââ> ?
-$num
-ââ@ A
-,
-ââA B
-DateTimeKind
-ââC O
-.
-ââO P
-Unspecified
-ââP [
-)
-ââ[ \
-,
-ââ\ ]
-null
-ââ^ b
-,
-ââb c
-new
-ââd g
-DateTime
-ââh p
-(
-ââp q
-$num
-ââq r
-,
-ââr s
-$num
-âât u
-,
-ââu v
-$num
-ââw x
-,
-ââx y
-$num
-ââz {
-,
-ââ{ |
-$num
-ââ} ~
-,
-ââ~ 
-$numââÄ Å
-,ââÅ Ç
-$numââÉ Ñ
-,ââÑ Ö
-DateTimeKindââÜ í
-.ââí ì
-Unspecifiedââì û
-)ââû ü
-,ââü †
-$numââ° §
-,ââ§ •
-nullââ¶ ™
-,ââ™ ´
-newââ¨ Ø
-DateTimeââ∞ ∏
-(ââ∏ π
-$numââπ ∫
-,ââ∫ ª
-$numââº Ω
-,ââΩ æ
-$numââø ¿
-,ââ¿ ¡
-$numââ¬ √
-,ââ√ ƒ
-$numââ≈ ∆
-,ââ∆ «
-$numââ» …
-,ââ…  
-$numââÀ Ã
-,ââÃ Õ
-DateTimeKindââŒ ⁄
-.ââ⁄ €
-Unspecifiedââ€ Ê
-)ââÊ Á
-,ââÁ Ë
-$strââÈ 
-}ââÒ Ú
-}
-ää 
-)
-ää 
-;
-ää 
-migrationBuilder
-åå 
-.
-åå 
-CreateIndex
-åå (
-(
-åå( )
-name
-çç 
-:
-çç 
-$str
-çç A
-,
-ççA B
-table
-éé 
-:
-éé 
-$str
-éé +
-,
-éé+ ,
-columns
-èè 
-:
-èè 
-new
-èè 
-[
-èè 
-]
-èè 
-{
-èè  
-$str
-èè! +
-,
-èè+ ,
-$str
-èè- 9
-}
-èè: ;
-,
-èè; <
-unique
-êê 
-:
-êê 
-true
-êê 
-,
-êê 
-filter
-ëë 
-:
-ëë 
-$str
-ëë 2
-)
-ëë2 3
-;
-ëë3 4
-migrationBuilder
-ìì 
-.
-ìì 
-CreateIndex
-ìì (
-(
-ìì( )
-name
-îî 
-:
-îî 
-$str
-îî /
-,
-îî/ 0
-table
-ïï 
-:
-ïï 
-$str
-ïï !
-,
-ïï! "
-column
-ññ 
-:
-ññ 
-$str
-ññ %
-,
-ññ% &
-unique
-óó 
-:
-óó 
-true
-óó 
-)
-óó 
-;
-óó 
-migrationBuilder
-ôô 
-.
-ôô 
-CreateIndex
-ôô (
-(
-ôô( )
-name
-öö 
-:
-öö 
-$str
-öö 4
-,
-öö4 5
-table
-õõ 
-:
-õõ 
-$str
-õõ #
-,
-õõ# $
-column
-úú 
-:
-úú 
-$str
-úú (
-,
-úú( )
-unique
-ùù 
-:
-ùù 
-true
-ùù 
-)
-ùù 
-;
-ùù 
-migrationBuilder
-üü 
-.
-üü 
-CreateIndex
-üü (
-(
-üü( )
-name
-†† 
-:
-†† 
-$str
-†† 2
-,
-††2 3
-table
-°° 
-:
-°° 
-$str
-°° '
-,
-°°' (
-column
-¢¢ 
-:
-¢¢ 
-$str
-¢¢ "
-,
-¢¢" #
-unique
-££ 
-:
-££ 
-true
-££ 
-)
-££ 
-;
-££ 
-migrationBuilder
-•• 
-.
-•• 
-CreateIndex
-•• (
-(
-••( )
-name
-¶¶ 
-:
-¶¶ 
-$str
-¶¶ V
-,
-¶¶V W
-table
-ßß 
-:
-ßß 
-$str
-ßß +
-,
-ßß+ ,
-columns
-®® 
-:
-®® 
-new
-®® 
-[
-®® 
-]
-®® 
-{
-®®  
-$str
-®®! 7
-,
-®®7 8
-$str
-®®9 N
-}
-®®O P
-,
-®®P Q
-unique
-©© 
-:
-©© 
-true
-©© 
-)
-©© 
-;
-©© 
-migrationBuilder
-´´ 
-.
-´´ 
-CreateIndex
-´´ (
-(
-´´( )
-name
-¨¨ 
-:
-¨¨ 
-$str
-¨¨ )
-,
-¨¨) *
-table
-≠≠ 
-:
-≠≠ 
-$str
-≠≠ 
-,
-≠≠ 
-column
-ÆÆ 
-:
-ÆÆ 
-$str
-ÆÆ "
-,
-ÆÆ" #
-unique
-ØØ 
-:
-ØØ 
-true
-ØØ 
-)
-ØØ 
-;
-ØØ 
-migrationBuilder
-±± 
-.
-±± 
-CreateIndex
-±± (
-(
-±±( )
-name
-≤≤ 
-:
-≤≤ 
-$str
-≤≤ ,
-,
-≤≤, -
-schema
-≥≥ 
-:
-≥≥ 
-$str
-≥≥ 
-,
-≥≥ 
-table
-¥¥ 
-:
-¥¥ 
-$str
-¥¥ #
-,
-¥¥# $
-column
-µµ 
-:
-µµ 
-$str
-µµ  
-)
-µµ  !
-;
-µµ! "
-migrationBuilder
-∑∑ 
-.
-∑∑ 
-CreateIndex
-∑∑ (
-(
-∑∑( )
-name
-∏∏ 
-:
-∏∏ 
-$str
-∏∏ %
-,
-∏∏% &
-schema
-ππ 
-:
-ππ 
-$str
-ππ 
-,
-ππ 
-table
-∫∫ 
-:
-∫∫ 
-$str
-∫∫ 
-,
-∫∫ 
-column
-ªª 
-:
-ªª 
-$str
-ªª (
-,
-ªª( )
-unique
-ºº 
-:
-ºº 
-true
-ºº 
-,
-ºº 
-filter
-ΩΩ 
-:
-ΩΩ 
-$str
-ΩΩ 6
-)
-ΩΩ6 7
-;
-ΩΩ7 8
-migrationBuilder
-øø 
-.
-øø 
-CreateIndex
-øø (
-(
-øø( )
-name
-¿¿ 
-:
-¿¿ 
-$str
-¿¿ 7
-,
-¿¿7 8
-table
-¡¡ 
-:
-¡¡ 
-$str
-¡¡ %
-,
-¡¡% &
-column
-¬¬ 
-:
-¬¬ 
-$str
-¬¬ )
-,
-¬¬) *
-unique
-√√ 
-:
-√√ 
-true
-√√ 
-)
-√√ 
-;
-√√ 
-migrationBuilder
-≈≈ 
-.
-≈≈ 
-CreateIndex
-≈≈ (
-(
-≈≈( )
-name
-∆∆ 
-:
-∆∆ 
-$str
-∆∆ +
-,
-∆∆+ ,
-table
-«« 
-:
-«« 
-$str
-«« #
-,
-««# $
-column
-»» 
-:
-»» 
-$str
-»» 
-,
-»»  
-unique
-…… 
-:
-…… 
-true
-…… 
-,
-…… 
-filter
-   
-:
-   
-$str
-   -
-)
-  - .
-;
-  . /
-migrationBuilder
-ÃÃ 
-.
-ÃÃ 
-CreateIndex
-ÃÃ (
-(
-ÃÃ( )
-name
-ÕÕ 
-:
-ÕÕ 
-$str
-ÕÕ ,
-,
-ÕÕ, -
-schema
-ŒŒ 
-:
-ŒŒ 
-$str
-ŒŒ 
-,
-ŒŒ 
-table
-œœ 
-:
-œœ 
-$str
-œœ #
-,
-œœ# $
-column
-–– 
-:
-–– 
-$str
-––  
-)
-––  !
-;
-––! "
-migrationBuilder
-““ 
-.
-““ 
-CreateIndex
-““ (
-(
-““( )
-name
-”” 
-:
-”” 
-$str
-”” ,
-,
-””, -
-schema
-‘‘ 
-:
-‘‘ 
-$str
-‘‘ 
-,
-‘‘ 
-table
-’’ 
-:
-’’ 
-$str
-’’ #
-,
-’’# $
-column
-÷÷ 
-:
-÷÷ 
-$str
-÷÷  
-)
-÷÷  !
-;
-÷÷! "
-migrationBuilder
-ÿÿ 
-.
-ÿÿ 
-CreateIndex
-ÿÿ (
-(
-ÿÿ( )
-name
-ŸŸ 
-:
-ŸŸ 
-$str
-ŸŸ +
-,
-ŸŸ+ ,
-schema
-⁄⁄ 
-:
-⁄⁄ 
-$str
-⁄⁄ 
-,
-⁄⁄ 
-table
-€€ 
-:
-€€ 
-$str
-€€ "
-,
-€€" #
-column
-‹‹ 
-:
-‹‹ 
-$str
-‹‹  
-)
-‹‹  !
-;
-‹‹! "
-migrationBuilder
-ﬁﬁ 
-.
-ﬁﬁ 
-CreateIndex
-ﬁﬁ (
-(
-ﬁﬁ( )
-name
-ﬂﬂ 
-:
-ﬂﬂ 
-$str
-ﬂﬂ "
-,
-ﬂﬂ" #
-schema
-‡‡ 
-:
-‡‡ 
-$str
-‡‡ 
-,
-‡‡ 
-table
-·· 
-:
-·· 
-$str
-·· 
-,
-·· 
-column
-‚‚ 
-:
-‚‚ 
-$str
-‚‚ )
-)
-‚‚) *
-;
-‚‚* +
-migrationBuilder
-‰‰ 
-.
-‰‰ 
-CreateIndex
-‰‰ (
-(
-‰‰( )
-name
-ÂÂ 
-:
-ÂÂ 
-$str
-ÂÂ %
-,
-ÂÂ% &
-schema
-ÊÊ 
-:
-ÊÊ 
-$str
-ÊÊ 
-,
-ÊÊ 
-table
-ÁÁ 
-:
-ÁÁ 
-$str
-ÁÁ 
-,
-ÁÁ 
-column
-ËË 
-:
-ËË 
-$str
-ËË ,
-,
-ËË, -
-unique
-ÈÈ 
-:
-ÈÈ 
-true
-ÈÈ 
-,
-ÈÈ 
-filter
-ÍÍ 
-:
-ÍÍ 
-$str
-ÍÍ :
-)
-ÍÍ: ;
-;
-ÍÍ; <
-}
-ÎÎ 	
-	protected
-ÓÓ 
-override
-ÓÓ 
-void
-ÓÓ 
-Down
-ÓÓ  $
-(
-ÓÓ$ %
-MigrationBuilder
-ÓÓ% 5
-migrationBuilder
-ÓÓ6 F
-)
-ÓÓF G
-{
-ÔÔ 	
-migrationBuilder
- 
-.
- 
-	DropTable
- &
-(
-& '
-name
-ÒÒ 
-:
-ÒÒ 
-$str
-ÒÒ *
-)
-ÒÒ* +
-;
-ÒÒ+ ,
-migrationBuilder
-ÛÛ 
-.
-ÛÛ 
-	DropTable
-ÛÛ &
-(
-ÛÛ& '
-name
-ÙÙ 
-:
-ÙÙ 
-$str
-ÙÙ 5
-)
-ÙÙ5 6
-;
-ÙÙ6 7
-migrationBuilder
-ˆˆ 
-.
-ˆˆ 
-	DropTable
-ˆˆ &
-(
-ˆˆ& '
-name
-˜˜ 
-:
-˜˜ 
-$str
-˜˜  
-)
-˜˜  !
-;
-˜˜! "
-migrationBuilder
-˘˘ 
-.
-˘˘ 
-	DropTable
-˘˘ &
-(
-˘˘& '
-name
-˙˙ 
-:
-˙˙ 
-$str
-˙˙ "
-)
-˙˙" #
-;
-˙˙# $
-migrationBuilder
-¸¸ 
-.
-¸¸ 
-	DropTable
-¸¸ &
-(
-¸¸& '
-name
-˝˝ 
-:
-˝˝ 
-$str
-˝˝ &
-)
-˝˝& '
-;
-˝˝' (
-migrationBuilder
-ˇˇ 
-.
-ˇˇ 
-	DropTable
-ˇˇ &
-(
-ˇˇ& '
-name
-ÄÄ 
-:
-ÄÄ 
-$str
-ÄÄ *
-)
-ÄÄ* +
-;
-ÄÄ+ ,
-migrationBuilder
-ÇÇ 
-.
-ÇÇ 
-	DropTable
-ÇÇ &
-(
-ÇÇ& '
-name
-ÉÉ 
-:
-ÉÉ 
-$str
-ÉÉ 
-)
-ÉÉ 
-;
-ÉÉ 
-migrationBuilder
-ÖÖ 
-.
-ÖÖ 
-	DropTable
-ÖÖ &
-(
-ÖÖ& '
-name
-ÜÜ 
-:
-ÜÜ 
-$str
-ÜÜ #
-)
-ÜÜ# $
-;
-ÜÜ$ %
-migrationBuilder
-àà 
-.
-àà 
-	DropTable
-àà &
-(
-àà& '
-name
-ââ 
-:
-ââ 
-$str
-ââ "
-,
-ââ" #
-schema
-ää 
-:
-ää 
-$str
-ää 
-)
-ää 
-;
-ää 
-migrationBuilder
-åå 
-.
-åå 
-	DropTable
-åå &
-(
-åå& '
-name
-çç 
-:
-çç 
-$str
-çç %
-)
-çç% &
-;
-çç& '
-migrationBuilder
-èè 
-.
-èè 
-	DropTable
-èè &
-(
-èè& '
-name
-êê 
-:
-êê 
-$str
-êê $
-)
-êê$ %
-;
-êê% &
-migrationBuilder
-íí 
-.
-íí 
-	DropTable
-íí &
-(
-íí& '
-name
-ìì 
-:
-ìì 
-$str
-ìì  
-)
-ìì  !
-;
-ìì! "
-migrationBuilder
-ïï 
-.
-ïï 
-	DropTable
-ïï &
-(
-ïï& '
-name
-ññ 
-:
-ññ 
-$str
-ññ &
-)
-ññ& '
-;
-ññ' (
-migrationBuilder
-òò 
-.
-òò 
-	DropTable
-òò &
-(
-òò& '
-name
-ôô 
-:
-ôô 
-$str
-ôô +
-)
-ôô+ ,
-;
-ôô, -
-migrationBuilder
-õõ 
-.
-õõ 
-	DropTable
-õõ &
-(
-õõ& '
-name
-úú 
-:
-úú 
-$str
-úú "
-)
-úú" #
-;
-úú# $
-migrationBuilder
-ûû 
-.
-ûû 
-	DropTable
-ûû &
-(
-ûû& '
-name
-üü 
-:
-üü 
-$str
-üü "
-,
-üü" #
-schema
-†† 
-:
-†† 
-$str
-†† 
-)
-†† 
-;
-†† 
-migrationBuilder
-¢¢ 
-.
-¢¢ 
-	DropTable
-¢¢ &
-(
-¢¢& '
-name
-££ 
-:
-££ 
-$str
-££ "
-,
-££" #
-schema
-§§ 
-:
-§§ 
-$str
-§§ 
-)
-§§ 
-;
-§§ 
-migrationBuilder
-¶¶ 
-.
-¶¶ 
-	DropTable
-¶¶ &
-(
-¶¶& '
-name
-ßß 
-:
-ßß 
-$str
-ßß !
-,
-ßß! "
-schema
-®® 
-:
-®® 
-$str
-®® 
-)
-®® 
-;
-®® 
-migrationBuilder
-™™ 
-.
-™™ 
-	DropTable
-™™ &
-(
-™™& '
-name
-´´ 
-:
-´´ 
-$str
-´´ "
-,
-´´" #
-schema
-¨¨ 
-:
-¨¨ 
-$str
-¨¨ 
-)
-¨¨ 
-;
-¨¨ 
-migrationBuilder
-ÆÆ 
-.
-ÆÆ 
-	DropTable
-ÆÆ &
-(
-ÆÆ& '
-name
-ØØ 
-:
-ØØ 
-$str
-ØØ 
-,
-ØØ 
-schema
-∞∞ 
-:
-∞∞ 
-$str
-∞∞ 
-)
-∞∞ 
-;
-∞∞ 
-migrationBuilder
-≤≤ 
-.
-≤≤ 
-	DropTable
-≤≤ &
-(
-≤≤& '
-name
-≥≥ 
-:
-≥≥ 
-$str
-≥≥ 
-,
-≥≥ 
-schema
-¥¥ 
-:
-¥¥ 
-$str
-¥¥ 
-)
-¥¥ 
-;
-¥¥ 
-}
-µµ 	
-}
-∂∂ 
-}∑∑ ∆	
-à/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Extensions/ServiceCollectionExtensions.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-
-Extensions' 1
-{ 
-public 
-
-static 
-class '
-ServiceCollectionExtensions 3
-{		 
-public
-
- 
-static
-
- 
-IServiceCollection
-
- (!
-AddUserInfrastructure
-
-) >
-(
-
-> ?
-this
-
-? C
-IServiceCollection
-
-D V
-services
-
-W _
-,
-
-_ `
-IConfiguration
-
-a o
-config
-
-p v
-)
-
-v w
-{ 	
-services 
-. 
-AddDbContext 
-< 
-UserDbContext +
->+ ,
-(, -
-options- 4
-=>5 7
-options8 ?
-.? @
-UseSqlServer@ L
-(L M
-configM S
-.S T
-GetConnectionStringT g
-(g h
-$strh y
-)y z
-)z {
-){ |
-;| }
-return 
-services 
-; 
-} 	
-} 
-} ∫I
-â/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Configuration/UserAndRolesConfiguration.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Configuration' 4
-{ 
-public 
-static 
-class %
-UserAndRolesConfiguration .
-{		 
-public
-
- 
-static
-
- 
-async
-
- 
-Task
-
-  
-SeedUserAndRoles
-
-! 1
-(
-
-1 2
-IServiceProvider
-
-2 B
-_serviceProvider
-
-C S
-)
-
-S T
-{ 	
-using 
-var 
-scope 
-= 
-_serviceProvider .
-.. /
-CreateScope/ :
-(: ;
-); <
-;< =
-var 
-	dbContext 
-= 
-scope !
-.! "
-ServiceProvider" 1
-.1 2
-GetRequiredService2 D
-<D E
-UserDbContextE R
->R S
-(S T
-)T U
-;U V
-var 
-userManager 
-= 
-scope #
-.# $
-ServiceProvider$ 3
-.3 4
-GetRequiredService4 F
-<F G
-UserManagerG R
-<R S#
-ApplicationIdentityUserS j
->j k
->k l
-(l m
-)m n
-;n o
-var 
-roleManager 
-= 
-scope #
-.# $
-ServiceProvider$ 3
-.3 4
-GetRequiredService4 F
-<F G
-RoleManagerG R
-<R S#
-ApplicationIdentityRoleS j
->j k
->k l
-(l m
-)m n
-;n o
-if 
-( 
-! 
-await 
-	dbContext  
-.  !
-Database! )
-.) *
-CanConnectAsync* 9
-(9 :
-): ;
-); <
-{ 
-await 
-	dbContext 
-.  
-Database  (
-.( )
-MigrateAsync) 5
-(5 6
-)6 7
-;7 8
-} 
-if 
-( 
-! 
-roleManager 
-. 
-RoleExistsAsync ,
-(, -
-$str- <
-)< =
-.= >
-Result> D
-)D E
-{ 
-await 
-roleManager !
-.! "
-CreateAsync" -
-(- .
-new. 1#
-ApplicationIdentityRole2 I
-{ 
-Name   
-=   
-$str   *
-,  * +
-NormalizedName!! "
-=!!# $
-$str!!% 4
-,!!4 5
-
-ApprovedBy"" 
-=""  
-$str""! &
-,""& '
-
-ApprovedOn## 
-=##  
-DateTime##! )
-.##) *
-UtcNow##* 0
-,##0 1
-	CreatedBy$$ 
-=$$ 
-$str$$  %
-,$$% &
-	CreatedOn%% 
-=%% 
-DateTime%%  (
-.%%( )
-UtcNow%%) /
-,%%/ 0
-Status&& 
-=&& 
-$num&& 
-}'' 
-)'' 
-;'' 
-await)) 
-roleManager)) !
-.))! "
-CreateAsync))" -
-())- .
-new)). 1#
-ApplicationIdentityRole))2 I
-{** 
-Name++ 
-=++ 
-$str++ -
-,++- .
-NormalizedName,, "
-=,,# $
-$str,,% 7
-,,,7 8
-
-ApprovedBy-- 
-=--  
-$str--! &
-,--& '
-
-ApprovedOn.. 
-=..  
-DateTime..! )
-...) *
-UtcNow..* 0
-,..0 1
-	CreatedBy// 
-=// 
-$str//  %
-,//% &
-	CreatedOn00 
-=00 
-DateTime00  (
-.00( )
-UtcNow00) /
-,00/ 0
-Status11 
-=11 
-$num11 
-}22 
-)22 
-;22 
-}33 
-var55 
-_email55 
-=55 
-$str55 -
-;55- .
-var66 
-misadmin_email66 
-=66  
-$str66! 9
-;669 :
-if88 
-(88 
-userManager88 
-.88 
-FindByEmailAsync88 ,
-(88, -
-_email88- 3
-)883 4
-.884 5
-Result885 ;
-==88< >
-null88? C
-)88C D
-{99 
-var;; 
-_user;; 
-=;; 
-new;; #
-ApplicationIdentityUser;;  7
-{<< 
-Id== 
-=== 
-$str== ?
-,==? @ 
-IdentificationNumber>> (
-=>>) *
-$str>>+ 1
-,>>1 2
-	FirstName?? 
-=?? 
-$str??  (
-,??( )
-
-MiddleName@@ 
-=@@  
-$str@@! #
-,@@# $
-LastNameAA 
-=AA 
-$strAA .
-,AA. /
-DepartmentIdBB  
-=BB! "
-$numBB# $
-,BB$ %
-UnitIdCC 
-=CC 
-$numCC 
-,CC 
-	ChannelIdDD 
-=DD 
-$numDD  #
-,DD# $
-StatusEE 
-=EE 
-$numEE 
-,EE 
-	CreatedByFF 
-=FF 
-$strFF  %
-,FF% &
-CreatedDateGG 
-=GG  !
-DateTimeGG" *
-.GG* +
-UtcNowGG+ 1
-,GG1 2
-UserNameHH 
-=HH 
-_emailHH %
-,HH% &
-NormalizedUserNameII &
-=II' (
-_emailII) /
-.II/ 0
-ToUpperII0 7
-(II7 8
-)II8 9
-,II9 :
-EmailJJ 
-=JJ 
-_emailJJ "
-,JJ" #
-NormalizedEmailKK #
-=KK$ %
-_emailKK& ,
-.KK, -
-ToUpperKK- 4
-(KK4 5
-)KK5 6
-,KK6 7
-PhoneNumberLL 
-=LL  !
-$strLL" .
-,LL. /
-EmailConfirmedMM "
-=MM# $
-trueMM% )
-,MM) *
-
-FirebaseIdNN 
-=NN  
-stringNN! '
-.NN' (
-EmptyNN( -
-,NN- .
-RegistrationDateOO $
-=OO% &
-DateTimeOO' /
-.OO/ 0
-UtcNowOO0 6
-,OO6 7
-IsFirstTimePP 
-=PP  !
-falsePP" '
-,PP' (
-UserTypeQQ 
-=QQ 
-$numQQ  
-}RR 
-;RR 
-varVV 
-_misUserVV 
-=VV 
-newVV "#
-ApplicationIdentityUserVV# :
-{WW 
-IdXX 
-=XX 
-$strXX ?
-,XX? @ 
-IdentificationNumberYY (
-=YY) *
-$strYY+ 3
-,YY3 4
-	FirstNameZZ 
-=ZZ 
-$strZZ  (
-,ZZ( )
-
-MiddleName[[ 
-=[[  
-$str[[  "
-,[[" #
-LastName\\ 
-=\\ 
-$str\\ *
-,\\* +
-DepartmentId]]  
-=]]! "
-$num]]# &
-,]]& '
-UnitId^^ 
-=^^ 
-$num^^  
-,^^  !
-	ChannelId__ 
-=__ 
-$num__  #
-,__# $
-Status`` 
-=`` 
-$num`` 
-,`` 
-	CreatedByaa 
-=aa 
-$straa  %
-,aa% &
-CreatedDatebb 
-=bb  !
-DateTimebb" *
-.bb* +
-UtcNowbb+ 1
-,bb1 2
-UserNamecc 
-=cc 
-misadmin_emailcc -
-,cc- .
-NormalizedUserNamedd &
-=dd' (
-misadmin_emaildd) 7
-.dd7 8
-ToUpperdd8 ?
-(dd? @
-)dd@ A
-,ddA B
-Emailee 
-=ee 
-misadmin_emailee *
-,ee* +
-NormalizedEmailff #
-=ff$ %
-misadmin_emailff& 4
-.ff4 5
-ToUpperff5 <
-(ff< =
-)ff= >
-,ff> ?
-PhoneNumbergg 
-=gg  !
-$strgg" .
-,gg. /
-EmailConfirmedhh "
-=hh# $
-truehh% )
-,hh) *
-
-FirebaseIdii 
-=ii  
-stringii! '
-.ii' (
-Emptyii( -
-,ii- .
-RegistrationDatejj $
-=jj% &
-DateTimejj' /
-.jj/ 0
-UtcNowjj0 6
-,jj6 7
-IsFirstTimekk 
-=kk  !
-falsekk" '
-,kk' (
-UserTypell 
-=ll 
-$numll  
-}mm 
-;mm 
-IdentityResultoo 
-identityResultoo -
-=oo. /
-userManageroo0 ;
-.oo; <
-CreateAsyncoo< G
-(ooG H
-_userooH M
-,ooM N
-$strooO _
-)oo_ `
-.oo` a
-Resultooa g
-;oog h
-ifpp 
-(pp 
-identityResultpp "
-.pp" #
-	Succeededpp# ,
-)pp, -
-awaitqq 
-userManagerqq %
-.qq% &
-AddToRoleAsyncqq& 4
-(qq4 5
-_userqq5 :
-,qq: ;
-$strqq< K
-)qqK L
-;qqL M
-identityResultss 
-=ss  
-userManagerss! ,
-.ss, -
-CreateAsyncss- 8
-(ss8 9
-_misUserss9 A
-,ssA B
-$strssC S
-)ssS T
-.ssT U
-ResultssU [
-;ss[ \
-iftt 
-(tt 
-identityResulttt "
-.tt" #
-	Succeededtt# ,
-)tt, -
-awaituu 
-userManageruu %
-.uu% &
-AddToRoleAsyncuu& 4
-(uu4 5
-_misUseruu5 =
-,uu= >
-$struu? Q
-)uuQ R
-;uuR S
-}ww 
-}zz 	
-}{{ 
-}|| ≈
-á/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Configuration/MenuActionConfiguration.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Configuration' 4
-{ 
-} ˜
-ê/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Configuration/DepartmentsAndUnitsConfiguration.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Configuration' 4
-{ 
-public 
-class $
-DepartmentsConfiguration &
-:' ($
-IEntityTypeConfiguration) A
-<A B
-
-DepartmentB L
->L M
-{		 
-public
-
- 
-void
-
- 
-	Configure
-
- 
-(
-
- 
-EntityTypeBuilder
-
- /
-<
-
-/ 0
-
-Department
-
-0 :
->
-
-: ;
-builder
-
-< C
-)
-
-C D
-{ 	
-builder 
-. 
-HasIndex 
-( 
-d 
-=> !
-d" #
-.# $
-DepartmentName$ 2
-)2 3
-;3 4
-builder 
-. 
-HasData 
-( 
-new 
-
-Department 
-( 
-$num "
-," #
-$str# ,
-), -
-,- .
-new 
-
-Department 
-( 
-$num "
-," #
-$str# ,
-), -
-) 
-; 
-} 	
-} 
-public 
-
-class )
-DepartmentsUnitsConfiguration .
-:/ 0$
-IEntityTypeConfiguration1 I
-<I J
-DepartmentUnitJ X
->X Y
-{ 
-public 
-void 
-	Configure 
-( 
-EntityTypeBuilder /
-</ 0
-DepartmentUnit0 >
->> ?
-builder@ G
-)G H
-{ 	
-builder 
-. 
-HasIndex 
-( 
-u 
-=> !
-u" #
-.# $
-UnitName$ ,
-), -
-;- .
-builder 
-. 
-HasData 
-( 
-new 
-DepartmentUnit "
-(" #
-$num# &
-,& '
-$num' *
-,* +
-$str+ 2
-)2 3
-,3 4
-new 
-DepartmentUnit "
-(" #
-$num# &
-,& '
-$num' *
-,* +
-$str+ 4
-)4 5
-,5 6
-new 
-DepartmentUnit "
-(" #
-$num# &
-,& '
-$num' *
-,* +
-$str+ 6
-)6 7
-,7 8
-new!! 
-DepartmentUnit!! "
-(!!" #
-$num!!# &
-,!!& '
-$num!!' *
-,!!* +
-$str!!+ 7
-)!!7 8
-,!!8 9
-new"" 
-DepartmentUnit"" "
-(""" #
-$num""# &
-,""& '
-$num""' *
-,""* +
-$str"", 5
-)""5 6
-,""6 7
-new## 
-DepartmentUnit## "
-(##" #
-$num### &
-,##& '
-$num##' *
-,##* +
-$str##, 3
-)##3 4
-,##4 5
-new$$ 
-DepartmentUnit$$ "
-($$" #
-$num$$# &
-,$$& '
-$num$$' *
-,$$* +
-$str$$, 4
-)$$4 5
-,$$5 6
-new%% 
-DepartmentUnit%% "
-(%%" #
-$num%%# &
-,%%& '
-$num%%' *
-,%%* +
-$str%%, 3
-)%%3 4
-)'' 
-;'' 
-}(( 	
-})) 
-}** ï
-
-Ñ/Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Infrastructure/Configuration/ChannelConfiguration.cs
-	namespace 	
-Modules
- 
-. 
-Users 
-. 
-Infrastructure &
-.& '
-Configuration' 4
-{ 
-public 
-class  
-ChannelConfiguration "
-:# $$
-IEntityTypeConfiguration% =
-<= >
-Channels> F
->F G
-{		 
-public
-
- 
-void
-
- 
-	Configure
-
- 
-(
-
- 
-EntityTypeBuilder
-
- /
-<
-
-/ 0
-Channels
-
-0 8
->
-
-8 9
-builder
-
-: A
-)
-
-A B
-{ 	
-builder 
-. 
-HasIndex 
-( 
-c 
-=> !
-c" #
-.# $
-ChannelName$ /
-)/ 0
-;0 1
-builder 
-. 
-HasData 
-( 
-new 
-Channels 
-( 
-$num  
-,  !
-$str" '
-)' (
-,( )
-new 
-Channels 
-( 
-$num  
-,  !
-$str" *
-)* +
-) 
-; 
-} 	
-} 
-} 

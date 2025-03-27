@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Modules.Estates.Infrastructure;
 
@@ -11,9 +12,11 @@ using Modules.Estates.Infrastructure;
 namespace Modules.Estates.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250326171014_AddInterestExpressed")]
+    partial class AddInterestExpressed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -619,42 +622,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.HasKey("IdentificationTypeId");
 
                     b.ToTable("IdentificationType", "est");
-                });
-
-            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.InterestExpressed", b =>
-                {
-                    b.Property<int>("InterestExpressedId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InterestExpressedId"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerInterestExpressed")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("InterestExpressedId");
-
-                    b.ToTable("InterestExpressed", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.Nationality", b =>

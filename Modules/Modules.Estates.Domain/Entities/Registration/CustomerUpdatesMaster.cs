@@ -7,6 +7,181 @@ namespace Modules.Estates.Domain.Entities.Registration
     public partial class CustomerMaster : BaseEntity
     {
 
+
+        public static async Task<CustomerMaster> UpdateProspectiveAsync(
+                    int customerMasterId,
+                    int customerTypeId,
+                    int residentTypeId,
+                    int localityId,
+                    string customerCode,
+                    int titleId,
+                    string surName,
+                    string otherNames,
+                    string companyName,
+                    string picture,
+                    int genderId,
+                    int nationalityId,
+                    string postalAddress,
+                    string residentialAddress,
+                    string digitalAddress,
+                    string primaryMobileNumber,
+                    string secondaryMobileNumber,
+                    string officeNumber,
+                    string whatsAppNumber,
+                    string emailAddress,
+                    int socialMediaTypeId,
+                    string socialMediaAccount,
+                    string comments,
+                    string interestExpressed,
+                    string modifiedBy,
+                    ICustomerDomainService customerDomainService)
+        {
+
+            if ( string.IsNullOrWhiteSpace(customerCode) || customerTypeId <= 0 || localityId <= 0 || string.IsNullOrWhiteSpace(surName) && string.IsNullOrWhiteSpace(otherNames) && string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress) || string.IsNullOrWhiteSpace(interestExpressed))
+            {
+                throw new ArgumentException("Invalid prospective customer registration data.");
+            }
+
+            if (!await customerDomainService.CustomerTypeExists(customerTypeId))
+                throw new ArgumentException(ErrorMessages.InvalidCustomerTypeId);
+
+            if (residentTypeId > 0)
+            {
+                if (!await customerDomainService.ResidentTypeExists(residentTypeId))
+                    throw new ArgumentException(ErrorMessages.InvalidResidentTypeId);
+            }
+
+            if (!await customerDomainService.LocalityExists(localityId))
+                throw new ArgumentException(ErrorMessages.InvalidLocalityId);
+
+            if (!await customerDomainService.GenderExists(genderId))
+                throw new ArgumentException(ErrorMessages.InvalidGenderId);
+
+            if (!await customerDomainService.NationalityExists(nationalityId))
+                throw new ArgumentException(ErrorMessages.InvalidNationalityId);
+
+            if (titleId > 0)
+            {
+                if (!await customerDomainService.TitleExists(titleId))
+                    throw new ArgumentException(ErrorMessages.InvalidTitleId);
+            }
+
+            if (genderId <= 0)
+            {
+                throw new ArgumentException("Gender id must be greater than zero.");
+            }
+
+            if (nationalityId <= 0)
+            {
+                throw new ArgumentException("Nationality id must be greater than zero.");
+            }
+
+            if (socialMediaTypeId > 0)
+            {
+                if (!await customerDomainService.SocialMediaExists(socialMediaTypeId))
+                    throw new ArgumentException(ErrorMessages.InvalidSocialMediaTypeId);
+            }
+
+
+            if (string.IsNullOrWhiteSpace(customerCode))
+            {
+                throw new ArgumentException("Customer Code cannot be not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(surName) && string.IsNullOrWhiteSpace(otherNames) && string.IsNullOrWhiteSpace(companyName))
+            {
+                throw new ArgumentException("Surname, othernames and company name cannot be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(primaryMobileNumber))
+            {
+                throw new ArgumentException("Primary mobile number must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(emailAddress))
+            {
+                throw new ArgumentException("Email address must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(interestExpressed))
+            {
+                throw new ArgumentException("Interest expressed must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(comments))
+            {
+                throw new ArgumentException("Comments must not be null or empty");
+            }
+            var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
+            var locality = await customerDomainService.LocalityExists(localityId);
+            if (locality is false)
+            {
+                throw new ArgumentException("Customer locality provided does not exist");
+            }
+
+           
+            var customer = new CustomerMaster
+            {
+                CustomerMasterId = customerMasterId,
+                CustomerTypeId = customerTypeId,
+                ResidentTypeId = residentTypeId,
+                LocalityId = localityId,
+                CustomerCode = customerCode,
+                TitleId = titleId,
+                SurName = surName,
+                OtherNames = otherNames,
+                CompanyName = companyName,
+                DateOfBirth = Convert.ToDateTime("1900-01-01"),
+                TinNumber = string.Empty,
+                Picture = picture,
+                GenderId = genderId,
+                NationalityId = nationalityId,
+                PostalAddress = postalAddress,
+                ResidentialAddress = residentialAddress,
+                DigitalAddress = digitalAddress,
+                PrimaryMobileNumber = primaryMobileNumber,
+                SecondaryMobileNumber = secondaryMobileNumber,
+                OfficeNumber = officeNumber,
+                WhatsAppNumber = whatsAppNumber,
+                EmailAddress = emailAddress,
+                ResidentPermitNumber = string.Empty,
+                ResidentPermitDateIssued = Convert.ToDateTime("1900-01-01"),
+                ResidentPermitExpiryDate = Convert.ToDateTime("1900-01-01"),
+                SocialMediaTypeId = socialMediaTypeId,
+                SocialMediaAccount = socialMediaAccount,
+                IdentificationTypeId = 0,
+                IdentificationTypeNumber = string.Empty,
+                IdentificationTypeImageOne = string.Empty,
+                IdentificationTypeImageTwo = string.Empty,
+                IdentificationTypeImageThree = string.Empty,
+                IdentificationTypeImageFour = string.Empty,
+                IdentificationTypeImageFive = string.Empty,
+                Comments = comments,
+                InterestExpressed = interestExpressed,
+                DebtorStatus = 0,
+                ParentCode = string.Empty,
+                ContactPerson_FullName = string.Empty,
+                ContactPerson_PhoneNumber = string.Empty,
+                ContactPerson_EmailAddress = string.Empty,
+                ContactPerson_Address = string.Empty,
+                ContactPerson_IdentificationTypeId = 0,
+                ContactPerson_IdentificationTypeNumber = string.Empty,
+                ContactPerson_IdentificationTypeImageOne = string.Empty,
+                ContactPerson_IdentificationTypeImageTwo = string.Empty,
+                IsDeleted = false,
+                ModifiedBy = modifiedBy
+            };
+
+            customer._domainEvents.Add(new CustomerUpdatedEvent(
+                customerMasterId,
+                customerCode,
+                "Prospective",
+                modifiedBy));
+
+            return customer;
+
+        }
+
         public static async Task<CustomerMaster> UpdateCompanyAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, string companyName, int nationalityId, string companyAddress, string digitalAddress, string primaryMobileNumber,
                                                                     string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress, string businessRegistrationNumber, string tinNumber, int socialMediaTypeId, string socialMediaAccount,
                                                                     string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive,

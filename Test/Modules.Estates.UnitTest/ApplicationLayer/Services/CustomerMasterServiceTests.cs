@@ -54,7 +54,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
         public async Task CreateCustomer_WithValidProspectiveData_ShouldCreateCustomerSuccessfully()
         {
             // Arrange
-            var dto = new ProspectiveCustomerDto
+            var dto = new ProspectiveCustomerCreateDto
             {
                 CustomerMasterId = 1,
                 CustomerTypeId = (int)CustomerTypeEnum.PROSPECTIVE,

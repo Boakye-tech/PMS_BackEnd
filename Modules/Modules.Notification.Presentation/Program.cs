@@ -110,6 +110,12 @@ builder.Services.AddSwaggerGen(options =>
 //            )
 //    );
 
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "npms-18309-firebase-adminsdk-fbsvc-52b1e19a3c.json"))
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -136,6 +142,8 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
+
+
 
 app.UseHttpsRedirection();
 

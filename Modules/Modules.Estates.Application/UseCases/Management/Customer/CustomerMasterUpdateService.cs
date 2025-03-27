@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Modules.Estates.Application.DTO;
 using Modules.Estates.Application.DTO.Management;
+using Modules.Estates.Application.Enums;
 using Modules.Estates.Domain.Entities.Management;
 using Modules.Estates.Domain.Entities.Setup.Customer;
 using Modules.Estates.Domain.Entities.Setup.Property;
@@ -13,6 +14,84 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 {
     public partial class CustomerMasterService : ICustomerMasterService
     {
+
+        public async Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateProspectiveCustomerDto values)
+        {
+            string _residentType = string.Empty;
+            string _title = string.Empty;
+            string _socialMediaPlatform = string.Empty;
+            string _identificationType = string.Empty;
+
+            try
+            {
+                CustomerMaster customer = await CustomerMaster.UpdateProspectiveAsync
+                    (
+                        customerMasterId: values.CustomerMasterId,
+                        customerTypeId: values.CustomerTypeId,
+                        residentTypeId: values.ResidentTypeId,
+                        localityId: values.LocalityId,
+                        customerCode: values.CustomerCode!,
+                        titleId: values.TitleId,
+                        surName: values.SurName!,
+                        otherNames: values.OtherNames!,
+                        companyName: values.CompanyName!,
+                        picture: string.Empty,
+                        genderId: values.GenderId,
+                        nationalityId: values.NationalityId,
+                        postalAddress: values.PostalAddress!,
+                        residentialAddress: values.ResidentialAddress!,
+                        digitalAddress: values.DigitalAddress!,
+                        primaryMobileNumber: values.PrimaryMobileNumber!,
+                        secondaryMobileNumber: values.SecondaryMobileNumber!,
+                        officeNumber: values.OfficeNumber!,
+                        whatsAppNumber: values.WhatsAppNumber!,
+                        emailAddress: values.EmailAddress,
+                        socialMediaTypeId: values.SocialMediaTypeId,
+                        socialMediaAccount: values.SocialMediaAccount!,
+                        comments: values.Comments!,
+                        interestExpressed: values.InterestExpressed,
+                        modifiedBy: values.ModifiedBy!,
+                        _domainService
+                    );
+
+                customer.ModifiedOn = DateTime.UtcNow;
+                //customer.DebtorStatus = (int)DebtorStatusEnum.APPROVED;
+
+                _unitOfWork.CustomerMaster.Update(customer);
+                await _unitOfWork.Complete();
+
+                foreach (var domainEvent in customer.DomainEvents)
+                {
+                    await _domainEventDispatcher.DispatchAsync(domainEvent);
+                }
+
+                if (values.TitleId != 0)
+                {
+                    _title = (await _unitOfWork.Title.Get(t => t.TitleId == customer.TitleId))!.Titles;
+                }
+
+                if (values.SocialMediaTypeId != 0)
+                {
+                    _socialMediaPlatform = (await _unitOfWork.SocialMedia.Get(s => s.SocialMediaId == customer.SocialMediaTypeId))!.SocialMediaPlatform;
+                }
+
+                var registeredCustomer = new CustomerRegistrationSuccessResponseDto
+                {
+                    CustomerCode = customer.CustomerCode,
+                    FullName = string.Concat(_title, " ", customer.OtherNames!, " ", customer.SurName!, " ", customer.CompanyName!).Trim(),
+                    PhoneNumber = customer.PrimaryMobileNumber,
+                };
+
+                return new CustomerRegistrationResponseDto { IsSuccess = true, SuccessResponse = registeredCustomer };
+
+            }
+            catch (Exception ex)
+            {
+                var err = new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                return new CustomerRegistrationResponseDto { IsSuccess = false, ErrorResponse = err };
+
+            }
+        }
 
         public async Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateCompanyCustomerDto values)
         {
@@ -562,7 +641,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             return 200;
 
         }
-
 
 
 

@@ -27,7 +27,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             _domainEventDispatcher = domainEventDispatcher;
         }
 
-        public async Task<CustomerRegistrationResponseDto> CreateCustomer(ProspectiveCustomerDto values)
+        public async Task<CustomerRegistrationResponseDto> CreateCustomer(ProspectiveCustomerCreateDto values)
         {
             string _residentType = string.Empty;
             string _title = string.Empty;

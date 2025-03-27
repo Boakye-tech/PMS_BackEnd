@@ -13,6 +13,9 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         Task<List<RolesDto>> GetRejectedUserRoles();
 
         Task<List<RolesDto>> GetUserRoles();
+        Task<List<RolesDto>> GetUserRoles(int departmentId);
+        Task<List<RolesDto>> GetUnitUserRoles(int unit);
+
         Task<IdentityResult> CreateUserRole(RolesCreateDto role);
         Task<IdentityResult> UpdateUserRole(RolesUpdateDto role);
         Task<IdentityResult> DeleteUserRole(RolesDeleteDto roleId);

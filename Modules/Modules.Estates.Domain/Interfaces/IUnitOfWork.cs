@@ -42,6 +42,9 @@ public interface IUnitOfWork : IDisposable
     //Mar 20 '25
     IStopDebitRepository StopDebit { get; }
 
+    //Mar 26 '25
+    IInterestExpressedRepository InterestExpressed { get; }
+
     Task<int> Complete();
 }
 

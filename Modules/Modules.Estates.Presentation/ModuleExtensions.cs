@@ -51,6 +51,8 @@ public static class ModuleExtensions
 
         services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 
+        services.AddScoped<IInterestExpressedService, InterestExpressedService>();
+
         services.AddHttpClient<IIdentificationTypeService, IdentificationTypeService>();
         services.AddHttpClient<IModuleCommunicationServices, ModuleCommunicationServices>();
 
@@ -63,7 +65,7 @@ public static class ModuleExtensions
         services.AddValidatorsFromAssemblyContaining<ResidentTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<SocialMediaDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<TitleDtoValidator>();
-
+        services.AddValidatorsFromAssemblyContaining<InterestExpressedDtoValidator>();
 
         // Dependency Injection - Register AutoMapper 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
