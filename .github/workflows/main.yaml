@@ -72,8 +72,9 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"MindSpringsGhana_pms-api" /o:"mindspringsghana" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"MindSpringsGhana_pms-api" /o:"mindspringsghana" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          dotnet build --no-incremental
+          dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults --settings coverlet.runsettings --logger "trx;LogFileName=testresults.trx"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Configure Environment Settings
@@ -229,6 +230,15 @@ jobs:
           foreach ($package in $packages) {
             Write-Host "Installing $($package.Package) version $($package.Version)"
             dotnet add PMS.Presentation/PMS.Presentation.csproj package $($package.Package) --version $($package.Version)
+          }
+        shell: pwsh
+
+      - name: Run Module Tests
+        run: |
+          $testProjects = Get-ChildItem -Path "Test" -Filter "*Test.csproj" -Recurse
+          foreach ($project in $testProjects) {
+            Write-Host "Running tests for: $($project.FullName)"
+            dotnet test $project.FullName --no-build --verbosity normal
           }
         shell: pwsh
           
