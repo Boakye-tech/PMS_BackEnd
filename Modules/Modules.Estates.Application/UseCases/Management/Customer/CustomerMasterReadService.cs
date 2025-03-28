@@ -24,7 +24,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
         {
             var customer = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
 
-            string _residentType = string.Empty; string _title = string.Empty; string _socialMediaPlatform = string.Empty; string _identificationType = string.Empty;
+            string _residentType = string.Empty; string _title = string.Empty; string _socialMediaPlatform = string.Empty;
 
             //get dynamic variables
             var _customerType = (await _unitOfWork.CustomerType.Get(c => c.CustomerTypeId == customer!.CustomerTypeId))!.CustomerTypes;
@@ -157,6 +157,11 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
         public async Task<IndividualResidentCustomerResponseDto> GetIndividualCustomerDetails(string customerCode)
         {
             var customer = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
+            if (customer == null)
+            {
+                throw new Exception("Customer not found");
+            }
+
 
             string _socialMediaPlatform = string.Empty; string _contactperson_identification = string.Empty;
 
@@ -459,7 +464,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         }
 
-        
     }
 }
 

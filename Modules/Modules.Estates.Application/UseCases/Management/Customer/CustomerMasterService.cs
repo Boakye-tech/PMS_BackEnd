@@ -29,7 +29,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerRegistrationResponseDto> CreateCustomer(ProspectiveCustomerCreateDto values)
         {
-            string _residentType = string.Empty;
             string _title = string.Empty;
             string _socialMediaPlatform = string.Empty;
             string _identificationType = string.Empty;

@@ -17,10 +17,13 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateProspectiveCustomerDto values)
         {
+
+            string _title = string.Empty;
             string _residentType = string.Empty;
             string _title = string.Empty;
             string _socialMediaPlatform = string.Empty;
             string _identificationType = string.Empty;
+
 
             try
             {
@@ -55,6 +58,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     );
 
                 customer.ModifiedOn = DateTime.UtcNow;
+
                 //customer.DebtorStatus = (int)DebtorStatusEnum.APPROVED;
 
                 _unitOfWork.CustomerMaster.Update(customer);
@@ -74,6 +78,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 {
                     _socialMediaPlatform = (await _unitOfWork.SocialMedia.Get(s => s.SocialMediaId == customer.SocialMediaTypeId))!.SocialMediaPlatform;
                 }
+
 
                 var registeredCustomer = new CustomerRegistrationSuccessResponseDto
                 {
@@ -95,12 +100,11 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateCompanyCustomerDto values)
         {
-            //string _socialMediaPlatform = string.Empty; string _residentType = string.Empty;
             string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty; string _imageFour = string.Empty; string _imageFive = string.Empty;
             string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
             int imageCount;
 
-            imageCount = values.IdentificationImages!.Count();
+            imageCount = values.IdentificationImages!.Length;
             switch (imageCount)
             {
                 case 1:
@@ -135,7 +139,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             }
 
 
-            imageCount = values.ContactPerson!.ContactPerson_IdentificationImages!.Count();
+            imageCount = values.ContactPerson!.ContactPerson_IdentificationImages!.Length;
             switch (imageCount)
             {
                 case 1:
@@ -191,7 +195,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 customer.ResidentialAddress = values.CompanyAddress;
                 customer.ModifiedBy = values.ModifiedBy;
                 customer.ModifiedOn = DateTime.UtcNow;
-                //customer.DebtorStatus = 1;
 
                 _unitOfWork.CustomerMaster.Update(customer);
                 await _unitOfWork.Complete();
@@ -218,7 +221,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
             int imageCount;
 
-            imageCount = values.IdentificationImages!.Count();
+            imageCount = values.IdentificationImages!.Length;
             switch (imageCount)
             {
                 case 1:
@@ -252,7 +255,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     break;
             }
 
-            imageCount = values.NonResident!.ContactPerson_IdentificationImages!.Count();
+            imageCount = values.NonResident!.ContactPerson_IdentificationImages!.Length;
             switch (imageCount)
             {
                 case 1:
@@ -277,7 +280,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                         titleId: values.TitleId,
                         surName: values.SurName,
                         otherNames: values.OtherNames,
-                        //companyName  : string.Empty,
                         dateOfBirth: values.DateOfBirth,
                         tinNumber: values.TinNumber!,
                         picture: values.Picture!,
@@ -314,7 +316,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                         contactPerson_IdentificationTypeId: values.NonResident.ContactPerson_IdentificationTypeId,
                         contactPerson_IdentificationTypeNumber: values.NonResident.ContactPerson_IdentificationTypeNumber!,
                         contactPerson_IdentificationTypeImageOne: c_imageOne,
-                        contactPerson_IdentificationTypeImageTwo: c_imageOne,
+                        contactPerson_IdentificationTypeImageTwo: c_imageTwo,
                         _domainService
                     );
 
@@ -624,6 +626,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 CustomerCode = values!.CustomerCode,
                 PropertyNumber = values.PropertyNumber,
                 DebtorStatus = values.DebtorStatus,
+                Reasons = values.Reasons,
                 ActionBy = values.ActionBy,
                 ActionOn = DateTime.UtcNow
             };
