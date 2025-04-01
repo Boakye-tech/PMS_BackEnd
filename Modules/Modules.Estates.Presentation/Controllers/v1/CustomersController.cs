@@ -288,8 +288,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
-                //if(ModelState.IsValid)
-
                 var userId = _userContextService.GetUserId();
                 if (!string.Equals(userId, values.ModifiedBy))
                 {
@@ -378,7 +376,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateIndividualCustomer")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        [Obsolete]
+        [Obsolete("UpdateIndividualCustomer endpoint is obsolete and would be removed in future releases. Please use the UpdateCustomerDetails endpoint")]
         public async Task<ActionResult> UpdateIndividualCustomer([FromBody] UpdateIndividualResidentCustomerDto values)
         {
             try
@@ -408,7 +406,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateJointCustomer")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        [Obsolete]
+        [Obsolete("UpdateJointCustomer endpoint is obsolete and would be removed in future releases. Please use the UpdateCustomerDetails endpoint")]
         public async Task<ActionResult> UpdateJointCustomer([FromBody] UpdateJointOwnershipCustomerDto values)
         {
             try
@@ -439,7 +437,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateMultiCustomer")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        [Obsolete]
+        [Obsolete("UpdateMultiCustomer endpoint is obsolete and would be removed in future releases. Please use the UpdateCustomerDetails endpoint")]
         public async Task<ActionResult> UpdateMultiCustomer([FromBody] UpdateMultiOwnershipCustomerDto values)
         {
             try

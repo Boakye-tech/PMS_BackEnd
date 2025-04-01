@@ -790,7 +790,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<ActivateUserAccountResponseDto> ActivateUserAccount(ActivateUserAccountDto accountActivation)
         {
-            //throw new NotImplementedException();
             try
             {
                 var user = await _userManager.FindByIdAsync(accountActivation.UserId!);
@@ -897,16 +896,10 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         StatusMessage = ex.ToString()
                     }
                 };
-
             }
-
-
-
-
-
         }
 
-        private async Task SendTokenViaNotification(ApplicationIdentityUser user, string temp_password)
+        public virtual async Task SendTokenViaNotification(ApplicationIdentityUser user, string temp_password)
         {
             var sb = new StringBuilder();
 

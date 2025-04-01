@@ -1,16 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Logging;
-using Modules.Estates.Application.DTO;
-using Modules.Estates.Application.DTO.Management;
-using Modules.Estates.Application.Enums;
-using Modules.Estates.Domain.Entities.Management;
-using Modules.Estates.Domain.Entities.Setup.Customer;
-using Modules.Estates.Domain.Entities.Setup.Property;
-using Modules.Estates.Domain.Events;
-
-namespace Modules.Estates.Application.UseCases.Management.Customer
+﻿namespace Modules.Estates.Application.UseCases.Management.Customer
 {
     public partial class CustomerMasterService : ICustomerMasterService
     {
@@ -19,11 +7,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
         {
 
             string _title = string.Empty;
-            string _residentType = string.Empty;
-            string _title = string.Empty;
-            string _socialMediaPlatform = string.Empty;
-            string _identificationType = string.Empty;
-
 
             try
             {
@@ -59,24 +42,17 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
                 customer.ModifiedOn = DateTime.UtcNow;
 
-                //customer.DebtorStatus = (int)DebtorStatusEnum.APPROVED;
-
                 _unitOfWork.CustomerMaster.Update(customer);
                 await _unitOfWork.Complete();
 
                 foreach (var domainEvent in customer.DomainEvents)
                 {
-                    await _domainEventDispatcher.DispatchAsync(domainEvent);
+                    await _domainEventDispatcher.Dispatch(domainEvent);
                 }
 
                 if (values.TitleId != 0)
                 {
                     _title = (await _unitOfWork.Title.Get(t => t.TitleId == customer.TitleId))!.Titles;
-                }
-
-                if (values.SocialMediaTypeId != 0)
-                {
-                    _socialMediaPlatform = (await _unitOfWork.SocialMedia.Get(s => s.SocialMediaId == customer.SocialMediaTypeId))!.SocialMediaPlatform;
                 }
 
 
@@ -307,7 +283,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                         identificationTypeImageFive: _imageFive,
                         comments: values.Comments!,
                         interestExpressed: string.Empty,
-                        debtorStatus: 0,
+                        //debtorStatus: 0,
                         parentCode: string.Empty,
                         contactPerson_FullName: values.NonResident.ContactPerson_FullName!,
                         contactPerson_PhoneNumber: values.NonResident.ContactPerson_PhoneNumber!,
@@ -320,8 +296,8 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                         _domainService
                     );
 
-                customer.CreatedBy = values.ModifiedBy;
-                customer.CreatedOn = DateTime.UtcNow;
+                customer.ModifiedBy = values.ModifiedBy;
+                customer.ModifiedOn = DateTime.UtcNow;
 
                 _unitOfWork.CustomerMaster.Update(customer);
                 await _unitOfWork.Complete();
@@ -441,7 +417,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     identificationTypeImageFive: _imageFive,
                     comments: values.Comments!,
                     interestExpressed: string.Empty,
-                    debtorStatus: 0,
+                    //debtorStatus: 0,
                     parentCode: string.Empty,
                     contactPerson_FullName: values.NonResident.ContactPerson_FullName!,
                     contactPerson_PhoneNumber: values.NonResident.ContactPerson_PhoneNumber!,
@@ -569,7 +545,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     identificationTypeImageFive: _imageFive,
                     comments: values.Comments!,
                     interestExpressed: string.Empty,
-                    debtorStatus: 0,
+                    //debtorStatus: 0,
                     parentCode: string.Empty,
                     contactPerson_FullName: values.NonResident.ContactPerson_FullName!,
                     contactPerson_PhoneNumber: values.NonResident.ContactPerson_PhoneNumber!,
@@ -608,40 +584,48 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<int> StopCustomerDebitAsync(StopDebitRequestDto values)
         {
-            if(values is null)
+            try
             {
-                return 400;
+                if (values is null)
+                {
+                    return 400;
+                }
+
+                //check if customer exist
+                var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values!.CustomerCode);
+                if (customer is null)
+                {
+                    return 404;
+                }
+
+                var debitDetails = new StopDebit
+                {
+                    StopDebitId = 0,
+                    CustomerCode = values!.CustomerCode,
+                    PropertyNumber = values.PropertyNumber,
+                    DebtorStatus = values.DebtorStatus,
+                    Reasons = values.Reasons,
+                    ActionBy = values.ActionBy,
+                    ActionOn = DateTime.UtcNow
+                };
+
+                //update customer master
+                customer!.DebtorStatus = 90; //values.DebtorStatus;
+                customer.ModifiedBy = values.ActionBy;
+                customer.ModifiedOn = DateTime.UtcNow;
+
+                _unitOfWork.CustomerMaster.Update(customer);
+                _unitOfWork.StopDebit.Insert(debitDetails);
+
+                await _unitOfWork.Complete();
+
+                return 200;
+            }
+            catch (Exception ex)
+            {
+                return 500;
             }
 
-            //check if customer exist
-            var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values!.CustomerCode);
-            if(customer is null)
-            {
-                return 404;
-            }
-
-            var debitDetails = new StopDebit
-            {
-                StopDebitId = 0,
-                CustomerCode = values!.CustomerCode,
-                PropertyNumber = values.PropertyNumber,
-                DebtorStatus = values.DebtorStatus,
-                Reasons = values.Reasons,
-                ActionBy = values.ActionBy,
-                ActionOn = DateTime.UtcNow
-            };
-
-            //update customer master
-            customer!.DebtorStatus = values.DebtorStatus;
-            customer.ModifiedBy = values.ActionBy;
-            customer.ModifiedOn = DateTime.UtcNow;
-
-            _unitOfWork.CustomerMaster.Update(customer);
-            _unitOfWork.StopDebit.Insert(debitDetails);
-
-            await _unitOfWork.Complete();
-
-            return 200;
 
         }
 

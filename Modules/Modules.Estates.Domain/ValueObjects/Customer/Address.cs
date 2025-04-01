@@ -3,9 +3,9 @@ namespace Modules.Estates.Domain.ValueObjects.Customer;
 
 public class Address
 {
-    public string PostalAddress { get; private set; }
-    public string ResidentialAddress { get; private set; }
-    public string DigitalAddress { get; private set; }
+    public string? PostalAddress { get; private set; }
+    public string? ResidentialAddress { get; private set; }
+    public string? DigitalAddress { get; private set; }
 
     private Address() { }
 

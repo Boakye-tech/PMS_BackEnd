@@ -213,11 +213,11 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             {
                 new CustomerListDto { CustomerCode = "2AA001" }
             };
-            _customerMasterServiceMock.Setup(x => x.GetCustomerListAsync())
+            _customerMasterServiceMock.Setup(x => x.GetCustomerListAsync(default!, default!))
                 .ReturnsAsync(expectedCustomers);
 
             // Act
-            var result = await _controller.GetCustomerList();
+            var result = await _controller.GetCustomerList(default!, default!);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -335,7 +335,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
         {
             // Arrange
             var customerCode = "INVALID";
-            _customerMasterServiceMock.Setup(x => x.GetCustomer(customerCode)).ReturnsAsync((CustomerMasterDto)null);
+            _customerMasterServiceMock.Setup(x => x.GetCustomer(customerCode)).ReturnsAsync((CustomerMasterDto)null!);
 
             // Act
             var result = await _controller.GetCustomer(customerCode);

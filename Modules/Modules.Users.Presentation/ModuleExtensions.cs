@@ -12,7 +12,14 @@ using Microsoft.AspNetCore.RateLimiting;
 
 namespace Modules.Users.Presentation
 {
-	public static class ModuleExtensions
+    /// <summary>
+    /// Class to handling all user module extentions. This is needed to enable smooth coordination between the solution and module level presentation layers
+    /// </summary>
+    /// <remarks>
+    /// This controller contains various services and injections needed to run the user module and to handle coordination with the solution level layer.
+    /// </remarks>
+    /// 
+    public static class ModuleExtensions
 	{
         public static IServiceCollection AddUserModule(this IServiceCollection services, IConfiguration configuration)
         {

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Modules.Estates.Domain.Entities.Registration;
 
 namespace Modules.Estates.Infrastrcuture.Repositories
 {
@@ -62,7 +63,30 @@ namespace Modules.Estates.Infrastrcuture.Repositories
 
         public async void InsertRange(IEnumerable<TEntity> entities) => await _dbContext.Set<TEntity>().AddRangeAsync(entities);
 
-        public void Update(TEntity entity) => _dbContext.Set<TEntity>().Update(entity);
+        public void Update(TEntity entity)
+        {
+            //_dbContext.Set<TEntity>().Update(entity);
+
+            var key = _dbContext.Model.FindEntityType(typeof(TEntity))!
+                 .FindPrimaryKey()!
+                 .Properties
+                 .Select(p => p.PropertyInfo!.GetValue(entity))
+                 .ToArray();
+
+            var existingEntity = _dbContext.Set<TEntity>().Find(key);
+
+            if (existingEntity != null)
+            {
+                _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
+            }
+            else
+            {
+                _dbContext.Attach(entity);
+                _dbContext.Entry(entity).State = EntityState.Modified;
+            }
+
+
+        }
 
         public void UpdateRange(IEnumerable<TEntity> entities) => _dbContext.Set<TEntity>().UpdateRange(entities);
     }

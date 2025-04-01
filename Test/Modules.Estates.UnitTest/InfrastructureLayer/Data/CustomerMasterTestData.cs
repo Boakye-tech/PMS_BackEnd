@@ -229,7 +229,7 @@ namespace Modules.Estates.UnitTest.InfrastructureLayer.Data
             return new CustomerMaster
             {
                 CustomerMasterId = 2,
-                CustomerTypeId = 2, // Company
+                CustomerTypeId = 1, // Company
                 ResidentTypeId = 1,
                 LocalityId = 1,
                 CustomerCode = "COMP001",

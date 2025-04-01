@@ -261,13 +261,6 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Email address must not be null or empty");
             }
 
-            var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
-
-            if (customer_locality is null)
-            {
-                throw new ArgumentException("Customer locality provided does not exist");
-            }
-
 
             return new CustomerMaster
             {
@@ -331,7 +324,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         public static async Task<CustomerMaster> UpdateIndividualAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, DateTime dateOfBirth, string tinNumber, string picture, int genderId,
                                                                        int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress,
                                                                        string residentPermitNumber, DateTime? residentPermitDateIssued, DateTime? residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber,
-                                                                       string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive, string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
+                                                                       string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive, string comments, string interestExpressed, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
                                                                        string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId, string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImageOne, string contactPerson_IdentificationTypeImageTwo, ICustomerDomainService customerDomainService)
         {
             if (!await customerDomainService.CustomerExists(customerMasterId))
@@ -483,14 +476,6 @@ namespace Modules.Estates.Domain.Entities.Registration
             }
 
 
-            var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
-
-            if (customer_locality is null)
-            {
-                throw new ArgumentException("Customer locality provided does not exist");
-            }
-
-
             return new CustomerMaster
             {
                 CustomerMasterId = customerMasterId,
@@ -529,7 +514,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 IdentificationTypeImageFive = identificationTypeImageFive,
                 Comments = comments,
                 InterestExpressed = interestExpressed,
-                DebtorStatus = debtorStatus,
+                DebtorStatus = 0,
                 ParentCode = parentCode,
                 ContactPerson_FullName = contactPerson_FullName,
                 ContactPerson_PhoneNumber = contactPerson_PhoneNumber,
@@ -552,7 +537,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         public static async Task<CustomerMaster> UpdateJointAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, DateTime dateOfBirth, string tinNumber, string picture, int genderId,
                                                                int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress,
                                                                string residentPermitNumber, DateTime? residentPermitDateIssued, DateTime? residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber,
-                                                               string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive, string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
+                                                               string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive, string comments, string interestExpressed, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
                                                                string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId, string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImageOne,
                                                                string contactPerson_IdentificationTypeImageTwo, string maritalStatus, DateTime? dateOfMarriage, ICustomerDomainService customerDomainService)
         {
@@ -706,13 +691,6 @@ namespace Modules.Estates.Domain.Entities.Registration
             }
 
 
-            var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
-
-            if (customer_locality is null)
-            {
-                throw new ArgumentException("Customer locality provided does not exist");
-            }
-
             return new CustomerMaster
             {
                 CustomerMasterId = customerMasterId,
@@ -751,7 +729,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 IdentificationTypeImageFive = identificationTypeImageFive,
                 Comments = comments,
                 InterestExpressed = interestExpressed,
-                DebtorStatus = debtorStatus,
+                DebtorStatus = 0,
                 ParentCode = parentCode,
                 ContactPerson_FullName = contactPerson_FullName,
                 ContactPerson_PhoneNumber = contactPerson_PhoneNumber,

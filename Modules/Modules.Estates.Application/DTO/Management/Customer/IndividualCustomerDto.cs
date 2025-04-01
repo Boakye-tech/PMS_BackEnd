@@ -77,7 +77,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(255)]
         public string? Comments { get; set; }
 
-        public int DebtorStatus { get; set; }
+        //public int DebtorStatus { get; set; }
 
     }
 

@@ -379,7 +379,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             var identificationTypeImageFive = "id5.jpg";
             var comments = "Joint account registration";
             var interestExpressed = "Residential property";
-            var debtorStatus = 0;
+            //var debtorStatus = 0;
             var parentCode = "";
             var contactPerson_FullName = "";
             var contactPerson_PhoneNumber = "";
@@ -452,7 +452,6 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 identificationTypeImageFive,
                 comments,
                 interestExpressed,
-                debtorStatus,
                 parentCode,
                 contactPerson_FullName,
                 contactPerson_PhoneNumber,
@@ -551,7 +550,6 @@ namespace Modules.Estates.UnitTest.DomainLayer
             var identificationTypeImageFive = "id5.jpg";
             var comments = "Joint account registration";
             var interestExpressed = "Residential property";
-            var debtorStatus = 0;
             var parentCode = "";
             var contactPerson_FullName = "Contact Person";
             var contactPerson_PhoneNumber = "+233111222333";
@@ -600,7 +598,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 identificationTypeImageOne, identificationTypeImageTwo,
                 identificationTypeImageThree, identificationTypeImageFour,
                 identificationTypeImageFive, comments, interestExpressed,
-                debtorStatus, parentCode, contactPerson_FullName,
+                parentCode, contactPerson_FullName,
                 contactPerson_PhoneNumber, contactPerson_EmailAddress,
                 contactPerson_Address, contactPerson_IdentificationTypeId,
                 contactPerson_IdentificationTypeNumber,

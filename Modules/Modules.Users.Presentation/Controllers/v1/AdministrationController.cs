@@ -7,13 +7,20 @@ using Modules.Users.Domain.Entities;
 
 namespace Modules.Users.Presentation.Controllers.v1
 {
+    /// <summary>
+    /// Controller for administering user account processes and activities.
+    /// </summary>
+    /// <remarks>
+    /// This controller contains endpoints for handling all account administration related routes and processes.
+    /// </remarks>
+    /// 
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
-
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Authorize(Policy = "Permission:Users.READ")]
+
 
     public class AdministrationController : ControllerBase
     {
@@ -25,6 +32,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         readonly IIdentificationTypeService _identificationTypeService;
         private readonly IUserContextService _userContextService;
 
+        /// <summary>
+        /// Dependency injection via administration controller contstructor.
+        /// </summary>
         public AdministrationController(IAdministrationService adminService, IDepartmentService departmentService, IDepartmentUnitService departmentUnitService, IMenuService menuService, IChannelService channelService, IIdentificationTypeService identificationTypeService, IUserContextService userContextService)
         {
             _adminService = adminService;
@@ -47,7 +57,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _channelService.GetChannelAsync());
         }
 
-
+        /// <summary>
+        /// Creates a new valid channels
+        /// </summary>
         [HttpPost]
         [Route("CreateChannel")]
         [Authorize(Policy = "Permission:Users.CREATE")]
@@ -75,6 +87,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modifies details of an exisitng channel
+        /// </summary>
         [HttpPut]
         [Route("UpdateChannel")]
         [Authorize(Policy = "Permission:Users.UPDATE")]
@@ -95,6 +110,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(result);
         }
 
+        /// <summary>
+        /// removes an exisitng channel
+        /// </summary>
         [HttpDelete("DeleteChannel/{channelId}")]
         public async Task<ActionResult> DeleteChannel(int channelId)
         {
@@ -109,7 +127,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
 
-
+        /// <summary>
+        /// Returns a list of access menus
+        /// </summary>
         [HttpGet]
         [Route("GetAccessMenus")]
         public async Task<AccessModulesDto> GetAccessMenus()
@@ -117,6 +137,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return await _menuService.GetAccessMenus();
         }
 
+        /// <summary>
+        /// Returns a list of user menu actions
+        /// </summary>
         [HttpGet]
         [Route("GetUserActions")]
         public IEnumerable<MenuActionsDto> GetUserActions()
@@ -124,6 +147,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return _menuService.GetActions();
         }
 
+        /// <summary>
+        /// Returns a list of menus
+        /// </summary>
         [HttpGet]
         [Route("GetMenus")]
         public async Task<IEnumerable<MenusDto>> GetMenus()
@@ -131,6 +157,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return await _menuService.GetMenus();
         }
 
+        /// <summary>
+        /// Add a new menu
+        /// </summary>
         [HttpPost]
         [Route("CreateMenus")]
         [Authorize(Policy = "Permission:Users.CREATE")]
@@ -140,6 +169,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(result);
         }
 
+        /// <summary>
+        /// Returns a list of sub menus
+        /// </summary>
         [HttpGet]
         [Route("GetSubMenus")]
         public async Task<IEnumerable<SubMenusDto>> GetSubMenus()
@@ -147,6 +179,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return await _menuService.GetSubMenus();
         }
 
+        /// <summary>
+        /// Add a new sub menu
+        /// </summary>
         [HttpPost]
         [Route("CreateSubMenus")]
         [Authorize(Policy = "Permission:Users.CREATE")]
@@ -156,6 +191,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(result);
         }
 
+        /// <summary>
+        /// Returns a list of sub menus items
+        /// </summary>
         [HttpGet]
         [Route("GetSubMenuItems")]
         public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()
@@ -163,6 +201,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return await _menuService.GetSubMenuItems();
         }
 
+        /// <summary>
+        /// Returns a list of application modules
+        /// </summary>
         [HttpGet]
         [Route("GetApplicationModules")]
         [AllowAnonymous]
@@ -171,6 +212,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return await _menuService.GetModules();
         }
 
+        /// <summary>
+        /// Create a new application module
+        /// </summary>
         [HttpPost]
         [Route("AddApplicationModules")]
         [AllowAnonymous]
@@ -179,6 +223,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _menuService.AddModules(values));
         }
 
+        /// <summary>
+        /// Modify existing application module details
+        /// </summary>
         [HttpPut]
         [Route("UpdateApplicationModules")]
         [AllowAnonymous]
@@ -187,7 +234,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _menuService.UpdateModules(values));
         }
 
-
+        /// <summary>
+        /// Assign list of permissions to a specific application module
+        /// </summary>
         [HttpPost]
         [Route("AssignModulePermission")]
         [AllowAnonymous]
@@ -196,6 +245,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _menuService.AssignModulePermission(values));
         }
 
+        /// <summary>
+        /// Returns a list of assigned permissions to various modules for a specific user role
+        /// </summary>
         [HttpGet]
         [Route("GetAssignedModulesPermissions/{roleId}")]
         [AllowAnonymous]
@@ -204,6 +256,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return await _menuService.GetModulesPermissions(roleId);
         }
 
+        /// <summary>
+        /// Add new sub menu items
+        /// </summary>
         [HttpPost]
         [Route("CreateSubMenuItems")]
         [Authorize(Policy = "Permission:Users.CREATE")]
@@ -274,7 +329,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetDepartmentUserRoles/{departmentId}")]
-        [Obsolete]
+        [Obsolete("GetDepartmentUserRoles is obsolete and will be removed in a future release.")]
         public async Task<List<RolesDto>> GetDepartmentUserRoles(int departmentId)
         {
             return await _adminService.GetDepartmentUserRoles(departmentId);
@@ -286,7 +341,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetDepartmentUnitUserRoles/{unitId}")]
-        [Obsolete]
+        [Obsolete("GetDepartmentUnitUserRoles is obsolete and will be removed in a future release.")]
         public async Task<List<RolesDto>> GetDepartmentUnitUserRoles(int unitId)
         {
             return await _adminService.GetDepartmentUnitUserRoles(unitId);
@@ -298,7 +353,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetRejectedUserRoles")]
-        [Obsolete]
+        [Obsolete("GetRejectedUserRoles is obsolete and will be removed in a future release. Use GetUserRoles with 'Rejected' status instead.")]
         public async Task<List<RolesDto>> GetRejectedUserRoles()
         {
             return await _adminService.GetRejectedUserRoles();
@@ -326,6 +381,9 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         }
 
+        /// <summary>
+        /// Add a new system user roles
+        /// </summary>
         [HttpPost]
         [Route("CreateUserRole")]
         [Authorize(Policy = "Permission:Users.CREATEROLE")]
@@ -352,6 +410,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return BadRequest(result);
         }
 
+        /// <summary>
+        /// Modify an existing system user role
+        /// </summary>
         [HttpPut]
         [Route("UpdateUserRole")]
         [Authorize(Policy = "Permission:Users.UPDATE")]
@@ -378,6 +439,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return BadRequest(result);
         }
 
+        /// <summary>
+        /// Removes an existing system user role
+        /// </summary>
         [HttpDelete]
         [Route("DeleteUserRole/{roleId}")]
         [Authorize(Policy = "Permission:Users.DELETE", Roles = "MISAdministrator")]
@@ -408,7 +472,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
 
         /// <summary>
-        /// assigns an existing role to an existing user
+        /// Assigns an existing role to an existing user
         /// </summary>
         [HttpPost]
         [Route("AssignRoleToUser")]
@@ -437,7 +501,9 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         }
 
-
+        /// <summary>
+        /// Assign a list of permission to a specific user role
+        /// </summary>
         [HttpPost]
         [Route("AssignPermissionsToRole")]
         [Authorize(Policy = "Permission:Users.ASSIGNPERM")]
@@ -446,6 +512,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _menuService.AssignPermissionToRole(values));
         }
 
+        /// <summary>
+        /// Returns a list of permissions assigned to the role of a specific 
+        /// </summary>
         [HttpGet]
         [Route("GetUserPermissions/{userId}")]
         public Task<IEnumerable<PermissionsAccessModulesReadDto>> GetUserPermissions(string userId)
@@ -454,6 +523,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             //return await _menuService.GetUserRolePermissions(userId);
         }
 
+        /// <summary>
+        /// Returns a list of permissions assigned to a specific role 
+        /// </summary>
         [HttpGet]
         [Route("GetRolePermissions/{roleId}")]
         public async Task<PermissionsAccessModulesReadDto> GetRolePermissions(string roleId)
@@ -461,6 +533,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return await _menuService.GetRolesPermissions(roleId);
         }
 
+        /// <summary>
+        /// Modify existing list of permission assigned to a specific user role
+        /// </summary>
         [HttpPut]
         [Route("UpdatePermissionsAssignedToRole")]
         private async Task<ActionResult> UpdatePermissionsAssignedToRole([FromBody] PermissionsAccessModulesReadDto values)
@@ -469,6 +544,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
 
+        /// <summary>
+        /// Verify registered user account
+        /// </summary>
         [HttpPut]
         [Route("VerifyUserAccount")]
         [Authorize(Policy = "Permission:Users.VERIFY")]
@@ -499,6 +577,10 @@ namespace Modules.Users.Presentation.Controllers.v1
             };
         }
 
+
+        /// <summary>
+        /// Rejected registered user account
+        /// </summary>
         [HttpPut]
         [Route("RejectUserAccount")]
         [Authorize(Policy = "Permission:Users.REJECT")]
@@ -530,6 +612,10 @@ namespace Modules.Users.Presentation.Controllers.v1
             };
         }
 
+
+        /// <summary>
+        /// Approve registered user account
+        /// </summary>
         [HttpPut]
         [Route("ApproveUserAccount")]
         [Authorize(Policy = "Permission:Users.APPROVE")]
@@ -561,6 +647,10 @@ namespace Modules.Users.Presentation.Controllers.v1
             
         }
 
+
+        /// <summary>
+        /// Disapprove registered user account
+        /// </summary>
         [HttpPut]
         [Route("DisapproveUserAccount")]
         [Authorize(Policy = "Permission:Users.DISAPPROVE")]
@@ -591,6 +681,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             };
         }
 
+        /// <summary>
+        /// Activate registered user account
+        /// </summary>
         [HttpPut]
         [Route("ActivateUserAccount")]
         [Authorize(Policy = "Permission:Users.ACTIVATE")] //, Roles = "MIS Officer"
@@ -621,6 +714,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             };
         }
 
+        /// <summary>
+        /// Deactivate registered user account
+        /// </summary>
         [HttpPut]
         [Route("DeactivateUserAccount")]
         [Authorize(Policy = "Permission:Users.DEACTIVATE")]
@@ -673,13 +769,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentUnitService.GetUnitAsync(departmentId));
         }
 
-        [HttpGet]
-        [Route("GetDepartment/{value}")]
-        private async Task<ActionResult<DepartmentReadDto>> GetDepartment(string value)
-        {
-            return Ok(await _departmentService.GetDepartmentAsync(value));
-        }
-
+        /// <summary>
+        /// Returns details of an exisitng department based on the department id
+        /// </summary>
         [HttpGet]
         [Route("GetDepartmentById/{departmentId}")]
         public async Task<ActionResult<DepartmentReadDto>> GetDepartmentById(int departmentId)
@@ -687,6 +779,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentService.GetDepartmentAsync(departmentId));
         }
 
+        /// <summary>
+        /// Add a new department
+        /// </summary>
         [HttpPost]
         [Route("CreateDepartment")]
         [Authorize(Policy = "Permission:Users.CREATE")]
@@ -715,6 +810,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of an existing department
+        /// </summary>
         [HttpPut]
         [Route("UpdateDepartment")]
         [Authorize(Policy = "Permission:Users.UPDATE")]
@@ -735,6 +833,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentService.UpdateDepartmentAsync(values));
         }
 
+        /// <summary>
+        /// Delete a department based on the departmentid
+        /// </summary>
         [HttpDelete("DeleteDepartment/{departmentId}")]
         public async Task<ActionResult> DeleteDepartment(int departmentId)
         {
@@ -748,7 +849,7 @@ namespace Modules.Users.Presentation.Controllers.v1
 
         //----------------------DEPARTMENT UNIT------------
         /// <summary>
-        /// Returns a list of exsiting units in department
+        /// Returns a list of existing units in a department
         /// </summary>
         [HttpGet]
         [Route("GetDepartmentUnits")]
@@ -757,13 +858,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentUnitService.GetDepartmentUnitAsync());
         }
 
-        [HttpGet]
-        [Route("GetDepartmentUnit/{value}")]
-        private async Task<ActionResult<DepartmentReadDto>> GetDepartmentUnit(string value)
-        {
-            return Ok(await _departmentUnitService.GetDepartmentUnitAsync(value));
-        }
-
+        /// <summary>
+        /// Returns a list of existing units in department based on the department id
+        /// </summary>
         [HttpGet]
         [Route("GetDepartmentUnitsByDepartmentId/{departmentId}")]
         public async Task<ActionResult<IEnumerable<DepartmentUnitReadDto>>> GetDepartmentUnitsByDepartmentId(int departmentId)
@@ -771,13 +868,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentUnitService.GetDepartmentUnitAsync(departmentId));
         }
 
-        [HttpGet]
-        [Route("GetDepartmentUnitById/{departmentUnitId}")]
-        private async Task<ActionResult<DepartmentReadDto>> GetDepartmentUnitById(int departmentUnitId)
-        {
-            return Ok(await _departmentUnitService.GetDepartmentUnitAsync(departmentUnitId));
-        }
-
+        /// <summary>
+        /// Add a new department unit
+        /// </summary>
         [HttpPost]
         [Route("CreateDepartmentUnit")]
         [Authorize(Policy = "Permission:Users.CREATE")]
@@ -806,6 +899,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Modify details of an exsiting department unit 
+        /// </summary>
         [HttpPut]
         [Route("UpdateDepartmentUnit")]
         public async Task<ActionResult<DepartmentReadDto>> UpdateDepartmentUnit([FromBody] DepartmentUnitUpdateDto values)
@@ -825,6 +921,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _departmentUnitService.UpdateDepartmentUnitAsync(values));
         }
 
+        /// <summary>
+        /// Removes an existing department unit
+        /// </summary>
         [HttpDelete("DeleteDepartmentUnit/{unitId}")]
         public async Task<ActionResult> DeleteDepartmentUnit(int unitId)
         {
@@ -836,6 +935,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return BadRequest(result);
         }
 
+        /// <summary>
+        /// Returns a list of registration status
+        /// </summary>
         [HttpGet]
         [Route("RegistrationStatus")]
         [AllowAnonymous]
@@ -867,7 +969,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _identificationTypeService.GetIdentificationTypeAsync());
         }
 
-
+        /// <summary>
+        /// Add a new identification type
+        /// </summary>
         [HttpPost]
         [Route("CreateIdentificationType")]
         [Authorize(Policy = "Permission:Users.CREATE")]
@@ -891,6 +995,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Update an exisiting identification type
+        /// </summary>
         [HttpPut]
         [Route("UpdateIdentificationType")]
         public async Task<ActionResult<ChannelReadDto>> UpdateIdentificationType([FromBody] IdentificationTypeDto values)
@@ -906,6 +1013,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(new { response = result });
         }
 
+        /// <summary>
+        /// Removes an exisiting identification type based on the identification type id
+        /// </summary>
         [HttpDelete("DeleteIdentificationType/{identificationTypeId}")]
         public async Task<ActionResult> DeleteIdentificationType(int identificationTypeId)
         {

@@ -20,7 +20,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Customer
         Task<JointOwnershipCustomerResponseDto> GetJointCustomerDetails(string customerCode);
         Task<MultiOwnershipCustomerResponseDto> GetMultiCustomerDetails(string customerCode);
 
-        Task<IEnumerable<CustomerListDto>> GetCustomerListAsync();
+        Task<IEnumerable<CustomerListDto>> GetCustomerListAsync(string? searchParam, string? locality);
+
         Task<IEnumerable<CustomerListDto>> GetPendingCustomerListAsync();
 
         Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateProspectiveCustomerDto values);

@@ -15,11 +15,17 @@ using Modules.Users.Domain.Interfaces;
 
 namespace Modules.Users.Presentation.Controllers.v1;
 
+/// <summary>
+/// Controller for handling user account processes and activities.
+/// </summary>
+/// <remarks>
+/// This controller contains endpoints for handling all user account related routes and processes.
+/// </remarks>
+/// 
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
-
 [EnableRateLimiting("UsersModulePolicy")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [AllowAnonymous]
@@ -33,6 +39,9 @@ public class AccountController : ControllerBase
     Regex phoneRegex = new Regex(@"^(023|024|025|053|054|055|059|027|057|026|056|028|020|050)\d{7}$");
 
 
+    /// <summary>
+    /// Dependency injection via account controller contstructor.
+    /// </summary>
     public AccountController(IUserAccountsService userAccountsService, IUnitOfWork unitOfWork)
     {
         _userAccountsService = userAccountsService;
@@ -112,7 +121,10 @@ public class AccountController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("Register/Partners")]
-    [ProducesResponseType(200, Type = typeof(RegistrationResponse))]
+    [ProducesResponseType(201, Type = typeof(RegistrationSuccessResponse))]
+    [ProducesResponseType(400, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(404, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(409, Type = typeof(RegistrationErrorResponse))]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] PartnerBankRegistrationRequestDto values)
     {
         if (ModelState.IsValid)

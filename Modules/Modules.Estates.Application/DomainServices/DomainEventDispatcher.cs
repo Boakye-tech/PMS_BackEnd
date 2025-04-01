@@ -18,16 +18,21 @@ namespace Modules.Estates.Application.Services
             _logger = logger;
         }
 
-        public async Task DispatchAsync(DomainEvent domainEvent)
+        public void Dispatch(DomainEvent domainEvent)
         {
             if (domainEvent is CustomerCreatedEvent customerCreated)
             {
-                await HandleCustomerCreatedEvent(customerCreated);
+                HandleCustomerCreatedEvent(customerCreated);
             }
             // Add handlers for other event types
         }
 
-        private async Task HandleCustomerCreatedEvent(CustomerCreatedEvent @event)
+        Task IDomainEventDispatcher.Dispatch(DomainEvent domainEvent)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void HandleCustomerCreatedEvent(CustomerCreatedEvent @event)
         {
             try
             {

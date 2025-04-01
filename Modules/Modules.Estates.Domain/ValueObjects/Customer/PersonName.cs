@@ -3,8 +3,8 @@ namespace Modules.Estates.Domain.ValueObjects.Customer;
 public class PersonName
 {
     public int TitleId { get; private set; }
-    public string SurName { get; private set; }
-    public string OtherNames { get; private set; }
+    public string? SurName { get; private set; }
+    public string? OtherNames { get; private set; }
 
     private PersonName() { }
 

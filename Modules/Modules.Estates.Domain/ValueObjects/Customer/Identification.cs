@@ -3,8 +3,8 @@ namespace Modules.Estates.Domain.ValueObjects.Customer;
 public class Identification
 {
     public int TypeId { get; private set; }
-    public string Number { get; private set; }
-    public IReadOnlyList<string> Images { get; private set; }
+    public string? Number { get; private set; }
+    public IReadOnlyList<string>? Images { get; private set; }
 
     private Identification() { }
 

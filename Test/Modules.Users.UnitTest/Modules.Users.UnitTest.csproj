@@ -33,12 +33,21 @@
     <None Remove="DomainLayer\" />
     <None Remove="InfrastructureLayer\" />
     <None Remove="PresentationLayer\" />
+    <None Remove="ApplicationLayer\UsesCases\UserServices\" />
+    <None Remove="ApplicationLayer\UseCases\" />
+    <None Remove="ApplicationLayer\UseCases\UserAccounts\" />
+    <None Remove="ApplicationLayer\UseCases\UserServices\" />
+    <None Remove="InfrastructureLayer\Data\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ApplicationLayer\" />
     <Folder Include="DomainLayer\" />
     <Folder Include="InfrastructureLayer\" />
     <Folder Include="PresentationLayer\" />
+    <Folder Include="ApplicationLayer\UseCases\" />
+    <Folder Include="ApplicationLayer\UseCases\UserAccounts\" />
+    <Folder Include="ApplicationLayer\UseCases\UserServices\" />
+    <Folder Include="InfrastructureLayer\Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\Modules.Users.Application\Modules.Users.Application.csproj" />

@@ -7,6 +7,7 @@ using Modules.Estates.Application.DTO.Management;
 using Modules.Estates.Domain.Entities.Setup.Customer;
 using Modules.Estates.Domain.Entities.Setup.Property;
 using Modules.Estates.Domain.Events;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Modules.Estates.Application.UseCases.Management.Customer
 {
@@ -49,6 +50,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
             var registeredCustomer = new ProspectiveCustomerResponseDto
             {
+                CustomerMasterId = customer.CustomerMasterId,
                 InterestExpressed = customer.InterestExpressed!,
                 CustomerTypeId = customer.CustomerTypeId,
                 CustomerType = _customerType,
@@ -410,33 +412,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             return multi_customer;
         }
 
-        public async Task<IEnumerable<CustomerListDto>> GetCustomerListAsync()
-        {
-            var customersQuery = from a in await _unitOfWork.CustomerMaster.GetAll(cm => cm.IsDeleted == false)
-                                 join b in await _unitOfWork.Title.GetAll()
-                                 on a.TitleId equals b.TitleId into titleGroup
-                                 from title in titleGroup.DefaultIfEmpty() // Left join on Title
-
-                                 join c in await _unitOfWork.Locality.GetAll()
-                                 on a.LocalityId equals c.LocalityId into localityGroup
-                                 from locality in localityGroup.DefaultIfEmpty() // Left join on Locality
-                                 orderby a.CreatedOn descending
-                                 select new CustomerListDto
-                                 {
-                                     CustomerCode = a.CustomerCode,
-                                     FullName = string.Concat(title != null ? title.Titles : null, " ", a.SurName, " ", a.OtherNames, " ", a.CompanyName),
-                                     Locality = locality != null ? locality.LocalityName : string.Empty,
-                                     EmailAddress = a.EmailAddress,
-                                     PrimaryMobileNumber = a.PrimaryMobileNumber,
-                                     DebtorStatus = a.DebtorStatus == 0 ? "Active" :
-                                                    a.DebtorStatus == 1 ? "Pending" :
-                                                    a.DebtorStatus == 90 ? "STOP DEBIT" : "Unknown"
-                                 };
-
-            return customersQuery.ToList();
-
-        }
-
         public async Task<IEnumerable<CustomerListDto>> GetPendingCustomerListAsync()
         {
             var customersQuery = from a in await _unitOfWork.CustomerMaster.GetAll(cm => cm.DebtorStatus == 1 && cm.IsDeleted == false)
@@ -463,6 +438,63 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             return customersQuery.ToList();
 
         }
+
+        public async Task<IEnumerable<CustomerListDto>> GetCustomerListAsync(string? searchParam,string? locality)
+        {
+            //throw new NotImplementedException();
+
+            var customersQuery = from a in await _unitOfWork.CustomerMaster.GetAll(cm => cm.IsDeleted == false)
+
+                                 join b in await _unitOfWork.CustomerType.GetAll()
+                                 on a.CustomerTypeId equals b.CustomerTypeId into customerTypeGroup
+                                 from customerType in customerTypeGroup.DefaultIfEmpty() // Left join on CustomerType
+
+                                 join d in await _unitOfWork.Locality.GetAll()
+                                 on a.LocalityId equals d.LocalityId into localityGroup
+                                 from area in localityGroup.DefaultIfEmpty() // Left join on Locality
+
+                                 join e in await _unitOfWork.Title.GetAll()
+                                 on a.TitleId equals e.TitleId into titleGroup
+                                 from title in titleGroup.DefaultIfEmpty() // Left join on Title
+
+                                 orderby a.CreatedOn descending
+                                 select new CustomerListDto
+                                 {
+                                     CustomerCode = a.CustomerCode,
+                                     CustomerType = customerType != null ? customerType.CustomerTypes : string.Empty,
+                                     DebtorStatus = a.DebtorStatus == 0 ? "Active" :
+                                                    a.DebtorStatus == 1 ? "Pending" :
+                                                    a.DebtorStatus == 90 ? "STOP DEBIT" : "Unknown",
+                                     EmailAddress = a.EmailAddress,
+                                     FullName = string.Join(" ", title != null ? title.Titles : "", a.SurName, a.OtherNames, a.CompanyName).Trim(),
+                                     Locality = area != null ? area.LocalityName : string.Empty,
+                                     PrimaryMobileNumber = a.PrimaryMobileNumber,
+                                 };
+
+            // Apply filters only if parameters are provided
+            if (!string.IsNullOrWhiteSpace(locality))
+            {
+                customersQuery = customersQuery.Where(c => c.Locality!.Contains(locality));
+            }
+
+            // Apply search only if a query is provided
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                customersQuery = customersQuery.Where(c =>
+                    c.CustomerCode!.Contains(searchParam) ||
+                    c.FullName!.Contains(searchParam) ||
+                    c.Locality!.Contains(searchParam) ||
+                    c.EmailAddress!.Contains(searchParam) ||
+                    c.PrimaryMobileNumber!.Contains(searchParam)
+                );
+            }
+
+
+            return customersQuery;
+        }
+
+
+
 
     }
 }

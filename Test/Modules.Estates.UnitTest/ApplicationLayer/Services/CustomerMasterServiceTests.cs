@@ -156,7 +156,6 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
                 IdentificationImages = new string[] { "doc1.jpg" },
                 Comments = "Test comment",
                 CreatedBy = "system",
-                DebtorStatus = 1,
                 ContactPerson = new CompanyContactPerson
                 {
                     ContactPerson_FullName = "John Contact",
@@ -929,10 +928,6 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
         }
 
 
-
-
-
-
         [Fact]
         public async Task GetJointCustomerDetails_WithNonResidentType_ReturnsWithContactPerson()
         {
@@ -1419,50 +1414,83 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
         [Fact]
         public async Task UpdateCustomer_WithValidProspectiveData_ShouldUpdateSuccessfully()
         {
-            // Arrange
             var updateDto = new UpdateProspectiveCustomerDto
             {
                 CustomerMasterId = 1,
                 CustomerTypeId = (int)CustomerTypeEnum.PROSPECTIVE,
-                ResidentTypeId = (int)ResidentTypeEnum.RESIDENT,
+                ResidentTypeId = 1,
                 LocalityId = 1,
                 CustomerCode = "PROS001",
-                TitleId = 1,
+                TitleId = 2,
                 SurName = "Smith",
                 OtherNames = "John",
-                CompanyName = "Toto Ple",
-                GenderId = 0,
+                CompanyName = "",
+                GenderId = 1,
                 NationalityId = 1,
-                PostalAddress = "125 Akwaadu Lane",
-                ResidentialAddress = "125 Akwaadu Lane",
-                DigitalAddress = string.Empty,
+                PostalAddress = "P.O. Box 123",
+                ResidentialAddress = "123 Main St",
+                DigitalAddress = "GA-123-4567",
                 PrimaryMobileNumber = "0244111222",
-                SecondaryMobileNumber = string.Empty,
-                OfficeNumber = string.Empty,
+                SecondaryMobileNumber = "0244333444",
+                OfficeNumber = "0302555666",
                 WhatsAppNumber = "0244111222",
                 EmailAddress = "john.smith@email.com",
                 SocialMediaTypeId = 1,
-                SocialMediaAccount = "@toto",
-                InterestExpressed = "New studio aparatments in community twenty-six",
-                Comments = "No comment", 
+                SocialMediaAccount = "jsmith",
+                Comments = "Potential customer",
+                InterestExpressed = "3 bedroom apartment",
                 ModifiedBy = "system"
             };
 
-            var title = new Title(titleId: 1, titles: "Mr." );
-            var customer = CustomerMasterTestData.GetProspectiveCustomer();
+            var titleData = CustomerMasterTestData.GetSampleTitleData();
+            var existingCustomer = CustomerMasterTestData.GetProspectiveCustomer();
 
-            _unitOfWorkMock.Setup(u => u.Title.Get(It.IsAny<Expression<Func<Title, bool>>>(), null))
-                .ReturnsAsync(title);
-            _unitOfWorkMock.Setup(u => u.Complete()).ReturnsAsync(1);
+            // Mock domain service validation
+            _domainServiceMock.Setup(d => d.CustomerExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.CustomerTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.ResidentTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.LocalityExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.TitleExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.GenderExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.NationalityExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.SocialMediaExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+
+            // Mock the UpdateProspectiveAsync method
+            _unitOfWorkMock.Setup(u => u.CustomerMaster.Get(It.IsAny<Expression<Func<CustomerMaster, bool>>>(), null))
+                .ReturnsAsync(existingCustomer);
+
+            _unitOfWorkMock.Setup(x => x.Title.Get(It.IsAny<Expression<Func<Title, bool>>>(), null))
+                .ReturnsAsync((Expression<Func<Title, bool>> predicate, object _) =>
+                    titleData.AsQueryable().FirstOrDefault(predicate));
+
+            _unitOfWorkMock.Setup(u => u.Complete())
+                .ReturnsAsync(1);
 
             // Act
             var result = await _sut.UpdateCustomer(updateDto);
 
             // Assert
+            Assert.NotNull(result);
             Assert.True(result.IsSuccess);
-            Assert.Equal("PROS001", result.SuccessResponse!.CustomerCode);
+            Assert.NotNull(result.SuccessResponse);
+            Assert.Equal("PROS001", result.SuccessResponse.CustomerCode);
             Assert.Contains("John Smith", result.SuccessResponse.FullName);
+            Assert.Equal("0244111222", result.SuccessResponse.PhoneNumber);
+
+            // Verify method calls
+            //_domainServiceMock.Verify(d => d.CustomerExists(It.IsAny<int>()), Times.AtLeastOnce);
+            _domainServiceMock.Verify(d => d.CustomerTypeExists(It.IsAny<int>()), Times.Once);
             _unitOfWorkMock.Verify(u => u.CustomerMaster.Update(It.IsAny<CustomerMaster>()), Times.Once);
+            _unitOfWorkMock.Verify(u => u.Complete(), Times.Once);
         }
 
         [Fact]
@@ -1471,39 +1499,91 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             // Arrange
             var updateDto = new UpdateCompanyCustomerDto
             {
-                CustomerMasterId = 1,
-                CustomerTypeId = 2,
+                CustomerMasterId = 2,
+                CustomerTypeId = (int)CustomerTypeEnum.COMPANY,
                 ResidentTypeId = 1,
                 LocalityId = 1,
                 CustomerCode = "COMP001",
                 CompanyName = "Global Tech Ltd",
-                EmailAddress = "info@globaltech.com",
+                CompanyAddress = "123 Tech Street",
+                DigitalAddress = "GA-123-4567",
                 PrimaryMobileNumber = "0244111222",
-                BusinessRegistrationNumber = "BUS123",
-                TinNumber = "TIN456",
-                IdentificationImages = new string[] { "image1.jpg", "image2.jpg" },
+                SecondaryMobileNumber = "0244333444",
+                OfficeNumber = "0302555666",
+                WhatsAppNumber = "0244111222",
+                EmailAddress = "info@globaltech.com",
+                BusinessRegistrationNumber = "BUS123456789",
+                TinNumber = "TIN987654321",
+                SocialMediaTypeId = 1,
+                SocialMediaAccount = "globaltechgh",
+                NationalityId = 1,
+                Comments = "Tech company update",
+                IdentificationImages = new string[] { "cert_incorporation.jpg", "cert_commence.jpg" },
                 ContactPerson = new CompanyContactPerson
                 {
                     ContactPerson_FullName = "John Contact",
-                    ContactPerson_PhoneNumber = "0244333444",
+                    ContactPerson_PhoneNumber = "0244777888",
                     ContactPerson_EmailAddress = "john@globaltech.com",
-                    ContactPerson_IdentificationImages = new string[] { "contact1.jpg", "contact2.jpg" }
+                    ContactPerson_Address = "123 Tech Street",
+                    ContactPerson_IdentificationTypeId = 1,
+                    ContactPerson_IdentificationTypeNumber = "GHA-123456789",
+                    ContactPerson_IdentificationImages = new string[] { "contact_id_front.jpg", "contact_id_back.jpg" }
                 },
                 ModifiedBy = "system"
             };
 
-            //var customer = CustomerMasterTestData.GetCompanyCustomer();
-            _unitOfWorkMock.Setup(u => u.Complete()).ReturnsAsync(1);
+            var existingCustomer = CustomerMasterTestData.GetCompanyCustomer();
+
+
+            // Mock domain service validation
+            _domainServiceMock.Setup(d => d.CustomerExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.CustomerTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.ResidentTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.LocalityExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.NationalityExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.SocialMediaExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+
+
+            // Mock the repository methods
+            _unitOfWorkMock.Setup(u => u.CustomerMaster.Get(It.IsAny<Expression<Func<CustomerMaster, bool>>>(), null))
+                .ReturnsAsync(existingCustomer);
+
+
+            _unitOfWorkMock.Setup(u => u.Complete())
+                .ReturnsAsync(1);
+
+            // Mock event dispatcher
+            //_mockEventDispatcher.Setup(d => d.DispatchAsync(It.IsAny<IDomainEvent>()))
+            //    .Returns(Task.CompletedTask);
 
             // Act
             var result = await _sut.UpdateCustomer(updateDto);
 
             // Assert
+            Assert.NotNull(result);
             Assert.True(result.IsSuccess);
-            Assert.Equal("COMP001", result.SuccessResponse!.CustomerCode);
+            Assert.NotNull(result.SuccessResponse);
+            Assert.Equal("COMP001", result.SuccessResponse.CustomerCode);
             Assert.Equal("Global Tech Ltd", result.SuccessResponse.FullName!.Trim());
+            Assert.Equal("0244111222", result.SuccessResponse.PhoneNumber);
+
+            // Verify method calls
+            _domainServiceMock.Verify(d => d.CustomerTypeExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.ResidentTypeExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.LocalityExists(It.IsAny<int>()), Times.Once);
             _unitOfWorkMock.Verify(u => u.CustomerMaster.Update(It.IsAny<CustomerMaster>()), Times.Once);
+            _unitOfWorkMock.Verify(u => u.Complete(), Times.Once);
+            //_mockEventDispatcher.Verify(d => d.DispatchAsync(It.IsAny<IDomainEvent>()), Times.AtLeastOnce);
         }
+
+       
 
         [Fact]
         public async Task UpdateCustomer_WithValidIndividualResidentData_ShouldUpdateSuccessfully()
@@ -1511,49 +1591,116 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             // Arrange
             var updateDto = new UpdateIndividualResidentCustomerDto
             {
-                CustomerMasterId = 1,
-                CustomerTypeId = 3,
-                ResidentTypeId = 1,
+                CustomerMasterId = 3,
+                CustomerTypeId = (int)CustomerTypeEnum.INDIVIDUAL,
+                ResidentTypeId = 3,
                 LocalityId = 1,
                 CustomerCode = "IND001",
                 TitleId = 1,
                 SurName = "Johnson",
                 OtherNames = "Peter",
                 DateOfBirth = new DateTime(1980, 1, 1),
-                TinNumber = "TIN789",
-                EmailAddress = "peter.johnson@email.com",
+                TinNumber = "TIN789012",
+                Picture = "profile.jpg",
+                GenderId = 1,
+                NationalityId = 1,
+                PostalAddress = "P.O. Box 123",
+                ResidentialAddress = "15 Independence Ave",
+                DigitalAddress = "GA-123-4567",
                 PrimaryMobileNumber = "0244555666",
-                IdentificationImages = new string[] { "id1.jpg", "id2.jpg" },
+                SecondaryMobileNumber = "0244777888",
+                OfficeNumber = "0302999000",
+                WhatsAppNumber = "0244555666",
+                EmailAddress = "peter.johnson@email.com",
+                SocialMediaTypeId = 1,
+                SocialMediaAccount = "pjohnson",
+                IdentificationTypeId = 1,
+                IdentificationTypeNumber = "GHA-123456789-0",
+                IdentificationImages = new string[] { "id_front.jpg", "id_back.jpg" },
+                Comments = "Individual resident update",
+
+                // Expatriate details (if applicable)
                 Expatriate = new IndividualExpatriateCustomerDto
                 {
-                    ResidentPermitNumber = "EXP123",
-                    ResidentPermitDateIssued = DateTime.Now,
-                    ResidentPermitExpiryDate = DateTime.Now.AddYears(1)
+                    ResidentPermitNumber = "",
+                    ResidentPermitDateIssued = DateTime.MinValue,
+                    ResidentPermitExpiryDate = DateTime.MinValue
                 },
+
+                // Non-resident details (if applicable)
                 NonResident = new IndividualNonResidentCustomerDto
                 {
-                    ContactPerson_FullName = "Local Contact",
-                    ContactPerson_PhoneNumber = "0244777888",
-                    ContactPerson_IdentificationImages = new string[] { "contact1.jpg" }
+                    ContactPerson_FullName = "",
+                    ContactPerson_PhoneNumber = "",
+                    ContactPerson_EmailAddress = "",
+                    ContactPerson_Address = "",
+                    ContactPerson_IdentificationTypeId = 0,
+                    ContactPerson_IdentificationTypeNumber = "",
+                    ContactPerson_IdentificationImages = new string[] { }
                 },
+
                 ModifiedBy = "system"
             };
 
-            var title = new Title(titleId: 1, titles: "Mr." );
-            //var customer = CustomerMasterTestData.GetIndividualCustomer();
+            var titleData = CustomerMasterTestData.GetSampleTitleData();
+            var existingCustomer = CustomerMasterTestData.GetIndividualCustomer();
 
-            _unitOfWorkMock.Setup(u => u.Title.Get(It.IsAny<Expression<Func<Title, bool>>>(), null))
-                .ReturnsAsync(title);
-            _unitOfWorkMock.Setup(u => u.Complete()).ReturnsAsync(1);
+
+            // Mock domain service validation
+            _domainServiceMock.Setup(d => d.CustomerExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.CustomerTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.ResidentTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.LocalityExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.TitleExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.GenderExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.NationalityExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.IdentificationTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.SocialMediaExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            // Mock repository methods
+            _unitOfWorkMock.Setup(u => u.CustomerMaster.Get(It.IsAny<Expression<Func<CustomerMaster, bool>>>(), null))
+                .ReturnsAsync(existingCustomer);
+
+            _unitOfWorkMock.Setup(x => x.Title.Get(It.IsAny<Expression<Func<Title, bool>>>(), null))
+                .ReturnsAsync((Expression<Func<Title, bool>> predicate, object _) =>
+                    titleData.AsQueryable().FirstOrDefault(predicate));
+
+            _unitOfWorkMock.Setup(u => u.Complete())
+                .ReturnsAsync(1);
+
+            // Mock event dispatcher
+            //_mockEventDispatcher.Setup(d => d.DispatchAsync(It.IsAny<IDomainEvent>()))
+            //    .Returns(Task.CompletedTask);
 
             // Act
             var result = await _sut.UpdateCustomer(updateDto);
 
             // Assert
+            Assert.NotNull(result);
             Assert.True(result.IsSuccess);
-            Assert.Equal("IND001", result.SuccessResponse!.CustomerCode);
+            Assert.NotNull(result.SuccessResponse);
+            Assert.Equal("IND001", result.SuccessResponse.CustomerCode);
             Assert.Contains("Peter Johnson", result.SuccessResponse.FullName);
+            Assert.Equal("0244555666", result.SuccessResponse.PhoneNumber);
+
+            // Verify method calls
+            _domainServiceMock.Verify(d => d.CustomerTypeExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.ResidentTypeExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.LocalityExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.TitleExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.IdentificationTypeExists(It.IsAny<int>()), Times.Once);
             _unitOfWorkMock.Verify(u => u.CustomerMaster.Update(It.IsAny<CustomerMaster>()), Times.Once);
+            _unitOfWorkMock.Verify(u => u.Complete(), Times.Once);
+            //_mockEventDispatcher.Verify(d => d.DispatchAsync(It.IsAny<IDomainEvent>()), Times.AtLeastOnce);
         }
 
         [Fact]
@@ -1563,50 +1710,118 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             var updateDto = new UpdateJointOwnershipCustomerDto
             {
                 CustomerMasterId = 1,
-                CustomerTypeId = 5,
-                ResidentTypeId = 1,
+                CustomerTypeId = (int)CustomerTypeEnum.JOINT_OWNERSHIP,
+                ResidentTypeId = (int)ResidentTypeEnum.RESIDENT,
                 LocalityId = 1,
-                CustomerCode = "JOINT001",
-                TitleId = 4,
-                SurName = "Smith",
-                OtherNames = "John & Jane",
+                CustomerCode = "JNT001",
+                TitleId = 4, // Mr. & Mrs.
+                SurName = "Addo-Mensah",
+                OtherNames = "Mary & Samuel",
                 DateOfBirth = new DateTime(1980, 1, 1),
+                TinNumber = "TIN456123789",
+                Picture = "uploads/pictures/addo_family.jpg",
+                GenderId = 1,
+                NationalityId = 1,
+                PostalAddress = "P.O. Box AN 7890, Accra North",
+                ResidentialAddress = "15 Palm Street, Dzorwulu",
+                DigitalAddress = "GS-432-8765",
+                PrimaryMobileNumber = "0244777666",
+                SecondaryMobileNumber = "0244888999",
+                OfficeNumber = "0244888999",
+                WhatsAppNumber = "0244777666",
+                EmailAddress = "addo.family@email.com",
+                SocialMediaTypeId = 2,
+                SocialMediaAccount = "addofamily",
+                IdentificationTypeId = 1,
+                IdentificationTypeNumber = "GHA-123456789-0",
+                IdentificationImages = new string[]{ "uploads/ids/addo_mary_id_front.jpg", "uploads/ids/addo_mary_id_bank.jpg", },
                 MaritalStatus = "Married",
                 DateOfMarriage = new DateTime(2010, 6, 15),
-                TinNumber = "TIN789",
-                EmailAddress = "smiths@email.com",
-                PrimaryMobileNumber = "0244999888",
-                IdentificationImages = new string[] { "id1.jpg", "id2.jpg", "id3.jpg", "id4.jpg" },
+                Comments = "Joint ownership update",
+
+                // Expatriate details (if applicable)
                 Expatriate = new IndividualExpatriateCustomerDto
                 {
-                    ResidentPermitNumber = "EXP456",
-                    ResidentPermitDateIssued = DateTime.Now,
-                    ResidentPermitExpiryDate = DateTime.Now.AddYears(1)
+                    ResidentPermitNumber = "",
+                    ResidentPermitDateIssued = null,
+                    ResidentPermitExpiryDate = null
                 },
+
+                // Non-resident details (if applicable)
                 NonResident = new IndividualNonResidentCustomerDto
                 {
-                    ContactPerson_FullName = "Local Contact",
-                    ContactPerson_PhoneNumber = "0244777888",
-                    ContactPerson_IdentificationImages = new string[] { "contact1.jpg" }
+                    ContactPerson_FullName = "",
+                    ContactPerson_PhoneNumber = "",
+                    ContactPerson_EmailAddress = "",
+                    ContactPerson_Address = "",
+                    ContactPerson_IdentificationTypeId = 0,
+                    ContactPerson_IdentificationTypeNumber = "",
+                    ContactPerson_IdentificationImages = new string[] { }
                 },
+
                 ModifiedBy = "system"
             };
 
-            var title = new Title(titleId: 6, titles: "Prof.");
-            var customer = CustomerMasterTestData.GetJointCustomer();
+            var titleData = CustomerMasterTestData.GetSampleTitleData();
+            var existingCustomer = CustomerMasterTestData.GetJointCustomer();
 
-            _unitOfWorkMock.Setup(u => u.Title.Get(It.IsAny<Expression<Func<Title, bool>>>(), null))
-                .ReturnsAsync(title);
-            _unitOfWorkMock.Setup(u => u.Complete()).ReturnsAsync(1);
+            // Mock domain service validation
+            _domainServiceMock.Setup(d => d.CustomerExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.CustomerTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.ResidentTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.LocalityExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.TitleExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.GenderExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.NationalityExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.IdentificationTypeExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            _domainServiceMock.Setup(d => d.SocialMediaExists(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            
+
+            // Mock repository methods
+            _unitOfWorkMock.Setup(u => u.CustomerMaster.Get(It.IsAny<Expression<Func<CustomerMaster, bool>>>(), null))
+                .ReturnsAsync(existingCustomer);
+
+            _unitOfWorkMock.Setup(x => x.Title.Get(It.IsAny<Expression<Func<Title, bool>>>(), null))
+                .ReturnsAsync((Expression<Func<Title, bool>> predicate, object _) =>
+                    titleData.AsQueryable().FirstOrDefault(predicate));
+
+            _unitOfWorkMock.Setup(u => u.Complete())
+                .ReturnsAsync(1);
+
+            // Mock event dispatcher
+            //_mockEventDispatcher.Setup(d => d.DispatchAsync(It.IsAny<IDomainEvent>()))
+            //    .Returns(Task.CompletedTask);
 
             // Act
             var result = await _sut.UpdateCustomer(updateDto);
 
             // Assert
+            Assert.NotNull(result);
             Assert.True(result.IsSuccess);
-            Assert.Equal("JOINT001", result.SuccessResponse!.CustomerCode);
-            Assert.Contains("John & Jane Smith", result.SuccessResponse.FullName);
+            Assert.NotNull(result.SuccessResponse);
+            Assert.Equal("JNT001", result.SuccessResponse.CustomerCode);
+            Assert.NotEqual("Samuel & Mary Addo", result.SuccessResponse.FullName);
+            Assert.Equal("Mr. & Mrs. Mary & Samuel Addo-Mensah", result.SuccessResponse.FullName);
+            Assert.NotEqual("0244999888", result.SuccessResponse.PhoneNumber);
+
+            // Verify method calls
+            _domainServiceMock.Verify(d => d.CustomerTypeExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.ResidentTypeExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.LocalityExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.TitleExists(It.IsAny<int>()), Times.Once);
+            _domainServiceMock.Verify(d => d.IdentificationTypeExists(It.IsAny<int>()), Times.Once);
             _unitOfWorkMock.Verify(u => u.CustomerMaster.Update(It.IsAny<CustomerMaster>()), Times.Once);
+            _unitOfWorkMock.Verify(u => u.Complete(), Times.Once);
+            //_mockEventDispatcher.Verify(d => d.DispatchAsync(It.IsAny<IDomainEvent>()), Times.AtLeastOnce);
         }
 
         [Fact]
@@ -1623,10 +1838,14 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             };
 
             var customer = CustomerMasterTestData.GetIndividualCustomer();
-            customer.CustomerCode = "IND001";
+            //customer.CustomerCode = "IND001";
 
             _unitOfWorkMock.Setup(u => u.CustomerMaster.Get(It.IsAny<Expression<Func<CustomerMaster, bool>>>(), null))
                 .ReturnsAsync(customer);
+
+            _unitOfWorkMock.Setup(u => u.CustomerMaster.Update(It.IsAny<CustomerMaster>()));
+            _unitOfWorkMock.Setup(u => u.StopDebit.Insert(It.IsAny<StopDebit>()));
+
             _unitOfWorkMock.Setup(u => u.Complete()).ReturnsAsync(1);
 
             // Act
@@ -1636,6 +1855,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             Assert.Equal(200, result);
             _unitOfWorkMock.Verify(u => u.CustomerMaster.Update(It.IsAny<CustomerMaster>()), Times.Once);
             _unitOfWorkMock.Verify(u => u.StopDebit.Insert(It.IsAny<StopDebit>()), Times.Once);
+
         }
 
         [Fact]

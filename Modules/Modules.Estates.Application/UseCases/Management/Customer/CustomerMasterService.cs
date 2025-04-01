@@ -73,7 +73,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
                 foreach (var domainEvent in customer.DomainEvents)
                 {
-                    await _domainEventDispatcher.DispatchAsync(domainEvent);
+                    await _domainEventDispatcher.Dispatch(domainEvent);
                 }
 
                 if (values.TitleId != 0)
@@ -468,7 +468,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     identificationTypeImageFive: _imageFive,
                     comments: values.Comments!,
                     interestExpressed: string.Empty,
-                    debtorStatus: 0,
                     parentCode: string.Empty,
                     contactPerson_FullName: values.NonResident.ContactPerson_FullName!,
                     contactPerson_PhoneNumber: values.NonResident.ContactPerson_PhoneNumber!,
@@ -568,7 +567,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                         identificationTypeImageFive: _imageFive,
                         comments: values.Comments!,
                         interestExpressed: string.Empty,
-                        debtorStatus: 0,
                         parentCode: customer.CustomerCode!,
                         contactPerson_FullName: value.NonResident.ContactPerson_FullName!,
                         contactPerson_PhoneNumber: value.NonResident.ContactPerson_PhoneNumber!,
@@ -707,7 +705,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     identificationTypeImageFive: _imageFive,
                     comments: values.Comments!,
                     interestExpressed: string.Empty,
-                    debtorStatus: 0,
                     parentCode: string.Empty,
                     contactPerson_FullName: values.NonResident.ContactPerson_FullName!,
                     contactPerson_PhoneNumber: values.NonResident.ContactPerson_PhoneNumber!,
@@ -793,7 +790,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                         identificationTypeImageFive: _imageFive,
                         comments: values.Comments!,
                         interestExpressed: string.Empty,
-                        debtorStatus: 0,
                         parentCode: customer.CustomerCode!,
                         contactPerson_FullName: values.NonResident.ContactPerson_FullName!,
                         contactPerson_PhoneNumber: values.NonResident.ContactPerson_PhoneNumber!,

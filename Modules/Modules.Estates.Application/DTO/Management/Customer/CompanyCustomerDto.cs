@@ -57,7 +57,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(50)]
         public string? SocialMediaAccount { get; set; }
 
-        public int DebtorStatus { get; set; }
+        //public int DebtorStatus { get; set; }
 
         [StringLength(255)]
         public string? Comments { get; set; }

@@ -2,7 +2,7 @@ namespace Modules.Estates.Domain.ValueObjects.Customer;
 
 public class ResidentPermit
 {
-    public string Number { get; private set; }
+    public string? Number { get; private set; }
     public DateTime DateIssued { get; private set; }
     public DateTime ExpiryDate { get; private set; }
 

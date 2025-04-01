@@ -814,13 +814,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
 
         /// <summary>
-        /// Returns a list of customers
+        /// Returns a list of customers based on optional search parameters. The entire list is returned if no pa
         /// </summary>
         [HttpGet]
         [Route("GetCustomerList")]
-        public async Task<ActionResult<IEnumerable<CustomerListDto>>> GetCustomerList()
+        public async Task<ActionResult<IEnumerable<CustomerListDto>>> GetCustomerList([FromQuery]string? searchParam, [FromQuery]string? locality)
         {
-            return Ok(await _customerMasterService.GetCustomerListAsync());
+            return Ok(await _customerMasterService.GetCustomerListAsync(searchParam, locality));
         }
 
         //----------------------INTEREST EXPRESSED------------

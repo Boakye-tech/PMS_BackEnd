@@ -24,11 +24,8 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         string IdentificationImageOne,
         string? SelfieImage,
         string? PassportPicture,
-        int ChannelId
-        //DateTime RegistrationDate,
-        //int Status,
-        //string Password,
-        //string ConfirmPassword
+        int ChannelId,
+        string FirebaseId
         );
 
     

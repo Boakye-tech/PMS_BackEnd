@@ -705,7 +705,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         public static async Task<CustomerMaster> CreateJointAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, DateTime dateOfBirth, string tinNumber, string picture, int genderId,
                                                                int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress,
                                                                string residentPermitNumber, DateTime? residentPermitDateIssued, DateTime? residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber,
-                                                               string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive, string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
+                                                               string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive, string comments, string interestExpressed, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
                                                                string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId, string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImageOne,
                                                                string contactPerson_IdentificationTypeImageTwo, bool isDeleted, bool isPrimary, string maritalStatus, DateTime? dateOfMarriage, ICustomerDomainService customerDomainService)
         {
@@ -905,7 +905,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 IdentificationTypeImageFive = identificationTypeImageFive,
                 Comments = comments,
                 InterestExpressed = interestExpressed,
-                DebtorStatus = debtorStatus,
+                DebtorStatus = 1,
                 ParentCode = parentCode,
                 ContactPerson_FullName = contactPerson_FullName,
                 ContactPerson_PhoneNumber = contactPerson_PhoneNumber,

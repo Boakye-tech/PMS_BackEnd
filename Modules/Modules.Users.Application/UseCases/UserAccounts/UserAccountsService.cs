@@ -770,7 +770,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                         EmailConfirmed = false,
                         PhoneNumberConfirmed = false,
                         IsFirstTime = true,
-                        UserType = (int)UserAccountType.Customer
+                        UserType = (int)UserAccountType.Customer,
+                        FirebaseId = details.FirebaseId
                     };
 
                     var results = await _userManager.CreateAsync(new_user); //, details.ConfirmPassword
