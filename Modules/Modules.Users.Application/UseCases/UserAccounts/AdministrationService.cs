@@ -23,17 +23,19 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         private readonly ValidationService _validationService;
         private readonly ILogger<AdministrationService> _logger;
-        private readonly HttpClient _httpClient;
+        private readonly INotificationServices _notifyService;
+        //private readonly HttpClient _httpClient;
 
         public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,
-                                     ValidationService validationService, ILogger<AdministrationService> logger, HttpClient httpClient) 
+                                     ValidationService validationService, ILogger<AdministrationService> logger, INotificationServices notifyService) //, HttpClient httpClient 
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _validationService = validationService;
             _logger = logger;
-            _httpClient = httpClient;
+            _notifyService = notifyService;
+            //_httpClient = httpClient;
 
         }
 
@@ -518,17 +520,23 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             user.VerifiedBy = accountVerification.verifiedBy;
             user.VerifiedDate = DateTime.UtcNow;
 
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.Complete();
+            //_unitOfWork.Users.Update(user);
+            //await _unitOfWork.Complete();
 
-            _logger.LogInformation($"User account with id {user.Id} with email address {user.Email} has been successfully verified by verification officer with account id {staff.Id} and staff id {staff.IdentificationNumber}.", user.Id);
+            await _userManager.UpdateAsync(user);
+
+            //_logger.LogInformation($"User account with id {user.Id} with email address {user.Email} has been successfully verified by verification officer with account id {staff.Id} and staff id {staff.IdentificationNumber}.", user.Id);
+            _logger.LogInformation("User account has been successfully verified.");
+
             return new CustomerVerificationResponseDto
             {
                 IsSuccess = true,
                 SuccessResponse = new CustomerVerificationSuccessResponseDto
                 {
                     StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"User account with id '{user.Id}', with email address '{user.Email}' has been successfully verified by verification officer with account id '{staff.Id}' and staff id '{staff.IdentificationNumber}'"
+                    //StatusMessage = $"User account with id '{user.Id}', with email address '{user.Email}' has been successfully verified by verification officer with account id '{staff.Id}' and staff id '{staff.IdentificationNumber}'"
+                    StatusMessage = "User account has been successfully verified."
+
                 }
             };
         }
@@ -697,8 +705,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             user.ApprovedBy = accountApproval.ApprovedBy;
             user.ApprovedDate = DateTime.UtcNow;
 
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.Complete();
+            await _userManager.UpdateAsync(user);
+            //_unitOfWork.Users.Update(user);
+            //await _unitOfWork.Complete();
 
            
             _logger.LogInformation("User account with id '{UserId}' has been successfully assigned to the role '{RoleName}' and successfully approved by approval officer with account id '{StaffId}' and staff id '{StaffIdentificationNumber}'.",user.Id, roleName.Name, staff.Id, staff.IdentificationNumber);
@@ -708,7 +717,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 SuccessResponse = new ApproveUserAccountSuccessResponseDto
                 {
                     StatusCode = StatusCodes.Status200OK,
-                    StatusMessage = $"User account with id '{user.Id}' has been successfully assigned to the role '{roleName!.Name!}' and successfully approved by approval officer with account id '{staff.Id}' and staff id '{staff.IdentificationNumber}'."
+                    //StatusMessage = $"User account with id '{user.Id}' has been successfully assigned to the role '{roleName!.Name!}' and successfully approved by approval officer with account id '{staff.Id}' and staff id '{staff.IdentificationNumber}'."
+                    StatusMessage = $"User account has been successfully approved and assigned to a role."
+
                 }
             };
         }
@@ -872,8 +883,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 _logger.LogInformation("User account has been successfully activated by activation officer.");
 
 
-
-                await this.SendTokenViaNotification(user, tempPassword);
+                await _notifyService.SendTemporaryPasswordEmailNotification(user, tempPassword);
 
                 return new ActivateUserAccountResponseDto
                 {
@@ -899,34 +909,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public virtual async Task SendTokenViaNotification(ApplicationIdentityUser user, string temp_password)
-        {
-            var sb = new StringBuilder();
-
-            sb.AppendLine($"Dear {user!.FirstName} {user.LastName},<br>");
-            sb.AppendLine("<br>");
-            sb.AppendLine($"Your account has been activated<br>");
-            sb.AppendLine("<br>");
-            sb.AppendLine($"Kindly use this temporary pass <b>{temp_password}</b> to login.<br>");
-            sb.AppendLine("<br>");
-            sb.AppendLine($"If you didn’t make this request, kindly ignore this email or contact our support team immediately.<br>");
-            sb.AppendLine("<br>");
-            sb.AppendLine($"Thank you for your attention.<br>");
-            sb.AppendLine("<br>");
-            sb.AppendLine($"Kind regards,<br>");
-            sb.AppendLine("<br>");
-            sb.AppendLine($"TDC MIS Team<br>");
-            sb.AppendLine($"TDC Ghana Ltd.<br>");
-            sb.AppendLine($"0302211211<br>");
-
-            var email_payload = new { userId = user.Email, displayName = "Notifications", subject = "Account Activation", message = sb.ToString(), type = 0 };
-
-            string json_emailpayload = JsonSerializer.Serialize(email_payload);
-            var email_httpContent = new StringContent(json_emailpayload, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Notification/SendNotification", email_httpContent);
-            var result = response.IsSuccessStatusCode;
-        }
-
+        
         public async Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation)
         {
             //throw new NotImplementedException();

@@ -709,7 +709,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetOwnershipType/{ownershipTypeId}")]
-        public async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipType(int ownershipTypeId)
+        private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipType(int ownershipTypeId)
         {
             return Ok(await _ownershipTypeService.GetOwnershipTypeAsync(ownershipTypeId));
         }

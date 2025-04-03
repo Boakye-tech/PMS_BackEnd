@@ -98,6 +98,28 @@ namespace Modules.Users.UnitTest.InfrastructureLayer.Data
                     RefreshToken = null,
                     RefreshTokenExpires = DateTime.UtcNow
                 },
+
+                new ApplicationIdentityUser
+                {
+                    Id = "staffId",
+                    Email = "staff@example.com",
+                    UserName = "staff@example.com",
+                    FirstName = "Automated",
+                    MiddleName = "Test",
+                    LastName = "Staff",
+                    PhoneNumber = "1234567890",
+                    Status = (int)RegistrationStatus.Activated,
+                    IsFirstTime = false,
+                    UserType = (int)UserAccountType.Staff,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    DepartmentId = 1,
+                    UnitId = 1,
+                    ChannelId = 1,
+                    RegistrationDate = DateTime.UtcNow,
+                    RefreshToken = null,
+                    RefreshTokenExpires = DateTime.UtcNow
+                },
             };
         }
 

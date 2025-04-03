@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿ using System.ComponentModel;
 using System.Reflection;
 using Asp.Versioning;
 using Azure;
@@ -273,7 +273,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("ApproveRole")]
-        [Authorize(Policy = "Permission:Users.APPROVE", Roles = "MISAdministrator")]
+        [Authorize(Policy = "Permission:Users.APPROVE")] //, Roles = "MISAdministrator"
         public async Task<ActionResult> ApproveRole([FromBody] RolesApprovalDto values)
         {
             var userId = _userContextService.GetUserId();
@@ -289,7 +289,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("DisapproveRole")]
-        [Authorize(Policy = "Permission:Users.DISAPPROVE", Roles = "MISAdministrator")]
+        [Authorize(Policy = "Permission:Users.DISAPPROVE")] //, Roles = "MISAdministrator"
         public async Task<ActionResult> DisapproveRole([FromBody] RolesApprovalDto values)
         {
             var userId = _userContextService.GetUserId();
@@ -444,7 +444,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete]
         [Route("DeleteUserRole/{roleId}")]
-        [Authorize(Policy = "Permission:Users.DELETE", Roles = "MISAdministrator")]
+        [Authorize(Policy = "Permission:Users.DELETE")] //, Roles = "MISAdministrator"
         public async Task<ActionResult> DeleteUserRole(string roleId)
         {
             var userId = _userContextService.GetUserId();
@@ -1034,7 +1034,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("StaffAccounts")]
-        [Authorize(Roles = "MIS Officer, MISAdministrator")]
+        //[Authorize(Roles = "MIS Officer, MISAdministrator")]
         public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff()
         {
             return Ok(await _adminService.GetAdministrationStaff());
@@ -1055,7 +1055,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("ThirdPartyAccounts")]
-        [Authorize(Roles = "MIS Officer, MISAdministrator")] 
+        //[Authorize(Roles = "MIS Officer, MISAdministrator")] 
         public async Task<ActionResult<IEnumerable<AdministrationPartnersDto>>> GetAdministrationPartner()
         {
             return Ok(await _adminService.GetAdministrationPartners());
