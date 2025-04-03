@@ -397,7 +397,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Modify details of exisitng nationalities
         /// </summary>
-        ///
+        /// <remarks>
         /// Sample Request:
         ///
         /// PUT /UpdateNationality

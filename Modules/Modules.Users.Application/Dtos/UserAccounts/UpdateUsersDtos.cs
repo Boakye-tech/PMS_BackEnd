@@ -12,5 +12,6 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         
         );
 
+    public record UpdateMobileTokenDto(string UserId, string? FirebaseToken);
 
 }

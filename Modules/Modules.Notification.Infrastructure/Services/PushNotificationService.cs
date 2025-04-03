@@ -19,29 +19,29 @@ namespace Modules.Notification.Infrastructure.Services
 
         public async Task<string> PushMessageAsync(PushNotificationDto pushRequest)
         {
-            //throw new NotImplementedException();
-
-            var message = new Message()
+            try
             {
-                Notification = new FirebaseAdmin.Messaging.Notification
+                var message = new Message()
                 {
-                    Title = pushRequest.Title,
-                    Body = pushRequest.Body,
-                },
+                    Notification = new FirebaseAdmin.Messaging.Notification
+                    {
+                        Title = pushRequest.Title,
+                        Body = pushRequest.Body,
+                    },
 
-                //Data = new Dictionary<string, string>()
-                //{
-                //    ["FirstName"] = "John",
-                //    ["LastName"] = "Doe"
-                //},
+                    Token = pushRequest.DeviceToken
+                };
 
-                Token = pushRequest.DeviceToken
-            };
+                var messaging = FirebaseMessaging.DefaultInstance;
+                var result = await messaging.SendAsync(message);
 
-            var messaging = FirebaseMessaging.DefaultInstance;
-            var result = await messaging.SendAsync(message);
+                return result;
 
-            return result;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public Task<string> Send(Notifications notification)

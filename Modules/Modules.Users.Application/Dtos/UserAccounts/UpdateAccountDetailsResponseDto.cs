@@ -7,5 +7,10 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         public UserInformationDto? success { get; set; }
     };
 
+    public record UpdateTokenDetailsResponseDto
+    {
+        public GenericResponseDto? error { get; set; }
+        public GenericResponseDto? success { get; set; }
+    };
 }
 

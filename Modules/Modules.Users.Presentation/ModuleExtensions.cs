@@ -9,6 +9,7 @@ using Modules.Users.Domain.Interfaces.Entities;
 using Modules.Users.Infrastructure.Repositories.Entities;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
+using Modules.Users.Application.Services;
 
 namespace Modules.Users.Presentation
 {
@@ -97,6 +98,7 @@ namespace Modules.Users.Presentation
             services.AddScoped<ITokenStoreRepository, TokenStoreRepository>();
 
             services.AddScoped<IIdentificationTypeService, IdentificationTypeService>();
+            services.AddScoped<INotificationServices, NotificationServices>();
 
 
 

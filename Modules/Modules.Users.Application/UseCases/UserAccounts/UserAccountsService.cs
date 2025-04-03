@@ -1027,6 +1027,31 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return new UpdateAccountDetailsResponseDto { error = null, success = await UserDetails(values.UserId)};
         }
 
+        public async Task<UpdateTokenDetailsResponseDto> UpdateMobileToken(UpdateMobileTokenDto values)
+        {
+
+            if (values is null)
+            {
+                return new UpdateTokenDetailsResponseDto { error = new GenericResponseDto("The update request cannot be null or empty"), success = null! };
+            }
+
+            if (string.IsNullOrWhiteSpace(values.UserId) || string.IsNullOrWhiteSpace(values.FirebaseToken) )
+            {
+                return new UpdateTokenDetailsResponseDto { error = new GenericResponseDto("Both values must be supplied."), success = null! };
+            }
+
+            var user = await _userManager.FindByIdAsync(values.UserId);
+            if (user is null)
+            {
+                return new UpdateTokenDetailsResponseDto { error = new GenericResponseDto("User id not found"), success = null! };
+            }
+
+            user.FirebaseId = values.FirebaseToken;
+
+            await _userManager.UpdateAsync(user);
+
+            return new UpdateTokenDetailsResponseDto { error = null, success = new GenericResponseDto("Firebase token updated successfully.") };
+        }
 
 
     }

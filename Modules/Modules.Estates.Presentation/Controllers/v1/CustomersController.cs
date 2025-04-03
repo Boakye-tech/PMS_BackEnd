@@ -11,9 +11,8 @@ using Modules.Estates.Presentation.Constants;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace Modules.Estates.Presentation.Controllers.v1
 {
-    /// <summary>
-    /// Presentation controller to handle all customer management related routes
-    /// </summary>
+
+
     public partial class CustomerController : ControllerBase
     {
 
@@ -279,7 +278,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// <Modify or update existing company customer details
+        /// Modify or update existing company customer details
         /// </summary>
         [HttpPut]
         [Route("UpdateProspectiveCustomer")]
@@ -325,7 +324,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
 
         /// <summary>
-        /// <Modify or update existing company customer details
+        /// Modify or update existing company customer details
         /// </summary>
         [HttpPut]
         [Route("UpdateCompanyCustomer")]

@@ -182,9 +182,9 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserAccounts
             Assert.Equal(StatusCodes.Status200OK, result.SuccessResponse!.StatusCode);
         }
 
-        [Fact]
-        public async Task GetAdministrationStaff_ShouldReturnStaffList()
-        {
+        //[Fact]
+        //public async Task GetAdministrationStaff_ShouldReturnStaffList()
+        //{
         //   // Arrange
         // var staffAccounts = new List<AdministrationStaffDto>
         //{
@@ -220,7 +220,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserAccounts
         //    Assert.NotNull(result);
         //    Assert.Single(result);
         //    Assert.Equal("STAFF001", result.First().IdentificationNumber);
-        }
+        //}
 
         [Fact]
         public async Task ActivateUserAccount_WithValidData_ShouldSucceed()
@@ -326,9 +326,9 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserAccounts
             _mockUserManager.Verify(x => x.ResetPasswordAsync(user, "resetToken", It.IsAny<string>()), Times.Once);
         }
 
-        [Fact]
-        public async Task GetUserRoles_ShouldReturnRolesList()
-        {
+        //[Fact]
+        //public async Task GetUserRoles_ShouldReturnRolesList()
+        //{
     //        // Arrange
     //        var roles = UserMasterTestData.GetSampleRolesData().AsQueryable();
     //        var departments = UserMasterTestData.GetSampleDepartmentData();
@@ -425,7 +425,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserAccounts
     //        _mockRoleManager.Verify(x => x.Roles, Times.Once);
     //        _mockUnitOfWork.Verify(x => x.Department.Get(It.IsAny<int>()), Times.Exactly(4));
     //        _mockUnitOfWork.Verify(x => x.DepartmentUnit.Get(It.IsAny<int>()), Times.Exactly(4));
-        }
+        //}
 
 
 

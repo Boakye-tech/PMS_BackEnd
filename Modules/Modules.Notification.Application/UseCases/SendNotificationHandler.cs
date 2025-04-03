@@ -5,11 +5,13 @@ namespace Modules.Notification.Application.UseCases
     {
         private readonly INotificationRepository _repository;
         private readonly INotificationSender _sender;
+        //private readonly IPushNotificationSender _pushSender;
 
-        public SendNotificationHandler(INotificationRepository repository, INotificationSender sender)
+        public SendNotificationHandler(INotificationRepository repository, INotificationSender sender) //, IPushNotificationSender pushSender
         {
             _repository = repository;
             _sender = sender;
+            //_pushSender = pushSender;
         }
 
         public async Task<Guid> Handle(SendNotificationCommand command, CancellationToken cancellationToken)
@@ -18,16 +20,25 @@ namespace Modules.Notification.Application.UseCases
 
             await _repository.AddAsync(notification_msg);
 
+            if(command.Request.Type == NotificationType.Push)
+            {
+                var response = await _sender.PushAsync(notification_msg);
+                if (response.Contains("/messages/"))
+                    notification_msg.MarkAsSent();
+                else
+                    notification_msg.Status = NotificationStatus.Failed;
+
+                await _repository.UpdateStatusAsync(notification_msg.Id, notification_msg.Status);
+                return notification_msg.Id;
+            }
+
             var sent = await _sender.SendAsync(notification_msg);
             if (sent)
                 notification_msg.MarkAsSent();
-
-            //var sent = await _sender.Send(notification_msg);
-            //if(sent != "false")
-            //    notification_msg.MarkAsSent();
+            else
+                notification_msg.Status = NotificationStatus.Failed;
 
             await _repository.UpdateStatusAsync(notification_msg.Id, notification_msg.Status);
-
             return notification_msg.Id;
         }
     }

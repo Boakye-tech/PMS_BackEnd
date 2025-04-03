@@ -4,7 +4,7 @@ using Modules.Notification.Application.Dtos.Sms;
 
 namespace Modules.Notification.Infrastructure.Services
 {
-	public class NotificationService : INotificationSender, IPushNotificationSender
+	public class NotificationService : INotificationSender
     {
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
@@ -19,7 +19,6 @@ namespace Modules.Notification.Infrastructure.Services
 
         public async Task<string> PushAsync(Notifications values)
         {
-            //throw new NotImplementedException();
             if(values.Type != NotificationType.Push)
             {
                 return "Invalid notification type.";
@@ -31,8 +30,6 @@ namespace Modules.Notification.Infrastructure.Services
 
         public async Task<string> Send(Notifications values)
         {
-            //throw new NotImplementedException();
-
             if (values.Type == NotificationType.Email)
             {
                 await _emailSender.SendEmailAsync(values.UserId!, values.Subject!, values.Message!.ToString());
@@ -51,7 +48,6 @@ namespace Modules.Notification.Infrastructure.Services
 
         public async Task<bool> SendAsync(Notifications values)
         {
-            //throw new NotImplementedException();
             if (values.Type == NotificationType.Email)
             {
                 await _emailSender.SendEmailAsync(values.UserId!, values.Subject!, values.Message!.ToString());
