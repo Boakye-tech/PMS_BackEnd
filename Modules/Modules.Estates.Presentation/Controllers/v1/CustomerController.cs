@@ -11,10 +11,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Common.Infrastructure.Authentication;
 using Modules.Estates.Application.Enums;
+using Modules.Estates.Application.Interfaces.Management.Complaints;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
+/// <summary>
+/// Presentation controller to handle all customer management related routes
+/// </summary>
 namespace Modules.Estates.Presentation.Controllers.v1
 {
     [ApiController]
@@ -23,7 +27,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
     [Produces("application/json")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Authorize(Policy = "Permission:Customers.READ")]
-
 
     /// <summary>
     /// Presentation controller to handle all customer management related routes
@@ -41,9 +44,16 @@ namespace Modules.Estates.Presentation.Controllers.v1
         readonly ICustomerMasterService _customerMasterService;
         readonly IUserContextService _userContextService;
         readonly IInterestExpressedService _interestExpressedService;
+        readonly IComplaintTypeService _complaintTypeService;
+        readonly INatureOfComplaintService _natureOfComplaintService;
+        readonly IComplaintMasterService _complaintMasterServices;
 
-        public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService,
-                                  ISocialMediaService socialMediaService, ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService, IInterestExpressedService interestExpressedService)
+        /// <summary>
+        /// Presentation controller constructor to handledependency injection
+        /// </summary>
+        public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService, ISocialMediaService socialMediaService,
+                                  ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService, IInterestExpressedService interestExpressedService, IComplaintTypeService complaintTypeService,
+                                  INatureOfComplaintService natureOfComplaintService, IComplaintMasterService complaintMasterServices)
         {
             _customerTypeService = customerTypeService;
             _genderService = genderService;
@@ -56,6 +66,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
             _ownershipTypeService = ownershipTypeService;
             _userContextService = userContextService;
             _interestExpressedService = interestExpressedService;
+            _complaintTypeService = complaintTypeService;
+            _natureOfComplaintService = natureOfComplaintService;
+            _complaintMasterServices = complaintMasterServices;
         }
 
         //----------------------CUSTOMER TYPES------------
@@ -721,7 +734,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         ///
         /// Sample Request:
         ///
-        /// POST /CreateTitle
+        /// POST /CreateOwnershipType
         /// 
         /// {
         ///    "ownershipTypeId": 0,
@@ -757,7 +770,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         ///
         /// Sample Request:
         ///
-        /// POST /UpdateTitle
+        /// POST /UpdateOwnershipType
         /// 
         /// {
         ///    "ownershipTypeId": 3,
@@ -779,7 +792,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Removes an existing title based on the id
+        /// Removes an existing ownership type based on the id
         /// </summary>
         [HttpDelete("DeleteOwnershipType/{ownershipTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
@@ -910,7 +923,182 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _interestExpressedService.DeleteInterestExpressedAsync(interestExpressedId));
         }
 
+        //----------------------COMPLAINT TYPE------------
+        /// <summary>
+        /// Returns a list of complaint types
+        /// </summary>
+        [HttpGet]
+        [Route("GetComplaintType")]
+        public async Task<ActionResult<IEnumerable<ComplaintTypeReadDto>>> GetComplaintType()
+        {
+            return Ok(await _complaintTypeService.GetComplaintTypeAsync());
+        }
 
+
+        /// <summary>
+        ///  Create a new complaint type
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateComplaintType
+        /// 
+        /// {
+        ///    "complaintTypeId": 0,
+        ///    "complaintTypes": "HOME OWNERS COMPLAINT",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateComplaintType")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
+        public async Task<ActionResult<ComplaintTypeReadDto>> CreateComplaintType([FromBody] ComplaintTypeCreateDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(await _complaintTypeService.AddComplaintTypeAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Modify details of exisitng complaint type
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /UpdateComplaintType
+        /// 
+        /// {
+        ///    "ownershipTypeId": 1,
+        ///    "ownershipType": "HOME-OWNERS COMPLAINT",
+        ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateComplaintType")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult<ComplaintTypeReadDto>> UpdateComplaintType([FromBody] ComplaintTypeUpdateDto values)
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
+
+            return Ok(await _complaintTypeService.UpdateComplaintTypeAsync(values));
+        }
+
+        /// <summary>
+        /// Removes an existing complaint type based on the id
+        /// </summary>
+        [HttpDelete("DeleteComplaintType/{complaintTypeId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
+        public async Task<ActionResult> DeleteComplaintType(int complaintTypeId)
+        {
+            return Ok(await _complaintTypeService.DeleteComplaintTypeAsync(complaintTypeId));
+        }
+
+
+        //----------------------NATURE OF COMPLAINT------------
+        /// <summary>
+        /// Returns the nature of complaint list
+        /// </summary>
+        [HttpGet]
+        [Route("GetNatureOfComplaint")]
+        public async Task<ActionResult<IEnumerable<NatureOfComplaintReadDto>>> GetNatureOfComplaint()
+        {
+            return Ok(await _natureOfComplaintService.GetNatureOfComplaintAsync());
+        }
+
+
+        /// <summary>
+        ///  Create a new nature of complaint
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateNatureOfComplaint
+        /// 
+        /// {
+        ///    "complaintTypeId": 1,
+        ///    "natureOfComplaintId": 0,
+        ///    "natureOfComplaints": "PLUMBING",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateNatureOfComplaint")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
+        public async Task<ActionResult<NatureOfComplaintReadDto>> CreateNatureOfComplaint([FromBody] NatureOfComplaintCreateDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(await _natureOfComplaintService.AddNatureOfComplaintAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Modify details of exisitng nature of complaint
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /UpdateNatureOfComplaint
+        /// 
+        /// {
+        ///    "complaintTypeId": 1,
+        ///    "natureOfComplaintId": 1,
+        ///    "natureOfComplaints": "PLUMBING WORKS",
+        ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateNatureOfComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult<InterestExpressedReadDto>> UpdateNatureOfComplaint([FromBody] NatureOfComplaintUpdateDto values)
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
+
+            return Ok(await _natureOfComplaintService.UpdateNatureOfComplaintAsync(values));
+        }
+
+        /// <summary>
+        /// Removes an exsiting nature of complaint based on the id
+        /// </summary>
+        [HttpDelete("DeleteNatureOfComplaint/{natureOfComplaintId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
+        public async Task<ActionResult> DeleteNatureOfComplaint(int natureOfComplaintId)
+        {
+            return Ok(await _natureOfComplaintService.DeleteNatureOfComplaintAsync(natureOfComplaintId));
+        }
     }
 }
 

@@ -1,4 +1,6 @@
-﻿namespace Modules.Estates.Application.UseCases.Management.Customer
+﻿using Microsoft.Extensions.Logging;
+
+namespace Modules.Estates.Application.UseCases.Management.Customer
 {
     public partial class CustomerMasterService : ICustomerMasterService
     {
@@ -623,6 +625,7 @@
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.ToString());
                 return 500;
             }
 

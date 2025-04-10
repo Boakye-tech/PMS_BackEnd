@@ -20,6 +20,9 @@ namespace Modules.Customers.Presentation
             services.AddScoped<ICustomerInvoiceService, CustomerInvoiceService>();
             //services.AddScoped<ICustomerInvoiceItemsService, CustomerInvoiceItemsService>();
 
+            services.AddScoped<IComplaintTypeService, ComplaintTypeService>();
+            services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
+            services.AddScoped<IComplaintService, ComplaintService>();
 
             services.AddSingleton(s =>
             {

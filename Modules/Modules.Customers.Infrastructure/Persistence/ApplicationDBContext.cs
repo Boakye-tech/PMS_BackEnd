@@ -13,6 +13,8 @@ public class ApplicationDBContext : ModuleDbContext
     }
 
     public DbSet<Complaint> Complaint { get; set; }
+    public DbSet<ComplaintType> ComplaintType { get; set; }
+    public DbSet<NatureOfComplaint> NatureOfComplaint { get; set; }
 
     public DbSet<CustomerDetails> CustomerDetails { get; set; }
     public DbSet<PropertyDetails> PropertyDetails { get; set; }
@@ -61,6 +63,11 @@ public class ApplicationDBContext : ModuleDbContext
         modelBuilder.Entity<CustomerPayments>()
             .HasIndex(ct => new { ct.ReceiptNumber, ct.CustomerCode })
             .IsUnique(true);
+
+        modelBuilder.Entity<Complaint>()
+            .HasIndex(c => c.ComplaintNumber)
+            .IsUnique(true);
+
     }
 }
 

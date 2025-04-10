@@ -56,7 +56,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         {
             return Ok(await _channelService.GetChannelAsync());
         }
-
+        
         /// <summary>
         /// Creates a new valid channels
         /// </summary>
@@ -148,6 +148,16 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
         /// <summary>
+        /// Returns a list of all menus and corresponding sub menus
+        /// </summary>
+        [HttpGet]
+        [Route("GetAllMenus")]
+        public async Task<IEnumerable<AllMenusDto>> GetAllMenus()
+        {
+            return await _menuService.GetAllMenus();
+        }
+
+        /// <summary>
         /// Returns a list of menus
         /// </summary>
         [HttpGet]
@@ -168,6 +178,31 @@ namespace Modules.Users.Presentation.Controllers.v1
             var result = await _menuService.CreateMenu(values);
             return Ok(result);
         }
+
+        /// <summary>
+        /// Update an existing menu
+        /// </summary>
+        [HttpPut]
+        [Route("UpdateMenus")]
+        [Authorize(Policy = "Permission:Users.UPDATE")]
+        public async Task<ActionResult> UpdateMenus([FromBody] MenusDto values)
+        {
+            var result = await _menuService.UpdateMenu(values);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// delete an exisitng menu
+        /// </summary>
+        [HttpDelete]
+        [Route("DeleteMenus/{menuId}")]
+        [Authorize(Policy = "Permission:Users.DELETE")]
+        public async Task<ActionResult> DeleteMenus(int menuId)
+        {
+            var result = await _menuService.DeleteMenu(menuId);
+            return Ok(result);
+        }
+
 
         /// <summary>
         /// Returns a list of sub menus
@@ -191,6 +226,31 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(result);
         }
 
+
+        /// <summary>
+        /// Update an existing sub menu
+        /// </summary>
+        [HttpPut]
+        [Route("UpdateSubMenu")]
+        [Authorize(Policy = "Permission:Users.UPDATE")]
+        public async Task<ActionResult> UpdateSubMenus([FromBody] SubMenusUpdateDto values)
+        {
+            var result = await _menuService.UpdateSubMenu(values);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// delete an exisitng sub menu
+        /// </summary>
+        [HttpDelete]
+        [Route("DeleteSubMenus/{subMenuId}")]
+        [Authorize(Policy = "Permission:Users.DELETE")]
+        public async Task<ActionResult> DeleteSubMenus(int subMenuId)
+        {
+            var result = await _menuService.DeleteSubMenu(subMenuId);
+            return Ok(result);
+        }
+
         /// <summary>
         /// Returns a list of sub menus items
         /// </summary>
@@ -199,6 +259,17 @@ namespace Modules.Users.Presentation.Controllers.v1
         public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()
         {
             return await _menuService.GetSubMenuItems();
+        }
+
+        /// <summary>
+        /// Add new sub menu items
+        /// </summary>
+        [HttpPost]
+        [Route("CreateSubMenuItems")]
+        [Authorize(Policy = "Permission:Users.CREATE")]
+        public async Task<ActionResult> CreateSubMenuItems([FromBody] SubMenuItemsCreateDto values)
+        {
+            return Ok(await _menuService.CreateSubMenuItems(values));
         }
 
         /// <summary>
@@ -254,17 +325,6 @@ namespace Modules.Users.Presentation.Controllers.v1
         public async Task<IEnumerable<RoleModulesPermissionsDto>> GetApplicationModulesPermissions(string roleId)
         {
             return await _menuService.GetModulesPermissions(roleId);
-        }
-
-        /// <summary>
-        /// Add new sub menu items
-        /// </summary>
-        [HttpPost]
-        [Route("CreateSubMenuItems")]
-        [Authorize(Policy = "Permission:Users.CREATE")]
-        public async Task<ActionResult> CreateSubMenuItems([FromBody] SubMenuItemsCreateDto values)
-        {
-            return Ok(await _menuService.CreateSubMenuItems(values));
         }
 
 
@@ -1029,47 +1089,78 @@ namespace Modules.Users.Presentation.Controllers.v1
 
 
 
+        ///// <summary>
+        ///// Returns a list of system registered staff users
+        ///// </summary>
+        //[HttpGet]
+        //[Route("StaffAccounts")]
+        ////[Authorize(Roles = "MIS Officer, MISAdministrator")]
+        //public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff()
+        //{
+        //    return Ok(await _adminService.GetAdministrationStaff());
+        //}
+
         /// <summary>
-        /// Returns a list of system registered staff users
+        /// Returns a list of system registered staff users based on search parameters
         /// </summary>
         [HttpGet]
         [Route("StaffAccounts")]
         //[Authorize(Roles = "MIS Officer, MISAdministrator")]
-        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff()
+        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff([FromQuery] string? searchParameter, [FromQuery] string? status)
         {
-            return Ok(await _adminService.GetAdministrationStaff());
+            return Ok(await _adminService.GetAdministrationStaff(searchParameter, status));
         }
 
+        ///// <summary>
+        ///// Returns a list of system registered customer users
+        ///// </summary>
+        //[HttpGet]
+        //[Route("CustomerAccounts")]
+        //public async Task<ActionResult<IEnumerable<AdministrationCustomerDto>>> GetAdministrationCustomers()
+        //{
+        //    return Ok(await _adminService.GetAdministrationCustomer());
+        //}
+
         /// <summary>
-        /// Returns a list of system registered customer users
+        /// Returns a list of system registered customer users based on search parameters
         /// </summary>
         [HttpGet]
         [Route("CustomerAccounts")]
-        public async Task<ActionResult<IEnumerable<AdministrationCustomerDto>>> GetAdministrationCustomers()
+        public async Task<ActionResult<IEnumerable<AdministrationCustomerDto>>> GetAdministrationCustomers([FromQuery] string? searchParameter, [FromQuery] string? status)
         {
-            return Ok(await _adminService.GetAdministrationCustomer());
+            return Ok(await _adminService.GetAdministrationCustomer(searchParameter, status));
         }
 
+        ///// <summary>
+        ///// Returns a list of system registered 3rd Party users (i.e. Parrtner Banks)
+        ///// </summary>
+        //[HttpGet]
+        //[Route("ThirdPartyAccounts")]
+        ////[Authorize(Roles = "MIS Officer, MISAdministrator")] 
+        //public async Task<ActionResult<IEnumerable<AdministrationPartnersDto>>> GetAdministrationPartner()
+        //{
+        //    return Ok(await _adminService.GetAdministrationPartners());
+        //}
+
         /// <summary>
-        /// Returns a list of system registered 3rd Party users (i.e. Parrtner Banks)
+        /// Returns a list of system registered 3rd Party users (i.e. Parrtner Banks) based on search parameters
         /// </summary>
         [HttpGet]
         [Route("ThirdPartyAccounts")]
         //[Authorize(Roles = "MIS Officer, MISAdministrator")] 
-        public async Task<ActionResult<IEnumerable<AdministrationPartnersDto>>> GetAdministrationPartner()
+        public async Task<ActionResult<IEnumerable<AdministrationPartnersDto>>> GetAdministrationPartner([FromQuery] string? searchParameter, [FromQuery] string? status)
         {
-            return Ok(await _adminService.GetAdministrationPartners());
+            return Ok(await _adminService.GetAdministrationPartners(searchParameter, status));
         }
-
 
         /// <summary>
         /// Returns a list of system registered staff users for a specific department
         /// </summary>
         [HttpGet]
         [Route("DepartmentStaffAccounts/{departmentId}")]
-        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentStaff(int departmentId)
+        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentStaff(int departmentId, [FromQuery] string? searchParameter, [FromQuery] string? status)
         {
-            return Ok(await _adminService.GetAdministrationDepartmentStaff(departmentId));
+            return Ok(await _adminService.GetAdministrationDepartmentStaff(departmentId, searchParameter, status));
         }
 
         /// <summary>
@@ -1077,9 +1168,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("DepartmentUnitStaffAccounts/{unitId}")]
-        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentUnitStaff(int unitId)
+        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentUnitStaff(int unitId, [FromQuery] string? searchParameter, [FromQuery] string? status)
         {
-            return Ok(await _adminService.GetAdministrationDepartmentUnitStaff(unitId));
+            return Ok(await _adminService.GetAdministrationDepartmentUnitStaff(unitId, searchParameter, status));
         }
 
 

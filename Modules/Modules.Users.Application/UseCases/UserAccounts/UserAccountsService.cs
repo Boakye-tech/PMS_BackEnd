@@ -137,7 +137,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
         }
 
-        public async Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetPasswordRequestDto resetPassword)
+        public async Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequestDto resetPassword)
         {
             if (resetPassword is null)
             {
@@ -156,7 +156,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             try
             {
                 //remember to check for the validity of the token
-                var otpresult = await _unitOfWork.TokenStore.VerifyToken(resetPassword.Phone_OR_Email, resetPassword.Token);
+                var otpresult = _unitOfWork.TokenStore.CheckVerifiedToken(resetPassword.Phone_OR_Email, resetPassword.Token);
                 if (otpresult != "Verified")
                 {
                     _logger.LogWarning($"OTP Token {resetPassword.Token} is invalid.", resetPassword.Phone_OR_Email);
@@ -173,7 +173,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 //remember to check for the expiry validity of the token
                 var otp_result = _unitOfWork.TokenStore.VerifyTokenExpiry(resetPassword.Phone_OR_Email, resetPassword.Token);
-                if(otp_result != "Verified")
+                if (otp_result != "Expired")
                 {
                     _logger.LogWarning($"User with email address {resetPassword.Phone_OR_Email}  and OTP Token {resetPassword.Token} not verified.", resetPassword.Phone_OR_Email);
                     return new ResetPasswordResponse
@@ -188,22 +188,19 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 }
 
-
-
-                var appUser = await _unitOfWork.Users.Get(u => u.Email == resetPassword.Phone_OR_Email);
+                var appUser = await _unitOfWork.Users.Get(u =>  u.Email == resetPassword.Phone_OR_Email || u.PhoneNumber == resetPassword.Phone_OR_Email);
                 var user = await _userManager.FindByIdAsync(appUser!.Id);
-                //var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress_OR_PhoneNumber);
 
                 if (user is null)
                 {
-                    _logger.LogWarning($"User with email address {resetPassword.Phone_OR_Email} not found.", resetPassword.Phone_OR_Email);
+                    _logger.LogWarning($"User with email address or phone number {resetPassword.Phone_OR_Email} not found.", resetPassword.Phone_OR_Email);
                     return new ResetPasswordResponse
                     {
                         IsSuccess = false,
                         ErrorResponse = new ResetPasswordErrorResponse
                         {
                             StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"User with email address '{resetPassword.Phone_OR_Email}' not found."
+                            StatusMessage = $"User with email address or phone number '{resetPassword.Phone_OR_Email}' not found."
                         }
                     };
                 }
@@ -224,28 +221,26 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 }
 
                 //check otp token validity
-
-
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var result = await _userManager.ResetPasswordAsync(user, token, resetPassword.NewPassword);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Password successfully reset for user with email address {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
+                    _logger.LogInformation($"Password successfully reset for user with email address or phone number {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
                     return new ResetPasswordResponse
                     {
                         IsSuccess = true,
                         SuccessResponse = new ResetPasswordSuccessResponse
                         {
                             StatusCode = StatusCodes.Status200OK,
-                            StatusMessage = $"Password reset {result.ToString()}"
+                            StatusMessage = $"Password reset {result.ToString().ToLower()}"
                         }
                     };
 
                 }
                 if (!result.Succeeded)
-                { 
-                    _logger.LogWarning($"Password reset failed for user with email address {resetPassword.Phone_OR_Email}. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
+                {
+                    _logger.LogWarning($"Password reset failed for user with email address or phone number {resetPassword.Phone_OR_Email}. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
                     return new ResetPasswordResponse
                     {
                         IsSuccess = false,
@@ -261,140 +256,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred while resetting the password for staff with email address {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
-                return new ResetPasswordResponse
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ResetPasswordErrorResponse
-                    {
-                        StatusCode = StatusCodes.Status500InternalServerError,
-                        StatusMessage = $"An unexpected error occurred. Please try again later. - {ex.InnerException!.Message}"
-                    }
-                };
-            }
-        }
-
-        public async Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetPasswordRequestDto resetPassword)
-        {
-            if (resetPassword is null)
-            {
-                _logger.LogWarning("Reset password request is null.");
-                return new ResetPasswordResponse
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ResetPasswordErrorResponse
-                    {
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        StatusMessage = "Invalid request data."
-                    }
-                };
-            }
-
-            try
-            {
-                //remember to check for the validity of the token
-                var otpresult = await _unitOfWork.TokenStore.VerifyToken(resetPassword.Phone_OR_Email, resetPassword.Token);
-                if (otpresult != "Verified")
-                {
-                    _logger.LogWarning($"OTP Token {resetPassword.Token} is invalid.", resetPassword.Phone_OR_Email);
-                    return new ResetPasswordResponse
-                    {
-                        IsSuccess = false,
-                        ErrorResponse = new ResetPasswordErrorResponse
-                        {
-                            StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"OTP Token '{resetPassword.Token}' is invalid."
-                        }
-                    };
-                }
-
-                //remember to check for the expiry validity of the token
-                var otp_result = _unitOfWork.TokenStore.VerifyTokenExpiry(resetPassword.Phone_OR_Email, resetPassword.Token);
-                if (otp_result != "Verified")
-                {
-                    _logger.LogWarning($"User with email address {resetPassword.Phone_OR_Email}  and OTP Token {resetPassword.Token} not verified.", resetPassword.Phone_OR_Email);
-                    return new ResetPasswordResponse
-                    {
-                        IsSuccess = false,
-                        ErrorResponse = new ResetPasswordErrorResponse
-                        {
-                            StatusCode = StatusCodes.Status400BadRequest,
-                            StatusMessage = $"User with email address '{resetPassword.Phone_OR_Email.ToLower()}' and OTP Token '{resetPassword.Token}' not verified."
-                        }
-                    };
-
-                }
-
-                var appUser = await _unitOfWork.Users.Get(u => u.PhoneNumber == resetPassword.Phone_OR_Email);
-                var user = await _userManager.FindByIdAsync(appUser!.Id);
-                //var user = await _userManager.FindByEmailAsync(resetPassword.EmailAddress_OR_PhoneNumber);
-
-                if (user is null)
-                {
-                    _logger.LogWarning($"Customer with mobile phone number {resetPassword.Phone_OR_Email} not found.", resetPassword.Phone_OR_Email);
-                    return new ResetPasswordResponse
-                    {
-                        IsSuccess = false,
-                        ErrorResponse = new ResetPasswordErrorResponse
-                        {
-                            StatusCode = StatusCodes.Status404NotFound,
-                            StatusMessage = $"Customer with mobile phone number '{resetPassword.Phone_OR_Email}' not found."
-                        }
-                    };
-                }
-
-                var validationResult = await _passwordValidator.ValidateAsync(_userManager, user, resetPassword.NewPassword);
-                if (!validationResult.Succeeded)
-                {
-                    return new ResetPasswordResponse
-                    {
-                        IsSuccess = false,
-                        ErrorResponse = new ResetPasswordErrorResponse
-                        {
-                            StatusCode = StatusCodes.Status400BadRequest,
-                            StatusMessage = $"Password reset failed. - {string.Join(", ", validationResult.Errors.Select(e => e.Description))}"
-                        }
-                    };
-                }
-
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, token, resetPassword.NewPassword);
-
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation($"Password successfully reset for staff with mobile phone number {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
-                    return new ResetPasswordResponse
-                    {
-                        IsSuccess = true,
-                        SuccessResponse = new ResetPasswordSuccessResponse
-                        {
-                            StatusCode = StatusCodes.Status200OK,
-                            StatusMessage = $"Password reset {result.ToString()}"
-                        }
-                    };
-
-                }
-
-                if (!result.Succeeded)
-                {
-                    _logger.LogWarning($"Password reset failed for staff with mobile phone number {resetPassword.Phone_OR_Email}. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}", resetPassword.Phone_OR_Email, string.Join(", ", result.Errors.Select(e => e.Description)));
-                    return new ResetPasswordResponse
-                    {
-                        IsSuccess = false,
-                        ErrorResponse = new ResetPasswordErrorResponse
-                        {
-                            StatusCode = StatusCodes.Status400BadRequest,
-                            StatusMessage = $"Password reset failed. - {string.Join(", ", result.Errors.Select(e => e.Description))}"
-                        }
-                    };
-                }
-
-                return null!;
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"An error occurred while resetting the password for customer with mobile phone number {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
+                _logger.LogError(ex, $"An error occurred while resetting the password for user with email address or phone number {resetPassword.Phone_OR_Email}.", resetPassword.Phone_OR_Email);
                 return new ResetPasswordResponse
                 {
                     IsSuccess = false,

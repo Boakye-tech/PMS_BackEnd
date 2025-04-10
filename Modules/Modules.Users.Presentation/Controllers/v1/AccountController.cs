@@ -261,7 +261,6 @@ public class AccountController : ControllerBase
 
             if (ModelState.IsValid)
             {
-
                 ResetPasswordRequestDto passwordRequest = new ResetPasswordRequestDto
                 {
                     Phone_OR_Email = resetPasswordRequest.Phone_OR_Email,
@@ -270,17 +269,7 @@ public class AccountController : ControllerBase
                     ConfirmNewPassword = resetPasswordRequest.ConfirmNewPassword
                 };
 
-
-                if (emailRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
-                {
-                    changeResult = await _userAccountsService.ResetPasswordViaEmailAddress(passwordRequest);
-                }
-
-
-                if (phoneRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
-                {
-                    changeResult = await _userAccountsService.ResetPasswordViaMobilePhoneNumber(passwordRequest);
-                }
+                changeResult = await _userAccountsService.ResetPassword(passwordRequest);
 
                 if (changeResult.IsSuccess)
                 {
@@ -302,7 +291,6 @@ public class AccountController : ControllerBase
                     default:
                         return StatusCode(500, changeResult);
                 };
-
             }
 
             return BadRequest();

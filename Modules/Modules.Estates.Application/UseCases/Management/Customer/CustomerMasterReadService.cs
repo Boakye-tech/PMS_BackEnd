@@ -441,8 +441,6 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<IEnumerable<CustomerListDto>> GetCustomerListAsync(string? searchParam,string? locality)
         {
-            //throw new NotImplementedException();
-
             var customersQuery = from a in await _unitOfWork.CustomerMaster.GetAll(cm => cm.IsDeleted == false)
 
                                  join b in await _unitOfWork.CustomerType.GetAll()
