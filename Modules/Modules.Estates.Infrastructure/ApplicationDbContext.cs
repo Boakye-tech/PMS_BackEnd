@@ -50,6 +50,11 @@ public class ApplicationDbContext : ModuleDbContext
 
     public DbSet<InterestExpressed> InterestExpressed { get; set; }
 
+    public DbSet<ComplaintType> ComplaintType { get; set; }
+    public DbSet<NatureOfComplaint> NatureOfComplaint { get; set; }
+    public DbSet<Complaint> Complaints { get; set; }
+
+    public DbSet<ComplaintStatuses> ComplaintStatuses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

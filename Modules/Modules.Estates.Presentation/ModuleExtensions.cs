@@ -1,7 +1,9 @@
 ﻿using System;
 using FluentValidation;
+using Modules.Estates.Application.Interfaces.Management.Complaints;
 using Modules.Estates.Application.Interfaces.ModuleServices;
 using Modules.Estates.Application.Services;
+using Modules.Estates.Application.UseCases.Management.Complaints;
 using Modules.Estates.Application.UseCases.ModuleServices;
 using Modules.Estates.Domain.Events;
 
@@ -53,8 +55,12 @@ public static class ModuleExtensions
 
         services.AddScoped<IInterestExpressedService, InterestExpressedService>();
 
-        services.AddHttpClient<IIdentificationTypeService, IdentificationTypeService>();
+        services.AddScoped<IIdentificationTypeService, IdentificationTypeService>();
         services.AddHttpClient<IModuleCommunicationServices, ModuleCommunicationServices>();
+
+        services.AddScoped<IComplaintTypeService, ComplaintTypeService>();
+        services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
+        services.AddScoped<IComplaintMasterService, ComplaintMasterService>();
 
 
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();

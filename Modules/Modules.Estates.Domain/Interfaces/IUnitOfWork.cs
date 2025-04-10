@@ -45,6 +45,11 @@ public interface IUnitOfWork : IDisposable
     //Mar 26 '25
     IInterestExpressedRepository InterestExpressed { get; }
 
+    //Apr 06 '25
+    IComplaintRepository Complaint { get; }
+    IComplaintTypeRepository ComplaintType { get; }
+    INatureOfComplaintRepository NatureOfComplaint { get; }
+
     Task<int> Complete();
 }
 

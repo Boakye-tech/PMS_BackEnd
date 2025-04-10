@@ -9,6 +9,14 @@ namespace Modules.Estates.Application.Interfaces.ModuleServices
 
         Task<bool> SendCustomerDetailsAsync(OnlineCustomerDetailsDto payload);
         Task<bool> SendPropertyDetailsAsync(OnlinePropertyDetailsDto payload);
+
+        Task<bool> SendComplaintTypeDetailsAsync(ComplaintTypeDto payload);
+        Task<bool> SendNatureOfComplaintDetailsAsync(NatureOfComplaintDto payload);
+
+        Task<bool> SendComplaintTypeDetailsUpdateAsync(ComplaintTypeDto payload);
+        Task<bool> SendNatureOfComplaintDetailsUpdateAsync(NatureOfComplaintDto payload);
+
+
     }
 }
 

@@ -8,13 +8,13 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly HttpClient _httpClient;
+        private readonly IModuleCommunicationServices _moduleComms;
 
-        public IdentificationTypeService(IUnitOfWork unitOfWork, IMapper mapper, HttpClient httpClient)
+        public IdentificationTypeService(IUnitOfWork unitOfWork, IMapper mapper, IModuleCommunicationServices moduleComms) 
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _httpClient = httpClient;
+            _moduleComms = moduleComms;
         }
 
         public async Task<IdentificationTypeReadDto> AddIdentificationTypeAsync(IdentificationTypeCreateDto values)
@@ -30,11 +30,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
 
             //send to user module
             var payload = new IdentificationTypeDto(request.IdentificationTypeId, request.IdentificationTypes!);
-            string json_payload = JsonSerializer.Serialize(payload);
-            var _httpContent = new StringContent(json_payload, Encoding.UTF8, "application/json");
-            HttpResponseMessage _response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Administration/CreateIdentificationType", _httpContent);
-            var result_sms = _response.IsSuccessStatusCode;
-
+            var response = await _moduleComms.SendIdentificationTypeAsync(payload);
+            if (!response) { } //remember to log failure response
 
             return new IdentificationTypeReadDto(request.IdentificationTypeId, request.IdentificationTypes!);
         }

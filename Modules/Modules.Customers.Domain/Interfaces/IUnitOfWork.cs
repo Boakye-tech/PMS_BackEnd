@@ -10,6 +10,10 @@ namespace Modules.Customers.Domain.Interfaces
         ICustomerTransactionsRepository CustomerTransaction { get; }
         IPropertyDetailsRepository PropertyDetails { get; }
 
+        IComplaintRepository Complaint { get; }
+        IComplaintTypeRepository ComplaintType { get; }
+        INatureOfComplaintRepository NatureOfComplaint { get; }
+
         Task<int> Complete();
     }
 }

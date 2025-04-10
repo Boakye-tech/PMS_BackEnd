@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Application.DTO.Management.Complaints;
 using Modules.Estates.Application.Enums;
 using Modules.Estates.Presentation.Constants;
 
@@ -580,6 +581,155 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
                     500 => StatusCode(500, new { response = "unsuccessful" }),
                     _ => StatusCode(500, new { response = "Internal Server Error" }),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of complaints
+        /// </summary>
+        [HttpGet]
+        [Route("GetListOfComplaints")]
+        [AllowAnonymous]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ComplaintStaffReadDto>))]
+        public async Task<ActionResult> GetListOfComplaints()
+        {
+            try
+            {
+                var result = await _complaintMasterServices.GetComplaintsList();
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+
+        /// <summary>
+        /// Creates a new complaint
+        /// </summary>
+        [HttpPost]
+        [Route("SubmitComplaint")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
+        public async Task<ActionResult> SubmitComplaint([FromBody] ComplaintCreateDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.CreateNewComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Reviews an existing complaint
+        /// </summary>
+        [HttpPut]
+        [Route("ReviewComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> ReviewComplaint([FromBody] ComplaintReviewDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ReviewedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.ReviewComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Assigns an existing complaint
+        /// </summary>
+        [HttpPut]
+        [Route("AssignComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> AssignComplaint([FromBody] ComplaintAssignDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.AssignedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.AssignComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    400 => BadRequest(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Resolve an existing complaint
+        /// </summary>
+        [HttpPut]
+        [Route("ResolveComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> ResolveComplaint([FromBody] ComplaintResolutionDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ResolvedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.ResolveComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    400 => BadRequest(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
                 };
 
             }

@@ -23,7 +23,7 @@ public class Gender : AuditableEntity
             throw new ArgumentException("Invalid Gender Data.");
         }
 
-        if (genderId <= -1)
+        if (genderId < 0)
             throw new ArgumentException("Gender Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(genderType) || genderType.Length > 10)
@@ -40,7 +40,7 @@ public class Gender : AuditableEntity
             throw new ArgumentException("Invalid Gender Data.");
         }
 
-        if (genderId <= -1)
+        if (genderId <= 0)
             throw new ArgumentException("Gender Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(genderType) || genderType.Length > 10)

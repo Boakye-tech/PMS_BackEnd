@@ -77,44 +77,18 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-            var phoneRegex = new Regex(@"^\+?\d{10,15}$");
-
-
             if (ModelState.IsValid)
             {
-
-                if (emailRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
+                ResetPasswordRequestDto passwordRequest = new ResetPasswordRequestDto
                 {
-                    ResetPasswordRequestDto passwordRequest = new ResetPasswordRequestDto
-                    {
-                        Phone_OR_Email = resetPasswordRequest.Phone_OR_Email,
-                        Token = resetPasswordRequest.Token,
-                        NewPassword = resetPasswordRequest.NewPassword,
-                        ConfirmNewPassword = resetPasswordRequest.ConfirmNewPassword
-                    };
+                    Phone_OR_Email = resetPasswordRequest.Phone_OR_Email,
+                    Token = resetPasswordRequest.Token,
+                    NewPassword = resetPasswordRequest.NewPassword,
+                    ConfirmNewPassword = resetPasswordRequest.ConfirmNewPassword
+                };
 
-                    var changeResult = await _userAccountsService.ResetPasswordViaEmailAddress(passwordRequest);
-                    return Ok(changeResult);
-
-                }
-
-
-                if (phoneRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
-                {
-                    ResetPasswordRequestDto passwordRequest = new ResetPasswordRequestDto
-                    {
-                        Phone_OR_Email = resetPasswordRequest.Phone_OR_Email,
-                        Token = resetPasswordRequest.Token,
-                        NewPassword = resetPasswordRequest.NewPassword,
-                        ConfirmNewPassword = resetPasswordRequest.ConfirmNewPassword
-                    };
-
-                    var changeResult = await _userAccountsService.ResetPasswordViaMobilePhoneNumber(passwordRequest);
-                    return Ok(changeResult);
-
-                }
-
+                var changeResult = await _userAccountsService.ResetPassword(passwordRequest);
+                return Ok(changeResult);
             }
 
             return BadRequest();

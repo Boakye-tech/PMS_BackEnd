@@ -11,6 +11,8 @@ namespace Modules.Users.Domain.Interfaces.Entities
 
         string VerifyTokenExpiry(string mobilePhoneNumber_OR_emailAddress, string tokenCode);
 
+        string CheckVerifiedToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode);
+
         JwTokenResponse GetJwToken(ApplicationIdentityUser user, int validityInHours);
 
         RefreshToken GetJwRefreshToken();

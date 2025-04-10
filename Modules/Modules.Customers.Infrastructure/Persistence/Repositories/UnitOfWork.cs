@@ -19,6 +19,9 @@ namespace Modules.Customers.Infrastructure.Persistence.Repositories
             CustomerInvoiceItems = new CustomerInvoiceItemsRepository(_dbContext);
             CustomerPayment = new CustomerPaymentsRepository(_dbContext);
             CustomerTransaction = new CustomerTransactionsRepository(_dbContext);
+            Complaint = new ComplaintRepository(_dbContext);
+            ComplaintType = new ComplaintTypeRepository(_dbContext);
+            NatureOfComplaint = new NatureOfComplaintRepository(_dbContext);
         }
 
         public ICustomerDetailsRepository CustomerDetails { get; private set; }
@@ -33,6 +36,11 @@ namespace Modules.Customers.Infrastructure.Persistence.Repositories
 
         public IPropertyDetailsRepository PropertyDetails { get; private set; }
 
+        public IComplaintRepository Complaint { get; private set; }
+
+        public IComplaintTypeRepository ComplaintType { get; private set; }
+
+        public INatureOfComplaintRepository NatureOfComplaint { get; private set; }
 
         public Task<int> Complete()
         {

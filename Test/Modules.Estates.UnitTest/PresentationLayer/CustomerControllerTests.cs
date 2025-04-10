@@ -11,7 +11,7 @@ using Modules.Estates.Presentation.Controllers.v1;
 using Modules.Estates.Application.DTO.Management;
 using Modules.Estates.Presentation.Constants;
 using Modules.Estates.Application.Enums;
-
+using Modules.Estates.Application.Interfaces.Management.Complaints;
 
 namespace Modules.Estates.UnitTest.PresentationLayer
 {
@@ -28,7 +28,12 @@ namespace Modules.Estates.UnitTest.PresentationLayer
         private readonly Mock<ICustomerMasterService> _customerMasterServiceMock;
         private readonly Mock<IUserContextService> _userContextServiceMock;
         private readonly Mock<IInterestExpressedService> _interestContextServiceMock;
+        
         private readonly CustomerController _controller;
+
+        private readonly Mock<IComplaintTypeService> _complaintTypeServiceMock;
+        private readonly Mock<INatureOfComplaintService> _natureOfComplaintMock;
+        private readonly Mock<IComplaintMasterService> _complaintMasterMock;
 
         public CustomerControllerTests()
         {
@@ -44,6 +49,10 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             _userContextServiceMock = new Mock<IUserContextService>();
             _interestContextServiceMock = new Mock<IInterestExpressedService>();
 
+            _complaintTypeServiceMock = new Mock<IComplaintTypeService>();
+            _natureOfComplaintMock = new Mock<INatureOfComplaintService>();
+            _complaintMasterMock = new Mock<IComplaintMasterService>();
+
             _controller = new CustomerController(
                 _customerTypeServiceMock.Object,
                 _genderServiceMock.Object,
@@ -55,7 +64,10 @@ namespace Modules.Estates.UnitTest.PresentationLayer
                 _customerMasterServiceMock.Object,
                 _ownershipTypeServiceMock.Object,
                 _userContextServiceMock.Object,
-                _interestContextServiceMock.Object
+                _interestContextServiceMock.Object,
+                _complaintTypeServiceMock.Object,
+                _natureOfComplaintMock.Object,
+                _complaintMasterMock.Object
             );
         }
 

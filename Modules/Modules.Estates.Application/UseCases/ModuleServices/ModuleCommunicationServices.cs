@@ -21,25 +21,50 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
             _config = config;
         }
 
+        public async Task<bool> SendComplaintTypeDetailsAsync(ComplaintTypeDto payload)
+        {
+            return await SendDataAsync("Complaint/CreateComplaintType", payload);
+        }
+
+        public async Task<bool> SendComplaintTypeDetailsUpdateAsync(ComplaintTypeDto payload)
+        {
+            return await SendDataAsync("Complaint/UpdateComplaintType", payload);
+        }
+
         public async Task<bool> SendCustomerDetailsAsync(OnlineCustomerDetailsDto payload)
         {
-            //throw new NotImplementedException();
             return await SendDataAsync("OnlineCustomer/AddCustomerDetails", payload);
             
         }
 
         public async Task<bool> SendIdentificationTypeAsync(IdentificationTypeDto payload)
         {
-            //throw new NotImplementedException();
             return await SendDataAsync("Administration/CreateIdentificationType", payload);
 
         }
 
+        public async Task<bool> SendNatureOfComplaintDetailsAsync(NatureOfComplaintDto payload) 
+        {
+            return await SendDataAsync("Complaint/CreateNatureOfComplaint", payload);
+        }
+
+        public async Task<bool> SendNatureOfComplaintDetailsUpdateAsync(NatureOfComplaintDto payload) 
+        {
+            return await SendDataAsync("Complaint/UpdateNatureOfComplaint", payload);
+        }
+
         public async Task<bool> SendPropertyDetailsAsync(OnlinePropertyDetailsDto payload)
         {
-            //throw new NotImplementedException();
             return await SendDataAsync("OnlineCustomer/AddPropertyDetails", payload);
         }
+
+        public async Task<bool> SendComplaintDetailsAsync(ComplaintTypeCreateDto payload)
+        {
+            return await SendDataAsync("Complaint/SubmitComplaint", payload);
+        }
+
+        
+
 
 
         private async Task<bool> SendDataAsync<T>(string endpoint, T payload)
@@ -55,14 +80,14 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogWarning("Failed to send data to User Module. Endpoint: {Endpoint}, Status Code: {StatusCode}", endpoint, response.StatusCode);
+                    _logger.LogWarning("Failed to send data to module. Endpoint: {Endpoint}, Status Code: {StatusCode}", endpoint, response.StatusCode);
                 }
 
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while sending data to User Module: {Endpoint}", endpoint);
+                _logger.LogError(ex, "Error occurred while sending data to moodule: {Endpoint}", endpoint);
                 return false;
             }
         }

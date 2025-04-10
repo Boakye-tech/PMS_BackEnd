@@ -8,9 +8,7 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         Task<RegistrationResponse> PartnerUserRegistration(PartnerBankRegistrationRequestDto details);
 
         Task<ChangePasswordResponse> ChangePassword(ChangePasswordRequestDto changePassword);
-
-        Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetPasswordRequestDto resetPassword);
-        Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetPasswordRequestDto resetPassword);
+        Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequestDto resetPassword);
 
         Task<LoginResponseDto> LoginWithEmailAddress(LoginRequestDto emailLoginDetails);
         Task<LoginResponseDto> LoginWithMobilePhoneNumber(LoginRequestDto phoneLoginDetails);

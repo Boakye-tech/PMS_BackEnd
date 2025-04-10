@@ -24,7 +24,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly ValidationService _validationService;
         private readonly ILogger<AdministrationService> _logger;
         private readonly INotificationServices _notifyService;
-        //private readonly HttpClient _httpClient;
 
         public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,
                                      ValidationService validationService, ILogger<AdministrationService> logger, INotificationServices notifyService) //, HttpClient httpClient 
@@ -35,7 +34,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             _validationService = validationService;
             _logger = logger;
             _notifyService = notifyService;
-            //_httpClient = httpClient;
 
         }
 
@@ -726,7 +724,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<DisapprovedUserAccountResponseDto> DisapproveUserAccount(DisapprovedUserAccountDto accountDisapproval)
         {
-            //throw new NotImplementedException();
             var user = await _userManager.FindByIdAsync(accountDisapproval.UserId!);
 
             if (user is null)
@@ -867,21 +864,10 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 _unitOfWork.Users.Update(user);
                 await _unitOfWork.Complete();
 
-                ////set temp password
-                //var tempPassword = PasswordGenerator.GenerateTemporaryPassword();
-
-                ////reset password with temp password to enable login...IsFirstTime would be used to re-direct to the change password section
-                //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //await _userManager.ResetPasswordAsync(user, token, tempPassword);
-
-                //send temp password via notification (.i.e email or sms)
-                //await this.SendTokenViaNotification(user, tempPassword);
-
 
                 //_logger.LogInformation($"User account with id '{user.Id!}', with email address {user.Email!} has been successfully activated by activation officer with account id {staff.Id!} and staff id {staff.IdentificationNumber!}.", user.Id!);
 
                 _logger.LogInformation("User account has been successfully activated by activation officer.");
-
 
                 await _notifyService.SendTemporaryPasswordEmailNotification(user, tempPassword);
 
@@ -912,7 +898,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         
         public async Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation)
         {
-            //throw new NotImplementedException();
             var user = await _userManager.FindByIdAsync(accountDeactivation.UserId!);
 
             if (user is null)
@@ -961,7 +946,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            //var userAccount = await _unitOfWork.Users.Get(u => u.Email == accountDeactivation.EmailAddress);
             user.Status = (int)RegistrationStatus.Deactivated; //6 - deactivated
             user.DeactivatedBy = accountDeactivation.DeactivatedBy;
             user.DeactivatedDate = DateTime.UtcNow;
@@ -985,9 +969,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             };
         }
 
-        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff()
+        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff(string? searchParam, string? status)
         {
-           
             var staff_UserList = (from user in await _unitOfWork.StaffAccounts.GetAll()
                                   orderby user.RegistrationDate descending
                                   select new AdministrationStaffDto
@@ -1004,13 +987,32 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                     user.RoleName,
                                     RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString(),
                                     user.RegistrationDate
-                                )).ToList();
+                                ));
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                staff_UserList = staff_UserList.Where(s => s.Status.Contains(status));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                staff_UserList = staff_UserList.Where(s =>
+                    s.FirstName!.Contains(searchParam) ||
+                    s.MiddleName!.Contains(searchParam) ||
+                    s.LastName!.Contains(searchParam) ||
+                    s.DepartmentName!.Contains(searchParam) ||
+                    s.UnitName!.Contains(searchParam) ||
+                    s.IdentificationNumber!.Contains(searchParam) ||
+                    s.EmailAddress!.Contains(searchParam) ||
+                    s.PhoneNumber!.Contains(searchParam)
+                );
+            }
 
             return staff_UserList;
 
         }
-
-        public async Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationCustomer()
+ 
+        public async Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationCustomer(string? searchParam, string? status)
         {
             var customer_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Customer)
                                      join channel in await _unitOfWork.Channels.GetAll()
@@ -1027,13 +1029,29 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                         channel.ChannelName!,
                                         RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString()
 
-                                     )).ToList();
+                                     ));
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                customer_UserList = customer_UserList.Where(c => c.Status.Contains(status));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                customer_UserList = customer_UserList.Where(c =>
+                    c.CustomerName.Contains(searchParam) ||
+                    c.IdentificationNumber.Contains(searchParam) ||
+                    c.EmailAddress.Contains(searchParam) ||
+                    c.Channel.Contains(searchParam) ||
+                    c.PhoneNumber.Contains(searchParam)
+                );
+            }
 
             return customer_UserList;
 
         }
-
-        public async Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners()
+        
+        public async Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners(string? searchParam, string? status)
         {
             var partner_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Partners)
                                     orderby user.RegistrationDate descending
@@ -1048,16 +1066,28 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                          user.ContactPerson_PhoneNumber!,
                                          user.RegistrationDate,
                                          RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString()
-                                     )).ToList();
+                                     ));
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                partner_UserList = partner_UserList.Where(p => p.Status.Contains(status));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                partner_UserList = partner_UserList.Where(p =>
+                    p.PartnerName.Contains(searchParam) ||
+                    p.EmailAddress.Contains(searchParam) ||
+                    p.PhoneNumber.Contains(searchParam)
+                );
+            }
 
 
             return partner_UserList;
         }
 
-        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId)
+        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId, string? searchParam, string? status)
         {
-            //throw new NotImplementedException();
-
             var staff_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff)
                                   join department in await _unitOfWork.Department.GetAll()
                                       on user.DepartmentId equals department.DepartmentId
@@ -1083,13 +1113,32 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                       role.Name!,
                                       RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString(),
                                       user.RegistrationDate
-                                  )).ToList();
+                                  ));
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                staff_UserList = staff_UserList.Where(s => s.Status.Contains(status));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                staff_UserList = staff_UserList.Where(s =>
+                    s.FirstName!.Contains(searchParam) ||
+                    s.MiddleName!.Contains(searchParam) ||
+                    s.LastName!.Contains(searchParam) ||
+                    s.DepartmentName!.Contains(searchParam) ||
+                    s.UnitName!.Contains(searchParam) ||
+                    s.IdentificationNumber!.Contains(searchParam) ||
+                    s.EmailAddress!.Contains(searchParam) ||
+                    s.PhoneNumber!.Contains(searchParam)
+                );
+            }
 
             return staff_UserList;
 
         }
 
-        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentUnitStaff(int unitId)
+        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentUnitStaff(int unitId, string? searchParam, string? status)
         {
             //throw new NotImplementedException();
             var staff_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff)
@@ -1117,7 +1166,26 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                       role.Name!,
                                       RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString(),
                                       user.RegistrationDate
-                                  )).ToList();
+                                  ));
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                staff_UserList = staff_UserList.Where(s => s.Status.Contains(status));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                staff_UserList = staff_UserList.Where(s =>
+                    s.FirstName!.Contains(searchParam) ||
+                    s.MiddleName!.Contains(searchParam) ||
+                    s.LastName!.Contains(searchParam) ||
+                    s.DepartmentName!.Contains(searchParam) ||
+                    s.UnitName!.Contains(searchParam) ||
+                    s.IdentificationNumber!.Contains(searchParam) ||
+                    s.EmailAddress!.Contains(searchParam) ||
+                    s.PhoneNumber!.Contains(searchParam)
+                );
+            }
 
             return staff_UserList;
         }

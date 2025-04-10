@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Users.Domain.Entities.Menu
 {
-	public class Menus
+	public class Menus : AuditableEntity
 	{
 		[Key]
 		[Required]

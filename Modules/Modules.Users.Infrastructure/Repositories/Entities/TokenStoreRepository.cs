@@ -196,8 +196,7 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                     return "Sorry the OTP provided has already been used, please request for a new OTP.";
                 }
 
-
-                var result = _userDbContext.TokenStore.FirstOrDefault(t => t.Token == tokenCode && t.IsVerified == false && t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress);
+                var result = _userDbContext.TokenStore.SingleOrDefault(t => (t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress) && t.Token == tokenCode && t.IsVerified == false);
                 if (result is null)
                 {
                     return "Not Verified";
@@ -250,6 +249,44 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                     (t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress) &&
                      t.Token == tokenCode && t.ExpiryDate >= DateTime.UtcNow);
 
+            if (result is null)
+            {
+                return "Not Expired";
+            }
+
+
+            return "Expired";
+        }
+
+        public string CheckVerifiedToken(string mobilePhoneNumber_OR_emailAddress, string tokenCode)
+        {
+            if (string.IsNullOrWhiteSpace(mobilePhoneNumber_OR_emailAddress) is true && string.IsNullOrWhiteSpace(tokenCode) is true)
+            {
+                return "Invalid mobile phone number or email address provided";
+            }
+
+            if (emailRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+            {
+                emailAddress = mobilePhoneNumber_OR_emailAddress;
+            }
+
+            if (emailAddress == string.Empty && !phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+            {
+                return "Invalid mobile phone number provided";
+            }
+
+            if (phoneRegex.IsMatch(mobilePhoneNumber_OR_emailAddress))
+            {
+                mobilePhoneNumber = mobilePhoneNumber_OR_emailAddress;
+            }
+
+            if (emailAddress == string.Empty && mobilePhoneNumber == string.Empty)
+            {
+                return "Invalid mobile phone number or email address provided";
+            }
+
+
+            var result = _userDbContext.TokenStore.SingleOrDefault(t => (t.MobilePhoneNumber == mobilePhoneNumber_OR_emailAddress || t.EmailAddress == mobilePhoneNumber_OR_emailAddress) && t.Token == tokenCode && t.IsVerified == true);
             if (result is null)
             {
                 return "Not Verified";
