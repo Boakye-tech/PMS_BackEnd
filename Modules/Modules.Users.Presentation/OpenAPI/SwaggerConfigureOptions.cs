@@ -8,6 +8,13 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Modules.Users.Presentation.OpenAPI
 {
+    /// <summary>
+    /// Class to handling all swagger and open api configurations
+    /// </summary>
+    /// <remarks>
+    /// This controller contains swagger and open api configrations methods.
+    /// </remarks>
+    /// 
     public class SwaggerConfigureOptions : IConfigureOptions<SwaggerGenOptions>
     {
         private readonly IApiVersionDescriptionProvider _provider;

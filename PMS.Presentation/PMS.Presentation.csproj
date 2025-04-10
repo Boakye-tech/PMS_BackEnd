@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -25,13 +27,11 @@
   <ItemGroup>
     <None Remove="Extensions\" />
     <None Remove="Properties\PublishProfiles\" />
-    <None Remove="Logs\" />
     <None Remove="OpenAPI\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="Logs\" />
     <Folder Include="OpenAPI\" />
   </ItemGroup>
   <ItemGroup>
@@ -54,4 +54,24 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="appsettings.Development.json" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <None Update="..\appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </None>
+</ItemGroup>-->
+
+<ItemGroup>
+    <Content Include="..\appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+</ItemGroup>
+
+
+
 </Project>

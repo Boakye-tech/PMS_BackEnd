@@ -1,7 +1,11 @@
 ﻿using System;
 using FluentValidation;
+using Modules.Estates.Application.Interfaces.Management.Complaints;
 using Modules.Estates.Application.Interfaces.ModuleServices;
+using Modules.Estates.Application.Services;
+using Modules.Estates.Application.UseCases.Management.Complaints;
 using Modules.Estates.Application.UseCases.ModuleServices;
+using Modules.Estates.Domain.Events;
 
 namespace Modules.Estates.Presentation;
 
@@ -47,9 +51,16 @@ public static class ModuleExtensions
 
         services.AddScoped<ICustomerMasterService, CustomerMasterService>();
 
-        services.AddHttpClient<IIdentificationTypeService, IdentificationTypeService>();
+        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
 
+        services.AddScoped<IInterestExpressedService, InterestExpressedService>();
+
+        services.AddScoped<IIdentificationTypeService, IdentificationTypeService>();
         services.AddHttpClient<IModuleCommunicationServices, ModuleCommunicationServices>();
+
+        services.AddScoped<IComplaintTypeService, ComplaintTypeService>();
+        services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
+        services.AddScoped<IComplaintMasterService, ComplaintMasterService>();
 
 
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
@@ -60,7 +71,7 @@ public static class ModuleExtensions
         services.AddValidatorsFromAssemblyContaining<ResidentTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<SocialMediaDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<TitleDtoValidator>();
-
+        services.AddValidatorsFromAssemblyContaining<InterestExpressedDtoValidator>();
 
         // Dependency Injection - Register AutoMapper 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -15,6 +15,7 @@ namespace Modules.Notification.Presentation
 
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<INotificationSender, NotificationService>();
+            services.AddScoped<IPushSender, PushNotificationService>();
 
             services.AddScoped<ISmsSender, SmsSender>();
 

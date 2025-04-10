@@ -13,22 +13,20 @@
 
         public async Task<ChannelReadDto> AddChannelAsync(ChannelCreateDto values)
         {
-            Channels Channel = new(values.ChannelId, values.ChannelName!)
-            {
-                CreatedBy = values.CreatedBy,
-                CreatedOn = DateTime.Now
-            };
+            Channels channel = Channels.CreateUpdate(values.ChannelId, values.ChannelName!);
 
-            _unitOfWork.Channels.Insert(Channel);
+            channel.CreatedBy = values.CreatedBy;
+            channel.CreatedOn = DateTime.Now;
+
+            _unitOfWork.Channels.Insert(channel);
             await _unitOfWork.Complete();
 
-            return new ChannelReadDto(Channel.ChannelId, Channel.ChannelName!);
+            return new ChannelReadDto(channel.ChannelId, channel.ChannelName!);
+
         }
 
         public async Task<string> DeleteChannelAsync(int value)
         {
-            //throw new NotImplementedException();
-
             var response = await _unitOfWork.Channels.Get(value);
 
             if (response is null)
@@ -58,17 +56,16 @@
 
         public async Task<ChannelReadDto> UpdateChannelAsync(ChannelUpdateDto values)
         {
-            //throw new NotImplementedException();
-            Channels Channel = new(values.ChannelId, values.ChannelName!)
-            {
-                ModifiedBy = values.ModifiedBy,
-                ModifiedOn = DateTime.Now
-            };
+            Channels channel = Channels.CreateUpdate(values.ChannelId, values.ChannelName!);
 
-            _unitOfWork.Channels.Update(Channel);
+            channel.ModifiedBy = values.ModifiedBy;
+            channel.ModifiedOn = DateTime.Now;
+
+
+            _unitOfWork.Channels.Update(channel);
             await _unitOfWork.Complete();
 
-            return new ChannelReadDto(Channel.ChannelId, Channel.ChannelName!);
+            return new ChannelReadDto(channel.ChannelId, channel.ChannelName!);
 
         }
 

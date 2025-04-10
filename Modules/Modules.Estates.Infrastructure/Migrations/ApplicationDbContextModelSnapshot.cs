@@ -23,6 +23,160 @@ namespace Modules.Estates.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Management.Complaint", b =>
+                {
+                    b.Property<int>("ComplaintId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintId"));
+
+                    b.Property<string>("AssignedBy")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("AssignedTo")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<DateTime>("AvailabilityDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ComplaintDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ComplaintNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("ComplaintStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ComplaintTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("CustomerCode")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("DateAssigned")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateReviewed")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DetailsOfComplaint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocumentOne")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("DocumentThree")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("DocumentTwo")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.Property<bool>("IsTheMatterInCourt")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NatureOfComplaintId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<int>("PropertyLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("ResolutionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ResolvedBy")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("ReviewedBy")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<string>("SubmittedBy")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("SubmittedBy_PhoneNumber")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("ComplaintId");
+
+                    b.ToTable("Complaints", "est");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Management.StopDebit", b =>
+                {
+                    b.Property<int>("StopDebitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StopDebitId"));
+
+                    b.Property<string>("ActionBy")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<DateTime>("ActionOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerCode")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("DebtorStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Reasons")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("StopDebitId");
+
+                    b.ToTable("StopDebit", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Registration.CustomerMaster", b =>
                 {
                     b.Property<int>("CustomerMasterId")
@@ -93,6 +247,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DateOfMarriage")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DebtorStatus")
                         .HasColumnType("int");
 
@@ -147,8 +304,14 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LocalityId")
                         .HasColumnType("int");
+
+                    b.Property<string>("MaritalStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -424,6 +587,78 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.ToTable("PropertyMaster", "est");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.ComplaintStatuses", b =>
+                {
+                    b.Property<int>("ComplaintStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintStatusId"));
+
+                    b.Property<string>("ComplaintStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ComplaintStatusId");
+
+                    b.ToTable("ComplaintStatuses", "est");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.ComplaintType", b =>
+                {
+                    b.Property<int>("ComplaintTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintTypeId"));
+
+                    b.Property<string>("ComplaintTypes")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ComplaintTypeId");
+
+                    b.ToTable("ComplaintType", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.CustomerType", b =>
                 {
                     b.Property<int>("CustomerTypeId")
@@ -577,6 +812,42 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.ToTable("IdentificationType", "est");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.InterestExpressed", b =>
+                {
+                    b.Property<int>("InterestExpressedId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InterestExpressedId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerInterestExpressed")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("InterestExpressedId");
+
+                    b.ToTable("InterestExpressed", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.Nationality", b =>
                 {
                     b.Property<int>("NationalityId")
@@ -611,6 +882,45 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.HasKey("NationalityId");
 
                     b.ToTable("Nationality", "est");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.NatureOfComplaint", b =>
+                {
+                    b.Property<int>("NatureOfComplaintId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NatureOfComplaintId"));
+
+                    b.Property<int>("ComplaintTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NatureOfComplaints")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.HasKey("NatureOfComplaintId");
+
+                    b.ToTable("NatureOfComplaint", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.OwnershipType", b =>

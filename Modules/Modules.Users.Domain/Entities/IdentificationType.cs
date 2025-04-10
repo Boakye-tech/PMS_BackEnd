@@ -30,7 +30,7 @@ namespace Modules.Users.Domain.Entities
                 throw new ArgumentException("Invalid Identification Type Data.");
             }
 
-            if (identificationTypeId <= 0)
+            if (identificationTypeId < 0)
                 throw new ArgumentException("Identification Type Id must be greater than zero.");
 
             if (string.IsNullOrWhiteSpace(identificationTypes) || identificationTypes.Length > 20)

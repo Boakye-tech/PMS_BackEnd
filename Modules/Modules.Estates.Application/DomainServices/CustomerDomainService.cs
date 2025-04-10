@@ -112,6 +112,17 @@ namespace Modules.Estates.Application.DomainServices
             return true;
         }
 
+        public async Task<bool> CustomerExists(int CustomerMasterId)
+        {
+            var result = await _unitOfWork.CustomerMaster.Get(CustomerMasterId);
+            if (result is null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
 
 
 

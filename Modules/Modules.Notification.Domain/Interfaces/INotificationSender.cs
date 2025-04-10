@@ -6,6 +6,8 @@ namespace Modules.Notification.Domain.Interfaces
 	{
         Task<bool> SendAsync(Notifications notification);
         Task<string> Send(Notifications notification);
+
+        Task<string> PushAsync(Notifications values);
     }
 }
 

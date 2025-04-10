@@ -25,6 +25,11 @@
     <None Remove="Interfaces\Registration\" />
     <None Remove="Interfaces\DomainServices\" />
     <None Remove="Enums\" />
+    <None Remove="ValueObjects\Customer\" />
+    <None Remove="ValueObjects\Property\" />
+    <None Remove="Events\Property\" />
+    <None Remove="Interfaces\Management\" />
+    <None Remove="Events\Complaints\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -40,5 +45,10 @@
     <Folder Include="Interfaces\Registration\" />
     <Folder Include="Interfaces\DomainServices\" />
     <Folder Include="Enums\" />
+    <Folder Include="ValueObjects\Customer\" />
+    <Folder Include="ValueObjects\Property\" />
+    <Folder Include="Events\Property\" />
+    <Folder Include="Interfaces\Management\" />
+    <Folder Include="Events\Complaints\" />
   </ItemGroup>
 </Project>

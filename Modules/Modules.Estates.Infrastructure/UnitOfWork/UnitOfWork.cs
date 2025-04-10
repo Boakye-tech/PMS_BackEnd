@@ -1,4 +1,7 @@
-﻿namespace Modules.Estates.Infrastructure.UnitOfWork;
+﻿
+using ComplaintsRepository = Modules.Estates.Infrastructure.Repositories.Entities.Setup.Customer.ComplaintsRepository;
+
+namespace Modules.Estates.Infrastructure.UnitOfWork;
 
 public class UnitOfWork: IUnitOfWork
 {
@@ -56,9 +59,18 @@ public class UnitOfWork: IUnitOfWork
         PropertyMaster = new PropertyMasterRepository(_dbContext);
 
         Activity = new ActivityRepository(_dbContext);
+
         ActivityType = new ActivityTypeRepository(_dbContext);
 
         OwnershipType = new OwnershipTypeRepository(_dbContext);
+
+        StopDebit = new StopDebitRepository(_dbContext);
+
+        InterestExpressed = new InterestExpressedRepository(_dbContext);
+
+        Complaint = new ComplaintRepository(_dbContext);
+        ComplaintType = new ComplaintTypeRepository(_dbContext);
+        NatureOfComplaint = new NatureOfComplaintRepository(_dbContext);
 
     }
 
@@ -111,9 +123,23 @@ public class UnitOfWork: IUnitOfWork
 
     //jan 2 '25
     public IActivityRepository Activity { get; private set; }
+
     public IActivityTypeRepository ActivityType { get; private set; }
 
     public IOwnershipTypeRepository OwnershipType { get; private set; }
+
+    //Mar 20 '25
+    public IStopDebitRepository StopDebit { get; private set; }
+
+    //Mar 26 '25
+    public IInterestExpressedRepository InterestExpressed { get; private set; }
+
+    //Apr 06 '25
+    public IComplaintTypeRepository ComplaintType { get; private set; }
+
+    public INatureOfComplaintRepository NatureOfComplaint { get; private set; }
+
+    public IComplaintRepository Complaint { get; private set; }
 
     public Task<int> Complete()
     {

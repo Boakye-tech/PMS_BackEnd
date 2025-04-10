@@ -144,13 +144,18 @@ namespace Modules.Users.Application.UseCases
             if (validationResult.IsValid)
             {
                 Menus menu = new(menus.menuId, menus.menuName, menus.description, menus.IsOpen);
+                menu.CreatedBy = menus.createdBy;
+
                 _unitOfWork.Menus.Insert(menu);
                 await _unitOfWork.Complete();
 
-                return new MenusDto(menu.MenuId, menus.menuName, menu.Description, menu.IsOpen);
+                var _user = await _userManager.FindByIdAsync(menus.createdBy);
+                var _createdBy = string.Concat(_user!.FirstName," ",_user.MiddleName," ",_user.LastName).Trim(); 
+
+                return new MenusDto(menu.MenuId, menus.menuName, menu.Description, _createdBy, menu.IsOpen);
             }
 
-            return new MenusDto(StatusCodes.Status400BadRequest, "BadRequest", "400-BadRequest", false);
+            return new MenusDto(StatusCodes.Status400BadRequest, "BadRequest", "BadRequest", "400-BadRequest", false);
         }
 
         public async Task<SubMenusDto> CreateSubMenu(SubMenusCreateDto subMenus)
@@ -160,23 +165,57 @@ namespace Modules.Users.Application.UseCases
             if (validationResult.IsValid)
             {
                 SubMenus _subMenu = new(subMenus.menuId, subMenus.subMenuId, subMenus.subMenuName, subMenus.description, subMenus.IsOpen);
+                _subMenu.CreatedBy = subMenus.createdBy;
+
                 _unitOfWork.SubMenus.Insert(_subMenu);
                 await _unitOfWork.Complete();
 
-                return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName, _subMenu.Description, _subMenu.IsOpen);
+                var _user = await _userManager.FindByIdAsync(subMenus.createdBy);
+                var _createdBy = string.Concat(_user!.FirstName, " ", _user.MiddleName, " ", _user.LastName).Trim();
+
+
+                return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName, _subMenu.Description, _createdBy, _subMenu.IsOpen);
             }
 
-            return new SubMenusDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "400-BadRequest",false);
+            return new SubMenusDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "BadRequest", "400-BadRequest",false);
         }
 
-        public void DeleteMenu(MenusDeleteDto menuid)
+        public async Task<GenericResponseDto> DeleteMenu(int menuId)
         {
-            throw new NotImplementedException();
+            var response = await _unitOfWork.Menus.Get(m => m.MenuId == menuId);
+            if(response is null)
+            {
+                return new GenericResponseDto("Menu id supplied does nto exist");
+            }
+
+            if (response is not null)
+            {
+                _unitOfWork.Menus.Delete(response);
+                await _unitOfWork.Complete();
+                return new GenericResponseDto("Menu deleted successfully.");
+            }
+
+            return new GenericResponseDto("Menu deletion unsuccessful.");
+
         }
 
-        public void DeleteSubMenu(SubMenuDeleteDto subMenuId)
+        public async Task<GenericResponseDto> DeleteSubMenu(int subMenuId)
         {
-            throw new NotImplementedException();
+            var response = await _unitOfWork.SubMenus.Get(sm => sm.SubMenuId == subMenuId);
+            if (response is null)
+            {
+                return new GenericResponseDto("Sub-menu id supplied does nto exist");
+            }
+
+            if (response is not null)
+            {
+                _unitOfWork.SubMenus.Delete(response);
+                await _unitOfWork.Complete();
+
+                return new GenericResponseDto("Sub-menu deleted successfully.");
+            }
+
+            return new GenericResponseDto("Sub-menu deletion unsuccessful.");
         }
 
         public IEnumerable<MenuActionsDto> GetActions()
@@ -247,6 +286,49 @@ namespace Modules.Users.Application.UseCases
             }
 
             return new PermissionsAccessModulesDto(values.RoleId, accessModules);
+        }
+
+        public async Task<List<AllMenusDto>> GetAllMenus()
+        {
+            List<AllMenusDto> allMenusResponse = new List<AllMenusDto>();
+
+            var menuJoined = (
+                            from m in await _unitOfWork.Menus.GetAll()
+                            join u in await _unitOfWork.Users.GetAll() on m.CreatedBy equals u.Id
+                            select new MenusDto
+                            (
+                                m.MenuId,
+                                m.MenuName,
+                                m.Description,
+                                string.Concat(u.FirstName," ", u.MiddleName, " ", u.LastName).Trim(),
+                                m.IsOpen
+                            )).ToList();
+
+            var subMenuJoined = (
+                from m in await _unitOfWork.SubMenus.GetAll()
+                join u in await _unitOfWork.Users.GetAll() on m.CreatedBy equals u.Id
+                select new SubMenusDto
+                (
+                    m.MenuId,
+                    m.SubMenuId,
+                    m.SubMenuName,
+                    m.Description,
+                    string.Concat(u.FirstName, " ", u.MiddleName, " ", u.LastName).Trim(),
+                    m.IsOpen
+                )).ToList();
+
+            foreach (var _menuItem in menuJoined)
+            {
+                var _subMenus = subMenuJoined.FindAll(sm => sm.menuId == _menuItem.menuId);
+
+                var menuItem = _mapper.Map<MenusDto>(_menuItem);
+                var subMenuItem = _mapper.Map<List<SubMenusDto>>(_subMenus);
+
+                AllMenusDto _allMenusDto = new AllMenusDto(menuItem, subMenuItem);
+                allMenusResponse.Add(_allMenusDto);
+            }
+
+            return allMenusResponse;
         }
 
         public async Task<IEnumerable<MenusDto>> GetMenus()
@@ -365,7 +447,7 @@ namespace Modules.Users.Application.UseCases
             throw new NotImplementedException();
         }
 
-        public void DeleteSubMenuItems(SubMenuItemsDeleteDto subMenuItemsId)
+        public Task<GenericResponseDto> DeleteSubMenuItems(int subMenuItemsId)
         {
             throw new NotImplementedException();
         }

@@ -23,7 +23,7 @@ public class CustomerType : AuditableEntity
             throw new ArgumentException("Invalid Customer Type Data.");
         }
 
-        if (customerTypeId <= -1)
+        if (customerTypeId < 0)
         {
             throw new ArgumentException("Customer Type Id must be greater than zero.");
         }
@@ -43,7 +43,7 @@ public class CustomerType : AuditableEntity
             throw new ArgumentException("Invalid Customer Type Data.");
         }
 
-        if (customerTypeId <= -1)
+        if (customerTypeId < 0)
         {
             throw new ArgumentException("Customer Type Id must be greater than zero.");
         }

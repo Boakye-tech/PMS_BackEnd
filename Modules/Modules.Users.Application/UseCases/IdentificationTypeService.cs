@@ -14,7 +14,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<IdentificationTypeDto> AddIdentificationTypeAsync(IdentificationTypeDto values)
         {
-            IdentificationType request = new(values.identificationTypeId, values.identificationTypes!);
+            IdentificationType request = IdentificationType.InsertUpdate(values.identificationTypeId, values.identificationTypes!);
 
             _unitOfWork.IdentificationType.Insert(request);
             await _unitOfWork.Complete();
@@ -46,7 +46,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<IdentificationTypeDto> UpdateIdentificationTypeAsync(IdentificationTypeDto values)
         {
-            IdentificationType request = new(values.identificationTypeId, values.identificationTypes!);
+            IdentificationType request = IdentificationType.InsertUpdate(values.identificationTypeId, values.identificationTypes!);
 
             _unitOfWork.IdentificationType.Update(request);
             await _unitOfWork.Complete();

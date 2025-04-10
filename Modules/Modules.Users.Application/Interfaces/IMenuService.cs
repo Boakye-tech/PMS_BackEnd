@@ -11,16 +11,18 @@ namespace Modules.Users.Application.Interfaces
 	{
         Task<MenusDto> CreateMenu(MenusDto menus);
         Task<MenusDto> UpdateMenu(MenusDto updateMenus);
-        void DeleteMenu(MenusDeleteDto menuid);
+        Task<GenericResponseDto> DeleteMenu(int menuId);
         
 
         Task<SubMenusDto> CreateSubMenu(SubMenusCreateDto subMenus);
         Task<SubMenusDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus);
-        void DeleteSubMenu(SubMenuDeleteDto subMenuId);
+        Task<GenericResponseDto> DeleteSubMenu(int subMenuId);
 
         Task<SubMenuItemsDto> CreateSubMenuItems(SubMenuItemsCreateDto subMenuItems);
         Task<SubMenuItemsDto> UpdateSubMenuItems(SubMenuItemsUpdateDto updateSubMenuItems);
-        void DeleteSubMenuItems(SubMenuItemsDeleteDto subMenuItemsId);
+        Task<GenericResponseDto> DeleteSubMenuItems(int subMenuItemsId);
+
+        Task<List<AllMenusDto>> GetAllMenus();
 
         Task<IEnumerable<MenusDto>> GetMenus();
         Task<IEnumerable<SubMenusDto>> GetSubMenus();

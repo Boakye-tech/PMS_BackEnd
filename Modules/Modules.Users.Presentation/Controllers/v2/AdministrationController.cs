@@ -79,10 +79,9 @@ namespace Modules.Users.Presentation.Controllers.v2
         // GET: api/values
         [HttpGet]
         [Route("GetUserRoles")]
-        //public IEnumerable<IdentityRole> GetUserRoles()
-        public IEnumerable<RolesDto> GetUserRoles()
+        public async Task<List<RolesDto>> GetUserRoles()
         {
-            return _adminService.GetUserRoles();
+            return await _adminService.GetUserRoles();
         }
 
         [HttpPost]

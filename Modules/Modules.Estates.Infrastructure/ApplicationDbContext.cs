@@ -46,6 +46,16 @@ public class ApplicationDbContext : ModuleDbContext
 
     public DbSet<OwnershipType> OwnershipType { get; set; }
 
+    public DbSet<StopDebit> StopDebit { get; set; }
+
+    public DbSet<InterestExpressed> InterestExpressed { get; set; }
+
+    public DbSet<ComplaintType> ComplaintType { get; set; }
+    public DbSet<NatureOfComplaint> NatureOfComplaint { get; set; }
+    public DbSet<Complaint> Complaints { get; set; }
+
+    public DbSet<ComplaintStatuses> ComplaintStatuses { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -61,6 +71,8 @@ public class ApplicationDbContext : ModuleDbContext
         modelBuilder.Entity<CustomerMaster>()
             .HasIndex(cm => cm.CustomerCode)
             .IsUnique(true);
+
+        modelBuilder.Entity<CustomerMaster>().Ignore(x => x.DomainEvents);
 
         //modelBuilder.Entity<ApartmentTypes>
 

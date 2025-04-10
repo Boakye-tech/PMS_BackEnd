@@ -1,4 +1,6 @@
-﻿using Modules.Users.Domain.Entities;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Modules.Users.Application.Dtos.Entities;
+using Modules.Users.Domain.Entities;
 
 namespace Modules.Users.Application.UseCases
 {
@@ -15,11 +17,10 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentReadDto> AddDepartmentAsync(DepartmentCreateDto values)
         {
-            Department department = new(values.DepartmentId, values.DepartmentName!)
-            {
-                CreatedBy = values.CreatedBy,
-                CreatedOn = DateTime.Now
-            };
+            Department department = Department.CreateUpdate(values.DepartmentId, values.DepartmentName!);
+
+            department.CreatedBy = values.CreatedBy;
+            department.CreatedOn = DateTime.Now;
 
             _unitOfWork.Department.Insert(department);
             await _unitOfWork.Complete();
@@ -29,7 +30,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<GenericResponseDto> DeleteDepartment(int departmentId)
         {
-            //throw new NotImplementedException();
             var department = await _unitOfWork.Department.Get(departmentId);
             if(department is null)
             {
@@ -62,12 +62,9 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentReadDto> UpdateDepartmentAsync(DepartmentUpdateDto values)
         {
-            //throw new NotImplementedException();
-            Department department = new(values.DepartmentId, values.DepartmentName!)
-            {
-                ModifiedBy = values.ModifiedBy,
-                ModifiedOn = DateTime.UtcNow
-            };
+            Department department = Department.CreateUpdate(values.DepartmentId, values.DepartmentName!);
+            department.ModifiedBy = values.ModifiedBy;
+            department.ModifiedOn = DateTime.UtcNow;
 
             _unitOfWork.Department.Update(department);
             await _unitOfWork.Complete();

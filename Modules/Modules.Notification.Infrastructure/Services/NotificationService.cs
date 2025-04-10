@@ -8,17 +8,28 @@ namespace Modules.Notification.Infrastructure.Services
     {
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
+        private readonly IPushSender _pushSender;
 
-        public NotificationService(IEmailSender emailSender, ISmsSender smsSender)
+        public NotificationService(IEmailSender emailSender, ISmsSender smsSender, IPushSender pushSender)
         {
             _emailSender = emailSender;
             _smsSender = smsSender;
+            _pushSender = pushSender;
+        }
+
+        public async Task<string> PushAsync(Notifications values)
+        {
+            if(values.Type != NotificationType.Push)
+            {
+                return "Invalid notification type.";
+            }
+
+            var response = await _pushSender.PushMessageAsync(new Application.Dtos.PushNotificationDto(Title: values.Subject!, Body: values.Message!, DeviceToken: values.UserId!));
+            return response;
         }
 
         public async Task<string> Send(Notifications values)
         {
-            //throw new NotImplementedException();
-
             if (values.Type == NotificationType.Email)
             {
                 await _emailSender.SendEmailAsync(values.UserId!, values.Subject!, values.Message!.ToString());
@@ -37,7 +48,6 @@ namespace Modules.Notification.Infrastructure.Services
 
         public async Task<bool> SendAsync(Notifications values)
         {
-            //throw new NotImplementedException();
             if (values.Type == NotificationType.Email)
             {
                 await _emailSender.SendEmailAsync(values.UserId!, values.Subject!, values.Message!.ToString());

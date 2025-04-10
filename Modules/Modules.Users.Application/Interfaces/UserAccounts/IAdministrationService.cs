@@ -7,8 +7,15 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 	public interface IAdministrationService
 	{
         //IEnumerable<IdentityRole> GetUserRoles();
-        IEnumerable<RolesDto> GetApprovedUserRoles();
-        IEnumerable<RolesDto> GetUserRoles();
+        Task<List<RolesDto>> GetApprovedUserRoles();
+        Task<List<RolesDto>> GetDepartmentUserRoles(int departmentId);
+        Task<List<RolesDto>> GetDepartmentUnitUserRoles(int unit);
+        Task<List<RolesDto>> GetRejectedUserRoles();
+
+        Task<List<RolesDto>> GetUserRoles();
+        Task<List<RolesDto>> GetUserRoles(int departmentId);
+        Task<List<RolesDto>> GetUnitUserRoles(int unit);
+
         Task<IdentityResult> CreateUserRole(RolesCreateDto role);
         Task<IdentityResult> UpdateUserRole(RolesUpdateDto role);
         Task<IdentityResult> DeleteUserRole(RolesDeleteDto roleId);
@@ -27,11 +34,15 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation);
 
 
-        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff();
-        Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationCustomer();
-        Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners();
-        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId);
-        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentUnitStaff(int unitId);
+        //Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff();
+        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff(string? searchParam, string? status);
+        //Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationCustomer();
+        Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationCustomer(string? searchParam, string? status);
+        //Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners();
+        Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners(string? searchParam, string? status);
+
+        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId,string? searchParam, string? status);
+        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentUnitStaff(int unitId, string? searchParam, string? status);
 
 
 

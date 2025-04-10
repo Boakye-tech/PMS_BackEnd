@@ -6,7 +6,11 @@ namespace Modules.Users.Application.Validations
 {
 	public class ValidationService
 	{
-		private readonly IServiceProvider _serviceProvider;
+		private readonly IServiceProvider? _serviceProvider;
+
+		public ValidationService()
+		{
+		}
 
 		public ValidationService(IServiceProvider serviceProvider)
 		{
@@ -15,9 +19,9 @@ namespace Modules.Users.Application.Validations
         }
 
 
-		public ValidationResult Validate<T>(T instance)
+		public virtual ValidationResult Validate<T>(T instance)
 		{
-			var validator = _serviceProvider.GetService<IValidator<T>>();
+			var validator = _serviceProvider!.GetService<IValidator<T>>();
 			return validator!.Validate(instance);
 		}
 

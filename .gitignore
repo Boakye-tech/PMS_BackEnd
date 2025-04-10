@@ -6,6 +6,40 @@ obj/
 */obj/
 
 
+**/appsettings.users.json
+**/appsettings.users.Development.json
+
+**/appsettings.notification.json
+**/appsettings.notification.Development.json
+
+**/appsettings.finance.json
+**/appsettings.finance.Development.json
+
+**/appsettings.estates.json
+**/appsettings.estates.Development.json
+
+**/appsettings.customers.json
+**/appsettings.customers.Development.json
+
+**/appsettings.billing.json
+**/appsettings.billing.Development.json
+
+
+**/appsettings.Development.json
+appsettings.json
+
+.sonarqube/
+coverage.opencover.xml
+coverage.cobertura.xml
+TestResults/
+report/
+SonarQube/
+
+# Logs
+Logs/
+
+
+
 # globs
 Makefile.in
 *.userprefs

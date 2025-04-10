@@ -115,6 +115,8 @@ namespace Modules.Customers.Application.Dtos.PropertyDetails
         public string[]? PropertyImages { get; set; }
 
         public bool IsLargeScale { get; set; }
+
+        public string? Address { get; set; }
     }
 }
 

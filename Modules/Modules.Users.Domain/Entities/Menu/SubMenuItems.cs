@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Users.Domain.Entities.Menu
 {
-	public class SubMenuItems
+	public class SubMenuItems : AuditableEntity
 	{
 		public int MenuId { get; set; }
 

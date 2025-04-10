@@ -8,19 +8,23 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(10)]
         public string? CustomerCode { get; set; }
 
-        [StringLength(300)]
-        public string? FullName { get; set; }
+        [StringLength(25)]
+        public string? CustomerType { get; set; }
 
-        public string? Locality { get; set; }
-       
-        [StringLength(12)]
-        public string? PrimaryMobileNumber { get; set; }
+        [StringLength(15)]
+        public string? DebtorStatus { get; set; }
 
         [EmailAddress]
         public string? EmailAddress { get; set; }
 
-        public string? DebtorStatus { get; set; }
+        [StringLength(300)]
+        public string? FullName { get; set; }
 
+        [StringLength(50)]
+        public string? Locality { get; set; }
+       
+        [StringLength(12)]
+        public string? PrimaryMobileNumber { get; set; }
     }
 
     

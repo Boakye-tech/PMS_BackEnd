@@ -1,5 +1,4 @@
 ﻿
-using Modules.Estates.Domain.Interfaces.Registration;
 
 namespace Modules.Estates.Domain;
 
@@ -39,6 +38,17 @@ public interface IUnitOfWork : IDisposable
     IActivityTypeRepository ActivityType { get; }
 
     IOwnershipTypeRepository OwnershipType { get; }
+
+    //Mar 20 '25
+    IStopDebitRepository StopDebit { get; }
+
+    //Mar 26 '25
+    IInterestExpressedRepository InterestExpressed { get; }
+
+    //Apr 06 '25
+    IComplaintRepository Complaint { get; }
+    IComplaintTypeRepository ComplaintType { get; }
+    INatureOfComplaintRepository NatureOfComplaint { get; }
 
     Task<int> Complete();
 }

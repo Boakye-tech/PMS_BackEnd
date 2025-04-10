@@ -1,7 +1,29 @@
 ﻿
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("appsettings.notification.json", optional: false, reloadOnChange: true);
+if (builder.Environment.IsDevelopment())
+{
+    var currentDirectory = Directory.GetCurrentDirectory();
+    var solutionDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName ?? "";
+    var solutionLevelConfigPath = Path.Combine(solutionDirectory, "appsettings.Development.json");
+
+    if (File.Exists(solutionLevelConfigPath))
+    {
+        builder.Configuration.AddJsonFile(solutionLevelConfigPath, optional: false, reloadOnChange: true);
+    }
+}
+
+if (builder.Environment.IsProduction())
+{
+    var currentDirectory = Directory.GetCurrentDirectory();
+    var solutionDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName ?? "";
+    var solutionLevelConfigPath = Path.Combine(solutionDirectory, "appsettings.json");
+
+    if (File.Exists(solutionLevelConfigPath))
+    {
+        builder.Configuration.AddJsonFile(solutionLevelConfigPath, optional: false, reloadOnChange: true);
+    }
+}
 
 
 //Add Serilog Configuration
@@ -88,6 +110,12 @@ builder.Services.AddSwaggerGen(options =>
 //            )
 //    );
 
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "npms-18309-firebase-adminsdk-fbsvc-52b1e19a3c.json"))
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -114,6 +142,8 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
+
+
 
 app.UseHttpsRedirection();
 

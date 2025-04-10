@@ -8,9 +8,7 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         Task<RegistrationResponse> PartnerUserRegistration(PartnerBankRegistrationRequestDto details);
 
         Task<ChangePasswordResponse> ChangePassword(ChangePasswordRequestDto changePassword);
-
-        Task<ResetPasswordResponse> ResetPasswordViaEmailAddress(ResetPasswordRequestDto resetPassword);
-        Task<ResetPasswordResponse> ResetPasswordViaMobilePhoneNumber(ResetPasswordRequestDto resetPassword);
+        Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequestDto resetPassword);
 
         Task<LoginResponseDto> LoginWithEmailAddress(LoginRequestDto emailLoginDetails);
         Task<LoginResponseDto> LoginWithMobilePhoneNumber(LoginRequestDto phoneLoginDetails);
@@ -38,7 +36,9 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 
         //Task<bool> ActivateCustomerAccount(UserRequestParameter mobileNumber);
 
-        Task<GenericResponseDto> UpdateAccountDetails(UpdateUserDto values);
+        Task<UpdateAccountDetailsResponseDto> UpdateAccountDetails(UpdateUserDto values);
+        Task<UpdateTokenDetailsResponseDto> UpdateMobileToken(UpdateMobileTokenDto values);
+
     }
 }
 

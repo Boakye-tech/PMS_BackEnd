@@ -1,14 +1,18 @@
 ﻿using System;
-using Modules.Estates.Domain.Entities.Setup.Property;
-using Modules.Estates.Domain.Enums;
-using Modules.Estates.Domain.Interfaces.DomainServices;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Modules.Estates.Domain.Entities.Registration
 {
-	public class CustomerMaster : BaseEntity
-	{
+    public partial class CustomerMaster : BaseEntity
+    {
+        private readonly List<DomainEvent> _domainEvents = new();
+
+        [NotMapped]
+        public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
         [Key]
-		public int CustomerMasterId { get; set; }
+        public int CustomerMasterId { get; set; }
 
         [Required]
         public int CustomerTypeId { get; set; }
@@ -141,53 +145,81 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public bool IsDeleted { get; set; }
 
+        public bool IsPrimary { get; set; }
+
+        public string? MaritalStatus { get; set; }
+
+        public DateTime? DateOfMarriage { get; set; }
+
 
         public CustomerMaster()
-		{
-		}
-
-        public CustomerMaster(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, string companyName, string businessRegistrationNumber, string tinNumber, string picture, 
-            int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress, string residentPermitNumber,
-            DateTime residentPermitDateIssued, DateTime residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber, string identificationTypeImageOne, string identificationTypeImageTwo,
-            string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,
-            string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImage, bool isDeleted, ICustomerDomainService customerDomainService)
         {
         }
 
-
-        public static async Task<CustomerMaster> CreateProspectiveAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, string companyName, string picture, int genderId,
-                                                                        int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress, 
-                                                                        int socialMediaTypeId, string socialMediaAccount, string comments, string interestExpressed, string CreatedBy,  ICustomerDomainService customerDomainService)
+        public CustomerMaster(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, string companyName, string businessRegistrationNumber, string tinNumber, string picture,
+            int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress, string residentPermitNumber,
+            DateTime residentPermitDateIssued, DateTime residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber, string identificationTypeImageOne, string identificationTypeImageTwo,
+            string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,
+            string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImage, bool isDeleted, bool isParent, string maritalStatus, DateTime dateOfMarriage, ICustomerDomainService customerDomainService)
         {
-            if (customerTypeId <= 0 || localityId <= 0 || string.IsNullOrWhiteSpace(surName) && string.IsNullOrWhiteSpace(otherNames) && string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(primaryMobileNumber)|| string.IsNullOrWhiteSpace(emailAddress) || string.IsNullOrWhiteSpace(interestExpressed))
+        }
+
+        public static async Task<CustomerMaster> CreateProspectiveAsync(
+            int customerMasterId,
+            int customerTypeId,
+            int residentTypeId,
+            int localityId,
+            string customerCode,
+            int titleId,
+            string surName,
+            string otherNames,
+            string companyName,
+            string picture,
+            int genderId,
+            int nationalityId,
+            string postalAddress,
+            string residentialAddress,
+            string digitalAddress,
+            string primaryMobileNumber,
+            string secondaryMobileNumber,
+            string officeNumber,
+            string whatsAppNumber,
+            string emailAddress,
+            int socialMediaTypeId,
+            string socialMediaAccount,
+            string comments,
+            string interestExpressed,
+            string createdBy,
+            ICustomerDomainService customerDomainService)
+        {
+
+            if (customerTypeId <= 0 || localityId <= 0 || string.IsNullOrWhiteSpace(surName) && string.IsNullOrWhiteSpace(otherNames) && string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress) || string.IsNullOrWhiteSpace(interestExpressed))
             {
                 throw new ArgumentException("Invalid prospective customer registration data.");
             }
 
-
             if (!await customerDomainService.CustomerTypeExists(customerTypeId))
-                throw new ArgumentException("Invalid customer type id.");
+                throw new ArgumentException(ErrorMessages.InvalidCustomerTypeId);
 
             if (residentTypeId > 0)
             {
                 if (!await customerDomainService.ResidentTypeExists(residentTypeId))
-                    throw new ArgumentException("Invalid resident type id.");
+                    throw new ArgumentException(ErrorMessages.InvalidResidentTypeId);
             }
 
-
             if (!await customerDomainService.LocalityExists(localityId))
-                throw new ArgumentException("Invalid locality id.");
+                throw new ArgumentException(ErrorMessages.InvalidLocalityId);
 
             if (!await customerDomainService.GenderExists(genderId))
-                throw new ArgumentException("Invalid gender id.");
+                throw new ArgumentException(ErrorMessages.InvalidGenderId);
 
             if (!await customerDomainService.NationalityExists(nationalityId))
-                throw new ArgumentException("Invalid nationality id.");
-           
+                throw new ArgumentException(ErrorMessages.InvalidNationalityId);
+
             if (titleId > 0)
             {
                 if (!await customerDomainService.TitleExists(titleId))
-                    throw new ArgumentException("Invalid title id.");
+                    throw new ArgumentException(ErrorMessages.InvalidTitleId);
             }
 
             if (genderId <= 0)
@@ -203,7 +235,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             if (socialMediaTypeId > 0)
             {
                 if (!await customerDomainService.SocialMediaExists(socialMediaTypeId))
-                    throw new ArgumentException("Invalid social media type id.");
+                    throw new ArgumentException(ErrorMessages.InvalidSocialMediaTypeId);
             }
 
             if (string.IsNullOrWhiteSpace(surName) && string.IsNullOrWhiteSpace(otherNames) && string.IsNullOrWhiteSpace(companyName))
@@ -221,7 +253,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Email address must not be null or empty");
             }
 
-            if(string.IsNullOrWhiteSpace(interestExpressed))
+            if (string.IsNullOrWhiteSpace(interestExpressed))
             {
                 throw new ArgumentException("Interest expressed must not be null or empty");
             }
@@ -230,28 +262,19 @@ namespace Modules.Estates.Domain.Entities.Registration
             {
                 throw new ArgumentException("Comments must not be null or empty");
             }
-
             var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
-
-            if (customer_locality is null)
+            var locality = await customerDomainService.LocalityExists(localityId);
+            if (locality is false)
             {
                 throw new ArgumentException("Customer locality provided does not exist");
             }
 
-
-            //int counter = customer_locality.CustomerCodeCounter;
-            //counter++;
-
-            //string incrementedNumber = counter.ToString("D4");
-
             string code = new Random().Next(0, 10000).ToString();
-
 
             string locality_customerCode = customer_locality.LocalityInitial!;
             string _customercode = $"{locality_customerCode}{code}";
 
-
-            return new CustomerMaster
+            var customer = new CustomerMaster
             {
                 CustomerMasterId = customerMasterId,
                 CustomerTypeId = customerTypeId,
@@ -299,19 +322,25 @@ namespace Modules.Estates.Domain.Entities.Registration
                 ContactPerson_IdentificationTypeNumber = string.Empty,
                 ContactPerson_IdentificationTypeImageOne = string.Empty,
                 ContactPerson_IdentificationTypeImageTwo = string.Empty,
-                IsDeleted = false
+                IsDeleted = false,
+                CreatedBy = createdBy
             };
 
+            customer._domainEvents.Add(new CustomerCreatedEvent(
+                customerMasterId,
+                _customercode,
+                "Prospective",
+                createdBy));
 
-
+            return customer;
 
         }
 
-
         public static async Task<CustomerMaster> CreateCompanyAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, string companyName, int nationalityId, string companyAddress, string digitalAddress, string primaryMobileNumber,
-                                                                    string secondaryMobileNumber,string officeNumber, string whatsAppNumber, string emailAddress, string businessRegistrationNumber, string tinNumber,int socialMediaTypeId, string socialMediaAccount,
-                                                                    string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,string contactPerson_IdentificationTypeNumber,
-                                                                    string contactPerson_IdentificationTypeImageOne, string contactPerson_IdentificationTypeImageTwo, string comments, bool isDeleted, ICustomerDomainService customerDomainService)
+                                                                    string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress, string businessRegistrationNumber, string tinNumber, int socialMediaTypeId, string socialMediaAccount,
+                                                                    string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive,
+                                                                    string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId, string contactPerson_IdentificationTypeNumber,
+                                                                    string contactPerson_IdentificationTypeImageOne, string contactPerson_IdentificationTypeImageTwo, string comments, bool isDeleted, bool isPrimary, ICustomerDomainService customerDomainService)
         {
             if (customerTypeId <= 0 || localityId <= 0 || nationalityId <= 0 || string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(companyAddress) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress))
             {
@@ -377,7 +406,6 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Email address must not be null or empty");
             }
 
-
             var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
 
             if (customer_locality is null)
@@ -425,8 +453,11 @@ namespace Modules.Estates.Domain.Entities.Registration
                 SocialMediaAccount = socialMediaAccount,
                 IdentificationTypeId = 0,
                 IdentificationTypeNumber = businessRegistrationNumber,
-                IdentificationTypeImageOne = string.Empty,
-                IdentificationTypeImageTwo = string.Empty,
+                IdentificationTypeImageOne = identificationTypeImageOne,
+                IdentificationTypeImageTwo = identificationTypeImageTwo,
+                IdentificationTypeImageThree = identificationTypeImageThree,
+                IdentificationTypeImageFour = identificationTypeImageFour,
+                IdentificationTypeImageFive = identificationTypeImageFive,
                 Comments = comments,
                 InterestExpressed = string.Empty,
                 DebtorStatus = 0,
@@ -439,11 +470,11 @@ namespace Modules.Estates.Domain.Entities.Registration
                 ContactPerson_IdentificationTypeNumber = contactPerson_IdentificationTypeNumber,
                 ContactPerson_IdentificationTypeImageOne = contactPerson_IdentificationTypeImageOne,
                 ContactPerson_IdentificationTypeImageTwo = contactPerson_IdentificationTypeImageTwo,
-                IsDeleted = false
-
+                IsDeleted = false,
+                IsPrimary = true,
+                MaritalStatus = string.Empty,
+                DateOfMarriage = Convert.ToDateTime("1900-01-01")
             };
-
-
 
 
         }
@@ -452,9 +483,9 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public static async Task<CustomerMaster> CreateIndividualAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, DateTime dateOfBirth, string tinNumber, string picture, int genderId,
                                                                        int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress,
-                                                                       string residentPermitNumber,DateTime? residentPermitDateIssued, DateTime? residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber,
-                                                                       string identificationTypeImageOne, string identificationTypeImageTwo,string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
-                                                                       string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImageOne, string contactPerson_IdentificationTypeImageTwo, bool isDeleted, ICustomerDomainService customerDomainService)
+                                                                       string residentPermitNumber, DateTime? residentPermitDateIssued, DateTime? residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber,
+                                                                       string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive, string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
+                                                                       string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId, string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImageOne, string contactPerson_IdentificationTypeImageTwo, bool isDeleted, bool isPrimary, ICustomerDomainService customerDomainService)
         {
             if (customerTypeId <= 0 || residentTypeId <= 0 || localityId <= 0 || nationalityId <= 0 || identificationTypeId <= 0 || string.IsNullOrWhiteSpace(surName) || string.IsNullOrWhiteSpace(otherNames) || string.IsNullOrWhiteSpace(identificationTypeNumber) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress))
             {
@@ -489,35 +520,33 @@ namespace Modules.Estates.Domain.Entities.Registration
 
                 if (string.IsNullOrWhiteSpace(contactPerson_PhoneNumber))
                 {
-                    throw new ArgumentException("Contact person phone number cannot be null or empty");
+                    throw new ArgumentException("Contact person's phone number cannot be null or empty");
                 }
 
                 if (string.IsNullOrWhiteSpace(contactPerson_EmailAddress))
                 {
-                    throw new ArgumentException("Company name cannot be null or empty");
+                    throw new ArgumentException("Contact person's email address cannot be null or empty");
                 }
 
                 if (string.IsNullOrWhiteSpace(contactPerson_Address))
                 {
-                    throw new ArgumentException("Company name cannot be null or empty");
+                    throw new ArgumentException("Contact person's address cannot be null or empty");
                 }
 
                 if (contactPerson_IdentificationTypeId <= 0)
                 {
-                    throw new ArgumentException("Identification Type id must be greater than zero.");
+                    throw new ArgumentException("Contact person identification type id must be greater than zero.");
                 }
 
                 if (string.IsNullOrWhiteSpace(contactPerson_IdentificationTypeNumber))
                 {
-                    throw new ArgumentException("Company name cannot be null or empty");
+                    throw new ArgumentException("Contact person identification type number cannot be null or empty");
                 }
-
 
                 if (string.IsNullOrWhiteSpace(contactPerson_IdentificationTypeImageOne))
                 {
-                    throw new ArgumentException("Company name cannot be null or empty");
+                    throw new ArgumentException("Contact person identification type image cannot be null or empty");
                 }
-
 
             }
 
@@ -648,9 +677,9 @@ namespace Modules.Estates.Domain.Entities.Registration
                 IdentificationTypeNumber = identificationTypeNumber,
                 IdentificationTypeImageOne = identificationTypeImageOne,
                 IdentificationTypeImageTwo = identificationTypeImageTwo,
-                IdentificationTypeImageThree = string.Empty,
-                IdentificationTypeImageFour = string.Empty,
-                IdentificationTypeImageFive = string.Empty,
+                IdentificationTypeImageThree = identificationTypeImageThree,
+                IdentificationTypeImageFour = identificationTypeImageFour,
+                IdentificationTypeImageFive = identificationTypeImageFive,
                 Comments = comments,
                 InterestExpressed = interestExpressed,
                 DebtorStatus = debtorStatus,
@@ -663,121 +692,27 @@ namespace Modules.Estates.Domain.Entities.Registration
                 ContactPerson_IdentificationTypeNumber = contactPerson_IdentificationTypeNumber,
                 ContactPerson_IdentificationTypeImageOne = contactPerson_IdentificationTypeImageOne,
                 ContactPerson_IdentificationTypeImageTwo = contactPerson_IdentificationTypeImageTwo,
-                IsDeleted = false
-
+                IsDeleted = false,
+                IsPrimary = true,
+                MaritalStatus = string.Empty,
+                DateOfMarriage = Convert.ToDateTime("1900-01-01")
             };
-
-
-
-
         }
 
 
-        public static async Task<CustomerMaster> CreateUpdateAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, string companyName, DateTime dateOfBirth, string tinNumber, string picture, int genderId,
-            int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress, string residentPermitNumber,
-            DateTime residentPermitDateIssued, DateTime residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber, string identificationTypeImageOne, string identificationTypeImageTwo,
-            string comments, string interestExpressed, int debtorStatus, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber, string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId,
-            string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImageOne, string contactPerson_IdentificationTypeImageTwo, bool isDeleted, ICustomerDomainService customerDomainService)
+
+
+        public static async Task<CustomerMaster> CreateJointAsync(int customerMasterId, int customerTypeId, int residentTypeId, int localityId, string customerCode, int titleId, string surName, string otherNames, DateTime dateOfBirth, string tinNumber, string picture, int genderId,
+                                                               int nationalityId, string postalAddress, string residentialAddress, string digitalAddress, string primaryMobileNumber, string secondaryMobileNumber, string officeNumber, string whatsAppNumber, string emailAddress,
+                                                               string residentPermitNumber, DateTime? residentPermitDateIssued, DateTime? residentPermitExpiryDate, int socialMediaTypeId, string socialMediaAccount, int identificationTypeId, string identificationTypeNumber,
+                                                               string identificationTypeImageOne, string identificationTypeImageTwo, string identificationTypeImageThree, string identificationTypeImageFour, string identificationTypeImageFive, string comments, string interestExpressed, string parentCode, string contactPerson_FullName, string contactPerson_PhoneNumber,
+                                                               string contactPerson_EmailAddress, string contactPerson_Address, int contactPerson_IdentificationTypeId, string contactPerson_IdentificationTypeNumber, string contactPerson_IdentificationTypeImageOne,
+                                                               string contactPerson_IdentificationTypeImageTwo, bool isDeleted, bool isPrimary, string maritalStatus, DateTime? dateOfMarriage, ICustomerDomainService customerDomainService)
         {
             if (customerTypeId <= 0 || residentTypeId <= 0 || localityId <= 0 || nationalityId <= 0 || identificationTypeId <= 0 || string.IsNullOrWhiteSpace(surName) || string.IsNullOrWhiteSpace(otherNames) || string.IsNullOrWhiteSpace(identificationTypeNumber) || string.IsNullOrWhiteSpace(primaryMobileNumber) || string.IsNullOrWhiteSpace(emailAddress))
             {
                 throw new ArgumentException("Invalid customer registration data.");
             }
-
-
-            if((int)CustomerTypeEnum.PROSPECTIVE == customerTypeId)
-            {
-                if (string.IsNullOrWhiteSpace(interestExpressed))
-                {
-                    throw new ArgumentException("Interest expressed must not be null or empty");
-                }
-
-                if (string.IsNullOrWhiteSpace(comments))
-                {
-                    throw new ArgumentException("Comments must not be null or empty");
-                }
-            }
-
-            if((int)CustomerTypeEnum.COMPANY == customerTypeId)
-            {
-                if (string.IsNullOrWhiteSpace(companyName))
-                {
-                    throw new ArgumentException("Company name cannot be null or empty");
-                }
-
-                //if (string.IsNullOrWhiteSpace())
-                //{
-                //    throw new ArgumentException("Company name cannot be null or empty");
-                //}
-
-                if (string.IsNullOrWhiteSpace(tinNumber))
-                {
-                    throw new ArgumentException("Company name cannot be null or empty");
-                }
-            }
-
-
-            if ((int)CustomerTypeEnum.INDIVIDUAL == customerTypeId && (int)ResidentTypeEnum.NON_RESIDENT == residentTypeId)
-            {
-                if (string.IsNullOrWhiteSpace(contactPerson_FullName))
-                {
-                    throw new ArgumentException("Contact person's fullName cannot be null or empty");
-                }
-
-                if (string.IsNullOrWhiteSpace(contactPerson_PhoneNumber))
-                {
-                    throw new ArgumentException("Contact person phone number cannot be null or empty");
-                }
-
-                if (string.IsNullOrWhiteSpace(contactPerson_EmailAddress))
-                {
-                    throw new ArgumentException("Company name cannot be null or empty");
-                }
-
-                if (string.IsNullOrWhiteSpace(contactPerson_Address))
-                {
-                    throw new ArgumentException("Company name cannot be null or empty");
-                }
-
-                if (contactPerson_IdentificationTypeId <= 0)
-                {
-                    throw new ArgumentException("Identification Type id must be greater than zero.");
-                }
-
-                if (string.IsNullOrWhiteSpace(contactPerson_IdentificationTypeNumber))
-                {
-                    throw new ArgumentException("Company name cannot be null or empty");
-                }
-
-
-                if (string.IsNullOrWhiteSpace(contactPerson_IdentificationTypeImageOne))
-                {
-                    throw new ArgumentException("Company name cannot be null or empty");
-                }
-
-               
-            }
-
-
-            if ((int)CustomerTypeEnum.INDIVIDUAL == customerTypeId && (int)ResidentTypeEnum.EXPATRIATE == residentTypeId)
-            {
-                if (string.IsNullOrWhiteSpace(residentPermitNumber))
-                {
-                    throw new ArgumentException("Resident permit number cannot be null or empty");
-                }
-
-                if (residentPermitDateIssued == DateTime.MinValue)
-                {
-                    throw new ArgumentException("Date of birth must not be an invalid date.");
-                }
-
-                if (residentPermitExpiryDate == DateTime.MinValue)
-                {
-                    throw new ArgumentException("Date of birth must not be an invalid date.");
-                }
-
-            }
-
 
             if (!await customerDomainService.CustomerTypeExists(customerTypeId))
                 throw new ArgumentException("Invalid customer type id.");
@@ -798,19 +733,64 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Invalid identification type id.");
 
 
-            if (customerTypeId <= 0)
+            if ((int)ResidentTypeEnum.NON_RESIDENT == residentTypeId)
             {
-                throw new ArgumentException("Customer type id must be greater than zero.");
+                if (string.IsNullOrWhiteSpace(contactPerson_FullName))
+                {
+                    throw new ArgumentException("Contact person's fullName cannot be null or empty");
+                }
+
+                if (string.IsNullOrWhiteSpace(contactPerson_PhoneNumber))
+                {
+                    throw new ArgumentException("Contact person phone number cannot be null or empty");
+                }
+
+                if (string.IsNullOrWhiteSpace(contactPerson_EmailAddress))
+                {
+                    throw new ArgumentException("Contact person email address cannot be null or empty");
+                }
+
+                if (string.IsNullOrWhiteSpace(contactPerson_Address))
+                {
+                    throw new ArgumentException("Contact person address cannot be null or empty");
+                }
+
+                if (contactPerson_IdentificationTypeId <= 0)
+                {
+                    throw new ArgumentException("Contact person identification type id must be greater than zero.");
+                }
+
+                if (string.IsNullOrWhiteSpace(contactPerson_IdentificationTypeNumber))
+                {
+                    throw new ArgumentException("contact person identification type number cannot be null or empty");
+                }
+
+
+                if (string.IsNullOrWhiteSpace(contactPerson_IdentificationTypeImageOne))
+                {
+                    throw new ArgumentException("Contact person identification type image cannot be null or empty");
+                }
+
             }
 
-            if (residentTypeId <= 0)
-            {
-                throw new ArgumentException("Resident type id must be greater than zero.");
-            }
 
-            if (localityId <= 0)
+            if ((int)ResidentTypeEnum.EXPATRIATE == residentTypeId)
             {
-                throw new ArgumentException("Locality id must be greater than zero.");
+                if (string.IsNullOrWhiteSpace(residentPermitNumber))
+                {
+                    throw new ArgumentException("Resident permit number cannot be null or empty");
+                }
+
+                if (residentPermitDateIssued == DateTime.MinValue)
+                {
+                    throw new ArgumentException("Date of birth must not be an invalid date.");
+                }
+
+                if (residentPermitExpiryDate == DateTime.MinValue)
+                {
+                    throw new ArgumentException("Date of birth must not be an invalid date.");
+                }
+
             }
 
             if (titleId > 0)
@@ -840,11 +820,10 @@ namespace Modules.Estates.Domain.Entities.Registration
                 throw new ArgumentException("Identification Type id must be greater than zero.");
             }
 
-            if (string.IsNullOrWhiteSpace(surName) && string.IsNullOrWhiteSpace(otherNames) && string.IsNullOrWhiteSpace(companyName))
+            if (string.IsNullOrWhiteSpace(surName) || string.IsNullOrWhiteSpace(otherNames))
             {
-                throw new ArgumentException("Surname, othernames and company name cannot be null or empty");
+                throw new ArgumentException("Surname and othernames cannot be null or empty");
             }
-
 
             if (dateOfBirth == DateTime.MinValue)
             {
@@ -874,11 +853,11 @@ namespace Modules.Estates.Domain.Entities.Registration
 
             var customer_locality = await customerDomainService.GetLocalityDetails(localityId);
 
-            if(customer_locality is null)
+            if (customer_locality is null)
             {
                 throw new ArgumentException("Customer locality provided does not exist");
             }
-            
+
 
             int counter = customer_locality.CustomerCodeCounter;
             counter++;
@@ -898,7 +877,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 TitleId = titleId,
                 SurName = surName,
                 OtherNames = otherNames,
-                CompanyName = companyName,
+                CompanyName = string.Empty,
                 DateOfBirth = dateOfBirth,
                 TinNumber = tinNumber,
                 Picture = picture,
@@ -917,36 +896,90 @@ namespace Modules.Estates.Domain.Entities.Registration
                 ResidentPermitExpiryDate = residentPermitExpiryDate,
                 SocialMediaTypeId = socialMediaTypeId,
                 SocialMediaAccount = socialMediaAccount,
-                IdentificationTypeId =  identificationTypeId,
-                IdentificationTypeNumber =  identificationTypeNumber,
+                IdentificationTypeId = identificationTypeId,
+                IdentificationTypeNumber = identificationTypeNumber,
                 IdentificationTypeImageOne = identificationTypeImageOne,
                 IdentificationTypeImageTwo = identificationTypeImageTwo,
-                Comments =  comments,
+                IdentificationTypeImageThree = identificationTypeImageThree,
+                IdentificationTypeImageFour = identificationTypeImageFour,
+                IdentificationTypeImageFive = identificationTypeImageFive,
+                Comments = comments,
                 InterestExpressed = interestExpressed,
-                DebtorStatus = debtorStatus,
+                DebtorStatus = 1,
                 ParentCode = parentCode,
-                ContactPerson_FullName =  contactPerson_FullName,
-                ContactPerson_PhoneNumber =  contactPerson_PhoneNumber,
+                ContactPerson_FullName = contactPerson_FullName,
+                ContactPerson_PhoneNumber = contactPerson_PhoneNumber,
                 ContactPerson_EmailAddress = contactPerson_EmailAddress,
                 ContactPerson_Address = contactPerson_Address,
                 ContactPerson_IdentificationTypeId = contactPerson_IdentificationTypeId,
-                ContactPerson_IdentificationTypeNumber  =  contactPerson_IdentificationTypeNumber,
+                ContactPerson_IdentificationTypeNumber = contactPerson_IdentificationTypeNumber,
                 ContactPerson_IdentificationTypeImageOne = contactPerson_IdentificationTypeImageOne,
                 ContactPerson_IdentificationTypeImageTwo = contactPerson_IdentificationTypeImageTwo,
-                IsDeleted = isDeleted
-
+                IsDeleted = false,
+                IsPrimary = isPrimary,
+                MaritalStatus = maritalStatus,
+                DateOfMarriage = dateOfMarriage
             };
-
-
-
-
         }
 
+        //public void UpdateContactInformation(
+        //    string postalAddress,
+        //    string residentialAddress,
+        //    string digitalAddress,
+        //    string primaryMobileNumber,
+        //    string secondaryMobileNumber,
+        //    string officeNumber,
+        //    string whatsAppNumber,
+        //    string emailAddress,
+        //    string updatedBy)
+        //{
+        //    PostalAddress = postalAddress;
+        //    ResidentialAddress = residentialAddress;
+        //    DigitalAddress = digitalAddress;
+        //    PrimaryMobileNumber = primaryMobileNumber;
+        //    SecondaryMobileNumber = secondaryMobileNumber;
+        //    OfficeNumber = officeNumber;
+        //    WhatsAppNumber = whatsAppNumber;
+        //    EmailAddress = emailAddress;
+        //    ModifiedOn = DateTime.UtcNow;
 
+        //    _domainEvents.Add(new CustomerUpdatedEvent(
+        //        CustomerMasterId,
+        //        CustomerCode,
+        //        updatedBy,
+        //        "ContactInformation"));
+        //}
 
+        //public void UpdateStatus(int newStatus, string changedBy)
+        //{
+        //    var oldStatus = DebtorStatus;
+        //    DebtorStatus = newStatus;
+        //    ModifiedOn = DateTime.UtcNow;
 
+        //    _domainEvents.Add(new CustomerStatusChangedEvent(
+        //        CustomerMasterId,
+        //        CustomerCode,
+        //        oldStatus.ToString(),
+        //        newStatus.ToString(),
+        //        changedBy));
+        //}
 
+        public void Delete(string deletedBy, string reason)
+        {
+            IsDeleted = true;
+            ModifiedOn = DateTime.UtcNow;
 
+            _domainEvents.Add(new CustomerDeletedEvent(
+                CustomerMasterId,
+                CustomerCode,
+                deletedBy,
+                reason));
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
+        }
     }
 }
 

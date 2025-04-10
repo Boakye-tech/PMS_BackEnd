@@ -10,6 +10,11 @@ namespace Modules.Notification.Infrastructure.Services
 
         public SmsNotificationService(ISmsSender smsSender) => _smsSender = smsSender;
 
+        public Task<string> PushAsync(Notifications notification)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<string> Send(Notifications values)
         {
             //throw new NotImplementedException();

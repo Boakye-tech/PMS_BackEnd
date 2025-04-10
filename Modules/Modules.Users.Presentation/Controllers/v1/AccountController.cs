@@ -15,11 +15,17 @@ using Modules.Users.Domain.Interfaces;
 
 namespace Modules.Users.Presentation.Controllers.v1;
 
+/// <summary>
+/// Controller for handling user account processes and activities.
+/// </summary>
+/// <remarks>
+/// This controller contains endpoints for handling all user account related routes and processes.
+/// </remarks>
+/// 
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
-
 [EnableRateLimiting("UsersModulePolicy")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [AllowAnonymous]
@@ -33,15 +39,17 @@ public class AccountController : ControllerBase
     Regex phoneRegex = new Regex(@"^(023|024|025|053|054|055|059|027|057|026|056|028|020|050)\d{7}$");
 
 
+    /// <summary>
+    /// Dependency injection via account controller contstructor.
+    /// </summary>
     public AccountController(IUserAccountsService userAccountsService, IUnitOfWork unitOfWork)
     {
         _userAccountsService = userAccountsService;
         _unitOfWork = unitOfWork;
-
     }
 
     /// <summary>
-    /// Returns a list of identification types
+    /// Returns a list of available identification types
     /// </summary>
     [HttpGet]
     [Route("GetIdentificationTypes")]
@@ -51,14 +59,28 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
+    /// Returns a list of available channels
+    /// </summary>
+    [HttpGet]
+    [Route("GetChannels")]
+    public async Task<ActionResult<IEnumerable<ChannelReadDto>>> GetChannels()
+    {
+        return Ok((await _unitOfWork.Channels.GetAll()).Select(c => new ChannelReadDto(c.ChannelId, c.ChannelName!)));
+
+    }
+
+    /// <summary>
     /// Registers a new customer user.
     /// </summary>
     /// <remarks>Returns the registration status and user id. The email/phone and password used in a successful registration will be required to access and generated a json web token and a refresh token that will be used for authoriation and authentication purposes</remarks>
-    /// <response code="200">Returns the uniquely created user id for a newly registered application user</response>
+    /// <response code="201">Returns the uniquely created user id for a newly registered application user</response>
     [HttpPost]
     [Route("Register/Customer")]
-    [ProducesResponseType(201, Type = typeof(RegistrationResponse))]
-    public async Task<ActionResult<RegistrationResponse>> Register([FromBody] CustomerRegistrationRequestDto values)
+    [ProducesResponseType(201, Type = typeof(RegistrationSuccessResponse))]
+    [ProducesResponseType(400, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(404, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(409, Type = typeof(RegistrationErrorResponse))]
+    public async Task<ActionResult> Register([FromBody] CustomerRegistrationRequestDto values)
     {
         if (ModelState.IsValid)
         {
@@ -99,7 +121,10 @@ public class AccountController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("Register/Partners")]
-    [ProducesResponseType(200, Type = typeof(RegistrationResponse))]
+    [ProducesResponseType(201, Type = typeof(RegistrationSuccessResponse))]
+    [ProducesResponseType(400, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(404, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(409, Type = typeof(RegistrationErrorResponse))]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] PartnerBankRegistrationRequestDto values)
     {
         if (ModelState.IsValid)
@@ -139,7 +164,10 @@ public class AccountController : ControllerBase
     [HttpPost]
     [Route("Register/Staff")]
     [Authorize(Policy = "Permission:Users.CREATE")]
-    [ProducesResponseType(201, Type = typeof(RegistrationResponse))]
+    [ProducesResponseType(201, Type = typeof(RegistrationSuccessResponse))]
+    [ProducesResponseType(400, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(404, Type = typeof(RegistrationErrorResponse))]
+    [ProducesResponseType(409, Type = typeof(RegistrationErrorResponse))]
     public async Task<ActionResult<RegistrationResponse>> Register([FromBody] StaffRegistrationRequestDto values)
     {
         if (ModelState.IsValid)
@@ -217,13 +245,15 @@ public class AccountController : ControllerBase
         }
     }
 
+    
+
     /// <summary>
     /// reset the password for a forgotten registered user account via their registered email address or registered mobile phone number
     /// </summary>
     [HttpPost]
     [AllowAnonymous]
     [Route("ResetPassword")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequest)
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequest) 
     {
         try
         {
@@ -231,7 +261,6 @@ public class AccountController : ControllerBase
 
             if (ModelState.IsValid)
             {
-
                 ResetPasswordRequestDto passwordRequest = new ResetPasswordRequestDto
                 {
                     Phone_OR_Email = resetPasswordRequest.Phone_OR_Email,
@@ -240,17 +269,7 @@ public class AccountController : ControllerBase
                     ConfirmNewPassword = resetPasswordRequest.ConfirmNewPassword
                 };
 
-
-                if (emailRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
-                {
-                    changeResult = await _userAccountsService.ResetPasswordViaEmailAddress(passwordRequest);
-                }
-
-
-                if (phoneRegex.IsMatch(resetPasswordRequest.Phone_OR_Email!))
-                {
-                    changeResult = await _userAccountsService.ResetPasswordViaMobilePhoneNumber(passwordRequest);
-                }
+                changeResult = await _userAccountsService.ResetPassword(passwordRequest);
 
                 if (changeResult.IsSuccess)
                 {
@@ -272,7 +291,6 @@ public class AccountController : ControllerBase
                     default:
                         return StatusCode(500, changeResult);
                 };
-
             }
 
             return BadRequest();
@@ -326,8 +344,6 @@ public class AccountController : ControllerBase
                                 500 => StatusCode(500, result.errorResponse),
                                 _ => StatusCode(500, result),
                             };
-                            //return Ok(result);
-
                     }
                 }
 
@@ -522,8 +538,7 @@ public class AccountController : ControllerBase
     [HttpPut]
     [AllowAnonymous]
     [Route("UpdateUserAccount")]
-
-    //[ProducesResponseType(200, Type = typeof(TokenResponseDto))]
+    [ProducesResponseType(200, Type = typeof(UserInformationDto))]
     public async Task<IActionResult> UpdateUserAccount([FromBody] UpdateUserDto UserUpdateRequest)
     {
         try
@@ -531,12 +546,15 @@ public class AccountController : ControllerBase
             if (ModelState.IsValid)
             {
                 var result = await _userAccountsService.UpdateAccountDetails(UserUpdateRequest);
-                if (result.response != "success")
-                {
-                    return BadRequest(new { message = result.response });
-                }
-                return Ok(new { message = result.response });
 
+                if (result.success is not null)
+                {
+                    return Ok(result.success);
+                }
+                else
+                {
+                    return BadRequest(result.error);
+                }
             }
 
             return NotFound();
@@ -547,5 +565,43 @@ public class AccountController : ControllerBase
         }
 
     }
+
+    /// <summary>
+    /// Update the firebase id/token only with the latest/refresh token generated by firebase
+    /// </summary>
+    [HttpPut]
+    [AllowAnonymous]
+    [Route("UpdateFirebaseToken")]
+    [ProducesResponseType(200, Type = typeof(GenericResponseDto))]
+    public async Task<IActionResult> UpdateFirebaseToken([FromBody] UpdateMobileTokenDto UserUpdateRequest)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _userAccountsService.UpdateMobileToken(UserUpdateRequest);
+
+                if (result.success is not null)
+                {
+                    return Ok(result.success);
+                }
+                else
+                {
+                    return BadRequest(result.error);
+                }
+            }
+
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+
+    }
+
+
+
+
 
 }

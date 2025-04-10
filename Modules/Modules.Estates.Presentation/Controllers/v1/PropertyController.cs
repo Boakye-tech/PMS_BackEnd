@@ -10,6 +10,9 @@ using Modules.Estates.Application.Interfaces.Management.Property;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
+/// <summary>
+/// Presentation controller to handle all propert management related routes
+/// </summary>
 namespace Modules.Estates.Presentation.Controllers.v1;
 
 [ApiController]
@@ -41,7 +44,9 @@ public class PropertyController : ControllerBase
     readonly IPropertyMasterService _propertyMasterService;
 
 
-
+    /// <summary>
+    /// Presentation controller constructor to handle dependency injection
+    /// </summary>
     public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotSizeService plotSizeService,
                               IApartmentTypeService apartmentTypeService, IFacilitiesService facilitiesService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
                               IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService,
@@ -928,7 +933,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _localityService.AddLocalityAsync(values));
+            return Ok(await _localityService.CreateLocalityAsync(values));
         }
         catch (Exception ex)
         {

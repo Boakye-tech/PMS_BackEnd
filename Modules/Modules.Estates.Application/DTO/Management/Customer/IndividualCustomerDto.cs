@@ -77,14 +77,23 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(255)]
         public string? Comments { get; set; }
 
-        public int DebtorStatus { get; set; }
-
-        public string? CreatedBy { get; set; }
+        //public int DebtorStatus { get; set; }
 
     }
 
     public record IndividualResidentCustomerDto : IndividualCustomerDto
     {
+        public string? CreatedBy { get; set; }
+
+        public IndividualNonResidentCustomerDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
+    }
+
+
+    public record UpdateIndividualResidentCustomerDto : IndividualCustomerDto
+    {
+        public string? ModifiedBy { get; set; }
+
         public IndividualNonResidentCustomerDto? NonResident { get; set; }
         public IndividualExpatriateCustomerDto? Expatriate { get; set; }
     }
@@ -121,46 +130,6 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public DateTime? ResidentPermitExpiryDate { get; set; }
     }
-
-
-
-    //public record IndividualResidentCustomerDto : IndividualCustomerDto
-    //{
-
-    //}
-    //public record IndividualNonResidentCustomerDto : IndividualCustomerDto
-    //{
-    //    [StringLength(255)]
-    //    public string? ContactPerson_FullName { get; set; }
-
-    //    [StringLength(12)]
-    //    public string? ContactPerson_PhoneNumber { get; set; }
-
-    //    [StringLength(255)]
-    //    [EmailAddress]
-    //    public string? ContactPerson_EmailAddress { get; set; }
-
-    //    [StringLength(12)]
-    //    public string? ContactPerson_Address { get; set; }
-
-    //    public int ContactPerson_IdentificationTypeId { get; set; }
-
-    //    [StringLength(20)]
-    //    public string? ContactPerson_IdentificationTypeNumber { get; set; }
-
-    //    [StringLength(255)]
-    //    public string? ContactPerson_IdentificationTypeImage { get; set; }
-    //}
-
-    //public record IndividualExpatriateCustomerDto : IndividualCustomerDto
-    //{
-    //    [StringLength(30)]
-    //    public string? ResidentPermitNumber { get; set; }
-
-    //    public DateTime ResidentPermitDateIssued { get; set; }
-
-    //    public DateTime ResidentPermitExpiryDate { get; set; }
-    //}
 
 }
 

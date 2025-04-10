@@ -23,7 +23,7 @@ public class IdentificationType : AuditableEntity
             throw new ArgumentException("Invalid Identification Type Data.");
         }
 
-        if (identificationTypeId <= -1)
+        if (identificationTypeId <= 0)
             throw new ArgumentException("Identification Type Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(identificationTypes) || identificationTypes.Length > 20)
@@ -39,7 +39,7 @@ public class IdentificationType : AuditableEntity
             throw new ArgumentException("Invalid Identification Type Data.");
         }
 
-        if (identificationTypeId <= -1)
+        if (identificationTypeId <= 0)
             throw new ArgumentException("Identification Type Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(identificationTypes) || identificationTypes.Length > 20)

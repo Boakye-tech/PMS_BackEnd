@@ -1,23 +1,42 @@
 ﻿using System;
+using Modules.Estates.Application.DTO.Management;
 using Modules.Estates.Application.DTO.Management.Customer;
 
 namespace Modules.Estates.Application.Interfaces.Management.Customer
 {
 	public interface ICustomerMasterService
 	{
-        Task<ProspectiveCustomerRegistrationResponseDto> CreateCustomer(ProspectiveCustomerDto values);
-        Task<CompanyRegistrationResponseDto> CreateCustomer(CompanyCustomerDto values);
+        Task<CustomerRegistrationResponseDto> CreateCustomer(ProspectiveCustomerCreateDto values);
+        Task<CustomerRegistrationResponseDto> CreateCustomer(CreateCompanyCustomerDto values);
+        Task<CustomerRegistrationResponseDto> CreateCustomer(IndividualResidentCustomerDto values);
+        Task<CustomerRegistrationResponseDto> CreateCustomer(JointOwnershipCustomerDto values);
+        Task<CustomerRegistrationResponseDto> CreateCustomer(MultiOwnershipCustomerDto values);
 
-        Task<IndividualResidentCustomerResponseDto> CreateCustomer(IndividualResidentCustomerDto values);
-        //Task<IndividualNonResidentCustomerResponseDto> CreateCustomer(IndividualNonResidentCustomerDto values);
-        //Task<IndividualExpatriateCustomerResponseDto> CreateCustomer(IndividualExpatriateCustomerDto values);
+        Task<CustomerMasterDto> GetCustomer(string customerCode);
 
-        Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync();
+        Task<ProspectiveCustomerResponseDto> GetProspectiveCustomerDetails(string customerCode);
+        Task<CompanyCustomerResponseDto> GetCompanyCustomerDetails(string customerCode);
+        Task<IndividualResidentCustomerResponseDto> GetIndividualCustomerDetails(string customerCode);
+        Task<JointOwnershipCustomerResponseDto> GetJointCustomerDetails(string customerCode);
+        Task<MultiOwnershipCustomerResponseDto> GetMultiCustomerDetails(string customerCode);
 
-        //Task<AllocationTypeReadDto> UpdateAllocationTypeAsync(AllocationTypeUpdateDto values);
-        //Task<AllocationTypeReadDto> GetAllocationTypeAsync(int value);
+        Task<IEnumerable<CustomerListDto>> GetCustomerListAsync(string? searchParam, string? locality);
 
-        Task<IEnumerable<CustomerListDto>> GetCustomerListAsync();
+        Task<IEnumerable<CustomerListDto>> GetPendingCustomerListAsync();
+
+        Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateProspectiveCustomerDto values);
+
+        Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateCompanyCustomerDto values);
+        Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateIndividualResidentCustomerDto values);
+        Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateJointOwnershipCustomerDto values);
+        Task<CustomerRegistrationResponseDto> UpdateCustomer(UpdateMultiOwnershipCustomerDto values);
+
+
+        Task<int> DeleteCustomerAsync(DeleteCustomerRequestDto values);
+
+        Task<int> StopCustomerDebitAsync(StopDebitRequestDto values);
+
+        Task<int> ApproveCustomerAsync(ApproveCustomerDto values);
 
     }
 }
