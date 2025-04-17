@@ -46,6 +46,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         readonly IInterestExpressedService _interestExpressedService;
         readonly IComplaintTypeService _complaintTypeService;
         readonly INatureOfComplaintService _natureOfComplaintService;
+        readonly IComplaintStatusesService _complaintStatusesService;
         readonly IComplaintMasterService _complaintMasterServices;
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService, ISocialMediaService socialMediaService,
                                   ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService, IInterestExpressedService interestExpressedService, IComplaintTypeService complaintTypeService,
-                                  INatureOfComplaintService natureOfComplaintService, IComplaintMasterService complaintMasterServices)
+                                  INatureOfComplaintService natureOfComplaintService, IComplaintStatusesService complaintStatusesService, IComplaintMasterService complaintMasterServices)
         {
             _customerTypeService = customerTypeService;
             _genderService = genderService;
@@ -68,6 +69,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             _interestExpressedService = interestExpressedService;
             _complaintTypeService = complaintTypeService;
             _natureOfComplaintService = natureOfComplaintService;
+            _complaintStatusesService = complaintStatusesService;
             _complaintMasterServices = complaintMasterServices;
         }
 
@@ -1098,6 +1100,93 @@ namespace Modules.Estates.Presentation.Controllers.v1
         public async Task<ActionResult> DeleteNatureOfComplaint(int natureOfComplaintId)
         {
             return Ok(await _natureOfComplaintService.DeleteNatureOfComplaintAsync(natureOfComplaintId));
+        }
+
+        //----------------------COMPLAINT STATUS------------
+        /// <summary>
+        /// Returns a list of complaint status
+        /// </summary>
+        [HttpGet]
+        [Route("GetComplaintStatus")]
+        public async Task<ActionResult<IEnumerable<ComplaintStatusesReadDto>>> GetComplaintStatus()
+        {
+            return Ok(await _complaintStatusesService.GetComplaintStatusAsync());
+        }
+
+
+        /// <summary>
+        ///  Create a new complaint status
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateComplaintStatus
+        /// 
+        /// {
+        ///    "complaintStatusId": 0,
+        ///    "complaintStatus": "SUBMITTED",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateComplaintStatus")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
+        public async Task<ActionResult<ComplaintStatusesReadDto>> CreateComplaintStatus([FromBody] ComplaintStatusesCreateDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(await _complaintStatusesService.CreateComplaintStatusAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Modify details of exisitng complaint status
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /UpdateComplaintStatus
+        /// 
+        /// {
+        ///    "complaintStatusId": 1,
+        ///    "complaintStatus": "CUSTOMER SUBMITTED",
+        ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateComplaintStatus")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult<ComplaintStatusesReadDto>> UpdateComplaintStatus([FromBody] ComplaintStatusesUpdateDto values)
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
+
+            return Ok(await _complaintStatusesService.UpdateComplaintStatusAsync(values));
+        }
+
+        /// <summary>
+        /// Removes an exsiting complaint status based on the id
+        /// </summary>
+        [HttpDelete("DeleteComplaintStatus/{complaintStatusId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
+        public async Task<ActionResult> DeleteComplaintStatus(int complaintStatusId)
+        {
+            return Ok(await _complaintStatusesService.DeleteComplaintStatusAsync(complaintStatusId));
         }
     }
 }

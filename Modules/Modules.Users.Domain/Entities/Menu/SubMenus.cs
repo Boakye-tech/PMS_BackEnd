@@ -13,12 +13,14 @@ namespace Modules.Users.Domain.Entities.Menu
 
         [Required]
         [StringLength(110)]
-        public string SubMenuName { get; set; }
+        public string? SubMenuName { get; set; }
 
         [StringLength(255)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public bool IsOpen { get; set; }
+
+        public SubMenus(){}
 
         public SubMenus(int menuId, int subMenuId, string subMenuName, string description, bool isOpen)
 		{

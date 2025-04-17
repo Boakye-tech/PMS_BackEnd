@@ -10,12 +10,13 @@ namespace Modules.Users.Application.Interfaces
 	public interface IMenuService
 	{
         Task<MenusDto> CreateMenu(MenusDto menus);
-        Task<MenusDto> UpdateMenu(MenusDto updateMenus);
+        Task<MenusUpdateDto> UpdateMenu(MenusUpdateDto updateMenus);
         Task<GenericResponseDto> DeleteMenu(int menuId);
         
 
         Task<SubMenusDto> CreateSubMenu(SubMenusCreateDto subMenus);
-        Task<SubMenusDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus);
+        Task<SubMenusUpdateResponseDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus);
+
         Task<GenericResponseDto> DeleteSubMenu(int subMenuId);
 
         Task<SubMenuItemsDto> CreateSubMenuItems(SubMenuItemsCreateDto subMenuItems);

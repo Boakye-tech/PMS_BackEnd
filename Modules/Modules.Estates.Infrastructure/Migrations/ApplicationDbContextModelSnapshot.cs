@@ -42,6 +42,13 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("AvailabilityDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CancelledBy")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<DateTime>("CancelledDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("ComplaintDate")
                         .HasColumnType("datetime2");
 
@@ -57,8 +64,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerCode")
                         .HasMaxLength(10)
@@ -73,6 +82,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateReviewed")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DetailsOfComplaint")
@@ -99,8 +114,15 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<bool>("IsTheMatterInCourt")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NatureOfComplaintId")
-                        .HasColumnType("int");
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NatureOfComplaintId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -129,6 +151,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
 
+                    b.Property<int>("Source")
+                        .HasColumnType("int");
+
                     b.Property<string>("SubmittedBy")
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
@@ -138,6 +163,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.HasKey("ComplaintId");
+
+                    b.HasIndex("ComplaintNumber")
+                        .IsUnique();
 
                     b.ToTable("Complaints", "est");
                 });
@@ -647,6 +675,12 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentUnitId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");

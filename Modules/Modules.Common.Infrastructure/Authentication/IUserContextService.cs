@@ -5,6 +5,7 @@ namespace Modules.Common.Infrastructure.Authentication
 	{
         string? GetUserId();
         bool? GetUserRole(string roleName);
+        string? GetAccessToken();
     }
 }
 

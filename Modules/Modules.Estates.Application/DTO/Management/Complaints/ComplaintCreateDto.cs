@@ -1,15 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Modules.Estates.Domain.Enums;
 
 namespace Modules.Estates.Application.DTO.Management.Complaints
 {
 	public record ComplaintCreateDto
 	{
+        [StringLength(10)]
+        public string? ComplaintNumber { get; set; }
+
         [Required]
         public int ComplaintTypeId { get; set; }
 
         [Required]
-        public int NatureOfComplaintId { get; set; }
+        public int[]? NatureOfComplaintId { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -51,19 +55,11 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
 
         public string[]? DocumentImages { get; set; }
 
-        //[StringLength(255)]
-        //public string? DocumentOne { get; set; }
-
-        //[StringLength(255)]
-        //public string? DocumentTwo { get; set; }
-
-        //[StringLength(255)]
-        //public string? DocumentThree { get; set; }
-
-        //public int ComplaintStatus { get; set; }
-
         [StringLength(36)]
         public string? CreatedBy { get; set; }
+
+        public ComplaintSourceEnum Source { get; set; }
+
     }
 }
 

@@ -1,6 +1,4 @@
 ﻿
-using ComplaintsRepository = Modules.Estates.Infrastructure.Repositories.Entities.Setup.Customer.ComplaintsRepository;
-
 namespace Modules.Estates.Infrastructure.UnitOfWork;
 
 public class UnitOfWork: IUnitOfWork
@@ -69,9 +67,12 @@ public class UnitOfWork: IUnitOfWork
         InterestExpressed = new InterestExpressedRepository(_dbContext);
 
         Complaint = new ComplaintRepository(_dbContext);
+
         ComplaintType = new ComplaintTypeRepository(_dbContext);
+
         NatureOfComplaint = new NatureOfComplaintRepository(_dbContext);
 
+        ComplaintStatuses = new ComplaintStatusesRepository(_dbContext);
     }
 
 
@@ -140,6 +141,8 @@ public class UnitOfWork: IUnitOfWork
     public INatureOfComplaintRepository NatureOfComplaint { get; private set; }
 
     public IComplaintRepository Complaint { get; private set; }
+
+    public IComplaintStatusesRepository ComplaintStatuses { get; private set; }
 
     public Task<int> Complete()
     {

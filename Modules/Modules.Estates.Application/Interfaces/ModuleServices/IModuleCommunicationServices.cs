@@ -1,5 +1,5 @@
 ﻿using System;
-using Modules.Estates.Application.DTO.Management.ModuleServices;
+
 
 namespace Modules.Estates.Application.Interfaces.ModuleServices
 {
@@ -16,6 +16,7 @@ namespace Modules.Estates.Application.Interfaces.ModuleServices
         Task<bool> SendComplaintTypeDetailsUpdateAsync(ComplaintTypeDto payload);
         Task<bool> SendNatureOfComplaintDetailsUpdateAsync(NatureOfComplaintDto payload);
 
+        Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload);
 
     }
 }

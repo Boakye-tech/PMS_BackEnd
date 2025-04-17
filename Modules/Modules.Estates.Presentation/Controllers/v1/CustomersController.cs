@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Application.DTO;
 using Modules.Estates.Application.DTO.Management.Complaints;
 using Modules.Estates.Application.Enums;
 using Modules.Estates.Presentation.Constants;
@@ -12,8 +13,6 @@ using Modules.Estates.Presentation.Constants;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace Modules.Estates.Presentation.Controllers.v1
 {
-
-
     public partial class CustomerController : ControllerBase
     {
 
@@ -612,13 +611,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
         }
 
-
         /// <summary>
         /// Creates a new complaint
         /// </summary>
         [HttpPost]
         [Route("SubmitComplaint")]
-        [Authorize(Policy = "Permission:Customers.CREATE")]
+        [Authorize(Policy = "Permission:Customers.COMPLAINT")]
         public async Task<ActionResult> SubmitComplaint([FromBody] ComplaintCreateDto values)
         {
             try
@@ -629,12 +627,18 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
+                if (values.NatureOfComplaintId!.Count() == 0)
+                {
+                    return StatusCode(204, "Nature of complaint cannot be null or empty");
+                }
+
+
                 var result = await _complaintMasterServices.CreateNewComplaint(values);
                 return result.StatusCode switch
                 {
-                    200 => Ok(result.StatusMessage),
-                    404 => NotFound(result.StatusMessage),
-                    _ => StatusCode(500, result.StatusMessage),
+                    200 => Ok(result),
+                    404 => NotFound(result),
+                    _ => StatusCode(500, result),
                 };
             }
             catch (Exception ex)

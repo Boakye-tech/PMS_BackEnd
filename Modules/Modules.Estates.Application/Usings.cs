@@ -17,3 +17,7 @@ global using Modules.Estates.Application.Interfaces.Management.Customer;
 global using Modules.Estates.Application.Interfaces.ModuleServices;
 global using Modules.Estates.Application.DTO;
 global using Modules.Estates.Application.DTO.Management;
+
+global using Modules.Estates.Application.DTO.Management.Complaints;
+global using Modules.Estates.Application.Enums;
+global using Modules.Estates.Application.Interfaces.Management.Complaints;

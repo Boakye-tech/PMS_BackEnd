@@ -23,7 +23,8 @@ namespace Modules.Estates.Domain.Entities.Management
 
         public int ComplaintTypeId { get; set; }
 
-        public int NatureOfComplaintId { get; set; }
+        [StringLength(50)]
+        public string? NatureOfComplaintId { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -72,7 +73,7 @@ namespace Modules.Estates.Domain.Entities.Management
         [StringLength(255)]
         public string? DocumentThree { get; set; }
 
-        public int ComplaintStatus { get; set; }
+        public ComplaintStatusEnum ComplaintStatus { get; set; }
 
         [StringLength(36)]
         public string? ReviewedBy { get; set; }
@@ -99,41 +100,42 @@ namespace Modules.Estates.Domain.Entities.Management
 
         public DateTime CancelledDate { get; set; }
 
+        public ComplaintSourceEnum Source { get; set; }
+
         public Complaint()
         {
 
         }
 
-        public Complaint(int complaintId, string complaintNumber, int complaintTypeId, int natureOfComplaintId,
+        public Complaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
                          string propertyNumber, int propertyLocationId, string customerCode, string customerName,
                          string phoneNumber, string emailAddress, bool isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, int complaintStatus, string createdBy,
+                         string documentOne, string documentTwo, string documentThree, ComplaintStatusEnum complaintStatus, string createdBy,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
-                         string resolvedBy, DateTime resolutionDate, string notes)
+                         string resolvedBy, DateTime resolutionDate, ComplaintSourceEnum Source,string notes)
         {
         }
 
-        public static Complaint CreateNewComplaint(int complaintId, string complaintNumber, int complaintTypeId, int natureOfComplaintId,
+        public static Complaint CreateNewComplaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
                          string propertyNumber, int propertyLocationId, string customerCode, string customerName,
                          string phoneNumber, string emailAddress, bool isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, int complaintStatus, string createdBy)
+                         string documentOne, string documentTwo, string documentThree, ComplaintStatusEnum complaintStatus, ComplaintSourceEnum source, string createdBy)
         {
             if(complaintTypeId <= 0)
             {
                 throw new ArgumentException("Complaint type id must be greater than zero.");
             }
 
-            if (natureOfComplaintId <= 0)
+            if (string.IsNullOrWhiteSpace(natureOfComplaintId))
             {
-                throw new ArgumentException("Nature of complaint id must be greater than zero.");
+                throw new ArgumentException("Nature of complaint must not be null or empty");
             }
 
             if (propertyLocationId <= 0)
             {
                 throw new ArgumentException("Property location id must be greater than zero.");
-
             }
 
             if (string.IsNullOrWhiteSpace(propertyNumber))
@@ -161,14 +163,16 @@ namespace Modules.Estates.Domain.Entities.Management
                 throw new ArgumentException("Complaint details must not be null or empty");
             }
 
-
-            string _complaintNumber = new Random().Next(0, 100000).ToString();
-            _complaintNumber = string.Concat("C", _complaintNumber);
+            if (source == ComplaintSourceEnum.STAFF)
+            {
+                string _complaintNumber = new Random().Next(0, 100000).ToString();
+                complaintNumber = string.Concat("C", _complaintNumber);
+            }
 
             var _newComplaint = new Complaint
             {
                 ComplaintId = complaintId,
-                ComplaintNumber = _complaintNumber,
+                ComplaintNumber = complaintNumber,
                 ComplaintTypeId = complaintTypeId,
                 NatureOfComplaintId = natureOfComplaintId,
                 PropertyNumber = propertyNumber,
@@ -195,10 +199,11 @@ namespace Modules.Estates.Domain.Entities.Management
                 DateAssigned = Convert.ToDateTime("1900-01-01"),
                 ResolvedBy = string.Empty,
                 ResolutionDate = Convert.ToDateTime("1900-01-01"),
-                Notes = string.Empty
+                Notes = string.Empty,
+                Source = source
             };
 
-            _newComplaint._domainEvents.Add(new ComplaintCreatedEvent(_complaintNumber, natureOfComplaintId.ToString(), propertyNumber, createdBy));
+            _newComplaint._domainEvents.Add(new ComplaintCreatedEvent(complaintNumber, natureOfComplaintId[0].ToString(), propertyNumber, createdBy));
 
             return _newComplaint;
 

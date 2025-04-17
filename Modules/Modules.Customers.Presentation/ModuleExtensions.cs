@@ -1,6 +1,7 @@
 ﻿using System;
 using Azure.Storage.Blobs;
 
+
 namespace Modules.Customers.Presentation
 {
 	public static class ModuleExtensions
@@ -23,6 +24,8 @@ namespace Modules.Customers.Presentation
             services.AddScoped<IComplaintTypeService, ComplaintTypeService>();
             services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
             services.AddScoped<IComplaintService, ComplaintService>();
+
+            services.AddHttpClient<ICustomerModuleCommunicationServices, CustomerModuleCommunicationServices>();
 
             services.AddSingleton(s =>
             {

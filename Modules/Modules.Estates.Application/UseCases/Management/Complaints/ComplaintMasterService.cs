@@ -1,9 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using Modules.Estates.Application.DTO.Management.Complaints;
-using Modules.Estates.Application.Enums;
-using Modules.Estates.Application.Interfaces.Management.Complaints;
-using Modules.Estates.Application.UseCases.Management.Customer;
+using Modules.Estates.Domain.Enums;
 
 namespace Modules.Estates.Application.UseCases.Management.Complaints
 {
@@ -14,14 +11,16 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
         private readonly IModuleCommunicationServices _moduleComms;
         private readonly ILogger<ComplaintMasterService> _logger;
         private readonly IDomainEventDispatcher _domainEventDispatcher;
+        private readonly IMapper _mapper;
 
-        public ComplaintMasterService(IUnitOfWork unitOfWork, ICustomerDomainService domainService, IModuleCommunicationServices moduleComms, ILogger<ComplaintMasterService> logger, IDomainEventDispatcher domainEventDispatcher)
+        public ComplaintMasterService(IUnitOfWork unitOfWork, ICustomerDomainService domainService, IModuleCommunicationServices moduleComms, ILogger<ComplaintMasterService> logger, IDomainEventDispatcher domainEventDispatcher, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _domainService = domainService;
             _moduleComms = moduleComms;
             _logger = logger;
             _domainEventDispatcher = domainEventDispatcher;
+            _mapper = mapper;
         }
 
         public async Task<BaseResponseDto> AssignComplaint(ComplaintAssignDto values)
@@ -38,7 +37,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _complaint.AssignedBy = values.AssignedBy;
                 _complaint.AssignedTo = values.AssignedTo;
                 _complaint.DateAssigned = DateTime.UtcNow;
-                _complaint.ComplaintStatus = (int)ComplaintStatusEnum.ASSIGNED;
+                _complaint.ComplaintStatus = ComplaintStatusEnum.ASSIGNED;
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();
@@ -66,7 +65,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 _complaint.CancelledBy = values.CancelledBy;
                 _complaint.CancelledDate = DateTime.UtcNow;
-                _complaint.ComplaintStatus = (int)ComplaintStatusEnum.CANCELLED;
+                _complaint.ComplaintStatus = ComplaintStatusEnum.CANCELLED;
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();
@@ -82,13 +81,43 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         public async Task<BaseResponseDto> CreateNewComplaint(ComplaintCreateDto values)
         {
+            string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty; 
+            int imageCount;
+            string natureofComplaint = string.Empty;
+
+            if(values.NatureOfComplaintId!.Count() == 0)
+            {
+                return new BaseResponseDto { StatusCode = 204 , StatusMessage = "Nature of complaint cannot be null or empty" };
+            }
+
+            natureofComplaint = string.Join(',', values.NatureOfComplaintId!);
+
+            imageCount = values.DocumentImages!.Count();
+            switch (imageCount)
+            {
+                case 1:
+                    _imageOne = values.DocumentImages![0];
+                    break;
+
+                case 2:
+                    _imageOne = values.DocumentImages![0];
+                    _imageTwo = values.DocumentImages![1];
+                    break;
+
+                case 3:
+                    _imageOne = values.DocumentImages![0];
+                    _imageTwo = values.DocumentImages![1];
+                    _imageThree = values.DocumentImages![2];
+                    break;
+            }
+
             try
             {
                 Complaint complaint = Complaint.CreateNewComplaint(
                     complaintId: 0,
                     complaintNumber: string.Empty,
                     complaintTypeId: values.ComplaintTypeId,
-                    natureOfComplaintId: values.NatureOfComplaintId,
+                    natureOfComplaintId: natureofComplaint,
                     propertyNumber: values.PropertyNumber!,
                     propertyLocationId: values.PropertyLocationId,
                     customerCode: values.CustomerCode!,
@@ -101,10 +130,11 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     complaintDate: DateTime.UtcNow,
                     submittedBy: values.SubmittedBy!,
                     submittedBy_PhoneNumber: values.SubmittedBy_PhoneNumber!,
-                    documentOne: values.DocumentImages![0],
-                    documentTwo: values.DocumentImages![1],
-                    documentThree: values.DocumentImages![2],
-                    complaintStatus: (int)ComplaintStatusEnum.SUBMITTED,
+                    documentOne: _imageOne,
+                    documentTwo: _imageTwo,
+                    documentThree: _imageThree,
+                    complaintStatus: ComplaintStatusEnum.SUBMITTED,
+                    source: values.Source,
                     createdBy: values.CreatedBy!
                     );
 
@@ -112,6 +142,10 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 _unitOfWork.Complaint.Insert(complaint);
                 await _unitOfWork.Complete();
+
+                //send to online customer
+                values.ComplaintNumber = complaint.ComplaintNumber;
+                await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
 
                 return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint submitted successfully." };
             }
@@ -128,29 +162,112 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         public async Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList()
         {
-            // Perform a left outer join in-memory using LINQ
-            var response = (
-                from c in await _unitOfWork.Complaint.GetAll()
-                join n in await _unitOfWork.NatureOfComplaint.GetAll()
-                    on c.NatureOfComplaintId equals n.NatureOfComplaintId into gj
-                from nature in gj.DefaultIfEmpty() // this ensures it's a LEFT JOIN
-                orderby c.ComplaintDate descending
-                select new ComplaintStaffReadDto(
-                    c.ComplaintNumber,
-                    nature?.NatureOfComplaints, // safe access in case there's no match
-                    c.PropertyNumber,
-                    c.ComplaintDate,
-                    c.ComplaintStatus.ToString(),
-                    c.CustomerName
-                )
-            ).ToList();
+            List<ComplaintStaffReadDto> _allComplaints = new List<ComplaintStaffReadDto>();
+
+            var allComplaint_Result = await _unitOfWork.Complaint.GetAll();
+
+            if (allComplaint_Result == null)
+            {
+                return _allComplaints;
+            }
+
+
+            foreach (var complaint in allComplaint_Result!)
+            {
+                string[] natureofComplaints = complaint.NatureOfComplaintId!.Split(',');
+                List<string> natureofComplaints_list = new List<string>();
+
+                foreach (var item in natureofComplaints)
+                {
+                    var result = (await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item)))!.NatureOfComplaints;
+                    natureofComplaints_list.Add(result!);
+                }
+
+                var response = new ComplaintStaffReadDto
+                (
+                    ComplaintNumber: complaint.ComplaintNumber,
+                    NatureOfComplaint: natureofComplaints_list,
+                    PropertyNumber: complaint.PropertyNumber,
+                    ComplaintDate: complaint.ComplaintDate,
+                    ComplaintStatus: complaint.ComplaintStatus.ToString(),
+                    CustomerName: complaint.CustomerName
+                );
+
+                _allComplaints.Add(response);
+            }
+
+            return _allComplaints;
+        }
+
+        public async Task<ComplaintStaffReadDto> GetComplaint(string complaintNumber)
+        {
+            var complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == complaintNumber);
+
+            if (complaint == null)
+            {
+                return new ComplaintStaffReadDto(null, null, null, DateTime.Now, null, null);
+            }
+
+            string[] natureofComplaints = complaint.NatureOfComplaintId!.Split(',');
+            List<string> natureofComplaints_list = new List<string>();
+
+            foreach (var item in natureofComplaints)
+            {
+                var result = (await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item)))!.NatureOfComplaints;
+                natureofComplaints_list.Add(result!);
+            }
+
+            var response = new ComplaintStaffReadDto
+            (
+                ComplaintNumber: complaint.ComplaintNumber,
+                NatureOfComplaint: natureofComplaints_list,
+                PropertyNumber: complaint.PropertyNumber,
+                ComplaintDate: complaint.ComplaintDate,
+                ComplaintStatus: complaint.ComplaintStatus.ToString(),
+                CustomerName: complaint.CustomerName
+            );
 
             return response;
         }
 
-        public Task<IEnumerable<ComplaintReadDto>> GetCustomerComplaintsList(string customerCode_OR_propertyNumber)
+        public async Task<IEnumerable<ComplaintStaffReadDto>> GetCustomerComplaintsList(string customerCode_OR_propertyNumber)
         {
-            throw new NotImplementedException();
+            List<ComplaintStaffReadDto> _allComplaints = new List<ComplaintStaffReadDto>();
+
+            var allComplaint_Result = await _unitOfWork.Complaint.GetAll(c => c.CustomerCode == customerCode_OR_propertyNumber || c.PropertyNumber == customerCode_OR_propertyNumber);
+
+            if (allComplaint_Result == null)
+            {
+                return _allComplaints;
+            }
+
+
+            foreach (var complaint in allComplaint_Result!)
+            {
+                string[] natureofComplaints = complaint.NatureOfComplaintId!.Split(',');
+                List<string> natureofComplaints_list = new List<string>();
+
+                foreach (var item in natureofComplaints)
+                {
+                    var result = (await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item)))!.NatureOfComplaints;
+                    natureofComplaints_list.Add(result!);
+                }
+
+                var response = new ComplaintStaffReadDto
+                (
+                    ComplaintNumber: complaint.ComplaintNumber,
+                    NatureOfComplaint: natureofComplaints_list,
+                    PropertyNumber: complaint.PropertyNumber,
+                    ComplaintDate: complaint.ComplaintDate,
+                    ComplaintStatus: complaint.ComplaintStatus.ToString(),
+                    CustomerName: complaint.CustomerName
+                );
+
+                _allComplaints.Add(response);
+            }
+
+            return _allComplaints;
+
         }
 
         public async Task<BaseResponseDto> ResolveComplaint(ComplaintResolutionDto values)
@@ -166,7 +283,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 _complaint.ResolvedBy = values.ResolvedBy;
                 _complaint.ResolutionDate = DateTime.UtcNow;
-                _complaint.ComplaintStatus = (int)ComplaintStatusEnum.RESOLVED;
+                _complaint.ComplaintStatus = ComplaintStatusEnum.RESOLVED;
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();
@@ -194,7 +311,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 _complaint.ReviewedBy = values.ReviewedBy;
                 _complaint.DateReviewed = DateTime.UtcNow;
-                _complaint.ComplaintStatus = (int)ComplaintStatusEnum.REVIEWED;
+                _complaint.ComplaintStatus = ComplaintStatusEnum.REVIEWED;
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();
@@ -242,8 +359,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
             }
         }
 
-
-
+        
     }
 }
 

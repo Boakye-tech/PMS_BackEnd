@@ -26,7 +26,16 @@ namespace Modules.Common.Infrastructure.Authentication
             return _httpContextAccessor.HttpContext?.User.IsInRole(roleName);
         }
 
+        public string? GetAccessToken()
+        {
+            var authHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+            {
+                return authHeader.Substring("Bearer ".Length);
+            }
 
+            return null;
+        }
     }
 }
 

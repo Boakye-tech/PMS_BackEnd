@@ -185,7 +185,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateMenus")]
         [Authorize(Policy = "Permission:Users.UPDATE")]
-        public async Task<ActionResult> UpdateMenus([FromBody] MenusDto values)
+        public async Task<ActionResult> UpdateMenus([FromBody] MenusUpdateDto values)
         {
             var result = await _menuService.UpdateMenu(values);
             return Ok(result);

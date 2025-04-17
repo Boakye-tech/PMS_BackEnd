@@ -15,12 +15,12 @@ namespace Modules.Customers.Application.UseCases
 
         public async Task<ComplaintTypeDto> AddNewComplaintType(ComplaintTypeDto values)
         {
-            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!);
+            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId);
 
             _unitOfWork.ComplaintType.Insert(ComplaintType);
             await _unitOfWork.Complete();
 
-            return new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!);
+            return new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!, ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
         }
 
         public async Task<GenericResponseDto> DeleteComplaintType(int complaintTypeid)
@@ -47,12 +47,12 @@ namespace Modules.Customers.Application.UseCases
 
         public async Task<ComplaintTypeDto> UpdateComplaintType(ComplaintTypeDto values)
         {
-            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!);
+            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId);
 
             _unitOfWork.ComplaintType.Update(ComplaintType);
             await _unitOfWork.Complete();
 
-            return new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!);
+            return new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!, ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
         }
     }
 }

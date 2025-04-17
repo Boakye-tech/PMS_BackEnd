@@ -16,7 +16,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
 
         public async Task<ComplaintTypeReadDto> AddComplaintTypeAsync(ComplaintTypeCreateDto values)
         {
-            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!)
+            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId)
             {
                 CreatedBy = values.createdBy,
                 CreatedOn = DateTime.Now
@@ -26,10 +26,10 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
             await _unitOfWork.Complete();
 
             //send to online customer module
-            var payload = new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!);
+            var payload = new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!, ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
             await _moduleComms.SendComplaintTypeDetailsAsync(payload);
              
-            return new ComplaintTypeReadDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!);
+            return new ComplaintTypeReadDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!,ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
         }
 
         public async Task<string> DeleteComplaintTypeAsync(int value)
@@ -67,7 +67,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
 
         public async Task<ComplaintTypeReadDto> UpdateComplaintTypeAsync(ComplaintTypeUpdateDto values)
         {
-            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!)
+            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId)
             {
                 ModifiedBy = values.modifiedBy,
                 ModifiedOn = DateTime.Now
@@ -76,7 +76,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
             _unitOfWork.ComplaintType.Update(ComplaintType);
             await _unitOfWork.Complete();
 
-            return new ComplaintTypeReadDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!);
+            return new ComplaintTypeReadDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!, ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
         }
 
     }

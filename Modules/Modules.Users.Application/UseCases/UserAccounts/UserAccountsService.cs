@@ -363,7 +363,10 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
                 if (result.IsNotAllowed)
                 {
-                    _logger.LogWarning($"User with email address {userLoginDetails.Phone_OR_Email} is not allowed to sign in", userLoginDetails.Phone_OR_Email);
+                    var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+                    var phoneConfirmed = await _userManager.IsPhoneNumberConfirmedAsync(user);
+
+                    _logger.LogWarning($"User with email address {userLoginDetails.Phone_OR_Email} is not allowed to sign in. EmailConfirmed: {emailConfirmed}, PhoneConfirmed: {phoneConfirmed}", userLoginDetails.Phone_OR_Email);
                     return new LoginResponseDto
                     {
                         LoginStatus = false,
@@ -844,7 +847,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<UpdateAccountDetailsResponseDto> UpdateAccountDetails(UpdateUserDto values)
         {
-            
             if(values is null)
             {
                 return new UpdateAccountDetailsResponseDto { error = new GenericResponseDto("The update request cannot be null or empty"), success = null! };
@@ -856,7 +858,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 return new UpdateAccountDetailsResponseDto { error = new GenericResponseDto("User id not found"), success = null! };
             }
 
-            if(string.IsNullOrWhiteSpace(values.UserId) || string.IsNullOrWhiteSpace(values.PhoneNumber) || string.IsNullOrWhiteSpace(values.ProfilePicture) || string.IsNullOrWhiteSpace(values.MiddleName))
+            if(string.IsNullOrWhiteSpace(values.UserId) && string.IsNullOrWhiteSpace(values.PhoneNumber) && string.IsNullOrWhiteSpace(values.ProfilePicture) && string.IsNullOrWhiteSpace(values.MiddleName))
             {
                 return new UpdateAccountDetailsResponseDto { error = new GenericResponseDto("At least two values must be supplied."), success = null! };
             }

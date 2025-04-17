@@ -7,7 +7,7 @@ namespace Modules.Customers.Application.Dtos.Complaints
     (
          string? ComplaintNumber,
 
-         string? NatureOfComplaint,
+         List<string>? NatureOfComplaint,
 
          string? PropertyNumber,
 

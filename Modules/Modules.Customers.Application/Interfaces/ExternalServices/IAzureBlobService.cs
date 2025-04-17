@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Modules.Customers.Application.Interfaces.Services
+namespace Modules.Customers.Application.Interfaces.ExternalService
 {
 	public interface IAzureBlobService
 	{

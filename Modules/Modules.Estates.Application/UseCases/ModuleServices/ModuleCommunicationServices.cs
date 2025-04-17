@@ -3,8 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Modules.Estates.Application.DTO.Management.ModuleServices;
-using Modules.Estates.Application.Interfaces.ModuleServices;
+
 
 namespace Modules.Estates.Application.UseCases.ModuleServices
 {
@@ -34,13 +33,11 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
         public async Task<bool> SendCustomerDetailsAsync(OnlineCustomerDetailsDto payload)
         {
             return await SendDataAsync("OnlineCustomer/AddCustomerDetails", payload);
-            
         }
 
         public async Task<bool> SendIdentificationTypeAsync(IdentificationTypeDto payload)
         {
             return await SendDataAsync("Administration/CreateIdentificationType", payload);
-
         }
 
         public async Task<bool> SendNatureOfComplaintDetailsAsync(NatureOfComplaintDto payload) 
@@ -58,12 +55,10 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
             return await SendDataAsync("OnlineCustomer/AddPropertyDetails", payload);
         }
 
-        public async Task<bool> SendComplaintDetailsAsync(ComplaintTypeCreateDto payload)
+        public async Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload)
         {
             return await SendDataAsync("Complaint/SubmitComplaint", payload);
         }
-
-        
 
 
 
@@ -81,6 +76,7 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Failed to send data to module. Endpoint: {Endpoint}, Status Code: {StatusCode}", endpoint, response.StatusCode);
+                    return response.IsSuccessStatusCode;
                 }
 
                 return response.IsSuccessStatusCode;

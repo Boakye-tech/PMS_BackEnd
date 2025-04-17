@@ -7,7 +7,7 @@ namespace Modules.Customers.Application.Interfaces
         Task<IEnumerable<ComplaintReadDto>> GetComplaintsList(string customerCode_OR_propertyNumber);
         Task<ComplaintReadDto> GetComplaintDetails(string complaintNumber);
 
-        Task<string> AddNewComplaint(ComplaintCreateDto values);
+        Task<GenericResponseDto> AddNewComplaint(ComplaintCreateDto values);
 
         Task<GenericResponseDto> UpdateComplaint(ComplaintUpdateDto values);
         Task<GenericResponseDto> DeleteComplaint(string ComplaintNumber);

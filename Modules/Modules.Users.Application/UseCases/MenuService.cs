@@ -145,6 +145,7 @@ namespace Modules.Users.Application.UseCases
             {
                 Menus menu = new(menus.menuId, menus.menuName, menus.description, menus.IsOpen);
                 menu.CreatedBy = menus.createdBy;
+                menu.CreatedOn = DateTime.UtcNow;
 
                 _unitOfWork.Menus.Insert(menu);
                 await _unitOfWork.Complete();
@@ -166,6 +167,7 @@ namespace Modules.Users.Application.UseCases
             {
                 SubMenus _subMenu = new(subMenus.menuId, subMenus.subMenuId, subMenus.subMenuName, subMenus.description, subMenus.IsOpen);
                 _subMenu.CreatedBy = subMenus.createdBy;
+                _subMenu.CreatedOn = DateTime.UtcNow;
 
                 _unitOfWork.SubMenus.Insert(_subMenu);
                 await _unitOfWork.Complete();
@@ -174,7 +176,7 @@ namespace Modules.Users.Application.UseCases
                 var _createdBy = string.Concat(_user!.FirstName, " ", _user.MiddleName, " ", _user.LastName).Trim();
 
 
-                return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName, _subMenu.Description, _createdBy, _subMenu.IsOpen);
+                return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName!, _subMenu.Description!, _createdBy, _subMenu.IsOpen);
             }
 
             return new SubMenusDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "BadRequest", "400-BadRequest",false);
@@ -410,14 +412,49 @@ namespace Modules.Users.Application.UseCases
 
         }
 
-        public Task<MenusDto> UpdateMenu(MenusDto updateMenus)
+        public async Task<MenusUpdateDto> UpdateMenu(MenusUpdateDto updateMenus)
         {
-            throw new NotImplementedException();
+            var menu = await _unitOfWork.Menus.Get(m => m.MenuId == updateMenus.menuId);
+            if(menu is null)
+            {
+                return new MenusUpdateDto(404, "Not Found.",null!, null!, false );
+            }
+
+            menu.MenuName = updateMenus.menuName;
+            menu.Description = updateMenus.description;
+            menu.ModifiedBy = updateMenus.modifiedBy;
+            menu.ModifiedOn = DateTime.UtcNow;
+
+            //var _menu = _mapper.Map<Menus>(menu);
+            _unitOfWork.Menus.Update(menu);
+            await _unitOfWork.Complete();
+
+            var updateMenu = _mapper.Map<MenusUpdateDto>(menu);
+            return updateMenu;
         }
 
-        public Task<SubMenusDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus)
+        public async Task<SubMenusUpdateResponseDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var subMenu = await _unitOfWork.SubMenus.Get(sm => sm.SubMenuId == updateSubMenus.subMenuId);
+            if (subMenu is null)
+            {
+                return new SubMenusUpdateResponseDto(404, 404, "Not Found.", null!, null!, false);
+            }
+
+            subMenu.SubMenuName = updateSubMenus.subMenuName;
+            subMenu.Description = updateSubMenus.description;
+            subMenu.IsOpen = updateSubMenus.IsOpen;
+            subMenu.ModifiedBy = updateSubMenus.modifiedBy;
+            subMenu.ModifiedOn = DateTime.UtcNow;
+
+            //var _subMenu = _mapper.Map<SubMenus>(updateSubMenus);
+            _unitOfWork.SubMenus.Update(subMenu);
+            await _unitOfWork.Complete();
+
+            var updatedSubMenu = _mapper.Map<SubMenusUpdateResponseDto>(subMenu);
+            return updatedSubMenu;
+
         }
 
         public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()

@@ -1,15 +1,21 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Modules.Customers.Domain.Enums;
 
 namespace Modules.Customers.Application.Dtos.Complaints
 {
 	public class ComplaintCreateDto
 	{
+
         [Required]
         public int ComplaintTypeId { get; set; }
 
         [Required]
-        public int NatureOfComplaintId { get; set; }
+        public int[]? NatureOfComplaintId { get; set; }
+
+        //[Required]
+        [StringLength(10)]
+        public string? ComplaintNumber { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -41,8 +47,6 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         public DateTime AvailabilityDate { get; set; }
 
-        //public DateTime ComplaintDate { get; set; }
-
         [StringLength(300)]
         public string? SubmittedBy { get; set; }
 
@@ -51,16 +55,7 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         public string[]? DocumentImages { get; set; }
 
-        //[StringLength(255)]
-        //public string? DocumentOne { get; set; }
-
-        //[StringLength(255)]
-        //public string? DocumentTwo { get; set; }
-
-        //[StringLength(255)]
-        //public string? DocumentThree { get; set; }
-
-        //public int ComplaintStatus { get; set; }
+        public ComplaintSource Source { get; set; }
 
         [StringLength(36)]
         public string? CreatedBy { get; set; }

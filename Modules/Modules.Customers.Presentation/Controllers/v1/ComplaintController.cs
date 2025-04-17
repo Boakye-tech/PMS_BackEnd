@@ -1,8 +1,10 @@
 ﻿using System.Web;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Customers.Application.Dtos.Complaints;
+using Modules.Customers.Domain.Enums;
 
 namespace Modules.Customers.Presntation.Controllers.v1;
 
@@ -10,6 +12,8 @@ namespace Modules.Customers.Presntation.Controllers.v1;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
 public class ComplaintController : ControllerBase
 {
     private readonly ILogger<ComplaintController> _logger;
@@ -179,6 +183,7 @@ public class ComplaintController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("SubmitComplaint")]
+    //[Authorize(Policy = "Permission:Customers.COMPLAINT")]
     public async Task<ActionResult> AddNewComplaint([FromBody] ComplaintCreateDto values)
     {
         try
@@ -188,6 +193,11 @@ public class ComplaintController : ControllerBase
             //{
             //    return Unauthorized();
             //}
+
+            if (values.NatureOfComplaintId!.Count() == 0)
+            {
+                return StatusCode(204, "Nature of complaint cannot be null or empty");
+            }
 
             var result = await _complaintService.AddNewComplaint(values);
             return Ok(result);

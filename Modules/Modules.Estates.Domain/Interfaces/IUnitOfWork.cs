@@ -49,6 +49,7 @@ public interface IUnitOfWork : IDisposable
     IComplaintRepository Complaint { get; }
     IComplaintTypeRepository ComplaintType { get; }
     INatureOfComplaintRepository NatureOfComplaint { get; }
+    IComplaintStatusesRepository ComplaintStatuses { get; }
 
     Task<int> Complete();
 }

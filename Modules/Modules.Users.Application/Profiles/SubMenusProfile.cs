@@ -10,8 +10,15 @@ namespace Modules.Users.Application.Profiles
 		{
 			CreateMap<SubMenus, SubMenusDto>();
             CreateMap<SubMenusDto, SubMenus>();
+
             CreateMap<SubMenusUpdateDto, SubMenus>();
+            //CreateMap<SubMenus, SubMenusUpdateDto>();
+
+
             CreateMap<SubMenuDeleteDto, SubMenus>();
+
+            CreateMap<SubMenus, SubMenusUpdateResponseDto>();
+            //CreateMap<SubMenusUpdateResponseDto, SubMenus>();
 
         }
     }

@@ -23,7 +23,7 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
     (
          string? ComplaintNumber,
 
-         string? NatureOfComplaint,
+         List<string>? NatureOfComplaint,
 
          string? PropertyNumber,
 

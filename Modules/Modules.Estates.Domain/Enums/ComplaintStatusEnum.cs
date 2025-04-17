@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Modules.Estates.Application.Enums
+namespace Modules.Estates.Domain.Enums
 {
 	public enum ComplaintStatusEnum
 	{
