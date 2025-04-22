@@ -191,7 +191,9 @@ using(var scope = app.Services.CreateScope())
     authorizationOptions.AddPolicy("Permission:Users.CREATEROLE", policy => policy.RequireClaim("Permission:Users.CREATEROLE", "CREATEROLE"));
     authorizationOptions.AddPolicy("Permission:Users.ASSIGNUSER", policy => policy.RequireClaim("Permission:Users.ASSIGNUSER", "ASSIGNUSER"));
     authorizationOptions.AddPolicy("Permission:Users.ASSIGNPERM", policy => policy.RequireClaim("Permission:Users.ASSIGNPERM", "ASSIGNPERM"));
+
     authorizationOptions.AddPolicy("Permission:Customers.COMPLAINT", policy => policy.RequireClaim("Permission:Customers.COMPLAINT", "COMPLAINT"));
+    authorizationOptions.AddPolicy("Permission:Complaints.COMPLAINT", policy => policy.RequireClaim("Permission:Complaints.COMPLAINT", "COMPLAINT"));
 };
 
 

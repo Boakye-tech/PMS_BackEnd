@@ -20,7 +20,8 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
         public string? PropertyNumber { get; set; }
 
         [Required]
-        public int PropertyLocationId { get; set; }
+        [StringLength(75)]
+        public string? PropertyLocation { get; set; }
 
         //[Required]
         [StringLength(10)]
@@ -38,7 +39,8 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 
-        public bool IsTheMatterInCourt { get; set; }
+        [StringLength(3)]
+        public string? IsTheMatterInCourt { get; set; }
 
         [Required]
         public string? DetailsOfComplaint { get; set; }

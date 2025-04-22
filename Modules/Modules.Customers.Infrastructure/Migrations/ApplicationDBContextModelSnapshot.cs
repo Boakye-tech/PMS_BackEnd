@@ -111,8 +111,9 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
 
-                    b.Property<bool>("IsTheMatterInCourt")
-                        .HasColumnType("bit");
+                    b.Property<string>("IsTheMatterInCourt")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -132,8 +133,10 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("PropertyLocationId")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyLocation")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("PropertyNumber")
                         .IsRequired()

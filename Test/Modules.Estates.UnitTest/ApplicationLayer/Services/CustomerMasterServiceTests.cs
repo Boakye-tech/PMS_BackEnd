@@ -18,6 +18,7 @@ using Modules.Estates.Domain;
 using Modules.Estates.Application.Enums;
 using Modules.Estates.UnitTest.InfrastructureLayer.Data;
 using Modules.Estates.Domain.Entities.Management;
+using Modules.Estates.Domain.Enums;
 
 namespace Modules.Estates.UnitTest.ApplicationLayer.Services
 {

@@ -21,3 +21,5 @@ global using Modules.Estates.Application.DTO.Management;
 global using Modules.Estates.Application.DTO.Management.Complaints;
 global using Modules.Estates.Application.Enums;
 global using Modules.Estates.Application.Interfaces.Management.Complaints;
+
+global using Modules.Common.Infrastructure.Authentication;

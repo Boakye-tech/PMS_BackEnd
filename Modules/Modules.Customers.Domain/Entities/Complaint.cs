@@ -32,7 +32,8 @@ namespace Modules.Customers.Domain.Entities
         public string? PropertyNumber { get; set; }
 
         [Required]
-        public int PropertyLocationId { get; set; }
+        [StringLength(75)]
+        public string? PropertyLocation { get; set; }
 
         //[Required]
         [StringLength(10)]
@@ -50,7 +51,8 @@ namespace Modules.Customers.Domain.Entities
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 
-        public bool IsTheMatterInCourt { get; set; }
+        [StringLength(3)]
+        public string? IsTheMatterInCourt { get; set; }
 
         [Required]
         public string? DetailsOfComplaint { get; set; }
@@ -109,8 +111,8 @@ namespace Modules.Customers.Domain.Entities
         }
 
         public Complaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
-                         string propertyNumber, int propertyLocationId, string customerCode, string customerName,
-                         string phoneNumber, string emailAddress, bool isTheMatterInCourt, string detailsOfComplaint,
+                         string propertyNumber, string propertyLocation, string customerCode, string customerName,
+                         string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
                          string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus, string createdBy,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
@@ -119,8 +121,8 @@ namespace Modules.Customers.Domain.Entities
         }
 
         public static Complaint CreateNewComplaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
-                         string propertyNumber, int propertyLocationId, string customerCode, string customerName,
-                         string phoneNumber, string emailAddress, bool isTheMatterInCourt, string detailsOfComplaint,
+                         string propertyNumber, string propertyLocation, string customerCode, string customerName,
+                         string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
                          string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus, ComplaintSource source, string createdBy)
         {
@@ -134,14 +136,14 @@ namespace Modules.Customers.Domain.Entities
                 throw new ArgumentException("Nature of complaint must not be null or empty.");
             }
 
-            if (propertyLocationId <= 0)
-            {
-                throw new ArgumentException("Property location id must be greater than zero.");
-            }
-
             if (string.IsNullOrWhiteSpace(propertyNumber))
             {
                 throw new ArgumentException("Property number must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(propertyLocation))
+            {
+                throw new ArgumentException("Property locatiion must not be null or empty.");
             }
 
             if (string.IsNullOrWhiteSpace(customerCode))
@@ -164,7 +166,6 @@ namespace Modules.Customers.Domain.Entities
                 throw new ArgumentException("Complaint details must not be null or empty");
             }
 
-
             if(source == ComplaintSource.CUSTOMER)
             {
                 string _complaintNumber = new Random().Next(0, 100000).ToString();
@@ -178,7 +179,7 @@ namespace Modules.Customers.Domain.Entities
                 ComplaintTypeId = complaintTypeId,
                 NatureOfComplaintId = natureOfComplaintId,
                 PropertyNumber = propertyNumber,
-                PropertyLocationId = propertyLocationId,
+                PropertyLocation = propertyLocation,
                 CustomerCode = customerCode,
                 CustomerName = customerName,
                 PhoneNumber = phoneNumber,

@@ -12,6 +12,11 @@ namespace Modules.Customers.Domain.Entities
         [Required]
         [StringLength(20)]
         public string? ComplaintStatus { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Description { get; set; }
+
     }
 }
 

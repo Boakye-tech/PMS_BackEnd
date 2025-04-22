@@ -4,7 +4,7 @@ using Modules.Estates.Domain.Events.Complaints;
 
 namespace Modules.Estates.Domain.Entities.Management
 {
-	public class Complaint : AuditableEntity
+	public class Complaint //: AuditableEntity
 	{
         private readonly List<DomainEvent> _domainEvents = new();
 
@@ -31,7 +31,8 @@ namespace Modules.Estates.Domain.Entities.Management
         public string? PropertyNumber { get; set; }
 
         [Required]
-        public int PropertyLocationId { get; set; }
+        [StringLength(75)]
+        public string? PropertyLocation { get; set; }
 
         //[Required]
         [StringLength(10)]
@@ -49,7 +50,8 @@ namespace Modules.Estates.Domain.Entities.Management
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 
-        public bool IsTheMatterInCourt { get; set; }
+        [StringLength(3)]
+        public string? IsTheMatterInCourt { get; set; }
 
         [Required]
         public string? DetailsOfComplaint { get; set; }
@@ -75,30 +77,30 @@ namespace Modules.Estates.Domain.Entities.Management
 
         public ComplaintStatusEnum ComplaintStatus { get; set; }
 
-        [StringLength(36)]
-        public string? ReviewedBy { get; set; }
+        //[StringLength(36)]
+        //public string? ReviewedBy { get; set; }
 
-        public DateTime DateReviewed { get; set; }
+        //public DateTime DateReviewed { get; set; }
 
-        [StringLength(36)]
-        public string? AssignedTo { get; set; }
+        //[StringLength(36)]
+        //public string? AssignedTo { get; set; }
 
-        [StringLength(36)]
-        public string? AssignedBy { get; set; }
+        //[StringLength(36)]
+        //public string? AssignedBy { get; set; }
 
-        public DateTime DateAssigned { get; set; }
+        //public DateTime DateAssigned { get; set; }
 
-        [StringLength(36)]
-        public string? ResolvedBy { get; set; }
+        //[StringLength(36)]
+        //public string? ResolvedBy { get; set; }
 
-        public DateTime ResolutionDate { get; set; }
+        //public DateTime ResolutionDate { get; set; }
 
         public string? Notes { get; set; }
 
-        [StringLength(36)]
-        public string? CancelledBy { get; set; }
+        //[StringLength(36)]
+        //public string? CancelledBy { get; set; }
 
-        public DateTime CancelledDate { get; set; }
+        //public DateTime CancelledDate { get; set; }
 
         public ComplaintSourceEnum Source { get; set; }
 
@@ -108,8 +110,8 @@ namespace Modules.Estates.Domain.Entities.Management
         }
 
         public Complaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
-                         string propertyNumber, int propertyLocationId, string customerCode, string customerName,
-                         string phoneNumber, string emailAddress, bool isTheMatterInCourt, string detailsOfComplaint,
+                         string propertyNumber, string propertyLocation, string customerCode, string customerName,
+                         string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
                          string documentOne, string documentTwo, string documentThree, ComplaintStatusEnum complaintStatus, string createdBy,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
@@ -118,8 +120,8 @@ namespace Modules.Estates.Domain.Entities.Management
         }
 
         public static Complaint CreateNewComplaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
-                         string propertyNumber, int propertyLocationId, string customerCode, string customerName,
-                         string phoneNumber, string emailAddress, bool isTheMatterInCourt, string detailsOfComplaint,
+                         string propertyNumber, string propertyLocation, string customerCode, string customerName,
+                         string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
                          string documentOne, string documentTwo, string documentThree, ComplaintStatusEnum complaintStatus, ComplaintSourceEnum source, string createdBy)
         {
@@ -133,14 +135,14 @@ namespace Modules.Estates.Domain.Entities.Management
                 throw new ArgumentException("Nature of complaint must not be null or empty");
             }
 
-            if (propertyLocationId <= 0)
-            {
-                throw new ArgumentException("Property location id must be greater than zero.");
-            }
-
             if (string.IsNullOrWhiteSpace(propertyNumber))
             {
                 throw new ArgumentException("Property number must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(propertyLocation))
+            {
+                throw new ArgumentException("Property location must not be null or empty");
             }
 
             if (string.IsNullOrWhiteSpace(customerCode))
@@ -176,7 +178,7 @@ namespace Modules.Estates.Domain.Entities.Management
                 ComplaintTypeId = complaintTypeId,
                 NatureOfComplaintId = natureOfComplaintId,
                 PropertyNumber = propertyNumber,
-                PropertyLocationId = propertyLocationId,
+                PropertyLocation = propertyLocation,
                 CustomerCode = customerCode,
                 CustomerName = customerName,
                 PhoneNumber = phoneNumber,
@@ -191,14 +193,14 @@ namespace Modules.Estates.Domain.Entities.Management
                 DocumentTwo = documentTwo,
                 DocumentThree = documentThree,
                 ComplaintStatus = complaintStatus,
-                CreatedBy = createdBy,
-                ReviewedBy = string.Empty,
-                DateReviewed = Convert.ToDateTime("1900-01-01"),
-                AssignedTo = string.Empty,
-                AssignedBy = string.Empty,
-                DateAssigned = Convert.ToDateTime("1900-01-01"),
-                ResolvedBy = string.Empty,
-                ResolutionDate = Convert.ToDateTime("1900-01-01"),
+                //CreatedBy = createdBy,
+                //ReviewedBy = string.Empty,
+                //DateReviewed = Convert.ToDateTime("1900-01-01"),
+                //AssignedTo = string.Empty,
+                //AssignedBy = string.Empty,
+                //DateAssigned = Convert.ToDateTime("1900-01-01"),
+                //ResolvedBy = string.Empty,
+                //ResolutionDate = Convert.ToDateTime("1900-01-01"),
                 Notes = string.Empty,
                 Source = source
             };

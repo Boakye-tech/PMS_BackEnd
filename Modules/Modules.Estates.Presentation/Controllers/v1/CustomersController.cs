@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.DTO;
-using Modules.Estates.Application.DTO.Management.Complaints;
-using Modules.Estates.Application.Enums;
-using Modules.Estates.Presentation.Constants;
+
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace Modules.Estates.Presentation.Controllers.v1
@@ -232,7 +231,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetCustomerDetails/{customerCode}")]
-        [AllowAnonymous]
+        [Authorize(Policy = "Permission:Customers.READ")]
         public async Task<ActionResult> GetCustomer(string customerCode)
         {
             try
@@ -590,17 +589,101 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
+        /// Returns a list of complaint status
+        /// </summary>
+        [HttpGet]
+        [Route("ComplaintStatus")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        public IActionResult ComplaintStatus()
+        {
+            var statuses = Enum.GetValues(typeof(ComplaintStatusEnum))
+                                   .Cast<ComplaintStatusEnum>()
+                                   .Select(e => new
+                                   {
+                                       Id = (int)e,
+                                       Name = e.ToString(),
+                                       DisplayName = e.GetType()
+                                                     .GetField(e.ToString())!
+                                                      .GetCustomAttribute<DescriptionAttribute>()?
+                                                      .Description
+
+                                   });
+            return Ok(statuses);
+        }
+
+        /// <summary>
         /// Returns a list of complaints
         /// </summary>
         [HttpGet]
         [Route("GetListOfComplaints")]
-        [AllowAnonymous]
+        [Authorize(Policy = "Permission:Customers.READ")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ComplaintStaffReadDto>))]
         public async Task<ActionResult> GetListOfComplaints()
         {
             try
             {
                 var result = await _complaintMasterServices.GetComplaintsList();
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Returns a list of complaints based on a user query/optional parameters
+        /// </summary>
+        [HttpGet]
+        [Route("GetComplaints")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ComplaintStaffReadDto>))]
+        public async Task<ActionResult> GetListOfComplaints([FromQuery] string? complaintNumber, [FromQuery] string? customerCode_OR_propertyNumber)
+        {
+            try
+            {
+                if (complaintNumber is null && customerCode_OR_propertyNumber is null)
+                {
+                    return Ok(Array.Empty<string>());
+                }
+
+                if (complaintNumber is not null)
+                {
+                    var result = await _complaintMasterServices.GetComplaintSummary(complaintNumber);
+                    return Ok(result);
+                }
+
+                if (customerCode_OR_propertyNumber is not null)
+                {
+                    var result = await _complaintMasterServices.GetCustomerComplaintsList(customerCode_OR_propertyNumber);
+                    return Ok(result);
+                }
+
+                return Ok(Array.Empty<string>());
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Returns details of a complaint
+        /// </summary>
+        [HttpGet]
+        [Route("GetComplaintDetails/{complaintNumber}")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(200, Type = typeof(ComplaintDto))]
+        public async Task<ActionResult> GetComplaintDetails(string complaintNumber)
+        {
+            try
+            {
+                var result = await _complaintMasterServices.GetComplaintDetails(complaintNumber);
                 return Ok(result);
 
             }

@@ -34,9 +34,9 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                _complaint.AssignedBy = values.AssignedBy;
-                _complaint.AssignedTo = values.AssignedTo;
-                _complaint.DateAssigned = DateTime.UtcNow;
+                //_complaint.AssignedBy = values.AssignedBy;
+                //_complaint.AssignedTo = values.AssignedTo;
+                //_complaint.DateAssigned = DateTime.UtcNow;
                 _complaint.ComplaintStatus = ComplaintStatusEnum.ASSIGNED;
 
                 _unitOfWork.Complaint.Update(_complaint);
@@ -63,8 +63,8 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                _complaint.CancelledBy = values.CancelledBy;
-                _complaint.CancelledDate = DateTime.UtcNow;
+                //_complaint.CancelledBy = values.CancelledBy;
+                //_complaint.CancelledDate = DateTime.UtcNow;
                 _complaint.ComplaintStatus = ComplaintStatusEnum.CANCELLED;
 
                 _unitOfWork.Complaint.Update(_complaint);
@@ -115,16 +115,16 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
             {
                 Complaint complaint = Complaint.CreateNewComplaint(
                     complaintId: 0,
-                    complaintNumber: string.Empty,
+                    complaintNumber: values.ComplaintNumber!,
                     complaintTypeId: values.ComplaintTypeId,
                     natureOfComplaintId: natureofComplaint,
                     propertyNumber: values.PropertyNumber!,
-                    propertyLocationId: values.PropertyLocationId,
+                    propertyLocation: values.PropertyLocation!,
                     customerCode: values.CustomerCode!,
                     customerName: values.CustomerName!,
                     phoneNumber: values.PhoneNumber!,
                     emailAddress: values.EmailAddress!,
-                    isTheMatterInCourt: values.IsTheMatterInCourt,
+                    isTheMatterInCourt: values.IsTheMatterInCourt!,
                     detailsOfComplaint: values.DetailsOfComplaint!,
                     availabilityDate: values.AvailabilityDate,
                     complaintDate: DateTime.UtcNow,
@@ -138,14 +138,21 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     createdBy: values.CreatedBy!
                     );
 
-                complaint.CreatedOn = DateTime.UtcNow;
+                //complaint.CreatedOn = DateTime.UtcNow;
 
                 _unitOfWork.Complaint.Insert(complaint);
                 await _unitOfWork.Complete();
 
-                //send to online customer
-                values.ComplaintNumber = complaint.ComplaintNumber;
-                await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
+
+                if (values.Source == ComplaintSourceEnum.STAFF)
+                {
+                    ComplaintHistory complaintHistory = ComplaintHistory.Create(complaint.ComplaintId, complaint.ComplaintNumber, ComplaintStatusEnum.SUBMITTED, values.CreatedBy, DateTime.UtcNow);
+                    await _unitOfWork.Complete();
+
+                    //send to online customer
+                    values.ComplaintNumber = complaint.ComplaintNumber;
+                    await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
+                }
 
                 return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint submitted successfully." };
             }
@@ -158,6 +165,49 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
         public Task<BaseResponseDto> DeleteComplaint(string ComplaintNumber)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ComplaintDto> GetComplaintDetails(string complaintNumber)
+        {
+            var complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == complaintNumber);
+
+            if (complaint == null)
+            {
+                return null!;
+            }
+
+            string[] natureofComplaints = complaint.NatureOfComplaintId!.Split(',');
+            List<NatureOfComplaints> natureofComplaints_list = new List<NatureOfComplaints>();
+
+            foreach (var item in natureofComplaints)
+            {
+                var result = await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item));
+                natureofComplaints_list.Add(new NatureOfComplaints(result!.NatureOfComplaintId, result.NatureOfComplaints!));
+            }
+
+            var response = new ComplaintDto
+            {
+                ComplaintId = complaint.ComplaintId,
+                ComplaintNumber = complaint.ComplaintNumber,
+                ComplaintTypeId = complaint.ComplaintTypeId,
+                ComplaintType = (await _unitOfWork.ComplaintType.Get(c => c.ComplaintTypeId == complaint.ComplaintTypeId))!.ComplaintTypes,
+                NatureOfComplaint = natureofComplaints_list,
+                PropertyNumber = complaint.PropertyNumber,
+                PropertyLocation = complaint.PropertyLocation,
+                CustomerCode = complaint.CustomerCode,
+                CustomerName = complaint.CustomerName,
+                PhoneNumber = complaint.PhoneNumber,
+                EmailAddress = complaint.EmailAddress,
+                IsTheMatterInCourt = complaint.IsTheMatterInCourt,
+                DetailsOfComplaint = complaint.DetailsOfComplaint!.Trim(),
+                ComplaintDate = complaint.ComplaintDate,
+                SubmittedBy = complaint.SubmittedBy,
+                SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
+                DocumentList = new List<string> { complaint.DocumentOne!, complaint.DocumentTwo!, complaint.DocumentThree! },
+                ComplaintStatus = ComplaintStatusEnumDescription.GetEnumDescription(complaint.ComplaintStatus)
+            };
+
+            return response;
         }
 
         public async Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList()
@@ -189,7 +239,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     NatureOfComplaint: natureofComplaints_list,
                     PropertyNumber: complaint.PropertyNumber,
                     ComplaintDate: complaint.ComplaintDate,
-                    ComplaintStatus: complaint.ComplaintStatus.ToString(),
+                    ComplaintStatus: ComplaintStatusEnumDescription.GetEnumDescription(complaint.ComplaintStatus),
                     CustomerName: complaint.CustomerName
                 );
 
@@ -199,7 +249,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
             return _allComplaints;
         }
 
-        public async Task<ComplaintStaffReadDto> GetComplaint(string complaintNumber)
+        public async Task<ComplaintStaffReadDto> GetComplaintSummary(string complaintNumber)
         {
             var complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == complaintNumber);
 
@@ -223,7 +273,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 NatureOfComplaint: natureofComplaints_list,
                 PropertyNumber: complaint.PropertyNumber,
                 ComplaintDate: complaint.ComplaintDate,
-                ComplaintStatus: complaint.ComplaintStatus.ToString(),
+                ComplaintStatus: ComplaintStatusEnumDescription.GetEnumDescription(complaint.ComplaintStatus),
                 CustomerName: complaint.CustomerName
             );
 
@@ -259,7 +309,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     NatureOfComplaint: natureofComplaints_list,
                     PropertyNumber: complaint.PropertyNumber,
                     ComplaintDate: complaint.ComplaintDate,
-                    ComplaintStatus: complaint.ComplaintStatus.ToString(),
+                    ComplaintStatus: ComplaintStatusEnumDescription.GetEnumDescription(complaint.ComplaintStatus),
                     CustomerName: complaint.CustomerName
                 );
 
@@ -281,8 +331,8 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                _complaint.ResolvedBy = values.ResolvedBy;
-                _complaint.ResolutionDate = DateTime.UtcNow;
+                //_complaint.ResolvedBy = values.ResolvedBy;
+                //_complaint.ResolutionDate = DateTime.UtcNow;
                 _complaint.ComplaintStatus = ComplaintStatusEnum.RESOLVED;
 
                 _unitOfWork.Complaint.Update(_complaint);
@@ -309,8 +359,8 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                _complaint.ReviewedBy = values.ReviewedBy;
-                _complaint.DateReviewed = DateTime.UtcNow;
+                //_complaint.ReviewedBy = values.ReviewedBy;
+                //_complaint.DateReviewed = DateTime.UtcNow;
                 _complaint.ComplaintStatus = ComplaintStatusEnum.REVIEWED;
 
                 _unitOfWork.Complaint.Update(_complaint);
@@ -344,8 +394,8 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _complaint.DocumentOne = values.DocumentImages![0];
                 _complaint.DocumentTwo = values.DocumentImages![1];
                 _complaint.DocumentThree = values.DocumentImages![2];
-                _complaint.ModifiedBy = values.ModifiedBy;
-                _complaint.ModifiedOn = DateTime.UtcNow;
+                //_complaint.ModifiedBy = values.ModifiedBy;
+                //_complaint.ModifiedOn = DateTime.UtcNow;
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();

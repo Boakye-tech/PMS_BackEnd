@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-
 
 namespace Modules.Estates.Application.UseCases.ModuleServices
 {
@@ -12,12 +12,15 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
         private readonly HttpClient _httpClient;
         private readonly ILogger<ModuleCommunicationServices> _logger;
         private readonly IConfiguration _config;
+        private readonly IUserContextService _userContextService;
 
-        public ModuleCommunicationServices(HttpClient httpClient, ILogger<ModuleCommunicationServices> logger, IConfiguration config)
+
+        public ModuleCommunicationServices(HttpClient httpClient, ILogger<ModuleCommunicationServices> logger, IConfiguration config, IUserContextService userContextService)
 		{
             _httpClient = httpClient;
             _logger = logger;
             _config = config;
+            _userContextService = userContextService;
         }
 
         public async Task<bool> SendComplaintTypeDetailsAsync(ComplaintTypeDto payload)
@@ -66,11 +69,14 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
         {
             var baseurl = _config.GetSection("ModuleUrl").GetSection("BaseUrl").Value;
             var Url = $"{baseurl}{endpoint}";
+            var token = _userContextService.GetAccessToken();
 
             try
             {
                 string jsonPayload = JsonSerializer.Serialize(payload);
                 using var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
                 using var response = await _httpClient.PostAsync(Url, httpContent);
 
                 if (!response.IsSuccessStatusCode)

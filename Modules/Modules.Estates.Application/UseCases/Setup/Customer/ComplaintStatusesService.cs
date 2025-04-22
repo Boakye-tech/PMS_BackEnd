@@ -16,14 +16,14 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
 
         public async Task<ComplaintStatusesReadDto> CreateComplaintStatusAsync(ComplaintStatusesCreateDto values)
         {
-            ComplaintStatuses complaintStatus = ComplaintStatuses.CreateUpdate(values.complaintStatusId, values.complaintStatus!);
+            ComplaintStatuses complaintStatus = ComplaintStatuses.CreateUpdate(values.complaintStatusId, values.complaintStatus!, values.description!);
             complaintStatus.CreatedBy = values.createdBy;
             complaintStatus.CreatedOn = DateTime.UtcNow;
 
             _unitOfWork.ComplaintStatuses.Insert(complaintStatus);
             await _unitOfWork.Complete();
 
-            return new ComplaintStatusesReadDto(complaintStatus.ComplaintStatusId, complaintStatus.ComplaintStatus!);
+            return new ComplaintStatusesReadDto(complaintStatus.ComplaintStatusId, complaintStatus.ComplaintStatus!, complaintStatus.Description!);
         }
 
         public async Task<string> DeleteComplaintStatusAsync(int value)
@@ -49,14 +49,22 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
 
         public async Task<ComplaintStatusesReadDto> UpdateComplaintStatusAsync(ComplaintStatusesUpdateDto values)
         {
-            ComplaintStatuses complaintStatus = ComplaintStatuses.CreateUpdate(values.complaintStatusId, values.complaintStatus!);
+            var complaintStatus = await _unitOfWork.ComplaintStatuses.Get(cs => cs.ComplaintStatusId == values.complaintStatusId);
+            if(complaintStatus is null)
+            {
+                return null!;
+            }
+            //ComplaintStatuses complaintStatus = ComplaintStatuses.CreateUpdate(values.complaintStatusId, values.complaintStatus!, values.description!);
+
+            complaintStatus.ComplaintStatus = values.complaintStatus;
+            complaintStatus.Description = values.description;
             complaintStatus.ModifiedBy = values.modifiedBy;
             complaintStatus.ModifiedOn = DateTime.UtcNow;
 
             _unitOfWork.ComplaintStatuses.Update(complaintStatus);
             await _unitOfWork.Complete();
 
-            return new ComplaintStatusesReadDto(complaintStatus.ComplaintStatusId, complaintStatus.ComplaintStatus!);
+            return new ComplaintStatusesReadDto(complaintStatus.ComplaintStatusId, complaintStatus.ComplaintStatus!, complaintStatus.Description!);
         }
     }
 }

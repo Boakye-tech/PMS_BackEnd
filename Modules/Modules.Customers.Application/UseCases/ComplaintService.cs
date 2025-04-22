@@ -64,12 +64,12 @@ namespace Modules.Customers.Application.UseCases
                     complaintTypeId: values.ComplaintTypeId,
                     natureOfComplaintId: natureofComplaint,
                     propertyNumber: values.PropertyNumber!,
-                    propertyLocationId: values.PropertyLocationId,
+                    propertyLocation: values.PropertyLocation!,
                     customerCode: values.CustomerCode!,
                     customerName: values.CustomerName!,
                     phoneNumber: values.PhoneNumber!,
                     emailAddress: values.EmailAddress!,
-                    isTheMatterInCourt: values.IsTheMatterInCourt,
+                    isTheMatterInCourt: values.IsTheMatterInCourt!,
                     detailsOfComplaint: values.DetailsOfComplaint!,
                     availabilityDate: values.AvailabilityDate,
                     complaintDate: DateTime.UtcNow,
@@ -87,10 +87,12 @@ namespace Modules.Customers.Application.UseCases
                 _unitOfWork.Complaint.Insert(complaint);
                 await _unitOfWork.Complete();
 
-                //send to staff module
-                values.ComplaintNumber = complaint.ComplaintNumber;
-                await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
-
+                if(values.Source == ComplaintSource.CUSTOMER)
+                {
+                    //send to staff module
+                    values.ComplaintNumber = complaint.ComplaintNumber;
+                    await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
+                }
 
                 return new GenericResponseDto{ response = complaint.ComplaintNumber! };
             }
@@ -152,32 +154,45 @@ namespace Modules.Customers.Application.UseCases
 
         }
 
-        public async Task<ComplaintReadDto> GetComplaintDetails(string complaintNumber)
+        public async Task<ComplaintDto> GetComplaintDetails(string complaintNumber)
         {
             var complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == complaintNumber);
 
             if (complaint == null)
             {
-                return new ComplaintReadDto(null, null, null,DateTime.Now,null);
+                return null!;
             }
 
             string[] natureofComplaints = complaint.NatureOfComplaintId!.Split(',');
-            List<string> natureofComplaints_list = new List<string>();
+            List<NatureOfComplaints> natureofComplaints_list = new List<NatureOfComplaints>();
 
             foreach (var item in natureofComplaints)
             {
-                var result =  (await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item)))!.NatureOfComplaints;
-                natureofComplaints_list.Add(result!);
+                var result =  await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item));
+                natureofComplaints_list.Add(new NatureOfComplaints(result!.NatureOfComplaintId, result.NatureOfComplaints!));
             }
 
-            var response = new ComplaintReadDto
-            (
-                ComplaintNumber : complaint.ComplaintNumber,
-                NatureOfComplaint : natureofComplaints_list,
-                PropertyNumber : complaint.PropertyNumber,
-                ComplaintDate : complaint.ComplaintDate,
-                ComplaintStatus : complaint.ComplaintStatus.ToString()
-            );
+            var response = new ComplaintDto
+            {
+                ComplaintId = complaint.ComplaintId,
+                ComplaintNumber = complaint.ComplaintNumber,
+                ComplaintTypeId = complaint.ComplaintTypeId,
+                ComplaintType = (await _unitOfWork.ComplaintType.Get(c => c.ComplaintTypeId == complaint.ComplaintTypeId))!.ComplaintTypes,
+                NatureOfComplaint = natureofComplaints_list,
+                PropertyNumber = complaint.PropertyNumber,
+                PropertyLocation = complaint.PropertyLocation,
+                CustomerCode = complaint.CustomerCode,
+                CustomerName = complaint.CustomerName,
+                PhoneNumber = complaint.PhoneNumber,
+                EmailAddress = complaint.EmailAddress,
+                IsTheMatterInCourt = complaint.IsTheMatterInCourt,
+                DetailsOfComplaint = complaint.DetailsOfComplaint!.Trim(),
+                ComplaintDate = complaint.ComplaintDate,
+                SubmittedBy = complaint.SubmittedBy,
+                SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
+                DocumentList = new List<string> { complaint.DocumentOne!, complaint.DocumentTwo!, complaint.DocumentThree! },
+                ComplaintStatus = ComplaintStatusDescription.GetEnumDescription(complaint.ComplaintStatus)
+            };
 
             return response;
 
@@ -195,7 +210,7 @@ namespace Modules.Customers.Application.UseCases
 
             foreach (var complaint in complaintList)
             {
-                var result = await this.GetComplaintDetails(complaint.ComplaintNumber!);
+                var result = await GetComplaintSummary(complaint.ComplaintNumber!);
                 response.Add(result);
             }
 
@@ -214,6 +229,37 @@ namespace Modules.Customers.Application.UseCases
             //    )).ToList();
 
             return response;
+        }
+
+        public async Task<ComplaintReadDto> GetComplaintSummary(string complaintNumber)
+        {
+            var complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == complaintNumber);
+
+            if (complaint == null)
+            {
+                return new ComplaintReadDto(null, null, null, DateTime.Now, null);
+            }
+
+            string[] natureofComplaints = complaint.NatureOfComplaintId!.Split(',');
+            List<string> natureofComplaints_list = new List<string>();
+
+            foreach (var item in natureofComplaints)
+            {
+                var result = (await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item)))!.NatureOfComplaints;
+                natureofComplaints_list.Add(result!);
+            }
+
+            var response = new ComplaintReadDto
+            (
+                ComplaintNumber: complaint.ComplaintNumber,
+                NatureOfComplaint: natureofComplaints_list,
+                PropertyNumber: complaint.PropertyNumber,
+                ComplaintDate: complaint.ComplaintDate,
+                ComplaintStatus: ComplaintStatusDescription.GetEnumDescription(complaint.ComplaintStatus)
+            );
+
+            return response;
+
         }
 
         public async Task<GenericResponseDto> ResolveComplaint(ComplaintResolutionDto values)

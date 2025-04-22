@@ -79,5 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Estates.Domain\Modules.Estates.Domain.csproj" />
+    <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

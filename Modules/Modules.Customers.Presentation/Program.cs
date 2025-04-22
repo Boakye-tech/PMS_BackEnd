@@ -15,9 +15,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Configuration.AddJsonFile("appsettings.customers.json", optional: false, reloadOnChange: true);
-
-
 if (builder.Environment.IsDevelopment())
 {
     var currentDirectory = Directory.GetCurrentDirectory();
@@ -117,13 +114,12 @@ builder.Services.AddCors(o =>
 //});
 
 builder.Services.AddCustomerModule(builder.Configuration);
-
+builder.Services.AddControllers();
 
 //register global exception handler
 builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddControllers();
 builder.Services
     .AddApiVersioning(options =>
     {

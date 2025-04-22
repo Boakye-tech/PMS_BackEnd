@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Modules.Estates.Application.Enums;
 using Modules.Estates.Domain.Entities.Setup.Customer;
+using Modules.Estates.Domain.Enums;
 
 namespace Modules.Estates.Application.UseCases.Management.Customer
 {

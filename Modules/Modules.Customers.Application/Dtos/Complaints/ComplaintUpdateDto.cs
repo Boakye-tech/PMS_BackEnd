@@ -16,7 +16,8 @@ namespace Modules.Customers.Application.Dtos.Complaints
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 
-        public bool IsTheMatterInCourt { get; set; }
+        [StringLength(3)]
+        public string? IsTheMatterInCourt { get; set; }
 
         [Required]
         public string? DetailsOfComplaint { get; set; }

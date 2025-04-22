@@ -1,8 +1,11 @@
-﻿using System.Web;
+﻿using System.ComponentModel;
+using System.Reflection;
+using System.Web;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Common.Infrastructure.Authentication;
 using Modules.Customers.Application.Dtos.Complaints;
 using Modules.Customers.Domain.Enums;
 
@@ -12,7 +15,7 @@ namespace Modules.Customers.Presntation.Controllers.v1;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
-//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
 public class ComplaintController : ControllerBase
 {
@@ -20,14 +23,16 @@ public class ComplaintController : ControllerBase
     private readonly IComplaintTypeService _complaintTypeService;
     private readonly INatureOfComplaintService _natureOfComplaintService;
     private readonly IComplaintService _complaintService;
+    private readonly IUserContextService _userContextService;
 
 
-    public ComplaintController(ILogger<ComplaintController> logger,IComplaintTypeService complaintTypeService, INatureOfComplaintService natureOfComplaintService, IComplaintService complaintService)
+    public ComplaintController(ILogger<ComplaintController> logger,IComplaintTypeService complaintTypeService, INatureOfComplaintService natureOfComplaintService, IComplaintService complaintService, IUserContextService userContextService)
     {
         _logger = logger;
         _complaintTypeService = complaintTypeService;
         _natureOfComplaintService = natureOfComplaintService;
         _complaintService = complaintService;
+        _userContextService = userContextService;
     }
 
 
@@ -35,6 +40,7 @@ public class ComplaintController : ControllerBase
     // POST api/values
     [HttpPost]
     [Route("CreateComplaintType")]
+    [Authorize(Policy = "Permission:Complaints.CREATE")]
     public async Task<ActionResult> CreateComplaintType(ComplaintTypeDto values)
     {
         try
@@ -50,6 +56,7 @@ public class ComplaintController : ControllerBase
     // POST api/values
     [HttpPost]
     [Route("CreateNatureOfComplaint")]
+    [Authorize(Policy = "Permission:Complaints.CREATE")]
     public async Task<IActionResult> CreateNatureOfComplaint(NatureOfComplaintDto values)
     {
         try
@@ -63,12 +70,14 @@ public class ComplaintController : ControllerBase
     }
 
     [HttpGet("ComplaintType")]
+    [Authorize(Policy = "Permission:Complaints.READ")]
     public async Task<IEnumerable<ComplaintTypeDto>> ComplaintType()
     {
         return await _complaintTypeService.GetComplaintTypes();
     }
 
     [HttpGet("NatureOfComplaint")]
+    [Authorize(Policy = "Permission:Complaints.READ")]
     public async Task<IEnumerable<NatureOfComplaintDto>> NatureOfComplaint([FromQuery] int complaintId)
     {
         if (complaintId == 0)
@@ -83,6 +92,7 @@ public class ComplaintController : ControllerBase
     // PUT api/values
     [HttpPut]
     [Route("UpdateComplaintType")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
     public async Task<ActionResult> UpdateComplaintType(ComplaintTypeDto values)
     {
         try
@@ -98,6 +108,7 @@ public class ComplaintController : ControllerBase
     // PUT api/values
     [HttpPut]
     [Route("UpdateNatureOfComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
     public async Task<IActionResult> UpdateNatureOfComplaint(NatureOfComplaintDto values)
     {
         try
@@ -112,6 +123,7 @@ public class ComplaintController : ControllerBase
 
     [HttpDelete]
     [Route("DeleteComplaintType/{complaintTypeId}")]
+    [Authorize(Policy = "Permission:Complaints.DELETE")]
     public async Task<IActionResult> DeleteComplaintType(int complaintTypeId)
     {
         try
@@ -126,6 +138,7 @@ public class ComplaintController : ControllerBase
 
     [HttpDelete]
     [Route("DeleteNatureOfComplaint/{natureOfComplaintId}")]
+    [Authorize(Policy = "Permission:Complaints.DELETE")]
     public async Task<IActionResult> DeleteNatureOfComplaint(int natureOfComplaintId)
     {
         try
@@ -139,11 +152,66 @@ public class ComplaintController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a list of complaints
+    /// Returns a list of complaint status
+    /// </summary>
+    [HttpGet]
+    [Route("ComplaintStatus")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [Authorize(Policy = "Permission:Complaints.READ")]
+    public IActionResult ComplaintStatus()
+    {
+        var statuses = Enum.GetValues(typeof(ComplaintStatus))
+                               .Cast<ComplaintStatus>()
+                               .Select(e => new
+                               {
+                                   Id = (int)e,
+                                   Name = e.ToString(),
+                                   DisplayName = e.GetType()
+                                                 .GetField(e.ToString())!
+                                                  .GetCustomAttribute<DescriptionAttribute>()?
+                                                  .Description
+
+                               });
+        return Ok(statuses);
+    }
+
+    /// <summary>
+    /// Returns the details of a complaint
+    /// </summary>
+    [HttpGet]
+    [Route("GetComplaintDetails/complaintNumber")]
+    [Authorize(Policy = "Permission:Complaints.READ")]
+    [ProducesResponseType(200, Type = typeof(ComplaintDto))]
+    public async Task<ActionResult> GetComplaints(string complaintNumber)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(complaintNumber))
+            {
+                return BadRequest("The complaint number cannot be empty or null");
+            }
+
+            var result = await _complaintService.GetComplaintDetails(complaintNumber);
+            if(result is null)
+            {
+                return NotFound($"No records found for complaint number {complaintNumber}");
+            }
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+
+    }
+
+    /// <summary>
+    /// Returns a list of complaints based on a user query/optional parameters
     /// </summary>
     [HttpGet]
     [Route("GetComplaints")]
-    [AllowAnonymous]
+    [Authorize(Policy = "Permission:Complaints.READ")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<ComplaintReadDto>))]
     public async Task<ActionResult> GetComplaints([FromQuery] string? complaintNumber, [FromQuery] string? customerCode_OR_propertyNumber)
     {
@@ -156,7 +224,7 @@ public class ComplaintController : ControllerBase
 
             if(complaintNumber is not null)
             {
-                var result = await _complaintService.GetComplaintDetails(complaintNumber) ;
+                var result = await _complaintService.GetComplaintSummary(complaintNumber) ;
                 return Ok(result);
 
             }
@@ -183,16 +251,16 @@ public class ComplaintController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("SubmitComplaint")]
-    //[Authorize(Policy = "Permission:Customers.COMPLAINT")]
+    [Authorize(Policy = "Permission:Complaints.COMPLAINT")]
     public async Task<ActionResult> AddNewComplaint([FromBody] ComplaintCreateDto values)
     {
         try
         {
-            //var userId = _userContextService.GetUserId();
-            //if (!string.Equals(userId, values.CreatedBy))
-            //{
-            //    return Unauthorized();
-            //}
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.CreatedBy))
+            {
+                return Unauthorized();
+            }
 
             if (values.NatureOfComplaintId!.Count() == 0)
             {
@@ -227,6 +295,7 @@ public class ComplaintController : ControllerBase
     /// </summary>
     [HttpPut]
     [Route("ReviewComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
     public async Task<ActionResult> ReviewComplaint([FromBody] ComplaintReviewDto values)
     {
         try
@@ -265,6 +334,7 @@ public class ComplaintController : ControllerBase
     /// </summary>
     [HttpPut]
     [Route("AssignComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
     public async Task<ActionResult> AssignComplaint([FromBody] ComplaintAssignDto values)
     {
         try
@@ -303,6 +373,7 @@ public class ComplaintController : ControllerBase
     /// </summary>
     [HttpPut]
     [Route("ResolveComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
     public async Task<ActionResult> ResolveComplaint([FromBody] ComplaintResolutionDto values)
     {
         try

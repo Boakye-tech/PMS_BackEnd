@@ -8,21 +8,57 @@ namespace Modules.Estates.Domain.Enums
         [Description("SUBMITTED")]
         SUBMITTED = 1,
 
+        [Description("ACKNOWLEDGED")]
+        ACKNOWLEDGED = 2,
+
         [Description("REVIEWED")]
-        REVIEWED = 2,
+        REVIEWED = 3,
+
+        [Description("DISPATCHED")]
+        DISPATCHED = 4,
 
         [Description("ASSIGNED")]
-        ASSIGNED = 3,
+        ASSIGNED = 5,
 
-        [Description("PENDING")]
-        PENDING = 4,
+        [Description("IN PROGRESS")]
+        INPROGRESS = 6,
 
         [Description("RESOLVED")]
-        RESOLVED = 5,
+        RESOLVED = 7,
+
+        [Description("REOPEN")]
+        REOPEN = 8,
+
+        [Description("CLOSED")]
+        CLOSED = 9,
 
         [Description("CANCELLED")]
-        CANCELLED = 6
-
+        CANCELLED = 10
     }
+
+    public static class ComplaintStatusEnumDescription
+    {
+        public static ComplaintStatusEnum ComplaintStatus(int input)
+        {
+            if (Enum.IsDefined(typeof(ComplaintStatusEnum), input))
+            {
+                return (ComplaintStatusEnum)input;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid input for complaint status enum.");
+            }
+        }
+
+        public static string GetEnumDescription(this Enum enumValue)
+        {
+            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+            var descriptionAttribute = fieldInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false)
+                                                 .FirstOrDefault() as DescriptionAttribute;
+
+            return descriptionAttribute?.Description ?? enumValue.ToString();
+        }
+    }
+
 }
 

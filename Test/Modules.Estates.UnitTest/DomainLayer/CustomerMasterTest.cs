@@ -7,6 +7,7 @@ using Modules.Estates.Domain.Interfaces.DomainServices;
 using Modules.Estates.Domain.Entities.Setup.Property;
 using Modules.Estates.Domain.Entities.Setup.Customer;
 using Modules.Estates.Application.Enums;
+using Modules.Estates.Domain.Enums;
 
 namespace Modules.Estates.UnitTest.DomainLayer
 {

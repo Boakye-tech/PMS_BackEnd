@@ -26,16 +26,13 @@ namespace Modules.Customers.Application.Services
 
         public async Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload)
         {
-            //throw new NotImplementedException();
             return await SendDataAsync("Customer/SubmitComplaint", payload);
-
         }
 
 
         private async Task<bool> SendDataAsync<T>(string endpoint, T payload)
         {
-            //var baseurl = _config.GetSection("ModuleUrl").GetSection("BaseUrl").Value;
-            var baseurl = "https://localhost:7072/api/v1/";
+            var baseurl = _config.GetSection("ModuleUrl").GetSection("BaseUrl").Value;
             var Url = $"{baseurl}{endpoint}";
             var token = _userContextService.GetAccessToken();
 
@@ -43,7 +40,6 @@ namespace Modules.Customers.Application.Services
             {
                 string jsonPayload = JsonSerializer.Serialize(payload);
                 using var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 using var response = await _httpClient.PostAsync(Url, httpContent);

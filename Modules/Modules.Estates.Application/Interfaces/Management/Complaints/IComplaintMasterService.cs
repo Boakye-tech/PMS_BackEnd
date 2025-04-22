@@ -13,11 +13,14 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
 
         Task<BaseResponseDto> DeleteComplaint(string ComplaintNumber);
 
-        Task<ComplaintStaffReadDto> GetComplaint(string complaintNumber);
-
         Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList();
 
 		Task<IEnumerable<ComplaintStaffReadDto>> GetCustomerComplaintsList(string customerCode_OR_propertyNumber);
+
+        Task<ComplaintStaffReadDto> GetComplaintSummary(string complaintNumber);
+
+        Task<ComplaintDto> GetComplaintDetails(string complaintNumber);
+
 
         Task<BaseResponseDto> ReviewComplaint(ComplaintReviewDto values);
 

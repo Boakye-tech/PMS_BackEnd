@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Reflection;
-using System.Security;
-using System.Threading.Tasks;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Modules.Common.Infrastructure.Authentication;
-using Modules.Estates.Application.Enums;
-using Modules.Estates.Application.Interfaces.Management.Complaints;
-
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-/// <summary>
-/// Presentation controller to handle all customer management related routes
-/// </summary>
 namespace Modules.Estates.Presentation.Controllers.v1
 {
     [ApiController]
@@ -26,7 +14,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Policy = "Permission:Customers.READ")]
 
     /// <summary>
     /// Presentation controller to handle all customer management related routes
@@ -77,7 +64,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng customer types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetCustomerTypes")]
         public async Task<ActionResult<IEnumerable<CustomerTypeReadDto>>> GetCustomerTypes()
         {
@@ -173,7 +160,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of existing genders
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetGenders")]
         public async Task<ActionResult<IEnumerable<GenderReadDto>>> GetGender()
         {
@@ -183,7 +170,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns an existing gender based on the name
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetGender/{value}")]
         private async Task<ActionResult<GenderReadDto>> GetGender(string value)
         {
@@ -280,7 +267,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng identification types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetIdentificationTypes")]
         public async Task<ActionResult<IEnumerable<IdentificationTypeReadDto>>> GetIdentificationTypes()
         {
@@ -366,7 +353,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng nationalities
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetNationality")]
         public async Task<ActionResult<IEnumerable<NationalityReadDto>>> GetNationality()
         {
@@ -450,7 +437,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng resident types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetResidentTypes")]
         public async Task<ActionResult<IEnumerable<ResidentTypeReadDto>>> GetResidentTypes()
         {
@@ -534,7 +521,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng social media platforms
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetSocialMedia")]
         public async Task<ActionResult<IEnumerable<SocialMediaReadDto>>> GetSocialMedia()
         {
@@ -596,7 +583,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng titles
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitles")]
         public async Task<ActionResult<IEnumerable<TitleReadDto>>> GetTitles()
         {
@@ -606,7 +593,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns details of exisitng titles based on the name
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitle/{value}")]
         private async Task<ActionResult<TitleReadDto>> GetTitle(string value)
         {
@@ -616,7 +603,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns details of exisitng titles based on the id
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitles/{titleId}")]
         public async Task<ActionResult<TitleReadDto>> GetTitleById(int titleId)
         {
@@ -670,7 +657,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// 
         /// {
         ///    "titleId": 1,
-        ///    "titles": "MR. & MRS.",
+        ///    "titles": "MR.& MRS.",
         ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
         /// }
         /// </remarks>
@@ -702,7 +689,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng ownership types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipTypes")]
         public async Task<ActionResult<IEnumerable<OwnershipTypeReadDto>>> GetOwnershipTypes()
         {
@@ -712,7 +699,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns an exisitng ownership type based on the name
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipTypes/{value}")]
         private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipTypes(string value)
         {
@@ -722,7 +709,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns an exisitng ownership type based on the id
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipType/{ownershipTypeId}")]
         private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipType(int ownershipTypeId)
         {
@@ -807,7 +794,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of marital status
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("MaritalStatus")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public IActionResult MaritalStatus()
@@ -831,7 +818,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of customers based on optional search parameters. The entire list is returned if no pa
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetCustomerList")]
         public async Task<ActionResult<IEnumerable<CustomerListDto>>> GetCustomerList([FromQuery]string? searchParam, [FromQuery]string? locality)
         {
@@ -842,7 +829,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of options for prospective customer interest expressed
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetInterestExpressed")]
         public async Task<ActionResult<IEnumerable<InterestExpressedReadDto>>> GetInterestExpressed()
         {
@@ -929,7 +916,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of complaint types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetComplaintType")]
         public async Task<ActionResult<IEnumerable<ComplaintTypeReadDto>>> GetComplaintType()
         {
@@ -1017,7 +1004,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns the nature of complaint list
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetNatureOfComplaint")]
         public async Task<ActionResult<IEnumerable<NatureOfComplaintReadDto>>> GetNatureOfComplaint()
         {
@@ -1106,7 +1093,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of complaint status
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetComplaintStatus")]
         public async Task<ActionResult<IEnumerable<ComplaintStatusesReadDto>>> GetComplaintStatus()
         {
@@ -1126,6 +1113,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// {
         ///    "complaintStatusId": 0,
         ///    "complaintStatus": "SUBMITTED",
+        ///    "description: "Complaint has been submitted by the customer.",
         ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
         /// }
         /// </remarks>
@@ -1162,6 +1150,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// {
         ///    "complaintStatusId": 1,
         ///    "complaintStatus": "CUSTOMER SUBMITTED",
+        ///    "description: "You submited a complaint and its' currently pending review by an officer.",
         ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
         /// }
         /// </remarks>
