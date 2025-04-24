@@ -5,11 +5,37 @@ namespace Modules.Customers.Domain.Enums
 {
 	public enum ComplaintSource
 	{
-        [Description("CUSTOMER")]
+        [Description("Customer")]
         CUSTOMER = 1,
 
-        [Description("STAFF")]
+        [Description("Staff")]
         STAFF = 2,
     }
+
+    public static class ComplaintSourceDescription
+    {
+        public static ComplaintSource ComplaintSource(int input)
+        {
+            if (Enum.IsDefined(typeof(ComplaintSource), input))
+            {
+                return (ComplaintSource)input;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid input for complaint source enum.");
+            }
+        }
+
+        public static string GetEnumDescription(this Enum enumValue)
+        {
+            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+            var descriptionAttribute = fieldInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false)
+                                                 .FirstOrDefault() as DescriptionAttribute;
+
+            return descriptionAttribute?.Description ?? enumValue.ToString();
+        }
+
+    }
+
 }
 

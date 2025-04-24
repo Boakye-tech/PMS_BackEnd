@@ -14,6 +14,12 @@ namespace Modules.Estates.Domain.Interfaces.DomainServices
         Task<bool> CustomerExists(int CustomerMasterId);
 
         Task<Locality> GetLocalityDetails(int localityId);
+
+        Task<bool> ComplaintTypeExist(int complaintTypeId);
+        Task<bool> ComplaintTypeExist(string complaintTypeName);
+
+        Task<bool> NatureOfComplaintExist(int natureOfComplaintId);
+        Task<bool> NatureOfComplaintExist(string natureOfComplaints);
     }
 }
 

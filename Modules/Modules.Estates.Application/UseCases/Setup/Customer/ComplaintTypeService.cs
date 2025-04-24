@@ -6,30 +6,30 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IModuleCommunicationServices _moduleComms;
+        private readonly ICustomerDomainService _domainService;
 
-        public ComplaintTypeService(IUnitOfWork unitOfWork, IMapper mapper, IModuleCommunicationServices moduleComms)
+        public ComplaintTypeService(IUnitOfWork unitOfWork, IMapper mapper, IModuleCommunicationServices moduleComms, ICustomerDomainService domainService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _moduleComms = moduleComms;
+            _domainService = domainService;
         }
 
         public async Task<ComplaintTypeReadDto> AddComplaintTypeAsync(ComplaintTypeCreateDto values)
         {
-            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId)
-            {
-                CreatedBy = values.createdBy,
-                CreatedOn = DateTime.Now
-            };
+            ComplaintType _complaintType = await ComplaintType.Create(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId, _domainService);
+            _complaintType.CreatedBy = values.createdBy;
+            _complaintType.CreatedOn = DateTime.Now;
 
-            _unitOfWork.ComplaintType.Insert(ComplaintType);
+            _unitOfWork.ComplaintType.Insert(_complaintType);
             await _unitOfWork.Complete();
 
             //send to online customer module
-            var payload = new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!, ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
+            var payload = new ComplaintTypeDto(_complaintType.ComplaintTypeId, _complaintType.ComplaintTypes!, _complaintType.DepartmentId, _complaintType.DepartmentUnitId);
             await _moduleComms.SendComplaintTypeDetailsAsync(payload);
              
-            return new ComplaintTypeReadDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!,ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
+            return new ComplaintTypeReadDto(_complaintType.ComplaintTypeId, _complaintType.ComplaintTypes!, _complaintType.DepartmentId, _complaintType.DepartmentUnitId);
         }
 
         public async Task<string> DeleteComplaintTypeAsync(int value)
@@ -67,16 +67,18 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
 
         public async Task<ComplaintTypeReadDto> UpdateComplaintTypeAsync(ComplaintTypeUpdateDto values)
         {
-            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId)
-            {
-                ModifiedBy = values.modifiedBy,
-                ModifiedOn = DateTime.Now
-            };
+            ComplaintType _complaintType = await ComplaintType.Update(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId, _domainService);
+            _complaintType.ModifiedBy = values.modifiedBy;
+            _complaintType.ModifiedOn = DateTime.Now;
 
-            _unitOfWork.ComplaintType.Update(ComplaintType);
+            _unitOfWork.ComplaintType.Update(_complaintType);
             await _unitOfWork.Complete();
 
-            return new ComplaintTypeReadDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!, ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
+            //send to online customer module
+            var payload = new ComplaintTypeDto(_complaintType.ComplaintTypeId, _complaintType.ComplaintTypes!, _complaintType.DepartmentId, _complaintType.DepartmentUnitId);
+            await _moduleComms.SendComplaintTypeDetailsUpdateAsync(payload);
+
+            return new ComplaintTypeReadDto(_complaintType.ComplaintTypeId, _complaintType.ComplaintTypes!, _complaintType.DepartmentId, _complaintType.DepartmentUnitId);
         }
 
     }

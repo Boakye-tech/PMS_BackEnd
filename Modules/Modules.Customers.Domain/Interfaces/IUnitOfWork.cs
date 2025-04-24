@@ -13,6 +13,8 @@ namespace Modules.Customers.Domain.Interfaces
         IComplaintRepository Complaint { get; }
         IComplaintTypeRepository ComplaintType { get; }
         INatureOfComplaintRepository NatureOfComplaint { get; }
+        IComplaintHistoryRepository ComplaintHistory { get; }
+        IComplaintStatusesRepository ComplaintStatuses { get; }
 
         Task<int> Complete();
     }

@@ -971,7 +971,7 @@ namespace Modules.Estates.Domain.Entities.Registration
 
             _domainEvents.Add(new CustomerDeletedEvent(
                 CustomerMasterId,
-                CustomerCode,
+                CustomerCode!,
                 deletedBy,
                 reason));
         }

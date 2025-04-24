@@ -731,6 +731,99 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
+        /// Updates/Modifies an existing complaint
+        /// </summary>
+        [HttpPut]
+        [Route("ModifyComplaint")]
+        [Authorize(Policy = "Permission:Complaints.UPDATE")]
+        public async Task<ActionResult> ReviewComplaint([FromBody] ComplaintUpdateDto values)
+        {
+            
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ModifiedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.UpdateComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Acknowledges a submitted complaint
+        /// </summary>
+        [HttpPut]
+        [Route("AcknowledgeComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> AcknowledgeComplaint([FromBody] ComplaintAcknowledgmentDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.AcknowledgedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.AcknowledgeComplaint(values); 
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Dispatches a submitted complaint
+        /// </summary>
+        [HttpPut]
+        [Route("DispatchComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> DispatchComplaint([FromBody] ComplaintDispatchedDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.DispatchedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.DispatchComplaint(values); 
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+
+        /// <summary>
         /// Reviews an existing complaint
         /// </summary>
         [HttpPut]
@@ -826,7 +919,104 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Reopens a resolved complaint
+        /// </summary>
+        [HttpPut]
+        [Route("ReopenComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> ReopenComplaint([FromBody] ComplaintReopenedDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ReopenedBy))
+                {
+                    return Unauthorized();
+                }
 
+                var result = await _complaintMasterServices.ReopenComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    400 => BadRequest(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Closes an opened complaint
+        /// </summary>
+        [HttpPut]
+        [Route("CloseComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> CloseComplaint([FromBody] ComplaintClosedDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ClosedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.CloseComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    400 => BadRequest(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Cancels an existing complaint
+        /// </summary>
+        [HttpPut]
+        [Route("CancelComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult> CancelComplaint([FromBody] ComplaintCancellationDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CancelledBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.CancelComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    400 => BadRequest(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
         /// <summary>
         /// Checks if the current user is authorized.
         /// </summary>

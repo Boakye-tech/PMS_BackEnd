@@ -77,36 +77,20 @@ namespace Modules.Estates.Domain.Entities.Management
 
         public ComplaintStatusEnum ComplaintStatus { get; set; }
 
-        //[StringLength(36)]
-        //public string? ReviewedBy { get; set; }
+        [StringLength(36)]
+        public int DispatachedTo_Department { get; set; }
 
-        //public DateTime DateReviewed { get; set; }
+        public int DispatachedTo_DepartmentUnit { get; set; }
 
-        //[StringLength(36)]
-        //public string? AssignedTo { get; set; }
-
-        //[StringLength(36)]
-        //public string? AssignedBy { get; set; }
-
-        //public DateTime DateAssigned { get; set; }
-
-        //[StringLength(36)]
-        //public string? ResolvedBy { get; set; }
-
-        //public DateTime ResolutionDate { get; set; }
+        [StringLength(36)]
+        public string? AssignedTo { get; set; }
 
         public string? Notes { get; set; }
-
-        //[StringLength(36)]
-        //public string? CancelledBy { get; set; }
-
-        //public DateTime CancelledDate { get; set; }
 
         public ComplaintSourceEnum Source { get; set; }
 
         public Complaint()
         {
-
         }
 
         public Complaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
@@ -193,23 +177,20 @@ namespace Modules.Estates.Domain.Entities.Management
                 DocumentTwo = documentTwo,
                 DocumentThree = documentThree,
                 ComplaintStatus = complaintStatus,
-                //CreatedBy = createdBy,
-                //ReviewedBy = string.Empty,
-                //DateReviewed = Convert.ToDateTime("1900-01-01"),
-                //AssignedTo = string.Empty,
-                //AssignedBy = string.Empty,
-                //DateAssigned = Convert.ToDateTime("1900-01-01"),
-                //ResolvedBy = string.Empty,
-                //ResolutionDate = Convert.ToDateTime("1900-01-01"),
+                DispatachedTo_Department = 0,
+                DispatachedTo_DepartmentUnit = 0,
+                AssignedTo = string.Empty,
                 Notes = string.Empty,
                 Source = source
             };
 
-            _newComplaint._domainEvents.Add(new ComplaintCreatedEvent(complaintNumber, natureOfComplaintId[0].ToString(), propertyNumber, createdBy));
+            _newComplaint._domainEvents.Add(new ComplaintCreatedEvent(complaintNumber, complaintStatus, createdBy));
 
             return _newComplaint;
 
         }
+
+
 
 
 

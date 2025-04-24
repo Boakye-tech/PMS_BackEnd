@@ -152,6 +152,30 @@ public class ComplaintController : ControllerBase
     }
 
     /// <summary>
+    /// Returns a list of complaint sources
+    /// </summary>
+    [HttpGet]
+    [Route("ComplaintSources")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [Authorize(Policy = "Permission:Complaints.READ")]
+    public IActionResult ComplaintSources()
+    {
+        var statuses = Enum.GetValues(typeof(ComplaintSource))
+                               .Cast<ComplaintSource>()
+                               .Select(e => new
+                               {
+                                   Id = (int)e,
+                                   Name = e.ToString(),
+                                   DisplayName = e.GetType()
+                                                 .GetField(e.ToString())!
+                                                  .GetCustomAttribute<DescriptionAttribute>()?
+                                                  .Description
+
+                               });
+        return Ok(statuses);
+    }
+
+    /// <summary>
     /// Returns a list of complaint status
     /// </summary>
     [HttpGet]
@@ -291,6 +315,119 @@ public class ComplaintController : ControllerBase
     }
 
     /// <summary>
+    /// Updates/Modifies an existing complaint
+    /// </summary>
+    [HttpPut]
+    [Route("ModifyComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
+    public async Task<ActionResult> ReviewComplaint([FromBody] ComplaintUpdateDto values)
+    {
+        try
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _complaintService.UpdateComplaint(values);
+            return Ok(result);
+            //if (result.IsSuccess)
+            //{
+            //    return Ok(result.SuccessResponse);
+            //}
+
+            //var status = result.ErrorResponse!.StatusCode;
+            //return status switch
+            //{
+            //    204 => NoContent(),
+            //    400 => BadRequest(result.ErrorResponse),
+            //    404 => NotFound(result.ErrorResponse),
+            //    _ => StatusCode(500, result.ErrorResponse),
+            //};
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    /// <summary>
+    /// Acknowledges a submitted complaint
+    /// </summary>
+    [HttpPut]
+    [Route("AcknowledgeComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
+    public async Task<ActionResult> AcknowledgeComplaint([FromBody] ComplaintAcknowledgmentDto values)
+    {
+        try
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.AcknowledgedBy))
+            {
+                return Unauthorized();
+            }
+
+            var role = _userContextService.GetUserRole(ComplaintSourceDescription.GetEnumDescription(ComplaintSource.CUSTOMER));
+            if ((bool)role!)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new GenericResponseDto { response = "The user role is forbidden from accessing this resource." });
+            }
+
+            var result = await _complaintService.AcknowledgeComplaint(values); //change
+            return Ok(result);
+            //return result.StatusCode switch
+            //{
+            //    200 => Ok(result.StatusMessage),
+            //    404 => NotFound(result.StatusMessage),
+            //    _ => StatusCode(500, result.StatusMessage),
+            //};
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    /// <summary>
+    /// Dispatches a submitted complaint
+    /// </summary>
+    [HttpPut]
+    [Route("DispatchComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
+    public async Task<ActionResult> DispatchComplaint([FromBody] ComplaintDispatchedDto values)
+    {
+        try
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.DispatchedBy))
+            {
+                return Unauthorized();
+            }
+
+            var role = _userContextService.GetUserRole(ComplaintSourceDescription.GetEnumDescription(ComplaintSource.CUSTOMER));
+            if ((bool)role!)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new GenericResponseDto{ response = "The user role is forbidden from accessing this resource." });
+            }
+
+            var result = await _complaintService.DispatchComplaint(values); 
+            return Ok(result);
+            //return result.StatusCode switch
+            //{
+            //    200 => Ok(result.StatusMessage),
+            //    404 => NotFound(result.StatusMessage),
+            //    _ => StatusCode(500, result.StatusMessage),
+            //};
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    /// <summary>
     /// Reviews an existing complaint
     /// </summary>
     [HttpPut]
@@ -300,11 +437,18 @@ public class ComplaintController : ControllerBase
     {
         try
         {
-            //var userId = _userContextService.GetUserId();
-            //if (!string.Equals(userId, values.CreatedBy))
-            //{
-            //    return Unauthorized();
-            //}
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ReviewedBy))
+            {
+                return Unauthorized();
+            }
+
+            var role = _userContextService.GetUserRole(ComplaintSourceDescription.GetEnumDescription(ComplaintSource.CUSTOMER));
+            if ((bool)role!)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new GenericResponseDto { response = "The user role is forbidden from accessing this resource." });
+            }
+
 
             var result = await _complaintService.ReviewComplaint(values);
             return Ok(result);
@@ -339,11 +483,17 @@ public class ComplaintController : ControllerBase
     {
         try
         {
-            //var userId = _userContextService.GetUserId();
-            //if (!string.Equals(userId, values.CreatedBy))
-            //{
-            //    return Unauthorized();
-            //}
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.AssignedBy))
+            {
+                return Unauthorized();
+            }
+
+            var role = _userContextService.GetUserRole(ComplaintSourceDescription.GetEnumDescription(ComplaintSource.CUSTOMER));
+            if ((bool)role!)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new GenericResponseDto { response = "The user role is forbidden from accessing this resource." });
+            }
 
             var result = await _complaintService.AssignComplaint(values);
             return Ok(result);
@@ -378,11 +528,17 @@ public class ComplaintController : ControllerBase
     {
         try
         {
-            //var userId = _userContextService.GetUserId();
-            //if (!string.Equals(userId, values.CreatedBy))
-            //{
-            //    return Unauthorized();
-            //}
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ResolvedBy))
+            {
+                return Unauthorized();
+            }
+
+            var role = _userContextService.GetUserRole(ComplaintSourceDescription.GetEnumDescription(ComplaintSource.CUSTOMER));
+            if ((bool)role!)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new GenericResponseDto { response = "The user role is forbidden from accessing this resource." });
+            }
 
             var result = await _complaintService.ResolveComplaint(values);
             return Ok(result);
@@ -407,5 +563,122 @@ public class ComplaintController : ControllerBase
         }
     }
 
+
+    /// <summary>
+    /// Resolve an existing complaint
+    /// </summary>
+    [HttpPut]
+    [Route("ReopenComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
+    public async Task<ActionResult> ReopenComplaint([FromBody] ComplaintReopenedDto values)
+    {
+        try
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ReopenedBy))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _complaintService.ReopenComplaint(values);
+            return Ok(result);
+            //if (result.IsSuccess)
+            //{
+            //    return Ok(result.SuccessResponse);
+            //}
+
+            //var status = result.ErrorResponse!.StatusCode;
+            //return status switch
+            //{
+            //    204 => NoContent(),
+            //    400 => BadRequest(result.ErrorResponse),
+            //    404 => NotFound(result.ErrorResponse),
+            //    _ => StatusCode(500, result.ErrorResponse),
+            //};
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    /// <summary>
+    /// Closes an open complaint
+    /// </summary>
+    [HttpPut]
+    [Route("CloseComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
+    public async Task<ActionResult> CloseComplaint([FromBody] ComplaintClosedDto values)
+    {
+        try
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ClosedBy))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _complaintService.CloseComplaint(values);
+            return Ok(result);
+            //if (result.IsSuccess)
+            //{
+            //    return Ok(result.SuccessResponse);
+            //}
+
+            //var status = result.ErrorResponse!.StatusCode;
+            //return status switch
+            //{
+            //    204 => NoContent(),
+            //    400 => BadRequest(result.ErrorResponse),
+            //    404 => NotFound(result.ErrorResponse),
+            //    _ => StatusCode(500, result.ErrorResponse),
+            //};
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
+
+    /// <summary>
+    /// Cancels an existing complaint
+    /// </summary>
+    [HttpPut]
+    [Route("CancelComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
+    public async Task<ActionResult> CancelComplaint([FromBody] ComplaintCancellationDto values)
+    {
+        try
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.CancelledBy))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _complaintService.CancelComplaint(values);
+            return Ok(result);
+            //if (result.IsSuccess)
+            //{
+            //    return Ok(result.SuccessResponse);
+            //}
+
+            //var status = result.ErrorResponse!.StatusCode;
+            //return status switch
+            //{
+            //    204 => NoContent(),
+            //    400 => BadRequest(result.ErrorResponse),
+            //    404 => NotFound(result.ErrorResponse),
+            //    _ => StatusCode(500, result.ErrorResponse),
+            //};
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+    }
 }
 

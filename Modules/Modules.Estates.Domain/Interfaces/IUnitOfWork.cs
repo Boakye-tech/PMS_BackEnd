@@ -1,6 +1,4 @@
-﻿
-
-namespace Modules.Estates.Domain;
+﻿namespace Modules.Estates.Domain;
 
 public interface IUnitOfWork : IDisposable
 {
@@ -50,6 +48,7 @@ public interface IUnitOfWork : IDisposable
     IComplaintTypeRepository ComplaintType { get; }
     INatureOfComplaintRepository NatureOfComplaint { get; }
     IComplaintStatusesRepository ComplaintStatuses { get; }
+    IComplaintHistoryRepository ComplaintHistory { get; }
 
     Task<int> Complete();
 }

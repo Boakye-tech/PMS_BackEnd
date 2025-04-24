@@ -26,11 +26,26 @@ namespace Modules.Customers.Application.Services
 
         public async Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload)
         {
-            return await SendDataAsync("Customer/SubmitComplaint", payload);
+            return await SendDataAsync("Customer/SubmitComplaint", payload, "POST");
+        }
+
+        public async Task<bool> SendComplaintCancelledAsync(ComplaintCancellationDto payload)
+        {
+            return await SendDataAsync("Customer/CancelComplaint", payload, "PUT");
+        }
+
+        public async Task<bool> SendComplaintClosedAsync(ComplaintClosedDto payload)
+        {
+            return await SendDataAsync("Customer/CloseComplaint", payload, "PUT");
+        }
+
+        public async Task<bool> SendComplaintReopenAsync(ComplaintReopenedDto payload)
+        {
+            return await SendDataAsync("Customer/ReopenComplaint", payload, "PUT");
         }
 
 
-        private async Task<bool> SendDataAsync<T>(string endpoint, T payload)
+        private async Task<bool> SendDataAsync<T>(string endpoint, T payload, string httpMethod)
         {
             var baseurl = _config.GetSection("ModuleUrl").GetSection("BaseUrl").Value;
             var Url = $"{baseurl}{endpoint}";
@@ -42,15 +57,28 @@ namespace Modules.Customers.Application.Services
                 using var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                using var response = await _httpClient.PostAsync(Url, httpContent);
-
-                if (!response.IsSuccessStatusCode)
+                HttpResponseMessage response = httpMethod switch
                 {
-                    _logger.LogWarning("Failed to send data to module. Endpoint: {Endpoint}, Status Code: {StatusCode}", endpoint, response.StatusCode);
-                    return response.IsSuccessStatusCode;
+                    "POST" => await _httpClient.PostAsync(Url, httpContent),
+                    "PUT" => await _httpClient.PutAsync(Url, httpContent),
+                    _ => null!
+                };
+
+                if (response == null)
+                {
+                    _logger.LogWarning("Unsupported HTTP method: {HttpMethod}", httpMethod);
+                    return false;
                 }
 
-                return response.IsSuccessStatusCode;
+                using (response)
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        _logger.LogWarning("Failed to send data to module. Endpoint: {Endpoint}, Status Code: {StatusCode}", Url, response.StatusCode);
+                    }
+
+                    return response.IsSuccessStatusCode;
+                }
             }
             catch (Exception ex)
             {
@@ -58,6 +86,9 @@ namespace Modules.Customers.Application.Services
                 return false;
             }
         }
+
+
+
 
     }
 }

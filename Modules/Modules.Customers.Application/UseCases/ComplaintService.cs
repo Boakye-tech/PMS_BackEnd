@@ -79,15 +79,18 @@ namespace Modules.Customers.Application.UseCases
                     documentTwo: _imageTwo,
                     documentThree: _imageThree,
                     complaintStatus: ComplaintStatus.SUBMITTED,
-                    source: values.Source,
-                    createdBy: values.CreatedBy!
+                    source: values.Source
                     );
-                complaint.CreatedOn = DateTime.UtcNow;
 
                 _unitOfWork.Complaint.Insert(complaint);
+                //await _unitOfWork.Complete();
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, complaint.ComplaintNumber, ComplaintStatus.SUBMITTED, values.CreatedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
-                if(values.Source == ComplaintSource.CUSTOMER)
+
+                if (values.Source == ComplaintSource.CUSTOMER)
                 {
                     //send to staff module
                     values.ComplaintNumber = complaint.ComplaintNumber;
@@ -111,13 +114,16 @@ namespace Modules.Customers.Application.UseCases
                 return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
             }
 
-            _complaint.AssignedBy = values.AssignedBy;
             _complaint.AssignedTo = values.AssignedTo;
-            _complaint.DateAssigned = DateTime.UtcNow;
             _complaint.ComplaintStatus = ComplaintStatus.ASSIGNED;
 
             _unitOfWork.Complaint.Update(_complaint);
+            //await _unitOfWork.Complete();
+
+            ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.ASSIGNED, values.AssignedBy, DateTime.UtcNow);
+            _unitOfWork.ComplaintHistory.Insert(complaintHistory);
             await _unitOfWork.Complete();
+
 
             return new GenericResponseDto { response = "Complaint reviewed successfully." };
 
@@ -132,14 +138,15 @@ namespace Modules.Customers.Application.UseCases
                 return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
             }
 
-            _complaint.CancelledBy = values.CancelledBy;
-            _complaint.CancelledDate = DateTime.UtcNow;
             _complaint.ComplaintStatus = ComplaintStatus.CANCELLED;
-
             _unitOfWork.Complaint.Update(_complaint);
+
+            ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.CANCELLED, values.CancelledBy, DateTime.UtcNow);
+            _unitOfWork.ComplaintHistory.Insert(complaintHistory);
             await _unitOfWork.Complete();
 
-            return new GenericResponseDto { response = "Complaint resolved successfully." };
+
+            return new GenericResponseDto { response = "Complaint cancelled successfully." };
         }
 
         public Task<GenericResponseDto> DeleteComplaint(string complaintNumber)
@@ -191,10 +198,28 @@ namespace Modules.Customers.Application.UseCases
                 SubmittedBy = complaint.SubmittedBy,
                 SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
                 DocumentList = new List<string> { complaint.DocumentOne!, complaint.DocumentTwo!, complaint.DocumentThree! },
-                ComplaintStatus = ComplaintStatusDescription.GetEnumDescription(complaint.ComplaintStatus)
+                ComplaintStatus = await GetComplaintStatus(complaintNumber)
             };
 
             return response;
+
+        }
+
+        private async Task<List<ComplaintHistoryReadDto>> GetComplaintStatus(string complaintNumber)
+        {
+
+            var result = (from a in await _unitOfWork.ComplaintHistory.GetAll(ch => ch.ComplaintNumber == complaintNumber)
+                          join b in await _unitOfWork.ComplaintStatuses.GetAll()
+                          on (int)a.ComplaintStatus equals b.ComplaintStatusId
+                          orderby a.ActionOn descending
+                          select new ComplaintHistoryReadDto
+                          {
+                              ComplaintStatus = b.ComplaintStatus!,
+                              ComplaintDescription = b.Description!,
+                              ActionOn = a.ActionOn
+                          }).ToList();
+
+            return result;
 
         }
 
@@ -213,20 +238,6 @@ namespace Modules.Customers.Application.UseCases
                 var result = await GetComplaintSummary(complaint.ComplaintNumber!);
                 response.Add(result);
             }
-
-            //var response = (
-            //    from c in await _unitOfWork.Complaint.GetAll(c => c.CustomerCode == customerCode_OR_propertyNumber || c.PropertyNumber == customerCode_OR_propertyNumber)
-            //    join n in await _unitOfWork.NatureOfComplaint.GetAll()
-            //        on c.NatureOfComplaintId equals n.NatureOfComplaintId into gj
-            //    from nature in gj.DefaultIfEmpty() // this ensures it's a LEFT JOIN
-            //    orderby c.ComplaintDate descending
-            //    select new ComplaintReadDto ( 
-            //        ComplaintNumber : c.ComplaintNumber,
-            //        NatureOfComplaint :  nature?.NatureOfComplaints, // safe access in case there's no match
-            //        PropertyNumber : c.PropertyNumber,
-            //        ComplaintDate : c.ComplaintDate,
-            //        ComplaintStatus : c.ComplaintStatus.ToString()
-            //    )).ToList();
 
             return response;
         }
@@ -264,7 +275,6 @@ namespace Modules.Customers.Application.UseCases
 
         public async Task<GenericResponseDto> ResolveComplaint(ComplaintResolutionDto values)
         {
-            //throw new NotImplementedException();
             var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
 
             if (_complaint is null)
@@ -272,15 +282,14 @@ namespace Modules.Customers.Application.UseCases
                 return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
             }
 
-            _complaint.ResolvedBy = values.ResolvedBy;
-            _complaint.ResolutionDate = DateTime.UtcNow;
             _complaint.ComplaintStatus = ComplaintStatus.RESOLVED;
-
             _unitOfWork.Complaint.Update(_complaint);
+
+            ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.RESOLVED, values.ResolvedBy, DateTime.UtcNow);
+            _unitOfWork.ComplaintHistory.Insert(complaintHistory);
             await _unitOfWork.Complete();
 
             return new GenericResponseDto { response = "Complaint resolved successfully." };
-
         }
 
         public async Task<GenericResponseDto> ReviewComplaint(ComplaintReviewDto values)
@@ -292,12 +301,13 @@ namespace Modules.Customers.Application.UseCases
                 return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
             }
 
-            _complaint.ReviewedBy = values.ReviewedBy;
-            _complaint.DateReviewed = DateTime.UtcNow;
             _complaint.ComplaintStatus = ComplaintStatus.REVIEWED;
-
             _unitOfWork.Complaint.Update(_complaint);
+
+            ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.REVIEWED, values.ReviewedBy, DateTime.UtcNow);
+            _unitOfWork.ComplaintHistory.Insert(complaintHistory);
             await _unitOfWork.Complete();
+
 
             return new GenericResponseDto { response = "Complaint reviewed successfully." };
         }
@@ -320,9 +330,7 @@ namespace Modules.Customers.Application.UseCases
             _complaint.DocumentOne = values.DocumentImages![0];
             _complaint.DocumentTwo = values.DocumentImages![1];
             _complaint.DocumentThree = values.DocumentImages![2];
-            _complaint.ModifiedBy = values.ModifiedBy;
-            _complaint.ModifiedOn = DateTime.UtcNow;
-
+           
             _unitOfWork.Complaint.Update(_complaint);
             await _unitOfWork.Complete();
 
@@ -330,8 +338,87 @@ namespace Modules.Customers.Application.UseCases
 
         }
 
+        public async Task<GenericResponseDto> AcknowledgeComplaint(ComplaintAcknowledgmentDto values)
+        {
+            var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
 
+            if (_complaint is null)
+            {
+                return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
+            }
 
+            _complaint.ComplaintStatus = ComplaintStatus.ACKNOWLEDGED;
+            _unitOfWork.Complaint.Update(_complaint);
+
+            ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.ACKNOWLEDGED, values.AcknowledgedBy, DateTime.UtcNow);
+            _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto { response = "Complaint acknowledged successfully." };
+
+        }
+
+        public async Task<GenericResponseDto> DispatchComplaint(ComplaintDispatchedDto values)
+        {
+            var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+            if (_complaint is null)
+            {
+                return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
+            }
+
+            _complaint.DispatachedTo_Department = values.DispatchedTo_DepartmentId;
+            _complaint.DispatachedTo_DepartmentUnit = values.DispatchedTo_DepartmentUnitId;
+            _complaint.ComplaintStatus = ComplaintStatus.DISPATCHED;
+            _unitOfWork.Complaint.Update(_complaint);
+
+            ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.DISPATCHED, values.DispatchedBy, DateTime.UtcNow);
+            _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto { response = "Complaint dispatched successfully." };
+
+        }
+
+        public async Task<GenericResponseDto> ReopenComplaint(ComplaintReopenedDto values)
+        {
+            var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+            if (_complaint is null)
+            {
+                return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
+            }
+
+            _complaint.ComplaintStatus = ComplaintStatus.REOPEN;
+            _unitOfWork.Complaint.Update(_complaint);
+
+            ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.REOPEN, values.ReopenedBy, DateTime.UtcNow);
+            _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto { response = "Complaint reopened successfully." };
+
+        }
+
+        public async Task<GenericResponseDto> CloseComplaint(ComplaintClosedDto values)
+        {
+            var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+            if (_complaint is null)
+            {
+                return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
+            }
+
+            _complaint.ComplaintStatus = ComplaintStatus.CLOSED;
+            _unitOfWork.Complaint.Update(_complaint);
+
+            ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.CLOSED, values.ClosedBy, DateTime.UtcNow);
+            _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto { response = "Complaint closed successfully." };
+
+        }
 
 
     }

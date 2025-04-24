@@ -5,13 +5,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
 {
 	public interface IComplaintMasterService
 	{
-        Task<BaseResponseDto> AssignComplaint(ComplaintAssignDto values);
-
-        Task<BaseResponseDto> CancelComplaint(ComplaintCancellationDto values);
-
-        Task<BaseResponseDto> CreateNewComplaint(ComplaintCreateDto values);
-
         Task<BaseResponseDto> DeleteComplaint(string ComplaintNumber);
+
 
         Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList();
 
@@ -22,11 +17,31 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
         Task<ComplaintDto> GetComplaintDetails(string complaintNumber);
 
 
+        Task<BaseResponseDto> CreateNewComplaint(ComplaintCreateDto values);
+
+        Task<BaseResponseDto> UpdateComplaint(ComplaintUpdateDto values);
+
+        Task<BaseResponseDto> AcknowledgeComplaint(ComplaintAcknowledgmentDto values);
+
+        Task<BaseResponseDto> DispatchComplaint(ComplaintDispatchedDto values);
+
         Task<BaseResponseDto> ReviewComplaint(ComplaintReviewDto values);
+
+        Task<BaseResponseDto> AssignComplaint(ComplaintAssignDto values);
 
         Task<BaseResponseDto> ResolveComplaint(ComplaintResolutionDto values);
 
-        Task<BaseResponseDto> UpdateComplaint(ComplaintUpdateDto values);
+        Task<BaseResponseDto> ReopenComplaint(ComplaintReopenedDto values);
+
+        Task<BaseResponseDto> CloseComplaint(ComplaintClosedDto values);
+
+        Task<BaseResponseDto> CancelComplaint(ComplaintCancellationDto values);
+
+        
+
+        
+
+       
     }
 }
 

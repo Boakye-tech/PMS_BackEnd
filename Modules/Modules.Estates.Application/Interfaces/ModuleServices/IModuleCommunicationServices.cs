@@ -18,6 +18,19 @@ namespace Modules.Estates.Application.Interfaces.ModuleServices
 
         Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload);
 
+        Task<bool> SendComplaintAcknowledgmentAsync(ComplaintAcknowledgmentDto payload);
+
+
+        Task<bool> SendComplaintDispatchAsync(ComplaintDispatchedDto payload);
+        Task<bool> SendComplaintAssignedAsync(ComplaintAssignDto payload);
+        Task<bool> SendComplaintReviewAsync(ComplaintReviewDto payload);
+        Task<bool> SendComplaintResolvedAsync(ComplaintResolutionDto payload);
+        Task<bool> SendComplaintReopenAsync(ComplaintReopenedDto payload);
+        Task<bool> SendComplaintClosedAsync(ComplaintClosedDto payload);
+        Task<bool> SendComplaintCancelledAsync(ComplaintCancellationDto payload);
+
+
+
     }
 }
 

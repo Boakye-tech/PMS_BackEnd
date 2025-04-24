@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Modules.Estates.Infrastructure.Configuration;
 
 namespace Modules.Estates.Infrastructure;
 
@@ -53,7 +54,7 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<ComplaintType> ComplaintType { get; set; }
     public DbSet<NatureOfComplaint> NatureOfComplaint { get; set; }
     public DbSet<Complaint> Complaints { get; set; }
-
+    public DbSet<ComplaintHistory> ComplaintHistory { get; set; }
     public DbSet<ComplaintStatuses> ComplaintStatuses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -76,6 +77,14 @@ public class ApplicationDbContext : ModuleDbContext
             .HasIndex(c => c.ComplaintNumber)
             .IsUnique(true);
 
+        modelBuilder.Entity<ComplaintStatuses>()
+            .HasIndex(c => c.ComplaintStatus)
+            .IsUnique(true);
+
+        modelBuilder.Entity<ComplaintHistory>()
+            .HasIndex(ch => new { ch.ComplaintNumber, ch.ComplaintStatus })
+            .IsUnique(true);
+
         modelBuilder.Entity<CustomerMaster>().Ignore(x => x.DomainEvents);
 
         //modelBuilder.Entity<ApartmentTypes>
@@ -90,7 +99,7 @@ public class ApplicationDbContext : ModuleDbContext
 
         //modelBuilder.ApplyConfiguration(new ActivityConfiguration());
         //modelBuilder.ApplyConfiguration(new ActivityTypeConfiguration());
-
+        //modelBuilder.ApplyConfiguration(new ComplaintStatusConfiguration());
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

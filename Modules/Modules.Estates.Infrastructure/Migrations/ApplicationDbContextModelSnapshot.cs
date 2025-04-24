@@ -31,22 +31,11 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintId"));
 
-                    b.Property<string>("AssignedBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
                     b.Property<string>("AssignedTo")
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("AvailabilityDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CancelledBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<DateTime>("CancelledDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ComplaintDate")
@@ -63,12 +52,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("ComplaintTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("CustomerCode")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -78,21 +61,16 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("DateAssigned")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateReviewed")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DeletedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("DetailsOfComplaint")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DispatachedTo_Department")
+                        .HasMaxLength(36)
+                        .HasColumnType("int");
+
+                    b.Property<int>("DispatachedTo_DepartmentUnit")
+                        .HasColumnType("int");
 
                     b.Property<string>("DocumentOne")
                         .HasMaxLength(255)
@@ -114,12 +92,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<string>("IsTheMatterInCourt")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("NatureOfComplaintId")
                         .HasMaxLength(50)
@@ -143,17 +115,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("ResolutionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ResolvedBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<string>("ReviewedBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
                     b.Property<int>("Source")
                         .HasColumnType("int");
 
@@ -171,6 +132,38 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Complaints", "est");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Management.ComplaintHistory", b =>
+                {
+                    b.Property<int>("ComplaintHistoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintHistoryId"));
+
+                    b.Property<string>("ActionBy")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<DateTime>("ActionOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ComplaintNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("ComplaintStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("ComplaintHistoryId");
+
+                    b.HasIndex("ComplaintNumber", "ComplaintStatus")
+                        .IsUnique();
+
+                    b.ToTable("ComplaintHistory", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Management.StopDebit", b =>
@@ -656,7 +649,102 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasKey("ComplaintStatusId");
 
+                    b.HasIndex("ComplaintStatus")
+                        .IsUnique();
+
                     b.ToTable("ComplaintStatuses", "est");
+
+                    b.HasData(
+                        new
+                        {
+                            ComplaintStatusId = 1,
+                            ComplaintStatus = "SUBMITTED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT HAS BEEN SUBMITTED BY THE CUSTOMER.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 2,
+                            ComplaintStatus = "ACKNOWLEDGED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT HAS BEEN ACKNOWLEDGED BY THE ORGANIZATION.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 3,
+                            ComplaintStatus = "DISPATCHED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT FORWARDED TO THE APPROPRIATE DEPARTMENT.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 4,
+                            ComplaintStatus = "REVIEWED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT HAS BEEN REVIEWED.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 5,
+                            ComplaintStatus = "ASSIGNED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT ASSIGNED TO A HANDLER.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 6,
+                            ComplaintStatus = "IN PROGRESS",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT IS ACTIVELY BEING WORKED ON.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 7,
+                            ComplaintStatus = "RESOLVED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT HAS BEEN RESOLVED.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 8,
+                            ComplaintStatus = "REOPENED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT HAS BEEN REOPENED FOR FURTHER ACTION.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 9,
+                            ComplaintStatus = "CLOSED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT PROCESS IS COMPLETED AND CLOSED.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 10,
+                            ComplaintStatus = "CANCELLED",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "COMPLAINT HAS BEEN CANCELLED.",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.ComplaintType", b =>

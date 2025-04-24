@@ -19,5 +19,16 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
 
         public required DateTime ActionOn { get; set; }
     }
+
+
+    public record ComplaintHistoryReadDto
+    {
+
+        public required string ComplaintStatus { get; set; }
+
+        public required string ComplaintDescription { get; set; }
+
+        public required DateTime ActionOn { get; set; }
+    }
 }
 

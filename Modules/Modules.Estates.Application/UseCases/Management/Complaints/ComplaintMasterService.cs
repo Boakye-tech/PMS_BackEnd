@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Modules.Estates.Domain.Enums;
 
@@ -34,16 +35,19 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                //_complaint.AssignedBy = values.AssignedBy;
-                //_complaint.AssignedTo = values.AssignedTo;
-                //_complaint.DateAssigned = DateTime.UtcNow;
+                _complaint.AssignedTo = values.AssignedTo;
                 _complaint.ComplaintStatus = ComplaintStatusEnum.ASSIGNED;
 
                 _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.ASSIGNED, values.AssignedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint reviewed successfully." };
+                //send to online customer
+                await _moduleComms.SendComplaintAssignedAsync(values);
 
+                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint assigned successfully." };
             }
             catch (Exception ex)
             {
@@ -63,15 +67,18 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                //_complaint.CancelledBy = values.CancelledBy;
-                //_complaint.CancelledDate = DateTime.UtcNow;
                 _complaint.ComplaintStatus = ComplaintStatusEnum.CANCELLED;
 
                 _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.CANCELLED, values.CancelledBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint resolved successfully." };
+                //send to online customer
+                await _moduleComms.SendComplaintCancelledAsync(values);
 
+                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint cancelled successfully." };
             }
             catch (Exception ex)
             {
@@ -138,17 +145,14 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     createdBy: values.CreatedBy!
                     );
 
-                //complaint.CreatedOn = DateTime.UtcNow;
-
                 _unitOfWork.Complaint.Insert(complaint);
-                await _unitOfWork.Complete();
 
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, complaint.ComplaintNumber, ComplaintStatusEnum.SUBMITTED, values.CreatedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+                await _unitOfWork.Complete();
 
                 if (values.Source == ComplaintSourceEnum.STAFF)
                 {
-                    ComplaintHistory complaintHistory = ComplaintHistory.Create(complaint.ComplaintId, complaint.ComplaintNumber, ComplaintStatusEnum.SUBMITTED, values.CreatedBy, DateTime.UtcNow);
-                    await _unitOfWork.Complete();
-
                     //send to online customer
                     values.ComplaintNumber = complaint.ComplaintNumber;
                     await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
@@ -204,10 +208,28 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 SubmittedBy = complaint.SubmittedBy,
                 SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
                 DocumentList = new List<string> { complaint.DocumentOne!, complaint.DocumentTwo!, complaint.DocumentThree! },
-                ComplaintStatus = ComplaintStatusEnumDescription.GetEnumDescription(complaint.ComplaintStatus)
+                ComplaintStatus = await GetComplaintStatus(complaintNumber)
             };
 
             return response;
+        }
+
+        private async Task<List<ComplaintHistoryReadDto>> GetComplaintStatus(string complaintNumber)
+        {
+
+            var result = (from a in await _unitOfWork.ComplaintHistory.GetAll(ch => ch.ComplaintNumber == complaintNumber)
+                          join b in await _unitOfWork.ComplaintStatuses.GetAll()
+                          on (int)a.ComplaintStatus equals b.ComplaintStatusId
+                          orderby a.ActionOn descending
+                          select new ComplaintHistoryReadDto
+                          {
+                              ComplaintStatus = b.ComplaintStatus!,
+                              ComplaintDescription =  b.Description!,
+                              ActionOn = a.ActionOn
+                          }).ToList();
+
+            return result;
+
         }
 
         public async Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList()
@@ -331,15 +353,19 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                //_complaint.ResolvedBy = values.ResolvedBy;
-                //_complaint.ResolutionDate = DateTime.UtcNow;
                 _complaint.ComplaintStatus = ComplaintStatusEnum.RESOLVED;
 
                 _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.RESOLVED, values.ResolvedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint resolved successfully." };
+                //send to online customer
+                await _moduleComms.SendComplaintResolvedAsync(values);
 
+
+                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint resolved successfully." };
             }
             catch (Exception ex)
             {
@@ -359,12 +385,16 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                //_complaint.ReviewedBy = values.ReviewedBy;
-                //_complaint.DateReviewed = DateTime.UtcNow;
                 _complaint.ComplaintStatus = ComplaintStatusEnum.REVIEWED;
 
                 _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.REVIEWED, values.ReviewedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
+
+                //send to online customer
+                await _moduleComms.SendComplaintReviewAsync(values);
 
                 return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint reviewed successfully." };
 
@@ -394,8 +424,6 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _complaint.DocumentOne = values.DocumentImages![0];
                 _complaint.DocumentTwo = values.DocumentImages![1];
                 _complaint.DocumentThree = values.DocumentImages![2];
-                //_complaint.ModifiedBy = values.ModifiedBy;
-                //_complaint.ModifiedOn = DateTime.UtcNow;
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();
@@ -409,7 +437,136 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
             }
         }
 
-        
+        public async Task<BaseResponseDto> AcknowledgeComplaint(ComplaintAcknowledgmentDto values)
+        {
+            try
+            {
+                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+                if (_complaint is null)
+                {
+                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                }
+
+                _complaint.ComplaintStatus = ComplaintStatusEnum.ACKNOWLEDGED;
+                _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.ACKNOWLEDGED, values.AcknowledgedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+                await _unitOfWork.Complete();
+
+                //send to online customer
+                await _moduleComms.SendComplaintAcknowledgmentAsync(values);
+
+                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint acknowledged successfully." };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+            }
+
+        }
+
+        public async Task<BaseResponseDto> DispatchComplaint(ComplaintDispatchedDto values)
+        {
+            try
+            {
+                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+                if (_complaint is null)
+                {
+                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                }
+
+                _complaint.DispatachedTo_Department = values.DispatchedTo_DepartmentId;
+                _complaint.DispatachedTo_DepartmentUnit = values.DispatchedTo_DepartmentUnitId;
+                _complaint.ComplaintStatus = ComplaintStatusEnum.DISPATCHED;
+                _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.DISPATCHED, values.DispatchedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+                await _unitOfWork.Complete();
+
+                //send to online customer
+                await _moduleComms.SendComplaintDispatchAsync(values);
+
+                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint dispatched successfully." };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+            }
+
+        }
+
+        public async Task<BaseResponseDto> ReopenComplaint(ComplaintReopenedDto values)
+        {
+            try
+            {
+                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+                if (_complaint is null)
+                {
+                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                }
+
+                _complaint.ComplaintStatus = ComplaintStatusEnum.REOPEN;
+                _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.REOPEN, values.ReopenedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+                await _unitOfWork.Complete();
+
+                //send to online customer
+                await _moduleComms.SendComplaintReopenAsync(values);
+
+                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint reopened successfully." };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+            }
+
+        }
+
+        public async Task<BaseResponseDto> CloseComplaint(ComplaintClosedDto values)
+        {
+            try
+            {
+                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+                if (_complaint is null)
+                {
+                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                }
+
+                _complaint.ComplaintStatus = ComplaintStatusEnum.CLOSED;
+                _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.CLOSED, values.ClosedBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+
+                await _unitOfWork.Complete();
+
+                //send to online customer
+                await _moduleComms.SendComplaintClosedAsync(values);
+
+
+                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint closed successfully." };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+            }
+
+        }
+
+
+
     }
 }
 

@@ -5,7 +5,7 @@ using Modules.Customers.Domain.Enums;
 
 namespace Modules.Customers.Domain.Entities
 {
-    public class Complaint : AuditableEntity
+    public class Complaint //: AuditableEntity
     {
         //private readonly List<DomainEvent> _domainEvents = new();
 
@@ -79,27 +79,12 @@ namespace Modules.Customers.Domain.Entities
         public ComplaintStatus ComplaintStatus { get; set; }
 
         [StringLength(36)]
-        public string? ReviewedBy { get; set; }
+        public int DispatachedTo_Department { get; set; }
 
-        public DateTime DateReviewed { get; set; }
+        public int DispatachedTo_DepartmentUnit { get; set; }
 
         [StringLength(36)]
         public string? AssignedTo { get; set; }
-
-        [StringLength(36)]
-        public string? AssignedBy { get; set; }
-
-        public DateTime DateAssigned { get; set; }
-
-        [StringLength(36)]
-        public string? ResolvedBy { get; set; }
-
-        public DateTime ResolutionDate { get; set; }
-
-        [StringLength(36)]
-        public string? CancelledBy { get; set; }
-
-        public DateTime CancelledDate { get; set; }
 
         public string? Notes { get; set; }
 
@@ -114,7 +99,7 @@ namespace Modules.Customers.Domain.Entities
                          string propertyNumber, string propertyLocation, string customerCode, string customerName,
                          string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus, string createdBy,
+                         string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
                          string resolvedBy, DateTime resolutionDate, string notes, ComplaintSource source)
         {
@@ -124,7 +109,7 @@ namespace Modules.Customers.Domain.Entities
                          string propertyNumber, string propertyLocation, string customerCode, string customerName,
                          string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus, ComplaintSource source, string createdBy)
+                         string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus, ComplaintSource source)
         {
             if (complaintTypeId <= 0)
             {
@@ -194,14 +179,9 @@ namespace Modules.Customers.Domain.Entities
                 DocumentTwo = documentTwo,
                 DocumentThree = documentThree,
                 ComplaintStatus = complaintStatus,
-                CreatedBy = createdBy,
-                ReviewedBy = string.Empty,
-                DateReviewed = Convert.ToDateTime("1900-01-01"),
+                DispatachedTo_Department = 0,
+                DispatachedTo_DepartmentUnit = 0,
                 AssignedTo = string.Empty,
-                AssignedBy = string.Empty,
-                DateAssigned = Convert.ToDateTime("1900-01-01"),
-                ResolvedBy = string.Empty,
-                ResolutionDate = Convert.ToDateTime("1900-01-01"),
                 Notes = string.Empty,
                 Source = source
             };

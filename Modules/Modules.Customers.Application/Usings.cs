@@ -10,3 +10,4 @@ global using Modules.Customers.Application.Interfaces.ModuleServices;
 
 global using Modules.Customers.Domain.Entities;
 global using Modules.Customers.Domain.Interfaces;
+global using Modules.Customers.Domain.Enums;

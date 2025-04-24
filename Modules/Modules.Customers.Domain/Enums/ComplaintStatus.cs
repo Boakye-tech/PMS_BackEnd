@@ -11,11 +11,11 @@ namespace Modules.Customers.Domain.Enums
         [Description("ACKNOWLEDGED")]
         ACKNOWLEDGED = 2,
 
-        [Description("REVIEWED")]
-        REVIEWED = 3,
-
         [Description("DISPATCHED")]
-        DISPATCHED = 4,
+        DISPATCHED = 3,
+
+        [Description("REVIEWED")]
+        REVIEWED = 4,
 
         [Description("ASSIGNED")]
         ASSIGNED = 5,

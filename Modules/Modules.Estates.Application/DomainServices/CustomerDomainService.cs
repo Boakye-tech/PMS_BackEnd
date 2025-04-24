@@ -123,9 +123,51 @@ namespace Modules.Estates.Application.DomainServices
             return true;
         }
 
+        public async Task<bool> ComplaintTypeExist(int complaintTypeId)
+        {
+            var result = await _unitOfWork.ComplaintType.Get(complaintTypeId);
+            if (result is null)
+            {
+                return false;
+            }
 
+            return true;
+        }
 
+        public async Task<bool> ComplaintTypeExist(string complaintTypeName)
+        {
+            var result = await _unitOfWork.ComplaintType.Get(ct => ct.ComplaintTypes == complaintTypeName);
+            if (result is null)
+            {
+                return false;
+            }
 
+            return true;
+        }
+
+        public async Task<bool> NatureOfComplaintExist(int natureOfComplaintId)
+        {
+            var result = await _unitOfWork.NatureOfComplaint.Get(natureOfComplaintId);
+            if (result is null)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
+
+        public async Task<bool> NatureOfComplaintExist(string natureOfComplaints)
+        {
+            var result = await _unitOfWork.NatureOfComplaint.Get(nc => nc.NatureOfComplaints == natureOfComplaints);
+            if (result is null)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
     }
 }
 

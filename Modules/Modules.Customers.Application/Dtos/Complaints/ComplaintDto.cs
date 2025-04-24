@@ -59,7 +59,7 @@ public record ComplaintDto
 
     public List<string>? DocumentList { get; set; }
 
-    public string? ComplaintStatus { get; set; }
+    public List<ComplaintHistoryReadDto>? ComplaintStatus { get; set; }
 
 }
 

@@ -956,7 +956,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(500, new { response = ex.Message });
             }
         }
 
@@ -980,13 +980,20 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<ComplaintTypeReadDto>> UpdateComplaintType([FromBody] ComplaintTypeUpdateDto values)
         {
-            var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.modifiedBy))
+            try
             {
-                return Unauthorized();
-            }
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.modifiedBy))
+                {
+                    return Unauthorized();
+                }
 
-            return Ok(await _complaintTypeService.UpdateComplaintTypeAsync(values));
+                return Ok(await _complaintTypeService.UpdateComplaintTypeAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { response = ex.Message });
+            }
         }
 
         /// <summary>
