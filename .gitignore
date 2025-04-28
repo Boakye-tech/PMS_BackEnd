@@ -29,6 +29,7 @@ obj/
 appsettings.json
 
 .sonarqube/
+.vscode/
 coverage.opencover.xml
 coverage.cobertura.xml
 TestResults/

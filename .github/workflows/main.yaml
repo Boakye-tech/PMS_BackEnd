@@ -199,6 +199,27 @@ jobs:
           $template | ConvertTo-Json -Depth 10 | Set-Content $devOutputPath
           Write-Host "Created appsettings.Development.json at: $devOutputPath"
 
+      - name: Configure Firebase Settings
+        run: |
+          # Create firebase.json in root directory
+          $firebaseContent = '${{ secrets.FIREBASE_JSON_CONTENT }}'
+          $rootPath = Join-Path ${{ github.workspace }} "firebase.json"
+          Set-Content -Path $rootPath -Value $firebaseContent
+          Write-Host "Created firebase.json at: $rootPath"
+
+          # Create copy in Modules/Modules.Notifications.Presentation directory
+          $modulePath = Join-Path ${{ github.workspace }} "Modules/Modules.Notifications.Presentation/firebase.json"
+          New-Item -Path (Split-Path $modulePath) -ItemType Directory -Force
+          Set-Content -Path $modulePath -Value $firebaseContent
+          Write-Host "Created firebase.json at: $modulePath"
+
+          # Verify files exist and have content
+          if (-not (Test-Path $rootPath) -or -not (Test-Path $modulePath)) {
+            Write-Error "Failed to create one or more firebase.json files"
+            exit 1
+          }
+        shell: pwsh
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
