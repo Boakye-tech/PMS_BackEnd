@@ -1,4 +1,14 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -27,6 +37,7 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
         {
             return await SendDataAsync("Administration/CreateIdentificationType", payload, "POST");
         }
+
 
         public async Task<bool> SendComplaintAcknowledgmentAsync(ComplaintAcknowledgmentDto payload)
         {
@@ -78,6 +89,16 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
             return await SendDataAsync("Complaint/UpdateNatureOfComplaint", payload, "PUT");
         }
 
+        public async Task<bool> SendModifiedComplaintDetailsAsync(ComplaintUpdateDto payload)
+        {
+            return await SendDataAsync("Complaint/ModifyComplaint", payload, "PUT");
+        }
+
+        public async Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload)
+        {
+            return await SendDataAsync("Complaint/SubmitComplaint", payload, "POST");
+        }
+
         public async Task<bool> SendComplaintTypeDetailsAsync(ComplaintTypeDto payload)
         {
             return await SendDataAsync("Complaint/CreateComplaintType", payload, "POST");
@@ -88,10 +109,7 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
             return await SendDataAsync("Complaint/CreateNatureOfComplaint", payload, "POST");
         }
 
-        public async Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload)
-        {
-            return await SendDataAsync("Complaint/SubmitComplaint", payload, "POST");
-        }
+       
 
         public async Task<bool> SendPropertyDetailsAsync(OnlinePropertyDetailsDto payload)
         {

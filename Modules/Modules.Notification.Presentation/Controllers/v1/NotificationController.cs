@@ -1,4 +1,13 @@
-﻿
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using Microsoft.AspNetCore.Authorization;
 using Modules.Notification.Domain.Enums;
 using System.ComponentModel;
@@ -94,10 +103,18 @@ public class NotificationController : ControllerBase
     [Route("SendNotification")]
     public async Task<IActionResult> SendNotification([FromBody] SendNotificationRequestDto values)
     {
-        SendNotificationRequest request = new SendNotificationRequest(values.UserId, $"{values.Subject}-{values.DisplayName}", values.Message, values.Type);
+        try
+        {
+            SendNotificationRequest request = new SendNotificationRequest(values.UserId, $"{values.Subject}-{values.DisplayName}", values.Message, values.Type);
 
-        var notificationId = await _mediator.Send(new SendNotificationCommand(request));
-        return Ok(notificationId);
+            var notificationId = await _mediator.Send(new SendNotificationCommand(request));
+            return Ok(notificationId);
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
 
     }
 }

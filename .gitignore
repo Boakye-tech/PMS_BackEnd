@@ -28,6 +28,14 @@ obj/
 **/appsettings.Development.json
 appsettings.json
 
+**/**/npms-18309-firebase-adminsdk-fbsvc-405fb5a13e.json
+Modules/Modules.Notification.Presentation/npms-18309-firebase-adminsdk-fbsvc-405fb5a13e.json
+
+**/firebase.json
+**/**/firebase.json
+Modules/Modules.Notification.Presentation/npms-firebase.json
+
+
 .sonarqube/
 .vscode/
 coverage.opencover.xml

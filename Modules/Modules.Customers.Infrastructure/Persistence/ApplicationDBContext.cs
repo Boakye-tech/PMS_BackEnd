@@ -1,6 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+using Microsoft.EntityFrameworkCore;
 using Modules.Common.Infrastructure;
-using Modules.Customers.Infrastructure.Persistence.EntityConfigurations;
 
 namespace Modules.Customers.Infrastructure.Persistence;
 

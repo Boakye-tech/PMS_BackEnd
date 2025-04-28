@@ -1,16 +1,16 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using System.Data;
-using System.Reflection;
-using System.Security.Claims;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Modules.Users.Application.Dtos.Entities.Permissions;
-using Modules.Users.Application.Dtos.UserAccounts;
-using Modules.Users.Domain.Entities;
-using Modules.Users.Domain.Entities.Menu;
-using static System.Collections.Specialized.BitVector32;
 
 
 namespace Modules.Users.Application.UseCases
@@ -249,7 +249,7 @@ namespace Modules.Users.Application.UseCases
                         items.Add(new AccessSubMenuItemsWithActionsDto(item.SubMenuItemName, permissions));
                     }
 
-                    sections.Add(new AccessSubMenusWithActionsDto(_subMenu.SubMenuName, _subMenu.IsOpen, permissions, items));
+                    sections.Add(new AccessSubMenusWithActionsDto(_subMenu.SubMenuName!, _subMenu.IsOpen, permissions, items));
                 }
 
                 accessModules.Add(new AccessMenusWithActionsDto(_menuItem.MenuName, _menuItem.IsOpen, permissions, sections));
@@ -313,8 +313,8 @@ namespace Modules.Users.Application.UseCases
                 (
                     m.MenuId,
                     m.SubMenuId,
-                    m.SubMenuName,
-                    m.Description,
+                    m.SubMenuName!,
+                    m.Description!,
                     string.Concat(u.FirstName, " ", u.MiddleName, " ", u.LastName).Trim(),
                     m.IsOpen
                 )).ToList();
@@ -342,6 +342,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<PermissionsAccessModulesReadDto> GetRolesPermissions(string roleId)
         {
+            /*
             var _permissions = await _unitOfWork.AcccessPermissions.GetAll(p => p.RoleId == roleId);
             var accessModules = new List<PermissionAccessMenusWithActionsReadDto>();
 
@@ -369,6 +370,86 @@ namespace Modules.Users.Application.UseCases
             }
 
             return new PermissionsAccessModulesReadDto(roleId, accessModules);
+            */
+
+
+            var defaultPermissions = new PermissionsActionsDto(NoAccess: false, Create: false, Read: false, Update: false, Delete: false, Approve: false);
+
+            // Fetch everything once
+            var allMenus = await _unitOfWork.Menus.GetAll();
+            var allSubMenus = await _unitOfWork.SubMenus.GetAll();
+            var allSubMenuItems = await _unitOfWork.SubMenuItems.GetAll();
+
+            var permissions = await _unitOfWork.AcccessPermissions.GetAll(p => p.RoleId == roleId);
+            var subPermissions = await _unitOfWork.SubPermissions.GetAll();
+            var subPermissionItems = await _unitOfWork.SubPermissionsItems.GetAll();
+
+            // Build dictionaries for fast lookup
+            var permissionDict = permissions.ToDictionary(p => p.ModuleName, p => p);
+            var subPermissionDict = subPermissions.ToDictionary(sp => (sp.PermissionsId, sp.SectionName), sp => sp);
+            var subPermissionItemDict = subPermissionItems.ToDictionary(spi => (spi.SubPermissionsId, spi.ItemName), spi => spi);
+
+            var accessModules = allMenus.Select(menu =>
+            {
+                var permission = permissionDict.GetValueOrDefault(menu.MenuName);
+                var permissionId = permission?.PermissionsId ?? 0;
+
+                var menuPermissions = permission != null
+                    ? new PermissionsActionsDto(permission.NoAccess, permission.Create, permission.Read, permission.Update, permission.Delete, permission.Approve)
+                    : defaultPermissions;
+
+                var sections = allSubMenus
+                    .Where(sm => sm.MenuId == menu.MenuId)
+                    .Select(subMenu =>
+                    {
+                        var subPermission = subPermissionDict!.GetValueOrDefault((permissionId, subMenu.SubMenuName));
+                        var subPermissionId = subPermission?.SubPermissionsId ?? 0;
+
+                        var subMenuPermissions = subPermission != null
+                            ? new PermissionsActionsDto(subPermission.NoAccess, subPermission.Create, subPermission.Read, subPermission.Update, subPermission.Delete, subPermission.Approve)
+                            : defaultPermissions;
+
+                        var items = allSubMenuItems
+                            .Where(smi => smi.SubMenuId == subMenu.SubMenuId)
+                            .Select(item =>
+                            {
+                                var subPermissionItem = subPermissionItemDict.GetValueOrDefault((subPermissionId, item.SubMenuItemName));
+
+                                var itemPermissions = subPermissionItem != null
+                                    ? new PermissionsActionsDto(subPermissionItem.NoAccess, subPermissionItem.Create, subPermissionItem.Read, subPermissionItem.Update, subPermissionItem.Delete, subPermissionItem.Approve)
+                                    : defaultPermissions;
+
+                                return new PermissionAccessSubMenuItemsWithActionsReadDto(
+                                    permissionId,
+                                    subPermissionId,
+                                    subPermissionItem?.SubPermissionsItemsId ?? 0,
+                                    item.SubMenuItemName,
+                                    itemPermissions
+                                );
+                            })
+                            .ToList();
+
+                        return new PermissionAccessSubMenusWithActionsReadDto(
+                            permissionId,
+                            subPermissionId,
+                            subMenu.SubMenuName!,
+                            subMenuPermissions,
+                            items
+                        );
+                    })
+                    .ToList();
+
+                return new PermissionAccessMenusWithActionsReadDto(
+                    permission?.PermissionsId ?? 0,
+                    menu.MenuName,
+                    menuPermissions,
+                    sections
+                );
+            }).ToList();
+
+            return new PermissionsAccessModulesReadDto(roleId, accessModules);
+
+
         }
 
 

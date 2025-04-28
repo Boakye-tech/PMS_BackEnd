@@ -1,13 +1,19 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+using System;
 using System.Net;
 using System.Text.Json;
-using System.Net.Http.Json;
-using System.Text.Json.Serialization;
 using System.Web;
 using Microsoft.Extensions.Configuration;
-using Modules.Notification.Application.Dtos.Sms;
-using Modules.Notification.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
+
 
 namespace Modules.Notification.Infrastructure.Services
 {

@@ -86,6 +86,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		appsettings.Development.json = appsettings.Development.json
 		appsettings.json = appsettings.json
+		firebase.json = firebase.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{03A7C49C-25C5-473B-AE3C-9B0E6932B6FE}"
@@ -274,5 +275,43 @@ Global
 		{114EC5E6-E629-42C7-BBEC-59167C111F85} = {03A7C49C-25C5-473B-AE3C-9B0E6932B6FE}
 		{153B3761-F766-4D11-A5EC-DB0DB63350E7} = {03A7C49C-25C5-473B-AE3C-9B0E6932B6FE}
 		{07F05AB7-72D8-4610-9169-33216C447618} = {03A7C49C-25C5-473B-AE3C-9B0E6932B6FE}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.StandardHeader = $1
+		$1.Text = @/**************************************************\n* Company: MindSprings Company Limited\n* Project Name: ${ProjectName}\n* Full FileName: ${FullFileName}\n* Author: ${AuthorName}\n* Email Address: ${AuthorEmail}\n* Copyright: ${CopyrightHolder}\n* Create Date: ${Date} ${Time}\n* Version: 1.0.1\n* Description: Property Management System\n **************************************************/
+		$0.DotNetNamingPolicy = $2
+		$2.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.TextStylePolicy = $3
+		$3.inheritsSet = null
+		$3.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $4
+		$4.scope = text/x-csharp
+		$0.TextStylePolicy = $5
+		$5.FileWidth = 80
+		$5.TabsToSpaces = True
+		$5.scope = text/plain
+		$0.TextStylePolicy = $6
+		$6.inheritsSet = null
+		$6.scope = text/x-json
+		$0.TextStylePolicy = $7
+		$7.inheritsSet = null
+		$7.scope = text/x-web
+		$0.TextStylePolicy = $8
+		$8.inheritsSet = null
+		$8.scope = text/x-vs
+		$0.TextStylePolicy = $9
+		$9.inheritsSet = null
+		$9.scope = application/xml
+		$0.XmlFormattingPolicy = $10
+		$10.scope = application/xml
+		$0.TextStylePolicy = $11
+		$11.inheritsSet = null
+		$11.scope = application/x-msbuild
+		$0.XmlFormattingPolicy = $12
+		$12.inheritsSet = null
+		$12.scope = application/x-msbuild
+		description = Property Management System
+		version = 1.0.1
 	EndGlobalSection
 EndGlobal

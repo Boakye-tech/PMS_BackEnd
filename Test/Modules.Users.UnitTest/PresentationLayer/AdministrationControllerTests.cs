@@ -1,11 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
+
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Xunit;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Modules.Users.Application.Interfaces.UserAccounts;
 using Modules.Users.Application.Interfaces;
 using Modules.Common.Infrastructure.Authentication;

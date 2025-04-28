@@ -1,16 +1,17 @@
-﻿using System.Text.Json;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using System.Text.RegularExpressions;
 using Asp.Versioning;
-using Azure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using Modules.Users.Application.Dtos.Entities;
-using Modules.Users.Application.Dtos.UserAccounts;
-using Modules.Users.Application.Shared;
-using Modules.Users.Domain.Interfaces;
 
 
 namespace Modules.Users.Presentation.Controllers.v1;

@@ -1,8 +1,17 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Azure.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Modules.Common.Infrastructure.Authentication;
@@ -27,6 +36,11 @@ namespace Modules.Customers.Application.Services
         public async Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload)
         {
             return await SendDataAsync("Customer/SubmitComplaint", payload, "POST");
+        }
+
+        public async Task<bool> SendModifiedComplaintDetailsAsync(ComplaintUpdateDto payload)
+        {
+            return await SendDataAsync("Customer/ModifyComplaint", payload, "PUT");
         }
 
         public async Task<bool> SendComplaintCancelledAsync(ComplaintCancellationDto payload)

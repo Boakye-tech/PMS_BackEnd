@@ -1,7 +1,16 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using Microsoft.Extensions.Logging;
-using Modules.Estates.Domain.Enums;
+
 
 namespace Modules.Estates.Application.UseCases.Management.Complaints
 {
@@ -207,7 +216,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 ComplaintDate = complaint.ComplaintDate,
                 SubmittedBy = complaint.SubmittedBy,
                 SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
-                DocumentList = new List<string> { complaint.DocumentOne!, complaint.DocumentTwo!, complaint.DocumentThree! },
+                DocumentList = new List<string> { complaint.DocumentOne!, complaint.DocumentTwo!, complaint.DocumentThree! }.Where(d => !string.IsNullOrWhiteSpace(d)).ToList(),
                 ComplaintStatus = await GetComplaintStatus(complaintNumber)
             };
 
@@ -407,6 +416,28 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         public async Task<BaseResponseDto> UpdateComplaint(ComplaintUpdateDto values)
         {
+            string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty;
+            int imageCount;
+
+            imageCount = values.DocumentImages!.Count();
+            switch (imageCount)
+            {
+                case 1:
+                    _imageOne = values.DocumentImages![0];
+                    break;
+
+                case 2:
+                    _imageOne = values.DocumentImages![0];
+                    _imageTwo = values.DocumentImages![1];
+                    break;
+
+                case 3:
+                    _imageOne = values.DocumentImages![0];
+                    _imageTwo = values.DocumentImages![1];
+                    _imageThree = values.DocumentImages![2];
+                    break;
+            }
+
             try
             {
                 var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
@@ -421,12 +452,15 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _complaint.IsTheMatterInCourt = values.IsTheMatterInCourt;
                 _complaint.DetailsOfComplaint = values.DetailsOfComplaint;
                 _complaint.AvailabilityDate = values.AvailabilityDate;
-                _complaint.DocumentOne = values.DocumentImages![0];
-                _complaint.DocumentTwo = values.DocumentImages![1];
-                _complaint.DocumentThree = values.DocumentImages![2];
+                _complaint.DocumentOne = _imageOne;
+                _complaint.DocumentTwo = _imageTwo;
+                _complaint.DocumentThree = _imageThree;
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();
+
+                //send to online customer
+                await _moduleComms.SendModifiedComplaintDetailsAsync(values);
 
                 return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint updated successfully." };
 

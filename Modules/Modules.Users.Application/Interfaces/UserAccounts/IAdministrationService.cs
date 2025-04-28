@@ -1,6 +1,15 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using Microsoft.AspNetCore.Identity;
-using Modules.Users.Application.Dtos.Administration;
 
 namespace Modules.Users.Application.Interfaces.UserAccounts
 {
@@ -43,11 +52,6 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 
         Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId,string? searchParam, string? status);
         Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentUnitStaff(int unitId, string? searchParam, string? status);
-
-
-
-
-
 
     }
 }

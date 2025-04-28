@@ -1,17 +1,24 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Modules.Users.Application.Dtos.Entities.Permissions;
-using Modules.Users.Application.Interfaces;
+
 
 namespace Modules.Users.Infrastructure.Repositories.Entities
 {
@@ -311,8 +318,9 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                         new Claim(ClaimTypes.NameIdentifier, user.Id),
                         new Claim(ClaimTypes.Role, userRoles!),
                         new Claim(ClaimTypes.Email, user.Email!),
+                        new Claim(ClaimTypes.PrimarySid, user.IdentificationNumber!),
                         new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!)
-            };
+                    };
 
             foreach (var permission in claims)
             {

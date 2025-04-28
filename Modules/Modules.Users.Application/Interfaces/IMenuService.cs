@@ -1,9 +1,14 @@
-﻿using System;
-using System.Security.Claims;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using Microsoft.AspNetCore.Identity;
-using Modules.Users.Application.Dtos.Administration;
-using Modules.Users.Application.Dtos.Entities.Menu;
-using Modules.Users.Application.Dtos.UserAccounts;
 
 namespace Modules.Users.Application.Interfaces
 {

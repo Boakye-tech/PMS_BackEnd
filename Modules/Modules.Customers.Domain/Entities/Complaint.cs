@@ -1,7 +1,15 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Modules.Customers.Domain.Enums;
 
 namespace Modules.Customers.Domain.Entities
 {
@@ -35,7 +43,6 @@ namespace Modules.Customers.Domain.Entities
         [StringLength(75)]
         public string? PropertyLocation { get; set; }
 
-        //[Required]
         [StringLength(10)]
         public string? CustomerCode { get; set; }
 

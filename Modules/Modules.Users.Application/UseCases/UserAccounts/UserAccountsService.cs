@@ -1,11 +1,18 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Modules.Users.Application.Enums;
 
 namespace Modules.Users.Application.UseCases.UserAccounts
 {
@@ -870,15 +877,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             if (!string.IsNullOrWhiteSpace(values.ProfilePicture))
             {
-                if (!string.IsNullOrWhiteSpace(user.SelfieImage))
-                {
-                    user.SelfieImage = values.ProfilePicture;
-                }
-
-                if (!string.IsNullOrWhiteSpace(user.PassportPicture))
-                {
-                    user.PassportPicture = values.ProfilePicture;
-                }
+                user.ProfilePicture = values.ProfilePicture;
             }
 
             if (!string.IsNullOrWhiteSpace(values.MiddleName))

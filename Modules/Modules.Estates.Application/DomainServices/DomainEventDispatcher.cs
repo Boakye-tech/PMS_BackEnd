@@ -1,8 +1,16 @@
-using System;
-using System.Threading.Tasks;
+// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using Microsoft.Extensions.Logging;
-using Modules.Estates.Domain.Entities.Registration;
-using Modules.Estates.Domain.Events;
+
 using Modules.Estates.Domain.Events.Customer;
 
 namespace Modules.Estates.Application.Services

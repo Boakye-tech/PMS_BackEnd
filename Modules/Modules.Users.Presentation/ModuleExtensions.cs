@@ -1,15 +1,13 @@
-﻿using System;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Modules.Users.Domain.Interfaces;
-using Modules.Users.Infrastructure.Extensions;
-using Modules.Users.Infrastructure.Repositories;
-using Modules.Users.Domain.Interfaces.Entities;
-using Modules.Users.Infrastructure.Repositories.Entities;
-using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.RateLimiting;
-using Modules.Users.Application.Services;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 
 namespace Modules.Users.Presentation
 {
