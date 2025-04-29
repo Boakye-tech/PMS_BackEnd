@@ -179,11 +179,22 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 
-FirebaseApp.Create(new AppOptions
+if (builder.Environment.IsDevelopment())
 {
+    FirebaseApp.Create(new AppOptions
+    {
 
-    Credential = GoogleCredential.FromFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", "firebase.json"))
-});
+        Credential = GoogleCredential.FromFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", "firebase.json"))
+    });
+}
+
+if (builder.Environment.IsProduction())
+{
+    FirebaseApp.Create(new AppOptions
+    {
+        Credential = GoogleCredential.FromFile(Path.Combine(Directory.GetCurrentDirectory() ?? "", "firebase.json"))
+    });
+}
 
 
 var app = builder.Build();

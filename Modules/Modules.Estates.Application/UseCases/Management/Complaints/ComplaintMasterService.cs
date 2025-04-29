@@ -9,6 +9,7 @@
 //  **************************************************/
 
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 
@@ -599,8 +600,32 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         }
 
+        public async Task<List<ComplainantDetailsDto>> GetComplainantDetails(string customerCode)
+        {
+            var result = from a in await _unitOfWork.CustomerMaster.GetAll()
+                        join d in await _unitOfWork.Title.GetAll() on a.TitleId equals d.TitleId into titleGroup
+                        from title in titleGroup.DefaultIfEmpty() // LEFT JOIN on Title
+                        join b in await _unitOfWork.PropertyMaster.GetAll() on a.CustomerCode equals b.CustomerCode into propertyGroup
+                        from property in propertyGroup.DefaultIfEmpty() // LEFT JOIN on PropertyMaster
+                        join c in await _unitOfWork.Locality.GetAll() on property.LocalityId equals c.LocalityId // INNER JOIN on Locality
+                        where a.CustomerCode == customerCode
+                        select new ComplainantDetailsDto
+                        {
+                            CustomerCode = a.CustomerCode,
+                            CustomerName = string.Concat(
+                                (title != null ? title.Titles : "") + " ",
+                                (a.OtherNames ?? "") + " ",
+                                (a.SurName ?? "") + " ",
+                                (a.CompanyName ?? "")
+                            ).Trim(),
+                            PhoneNumber = a.PrimaryMobileNumber,
+                            EmailAddress = a.EmailAddress,
+                            PropertyNumber = property.PropertyNumber,
+                            PropertyLocation = c.LocalityName
+                        };
 
-
+            return result.ToList();
+        }
     }
 }
 

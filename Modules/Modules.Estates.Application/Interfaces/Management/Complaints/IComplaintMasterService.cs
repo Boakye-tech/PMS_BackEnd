@@ -24,6 +24,7 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
 
         Task<ComplaintDto> GetComplaintDetails(string complaintNumber);
 
+        Task<List<ComplainantDetailsDto>> GetComplainantDetails(string customerCode);
 
         Task<BaseResponseDto> CreateNewComplaint(ComplaintCreateDto values);
 
