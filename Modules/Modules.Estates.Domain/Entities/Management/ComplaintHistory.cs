@@ -76,8 +76,7 @@ namespace Modules.Estates.Domain.Entities.Management
 
         }
 
-
-
+        public void ClearDomainEvents() => _domainEvents.Clear();
 
     }
 }

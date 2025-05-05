@@ -424,7 +424,7 @@ public class AccountController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("Users/{userId}")]
-    //[Authorize(Policy = "Permission:Users.CREATE")]
+    [ProducesResponseType(200, Type = typeof(UserInformationDto))]
     public async Task<ActionResult> UserDetails(string userId)
     {
         var user = await _unitOfWork.Users.Get(u => u.Id == userId);

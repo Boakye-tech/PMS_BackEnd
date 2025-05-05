@@ -16,7 +16,7 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
         Task<BaseResponseDto> DeleteComplaint(string ComplaintNumber);
 
 
-        Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList();
+        Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList(string searchParameter, int complaintType, int complaintStatus);
 
 		Task<IEnumerable<ComplaintStaffReadDto>> GetCustomerComplaintsList(string customerCode_OR_propertyNumber);
 
@@ -25,6 +25,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
         Task<ComplaintDto> GetComplaintDetails(string complaintNumber);
 
         Task<List<ComplainantDetailsDto>> GetComplainantDetails(string customerCode);
+
+        Task<List<ComplainantSearchDto>> GetComplainantSearch(string customerCode_OR_propertyNumber);
 
         Task<BaseResponseDto> CreateNewComplaint(ComplaintCreateDto values);
 
@@ -45,6 +47,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
         Task<BaseResponseDto> CloseComplaint(ComplaintClosedDto values);
 
         Task<BaseResponseDto> CancelComplaint(ComplaintCancellationDto values);
+
+        Task<BaseResponseDto> InProgressComplaint(ComplaintInProgressDto values);
     }
 }
 

@@ -134,6 +134,13 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
                 }
 
+                // Status is neither DISPATCHED nor REVIEWED
+                if (!new[] { ComplaintStatus.DISPATCHED, ComplaintStatus.REVIEWED }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be assigned as it has not been dispatched or reviewed yet.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be assigned as it has not been dispatched or reviewed yet." };
+                }
+
                 _complaint.AssignedTo = values.AssignedTo;
                 _complaint.ComplaintStatus = ComplaintStatus.ASSIGNED;
 
@@ -167,6 +174,13 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
                 }
 
+                // Status is neither SUBMITTED nor ACKNOWLEDGED
+                if (!new[] { ComplaintStatus.SUBMITTED, ComplaintStatus.ACKNOWLEDGED }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be cancelled at this stage.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be cancelled at this stage." };
+                }
+
                 _complaint.ComplaintStatus = ComplaintStatus.CANCELLED;
                 _unitOfWork.Complaint.Update(_complaint);
 
@@ -175,7 +189,6 @@ namespace Modules.Customers.Application.UseCases
                 await _unitOfWork.Complete();
 
                 _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.CANCELLED} by {values.CancelledBy} at {DateTime.UtcNow}.");
-
 
                 //send to staff module
                 var response = await _moduleComms.SendComplaintCancelledAsync(values);
@@ -341,6 +354,13 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
                 }
 
+                //Status is neither DISPATCHED nor REVIEWED nor ASSIGNED nor INPROGRESS
+                if (!new[] { ComplaintStatus.DISPATCHED, ComplaintStatus.REVIEWED, ComplaintStatus.ASSIGNED, ComplaintStatus.INPROGRESS }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be resolved at this stage.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be resolved at this stage." };
+                }
+
                 _complaint.ComplaintStatus = ComplaintStatus.RESOLVED;
                 _unitOfWork.Complaint.Update(_complaint);
 
@@ -351,6 +371,43 @@ namespace Modules.Customers.Application.UseCases
                 _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.RESOLVED} by {values.ResolvedBy} at {DateTime.UtcNow}.");
 
                 return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = "Complaint resolved successfully." };
+
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponseDto { responseCode = StatusCodes.Status500InternalServerError, response = ex.Message };
+            }
+        }
+
+        public async Task<GenericResponseDto> InProgressComplaint(ComplaintInProgressDto values)
+        {
+            try
+            {
+                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+                if (_complaint is null)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                }
+
+                //Status is neither DISPATCHED nor REVIEWED nor ASSIGNED
+                if (!new[] { ComplaintStatus.DISPATCHED, ComplaintStatus.REVIEWED, ComplaintStatus.ASSIGNED }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be moved to the in-progress stage at this time.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be moved to the in-progress stage at this time." };
+                }
+
+                _complaint.ComplaintStatus = ComplaintStatus.INPROGRESS;
+                _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.INPROGRESS, values.InProgressBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+                await _unitOfWork.Complete();
+
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.INPROGRESS} by {values.InProgressBy} at {DateTime.UtcNow}.");
+
+                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = $"Complaint status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.INPROGRESS} successfully." };
 
             }
             catch (Exception ex)
@@ -370,6 +427,14 @@ namespace Modules.Customers.Application.UseCases
                     _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
                     return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
                 }
+
+
+                if (!new[] { ComplaintStatus.DISPATCHED, ComplaintStatus.INPROGRESS }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be reviewed at this stage.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be reviewed at this stage." };
+                }
+
 
                 _complaint.ComplaintStatus = ComplaintStatus.REVIEWED;
                 _unitOfWork.Complaint.Update(_complaint);
@@ -424,8 +489,8 @@ namespace Modules.Customers.Application.UseCases
                 }
 
                 //check status of complaint. If status is dispatched, customer cannot modify complaint anymore
-                var _complaintStatus = await _unitOfWork.ComplaintHistory.Get(ch => ch.ComplaintNumber == values.ComplaintNumber && ch.ComplaintStatus == ComplaintStatus.DISPATCHED);
-                if (_complaintStatus is not null)
+                //var _complaintStatus = await _unitOfWork.ComplaintHistory.Get(ch => ch.ComplaintNumber == values.ComplaintNumber && ch.ComplaintStatus == ComplaintStatus.DISPATCHED);
+                if (_complaint.ComplaintStatus >= ComplaintStatus.DISPATCHED)
                 {
                     _logger.LogWarning($"Complaint number {values.ComplaintNumber} has been dispatched and cannot be modified.");
                     return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} has been dispatched and cannot be modified." };
@@ -477,6 +542,12 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
                 }
 
+                if (_complaint.ComplaintStatus != ComplaintStatus.SUBMITTED)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} is not in the submitted state and cannot be acknowledged.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} is not in the submitted state and cannot be acknowledged." };
+                }
+
                 _complaint.ComplaintStatus = ComplaintStatus.ACKNOWLEDGED;
                 _unitOfWork.Complaint.Update(_complaint);
 
@@ -505,6 +576,13 @@ namespace Modules.Customers.Application.UseCases
                 {
                     _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
                     return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                }
+
+
+                if (_complaint.ComplaintStatus != ComplaintStatus.ACKNOWLEDGED)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been acknowledged yet and cannot be dispatched.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} has not been acknowledged yet and cannot be dispatched." };
                 }
 
                 _complaint.DispatachedTo_Department = values.DispatchedTo_DepartmentId;
@@ -537,6 +615,12 @@ namespace Modules.Customers.Application.UseCases
                 {
                     _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
                     return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                }
+
+                if (_complaint.ComplaintStatus != ComplaintStatus.RESOLVED)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been resolved and cannot be re-opened.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} has not been resolved and cannot be re-opened." };
                 }
 
                 _complaint.ComplaintStatus = ComplaintStatus.REOPEN;
@@ -572,6 +656,12 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
                 }
 
+                if (_complaint.ComplaintStatus != ComplaintStatus.REOPEN)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been re-opened and cannot be closed.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} has not been re-opened and cannot be closed." };
+                }
+
                 _complaint.ComplaintStatus = ComplaintStatus.CLOSED;
                 _unitOfWork.Complaint.Update(_complaint);
 
@@ -580,7 +670,6 @@ namespace Modules.Customers.Application.UseCases
                 await _unitOfWork.Complete();
 
                 _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.CLOSED} by {values.ClosedBy} at {DateTime.UtcNow}.");
-
 
                 //send to staff module
                 await _moduleComms.SendComplaintClosedAsync(values);

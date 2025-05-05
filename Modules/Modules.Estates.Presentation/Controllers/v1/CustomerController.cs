@@ -1028,6 +1028,16 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(await _natureOfComplaintService.GetNatureOfComplaintAsync());
         }
 
+        /// <summary>
+        /// Returns the nature of complaint list based on a complaint type
+        /// </summary>
+        [HttpGet]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [Route("GetNatureOfComplaint/{complaintTypeId}")]
+        public async Task<ActionResult<IEnumerable<NatureOfComplaintReadDto>>> GetNatureOfComplaint(int complaintTypeId)
+        {
+            return Ok(await _natureOfComplaintService.GetNatureOfComplaintAsync(complaintTypeId));
+        }
 
         /// <summary>
         ///  Create a new nature of complaint

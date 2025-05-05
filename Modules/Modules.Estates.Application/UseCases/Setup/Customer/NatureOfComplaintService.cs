@@ -79,7 +79,11 @@ namespace Modules.Estates.Application.UseCases.Setup.Customer
             return _mapper.Map<IEnumerable<NatureOfComplaintReadDto>>(response);
         }
 
-
+        public async Task<IEnumerable<NatureOfComplaintReadDto>> GetNatureOfComplaintAsync(int complaintTypeId)
+        {
+            var response = await _unitOfWork.NatureOfComplaint.GetAll(ct => ct.ComplaintTypeId == complaintTypeId);
+            return _mapper.Map<IEnumerable<NatureOfComplaintReadDto>>(response);
+        }
 
     }
 

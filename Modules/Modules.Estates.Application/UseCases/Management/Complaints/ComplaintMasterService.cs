@@ -9,6 +9,8 @@
 //  **************************************************/
 
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -42,7 +44,15 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
-                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status204NoContent, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                }
+
+                // Status is neither DISPATCHED nor REVIEWED
+                if (!new[] { ComplaintStatusEnum.DISPATCHED, ComplaintStatusEnum.REVIEWED }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be assigned as it has not been dispatched or reviewed yet.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} cannot be assigned as it has not been dispatched or reviewed yet." };
                 }
 
                 _complaint.AssignedTo = values.AssignedTo;
@@ -54,14 +64,17 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.ASSIGNED} by {values.AssignedBy} at {DateTime.UtcNow}.");
+
                 //send to online customer
                 await _moduleComms.SendComplaintAssignedAsync(values);
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint assigned successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint assigned successfully." };
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                _logger.LogError(ex.ToString());
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.Message };
             }
 
         }
@@ -74,25 +87,32 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
+                if (!new[] { ComplaintStatusEnum.SUBMITTED, ComplaintStatusEnum.ACKNOWLEDGED }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be cancelled at this stage.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} cannot be cancelled at this stage." };
+                }
                 _complaint.ComplaintStatus = ComplaintStatusEnum.CANCELLED;
-
                 _unitOfWork.Complaint.Update(_complaint);
 
                 ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.CANCELLED, values.CancelledBy, DateTime.UtcNow);
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.CANCELLED} by {values.CancelledBy} at {DateTime.UtcNow}.");
+
                 //send to online customer
                 await _moduleComms.SendComplaintCancelledAsync(values);
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint cancelled successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint cancelled successfully." };
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.InnerException!.Message };
             }
         }
 
@@ -161,6 +181,9 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
+
+                //send notification
+
                 if (values.Source == ComplaintSourceEnum.STAFF)
                 {
                     //send to online customer
@@ -168,11 +191,11 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
                 }
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint submitted successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint submitted successfully." };
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.InnerException!.Message };
             }
         }
 
@@ -242,11 +265,31 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         }
 
-        public async Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList()
+        public async Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList(string? searchParameter, int complaintType, int complaintStatus)
         {
+            var allComplaint_Result = (await _unitOfWork.Complaint.GetAll()).AsQueryable();
+
+            if (complaintType != 0)
+            {
+                allComplaint_Result = allComplaint_Result.Where(a => a.ComplaintTypeId == complaintType);
+            }
+
+            if (complaintStatus != 0)
+            {
+                allComplaint_Result = allComplaint_Result.Where(a => a.ComplaintStatus == (ComplaintStatusEnum)complaintStatus);
+            }
+
+            if (!string.IsNullOrEmpty(searchParameter))
+            {
+                allComplaint_Result = allComplaint_Result.Where(a =>
+                                                                 a.CustomerCode!.Contains(searchParameter.ToUpper()) ||
+                                                                 a.PropertyNumber!.Contains(searchParameter.ToUpper()) ||
+                                                                 a.ComplaintNumber!.Contains(searchParameter.ToUpper())
+                                                               );
+            }
+
             List<ComplaintStaffReadDto> _allComplaints = new List<ComplaintStaffReadDto>();
 
-            var allComplaint_Result = await _unitOfWork.Complaint.GetAll();
 
             if (allComplaint_Result == null)
             {
@@ -268,11 +311,15 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 var response = new ComplaintStaffReadDto
                 (
                     ComplaintNumber: complaint.ComplaintNumber,
+                    ComplaintType: (await _unitOfWork.ComplaintType.Get(c => c.ComplaintTypeId == complaint.ComplaintTypeId))!.ComplaintTypes,
                     NatureOfComplaint: natureofComplaints_list,
+                    CustomerCode: complaint.CustomerCode,
                     PropertyNumber: complaint.PropertyNumber,
+                    PhoneNumber: complaint.PhoneNumber,
                     ComplaintDate: complaint.ComplaintDate,
                     ComplaintStatus: ComplaintStatusEnumDescription.GetEnumDescription(complaint.ComplaintStatus),
-                    CustomerName: complaint.CustomerName
+                    CustomerName: complaint.CustomerName,
+                    InitiatedBy: complaint.Source == ComplaintSourceEnum.CUSTOMER ? "Self-Assisted" : "Officer-Assisted"
                 );
 
                 _allComplaints.Add(response);
@@ -287,7 +334,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
             if (complaint == null)
             {
-                return new ComplaintStaffReadDto(null, null, null, DateTime.Now, null, null);
+                return new ComplaintStaffReadDto(null, null, null, null, null, null, null, DateTime.Now, null, null);
             }
 
             string[] natureofComplaints = complaint.NatureOfComplaintId!.Split(',');
@@ -302,11 +349,15 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
             var response = new ComplaintStaffReadDto
             (
                 ComplaintNumber: complaint.ComplaintNumber,
+                ComplaintType: (await _unitOfWork.ComplaintType.Get(c => c.ComplaintTypeId == complaint.ComplaintTypeId))!.ComplaintTypes,
                 NatureOfComplaint: natureofComplaints_list,
+                CustomerCode: complaint.CustomerCode,
                 PropertyNumber: complaint.PropertyNumber,
+                PhoneNumber: complaint.PhoneNumber,
                 ComplaintDate: complaint.ComplaintDate,
                 ComplaintStatus: ComplaintStatusEnumDescription.GetEnumDescription(complaint.ComplaintStatus),
-                CustomerName: complaint.CustomerName
+                CustomerName: complaint.CustomerName,
+                InitiatedBy: complaint.Source == ComplaintSourceEnum.CUSTOMER ? "Self-Assisted" : "Officer-Assisted"
             );
 
             return response;
@@ -338,11 +389,15 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 var response = new ComplaintStaffReadDto
                 (
                     ComplaintNumber: complaint.ComplaintNumber,
+                    ComplaintType: (await _unitOfWork.ComplaintType.Get(c => c.ComplaintTypeId == complaint.ComplaintTypeId))!.ComplaintTypes,
                     NatureOfComplaint: natureofComplaints_list,
+                    CustomerCode: complaint.CustomerCode,
                     PropertyNumber: complaint.PropertyNumber,
+                    PhoneNumber: complaint.PhoneNumber,
                     ComplaintDate: complaint.ComplaintDate,
                     ComplaintStatus: ComplaintStatusEnumDescription.GetEnumDescription(complaint.ComplaintStatus),
-                    CustomerName: complaint.CustomerName
+                    CustomerName: complaint.CustomerName,
+                    InitiatedBy: complaint.Source == ComplaintSourceEnum.CUSTOMER ? "Self-Assisted" : "Officer-Assisted"
                 );
 
                 _allComplaints.Add(response);
@@ -360,26 +415,35 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
-                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status204NoContent, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                }
+
+                //Status is neither DISPATCHED nor REVIEWED nor ASSIGNED nor INPROGRESS
+                if (!new[] { ComplaintStatusEnum.DISPATCHED, ComplaintStatusEnum.REVIEWED, ComplaintStatusEnum.ASSIGNED, ComplaintStatusEnum.INPROGRESS }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be resolved at this stage.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} cannot be resolved at this stage." };
                 }
 
                 _complaint.ComplaintStatus = ComplaintStatusEnum.RESOLVED;
-
                 _unitOfWork.Complaint.Update(_complaint);
 
                 ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.RESOLVED, values.ResolvedBy, DateTime.UtcNow);
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.RESOLVED} by {values.ResolvedBy} at {DateTime.UtcNow}.");
+
                 //send to online customer
                 await _moduleComms.SendComplaintResolvedAsync(values);
 
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint resolved successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint resolved successfully." };
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.InnerException!.Message };
             }
 
         }
@@ -392,26 +456,35 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
                     return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
                 }
 
-                _complaint.ComplaintStatus = ComplaintStatusEnum.REVIEWED;
+                if (!new[] { ComplaintStatusEnum.DISPATCHED, ComplaintStatusEnum.INPROGRESS }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be reviewed at this stage.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} cannot be reviewed at this stage." };
+                }
 
+                _complaint.ComplaintStatus = ComplaintStatusEnum.REVIEWED;
                 _unitOfWork.Complaint.Update(_complaint);
 
                 ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.REVIEWED, values.ReviewedBy, DateTime.UtcNow);
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.REVIEWED} by {values.ReviewedBy} at {DateTime.UtcNow}.");
+
                 //send to online customer
                 await _moduleComms.SendComplaintReviewAsync(values);
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint reviewed successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint reviewed successfully." };
 
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                _logger.LogError(ex.ToString());
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.InnerException!.Message };
             }
         }
 
@@ -445,7 +518,15 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
-                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status204NoContent, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                }
+
+                //check status of complaint. If status is dispatched, customer cannot modify complaint anymore
+                if (_complaint.ComplaintStatus >= ComplaintStatusEnum.DISPATCHED)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has been dispatched and cannot be modified.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} has been dispatched and cannot be modified." };
                 }
 
                 _complaint.PhoneNumber = values.PhoneNumber;
@@ -480,7 +561,15 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
-                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status404NotFound, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                }
+
+                //check status of complaint. If status is is not submitted, complaint cannot be acknowledged
+                if (_complaint.ComplaintStatus != ComplaintStatusEnum.SUBMITTED)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} is no more in a submitted state, and cannot be acknowledged.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} is no more in a submitted state, and cannot be acknowledged" };
                 }
 
                 _complaint.ComplaintStatus = ComplaintStatusEnum.ACKNOWLEDGED;
@@ -490,15 +579,18 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.ACKNOWLEDGED} by {values.AcknowledgedBy} at {DateTime.UtcNow}.");
+
                 //send to online customer
                 await _moduleComms.SendComplaintAcknowledgmentAsync(values);
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint acknowledged successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint acknowledged successfully." };
 
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                _logger.LogError(ex.ToString());
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.InnerException!.Message };
             }
 
         }
@@ -511,7 +603,22 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
-                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status404NotFound, StatusMessage = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                }
+
+                //check status of complaint. If status is not acknowledged, complaint cannot be dispatched.
+                var _complaintStatus = await _unitOfWork.ComplaintHistory.Get(ch => ch.ComplaintNumber == values.ComplaintNumber && ch.ComplaintStatus == ComplaintStatusEnum.ACKNOWLEDGED);
+                if (_complaintStatus is not null)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been acknowledged yet, and cannot be dispatched.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} has not been acknowledged yet, and cannot be dispatched." };
+                }
+
+                if (_complaint.ComplaintStatus != ComplaintStatusEnum.ACKNOWLEDGED)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been acknowledged yet and cannot be dispatched.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} has not been acknowledged yet and cannot be dispatched." };
                 }
 
                 _complaint.DispatachedTo_Department = values.DispatchedTo_DepartmentId;
@@ -523,15 +630,17 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.DISPATCHED} by {values.DispatchedBy} at {DateTime.UtcNow}.");
+
                 //send to online customer
                 await _moduleComms.SendComplaintDispatchAsync(values);
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint dispatched successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint dispatched successfully." };
 
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.InnerException!.Message };
             }
 
         }
@@ -544,7 +653,14 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
-                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status204NoContent, StatusMessage = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                }
+
+                if (_complaint.ComplaintStatus != ComplaintStatusEnum.RESOLVED)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been resolved and cannot be re-opened.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} has not been resolved and cannot be re-opened." };
                 }
 
                 _complaint.ComplaintStatus = ComplaintStatusEnum.REOPEN;
@@ -554,15 +670,18 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.REOPEN} by {values.ReopenedBy} at {DateTime.UtcNow}.");
+
                 //send to online customer
                 await _moduleComms.SendComplaintReopenAsync(values);
 
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint reopened successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint reopened successfully." };
 
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                _logger.LogError(ex.ToString());
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.Message };
             }
 
         }
@@ -575,7 +694,14 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 if (_complaint is null)
                 {
-                    return new BaseResponseDto { StatusCode = 404, StatusMessage = $"Complaint number {values.ComplaintNumber} doesnot exist." };
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status204NoContent, StatusMessage = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                }
+
+                if (_complaint.ComplaintStatus != ComplaintStatusEnum.REOPEN)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been re-opened and cannot be closed.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} has not been re-opened and cannot be closed." };
                 }
 
                 _complaint.ComplaintStatus = ComplaintStatusEnum.CLOSED;
@@ -586,45 +712,103 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
                 await _unitOfWork.Complete();
 
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.CLOSED} by {values.ClosedBy} at {DateTime.UtcNow}.");
+
                 //send to online customer
                 await _moduleComms.SendComplaintClosedAsync(values);
 
-
-                return new BaseResponseDto { StatusCode = 200, StatusMessage = "Complaint closed successfully." };
-
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint closed successfully." };
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                _logger.LogError(ex.ToString());
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.Message };
             }
 
         }
 
         public async Task<List<ComplainantDetailsDto>> GetComplainantDetails(string customerCode)
         {
-            var result = from a in await _unitOfWork.CustomerMaster.GetAll()
-                        join d in await _unitOfWork.Title.GetAll() on a.TitleId equals d.TitleId into titleGroup
-                        from title in titleGroup.DefaultIfEmpty() // LEFT JOIN on Title
-                        join b in await _unitOfWork.PropertyMaster.GetAll() on a.CustomerCode equals b.CustomerCode into propertyGroup
-                        from property in propertyGroup.DefaultIfEmpty() // LEFT JOIN on PropertyMaster
-                        join c in await _unitOfWork.Locality.GetAll() on property.LocalityId equals c.LocalityId // INNER JOIN on Locality
-                        where a.CustomerCode == customerCode
-                        select new ComplainantDetailsDto
-                        {
-                            CustomerCode = a.CustomerCode,
-                            CustomerName = string.Concat(
-                                (title != null ? title.Titles : "") + " ",
-                                (a.OtherNames ?? "") + " ",
-                                (a.SurName ?? "") + " ",
-                                (a.CompanyName ?? "")
-                            ).Trim(),
-                            PhoneNumber = a.PrimaryMobileNumber,
-                            EmailAddress = a.EmailAddress,
-                            PropertyNumber = property.PropertyNumber,
-                            PropertyLocation = c.LocalityName
-                        };
+            var allCustomers = await _unitOfWork.CustomerMaster.GetAll();
+            var allTitles = await _unitOfWork.Title.GetAll();
+            var allProperties = await _unitOfWork.PropertyMaster.GetAll();
+            var allLocalities = await _unitOfWork.Locality.GetAll();
+
+            var result = from a in allCustomers
+                         join d in allTitles on a.TitleId equals d.TitleId into titleGroup
+                         from title in titleGroup.DefaultIfEmpty()
+                         join b in allProperties on a.CustomerCode equals b.CustomerCode into propertyGroup
+                         from property in propertyGroup.DefaultIfEmpty()
+                         join c in allLocalities on property?.LocalityId equals c.LocalityId into localityGroup
+                         from locality in localityGroup.DefaultIfEmpty()
+                         where a.CustomerCode == customerCode
+                         select new ComplainantDetailsDto
+                         {
+                             CustomerCode = a.CustomerCode,
+                             CustomerName = string.Concat(
+                                 (title?.Titles ?? "") + " ",
+                                 (a.OtherNames ?? "") + " ",
+                                 (a.SurName ?? "") + " ",
+                                 (a.CompanyName ?? "")
+                             ).Trim(),
+                             PhoneNumber = a.PrimaryMobileNumber,
+                             EmailAddress = a.EmailAddress,
+                             PropertyNumber = property?.PropertyNumber,
+                             PropertyLocation = locality?.LocalityName
+                         };
 
             return result.ToList();
+          
+        }
+
+        public async Task<List<ComplainantSearchDto>> GetComplainantSearch(string customerCode_OR_propertyNumber)
+        {
+            var result = from a in await _unitOfWork.PropertyMaster.GetAll(c => c.CustomerCode!.Contains(customerCode_OR_propertyNumber) || c.PropertyNumber!.Contains(customerCode_OR_propertyNumber))
+                         select new ComplainantSearchDto
+                         {
+                             CustomerCode = a.CustomerCode,
+                             PropertyNumber = a.PropertyNumber
+                         };
+
+            return result.ToList();
+        }
+
+        public async Task<BaseResponseDto> InProgressComplaint(ComplaintInProgressDto values)
+        {
+            try
+            {
+                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+
+                if (_complaint is null)
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status204NoContent, StatusMessage = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                }
+
+                //Status is neither DISPATCHED nor REVIEWED nor ASSIGNED
+                if (!new[] { ComplaintStatusEnum.DISPATCHED, ComplaintStatusEnum.REVIEWED, ComplaintStatusEnum.ASSIGNED }.Contains(_complaint.ComplaintStatus))
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be moved to the in-progress stage at this time.");
+                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} cannot be moved to the in-progress stage at this time." };
+                }
+
+                _complaint.ComplaintStatus = ComplaintStatusEnum.INPROGRESS;
+                _unitOfWork.Complaint.Update(_complaint);
+
+                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatusEnum.INPROGRESS, values.InProgressBy, DateTime.UtcNow);
+                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+                await _unitOfWork.Complete();
+
+                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.INPROGRESS} by {values.InProgressBy} at {DateTime.UtcNow}.");
+
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = $"Complaint status changed from {_complaint.ComplaintStatus} to {ComplaintStatusEnum.INPROGRESS} successfully." };
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.Message };
+            }
         }
     }
 }

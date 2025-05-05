@@ -8,12 +8,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Modules.Estates.Domain.Events
 {
-    [Keyless]
     public abstract class DomainEvent
     {
         public DateTime OccurredOn { get; }

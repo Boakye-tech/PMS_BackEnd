@@ -19,6 +19,8 @@ namespace Modules.Users.Application.Profiles
             CreateMap<MenusDto, Menus>();
             CreateMap<MenusDeleteDto, Menus>();
 
+
+            CreateMap<Menus, MenusUpdateDto>();
         }
     }
 }

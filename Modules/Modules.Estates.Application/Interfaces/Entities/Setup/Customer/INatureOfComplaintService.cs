@@ -17,6 +17,7 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Customer
         Task<NatureOfComplaintReadDto> UpdateNatureOfComplaintAsync(NatureOfComplaintUpdateDto values);
         Task<string> DeleteNatureOfComplaintAsync(int value);
         Task<IEnumerable<NatureOfComplaintReadDto>> GetNatureOfComplaintAsync();
+        Task<IEnumerable<NatureOfComplaintReadDto>> GetNatureOfComplaintAsync(int complaintTypeId);
     }
 }
 

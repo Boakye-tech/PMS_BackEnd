@@ -13,8 +13,8 @@ namespace Modules.Customers.Application.Interfaces
 {
 	public interface IComplaintService
 	{
-        Task<GenericResponseDto> DeleteComplaint(string ComplaintNumber);
 
+        Task<GenericResponseDto> DeleteComplaint(string ComplaintNumber);
 
         Task<IEnumerable<ComplaintReadDto>> GetComplaintsList();
 
@@ -43,6 +43,8 @@ namespace Modules.Customers.Application.Interfaces
         Task<GenericResponseDto> CloseComplaint(ComplaintClosedDto values);
 
         Task<GenericResponseDto> CancelComplaint(ComplaintCancellationDto values);
+
+        Task<GenericResponseDto> InProgressComplaint(ComplaintInProgressDto values);
 
     }
 }

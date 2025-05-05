@@ -11,6 +11,7 @@
 using System.ComponentModel;
 using System.Data;
 using System.Reflection;
+using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("AddProspectiveCustomer")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomerRegistrationResponseDto))]
         public async Task<ActionResult> AddProspectiveCustomer([FromBody] ProspectiveCustomerCreateDto values)
         {
             try
@@ -221,7 +223,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     200 => Ok("success"),
                     400 => BadRequest(),
                     404 => NotFound($"Customer code {values.customerCode} not found"),
-                    500 => StatusCode(500, "unsuccessful"),
                     _ => StatusCode(500, "Internal Server Error"),
                 }; ;
 
@@ -337,8 +338,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
-                //if(ModelState.IsValid)
-
                 var userId = _userContextService.GetUserId();
                 if (!string.Equals(userId, values.ModifiedBy))
                 {
@@ -548,7 +547,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     200 => Ok( new{ response = "success" }),
                     400 => BadRequest(),
                     404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
-                    500 => StatusCode(500, new { response = "unsuccessful" }),
                     _ => StatusCode(500, new { response = "Internal Server Error" }),
                 };
 
@@ -582,7 +580,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     200 => Ok(new { response = "success" }),
                     400 => BadRequest(),
                     404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
-                    500 => StatusCode(500, new { response = "unsuccessful" }),
                     _ => StatusCode(500, new { response = "Internal Server Error" }),
                 };
 
@@ -624,13 +621,15 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Route("GetListOfComplaints")]
         [Authorize(Policy = "Permission:Customers.READ")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ComplaintStaffReadDto>))]
-        public async Task<ActionResult> GetListOfComplaints()
+        public async Task<ActionResult> GetListOfComplaints([FromQuery] string? searchParameter, [FromQuery] int complaintType, [FromQuery] int complaintStatus )
         {
             try
             {
-                var result = await _complaintMasterServices.GetComplaintsList();
-                return Ok(result);
 
+                string _parameter = HttpUtility.UrlDecode(searchParameter!);
+
+                var result = await _complaintMasterServices.GetComplaintsList(searchParameter!, complaintType, complaintStatus);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -664,6 +663,35 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 if (customerCode_OR_propertyNumber is not null)
                 {
                     var result = await _complaintMasterServices.GetCustomerComplaintsList(customerCode_OR_propertyNumber);
+                    return Ok(result);
+                }
+
+                return Ok(Array.Empty<string>());
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+
+        /// <summary>
+        /// Returns a list of complainants summary based on customer code or property number parameters
+        /// </summary>
+        [HttpGet]
+        [Route("GetComplainantSearch/{customerCode_OR_propertyNumber}")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ComplainantSearchDto>))]
+        public async Task<ActionResult> GetComplainantSearch(string? customerCode_OR_propertyNumber)
+        {
+            try
+            {
+                if (customerCode_OR_propertyNumber is not null)
+                {
+                    string param = HttpUtility.UrlDecode(customerCode_OR_propertyNumber!);
+                    var result = await _complaintMasterServices.GetComplainantSearch(param);
                     return Ok(result);
                 }
 
@@ -919,26 +947,26 @@ namespace Modules.Estates.Presentation.Controllers.v1
         ///         "responseCode": 200,
         ///         "response": "Complaint C85991 has been successfully acknowledged."
         ///     }
-        /// 
-        /// **Sample Response 204:**
+        ///     
+        /// **Sample Response 401:**
         /// 
         ///     {
-        ///         "responseCode": 204,
-        ///         "response": "No content. The complaint was not acknowledged."
+        ///         "responseCode": 401,
+        ///         "response": "Unauthorized."
         ///     }
-        /// 
-        /// **Sample Response 400:**
+        ///     
+        /// **Sample Response 403:**
         /// 
         ///     {
-        ///         "responseCode": 400,
-        ///         "response": "Bad request due to missing or invalid fields."
+        ///         "responseCode": 403,
+        ///         "response": "User forbidden from performing this operation"
         ///     }
         /// 
         /// **Sample Response 404:**
         /// 
         ///     {
         ///         "responseCode": 404,
-        ///         "response": "Complaint not found."
+        ///         "response": "Complaint number C85991 doesnot exist."
         ///     }
         /// 
         /// **Sample Response 500:**
@@ -951,8 +979,8 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <param name="values">The complaint acknowledgment details.</param>
         /// <returns>
         /// Returns HTTP 200 OK if the complaint is successfully acknowledged.
-        /// Returns HTTP 204 No Content if no changes were made.
-        /// Returns HTTP 400 Bad Request if the request is invalid.
+        /// Returns HTTP 401 Unauthorized.
+        /// Returns HTTP 403 Forbidden.
         /// Returns HTTP 404 Not Found if the complaint does not exist.
         /// Returns HTTP 500 Internal Server Error if an error occurs.
         /// </returns>
@@ -960,9 +988,8 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Route("AcknowledgeComplaint")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
-        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
         public async Task<ActionResult> AcknowledgeComplaint([FromBody] ComplaintAcknowledgmentDto values)
@@ -978,9 +1005,10 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 var result = await _complaintMasterServices.AcknowledgeComplaint(values); 
                 return result.StatusCode switch
                 {
-                    200 => Ok(result.StatusMessage),
-                    404 => NotFound(result.StatusMessage),
-                    _ => StatusCode(500, result.StatusMessage),
+                    200 => Ok(new { message = result.StatusMessage }),
+                    403 => StatusCode(StatusCodes.Status403Forbidden, new { message = result.StatusMessage }),
+                    404 => NotFound(new { message = result.StatusMessage }),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, new { message = result.StatusMessage })
                 };
             }
             catch (Exception ex)
@@ -1667,6 +1695,94 @@ namespace Modules.Estates.Presentation.Controllers.v1
             catch (Exception ex)
             {
                 return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Change the status of an existing complaint to IN-PROGRESS
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to manually change the status of an existing complaint to the in-progress status, the complaint should have been dispatched, assigned or reviewed. 
+        /// The complaint will be marked as in-progress upon successful execution of this operation. The request requires 
+        /// the complaint number and the user who is manually changing the complaint's status from the current status to the in-progress status.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /InProgressComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C12456",
+        ///         "inprogressBy": "b61d23af-2345-43b1-9c2d-d1d842a3d9f7"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C12456 has been successfully been moved from the current status to in-progress."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The status of the complaint was not changed."
+        ///     }
+        /// 
+        /// **Sample Response 403:**
+        /// 
+        ///     {
+        ///         "responseCode": 403,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while changing the status of the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint cancellation details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK with the response if the complaint is successfully cancelled.
+        /// Returns HTTP 204 No Content if no changes were made to cancel the complaint.
+        /// Returns HTTP 400 Bad Request if the request is missing or has invalid fields.
+        /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+        /// </returns>
+        [HttpPut]
+        [Route("InProgressComplaint")]
+        [Authorize(Policy = "Permission:Complaints.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
+        public async Task<ActionResult> InProgressComplaint([FromBody] ComplaintInProgressDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.InProgressBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.InProgressComplaint(values);
+                var status = result.StatusCode;
+                return status switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    403 => StatusCode(StatusCodes.Status403Forbidden, result.StatusMessage),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 

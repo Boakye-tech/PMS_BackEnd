@@ -743,7 +743,7 @@ public class ComplaintController : ControllerBase
             }
 
             var customer_code = _userContextService.UserCode();
-            if(string.Compare(customer_code, values.CustomerCode) == 0)
+            if(!string.Equals(customer_code, values.CustomerCode))
             {
                 return StatusCode(StatusCodes.Status403Forbidden, "Sorry you cannot submit complaints on behalf of another customer.");
             }
@@ -761,7 +761,7 @@ public class ComplaintController : ControllerBase
                 204 => NoContent(),
                 400 => BadRequest(result.response),
                 404 => NotFound(result.response),
-                _ => StatusCode(500, result.response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
             }; ;
 
         }
@@ -837,7 +837,7 @@ public class ComplaintController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(GenericResponseDto))]
     [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(GenericResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(GenericResponseDto))]
-    public async Task<ActionResult> ReviewComplaint([FromBody] ComplaintUpdateDto values)
+    public async Task<ActionResult> ModifyComplaint([FromBody] ComplaintUpdateDto values)
     {
         try
         {
@@ -853,7 +853,8 @@ public class ComplaintController : ControllerBase
             {
                 200 => Ok(result.response),
                 204 => NoContent(),
-                _ => StatusCode(500, result.response),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
             };
 
         }
@@ -945,6 +946,7 @@ public class ComplaintController : ControllerBase
             {
                 200 => Ok(result.response),
                 204 => NoContent(),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
                 _ => StatusCode(500, result.response),
             };
         }
@@ -1130,6 +1132,7 @@ public class ComplaintController : ControllerBase
             {
                 200 => Ok(result.response),
                 204 => NoContent(),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
                 _ => StatusCode(500, result.response),
             };
 
@@ -1225,6 +1228,7 @@ public class ComplaintController : ControllerBase
             {
                 200 => Ok(result.response),
                 204 => NoContent(),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
                 _ => StatusCode(500, result.response),
             };
 
@@ -1319,7 +1323,8 @@ public class ComplaintController : ControllerBase
             {
                 200 => Ok(result.response),
                 204 => NoContent(),
-                _ => StatusCode(500, result.response),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
             };
 
         }
@@ -1407,7 +1412,8 @@ public class ComplaintController : ControllerBase
             {
                 200 => Ok(result.response),
                 204 => NoContent(),
-                _ => StatusCode(500, result.response),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
             };
 
         }
@@ -1495,7 +1501,8 @@ public class ComplaintController : ControllerBase
             {
                 200 => Ok(result.response),
                 204 => NoContent(),
-                _ => StatusCode(500, result.response),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
             };
 
         }
@@ -1583,7 +1590,97 @@ public class ComplaintController : ControllerBase
             {
                 200 => Ok(result.response),
                 204 => NoContent(),
-                _ => StatusCode(500, result.response),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
+            };
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Change the status of an existing complaint to IN-PROGRESS
+    /// </summary>
+    /// <remarks>
+    /// This endpoint allows authorized users to manually change the status of an existing complaint to the in-progress status, the complaint should have been dispatched, assigned or reviewed. 
+    /// The complaint will be marked as in-progress upon successful execution of this operation. The request requires 
+    /// the complaint number and the user who is manually changing the complaint's status from the current status to the in-progress status.
+    ///
+    /// **Sample Request:**
+    /// 
+    ///     PUT /InProgressComplaint
+    /// 
+    /// **Sample Request Body:**
+    /// 
+    ///     {
+    ///         "complaintNumber": "C12456",
+    ///         "inprogressBy": "b61d23af-2345-43b1-9c2d-d1d842a3d9f7"
+    ///     }
+    /// 
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "responseCode": 200,
+    ///         "response": "Complaint C12456 has been successfully been moved from the current status to in-progress."
+    ///     }
+    /// 
+    /// **Sample Response 204:**
+    /// 
+    ///     {
+    ///         "responseCode": 204,
+    ///         "response": "No content. The status of the complaint was not changed."
+    ///     }
+    /// 
+    /// **Sample Response 403:**
+    /// 
+    ///     {
+    ///         "responseCode": 403,
+    ///         "response": "Bad request due to missing or invalid fields."
+    ///     }
+    /// 
+    /// **Sample Response 500:**
+    /// 
+    ///     {
+    ///         "responseCode": 500,
+    ///         "response": "An unexpected error occurred while changing the status of the complaint."
+    ///     }
+    /// </remarks>
+    /// <param name="values">The complaint cancellation details.</param>
+    /// <returns>
+    /// Returns HTTP 200 OK with the response if the complaint is successfully cancelled.
+    /// Returns HTTP 204 No Content if no changes were made to cancel the complaint.
+    /// Returns HTTP 400 Bad Request if the request is missing or has invalid fields.
+    /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+    /// </returns>
+    [HttpPut]
+    [Route("InProgressComplaint")]
+    [Authorize(Policy = "Permission:Complaints.UPDATE")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GenericResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(GenericResponseDto))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(GenericResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(GenericResponseDto))]
+    public async Task<ActionResult> InProgressComplaint([FromBody] ComplaintInProgressDto values)
+    {
+        try
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.InProgressBy))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _complaintService.InProgressComplaint(values);
+            var status = result.responseCode;
+            return status switch
+            {
+                200 => Ok(result.response),
+                204 => NoContent(),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
             };
 
         }

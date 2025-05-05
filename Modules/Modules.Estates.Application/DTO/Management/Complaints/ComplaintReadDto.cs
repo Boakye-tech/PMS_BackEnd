@@ -33,15 +33,23 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
     (
          string? ComplaintNumber,
 
+         string? ComplaintType,
+
          List<string>? NatureOfComplaint,
 
+         string? CustomerCode,
+
+         string? CustomerName,
+
          string? PropertyNumber,
+
+         string? PhoneNumber,
 
          DateTime ComplaintDate,
 
          string? ComplaintStatus,
 
-         string? CustomerName
+         string? InitiatedBy
     );
 
 }
