@@ -1,6 +1,13 @@
-﻿using System;
-using Modules.Estates.Domain.Entities.Setup.Customer;
-using Modules.Estates.Domain.Interfaces.DomainServices;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 
 namespace Modules.Estates.Application.DomainServices
 {
@@ -123,9 +130,51 @@ namespace Modules.Estates.Application.DomainServices
             return true;
         }
 
+        public async Task<bool> ComplaintTypeExist(int complaintTypeId)
+        {
+            var result = await _unitOfWork.ComplaintType.Get(complaintTypeId);
+            if (result is null)
+            {
+                return false;
+            }
 
+            return true;
+        }
 
+        public async Task<bool> ComplaintTypeExist(string complaintTypeName)
+        {
+            var result = await _unitOfWork.ComplaintType.Get(ct => ct.ComplaintTypes == complaintTypeName);
+            if (result is null)
+            {
+                return false;
+            }
 
+            return true;
+        }
+
+        public async Task<bool> NatureOfComplaintExist(int natureOfComplaintId)
+        {
+            var result = await _unitOfWork.NatureOfComplaint.Get(natureOfComplaintId);
+            if (result is null)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
+
+        public async Task<bool> NatureOfComplaintExist(string natureOfComplaints)
+        {
+            var result = await _unitOfWork.NatureOfComplaint.Get(nc => nc.NatureOfComplaints == natureOfComplaints);
+            if (result is null)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
     }
 }
 

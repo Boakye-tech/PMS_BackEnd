@@ -1,7 +1,16 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/03/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using Microsoft.EntityFrameworkCore;
 using Modules.Common.Infrastructure;
-using Modules.Finance.Domain.Entities.Setup;
 
 namespace Modules.Finance.Infrastructure.Data;
 

@@ -1,4 +1,14 @@
-﻿using System.Reflection;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+using System.Reflection;
 using System.Text;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,9 +24,6 @@ using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//builder.Configuration.AddJsonFile("appsettings.customers.json", optional: false, reloadOnChange: true);
-
 
 if (builder.Environment.IsDevelopment())
 {
@@ -117,13 +124,12 @@ builder.Services.AddCors(o =>
 //});
 
 builder.Services.AddCustomerModule(builder.Configuration);
-
+builder.Services.AddControllers();
 
 //register global exception handler
 builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddControllers();
 builder.Services
     .AddApiVersioning(options =>
     {
@@ -178,7 +184,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors();
 
 app.MapControllers();
 

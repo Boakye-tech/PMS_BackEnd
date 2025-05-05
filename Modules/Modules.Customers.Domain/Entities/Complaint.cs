@@ -1,10 +1,19 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Modules.Customers.Domain.Entities
 {
-    public class Complaint : AuditableEntity
+    public class Complaint //: AuditableEntity
     {
         //private readonly List<DomainEvent> _domainEvents = new();
 
@@ -23,16 +32,17 @@ namespace Modules.Customers.Domain.Entities
 
         public int ComplaintTypeId { get; set; }
 
-        public int NatureOfComplaintId { get; set; }
+        [StringLength(50)]
+        public string? NatureOfComplaintId { get; set; }
 
         [Required]
         [StringLength(50)]
         public string? PropertyNumber { get; set; }
 
         [Required]
-        public int PropertyLocationId { get; set; }
+        [StringLength(75)]
+        public string? PropertyLocation { get; set; }
 
-        //[Required]
         [StringLength(10)]
         public string? CustomerCode { get; set; }
 
@@ -48,7 +58,8 @@ namespace Modules.Customers.Domain.Entities
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 
-        public bool IsTheMatterInCourt { get; set; }
+        [StringLength(3)]
+        public string? IsTheMatterInCourt { get; set; }
 
         [Required]
         public string? DetailsOfComplaint { get; set; }
@@ -72,74 +83,59 @@ namespace Modules.Customers.Domain.Entities
         [StringLength(255)]
         public string? DocumentThree { get; set; }
 
-        public int ComplaintStatus { get; set; }
+        public ComplaintStatus ComplaintStatus { get; set; }
 
         [StringLength(36)]
-        public string? ReviewedBy { get; set; }
+        public int DispatachedTo_Department { get; set; }
 
-        public DateTime DateReviewed { get; set; }
+        public int DispatachedTo_DepartmentUnit { get; set; }
 
         [StringLength(36)]
         public string? AssignedTo { get; set; }
 
-        [StringLength(36)]
-        public string? AssignedBy { get; set; }
-
-        public DateTime DateAssigned { get; set; }
-
-        [StringLength(36)]
-        public string? ResolvedBy { get; set; }
-
-        public DateTime ResolutionDate { get; set; }
-
-        [StringLength(36)]
-        public string? CancelledBy { get; set; }
-
-        public DateTime CancelledDate { get; set; }
-
-
         public string? Notes { get; set; }
+
+        public ComplaintSource Source { get; set; }
 
         public Complaint()
         {
 
         }
 
-        public Complaint(int complaintId, string complaintNumber, int complaintTypeId, int natureOfComplaintId,
-                         string propertyNumber, int propertyLocationId, string customerCode, string customerName,
-                         string phoneNumber, string emailAddress, bool isTheMatterInCourt, string detailsOfComplaint,
+        public Complaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
+                         string propertyNumber, string propertyLocation, string customerCode, string customerName,
+                         string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, int complaintStatus, string createdBy,
+                         string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
-                         string resolvedBy, DateTime resolutionDate, string notes)
+                         string resolvedBy, DateTime resolutionDate, string notes, ComplaintSource source)
         {
         }
 
-        public static Complaint CreateNewComplaint(int complaintId, string complaintNumber, int complaintTypeId, int natureOfComplaintId,
-                         string propertyNumber, int propertyLocationId, string customerCode, string customerName,
-                         string phoneNumber, string emailAddress, bool isTheMatterInCourt, string detailsOfComplaint,
+        public static Complaint CreateNewComplaint(int complaintId, string complaintNumber, int complaintTypeId, string natureOfComplaintId,
+                         string propertyNumber, string propertyLocation, string customerCode, string customerName,
+                         string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, int complaintStatus, string createdBy)
+                         string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus, ComplaintSource source)
         {
             if (complaintTypeId <= 0)
             {
                 throw new ArgumentException("Complaint type id must be greater than zero.");
             }
 
-            if (natureOfComplaintId <= 0)
+            if (string.IsNullOrWhiteSpace(natureOfComplaintId))
             {
-                throw new ArgumentException("Nature of complaint id must be greater than zero.");
-            }
-
-            if (propertyLocationId <= 0)
-            {
-                throw new ArgumentException("Property location id must be greater than zero.");
-
+                throw new ArgumentException("Nature of complaint must not be null or empty.");
             }
 
             if (string.IsNullOrWhiteSpace(propertyNumber))
             {
                 throw new ArgumentException("Property number must not be null or empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(propertyLocation))
+            {
+                throw new ArgumentException("Property locatiion must not be null or empty.");
             }
 
             if (string.IsNullOrWhiteSpace(customerCode))
@@ -162,18 +158,20 @@ namespace Modules.Customers.Domain.Entities
                 throw new ArgumentException("Complaint details must not be null or empty");
             }
 
-
-            string _complaintNumber = new Random().Next(0, 100000).ToString();
-            _complaintNumber = string.Concat("C", _complaintNumber);
+            if(source == ComplaintSource.CUSTOMER)
+            {
+                string _complaintNumber = new Random().Next(0, 100000).ToString();
+                complaintNumber = string.Concat("C", _complaintNumber);
+            }
 
             var _newComplaint = new Complaint
             {
                 ComplaintId = complaintId,
-                ComplaintNumber = _complaintNumber,
+                ComplaintNumber = complaintNumber,
                 ComplaintTypeId = complaintTypeId,
                 NatureOfComplaintId = natureOfComplaintId,
                 PropertyNumber = propertyNumber,
-                PropertyLocationId = propertyLocationId,
+                PropertyLocation = propertyLocation,
                 CustomerCode = customerCode,
                 CustomerName = customerName,
                 PhoneNumber = phoneNumber,
@@ -188,15 +186,11 @@ namespace Modules.Customers.Domain.Entities
                 DocumentTwo = documentTwo,
                 DocumentThree = documentThree,
                 ComplaintStatus = complaintStatus,
-                CreatedBy = createdBy,
-                ReviewedBy = string.Empty,
-                DateReviewed = Convert.ToDateTime("1900-01-01"),
+                DispatachedTo_Department = 0,
+                DispatachedTo_DepartmentUnit = 0,
                 AssignedTo = string.Empty,
-                AssignedBy = string.Empty,
-                DateAssigned = Convert.ToDateTime("1900-01-01"),
-                ResolvedBy = string.Empty,
-                ResolutionDate = Convert.ToDateTime("1900-01-01"),
-                Notes = string.Empty
+                Notes = string.Empty,
+                Source = source
             };
 
             //_newComplaint._domainEvents.Add(new ComplaintCreatedEvent(_complaintNumber, natureOfComplaintId.ToString(), propertyNumber, createdBy));

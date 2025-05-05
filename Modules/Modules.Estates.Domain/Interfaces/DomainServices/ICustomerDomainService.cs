@@ -1,4 +1,14 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 namespace Modules.Estates.Domain.Interfaces.DomainServices
 {
 	public interface ICustomerDomainService
@@ -14,6 +24,12 @@ namespace Modules.Estates.Domain.Interfaces.DomainServices
         Task<bool> CustomerExists(int CustomerMasterId);
 
         Task<Locality> GetLocalityDetails(int localityId);
+
+        Task<bool> ComplaintTypeExist(int complaintTypeId);
+        Task<bool> ComplaintTypeExist(string complaintTypeName);
+
+        Task<bool> NatureOfComplaintExist(int natureOfComplaintId);
+        Task<bool> NatureOfComplaintExist(string natureOfComplaints);
     }
 }
 

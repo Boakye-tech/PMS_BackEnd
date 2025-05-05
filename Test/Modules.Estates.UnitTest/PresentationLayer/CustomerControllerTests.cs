@@ -1,3 +1,14 @@
+// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using FluentAssertions;
@@ -35,6 +46,8 @@ namespace Modules.Estates.UnitTest.PresentationLayer
         private readonly Mock<INatureOfComplaintService> _natureOfComplaintMock;
         private readonly Mock<IComplaintMasterService> _complaintMasterMock;
 
+        private readonly Mock<IComplaintStatusesService> _complaintStatusesMock;
+
         public CustomerControllerTests()
         {
             _customerTypeServiceMock = new Mock<ICustomerTypeService>();
@@ -52,6 +65,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             _complaintTypeServiceMock = new Mock<IComplaintTypeService>();
             _natureOfComplaintMock = new Mock<INatureOfComplaintService>();
             _complaintMasterMock = new Mock<IComplaintMasterService>();
+            _complaintStatusesMock = new Mock<IComplaintStatusesService>();
 
             _controller = new CustomerController(
                 _customerTypeServiceMock.Object,
@@ -67,6 +81,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
                 _interestContextServiceMock.Object,
                 _complaintTypeServiceMock.Object,
                 _natureOfComplaintMock.Object,
+                _complaintStatusesMock.Object,
                 _complaintMasterMock.Object
             );
         }

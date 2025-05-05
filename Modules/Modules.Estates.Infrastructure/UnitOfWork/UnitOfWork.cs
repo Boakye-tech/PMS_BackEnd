@@ -1,5 +1,13 @@
-﻿
-using ComplaintsRepository = Modules.Estates.Infrastructure.Repositories.Entities.Setup.Customer.ComplaintsRepository;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 
 namespace Modules.Estates.Infrastructure.UnitOfWork;
 
@@ -69,9 +77,14 @@ public class UnitOfWork: IUnitOfWork
         InterestExpressed = new InterestExpressedRepository(_dbContext);
 
         Complaint = new ComplaintRepository(_dbContext);
+
         ComplaintType = new ComplaintTypeRepository(_dbContext);
+
         NatureOfComplaint = new NatureOfComplaintRepository(_dbContext);
 
+        ComplaintStatuses = new ComplaintStatusesRepository(_dbContext);
+
+        ComplaintHistory = new ComplaintHistoryRepository(dbContext);
     }
 
 
@@ -140,6 +153,10 @@ public class UnitOfWork: IUnitOfWork
     public INatureOfComplaintRepository NatureOfComplaint { get; private set; }
 
     public IComplaintRepository Complaint { get; private set; }
+
+    public IComplaintStatusesRepository ComplaintStatuses { get; private set; }
+
+    public IComplaintHistoryRepository ComplaintHistory { get; private set; }
 
     public Task<int> Complete()
     {

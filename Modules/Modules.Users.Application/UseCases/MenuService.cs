@@ -1,16 +1,16 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using System.Data;
-using System.Reflection;
-using System.Security.Claims;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Modules.Users.Application.Dtos.Entities.Permissions;
-using Modules.Users.Application.Dtos.UserAccounts;
-using Modules.Users.Domain.Entities;
-using Modules.Users.Domain.Entities.Menu;
-using static System.Collections.Specialized.BitVector32;
 
 
 namespace Modules.Users.Application.UseCases
@@ -145,6 +145,7 @@ namespace Modules.Users.Application.UseCases
             {
                 Menus menu = new(menus.menuId, menus.menuName, menus.description, menus.IsOpen);
                 menu.CreatedBy = menus.createdBy;
+                menu.CreatedOn = DateTime.UtcNow;
 
                 _unitOfWork.Menus.Insert(menu);
                 await _unitOfWork.Complete();
@@ -166,6 +167,7 @@ namespace Modules.Users.Application.UseCases
             {
                 SubMenus _subMenu = new(subMenus.menuId, subMenus.subMenuId, subMenus.subMenuName, subMenus.description, subMenus.IsOpen);
                 _subMenu.CreatedBy = subMenus.createdBy;
+                _subMenu.CreatedOn = DateTime.UtcNow;
 
                 _unitOfWork.SubMenus.Insert(_subMenu);
                 await _unitOfWork.Complete();
@@ -174,7 +176,7 @@ namespace Modules.Users.Application.UseCases
                 var _createdBy = string.Concat(_user!.FirstName, " ", _user.MiddleName, " ", _user.LastName).Trim();
 
 
-                return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName, _subMenu.Description, _createdBy, _subMenu.IsOpen);
+                return new SubMenusDto(_subMenu.MenuId, _subMenu.SubMenuId, _subMenu.SubMenuName!, _subMenu.Description!, _createdBy, _subMenu.IsOpen);
             }
 
             return new SubMenusDto(StatusCodes.Status400BadRequest, StatusCodes.Status400BadRequest, "BadRequest", "BadRequest", "400-BadRequest",false);
@@ -247,7 +249,7 @@ namespace Modules.Users.Application.UseCases
                         items.Add(new AccessSubMenuItemsWithActionsDto(item.SubMenuItemName, permissions));
                     }
 
-                    sections.Add(new AccessSubMenusWithActionsDto(_subMenu.SubMenuName, _subMenu.IsOpen, permissions, items));
+                    sections.Add(new AccessSubMenusWithActionsDto(_subMenu.SubMenuName!, _subMenu.IsOpen, permissions, items));
                 }
 
                 accessModules.Add(new AccessMenusWithActionsDto(_menuItem.MenuName, _menuItem.IsOpen, permissions, sections));
@@ -311,8 +313,8 @@ namespace Modules.Users.Application.UseCases
                 (
                     m.MenuId,
                     m.SubMenuId,
-                    m.SubMenuName,
-                    m.Description,
+                    m.SubMenuName!,
+                    m.Description!,
                     string.Concat(u.FirstName, " ", u.MiddleName, " ", u.LastName).Trim(),
                     m.IsOpen
                 )).ToList();
@@ -340,6 +342,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<PermissionsAccessModulesReadDto> GetRolesPermissions(string roleId)
         {
+            /*
             var _permissions = await _unitOfWork.AcccessPermissions.GetAll(p => p.RoleId == roleId);
             var accessModules = new List<PermissionAccessMenusWithActionsReadDto>();
 
@@ -367,6 +370,86 @@ namespace Modules.Users.Application.UseCases
             }
 
             return new PermissionsAccessModulesReadDto(roleId, accessModules);
+            */
+
+
+            var defaultPermissions = new PermissionsActionsDto(NoAccess: false, Create: false, Read: false, Update: false, Delete: false, Approve: false);
+
+            // Fetch everything once
+            var allMenus = await _unitOfWork.Menus.GetAll();
+            var allSubMenus = await _unitOfWork.SubMenus.GetAll();
+            var allSubMenuItems = await _unitOfWork.SubMenuItems.GetAll();
+
+            var permissions = await _unitOfWork.AcccessPermissions.GetAll(p => p.RoleId == roleId);
+            var subPermissions = await _unitOfWork.SubPermissions.GetAll();
+            var subPermissionItems = await _unitOfWork.SubPermissionsItems.GetAll();
+
+            // Build dictionaries for fast lookup
+            var permissionDict = permissions.ToDictionary(p => p.ModuleName, p => p);
+            var subPermissionDict = subPermissions.ToDictionary(sp => (sp.PermissionsId, sp.SectionName), sp => sp);
+            var subPermissionItemDict = subPermissionItems.ToDictionary(spi => (spi.SubPermissionsId, spi.ItemName), spi => spi);
+
+            var accessModules = allMenus.Select(menu =>
+            {
+                var permission = permissionDict.GetValueOrDefault(menu.MenuName);
+                var permissionId = permission?.PermissionsId ?? 0;
+
+                var menuPermissions = permission != null
+                    ? new PermissionsActionsDto(permission.NoAccess, permission.Create, permission.Read, permission.Update, permission.Delete, permission.Approve)
+                    : defaultPermissions;
+
+                var sections = allSubMenus
+                    .Where(sm => sm.MenuId == menu.MenuId)
+                    .Select(subMenu =>
+                    {
+                        var subPermission = subPermissionDict!.GetValueOrDefault((permissionId, subMenu.SubMenuName));
+                        var subPermissionId = subPermission?.SubPermissionsId ?? 0;
+
+                        var subMenuPermissions = subPermission != null
+                            ? new PermissionsActionsDto(subPermission.NoAccess, subPermission.Create, subPermission.Read, subPermission.Update, subPermission.Delete, subPermission.Approve)
+                            : defaultPermissions;
+
+                        var items = allSubMenuItems
+                            .Where(smi => smi.SubMenuId == subMenu.SubMenuId)
+                            .Select(item =>
+                            {
+                                var subPermissionItem = subPermissionItemDict.GetValueOrDefault((subPermissionId, item.SubMenuItemName));
+
+                                var itemPermissions = subPermissionItem != null
+                                    ? new PermissionsActionsDto(subPermissionItem.NoAccess, subPermissionItem.Create, subPermissionItem.Read, subPermissionItem.Update, subPermissionItem.Delete, subPermissionItem.Approve)
+                                    : defaultPermissions;
+
+                                return new PermissionAccessSubMenuItemsWithActionsReadDto(
+                                    permissionId,
+                                    subPermissionId,
+                                    subPermissionItem?.SubPermissionsItemsId ?? 0,
+                                    item.SubMenuItemName,
+                                    itemPermissions
+                                );
+                            })
+                            .ToList();
+
+                        return new PermissionAccessSubMenusWithActionsReadDto(
+                            permissionId,
+                            subPermissionId,
+                            subMenu.SubMenuName!,
+                            subMenuPermissions,
+                            items
+                        );
+                    })
+                    .ToList();
+
+                return new PermissionAccessMenusWithActionsReadDto(
+                    permission?.PermissionsId ?? 0,
+                    menu.MenuName,
+                    menuPermissions,
+                    sections
+                );
+            }).ToList();
+
+            return new PermissionsAccessModulesReadDto(roleId, accessModules);
+
+
         }
 
 
@@ -410,14 +493,49 @@ namespace Modules.Users.Application.UseCases
 
         }
 
-        public Task<MenusDto> UpdateMenu(MenusDto updateMenus)
+        public async Task<MenusUpdateDto> UpdateMenu(MenusUpdateDto updateMenus)
         {
-            throw new NotImplementedException();
+            var menu = await _unitOfWork.Menus.Get(m => m.MenuId == updateMenus.menuId);
+            if(menu is null)
+            {
+                return new MenusUpdateDto(404, "Not Found.",null!, null!, false );
+            }
+
+            menu.MenuName = updateMenus.menuName;
+            menu.Description = updateMenus.description;
+            menu.ModifiedBy = updateMenus.modifiedBy;
+            menu.ModifiedOn = DateTime.UtcNow;
+
+            //var _menu = _mapper.Map<Menus>(menu);
+            _unitOfWork.Menus.Update(menu);
+            await _unitOfWork.Complete();
+
+            var updateMenu = _mapper.Map<MenusUpdateDto>(menu);
+            return updateMenu;
         }
 
-        public Task<SubMenusDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus)
+        public async Task<SubMenusUpdateResponseDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var subMenu = await _unitOfWork.SubMenus.Get(sm => sm.SubMenuId == updateSubMenus.subMenuId);
+            if (subMenu is null)
+            {
+                return new SubMenusUpdateResponseDto(404, 404, "Not Found.", null!, null!, false);
+            }
+
+            subMenu.SubMenuName = updateSubMenus.subMenuName;
+            subMenu.Description = updateSubMenus.description;
+            subMenu.IsOpen = updateSubMenus.IsOpen;
+            subMenu.ModifiedBy = updateSubMenus.modifiedBy;
+            subMenu.ModifiedOn = DateTime.UtcNow;
+
+            //var _subMenu = _mapper.Map<SubMenus>(updateSubMenus);
+            _unitOfWork.SubMenus.Update(subMenu);
+            await _unitOfWork.Complete();
+
+            var updatedSubMenu = _mapper.Map<SubMenusUpdateResponseDto>(subMenu);
+            return updatedSubMenu;
+
         }
 
         public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()

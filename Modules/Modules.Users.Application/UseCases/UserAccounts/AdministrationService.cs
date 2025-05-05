@@ -1,17 +1,19 @@
-﻿using System.Data;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
+using System.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Modules.Users.Application.Dtos.Administration;
-using Modules.Users.Application.Enums;
-using Modules.Users.Application.Helpers;
-using Modules.Users.Application.Validations;
-using Modules.Users.Domain.Entities;
 
 namespace Modules.Users.Application.UseCases.UserAccounts
 {

@@ -1,4 +1,13 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 
 namespace Modules.Customers.Application.UseCases
 {
@@ -15,12 +24,12 @@ namespace Modules.Customers.Application.UseCases
 
         public async Task<ComplaintTypeDto> AddNewComplaintType(ComplaintTypeDto values)
         {
-            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!);
+            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId);
 
             _unitOfWork.ComplaintType.Insert(ComplaintType);
             await _unitOfWork.Complete();
 
-            return new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!);
+            return new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!, ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
         }
 
         public async Task<GenericResponseDto> DeleteComplaintType(int complaintTypeid)
@@ -47,12 +56,12 @@ namespace Modules.Customers.Application.UseCases
 
         public async Task<ComplaintTypeDto> UpdateComplaintType(ComplaintTypeDto values)
         {
-            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!);
+            ComplaintType ComplaintType = new(values.complaintTypeId, values.complaintTypes!, values.departmentId, values.departmentUnitId);
 
             _unitOfWork.ComplaintType.Update(ComplaintType);
             await _unitOfWork.Complete();
 
-            return new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!);
+            return new ComplaintTypeDto(ComplaintType.ComplaintTypeId, ComplaintType.ComplaintTypes!, ComplaintType.DepartmentId, ComplaintType.DepartmentUnitId);
         }
     }
 }

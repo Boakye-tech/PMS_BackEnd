@@ -1,6 +1,13 @@
-﻿using System;
-using System.Net;
-using Microsoft.EntityFrameworkCore;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 
 namespace Modules.Customers.Application.UseCases
 {
@@ -76,14 +83,16 @@ namespace Modules.Customers.Application.UseCases
                                 (transaction, property) => new PropertySummaryMobileViewDto
                                 {
                                     PropertyNumber = transaction.PropertyNumber,
+                                    Address = property.Locality,
                                     LandUse = property.LandUse,
                                     Balance = transaction.Amount,
                                     Image = property.ImageOne
                                 })
-                            .GroupBy(t => new { t.PropertyNumber, t.LandUse, t.Image })
+                            .GroupBy(t => new { t.PropertyNumber, t.LandUse, t.Image, t.Address })
                             .Select(g => new PropertySummaryMobileViewDto
                             {
                                 PropertyNumber = g.Key.PropertyNumber,
+                                Address = g.Key.Address,
                                 LandUse = g.Key.LandUse,
                                 Balance = g.Sum(t => t.Balance),
                                 Image = g.Key.Image

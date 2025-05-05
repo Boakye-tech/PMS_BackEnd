@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.DTO.Management.Complaints;
-using Modules.Estates.Application.Enums;
-using Modules.Estates.Presentation.Constants;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace Modules.Estates.Presentation.Controllers.v1
 {
-
-
     public partial class CustomerController : ControllerBase
     {
 
@@ -23,6 +28,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("AddProspectiveCustomer")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomerRegistrationResponseDto))]
         public async Task<ActionResult> AddProspectiveCustomer([FromBody] ProspectiveCustomerCreateDto values)
         {
             try
@@ -217,7 +223,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     200 => Ok("success"),
                     400 => BadRequest(),
                     404 => NotFound($"Customer code {values.customerCode} not found"),
-                    500 => StatusCode(500, "unsuccessful"),
                     _ => StatusCode(500, "Internal Server Error"),
                 }; ;
 
@@ -233,7 +238,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetCustomerDetails/{customerCode}")]
-        [AllowAnonymous]
+        [Authorize(Policy = "Permission:Customers.READ")]
         public async Task<ActionResult> GetCustomer(string customerCode)
         {
             try
@@ -323,7 +328,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
 
-
         /// <summary>
         /// Modify or update existing company customer details
         /// </summary>
@@ -334,8 +338,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
-                //if(ModelState.IsValid)
-
                 var userId = _userContextService.GetUserId();
                 if (!string.Equals(userId, values.ModifiedBy))
                 {
@@ -545,7 +547,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     200 => Ok( new{ response = "success" }),
                     400 => BadRequest(),
                     404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
-                    500 => StatusCode(500, new { response = "unsuccessful" }),
                     _ => StatusCode(500, new { response = "Internal Server Error" }),
                 };
 
@@ -579,7 +580,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     200 => Ok(new { response = "success" }),
                     400 => BadRequest(),
                     404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
-                    500 => StatusCode(500, new { response = "unsuccessful" }),
                     _ => StatusCode(500, new { response = "Internal Server Error" }),
                 };
 
@@ -591,18 +591,82 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
+        /// Returns a list of complaint status
+        /// </summary>
+        [HttpGet]
+        [Route("ComplaintStatus")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        public IActionResult ComplaintStatus()
+        {
+            var statuses = Enum.GetValues(typeof(ComplaintStatusEnum))
+                                   .Cast<ComplaintStatusEnum>()
+                                   .Select(e => new
+                                   {
+                                       Id = (int)e,
+                                       Name = e.ToString(),
+                                       DisplayName = e.GetType()
+                                                     .GetField(e.ToString())!
+                                                      .GetCustomAttribute<DescriptionAttribute>()?
+                                                      .Description
+
+                                   });
+            return Ok(statuses);
+        }
+
+        /// <summary>
         /// Returns a list of complaints
         /// </summary>
         [HttpGet]
         [Route("GetListOfComplaints")]
-        [AllowAnonymous]
+        [Authorize(Policy = "Permission:Customers.READ")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ComplaintStaffReadDto>))]
-        public async Task<ActionResult> GetListOfComplaints()
+        public async Task<ActionResult> GetListOfComplaints([FromQuery] string? searchParameter, [FromQuery] int complaintType, [FromQuery] int complaintStatus )
         {
             try
             {
-                var result = await _complaintMasterServices.GetComplaintsList();
+
+                string _parameter = HttpUtility.UrlDecode(searchParameter!);
+
+                var result = await _complaintMasterServices.GetComplaintsList(searchParameter!, complaintType, complaintStatus);
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Returns a list of complaints based on a user query/optional parameters
+        /// </summary>
+        [HttpGet]
+        [Route("GetComplaints")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ComplaintStaffReadDto>))]
+        public async Task<ActionResult> GetListOfComplaints([FromQuery] string? complaintNumber, [FromQuery] string? customerCode_OR_propertyNumber)
+        {
+            try
+            {
+                if (complaintNumber is null && customerCode_OR_propertyNumber is null)
+                {
+                    return Ok(Array.Empty<string>());
+                }
+
+                if (complaintNumber is not null)
+                {
+                    var result = await _complaintMasterServices.GetComplaintSummary(complaintNumber);
+                    return Ok(result);
+                }
+
+                if (customerCode_OR_propertyNumber is not null)
+                {
+                    var result = await _complaintMasterServices.GetCustomerComplaintsList(customerCode_OR_propertyNumber);
+                    return Ok(result);
+                }
+
+                return Ok(Array.Empty<string>());
 
             }
             catch (Exception ex)
@@ -614,11 +678,129 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
 
         /// <summary>
-        /// Creates a new complaint
+        /// Returns a list of complainants summary based on customer code or property number parameters
         /// </summary>
+        [HttpGet]
+        [Route("GetComplainantSearch/{customerCode_OR_propertyNumber}")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ComplainantSearchDto>))]
+        public async Task<ActionResult> GetComplainantSearch(string? customerCode_OR_propertyNumber)
+        {
+            try
+            {
+                if (customerCode_OR_propertyNumber is not null)
+                {
+                    string param = HttpUtility.UrlDecode(customerCode_OR_propertyNumber!);
+                    var result = await _complaintMasterServices.GetComplainantSearch(param);
+                    return Ok(result);
+                }
+
+                return Ok(Array.Empty<string>());
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Returns details of a complaint
+        /// </summary>
+        [HttpGet]
+        [Route("GetComplaintDetails/{complaintNumber}")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(200, Type = typeof(ComplaintDto))]
+        public async Task<ActionResult> GetComplaintDetails(string complaintNumber)
+        {
+            try
+            {
+                var result = await _complaintMasterServices.GetComplaintDetails(complaintNumber);
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Creates/Submit a new complaint.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows users to submit a new complaint with all the necessary details.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     POST /SubmitComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintTypeId": 2,
+        ///         "natureOfComplaintId": [5, 6],
+        ///         "complaintNumber": "C85991",
+        ///         "propertyNumber": "CPL/C02/DTA/F/981",
+        ///         "propertyLocation": "COMMUNITY 3",
+        ///         "customerCode": "2A00137",
+        ///         "customerName": "Ama Serwaa",
+        ///         "phoneNumber": "0549876543",
+        ///         "emailAddress": "ama.serwaa@example.com",
+        ///         "isTheMatterInCourt": "No",
+        ///         "detailsOfComplaint": "The neighbor's construction is blocking my driveway and causing noise disturbances.",
+        ///         "availabilityDate": "2025-04-25T09:00:00",
+        ///         "submittedBy": "Ms. Ama Serwaa",
+        ///         "submittedBy_PhoneNumber": "0549876543",
+        ///         "documentImages": ["https://images/uploads/photo-1537731121640-bc1c4aba9b80.jpg"],
+        ///         "source": 1,
+        ///         "createdBy": "3fba6d17-3e29-4f61-8d8a-1a1f249cf111"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint submitted successfully with complaint number C85991."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "Nature of complaint cannot be null or empty."
+        ///     }
+        /// 
+        /// **Sample Response 403:**
+        /// 
+        ///     {
+        ///         "responseCode": 403,
+        ///         "response": "Sorry you cannot submit complaints on behalf of another staff user."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while processing the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint details to be submitted.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK with the response if the complaint is successfully submitted.
+        /// Returns HTTP 204 No Content if nature of complaint is empty.
+        /// Returns HTTP 403 Forbidden if trying to submit on behalf of another staff user.
+        /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+        /// </returns>
         [HttpPost]
         [Route("SubmitComplaint")]
-        [Authorize(Policy = "Permission:Customers.CREATE")]
+        [Authorize(Policy = "Permission:Customers.COMPLAINT")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
         public async Task<ActionResult> SubmitComplaint([FromBody] ComplaintCreateDto values)
         {
             try
@@ -629,7 +811,295 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
+                if (values.NatureOfComplaintId!.Count() == 0)
+                {
+                    return StatusCode(204, "Nature of complaint cannot be null or empty");
+                }
+
+
                 var result = await _complaintMasterServices.CreateNewComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result),
+                    404 => NotFound(result),
+                    _ => StatusCode(500, result),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates/Modifies an existing complaint.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows users to modify an existing complaint by providing the updated details.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /ModifyComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C85991",
+        ///         "phoneNumber": "0549876543",
+        ///         "emailAddress": "ama.serwaa.updated@example.com",
+        ///         "isTheMatterInCourt": "No",
+        ///         "detailsOfComplaint": "The construction has now been completed, but it caused significant disruption to my property.",
+        ///         "availabilityDate": "2025-04-30T09:00:00",
+        ///         "documentImages": ["https://images/uploads/photo-1537731121640-bc1c4aba9b80.jpg"],
+        ///         "modifiedBy": "2fba6d17-3e29-4f61-8d8a-1a1f249cf111"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C85991 has been successfully updated."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The complaint was not modified."
+        ///     }
+        /// 
+        /// **Sample Response 403:**
+        /// 
+        ///     {
+        ///         "responseCode": 403,
+        ///         "response": "You are not authorized to modify this complaint."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while updating the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint details to be updated.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK with the response if the complaint is successfully updated.
+        /// Returns HTTP 204 No Content if no changes were made to the complaint.
+        /// Returns HTTP 403 Forbidden if the user is unauthorized to modify the complaint.
+        /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+        /// </returns>
+        [HttpPut]
+        [Route("ModifyComplaint")]
+        [Authorize(Policy = "Permission:Complaints.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
+        public async Task<ActionResult> ReviewComplaint([FromBody] ComplaintUpdateDto values)
+        {
+            
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ModifiedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.UpdateComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Acknowledges a submitted complaint.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to acknowledge receipt of a complaint. 
+        /// It marks the complaint as officially received and may trigger further processing workflows.
+        /// The request must include the complaint number and the ID of the user acknowledging the complaint.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /AcknowledgeComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C85991",
+        ///         "acknowledgedBy": "a56f33bf-1234-42d2-bd10-777efb832f6a"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C85991 has been successfully acknowledged."
+        ///     }
+        ///     
+        /// **Sample Response 401:**
+        /// 
+        ///     {
+        ///         "responseCode": 401,
+        ///         "response": "Unauthorized."
+        ///     }
+        ///     
+        /// **Sample Response 403:**
+        /// 
+        ///     {
+        ///         "responseCode": 403,
+        ///         "response": "User forbidden from performing this operation"
+        ///     }
+        /// 
+        /// **Sample Response 404:**
+        /// 
+        ///     {
+        ///         "responseCode": 404,
+        ///         "response": "Complaint number C85991 doesnot exist."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while acknowledging the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint acknowledgment details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK if the complaint is successfully acknowledged.
+        /// Returns HTTP 401 Unauthorized.
+        /// Returns HTTP 403 Forbidden.
+        /// Returns HTTP 404 Not Found if the complaint does not exist.
+        /// Returns HTTP 500 Internal Server Error if an error occurs.
+        /// </returns>
+        [HttpPut]
+        [Route("AcknowledgeComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
+        public async Task<ActionResult> AcknowledgeComplaint([FromBody] ComplaintAcknowledgmentDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.AcknowledgedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.AcknowledgeComplaint(values); 
+                return result.StatusCode switch
+                {
+                    200 => Ok(new { message = result.StatusMessage }),
+                    403 => StatusCode(StatusCodes.Status403Forbidden, new { message = result.StatusMessage }),
+                    404 => NotFound(new { message = result.StatusMessage }),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, new { message = result.StatusMessage })
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Dispatches a submitted complaint.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to dispatch a complaint to a specific department or unit for handling.
+        /// It requires the complaint number, the user dispatching it, and the IDs of the target department and department unit.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /DispatchComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C85991",
+        ///         "dispatchedBy": "a56f33bf-1234-42d2-bd10-777efb832f6a",
+        ///         "dispatchedTo_DepartmentId": 401,
+        ///         "dispatchedTo_DepartmentUnitId": 211
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C85991 has been successfully dispatched."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The complaint was not dispatched."
+        ///     }
+        /// 
+        /// **Sample Response 400:**
+        /// 
+        ///     {
+        ///         "responseCode": 400,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        /// 
+        /// **Sample Response 404:**
+        /// 
+        ///     {
+        ///         "responseCode": 404,
+        ///         "response": "Complaint not found."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while dispatching the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint dispatch details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK if the complaint is successfully dispatched.
+        /// Returns HTTP 204 No Content if no changes were made.
+        /// Returns HTTP 400 Bad Request if the request is invalid.
+        /// Returns HTTP 404 Not Found if the complaint does not exist.
+        /// Returns HTTP 500 Internal Server Error if an error occurs.
+        /// </returns>
+        [HttpPut]
+        [Route("DispatchComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
+        public async Task<ActionResult> DispatchComplaint([FromBody] ComplaintDispatchedDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.DispatchedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.DispatchComplaint(values); 
                 return result.StatusCode switch
                 {
                     200 => Ok(result.StatusMessage),
@@ -644,11 +1114,75 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Reviews an existing complaint
+        /// Reviews an existing complaint.
         /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to review a previously submitted complaint. 
+        /// The review can include feedback or any necessary actions that are part of the complaint process. 
+        /// It requires the complaint number and the user performing the review.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /ReviewComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C85991",
+        ///         "reviewedBy": "a56f33bf-1234-42d2-bd10-777efb832f6a"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C85991 has been successfully reviewed."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The complaint was not reviewed."
+        ///     }
+        /// 
+        /// **Sample Response 400:**
+        /// 
+        ///     {
+        ///         "responseCode": 400,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        /// 
+        /// **Sample Response 404:**
+        /// 
+        ///     {
+        ///         "responseCode": 404,
+        ///         "response": "Complaint not found."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while reviewing the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint review details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK if the complaint is successfully reviewed.
+        /// Returns HTTP 204 No Content if no changes were made to the complaint.
+        /// Returns HTTP 400 Bad Request if the request is invalid.
+        /// Returns HTTP 404 Not Found if the complaint does not exist.
+        /// Returns HTTP 500 Internal Server Error if an error occurs.
+        /// </returns>
         [HttpPut]
         [Route("ReviewComplaint")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
         public async Task<ActionResult> ReviewComplaint([FromBody] ComplaintReviewDto values)
         {
             try
@@ -674,11 +1208,77 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Assigns an existing complaint
+        /// Assigns an existing complaint to a user or department.
         /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to assign a previously submitted complaint to a designated user 
+        /// or department for further action. The request requires the complaint number, the user assigned to handle 
+        /// the complaint, and optionally the user who is assigning the complaint.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /AssignComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C85991",
+        ///         "assignedTo": "a56f33bf-1234-42d2-bd10-777efb832f6a",
+        ///         "assignedBy": "b76d44a5-9c54-4b7d-bb52-dfe1e798bb1d"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C85991 has been successfully assigned."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The complaint was not assigned."
+        ///     }
+        /// 
+        /// **Sample Response 400:**
+        /// 
+        ///     {
+        ///         "responseCode": 400,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        /// 
+        /// **Sample Response 404:**
+        /// 
+        ///     {
+        ///         "responseCode": 404,
+        ///         "response": "Complaint not found or invalid assignment details."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while assigning the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint assignment details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK if the complaint is successfully assigned.
+        /// Returns HTTP 204 No Content if no changes were made to the complaint.
+        /// Returns HTTP 400 Bad Request if the request is invalid.
+        /// Returns HTTP 404 Not Found if the complaint does not exist or the assignment details are invalid.
+        /// Returns HTTP 500 Internal Server Error if an error occurs.
+        /// </returns>
         [HttpPut]
         [Route("AssignComplaint")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
         public async Task<ActionResult> AssignComplaint([FromBody] ComplaintAssignDto values)
         {
             try
@@ -707,11 +1307,78 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Resolve an existing complaint
+        /// Resolves an existing complaint after investigation or action has been completed.
         /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to mark a complaint as resolved. 
+        /// It is typically used once the necessary investigation or remedial action has been completed. 
+        /// The request must include the complaint number and the ID of the user resolving the complaint. 
+        /// Optionally, notes about the resolution can also be provided.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /ResolveComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C85991",
+        ///         "resolvedBy": "a56f33bf-1234-42d2-bd10-777efb832f6a",
+        ///         "notes": "Issue was resolved by replacing defective meter."
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C85991 has been successfully resolved."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The complaint was not resolved."
+        ///     }
+        /// 
+        /// **Sample Response 400:**
+        /// 
+        ///     {
+        ///         "responseCode": 400,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        /// 
+        /// **Sample Response 404:**
+        /// 
+        ///     {
+        ///         "responseCode": 404,
+        ///         "response": "Complaint not found."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while resolving the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint resolution details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK if the complaint is successfully resolved.
+        /// Returns HTTP 204 No Content if no changes were made.
+        /// Returns HTTP 400 Bad Request if the request is invalid.
+        /// Returns HTTP 404 Not Found if the complaint does not exist.
+        /// Returns HTTP 500 Internal Server Error if an error occurs.
+        /// </returns>
         [HttpPut]
         [Route("ResolveComplaint")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
         public async Task<ActionResult> ResolveComplaint([FromBody] ComplaintResolutionDto values)
         {
             try
@@ -739,6 +1406,424 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Reopens a previously resolved complaint, allowing it to be addressed or investigated further.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to reopen a complaint that was previously marked as resolved. 
+        /// This is typically used when a complaint requires additional investigation or was prematurely resolved. 
+        /// The request requires the complaint number and the ID of the user performing the reopen action.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /ReopenComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C85991",
+        ///         "reopenedBy": "a56f33bf-1234-42d2-bd10-777efb832f6a"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C85991 has been successfully reopened."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The complaint was not reopened."
+        ///     }
+        /// 
+        /// **Sample Response 400:**
+        /// 
+        ///     {
+        ///         "responseCode": 400,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        /// 
+        /// **Sample Response 404:**
+        /// 
+        ///     {
+        ///         "responseCode": 404,
+        ///         "response": "Not found due to invalid complaint number."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while reopening the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint reopening details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK if the complaint is successfully reopened.
+        /// Returns HTTP 204 No Content if no action was taken.
+        /// Returns HTTP 400 Bad Request if the request is malformed.
+        /// Returns HTTP 404 Not Found if the complaint does not exist.
+        /// Returns HTTP 500 Internal Server Error if an unhandled exception occurs.
+        /// </returns>
+        [HttpPut]
+        [Route("ReopenComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
+        public async Task<ActionResult> ReopenComplaint([FromBody] ComplaintReopenedDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ReopenedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.ReopenComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    400 => BadRequest(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Closes a re-opened complaint after resolution or review.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to close a complaint that has been previously re-opened. 
+        /// The complaint will be marked as closed once this operation is successful. The request requires the complaint number 
+        /// and the user who is closing the complaint.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /CloseComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C85991",
+        ///         "closedBy": "a56f33bf-1234-42d2-bd10-777efb832f6a"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C85991 has been successfully closed."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The complaint was not closed."
+        ///     }
+        /// 
+        /// **Sample Response 400:**
+        /// 
+        ///     {
+        ///         "responseCode": 400,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        ///     
+        /// **Sample Response 404:**
+        /// 
+        ///     {
+        ///         "responseCode": 404,
+        ///         "response": "Not found due to invalid fields."
+        ///     }
+        ///     
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while closing the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint closing details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK with the response if the complaint is successfully closed.
+        /// Returns HTTP 204 No Content if no changes were made to close the complaint.
+        /// Returns HTTP 400 Bad Request if the request is missing or has invalid fields.
+        /// Returns HTTP 404 Not Found if the request has invalid fields.
+        /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+        /// </returns>
+        [HttpPut]
+        [Route("CloseComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
+        public async Task<ActionResult> CloseComplaint([FromBody] ComplaintClosedDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ClosedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.CloseComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    400 => BadRequest(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Cancels an existing complaint.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to cancel a complaint that has not been resolved or processed further. 
+        /// The complaint will be marked as cancelled upon successful execution of this operation. The request requires 
+        /// the complaint number and the user who is cancelling the complaint.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /CancelComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C12456",
+        ///         "cancelledBy": "b61d23af-2345-43b1-9c2d-d1d842a3d9f7"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C12456 has been successfully cancelled."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The complaint was not cancelled."
+        ///     }
+        /// 
+        /// **Sample Response 400:**
+        /// 
+        ///     {
+        ///         "responseCode": 400,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        ///
+        /// **Sample Response 404:**
+        /// 
+        ///     {
+        ///         "responseCode": 404,
+        ///         "response": "Not found due to invalid fields."
+        ///     }
+        ///     
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while cancelling the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint cancellation details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK with the response if the complaint is successfully cancelled.
+        /// Returns HTTP 204 No Content if no changes were made to cancel the complaint.
+        /// Returns HTTP 400 Bad Request if the request is missing or has invalid fields.
+        /// Returns HTTP 404 Not Found if the request has invalid fields.
+        /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+        /// </returns>
+        [HttpPut]
+        [Route("CancelComplaint")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
+        public async Task<ActionResult> CancelComplaint([FromBody] ComplaintCancellationDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.CancelledBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.CancelComplaint(values);
+                return result.StatusCode switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    400 => BadRequest(result.StatusMessage),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(500, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Change the status of an existing complaint to IN-PROGRESS
+        /// </summary>
+        /// <remarks>
+        /// This endpoint allows authorized users to manually change the status of an existing complaint to the in-progress status, the complaint should have been dispatched, assigned or reviewed. 
+        /// The complaint will be marked as in-progress upon successful execution of this operation. The request requires 
+        /// the complaint number and the user who is manually changing the complaint's status from the current status to the in-progress status.
+        ///
+        /// **Sample Request:**
+        /// 
+        ///     PUT /InProgressComplaint
+        /// 
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "complaintNumber": "C12456",
+        ///         "inprogressBy": "b61d23af-2345-43b1-9c2d-d1d842a3d9f7"
+        ///     }
+        /// 
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "responseCode": 200,
+        ///         "response": "Complaint C12456 has been successfully been moved from the current status to in-progress."
+        ///     }
+        /// 
+        /// **Sample Response 204:**
+        /// 
+        ///     {
+        ///         "responseCode": 204,
+        ///         "response": "No content. The status of the complaint was not changed."
+        ///     }
+        /// 
+        /// **Sample Response 403:**
+        /// 
+        ///     {
+        ///         "responseCode": 403,
+        ///         "response": "Bad request due to missing or invalid fields."
+        ///     }
+        /// 
+        /// **Sample Response 500:**
+        /// 
+        ///     {
+        ///         "responseCode": 500,
+        ///         "response": "An unexpected error occurred while changing the status of the complaint."
+        ///     }
+        /// </remarks>
+        /// <param name="values">The complaint cancellation details.</param>
+        /// <returns>
+        /// Returns HTTP 200 OK with the response if the complaint is successfully cancelled.
+        /// Returns HTTP 204 No Content if no changes were made to cancel the complaint.
+        /// Returns HTTP 400 Bad Request if the request is missing or has invalid fields.
+        /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+        /// </returns>
+        [HttpPut]
+        [Route("InProgressComplaint")]
+        [Authorize(Policy = "Permission:Complaints.UPDATE")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
+        public async Task<ActionResult> InProgressComplaint([FromBody] ComplaintInProgressDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.InProgressBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _complaintMasterServices.InProgressComplaint(values);
+                var status = result.StatusCode;
+                return status switch
+                {
+                    200 => Ok(result.StatusMessage),
+                    204 => NoContent(),
+                    403 => StatusCode(StatusCodes.Status403Forbidden, result.StatusMessage),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.StatusMessage),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the details of a complainant using a provided customer code.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint fetches complainant information linked to the specified customer code.
+        /// It is typically used to pre-fill or verify complainant data during complaint registration or lookup.
+        /// 
+        /// **Sample Request:**
+        /// 
+        ///     GET /GetComplainantDetails/CUST001234
+        /// 
+        /// **Sample Successful Response (200 OK):**
+        /// 
+        ///     [
+        ///         {
+        ///             "propertyNumber": "CPL/C02/DTA/F/980",
+        ///             "propertyLocation": "COMMUNITY TWO",
+        ///             "customerName": "Kwame Ghana",
+        ///             "phoneNumber": "0245678901",
+        ///             "emailAddress": "kwame.ghana@example.com"
+        ///         }
+        ///     ]
+        /// 
+        /// **Response Codes:**
+        /// - 200 OK: Returns a list of complainant details matching the given customer code.
+        /// - 403 Forbidden: User does not have the required permissions.
+        /// </remarks>
+        /// <param name="customerCode">The unique customer code associated with the complainant.</param>
+        /// <returns>A list of <see cref="ComplainantDetailsDto"/> records containing complainant information.</returns>
+        [HttpGet]
+        [Route("GetComplainantDetails/{customerCode}")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ComplainantDetailsDto>))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<List<ComplainantDetailsDto>>> GetCustomerTypes(string customerCode)
+        {
+            return Ok(await _complaintMasterServices.GetComplainantDetails(customerCode));
+        }
 
         /// <summary>
         /// Checks if the current user is authorized.

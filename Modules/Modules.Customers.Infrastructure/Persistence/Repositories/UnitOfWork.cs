@@ -1,4 +1,14 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace Modules.Customers.Infrastructure.Persistence.Repositories
@@ -22,6 +32,8 @@ namespace Modules.Customers.Infrastructure.Persistence.Repositories
             Complaint = new ComplaintRepository(_dbContext);
             ComplaintType = new ComplaintTypeRepository(_dbContext);
             NatureOfComplaint = new NatureOfComplaintRepository(_dbContext);
+            ComplaintHistory = new ComplaintHistoryRepository(_dbContext);
+            ComplaintStatuses = new ComplaintStatusesRepository(_dbContext);
         }
 
         public ICustomerDetailsRepository CustomerDetails { get; private set; }
@@ -41,6 +53,10 @@ namespace Modules.Customers.Infrastructure.Persistence.Repositories
         public IComplaintTypeRepository ComplaintType { get; private set; }
 
         public INatureOfComplaintRepository NatureOfComplaint { get; private set; }
+
+        public IComplaintHistoryRepository ComplaintHistory { get; private set; }
+
+        public IComplaintStatusesRepository ComplaintStatuses { get; private set; }
 
         public Task<int> Complete()
         {

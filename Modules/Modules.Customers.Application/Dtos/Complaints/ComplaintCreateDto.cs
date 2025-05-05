@@ -1,22 +1,36 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 
 namespace Modules.Customers.Application.Dtos.Complaints
 {
 	public class ComplaintCreateDto
 	{
+
         [Required]
         public int ComplaintTypeId { get; set; }
 
         [Required]
-        public int NatureOfComplaintId { get; set; }
+        public int[]? NatureOfComplaintId { get; set; }
+
+        //[Required]
+        [StringLength(10)]
+        public string? ComplaintNumber { get; set; }
 
         [Required]
         [StringLength(50)]
         public string? PropertyNumber { get; set; }
 
         [Required]
-        public int PropertyLocationId { get; set; }
+        [StringLength(75)]
+        public string? PropertyLocation { get; set; }
 
         //[Required]
         [StringLength(10)]
@@ -34,14 +48,13 @@ namespace Modules.Customers.Application.Dtos.Complaints
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 
-        public bool IsTheMatterInCourt { get; set; }
+        [StringLength(3)]
+        public string? IsTheMatterInCourt { get; set; }
 
         [Required]
         public string? DetailsOfComplaint { get; set; }
 
         public DateTime AvailabilityDate { get; set; }
-
-        //public DateTime ComplaintDate { get; set; }
 
         [StringLength(300)]
         public string? SubmittedBy { get; set; }
@@ -51,16 +64,7 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         public string[]? DocumentImages { get; set; }
 
-        //[StringLength(255)]
-        //public string? DocumentOne { get; set; }
-
-        //[StringLength(255)]
-        //public string? DocumentTwo { get; set; }
-
-        //[StringLength(255)]
-        //public string? DocumentThree { get; set; }
-
-        //public int ComplaintStatus { get; set; }
+        public ComplaintSource Source { get; set; }
 
         [StringLength(36)]
         public string? CreatedBy { get; set; }

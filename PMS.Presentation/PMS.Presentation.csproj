@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
+    <ReleaseVersion>1.0.1</ReleaseVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -56,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="appsettings.Development.json" />
+    <Content Remove="firebase.json" />
   </ItemGroup>
 
   <!--<ItemGroup>
@@ -69,6 +71,9 @@
     <Content Include="..\appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+    <Content Include="..\firebase.json">
+      <Link>firebase.json</Link>
     </Content>
 </ItemGroup>
 

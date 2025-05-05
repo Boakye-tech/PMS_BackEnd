@@ -1,22 +1,36 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Estates.Application.DTO.Management.Complaints
 {
 	public record ComplaintCreateDto
 	{
+        [StringLength(10)]
+        public string? ComplaintNumber { get; set; }
+
         [Required]
         public int ComplaintTypeId { get; set; }
 
         [Required]
-        public int NatureOfComplaintId { get; set; }
+        public int[]? NatureOfComplaintId { get; set; }
 
         [Required]
         [StringLength(50)]
         public string? PropertyNumber { get; set; }
 
         [Required]
-        public int PropertyLocationId { get; set; }
+        [StringLength(75)]
+        public string? PropertyLocation { get; set; }
 
         //[Required]
         [StringLength(10)]
@@ -34,7 +48,8 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 
-        public bool IsTheMatterInCourt { get; set; }
+        [StringLength(3)]
+        public string? IsTheMatterInCourt { get; set; }
 
         [Required]
         public string? DetailsOfComplaint { get; set; }
@@ -51,19 +66,11 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
 
         public string[]? DocumentImages { get; set; }
 
-        //[StringLength(255)]
-        //public string? DocumentOne { get; set; }
-
-        //[StringLength(255)]
-        //public string? DocumentTwo { get; set; }
-
-        //[StringLength(255)]
-        //public string? DocumentThree { get; set; }
-
-        //public int ComplaintStatus { get; set; }
-
         [StringLength(36)]
         public string? CreatedBy { get; set; }
+
+        public ComplaintSourceEnum Source { get; set; }
+
     }
 }
 

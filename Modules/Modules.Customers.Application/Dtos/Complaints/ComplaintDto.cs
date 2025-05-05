@@ -1,5 +1,14 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 
 namespace Modules.Customers.Application.Dtos.Complaints;
 
@@ -14,14 +23,17 @@ public record ComplaintDto
 
     public int ComplaintTypeId { get; set; }
 
-    public int NatureOfComplaintId { get; set; }
+    public string? ComplaintType { get; set; }
+
+    public List<NatureOfComplaints>? NatureOfComplaint { get; set; }
 
     [Required]
     [StringLength(50)]
     public string? PropertyNumber { get; set; }
 
     [Required]
-    public int PropertyLocationId { get; set; }
+    [StringLength(75)]
+    public string? PropertyLocation { get; set; }
 
     [StringLength(10)]
     public string? CustomerCode { get; set; }
@@ -38,27 +50,25 @@ public record ComplaintDto
     [StringLength(75)]
     public string? EmailAddress { get; set; }
 
-    public bool IsTheMatterInCourt { get; set; }
+    [StringLength(3)]
+    public string? IsTheMatterInCourt { get; set; }
 
     [Required]
     public string? DetailsOfComplaint { get; set; }
 
     public DateTime ComplaintDate { get; set; }
 
-    [StringLength(36)]
+    [StringLength(150)]
     public string? SubmittedBy { get; set; }
 
-    [StringLength(255)]
-    public string? DocumentOne { get; set; }
+    [StringLength(15)]
+    public string? SubmittedBy_PhoneNumber { get; set; }
 
-    [StringLength(255)]
-    public string? DocumentTwo { get; set; }
+    public List<string>? DocumentList { get; set; }
 
-    [StringLength(255)]
-    public string? DocumentThree { get; set; }
+    public List<ComplaintHistoryReadDto>? ComplaintStatus { get; set; }
 
-    //public int ComplaintStatus { get; set; }
-
-    [StringLength(36)]
-    public string? CreatedBy { get; set; }
 }
+
+
+public record NatureOfComplaints(int NatureOfComplaintId, string NatureOfComplaint);

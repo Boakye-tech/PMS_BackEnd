@@ -1,5 +1,18 @@
-﻿using System.Text;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
+using System.Text;
 using Asp.Versioning;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
@@ -58,6 +71,7 @@ builder.Services.AddCustomerModule(builder.Configuration);
 
 var module = "Modules.Estates.Presentation";
 var user_module = "Modules.Users.Presentation";
+var customers_module = "Modules.Customers.Presentation";
 
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
@@ -159,11 +173,28 @@ builder.Services.AddSwaggerGen(options =>
 
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{module}.xml"));
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{user_module}.xml"));
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{customers_module}.xml"));
 });
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 
+if (builder.Environment.IsDevelopment())
+{
+    FirebaseApp.Create(new AppOptions
+    {
+
+        Credential = GoogleCredential.FromFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", "firebase.json"))
+    });
+}
+
+if (builder.Environment.IsProduction())
+{
+    FirebaseApp.Create(new AppOptions
+    {
+        Credential = GoogleCredential.FromFile(Path.Combine(Directory.GetCurrentDirectory() ?? "", "firebase.json"))
+    });
+}
 
 
 var app = builder.Build();
@@ -191,6 +222,9 @@ using(var scope = app.Services.CreateScope())
     authorizationOptions.AddPolicy("Permission:Users.CREATEROLE", policy => policy.RequireClaim("Permission:Users.CREATEROLE", "CREATEROLE"));
     authorizationOptions.AddPolicy("Permission:Users.ASSIGNUSER", policy => policy.RequireClaim("Permission:Users.ASSIGNUSER", "ASSIGNUSER"));
     authorizationOptions.AddPolicy("Permission:Users.ASSIGNPERM", policy => policy.RequireClaim("Permission:Users.ASSIGNPERM", "ASSIGNPERM"));
+
+    authorizationOptions.AddPolicy("Permission:Customers.COMPLAINT", policy => policy.RequireClaim("Permission:Customers.COMPLAINT", "COMPLAINT"));
+    authorizationOptions.AddPolicy("Permission:Complaints.COMPLAINT", policy => policy.RequireClaim("Permission:Complaints.COMPLAINT", "COMPLAINT"));
 };
 
 

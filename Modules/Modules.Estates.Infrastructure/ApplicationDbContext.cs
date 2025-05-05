@@ -1,4 +1,14 @@
-﻿using System.Reflection;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 
 namespace Modules.Estates.Infrastructure;
 
@@ -53,7 +63,7 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<ComplaintType> ComplaintType { get; set; }
     public DbSet<NatureOfComplaint> NatureOfComplaint { get; set; }
     public DbSet<Complaint> Complaints { get; set; }
-
+    public DbSet<ComplaintHistory> ComplaintHistory { get; set; }
     public DbSet<ComplaintStatuses> ComplaintStatuses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -72,6 +82,18 @@ public class ApplicationDbContext : ModuleDbContext
             .HasIndex(cm => cm.CustomerCode)
             .IsUnique(true);
 
+        modelBuilder.Entity<Complaint>()
+            .HasIndex(c => c.ComplaintNumber)
+            .IsUnique(true);
+
+        modelBuilder.Entity<ComplaintStatuses>()
+            .HasIndex(c => c.ComplaintStatus)
+            .IsUnique(true);
+
+        modelBuilder.Entity<ComplaintHistory>()
+            .HasIndex(ch => new { ch.ComplaintNumber, ch.ComplaintStatus })
+            .IsUnique(true);
+
         modelBuilder.Entity<CustomerMaster>().Ignore(x => x.DomainEvents);
 
         //modelBuilder.Entity<ApartmentTypes>
@@ -86,7 +108,7 @@ public class ApplicationDbContext : ModuleDbContext
 
         //modelBuilder.ApplyConfiguration(new ActivityConfiguration());
         //modelBuilder.ApplyConfiguration(new ActivityTypeConfiguration());
-
+        //modelBuilder.ApplyConfiguration(new ComplaintStatusConfiguration());
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

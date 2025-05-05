@@ -1,11 +1,16 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using FluentValidation;
-using Modules.Estates.Application.Interfaces.Management.Complaints;
-using Modules.Estates.Application.Interfaces.ModuleServices;
-using Modules.Estates.Application.Services;
-using Modules.Estates.Application.UseCases.Management.Complaints;
-using Modules.Estates.Application.UseCases.ModuleServices;
-using Modules.Estates.Domain.Events;
+
 
 namespace Modules.Estates.Presentation;
 
@@ -61,7 +66,7 @@ public static class ModuleExtensions
         services.AddScoped<IComplaintTypeService, ComplaintTypeService>();
         services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
         services.AddScoped<IComplaintMasterService, ComplaintMasterService>();
-
+        services.AddScoped<IComplaintStatusesService, ComplaintStatusesService>();
 
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();

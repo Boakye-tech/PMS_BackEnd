@@ -1,7 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +58,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _customerTypeService.GetCustomerTypeAsync());
         }
 
+        /// <summary>
+        /// Add a new customer type
+        /// </summary>
         [HttpPost]
         [Route("AddCustomerType")]
         public async Task<ActionResult<CustomerTypeReadDto>> AddCustomerType([FromBody] CustomerTypeCreateDto values)
@@ -65,6 +75,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             }
         }
 
+        /// <summary>
+        /// Modifies an existing customer type
+        /// </summary>
         [HttpPut]
         [Route("UpdateCustomerType")]
         public async Task<ActionResult<CustomerTypeReadDto>> UpdateCustomerType([FromBody] CustomerTypeUpdateDto values)
@@ -102,6 +115,10 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _genderService.GetGenderAsync(genderId));
         }
 
+
+        /// <summary>
+        /// Add a new gender type
+        /// </summary>
         [HttpPost]
         [Route("AddGender")]
         public async Task<ActionResult<GenderReadDto>> AddGender([FromBody] GenderCreateDto values)
@@ -116,6 +133,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             }
         }
 
+        /// <summary>
+        /// Modifies an existing gender type
+        /// </summary>
         [HttpPut]
         [Route("UpdateGender")]
         public async Task<ActionResult<GenderReadDto>> UpdateGender([FromBody] GenderUpdateDto values)
@@ -138,6 +158,10 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _identificationTypeService.GetIdentificationTypeAsync());
         }
 
+
+        /// <summary>
+        /// Add a new identification type
+        /// </summary>
         [HttpPost]
         [Route("AddIdentificationType")]
         public async Task<ActionResult<IdentificationTypeReadDto>> AddIdentificationType([FromBody] IdentificationTypeCreateDto values)
@@ -152,6 +176,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             }
         }
 
+        /// <summary>
+        /// Modifies an existing identification type
+        /// </summary>
         [HttpPut]
         [Route("UpdateIdentificationType")]
         public async Task<ActionResult<IdentificationTypeReadDto>> UpdateCustomerType([FromBody] IdentificationTypeUpdateDto values)
@@ -175,6 +202,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _nationalityService.GetNationalityAsync());
         }
 
+        /// <summary>
+        /// Add a new nationality
+        /// </summary>
         [HttpPost]
         [Route("AddNationality")]
         public async Task<ActionResult<NationalityReadDto>> AddNationality([FromBody] NationalityCreateDto values)
@@ -189,6 +219,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             }
         }
 
+        /// <summary>
+        /// Modifies an existing nationality
+        /// </summary>
         [HttpPut]
         [Route("UpdateNationality")]
         public async Task<ActionResult<NationalityReadDto>> UpdateNationality([FromBody] NationalityUpdateDto values)
@@ -212,6 +245,10 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _residentTypeService.GetResidentTypeAsync());
         }
 
+
+        /// <summary>
+        /// Add a new resident type
+        /// </summary>
         [HttpPost]
         [Route("AddResidentType")]
         public async Task<ActionResult<ResidentTypeReadDto>> AddResidentType([FromBody] ResidentTypeCreateDto values)
@@ -226,6 +263,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             }
         }
 
+        /// <summary>
+        /// Modifies an existing resident type
+        /// </summary>
         [HttpPut]
         [Route("UpdateResidentType")]
         public async Task<ActionResult<ResidentTypeReadDto>> UpdateResidentType([FromBody] ResidentTypeUpdateDto values)
@@ -249,6 +289,10 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _socialMediaService.GetSocialMediaAsync());
         }
 
+
+        /// <summary>
+        /// Add a new social media platform
+        /// </summary>
         [HttpPost]
         [Route("AddSocialMedia")]
         public async Task<ActionResult<SocialMediaReadDto>> AddSocialMedia([FromBody] SocialMediaCreateDto values)
@@ -263,6 +307,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             }
         }
 
+        /// <summary>
+        /// Modifies an existing social media platform
+        /// </summary>
         [HttpPut]
         [Route("UpdateSocialMedia")]
         public async Task<ActionResult<SocialMediaReadDto>> UpdateSocialMedia([FromBody] SocialMediaUpdateDto values)
@@ -286,6 +333,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _titleService.GetTitleAsync());
         }
 
+        /// <summary>
+        /// Returns an exisitng title based on the title name
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetTitle/{value}")]
         public async Task<ActionResult<TitleReadDto>> GetTitle(string value)
@@ -293,6 +343,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _titleService.GetTitleAsync(value));
         }
 
+        /// <summary>
+        /// Returns an exisitng title based on the title id
+        /// </summary>
         [HttpGet]
         [Route("Setup/GetTitlesById/{titleId}")]
         public async Task<ActionResult<TitleReadDto>> GetTitleById(int titleId)
@@ -300,6 +353,10 @@ namespace Modules.Estates.Presentation.Controllers.v2
             return Ok(await _titleService.GetTitleAsync(titleId));
         }
 
+
+        /// <summary>
+        /// Add a new title
+        /// </summary>
         [HttpPost]
         [Route("AddTitle")]
         public async Task<ActionResult<TitleReadDto>> AddTitle([FromBody] TitleCreateDto values)
@@ -314,6 +371,9 @@ namespace Modules.Estates.Presentation.Controllers.v2
             }
         }
 
+        /// <summary>
+        /// Modifies an existing title
+        /// </summary>
         [HttpPut]
         [Route("UpdateTitle")]
         public async Task<ActionResult<TitleReadDto>> UpdateTitle([FromBody] TitleUpdateDto values)
@@ -326,6 +386,10 @@ namespace Modules.Estates.Presentation.Controllers.v2
         { }
 
         //------------------
+
+        /// <summary>
+        /// Add a new prospective customer
+        /// </summary>
         [HttpPost]
         [Route("AddProspectiveCustomer")]
         public async Task<ActionResult<ProspectiveCustomerResponseDto>> AddProspectiveCustomer([FromBody] ProspectiveCustomerCreateDto values)
@@ -340,6 +404,10 @@ namespace Modules.Estates.Presentation.Controllers.v2
             }
         }
 
+
+        /// <summary>
+        /// Add a new company customer
+        /// </summary>
         [HttpPost]
         [Route("AddCompanyCustomer")]
         public async Task<ActionResult<CompanyCustomerResponseDto>> AddCompanyCustomer([FromBody] CreateCompanyCustomerDto values)

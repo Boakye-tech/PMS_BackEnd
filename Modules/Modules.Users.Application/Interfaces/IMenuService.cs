@@ -1,21 +1,27 @@
-﻿using System;
-using System.Security.Claims;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using Microsoft.AspNetCore.Identity;
-using Modules.Users.Application.Dtos.Administration;
-using Modules.Users.Application.Dtos.Entities.Menu;
-using Modules.Users.Application.Dtos.UserAccounts;
 
 namespace Modules.Users.Application.Interfaces
 {
 	public interface IMenuService
 	{
         Task<MenusDto> CreateMenu(MenusDto menus);
-        Task<MenusDto> UpdateMenu(MenusDto updateMenus);
+        Task<MenusUpdateDto> UpdateMenu(MenusUpdateDto updateMenus);
         Task<GenericResponseDto> DeleteMenu(int menuId);
         
 
         Task<SubMenusDto> CreateSubMenu(SubMenusCreateDto subMenus);
-        Task<SubMenusDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus);
+        Task<SubMenusUpdateResponseDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus);
+
         Task<GenericResponseDto> DeleteSubMenu(int subMenuId);
 
         Task<SubMenuItemsDto> CreateSubMenuItems(SubMenuItemsCreateDto subMenuItems);

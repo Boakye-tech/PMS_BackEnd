@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Security;
-using System.Threading.Tasks;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Modules.Common.Infrastructure.Authentication;
-using Modules.Estates.Application.Enums;
-using Modules.Estates.Application.Interfaces.Management.Complaints;
-
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-/// <summary>
-/// Presentation controller to handle all customer management related routes
-/// </summary>
 namespace Modules.Estates.Presentation.Controllers.v1
 {
     [ApiController]
@@ -26,7 +24,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Policy = "Permission:Customers.READ")]
 
     /// <summary>
     /// Presentation controller to handle all customer management related routes
@@ -46,6 +43,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         readonly IInterestExpressedService _interestExpressedService;
         readonly IComplaintTypeService _complaintTypeService;
         readonly INatureOfComplaintService _natureOfComplaintService;
+        readonly IComplaintStatusesService _complaintStatusesService;
         readonly IComplaintMasterService _complaintMasterServices;
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService, ISocialMediaService socialMediaService,
                                   ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService, IInterestExpressedService interestExpressedService, IComplaintTypeService complaintTypeService,
-                                  INatureOfComplaintService natureOfComplaintService, IComplaintMasterService complaintMasterServices)
+                                  INatureOfComplaintService natureOfComplaintService, IComplaintStatusesService complaintStatusesService, IComplaintMasterService complaintMasterServices)
         {
             _customerTypeService = customerTypeService;
             _genderService = genderService;
@@ -68,6 +66,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             _interestExpressedService = interestExpressedService;
             _complaintTypeService = complaintTypeService;
             _natureOfComplaintService = natureOfComplaintService;
+            _complaintStatusesService = complaintStatusesService;
             _complaintMasterServices = complaintMasterServices;
         }
 
@@ -75,7 +74,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng customer types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetCustomerTypes")]
         public async Task<ActionResult<IEnumerable<CustomerTypeReadDto>>> GetCustomerTypes()
         {
@@ -171,7 +170,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of existing genders
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetGenders")]
         public async Task<ActionResult<IEnumerable<GenderReadDto>>> GetGender()
         {
@@ -181,7 +180,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns an existing gender based on the name
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetGender/{value}")]
         private async Task<ActionResult<GenderReadDto>> GetGender(string value)
         {
@@ -278,7 +277,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng identification types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetIdentificationTypes")]
         public async Task<ActionResult<IEnumerable<IdentificationTypeReadDto>>> GetIdentificationTypes()
         {
@@ -364,7 +363,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng nationalities
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetNationality")]
         public async Task<ActionResult<IEnumerable<NationalityReadDto>>> GetNationality()
         {
@@ -448,7 +447,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng resident types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetResidentTypes")]
         public async Task<ActionResult<IEnumerable<ResidentTypeReadDto>>> GetResidentTypes()
         {
@@ -532,7 +531,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng social media platforms
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetSocialMedia")]
         public async Task<ActionResult<IEnumerable<SocialMediaReadDto>>> GetSocialMedia()
         {
@@ -594,7 +593,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng titles
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitles")]
         public async Task<ActionResult<IEnumerable<TitleReadDto>>> GetTitles()
         {
@@ -604,7 +603,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns details of exisitng titles based on the name
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitle/{value}")]
         private async Task<ActionResult<TitleReadDto>> GetTitle(string value)
         {
@@ -614,7 +613,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns details of exisitng titles based on the id
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitles/{titleId}")]
         public async Task<ActionResult<TitleReadDto>> GetTitleById(int titleId)
         {
@@ -668,7 +667,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// 
         /// {
         ///    "titleId": 1,
-        ///    "titles": "MR. & MRS.",
+        ///    "titles": "MR.& MRS.",
         ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
         /// }
         /// </remarks>
@@ -700,7 +699,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng ownership types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipTypes")]
         public async Task<ActionResult<IEnumerable<OwnershipTypeReadDto>>> GetOwnershipTypes()
         {
@@ -710,7 +709,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns an exisitng ownership type based on the name
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipTypes/{value}")]
         private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipTypes(string value)
         {
@@ -720,7 +719,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns an exisitng ownership type based on the id
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipType/{ownershipTypeId}")]
         private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipType(int ownershipTypeId)
         {
@@ -805,7 +804,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of marital status
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("MaritalStatus")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public IActionResult MaritalStatus()
@@ -829,7 +828,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of customers based on optional search parameters. The entire list is returned if no pa
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetCustomerList")]
         public async Task<ActionResult<IEnumerable<CustomerListDto>>> GetCustomerList([FromQuery]string? searchParam, [FromQuery]string? locality)
         {
@@ -840,7 +839,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of options for prospective customer interest expressed
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetInterestExpressed")]
         public async Task<ActionResult<IEnumerable<InterestExpressedReadDto>>> GetInterestExpressed()
         {
@@ -927,7 +926,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of complaint types
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetComplaintType")]
         public async Task<ActionResult<IEnumerable<ComplaintTypeReadDto>>> GetComplaintType()
         {
@@ -967,7 +966,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(500, new { response = ex.Message });
             }
         }
 
@@ -991,13 +990,20 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult<ComplaintTypeReadDto>> UpdateComplaintType([FromBody] ComplaintTypeUpdateDto values)
         {
-            var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.modifiedBy))
+            try
             {
-                return Unauthorized();
-            }
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.modifiedBy))
+                {
+                    return Unauthorized();
+                }
 
-            return Ok(await _complaintTypeService.UpdateComplaintTypeAsync(values));
+                return Ok(await _complaintTypeService.UpdateComplaintTypeAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { response = ex.Message });
+            }
         }
 
         /// <summary>
@@ -1015,13 +1021,23 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns the nature of complaint list
         /// </summary>
-        [HttpGet]
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetNatureOfComplaint")]
         public async Task<ActionResult<IEnumerable<NatureOfComplaintReadDto>>> GetNatureOfComplaint()
         {
             return Ok(await _natureOfComplaintService.GetNatureOfComplaintAsync());
         }
 
+        /// <summary>
+        /// Returns the nature of complaint list based on a complaint type
+        /// </summary>
+        [HttpGet]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [Route("GetNatureOfComplaint/{complaintTypeId}")]
+        public async Task<ActionResult<IEnumerable<NatureOfComplaintReadDto>>> GetNatureOfComplaint(int complaintTypeId)
+        {
+            return Ok(await _natureOfComplaintService.GetNatureOfComplaintAsync(complaintTypeId));
+        }
 
         /// <summary>
         ///  Create a new nature of complaint
@@ -1099,6 +1115,97 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             return Ok(await _natureOfComplaintService.DeleteNatureOfComplaintAsync(natureOfComplaintId));
         }
+
+        //----------------------COMPLAINT STATUS------------
+        /// <summary>
+        /// Returns a list of complaint status
+        /// </summary>
+        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [Route("GetComplaintStatus")]
+        public async Task<ActionResult<IEnumerable<ComplaintStatusesReadDto>>> GetComplaintStatus()
+        {
+            return Ok(await _complaintStatusesService.GetComplaintStatusAsync());
+        }
+
+
+        /// <summary>
+        ///  Create a new complaint status
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /CreateComplaintStatus
+        /// 
+        /// {
+        ///    "complaintStatusId": 0,
+        ///    "complaintStatus": "SUBMITTED",
+        ///    "description: "Complaint has been submitted by the customer.",
+        ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateComplaintStatus")]
+        [Authorize(Policy = "Permission:Customers.CREATE")]
+        public async Task<ActionResult<ComplaintStatusesReadDto>> CreateComplaintStatus([FromBody] ComplaintStatusesCreateDto values)
+        {
+            try
+            {
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(await _complaintStatusesService.CreateComplaintStatusAsync(values));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Modify details of exisitng complaint status
+        /// </summary>
+        /// <remarks>
+        ///
+        /// Sample Request:
+        ///
+        /// POST /UpdateComplaintStatus
+        /// 
+        /// {
+        ///    "complaintStatusId": 1,
+        ///    "complaintStatus": "CUSTOMER SUBMITTED",
+        ///    "description: "You submited a complaint and its' currently pending review by an officer.",
+        ///    "modifiedby": "32ea339b-75f2-4f57-8153-915f127a9612"
+        /// }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateComplaintStatus")]
+        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        public async Task<ActionResult<ComplaintStatusesReadDto>> UpdateComplaintStatus([FromBody] ComplaintStatusesUpdateDto values)
+        {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
+
+            return Ok(await _complaintStatusesService.UpdateComplaintStatusAsync(values));
+        }
+
+        /// <summary>
+        /// Removes an exsiting complaint status based on the id
+        /// </summary>
+        [HttpDelete("DeleteComplaintStatus/{complaintStatusId}")]
+        [Authorize(Policy = "Permission:Customers.DELETE")]
+        public async Task<ActionResult> DeleteComplaintStatus(int complaintStatusId)
+        {
+            return Ok(await _complaintStatusesService.DeleteComplaintStatusAsync(complaintStatusId));
+        }
+
+
     }
 }
 

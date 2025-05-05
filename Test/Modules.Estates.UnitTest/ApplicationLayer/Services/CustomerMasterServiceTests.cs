@@ -1,4 +1,15 @@
-﻿using Xunit;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
+using Xunit;
 using FluentAssertions;
 using Moq;
 using AutoFixture;
@@ -18,6 +29,7 @@ using Modules.Estates.Domain;
 using Modules.Estates.Application.Enums;
 using Modules.Estates.UnitTest.InfrastructureLayer.Data;
 using Modules.Estates.Domain.Entities.Management;
+using Modules.Estates.Domain.Enums;
 
 namespace Modules.Estates.UnitTest.ApplicationLayer.Services
 {

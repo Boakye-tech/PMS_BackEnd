@@ -1,11 +1,17 @@
-﻿using System;
-using System.Reflection.Emit;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Modules.Users.Application.Dtos.Administration;
-using Modules.Users.Domain.Entities.Menu;
-using Modules.Users.Infrastructure.Configuration;
 
 namespace Modules.Users.Infrastructure
 {

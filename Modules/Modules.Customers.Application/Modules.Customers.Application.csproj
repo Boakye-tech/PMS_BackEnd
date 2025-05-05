@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ReleaseVersion>1.0.1</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,8 +15,10 @@
     <None Remove="Validations\" />
     <None Remove="Dtos\CustomerDetails\" />
     <None Remove="Dtos\PropertyDetails\" />
-    <None Remove="Interfaces\Services\" />
     <None Remove="Dtos\Complaints\" />
+    <None Remove="Interfaces\ExternalServices\" />
+    <None Remove="Interfaces\ModuleServices\" />
+    <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -25,11 +28,14 @@
     <Folder Include="Validations\" />
     <Folder Include="Dtos\CustomerDetails\" />
     <Folder Include="Dtos\PropertyDetails\" />
-    <Folder Include="Interfaces\Services\" />
     <Folder Include="Dtos\Complaints\" />
+    <Folder Include="Interfaces\ExternalServices\" />
+    <Folder Include="Interfaces\ModuleServices\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Customers.Domain\Modules.Customers.Domain.csproj" />
+    <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />

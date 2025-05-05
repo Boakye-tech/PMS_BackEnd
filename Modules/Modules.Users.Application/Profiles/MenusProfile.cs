@@ -1,6 +1,13 @@
-﻿using System;
-using Modules.Users.Application.Dtos.Entities.Menu;
-using Modules.Users.Domain.Entities.Menu;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 
 namespace Modules.Users.Application.Profiles
 {
@@ -12,6 +19,8 @@ namespace Modules.Users.Application.Profiles
             CreateMap<MenusDto, Menus>();
             CreateMap<MenusDeleteDto, Menus>();
 
+
+            CreateMap<Menus, MenusUpdateDto>();
         }
     }
 }

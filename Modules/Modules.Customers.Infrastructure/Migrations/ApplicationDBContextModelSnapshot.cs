@@ -31,10 +31,6 @@ namespace Modules.Customers.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintId"));
 
-                    b.Property<string>("AssignedBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
                     b.Property<string>("AssignedTo")
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
@@ -57,8 +53,10 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerCode")
                         .HasMaxLength(10)
@@ -69,15 +67,22 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("DateAssigned")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateReviewed")
+                    b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DetailsOfComplaint")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DispatachedTo_Department")
+                        .HasMaxLength(36)
+                        .HasColumnType("int");
+
+                    b.Property<int>("DispatachedTo_DepartmentUnit")
+                        .HasColumnType("int");
 
                     b.Property<string>("DocumentOne")
                         .HasMaxLength(255)
@@ -96,11 +101,19 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
 
-                    b.Property<bool>("IsTheMatterInCourt")
-                        .HasColumnType("bit");
+                    b.Property<string>("IsTheMatterInCourt")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
-                    b.Property<int>("NatureOfComplaintId")
-                        .HasColumnType("int");
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NatureOfComplaintId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -110,24 +123,18 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("PropertyLocationId")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyLocation")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("PropertyNumber")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("ResolutionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ResolvedBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
-
-                    b.Property<string>("ReviewedBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                    b.Property<int>("Source")
+                        .HasColumnType("int");
 
                     b.Property<string>("SubmittedBy")
                         .HasMaxLength(300)
@@ -145,6 +152,126 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.ToTable("Complaint", "cus");
                 });
 
+            modelBuilder.Entity("Modules.Customers.Domain.Entities.ComplaintHistory", b =>
+                {
+                    b.Property<int>("ComplaintHistoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintHistoryId"));
+
+                    b.Property<string>("ActionBy")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
+
+                    b.Property<DateTime>("ActionOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ComplaintNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("ComplaintStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("ComplaintHistoryId");
+
+                    b.HasIndex("ComplaintNumber", "ComplaintStatus")
+                        .IsUnique();
+
+                    b.ToTable("ComplaintHistory", "cus");
+                });
+
+            modelBuilder.Entity("Modules.Customers.Domain.Entities.ComplaintStatuses", b =>
+                {
+                    b.Property<int>("ComplaintStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintStatusId"));
+
+                    b.Property<string>("ComplaintStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("ComplaintStatusId");
+
+                    b.HasIndex("ComplaintStatus")
+                        .IsUnique();
+
+                    b.ToTable("ComplaintStatus", "cus");
+
+                    b.HasData(
+                        new
+                        {
+                            ComplaintStatusId = 1,
+                            ComplaintStatus = "SUBMITTED",
+                            Description = "COMPLAINT HAS BEEN SUBMITTED BY THE CUSTOMER."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 2,
+                            ComplaintStatus = "ACKNOWLEDGED",
+                            Description = "COMPLAINT HAS BEEN ACKNOWLEDGED BY THE ORGANIZATION."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 3,
+                            ComplaintStatus = "DISPATCHED",
+                            Description = "COMPLAINT FORWARDED TO THE APPROPRIATE DEPARTMENT."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 4,
+                            ComplaintStatus = "REVIEWED",
+                            Description = "COMPLAINT HAS BEEN REVIEWED."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 5,
+                            ComplaintStatus = "ASSIGNED",
+                            Description = "COMPLAINT ASSIGNED TO A HANDLER."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 6,
+                            ComplaintStatus = "IN PROGRESS",
+                            Description = "COMPLAINT IS ACTIVELY BEING WORKED ON."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 7,
+                            ComplaintStatus = "RESOLVED",
+                            Description = "COMPLAINT HAS BEEN RESOLVED."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 8,
+                            ComplaintStatus = "REOPENED",
+                            Description = "COMPLAINT HAS BEEN REOPENED FOR FURTHER ACTION."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 9,
+                            ComplaintStatus = "CLOSED",
+                            Description = "COMPLAINT PROCESS IS COMPLETED AND CLOSED."
+                        },
+                        new
+                        {
+                            ComplaintStatusId = 10,
+                            ComplaintStatus = "CANCELLED",
+                            Description = "COMPLAINT HAS BEEN CANCELLED."
+                        });
+                });
+
             modelBuilder.Entity("Modules.Customers.Domain.Entities.ComplaintType", b =>
                 {
                     b.Property<int>("ComplaintTypeId")
@@ -154,6 +281,12 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentUnitId")
+                        .HasColumnType("int");
 
                     b.HasKey("ComplaintTypeId");
 

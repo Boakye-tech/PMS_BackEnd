@@ -4,23 +4,28 @@ namespace Modules.Estates.Domain.Entities.Setup.Customer
 	public class ComplaintType : AuditableEntity
 	{
         [Key]
-        [Required]
 		public int ComplaintTypeId { get; set; }
 
-        [Required]
         [StringLength(120)]
-        public string ComplaintTypes { get; set; }
+        public string? ComplaintTypes { get; set; }
+
+        public int DepartmentId { get; set; }
+
+        public int DepartmentUnitId { get; set; }
 
 
-        public ComplaintType(int complaintTypeId, string complaintTypes)
+        public ComplaintType(int complaintTypeId, string complaintTypes, int departmentId, int departmentUnitId)
         {
             ComplaintTypeId = complaintTypeId;
             ComplaintTypes = complaintTypes;
+            DepartmentId = departmentId;
+            DepartmentUnitId = departmentUnitId;
         }
 
-        public static ComplaintType Create(int complaintTypeId, string complaintTypes)
+
+        public static async Task<ComplaintType> Create(int complaintTypeId, string complaintTypes, int departmentId, int departmentUnitId, ICustomerDomainService customerDomainService)
         {
-            if (string.IsNullOrWhiteSpace(complaintTypes) || complaintTypeId < 0)
+            if (string.IsNullOrWhiteSpace(complaintTypes) || complaintTypeId < 0 || departmentId == 0)
             {
                 throw new ArgumentException("Invalid Complaint Type Data.");
             }
@@ -31,15 +36,34 @@ namespace Modules.Estates.Domain.Entities.Setup.Customer
             if (string.IsNullOrWhiteSpace(complaintTypes) || complaintTypes.Length > 120)
                 throw new ArgumentException("Complaint Types must not be null or exceed 120 characters.");
 
+            if (departmentId == 0)
+                throw new ArgumentException("Department Id must be greater than zero.");
 
-            return new ComplaintType(complaintTypeId, complaintTypes);
+            if(await customerDomainService.ComplaintTypeExist(complaintTypeId))
+            {
+                throw new ArgumentException("Complaint Type Id already exist");
+            }
+
+            if (await customerDomainService.ComplaintTypeExist(complaintTypes))
+            {
+                throw new ArgumentException("Complaint Type already exist");
+            }
+
+
+            return new ComplaintType(complaintTypeId, complaintTypes, departmentId, departmentUnitId);
         }
 
-        public static ComplaintType Update(int complaintTypeId, string complaintTypes)
+        public static async Task<ComplaintType> Update(int complaintTypeId, string complaintTypes, int departmentId, int departmentUnitId, ICustomerDomainService customerDomainService)
         {
-            if (string.IsNullOrWhiteSpace(complaintTypes) || complaintTypeId < 0)
+            if (string.IsNullOrWhiteSpace(complaintTypes) || complaintTypeId < 0 || departmentId == 0)
             {
                 throw new ArgumentException("Invalid Complaint Type Data.");
+            }
+
+
+            if (!await customerDomainService.ComplaintTypeExist(complaintTypeId))
+            {
+                throw new ArgumentException("Complaint Type Id supplied does not exist.");
             }
 
             if (complaintTypeId < 0)
@@ -49,7 +73,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Customer
                 throw new ArgumentException("Complaint Types must not be null or exceed 120 characters.");
 
 
-            return new ComplaintType(complaintTypeId, complaintTypes);
+            return new ComplaintType(complaintTypeId, complaintTypes,departmentId, departmentUnitId);
 
         }
 

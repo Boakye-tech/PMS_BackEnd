@@ -1,5 +1,16 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+using System;
 using Azure.Storage.Blobs;
+
 
 namespace Modules.Customers.Presentation
 {
@@ -8,7 +19,6 @@ namespace Modules.Customers.Presentation
         public static IServiceCollection AddCustomerModule(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                //.AddCatalogCore()
                 .AddCustomerInfrastructure(configuration);
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -23,6 +33,8 @@ namespace Modules.Customers.Presentation
             services.AddScoped<IComplaintTypeService, ComplaintTypeService>();
             services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
             services.AddScoped<IComplaintService, ComplaintService>();
+
+            services.AddHttpClient<ICustomerModuleCommunicationServices, CustomerModuleCommunicationServices>();
 
             services.AddSingleton(s =>
             {

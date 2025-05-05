@@ -1,4 +1,14 @@
-﻿using System;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 01/01/2025 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Users.Domain.Entities.Menu
@@ -13,12 +23,14 @@ namespace Modules.Users.Domain.Entities.Menu
 
         [Required]
         [StringLength(110)]
-        public string SubMenuName { get; set; }
+        public string? SubMenuName { get; set; }
 
         [StringLength(255)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public bool IsOpen { get; set; }
+
+        public SubMenus(){}
 
         public SubMenus(int menuId, int subMenuId, string subMenuName, string description, bool isOpen)
 		{
