@@ -206,6 +206,15 @@ jobs:
           github.event_name == 'push'
         working-directory: PMS.Presentation
         run: dotnet publish ./PMS.Presentation.csproj -c Release -o "${{env.DOTNET_ROOT}}/publish-output" /p:GenerateDocumentationFile=true
+
+      - name: Copy Firebase Config to Publish Directory
+        if: github.event_name == 'push'
+        shell: pwsh
+        run: |
+          $publishDir = "${{env.DOTNET_ROOT}}\publish-output"
+          $firebaseContent = '${{ secrets.FIREBASE_JSON_CONTENT }}'
+          Set-Content -Path (Join-Path $publishDir "firebase.json") -Value $firebaseContent
+          Write-Host "Copied firebase.json to publish directory"
       
       - name: Update All Databases  
         if: >
