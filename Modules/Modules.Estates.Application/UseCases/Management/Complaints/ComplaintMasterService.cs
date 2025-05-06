@@ -367,7 +367,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
         {
             List<ComplaintStaffReadDto> _allComplaints = new List<ComplaintStaffReadDto>();
 
-            var allComplaint_Result = await _unitOfWork.Complaint.GetAll(c => c.CustomerCode == customerCode_OR_propertyNumber || c.PropertyNumber == customerCode_OR_propertyNumber);
+            var allComplaint_Result = (await _unitOfWork.Complaint.GetAll(c => c.CustomerCode == customerCode_OR_propertyNumber || c.PropertyNumber == customerCode_OR_propertyNumber)).OrderBy(c => c.ComplaintDate);
 
             if (allComplaint_Result == null)
             {
@@ -608,13 +608,6 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 }
 
                 //check status of complaint. If status is not acknowledged, complaint cannot be dispatched.
-                var _complaintStatus = await _unitOfWork.ComplaintHistory.Get(ch => ch.ComplaintNumber == values.ComplaintNumber && ch.ComplaintStatus == ComplaintStatusEnum.ACKNOWLEDGED);
-                if (_complaintStatus is not null)
-                {
-                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been acknowledged yet, and cannot be dispatched.");
-                    return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} has not been acknowledged yet, and cannot be dispatched." };
-                }
-
                 if (_complaint.ComplaintStatus != ComplaintStatusEnum.ACKNOWLEDGED)
                 {
                     _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been acknowledged yet and cannot be dispatched.");

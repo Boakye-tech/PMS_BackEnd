@@ -9,6 +9,10 @@
 //  **************************************************/
 
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Modules.Estates.Domain.Entities.Setup.Customer;
+
 namespace Modules.Estates.Application.UseCases.Setup.Customer;
 
 public class CustomerTypeService : ICustomerTypeService
@@ -24,31 +28,51 @@ public class CustomerTypeService : ICustomerTypeService
 
     public async Task<CustomerTypeReadDto> AddCustomerTypeAsync(CustomerTypeCreateDto values)
     {
-        CustomerType customerType = new(values.customerTypeId, values.customerTypes!)
+        try
         {
-            CreatedBy = values.createdBy,
-            CreatedOn = DateTime.Now
-        };
+            values.customerTypeId = 0;
+            CustomerType customerType = new(values.customerTypeId, values.customerTypes!)
+            {
+                CreatedBy = values.createdBy,
+                CreatedOn = DateTime.Now
+            };
 
-        _unitOfWork.CustomerType.Insert(customerType);
-        await _unitOfWork.Complete();
+            _unitOfWork.CustomerType.Insert(customerType);
+            await _unitOfWork.Complete();
 
-        return new CustomerTypeReadDto(customerType.CustomerTypeId, customerType.CustomerTypes!);
+            return new CustomerTypeReadDto(customerType.CustomerTypeId, customerType.CustomerTypes!);
+        }
+        catch (DbUpdateException ex)
+        {
+            return new CustomerTypeReadDto(ex.HResult, ex.InnerException!.Message);
+        }
+        catch (Exception ex)
+        {
+            return new CustomerTypeReadDto(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
-    public async Task<string> DeleteCustomerTyeAsync(int value)
+    public async Task<CustomerTypeReadDto> DeleteCustomerTyeAsync(int value)
     {
-        var response = await _unitOfWork.CustomerType.Get(value);
-
-        if (response is null)
+        try
         {
-            return "BadRequest";
+            var response = await _unitOfWork.CustomerType.Get(value);
+
+            if (response is null)
+            {
+                return new CustomerTypeReadDto(StatusCodes.Status404NotFound, $"Customer Type Id {value} supplied was not found.");
+            }
+
+            _unitOfWork.CustomerType.Delete(response);
+            await _unitOfWork.Complete();
+
+            return new CustomerTypeReadDto(response.CustomerTypeId, response.CustomerTypes!);
         }
-
-        _unitOfWork.CustomerType.Delete(response);
-        await _unitOfWork.Complete();
-
-        return "success";
+        catch (Exception ex)
+        {
+            return new CustomerTypeReadDto(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+        
     }
 
     public async Task<IEnumerable<CustomerTypeReadDto>> GetCustomerTypeAsync()
@@ -71,16 +95,32 @@ public class CustomerTypeService : ICustomerTypeService
 
     public async Task<CustomerTypeReadDto> UpdateCustomerTypeAsync(CustomerTypeUpdateDto values)
     {
-        CustomerType customerType = new(values.customerTypeId, values.customerTypes!)
+        try
         {
-            ModifiedBy = values.modifiedBy,
-            ModifiedOn = DateTime.Now
-        };
+            var result = await _unitOfWork.CustomerType.Get(ct => ct.CustomerTypeId == values.customerTypeId);
+            if (result is null)
+            {
+                return new CustomerTypeReadDto(StatusCodes.Status404NotFound, "0 row(s) found.");
+            }
 
-        _unitOfWork.CustomerType.Update(customerType);
-        await _unitOfWork.Complete();
+            CustomerType customerType = new(values.customerTypeId, values.customerTypes!)
+            {
+                ModifiedBy = values.modifiedBy,
+                ModifiedOn = DateTime.Now
+            };
 
-        return new CustomerTypeReadDto(customerType.CustomerTypeId, customerType.CustomerTypes!);
+            _unitOfWork.CustomerType.Update(customerType);
+            await _unitOfWork.Complete();
+
+            return new CustomerTypeReadDto(customerType.CustomerTypeId, customerType.CustomerTypes!);
+
+        }
+        catch (Exception ex)
+        {
+            return new CustomerTypeReadDto(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
+
+
 }
 

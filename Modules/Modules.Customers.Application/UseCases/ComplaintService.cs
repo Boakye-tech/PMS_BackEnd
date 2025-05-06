@@ -114,7 +114,7 @@ namespace Modules.Customers.Application.UseCases
                     }
                 }
 
-                return new GenericResponseDto{ responseCode = StatusCodes.Status200OK, response = complaint.ComplaintNumber! };
+                return new GenericResponseDto{ responseCode = StatusCodes.Status201Created, response = $"Complaint submitted successfully with complaint number {complaint.ComplaintNumber!}." };
             }
             catch (Exception ex)
             {
@@ -521,7 +521,7 @@ namespace Modules.Customers.Application.UseCases
                 //send to staff module
                 await _moduleComms.SendModifiedComplaintDetailsAsync(values);
 
-                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = "Complaint modified successfully." };
+                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = $"Complaint {values.ComplaintNumber} has been successfully modified." };
             }
             catch (Exception ex)
             {
@@ -557,7 +557,7 @@ namespace Modules.Customers.Application.UseCases
 
                 _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.ACKNOWLEDGED} by {values.AcknowledgedBy} at {DateTime.UtcNow}.");
 
-                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = "Complaint acknowledged successfully." };
+                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = $"Complaint {_complaint.ComplaintNumber} has been successfully acknowledged." };
 
             }
             catch (Exception ex)
