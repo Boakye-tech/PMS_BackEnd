@@ -113,11 +113,11 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             // Arrange
             var userId = "testUser";
             var createDto = new CustomerTypeCreateDto
-            (
-                customerTypeId: 0,
-                customerTypes: "RESIDENT",
-                createdBy: userId
-            );
+            {
+                customerTypeId = 0,
+                customerTypes = "RESIDENT",
+                createdBy= userId
+            };
 
             var expectedResponse = new CustomerTypeReadDto
             (

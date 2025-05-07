@@ -591,8 +591,35 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Returns a list of complaint status
+        /// Returns a list of complaint statuses.
         /// </summary>
+        /// <remarks>
+        /// This endpoint returns all possible statuses that a complaint can go through.
+        /// 
+        /// **Sample Request:**
+        /// 
+        ///     GET /ComplaintStatus
+        /// 
+        /// **Sample Response:**
+        /// 
+        ///     [
+        ///         {
+        ///             "id": 1,
+        ///             "name": "SUBMITTED",
+        ///             "displayName": "Submit Complaint"
+        ///         },
+        ///         {
+        ///             "id": 2,
+        ///             "name": "ACKNOWLEDGED",
+        ///             "displayName": "Complaint Acknowledged"
+        ///         }
+        ///     ]
+        /// 
+        /// </remarks>
+        /// <returns>
+        /// Returns HTTP 200 OK with a list of complaint statuses.  
+        /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+        /// </returns>
         [HttpGet]
         [Route("ComplaintStatus")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
@@ -601,6 +628,58 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             var statuses = Enum.GetValues(typeof(ComplaintStatusEnum))
                                    .Cast<ComplaintStatusEnum>()
+                                   .Select(e => new
+                                   {
+                                       Id = (int)e,
+                                       Name = e.ToString(),
+                                       DisplayName = e.GetType()
+                                                     .GetField(e.ToString())!
+                                                      .GetCustomAttribute<DescriptionAttribute>()?
+                                                      .Description
+
+                                   });
+            return Ok(statuses);
+        }
+
+        /// <summary>
+        /// Returns a list of complaint sources.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint returns all possible sources from which a complaint can originate.
+        /// 
+        /// **Sample Request:**
+        /// 
+        ///     GET /ComplaintSources
+        /// 
+        /// **Sample Response:**
+        /// 
+        ///     [
+        ///         {
+        ///             "id": 1,
+        ///             "name": "CUSTOMER",
+        ///             "displayName": "Online customer self service submission"
+        ///         },
+        ///         {
+        ///             "id": 2,
+        ///             "name": "STAFF",
+        ///             "displayName": "Offline customer staff assisted submission"
+        ///         }
+        ///     ]
+        ///  
+        /// </remarks>
+        /// <returns>
+        /// Returns HTTP 200 OK with a list of complaint sources.  
+        /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
+        /// </returns>
+        [HttpGet]
+        [Route("ComplaintSources")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult ComplaintSources()
+        {
+            var statuses = Enum.GetValues(typeof(ComplaintSourceEnum))
+                                   .Cast<ComplaintSourceEnum>()
                                    .Select(e => new
                                    {
                                        Id = (int)e,
@@ -1820,10 +1899,70 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.READ")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ComplainantDetailsDto>))]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<List<ComplainantDetailsDto>>> GetCustomerTypes(string customerCode)
+        [Obsolete]
+        public async Task<ActionResult<List<ComplainantDetailsDto>>> GetComplainantDetails(string customerCode)
         {
             return Ok(await _complaintMasterServices.GetComplainantDetails(customerCode));
         }
+
+        /// <summary>
+        /// Retrieves the details of a complainant using either a provided property number or customer code.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint fetches complainant information linked to the specified property number or customer code.
+        /// It is typically used to pre-fill or verify complainant data during complaint registration or lookup.
+        /// 
+        /// **Sample Request:**
+        /// 
+        ///     GET /GetComplainantDetails?propertyNumber=RPL/C06/DTA/A/12&customerCode=2MI0106
+        /// 
+        /// **Sample Successful Response (200 OK):**
+        /// 
+        ///         {
+        ///             "propertyNumber": "CPL/C02/DTA/F/980",
+        ///             "propertyLocation": "COMMUNITY TWO",
+        ///             "customerName": "Kwame Ghana",
+        ///             "phoneNumber": "0245678901",
+        ///             "emailAddress": "kwame.ghana@example.com"
+        ///         }
+        ///                 /// **Sample Successful Response (200 OK):**
+        /// 
+        ///     [
+        ///         {
+        ///             "propertyNumber": "CPL/C02/DTA/F/980",
+        ///             "propertyLocation": "COMMUNITY TWO",
+        ///             "customerName": "Kwame Ghana",
+        ///             "phoneNumber": "0245678901",
+        ///             "emailAddress": "kwame.ghana@example.com"
+        ///         }
+        ///     ]
+        /// 
+        /// **Response Codes:**
+        /// - 200 OK: Returns a list of complainant details matching the given property number.
+        /// </remarks>
+        /// <returns>A list of <see cref="ComplainantDetailsDto"/> records containing complainant information.</returns>
+        [HttpGet]
+        [Route("GetComplainantDetails")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ComplainantDetailsDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ComplainantDetailsDto>))]
+        //[ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult> GetComplainantDetailsByPropertyNumber([FromQuery] string? propertyNumber, [FromQuery] string? customerCode)
+        {
+            if (!string.IsNullOrWhiteSpace(propertyNumber))
+            {
+                string _propertyNumber = HttpUtility.UrlDecode(propertyNumber!);
+                return Ok(await _complaintMasterServices.GetComplainantDetailsByPropertyNumber(_propertyNumber));
+            }
+
+            if (!string.IsNullOrWhiteSpace(customerCode))
+            {
+                return Ok(await _complaintMasterServices.GetComplainantDetails(customerCode));
+            }
+
+            return Ok();
+        }
+
 
         /// <summary>
         /// Checks if the current user is authorized.

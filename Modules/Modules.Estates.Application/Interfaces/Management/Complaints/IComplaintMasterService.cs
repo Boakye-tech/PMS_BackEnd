@@ -24,6 +24,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
 
         Task<ComplaintDto> GetComplaintDetails(string complaintNumber);
 
+        Task<ComplainantDetailsDto> GetComplainantDetailsByPropertyNumber(string propertyNumber);
+
         Task<List<ComplainantDetailsDto>> GetComplainantDetails(string customerCode);
 
         Task<List<ComplainantSearchDto>> GetComplainantSearch(string customerCode_OR_propertyNumber);

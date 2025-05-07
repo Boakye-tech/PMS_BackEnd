@@ -267,16 +267,16 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         public async Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList(string? searchParameter, int complaintType, int complaintStatus)
         {
-            var allComplaint_Result = (await _unitOfWork.Complaint.GetAll()).AsQueryable();
+            var allComplaint_Result = (await _unitOfWork.Complaint.GetAll()).AsQueryable().OrderByDescending(c => c.ComplaintDate);
 
             if (complaintType != 0)
             {
-                allComplaint_Result = allComplaint_Result.Where(a => a.ComplaintTypeId == complaintType);
+                allComplaint_Result = allComplaint_Result.Where(a => a.ComplaintTypeId == complaintType).OrderByDescending(c => c.ComplaintDate);
             }
 
             if (complaintStatus != 0)
             {
-                allComplaint_Result = allComplaint_Result.Where(a => a.ComplaintStatus == (ComplaintStatusEnum)complaintStatus);
+                allComplaint_Result = allComplaint_Result.Where(a => a.ComplaintStatus == (ComplaintStatusEnum)complaintStatus).OrderByDescending(c => c.ComplaintDate);
             }
 
             if (!string.IsNullOrEmpty(searchParameter))
@@ -285,7 +285,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                                                                  a.CustomerCode!.Contains(searchParameter.ToUpper()) ||
                                                                  a.PropertyNumber!.Contains(searchParameter.ToUpper()) ||
                                                                  a.ComplaintNumber!.Contains(searchParameter.ToUpper())
-                                                               );
+                                                               ).OrderByDescending(c => c.ComplaintDate);
             }
 
             List<ComplaintStaffReadDto> _allComplaints = new List<ComplaintStaffReadDto>();
@@ -295,6 +295,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
             {
                 return _allComplaints;
             }
+
 
 
             foreach (var complaint in allComplaint_Result!)
@@ -367,7 +368,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
         {
             List<ComplaintStaffReadDto> _allComplaints = new List<ComplaintStaffReadDto>();
 
-            var allComplaint_Result = (await _unitOfWork.Complaint.GetAll(c => c.CustomerCode == customerCode_OR_propertyNumber || c.PropertyNumber == customerCode_OR_propertyNumber)).OrderBy(c => c.ComplaintDate);
+            var allComplaint_Result = (await _unitOfWork.Complaint.GetAll(c => c.CustomerCode == customerCode_OR_propertyNumber || c.PropertyNumber == customerCode_OR_propertyNumber)).OrderByDescending(c => c.ComplaintDate);
 
             if (allComplaint_Result == null)
             {
@@ -752,6 +753,40 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
             return result.ToList();
           
+        }
+
+        public async Task<ComplainantDetailsDto> GetComplainantDetailsByPropertyNumber(string propertyNumber)
+        {
+            var allCustomers = await _unitOfWork.CustomerMaster.GetAll();
+            var allTitles = await _unitOfWork.Title.GetAll();
+            var allProperties = await _unitOfWork.PropertyMaster.GetAll();
+            var allLocalities = await _unitOfWork.Locality.GetAll();
+
+            var result = from a in allCustomers
+                         join d in allTitles on a.TitleId equals d.TitleId into titleGroup
+                         from title in titleGroup.DefaultIfEmpty()
+                         join b in allProperties on a.CustomerCode equals b.CustomerCode into propertyGroup
+                         from property in propertyGroup.DefaultIfEmpty()
+                         join c in allLocalities on property?.LocalityId equals c.LocalityId into localityGroup
+                         from locality in localityGroup.DefaultIfEmpty()
+                         where property != null && property.PropertyNumber == propertyNumber
+                         select new ComplainantDetailsDto
+                         {
+                             CustomerCode = a.CustomerCode,
+                             CustomerName = string.Concat(
+                                 (title?.Titles ?? "") + " ",
+                                 (a.OtherNames ?? "") + " ",
+                                 (a.SurName ?? "") + " ",
+                                 (a.CompanyName ?? "")
+                             ).Trim(),
+                             PhoneNumber = a.PrimaryMobileNumber,
+                             EmailAddress = a.EmailAddress,
+                             PropertyNumber = property?.PropertyNumber,
+                             PropertyLocation = locality?.LocalityName
+                         };
+
+            return result.FirstOrDefault()!;
+
         }
 
         public async Task<List<ComplainantSearchDto>> GetComplainantSearch(string customerCode_OR_propertyNumber)
