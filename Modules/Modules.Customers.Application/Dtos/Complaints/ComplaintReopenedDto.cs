@@ -20,6 +20,8 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         [StringLength(36)]
         public string? ReopenedBy { get; set; }
+
+        public string? ReopenNotes { get; set; }
     }
 }
 

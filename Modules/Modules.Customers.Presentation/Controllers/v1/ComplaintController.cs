@@ -743,10 +743,13 @@ public class ComplaintController : ControllerBase
                 return Unauthorized();
             }
 
-            var customer_code = _userContextService.UserCode();
-            if(!string.Equals(customer_code, values.CustomerCode))
+            if(values.Source == ComplaintSource.CUSTOMER)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, "Sorry you cannot submit complaints on behalf of another customer.");
+                var customer_code = _userContextService.UserCode();
+                if (!string.Equals(customer_code, values.CustomerCode))
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, "Sorry you cannot submit complaints on behalf of another customer.");
+                }
             }
 
             if (values.NatureOfComplaintId!.Count() == 0)
@@ -939,6 +942,11 @@ public class ComplaintController : ControllerBase
             if ((bool)role!)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = "The user role is forbidden from accessing this resource." });
+            }
+
+            if (values.ComplaintNumber!.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status204NoContent, new { message = "The complaint number cannot be empty or null, it must contain at least one valid complaint number." });
             }
 
             var result = await _complaintService.AcknowledgeComplaint(values); //change

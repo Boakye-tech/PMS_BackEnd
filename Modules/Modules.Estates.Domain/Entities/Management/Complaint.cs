@@ -96,6 +96,14 @@ namespace Modules.Estates.Domain.Entities.Management
 
         public string? Notes { get; set; }
 
+        public string? ReviewNotes { get; set; }
+
+        public string? CancelNotes { get; set; }
+
+        public string? ReopenNotes { get; set; }
+
+        public string? ClosedNotes { get; set; }
+
         public ComplaintSourceEnum Source { get; set; }
 
         public Complaint()
@@ -108,7 +116,7 @@ namespace Modules.Estates.Domain.Entities.Management
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
                          string documentOne, string documentTwo, string documentThree, ComplaintStatusEnum complaintStatus, string createdBy,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
-                         string resolvedBy, DateTime resolutionDate, ComplaintSourceEnum Source,string notes)
+                         string resolvedBy, DateTime resolutionDate, ComplaintSourceEnum Source,string notes, string ReviewNotes, string CancelNotes, string ReopenNotes, string ClosedNotes)
         {
         }
 
@@ -190,6 +198,10 @@ namespace Modules.Estates.Domain.Entities.Management
                 DispatachedTo_DepartmentUnit = 0,
                 AssignedTo = string.Empty,
                 Notes = string.Empty,
+                ReviewNotes = string.Empty,
+                ReopenNotes = string.Empty,
+                ClosedNotes = string.Empty,
+                CancelNotes = string.Empty,
                 Source = source
             };
 

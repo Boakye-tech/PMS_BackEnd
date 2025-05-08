@@ -97,6 +97,14 @@ namespace Modules.Customers.Domain.Entities
 
         public ComplaintSource Source { get; set; }
 
+        public string? ReviewNotes { get; set; }
+
+        public string? CancelNotes { get; set; }
+
+        public string? ReopenNotes { get; set; }
+
+        public string? ClosedNotes { get; set; }
+
         public Complaint()
         {
 
@@ -108,7 +116,7 @@ namespace Modules.Customers.Domain.Entities
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
                          string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
-                         string resolvedBy, DateTime resolutionDate, string notes, ComplaintSource source)
+                         string resolvedBy, DateTime resolutionDate, string notes, ComplaintSource source, string ReviewNotes, string CancelNotes, string ReopenNotes, string ClosedNotes)
         {
         }
 
@@ -190,7 +198,11 @@ namespace Modules.Customers.Domain.Entities
                 DispatachedTo_DepartmentUnit = 0,
                 AssignedTo = string.Empty,
                 Notes = string.Empty,
-                Source = source
+                Source = source,
+                ReviewNotes = string.Empty,
+                ReopenNotes = string.Empty,
+                ClosedNotes = string.Empty,
+                CancelNotes = string.Empty
             };
 
             //_newComplaint._domainEvents.Add(new ComplaintCreatedEvent(_complaintNumber, natureOfComplaintId.ToString(), propertyNumber, createdBy));

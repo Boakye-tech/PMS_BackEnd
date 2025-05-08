@@ -25,8 +25,8 @@ namespace Modules.Customers.Application.Interfaces
         Task<PropertyDetailsReadDto> GetPropertyDetails(string propertyNumber);
 
         Task<IEnumerable<AvailablePropertySummaryViewDto>> AvailablePropertiesSummary();
-        
 
+        Task<PaginatedResultDto<PropertySearchDto>> GetCustomerPropertySearch(string customerCode_OR_propertyNumber, int pageNumber, int pageSize);
     }
 
 

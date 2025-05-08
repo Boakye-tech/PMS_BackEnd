@@ -19,6 +19,8 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         [StringLength(36)]
         public string? ClosedBy { get; set; }
+
+        public string? CloseNotes { get; set; }
     }
 }
 

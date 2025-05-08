@@ -9,6 +9,8 @@
 //  **************************************************/
 
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace Modules.Estates.Application.Interfaces.Management.Complaints
 {
 	public interface IComplaintMasterService
@@ -51,6 +53,11 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
         Task<BaseResponseDto> CancelComplaint(ComplaintCancellationDto values);
 
         Task<BaseResponseDto> InProgressComplaint(ComplaintInProgressDto values);
+
+        Task<IEnumerable<ComplaintStaffReadDto>> GetListOfComplaintsByDepartment(int departmentId, [FromQuery] int departmentUnitId, [FromQuery] int complaintStatus);
+
+        Task<IEnumerable<ComplaintStaffReadDto>> GetListOfComplaintsByAssignee(string userId, [FromQuery] int complaintStatus);
+
     }
 }
 

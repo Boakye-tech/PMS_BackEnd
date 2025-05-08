@@ -142,6 +142,7 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
                     _ => null!
                 };
 
+
                 if (response == null)
                 {
                     _logger.LogWarning("Unsupported HTTP method: {HttpMethod}", httpMethod);

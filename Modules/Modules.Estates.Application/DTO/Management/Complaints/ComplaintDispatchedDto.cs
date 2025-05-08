@@ -17,15 +17,15 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
 	{
         [Required]
         [StringLength(10)]
-        public string? ComplaintNumber { get; set; }
+        public List<string>? ComplaintNumber { get; set; }
 
         [StringLength(36)]
         public string? DispatchedBy { get; set; }
 
-        [Required]
-        public int DispatchedTo_DepartmentId { get; set; }
+        //[Required]
+        //public int DispatchedTo_DepartmentId { get; set; }
 
-        public int DispatchedTo_DepartmentUnitId { get; set; }
+        //public int DispatchedTo_DepartmentUnitId { get; set; }
 
     }
 }

@@ -19,7 +19,7 @@ namespace Modules.Users.Application.Validations.UserAccounts
             RuleFor(x => x.DepartmentId).GreaterThanOrEqualTo(0);
             RuleFor(x => x.UnitId).GreaterThanOrEqualTo(0);
             RuleFor(x => x.FirstName).NotEmpty().Length(3, 50); //.WithMessage("Staff firstname is required");
-            RuleFor(x => x.MiddleName).Length(1, 100);//.WithMessage("Staff firstname is required");
+            //RuleFor(x => x.MiddleName).Length(1, 100);//.WithMessage("Staff firstname is required");
             RuleFor(x => x.LastName).NotEmpty().Length(3, 100); //.WithMessage("Staff lastName is required");
 
 

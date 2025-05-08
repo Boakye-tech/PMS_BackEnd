@@ -19,6 +19,8 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
         [StringLength(10)]
         public string? ComplaintNumber { get; set; }
 
+        public string? ClosedNotes { get; set; }
+
         [StringLength(36)]
         public string? ClosedBy { get; set; }
     }

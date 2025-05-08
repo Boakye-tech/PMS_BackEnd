@@ -20,6 +20,8 @@ namespace Modules.Customers.Application.Dtos.Complaints
         [StringLength(36)]
         public string? CancelledBy { get; set; }
 
+        public string? CancelNotes { get; set; }
+
     }
 }
 

@@ -38,6 +38,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("AvailabilityDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CancelNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClosedNotes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ComplaintDate")
                         .HasColumnType("datetime2");
 
@@ -114,6 +120,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ReopenNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviewNotes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Source")
                         .HasColumnType("int");
@@ -756,7 +768,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComplaintTypeId"));
 
                     b.Property<string>("ComplaintTypes")
-                        .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 

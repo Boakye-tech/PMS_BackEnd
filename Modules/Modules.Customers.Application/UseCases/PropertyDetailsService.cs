@@ -119,6 +119,47 @@ namespace Modules.Customers.Application.UseCases
 
         }
 
+        public async Task<List<PropertySearchDto>> GetCustomerPropertySearch(string customerCode_OR_propertyNumber)
+        {
+            var result = from a in await _unitOfWork.PropertyDetails.GetAll(c => c.CustomerCode!.Contains(customerCode_OR_propertyNumber) || c.PropertyNumber!.Contains(customerCode_OR_propertyNumber))
+                         select new PropertySearchDto
+                         {
+                             CustomerCode = a.CustomerCode,
+                             PropertyNumber = a.PropertyNumber
+                         };
+
+            return result.ToList();
+        }
+
+
+
+        public async Task<PaginatedResultDto<PropertySearchDto>> GetCustomerPropertySearch(string customerCode_OR_propertyNumber, int pageNumber, int pageSize)
+        {
+            var query = from a in await _unitOfWork.PropertyDetails.GetAll(
+                            c => c.CustomerCode!.Contains(customerCode_OR_propertyNumber) ||
+                                 c.PropertyNumber!.Contains(customerCode_OR_propertyNumber))
+                        select new PropertySearchDto
+                        {
+                            CustomerCode = a.CustomerCode,
+                            PropertyNumber = a.PropertyNumber
+                        };
+
+            var totalRecords = query.Count();
+            var list = query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return new PaginatedResultDto<PropertySearchDto>
+            {
+                SearchList = list,
+                TotalRecords = totalRecords,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+        }
+
+
         public Task<GenericResponseDto> UpdatePropertyDetails(PropertyDetailsDto values)
         {
             throw new NotImplementedException();

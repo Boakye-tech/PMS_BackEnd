@@ -1081,13 +1081,19 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
+                if(values.ComplaintNumber!.Count == 0)
+                {
+                    return StatusCode(StatusCodes.Status204NoContent, new { StatusMessage = "The complaint number cannot be empty or null, it must contain at least one valid complaint number." });
+                }
+
                 var result = await _complaintMasterServices.AcknowledgeComplaint(values); 
                 return result.StatusCode switch
                 {
-                    200 => Ok(new { message = result.StatusMessage }),
-                    403 => StatusCode(StatusCodes.Status403Forbidden, new { message = result.StatusMessage }),
-                    404 => NotFound(new { message = result.StatusMessage }),
-                    _ => StatusCode(StatusCodes.Status500InternalServerError, new { message = result.StatusMessage })
+                    200 => Ok(result),
+                    204 => StatusCode(StatusCodes.Status204NoContent,result),
+                    403 => StatusCode(StatusCodes.Status403Forbidden,result),
+                    404 => NotFound(result.StatusMessage),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result)
                 };
             }
             catch (Exception ex)
@@ -1178,12 +1184,18 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
+                if (values.ComplaintNumber!.Count == 0)
+                {
+                    return StatusCode(StatusCodes.Status204NoContent, new { StatusMessage = "The complaint number cannot be empty or null, it must contain at least one valid complaint number." });
+                }
+
                 var result = await _complaintMasterServices.DispatchComplaint(values); 
                 return result.StatusCode switch
                 {
-                    200 => Ok(result.StatusMessage),
-                    404 => NotFound(result.StatusMessage),
-                    _ => StatusCode(500, result.StatusMessage),
+                    200 => Ok(result),
+                    204 => StatusCode(StatusCodes.Status204NoContent, result),
+                    404 => NotFound(result),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result),
                 };
             }
             catch (Exception ex)
@@ -1275,14 +1287,15 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 var result = await _complaintMasterServices.ReviewComplaint(values);
                 return result.StatusCode switch
                 {
-                    200 => Ok(result.StatusMessage),
-                    404 => NotFound(result.StatusMessage),
-                    _ => StatusCode(500, result.StatusMessage),
+                    200 => Ok(result),
+                    400 => BadRequest(result),
+                    404 => NotFound(result),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result),
                 };
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
             }
         }
 
@@ -1961,6 +1974,37 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetListOfComplaintsByDepartment/{departmentId}")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ComplainantDetailsDto>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> GetListOfComplaintsByDepartment(int departmentId, [FromQuery] int departmentUnitId, [FromQuery] int complaintStatus)
+        {
+            if (departmentId == 0)
+            {
+                return StatusCode(StatusCodes.Status204NoContent, new { response = "Department Id cannot be zero." });
+            }
+
+            return Ok(await _complaintMasterServices.GetListOfComplaintsByDepartment(departmentId, departmentUnitId,complaintStatus));
+        }
+
+        [HttpGet]
+        [Route("GetListOfComplaintsByAssignee/{userId}")]
+        [Authorize(Policy = "Permission:Customers.READ")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ComplainantDetailsDto>))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> GetListOfComplaintsByAssignee(string userId, [FromQuery] int complaintStatus)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return StatusCode(StatusCodes.Status204NoContent, new { response = "User id cannot be null or empty." });
+            }
+
+            return Ok(await _complaintMasterServices.GetListOfComplaintsByAssignee(userId,complaintStatus));
+
         }
 
 

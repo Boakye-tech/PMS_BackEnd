@@ -114,7 +114,7 @@ namespace Modules.Customers.Application.UseCases
                     }
                 }
 
-                return new GenericResponseDto{ responseCode = StatusCodes.Status201Created, response = $"Complaint submitted successfully with complaint number {complaint.ComplaintNumber!}." };
+                return new GenericResponseDto{ responseCode = StatusCodes.Status201Created, response = $"Complaint submitted successfully with complaint number - {complaint.ComplaintNumber!}." };
             }
             catch (Exception ex)
             {
@@ -181,6 +181,7 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be cancelled at this stage." };
                 }
 
+                _complaint.CancelNotes = values.CancelNotes;
                 _complaint.ComplaintStatus = ComplaintStatus.CANCELLED;
                 _unitOfWork.Complaint.Update(_complaint);
 
@@ -361,6 +362,7 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be resolved at this stage." };
                 }
 
+                _complaint.Notes = values.Notes;
                 _complaint.ComplaintStatus = ComplaintStatus.RESOLVED;
                 _unitOfWork.Complaint.Update(_complaint);
 
@@ -435,7 +437,13 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be reviewed at this stage." };
                 }
 
+                if (values.IsReviewed!.ToUpper() == "NO")
+                {
+                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been reviewed at this stage.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status400BadRequest, response = $"Complaint number {values.ComplaintNumber} has not been reviewed at this stage." };
+                }
 
+                _complaint.ReviewNotes = values.ReviewNotes;
                 _complaint.ComplaintStatus = ComplaintStatus.REVIEWED;
                 _unitOfWork.Complaint.Update(_complaint);
 
@@ -534,30 +542,40 @@ namespace Modules.Customers.Application.UseCases
         {
             try
             {
-                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
-
-                if (_complaint is null)
+                if (values.ComplaintNumber!.Count == 0)
                 {
-                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
-                    return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                    _logger.LogWarning("The complaint number list cannot be empty or null, it must contain at least one valid complaint number.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = "The complaint number list cannot be empty or null, it must contain at least one valid complaint number." };
                 }
 
-                if (_complaint.ComplaintStatus != ComplaintStatus.SUBMITTED)
+                foreach (var _complaintNumber in values.ComplaintNumber)
                 {
-                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} is not in the submitted state and cannot be acknowledged.");
-                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} is not in the submitted state and cannot be acknowledged." };
+                    var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == _complaintNumber);
+
+                    if (_complaint is null)
+                    {
+                        _logger.LogWarning($"Complaint number {_complaintNumber} supplied doesnot exist.");
+                        return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {_complaintNumber} supplied doesnot exist." };
+                    }
+
+                    if (_complaint.ComplaintStatus != ComplaintStatus.SUBMITTED)
+                    {
+                        _logger.LogWarning($"Complaint number {values.ComplaintNumber} is not in the submitted state and cannot be acknowledged.");
+                        return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {_complaintNumber} is not in the submitted state and cannot be acknowledged." };
+                    }
+
+                    _complaint.ComplaintStatus = ComplaintStatus.ACKNOWLEDGED;
+                    _unitOfWork.Complaint.Update(_complaint);
+
+                    ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.ACKNOWLEDGED, values.AcknowledgedBy, DateTime.UtcNow);
+                    _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+                    
+                    _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.ACKNOWLEDGED} by {values.AcknowledgedBy} at {DateTime.UtcNow}.");
                 }
 
-                _complaint.ComplaintStatus = ComplaintStatus.ACKNOWLEDGED;
-                _unitOfWork.Complaint.Update(_complaint);
-
-                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.ACKNOWLEDGED, values.AcknowledgedBy, DateTime.UtcNow);
-                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
-                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.ACKNOWLEDGED} by {values.AcknowledgedBy} at {DateTime.UtcNow}.");
-
-                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = $"Complaint {_complaint.ComplaintNumber} has been successfully acknowledged." };
+                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = $"Complaint(s) acknowledged successfully." };
 
             }
             catch (Exception ex)
@@ -570,31 +588,47 @@ namespace Modules.Customers.Application.UseCases
         {
             try
             {
-                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
-
-                if (_complaint is null)
+                if (values.ComplaintNumber!.Count == 0)
                 {
-                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
-                    return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                    _logger.LogWarning("The complaint number list cannot be empty or null, it must contain at least one valid complaint number.");
+                    return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = "The complaint number list cannot be empty or null, it must contain at least one valid complaint number." };
                 }
 
-
-                if (_complaint.ComplaintStatus != ComplaintStatus.ACKNOWLEDGED)
+                foreach (var _complaintNumber in values.ComplaintNumber)
                 {
-                    _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been acknowledged yet and cannot be dispatched.");
-                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} has not been acknowledged yet and cannot be dispatched." };
+                    var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == _complaintNumber);
+
+                    if (_complaint is null)
+                    {
+                        _logger.LogWarning($"Complaint number {_complaintNumber} supplied doesnot exist.");
+                        return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {_complaintNumber} supplied doesnot exist." };
+                    }
+
+                    if (_complaint.ComplaintStatus != ComplaintStatus.ACKNOWLEDGED)
+                    {
+                        _logger.LogWarning($"Complaint number {_complaintNumber} has not been acknowledged yet and cannot be dispatched.");
+                        return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {_complaintNumber} has not been acknowledged yet and cannot be dispatched." };
+                    }
+
+                    var _deptInfo = await _unitOfWork.ComplaintType.Get(ct => ct.ComplaintTypeId == _complaint.ComplaintTypeId);
+                    if (_deptInfo is null)
+                    {
+                        _logger.LogWarning($"Complaint type id {_complaint.ComplaintTypeId} supplied doesnot exist.");
+                        return new GenericResponseDto { responseCode = StatusCodes.Status404NotFound, response = $"Complaint type id {_complaint.ComplaintTypeId} supplied doesnot exist." };
+                    }
+
+                    _complaint.DispatachedTo_Department = _deptInfo!.DepartmentId;
+                    _complaint.DispatachedTo_DepartmentUnit = _deptInfo.DepartmentUnitId;
+                    _complaint.ComplaintStatus = ComplaintStatus.DISPATCHED;
+                    _unitOfWork.Complaint.Update(_complaint);
+
+                    ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.DISPATCHED, values.DispatchedBy, DateTime.UtcNow);
+                    _unitOfWork.ComplaintHistory.Insert(complaintHistory);
+
+                    _logger.LogInformation($"Complaint Number: {_complaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.DISPATCHED} by {values.DispatchedBy} at {DateTime.UtcNow}.");
                 }
 
-                _complaint.DispatachedTo_Department = values.DispatchedTo_DepartmentId;
-                _complaint.DispatachedTo_DepartmentUnit = values.DispatchedTo_DepartmentUnitId;
-                _complaint.ComplaintStatus = ComplaintStatus.DISPATCHED;
-                _unitOfWork.Complaint.Update(_complaint);
-
-                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.DISPATCHED, values.DispatchedBy, DateTime.UtcNow);
-                _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
-
-                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.DISPATCHED} by {values.DispatchedBy} at {DateTime.UtcNow}.");
 
                 return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = "Complaint dispatched successfully." };
 
@@ -623,6 +657,7 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} has not been resolved and cannot be re-opened." };
                 }
 
+                _complaint.ReopenNotes = values.ReopenNotes;
                 _complaint.ComplaintStatus = ComplaintStatus.REOPEN;
                 _unitOfWork.Complaint.Update(_complaint);
 
@@ -662,6 +697,7 @@ namespace Modules.Customers.Application.UseCases
                     return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} has not been re-opened and cannot be closed." };
                 }
 
+                _complaint.ClosedNotes = values.CloseNotes;
                 _complaint.ComplaintStatus = ComplaintStatus.CLOSED;
                 _unitOfWork.Complaint.Update(_complaint);
 
