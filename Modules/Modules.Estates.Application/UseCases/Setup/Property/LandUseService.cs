@@ -1,13 +1,16 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Setup/Property/LandUseService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/01/2025 
+// * Create Date: 11/05/2025 1:07 PM
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Http;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
@@ -21,21 +24,6 @@ public class LandUseService : ILandUseService
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-
-    public async Task<LandUseReadDto> AddLandUseAsync(LandUseCreateDto values)
-    {
-        LandUse landUse = new(values.LandUseId, values.LandUseInitial!, values.LandUseName!)
-        {
-            CreatedBy = values.CreatedBy,
-            CreatedOn = DateTime.Now
-        };
-
-        _unitOfWork.LandUse.Insert(landUse);
-        await _unitOfWork.Complete();
-
-        return new LandUseReadDto(landUse.LandUseId, landUse.LandUseInitial!, landUse.LandUseName!);
-    }
-
     public async Task<IEnumerable<LandUseReadDto>> GetLandUseAsync()
     {
         var landuse = await _unitOfWork.LandUse.GetAll();
@@ -54,21 +42,95 @@ public class LandUseService : ILandUseService
         return _mapper.Map<LandUseReadDto>(landuse);
     }
 
-    public async Task<LandUseReadDto> UpdateLandUseAsync(LandUseUpdateDto values)
+    public async Task<ReturnResponsesDto> CreateLandUseAsync(LandUseCreateDto values)
     {
-        LandUse landUse = new(values.LandUseId, values.LandUseInitial!, values.LandUseName!)
+        try
         {
-            ModifiedBy = values.ModifiedBy,
-            ModifiedOn = DateTime.Now
-        };
+            int LandUseId = 0;
 
-        _unitOfWork.LandUse.Update(landUse);
-        await _unitOfWork.Complete();
+            var landUseInitial = await _unitOfWork.LandUse.Get(l => l.LandUseInitial == values.LandUseInitial);
+            if (landUseInitial != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Land Use Initial already exists." },
+                    SuccessResponse = null
+                };
+            }
 
-        return new LandUseReadDto(landUse.LandUseId, landUse.LandUseInitial!, landUse.LandUseName!);
+            var landuse = await _unitOfWork.LandUse.Get(l => l.LandUseName == values.LandUseName);
+            if (landuse != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Land Use Name already exists." },
+                    SuccessResponse = null
+                };
+            }
 
+            var landUse = LandUse.Create(LandUseId, values.LandUseInitial!, values.LandUseName!);
+            landUse.CreatedBy = values.CreatedBy;
+            landUse.CreatedOn = DateTime.Now;
+
+            _unitOfWork.LandUse.Insert(landUse);
+            await _unitOfWork.Complete();
+
+            var result = _mapper.Map<LandUseReadDto>(landUse);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Land Use details created successfully.", Data = result},
+            };
+
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+        }
+        
     }
 
+    public async Task<ReturnResponsesDto> UpdateLandUseAsync(LandUseUpdateDto values)
+    {
+        try
+        {
+            var landUse = await _unitOfWork.LandUse.Get(values.LandUseId);
+            if (landUse == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Land Use with ID {values.LandUseId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            landUse.Update(values.LandUseId, values.LandUseInitial!, values.LandUseName!);
+            landUse.ModifiedBy = values.ModifiedBy;
+            landUse.ModifiedOn = DateTime.Now;
+
+            _unitOfWork.LandUse.Update(landUse);
+            await _unitOfWork.Complete();
+
+            var result = _mapper.Map<LandUseReadDto>(landUse);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Land Use details modified successfully.", Data = result },
+            };
+
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
 
 }
 

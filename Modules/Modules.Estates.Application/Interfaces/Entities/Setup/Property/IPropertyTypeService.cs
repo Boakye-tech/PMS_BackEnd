@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/Interfaces/Entities/Setup/Property/IPropertyTypeService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,13 +10,15 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Modules.Estates.Application.DTO.Setup;
+using Modules.Estates.Application.DTO.Setup.Property;
 
 namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 
 public interface IPropertyTypeService
 {
-    Task<PropertyTypeReadDto> AddPropertyTypeAsync(PropertyTypeCreateDto values);
-    Task<PropertyTypeReadDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values);
+    Task<ReturnResponsesDto> CreatePropertyTypeAsync(PropertyTypeCreateDto values);
+    Task<ReturnResponsesDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values);
     Task<IEnumerable<PropertyTypeReadDto>> GetPropertyTypeAsync();
     Task<PropertyTypeReadDto> GetPropertyTypeAsync(int value);
     Task<PropertyTypeReadDto> GetPropertyTypeAsync(string value);

@@ -11,8 +11,8 @@
 
 namespace Modules.Estates.Application.UseCases.Management.Property
 {
-	public class PropertyMasterService : IPropertyMasterService
-	{
+    public class PropertyMasterService : IPropertyMasterService
+    {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
@@ -22,58 +22,66 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             _mapper = mapper;
         }
 
-        public async Task<PropertyMasterCreatePlotResponseDto> CreateProperty(PropertyMasterCreatePlotDto values)
+        public async Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values)
         {
-            //throw new NotImplementedException();
-
-            PropertyMaster property = PropertyMaster.Create(values.PropertyMasterId, values.PropertyTypeId, values.LandUseInitial, values.LandUseId, values.LandUseTypeInitial, values.LandUseTypeId,
-                                                            values.LocalityInitial, values.LocalityId, values.AllocationTypeInitial, values.AllocationTypeId, values.BlockNumber!, values.PlotNumber, values.AcreageOne,
-                                                            values.AcreageTwo, values.PropertyHeightId, values.PlotSizeId, values.SitePlanNumber!, false);
-
-            property.CreatedBy = values.CreatedBy;
-            property.CreatedOn = DateTime.UtcNow;
-
-            _unitOfWork.PropertyMaster.Insert(property);
-            await _unitOfWork.Complete();
-
-            return new PropertyMasterCreatePlotResponseDto
+            try
             {
-                PropertyNumber = property.PropertyNumber,
-                PropertyType = _unitOfWork.PropertyType.Get(pt => pt.PropertyTypeId == property.PropertyTypeId).Result!.PropertyTypes,
-                Locality = _unitOfWork.Locality.Get(l => l.LocalityId == property.LocalityId).Result!.LocalityName,
-                LandUse = "",
-                LandUseType = "", 
+                PropertyMaster property = PropertyMaster.Create(values.PropertyMasterId, values.PropertyTypeId, values.LandUseInitial, values.LandUseId, values.LandUseTypeInitial, values.LandUseTypeId,
+                                                                values.LocalityInitial, values.LocalityId, values.AllocationTypeInitial, values.AllocationTypeId, values.BlockNumber!, values.PlotNumber, values.AcreageOne,
+                                                                values.AcreageTwo, values.PropertyHeightId, values.PlotSizeId, values.SitePlanNumber!, false);
 
-                AllocationType = "",
-                BlockNumber = "",
+                property.CreatedBy = values.CreatedBy;
+                property.CreatedOn = DateTime.UtcNow;
 
-                PlotNumber = "",
+                _unitOfWork.PropertyMaster.Insert(property);
+                await _unitOfWork.Complete();
 
-                AcreageOne = 0,
+                var response = new PropertyMasterCreatePlotResponseDto
+                {
+                    PropertyNumber = property.PropertyNumber,
+                    PropertyType = _unitOfWork.PropertyType.Get(pt => pt.PropertyTypeId == property.PropertyTypeId).Result!.PropertyTypes,
+                    Locality = _unitOfWork.Locality.Get(l => l.LocalityId == property.LocalityId).Result!.LocalityName,
+                    LandUse = "",
+                    LandUseType = "",
+                    AllocationType = "",
+                    BlockNumber = "",
+                    PlotNumber = "",
+                    AcreageOne = 0,
+                    AcreageTwo = 0,
+                    PropertyHeight = "",
+                    PlotSize = "",
+                    SitePlanNumber = "",
+                    CoordinateOne = "",
+                    CoordinateTwo = "",
+                    CoordinateThree = "",
+                    CoordinateFour = "",
+                    CoordinateFive = "",
+                    CoordinateSix = ""
+                };
 
-                AcreageTwo = 0,
-
-                PropertyHeight = "",
-
-                PlotSize = "",
-
-                SitePlanNumber = "",
-
-
-                CoordinateOne = "",
-
-                CoordinateTwo = "",
-
-                CoordinateThree = "",
-
-                CoordinateFour = "",
-
-                CoordinateFive = "",
-
-                CoordinateSix = ""
-
-            };
-            
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    SuccessResponse = new SuccessResponseDto
+                    {
+                        Code = 201,
+                        Message = "Property created successfully.",
+                        Data = response
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = 500,
+                        Message = ex.InnerException?.Message ?? ex.Message
+                    }
+                };
+            }
         }
 
         public Task<IEnumerable<PropertyMasterDto>> GetProperties(int localityId)

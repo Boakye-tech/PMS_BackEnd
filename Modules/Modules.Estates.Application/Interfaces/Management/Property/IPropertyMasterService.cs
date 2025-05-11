@@ -10,9 +10,9 @@
 
 namespace Modules.Estates.Application.Interfaces.Management.Property
 {
-	public interface IPropertyMasterService
-	{
-        Task<PropertyMasterCreatePlotResponseDto> CreateProperty(PropertyMasterCreatePlotDto values);
+    public interface IPropertyMasterService
+    {
+        Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);
         //Task<AllocationTypeReadDto> UpdateAllocationTypeAsync(AllocationTypeUpdateDto values);
         Task<IEnumerable<PropertyMasterDto>> GetProperties(int localityId);
         //Task<AllocationTypeReadDto> GetAllocationTypeAsync(int value);

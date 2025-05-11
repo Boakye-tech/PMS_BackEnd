@@ -13,9 +13,6 @@ namespace Modules.Customers.Application.Interfaces
 {
 	public interface IComplaintService
 	{
-
-        Task<GenericResponseDto> DeleteComplaint(string ComplaintNumber);
-
         Task<IEnumerable<ComplaintReadDto>> GetComplaintsList();
 
         Task<IEnumerable<ComplaintReadDto>> GetComplaintsList(string customerCode_OR_propertyNumber);

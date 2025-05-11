@@ -700,14 +700,33 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Route("GetListOfComplaints")]
         [Authorize(Policy = "Permission:Customers.READ")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ComplaintStaffReadDto>))]
-        public async Task<ActionResult> GetListOfComplaints([FromQuery] string? searchParameter, [FromQuery] int complaintType, [FromQuery] int complaintStatus )
+        public async Task<ActionResult> GetListOfComplaints([FromQuery] string? searchParameter, [FromQuery] int complaintType, [FromQuery] int complaintStatus, [FromQuery] int departmentId, [FromQuery] int departmentUnitId, [FromQuery] string? userId)
         {
             try
             {
 
+                var _userRole = _userContextService.GetUserRole();
+
+                if (_userRole!.Contains("MIS") || _userRole.Contains("Complaint") || _userRole.Contains("Admin"))
+                {
+                    //searchParameter = null;
+                    complaintType = 0;
+                    complaintType = 0;
+                    departmentId = 0;
+                    departmentUnitId = 0;
+                    userId = null;
+                }
+
+                if (_userRole!.Contains("Supervisor") || _userRole.Contains("Manager") || _userRole.Contains("Head"))
+                {
+                    //searchParameter = null;
+                    departmentUnitId = 0;
+                    userId = null;
+                }
+
                 string _parameter = HttpUtility.UrlDecode(searchParameter!);
 
-                var result = await _complaintMasterServices.GetComplaintsList(searchParameter!, complaintType, complaintStatus);
+                var result = await _complaintMasterServices.GetComplaintsList(searchParameter!, complaintType, complaintStatus, departmentId, departmentUnitId, userId!);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -1981,6 +2000,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.READ")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ComplainantDetailsDto>))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Obsolete]
         public async Task<ActionResult> GetListOfComplaintsByDepartment(int departmentId, [FromQuery] int departmentUnitId, [FromQuery] int complaintStatus)
         {
             if (departmentId == 0)
@@ -1996,6 +2016,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.READ")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ComplainantDetailsDto>))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Obsolete]
         public async Task<ActionResult> GetListOfComplaintsByAssignee(string userId, [FromQuery] int complaintStatus)
         {
             if (string.IsNullOrWhiteSpace(userId))

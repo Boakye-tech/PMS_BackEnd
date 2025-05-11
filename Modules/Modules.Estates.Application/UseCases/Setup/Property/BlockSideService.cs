@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Setup/Property/BlockSideService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,10 +10,17 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using Modules.Estates.Application.DTO.Setup;
+using Modules.Estates.Application.DTO.Setup.Property;
+using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
+using Modules.Estates.Domain;
+using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
-public class BlockSideService: IBlockSideService
+public class BlockSideService : IBlockSideService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -20,20 +29,6 @@ public class BlockSideService: IBlockSideService
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-    }
-
-    public async Task<BlockSideReadDto> AddBlockSideAsync(BlockSideCreateDto values)
-    {
-        BlockSides input_values = new(values.sideId, values.side!)
-        {
-            CreatedBy = values.createdby,
-            CreatedOn = DateTime.Now
-        };
-
-        _unitOfWork.BlockSides.Insert(input_values);
-        await _unitOfWork.Complete();
-
-        return new BlockSideReadDto(input_values.SideId, input_values.Side!);
     }
 
     public async Task<IEnumerable<BlockSideReadDto>> GetBlockSideAsync()
@@ -54,18 +49,78 @@ public class BlockSideService: IBlockSideService
         return _mapper.Map<BlockSideReadDto>(response);
     }
 
-    public async Task<BlockSideReadDto> UpdateBlockSideAsync(BlockSideUpdateDto values)
+    public async Task<ReturnResponsesDto> CreateBlockSideAsync(BlockSideCreateDto values)
     {
-        BlockSides input_values = new(values.sideId, values.side!)
+        try
         {
-            ModifiedBy = values.modifiedby,
-            ModifiedOn = DateTime.Now
-        };
+            var existingSide = await _unitOfWork.BlockSides.Get(bs => bs.Side == values.side);
+            if (existingSide != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Block Side already exists." },
+                    SuccessResponse = null
+                };
+            }
 
-        _unitOfWork.BlockSides.Update(input_values);
-        await _unitOfWork.Complete();
+            var blockSide = BlockSides.Create(0, values.side);
+            blockSide.CreatedBy = values.createdby;
+            blockSide.CreatedOn = DateTime.Now;
 
-        return new BlockSideReadDto(input_values.SideId, input_values.Side!);
+            _unitOfWork.BlockSides.Insert(blockSide);
+            await _unitOfWork.Complete();
+
+            var result = _mapper.Map<BlockSideReadDto>(blockSide);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Block Side created successfully.", Data = result },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> UpdateBlockSideAsync(BlockSideUpdateDto values)
+    {
+        try
+        {
+            var blockSide = await _unitOfWork.BlockSides.Get(values.sideId);
+            if (blockSide == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Block Side with ID {values.sideId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            blockSide.Update(values.sideId, values.side);
+            blockSide.ModifiedBy = values.modifiedby;
+            blockSide.ModifiedOn = DateTime.Now;
+
+            _unitOfWork.BlockSides.Update(blockSide);
+            await _unitOfWork.Complete();
+
+            var result = _mapper.Map<BlockSideReadDto>(blockSide);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Block Side modified successfully.", Data = result },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
     }
 }
 

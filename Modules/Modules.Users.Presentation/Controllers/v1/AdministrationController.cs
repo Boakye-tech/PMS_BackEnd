@@ -1181,7 +1181,15 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _adminService.GetAdministrationDepartmentUnitStaff(unitId, searchParameter, status));
         }
 
-
+        /// <summary>
+        /// Returns a list of system registered staff users for a specific department and or unit
+        /// </summary>
+        [HttpGet]
+        [Route("ComplaintAssignee")]
+        public async Task<ActionResult<IEnumerable<ComplaintAssigneeDto>>> GetComplaintAssignee( [FromQuery] int departmentId, [FromQuery] int unitId)
+        {
+            return Ok (await _adminService.GetComplaintAssignee(departmentId,unitId) );
+        }
     }
 }
 

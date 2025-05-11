@@ -15,10 +15,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
 {
 	public interface IComplaintMasterService
 	{
-        Task<BaseResponseDto> DeleteComplaint(string ComplaintNumber);
 
-
-        Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList(string searchParameter, int complaintType, int complaintStatus);
+        Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList(string? searchParameter, int complaintType, int complaintStatus, int departmentId, int departmentUnitId, string userId);
 
 		Task<IEnumerable<ComplaintStaffReadDto>> GetCustomerComplaintsList(string customerCode_OR_propertyNumber);
 

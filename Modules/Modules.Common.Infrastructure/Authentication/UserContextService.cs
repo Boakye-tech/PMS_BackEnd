@@ -38,6 +38,13 @@ namespace Modules.Common.Infrastructure.Authentication
             return _httpContextAccessor.HttpContext?.User.IsInRole(roleName);
         }
 
+        public string? GetUserRole()
+        {
+            var user = _httpContextAccessor.HttpContext?.User;
+            return user?.FindFirst(ClaimTypes.Role)?.Value
+                   ?? user?.FindFirst("role")?.Value;
+        }
+
         public string? GetAccessToken()
         {
             var authHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();

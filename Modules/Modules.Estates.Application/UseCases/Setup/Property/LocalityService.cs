@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Setup/Property/LocalityService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,6 +10,13 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using Modules.Estates.Application.DTO.Setup;
+using Modules.Estates.Application.DTO.Setup.Property;
+using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
+using Modules.Estates.Domain;
+using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
@@ -17,24 +26,9 @@ public class LocalityService : ILocalityService
     private readonly IMapper _mapper;
 
     public LocalityService(IUnitOfWork unitOfWork, IMapper mapper)
-	{
+    {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-    }
-
-    public async Task<LocalityReadDto> CreateLocalityAsync(LocalityCreateDto values)
-    {
-        Locality locality = new(values.LocalityId, values.LocalityInitial!, values.LocalityName!,values.CustomerCode, values.CustomerCodeCounter)
-        {
-            CreatedBy = values.CreatedBy,
-            CreatedOn = DateTime.Now
-        };
-
-        _unitOfWork.Locality.Insert(locality);
-        await _unitOfWork.Complete();
-
-        return new LocalityReadDto(locality.LocalityId, locality.LocalityInitial!, locality.LocalityName!, locality.CustomerCode!, locality.CustomerCodeCounter);
-
     }
 
     public async Task<IEnumerable<LocalityReadDto>> GetLocalityAsync()
@@ -55,19 +49,78 @@ public class LocalityService : ILocalityService
         return _mapper.Map<LocalityReadDto>(localities);
     }
 
-    public async Task<LocalityReadDto> UpdateLocalityAsync(LocalityUpdateDto values)
+    public async Task<ReturnResponsesDto> CreateLocalityAsync(LocalityCreateDto values)
     {
-        Locality locality = new(values.LocalityId, values.LocalityInitial!, values.LocalityName!, values.CustomerCode, values.CustomerCodeCounter)
+        try
         {
-            ModifiedBy = values.ModifiedBy,
-            ModifiedOn = DateTime.Now
-        };
+            var existingLocality = await _unitOfWork.Locality.Get(l => l.LocalityInitial == values.LocalityInitial || l.LocalityName == values.LocalityName);
+            if (existingLocality != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Locality already exists." },
+                    SuccessResponse = null
+                };
+            }
 
-        _unitOfWork.Locality.Update(locality);
-        await _unitOfWork.Complete();
+            var locality = Locality.Create(0, values.LocalityInitial!, values.LocalityName!, values.CustomerCode, values.CustomerCodeCounter);
+            locality.CreatedBy = values.CreatedBy;
+            locality.CreatedOn = DateTime.Now;
 
-        return new LocalityReadDto(locality.LocalityId, locality.LocalityInitial!, locality.LocalityName!, locality.CustomerCode!, locality.CustomerCodeCounter);
+            _unitOfWork.Locality.Insert(locality);
+            await _unitOfWork.Complete();
 
+            var result = _mapper.Map<LocalityReadDto>(locality);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Locality created successfully.", Data = result },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> UpdateLocalityAsync(LocalityUpdateDto values)
+    {
+        try
+        {
+            var locality = await _unitOfWork.Locality.Get(values.LocalityId);
+            if (locality == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Locality with ID {values.LocalityId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            locality.Update(values.LocalityId, values.LocalityInitial!, values.LocalityName!, values.CustomerCode, values.CustomerCodeCounter);
+            locality.ModifiedBy = values.ModifiedBy;
+            locality.ModifiedOn = DateTime.Now;
+
+            _unitOfWork.Locality.Update(locality);
+            await _unitOfWork.Complete();
+
+            var result = _mapper.Map<LocalityReadDto>(locality);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Locality modified successfully.", Data = result },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
     }
 
     public async Task<string> DeleteLocality(int localityId)
@@ -76,6 +129,5 @@ public class LocalityService : ILocalityService
         _unitOfWork.Locality.Delete(locality!);
         return "success";
     }
-
 }
 

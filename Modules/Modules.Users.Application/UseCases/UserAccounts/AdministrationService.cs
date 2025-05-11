@@ -360,6 +360,48 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return roleDtos;
         }
 
+        public async Task<List<RolesDto>> GetUserRoles(string roleName)
+        {
+            var roles = await _roleManager.Roles
+                 .Where(r => r.Name!.Contains(roleName))
+                 .OrderByDescending(role => role.CreatedOn)
+                 .ToListAsync();
+
+            var roleDtos = new List<RolesDto>();
+
+            foreach (var role in roles)
+            {
+                var department = await _unitOfWork.Department.Get(role.DepartmentId);
+                var unit = await _unitOfWork.DepartmentUnit.Get(role.UnitId);
+
+                var createdByUser = await _userManager.Users
+                    .Where(u => u.Id == role.CreatedBy)
+                    .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                    .FirstOrDefaultAsync();
+
+                var approvedByUser = await _userManager.Users
+                    .Where(u => u.Id == role.ApprovedBy)
+                    .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                    .FirstOrDefaultAsync();
+
+                roleDtos.Add(new RolesDto(
+                    role.Id,
+                    role.Name!,
+                    role.DepartmentId,
+                    department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
+                    unit?.UnitName ?? string.Empty,
+                    createdByUser ?? string.Empty,
+                    role.CreatedOn,
+                    approvedByUser ?? string.Empty,
+                    role.ApprovedOn,
+                    RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString()
+                ));
+            }
+
+            return roleDtos;
+        }
+
         public async Task<List<RolesDto>> GetUserRoles(int departmentId)
         {
 
@@ -1086,6 +1128,70 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
 
             return partner_UserList;
+        }
+
+
+        public async Task<IEnumerable<ComplaintAssigneeDto>> GetComplaintAssignee(int departmentId, int unitId)
+        {
+            /*
+            var staff_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff)
+                                  join department in await _unitOfWork.Department.GetAll()
+                                      on user.DepartmentId equals department.DepartmentId
+                                  join unit in await _unitOfWork.DepartmentUnit.GetAll()
+                                      on user.UnitId equals unit.UnitId
+                                  join usrole in await _unitOfWork.UsersRoles.GetAll()
+                                      on user.Id equals usrole.UserId
+                                  join role in await _unitOfWork.Roles.GetAll()
+                                      on usrole.RoleId equals role.Id
+                                  where user.DepartmentId == departmentId
+                                  orderby user.RegistrationDate descending
+                                  select new AdministrationStaffDto
+                                  (
+                                      user.Id,
+                                      user.IdentificationNumber!,
+                                      user.FirstName!,
+                                      user.MiddleName!,
+                                      user.LastName!,
+                                      department.DepartmentName,
+                                      unit.UnitName,
+                                      user.Email!,
+                                      user.PhoneNumber!,
+                                      role.Name!,
+                                      RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString(),
+                                      user.RegistrationDate
+                                  ));
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                staff_UserList = staff_UserList.Where(s => s.Status.Contains(status));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
+            {
+                staff_UserList = staff_UserList.Where(s =>
+                    s.FirstName!.Contains(searchParam) ||
+                    s.MiddleName!.Contains(searchParam) ||
+                    s.LastName!.Contains(searchParam) ||
+                    s.DepartmentName!.Contains(searchParam) ||
+                    s.UnitName!.Contains(searchParam) ||
+                    s.IdentificationNumber!.Contains(searchParam) ||
+                    s.EmailAddress!.Contains(searchParam) ||
+                    s.PhoneNumber!.Contains(searchParam)
+                );
+            }
+            */
+            
+
+            var staff_UserList = (await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff && u.DepartmentId == departmentId && (u.UnitId == unitId || unitId == 0)))
+                .Select(u => new ComplaintAssigneeDto
+                (
+                    u.Id,
+                    string.Join(" ", new[] { u.FirstName, u.MiddleName, u.LastName }
+                                           .Where(name => !string.IsNullOrWhiteSpace(name)))
+                )).ToList();
+
+            return staff_UserList;
+
         }
 
         public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId, string? searchParam, string? status)

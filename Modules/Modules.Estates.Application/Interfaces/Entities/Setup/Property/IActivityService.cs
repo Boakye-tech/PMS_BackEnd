@@ -13,8 +13,8 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
 {
 	public interface IActivityService
 	{
-        Task<ActivityReadDto> CreateActivityAsync(ActivityCreateDto values);
-        Task<ActivityReadDto> UpdateActivityAsync(ActivityUpdateDto values);
+        Task<ReturnResponsesDto> CreateActivityAsync(ActivityCreateDto values);
+        Task<ReturnResponsesDto> UpdateActivityAsync(ActivityUpdateDto values);
         Task<IEnumerable<ActivityReadDto>> GetActivitiesAsync();
         Task<ActivityReadDto> GetActivityAsync(int value);
         //Task<ActivityReadDto> GetAllocationTypeAsync(string value);

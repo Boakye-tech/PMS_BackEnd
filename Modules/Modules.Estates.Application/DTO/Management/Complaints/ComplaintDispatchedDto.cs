@@ -16,7 +16,6 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
 	public record ComplaintDispatchedDto
 	{
         [Required]
-        [StringLength(10)]
         public List<string>? ComplaintNumber { get; set; }
 
         [StringLength(36)]

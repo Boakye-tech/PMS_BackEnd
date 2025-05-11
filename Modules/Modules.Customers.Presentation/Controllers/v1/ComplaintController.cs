@@ -524,6 +524,7 @@ public class ComplaintController : ControllerBase
             }
 
             var result = await _complaintService.GetComplaintDetails(complaintNumber);
+
             if(result is null)
             {
                 return NotFound($"No records found for complaint number {complaintNumber}");
@@ -721,7 +722,7 @@ public class ComplaintController : ControllerBase
     /// </remarks>
     /// <param name="values">The complaint details to be submitted.</param>
     /// <returns>
-    /// Returns HTTP 200 OK with the response if the complaint is successfully submitted.
+    /// Returns HTTP 201 Created with the response if the complaint is successfully submitted.
     /// Returns HTTP 204 No Content if nature of complaint is empty.
     /// Returns HTTP 403 Forbidden if trying to submit on behalf of another customer.
     /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.

@@ -16,6 +16,7 @@ namespace Modules.Common.Infrastructure.Authentication
 	{
         string? GetUserId();
         bool? GetUserRole(string roleName);
+        string? GetUserRole();
         string? GetAccessToken();
 
         string? UserCode();

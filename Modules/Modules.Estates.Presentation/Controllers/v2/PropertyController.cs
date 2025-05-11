@@ -262,7 +262,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _allocationTypeService.AddAllocationTypeAsync(values));
+            return Ok(await _allocationTypeService.CreateAllocationTypeAsync(values));
         }
         catch (Exception ex)
         {
@@ -341,7 +341,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _apartmentTypeService.AddApartmentTypeAsync(values));
+            return Ok(await _apartmentTypeService.CreateApartmentTypeAsync(values));
         }
         catch (Exception ex)
         {
@@ -399,7 +399,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _blockNumberService.AddBlockNumberAsync(values));
+            return Ok(await _blockNumberService.CreateBlockNumberAsync(values));
         }
         catch (Exception ex)
         {
@@ -459,7 +459,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _blockSideService.AddBlockSideAsync(values));
+            return Ok(await _blockSideService.CreateBlockSideAsync(values));
         }
         catch (Exception ex)
         {
@@ -519,7 +519,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _blockTypeService.AddBlockTypeAsync(values));
+            return Ok(await _blockTypeService.CreateBlockTypeAsync(values));
         }
         catch (Exception ex)
         {
@@ -578,7 +578,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _blockUnitService.AddBlockUnitAsync(values));
+            return Ok(await _blockUnitService.CreateBlockUnitAsync(values));
         }
         catch (Exception ex)
         {
@@ -637,7 +637,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _facilitiesService.AddFacilitiesAsync(values));
+            return Ok(await _facilitiesService.CreateFacilitiesAsync(values));
         }
         catch (Exception ex)
         {
@@ -696,7 +696,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _floorNumberingService.AddFloorNumberingAsync(values));
+            return Ok(await _floorNumberingService.CreateFloorNumberingAsync(values));
         }
         catch (Exception ex)
         {
@@ -774,10 +774,10 @@ public class PropertyController : ControllerBase
     [Route("CreateLandUse")]
     public async Task<ActionResult<LandUseReadDto>> CreateLandUse([FromBody] LandUseCreateDto values)
     {
-        //return Ok(await _landUseService.AddLandUseAsync(values));
         try
         {
-            return Ok(await _landUseService.AddLandUseAsync(values));
+            var result = await _landUseService.CreateLandUseAsync(values);
+            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -852,10 +852,10 @@ public class PropertyController : ControllerBase
     [Route("CreateLandUseType")]
     public async Task<ActionResult<LandUseTypeReadDto>> CreateLandUseType([FromBody] LandUseTypeCreateDto values)
     {
-        //return Ok(await _landUseService.AddLandUseAsync(values));
+        //return Ok(await _landUseService.CreateLandUseAsync(values));
         try
         {
-            return Ok(await _landUseTypeService.AddLandUseTypeAsync(values));
+            return Ok(await _landUseTypeService.CreateLandUseTypeAsync(values));
         }
         catch (Exception ex)
         {
@@ -1005,7 +1005,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _plotSizeService.AddPlotSizeAsync(values));
+            return Ok(await _plotSizeService.CreatePlotSizeAsync(values));
         }
         catch (Exception ex)
         {
@@ -1064,7 +1064,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _propertyHeightService.AddPropertyHeightAsync(values));
+            return Ok(await _propertyHeightService.CreatePropertyHeightAsync(values));
         }
         catch (Exception ex)
         {
@@ -1136,7 +1136,7 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _propertyTypeService.AddPropertyTypeAsync(values));
+            return Ok(await _propertyTypeService.CreatePropertyTypeAsync(values));
         }
         catch (Exception ex)
         {

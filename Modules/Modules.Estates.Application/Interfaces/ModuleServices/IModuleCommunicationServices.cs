@@ -36,6 +36,7 @@ namespace Modules.Estates.Application.Interfaces.ModuleServices
         Task<bool> SendComplaintReopenAsync(ComplaintReopenedDto payload);
         Task<bool> SendComplaintClosedAsync(ComplaintClosedDto payload);
         Task<bool> SendComplaintCancelledAsync(ComplaintCancellationDto payload);
+        Task<bool> SendComplaintInProgressAsync(ComplaintInProgressDto payload);
     }
 }
 

@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Setup/Property/PropertyHeightService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,10 +10,17 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using Modules.Estates.Application.DTO.Setup;
+using Modules.Estates.Application.DTO.Setup.Property;
+using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
+using Modules.Estates.Domain;
+using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
-public class PropertyHeightService: IPropertyHeightService
+public class PropertyHeightService : IPropertyHeightService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -20,20 +29,6 @@ public class PropertyHeightService: IPropertyHeightService
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-    }
-
-    public async Task<PropertyHeightReadDto> AddPropertyHeightAsync(PropertyHeightCreateDto values)
-    {
-        PropertyHeight input_values = new(values.propertyHeightId, values.propertyHeights!)
-        {
-            CreatedBy = values.createdBy,
-            CreatedOn = DateTime.Now
-        };
-
-        _unitOfWork.PropertyHeight.Insert(input_values);
-        await _unitOfWork.Complete();
-
-        return new PropertyHeightReadDto(input_values.PropertyHeightId, input_values.PropertyHeights!);
     }
 
     public async Task<IEnumerable<PropertyHeightReadDto>> GetPropertyHeightAsync()
@@ -54,18 +49,78 @@ public class PropertyHeightService: IPropertyHeightService
         return _mapper.Map<PropertyHeightReadDto>(response);
     }
 
-    public async Task<PropertyHeightReadDto> UpdatePropertyHeightAsync(PropertyHeightUpdateDto values)
+    public async Task<ReturnResponsesDto> CreatePropertyHeightAsync(PropertyHeightCreateDto values)
     {
-        PropertyHeight input_values = new(values.propertyHeightId, values.propertyHeights!)
+        try
         {
-            ModifiedBy = values.modifiedBy,
-            ModifiedOn = DateTime.Now
-        };
+            var existingHeight = await _unitOfWork.PropertyHeight.Get(ph => ph.PropertyHeights == values.propertyHeights);
+            if (existingHeight != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Property Height already exists." },
+                    SuccessResponse = null
+                };
+            }
 
-        _unitOfWork.PropertyHeight.Update(input_values);
-        await _unitOfWork.Complete();
+            var propertyHeight = PropertyHeight.Create(0, values.propertyHeights);
+            propertyHeight.CreatedBy = values.createdBy;
+            propertyHeight.CreatedOn = DateTime.Now;
 
-        return new PropertyHeightReadDto(input_values.PropertyHeightId, input_values.PropertyHeights!);
+            _unitOfWork.PropertyHeight.Insert(propertyHeight);
+            await _unitOfWork.Complete();
+
+            var result = _mapper.Map<PropertyHeightReadDto>(propertyHeight);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Property Height created successfully.", Data = result },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> UpdatePropertyHeightAsync(PropertyHeightUpdateDto values)
+    {
+        try
+        {
+            var propertyHeight = await _unitOfWork.PropertyHeight.Get(values.propertyHeightId);
+            if (propertyHeight == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Property Height with ID {values.propertyHeightId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            propertyHeight.Update(values.propertyHeightId, values.propertyHeights);
+            propertyHeight.ModifiedBy = values.modifiedBy;
+            propertyHeight.ModifiedOn = DateTime.Now;
+
+            _unitOfWork.PropertyHeight.Update(propertyHeight);
+            await _unitOfWork.Complete();
+
+            var result = _mapper.Map<PropertyHeightReadDto>(propertyHeight);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Property Height modified successfully.", Data = result },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
     }
 }
 

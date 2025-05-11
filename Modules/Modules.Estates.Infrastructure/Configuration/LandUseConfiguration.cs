@@ -40,7 +40,7 @@ public class LandUseConfiguration : IEntityTypeConfiguration<LandUse>
         //        );
 
         builder.HasData(
-            new LandUse(1, "RPL", "RESIDENTIAL" ),
+            new LandUse(1, "RPL", "RESIDENTIAL"),
             new LandUse(2, "HOS", "HOUSE OWNERSHIP SCHEME" ),
             new LandUse(3, "LSD", "LARGE SCALE DEVELOPMENT" ),
             new LandUse(4, "HSE", "HOUSE" ),

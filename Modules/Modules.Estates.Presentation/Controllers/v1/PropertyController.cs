@@ -9,7 +9,10 @@
 //  **************************************************/
 
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Application.DTO.Setup;
+using Modules.Estates.Domain.Exceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -97,44 +100,124 @@ public class PropertyController : ControllerBase
     /// <remarks>
     /// The various activities undertaken during the aquisition process
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateActivity
+    ///     POST /CreateActivity
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "activityId": 0,
-    ///    "activityName": "LETTERS",
-    ///    "activityDescription": "VARIOUS LETTERS REQUIRED IN THE ACQUISITION PROCESS",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "activityId": 0,
+    ///         "activityName": "LETTERS",
+    ///         "activityDescription": "VARIOUS LETTERS REQUIRED IN THE ACQUISITION PROCESS",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Activity created successfully.",
+    ///         "data": {
+    ///             "activityId": 1,
+    ///             "activityName": "LETTERS",
+    ///             "activityDescription": "VARIOUS LETTERS REQUIRED IN THE ACQUISITION PROCESS"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
-    /// 
-    /// <param name="values"></param>
-    /// <returns></returns>
     [HttpPost]
     [Route("CreateActivity")]
-    public async Task<ActionResult<ActivityReadDto>> CreateActivity([FromBody] ActivityCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateActivity([FromBody] ActivityCreateDto values)
     {
         try
         {
-            return Ok(await _activityService.CreateActivityAsync(values));
+            var result = await _activityService.CreateActivityAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting activity
+    ///  Updates the details of an existing activity
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing activity based on the activity id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateActivity
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "activityId": 1,
+    ///         "activityName": "LETTERS",
+    ///         "activityDescription": "VARIOUS LETTERS REQUIRED IN THE ACQUISITION PROCESS",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Activity details modified successfully.",
+    ///         "data": {
+    ///             "activityId": 1,
+    ///             "activityName": "LETTERS",
+    ///             "activityDescription": "VARIOUS LETTERS REQUIRED IN THE ACQUISITION PROCESS"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateActivity")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<ActivityReadDto>> UpdateActivity([FromBody] ActivityUpdateDto values)
     {
-        return Ok(await _activityService.UpdateActivityAsync(values));
+        var result = await _activityService.UpdateActivityAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
+
     // DELETE api/values/5
     [HttpDelete("DeleteActivity/{activityId}")]
     public void DeleteActivity(int activityId)
@@ -160,45 +243,125 @@ public class PropertyController : ControllerBase
     /// <remarks>
     /// The various activities types undertaken during the aquisition process
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateActivity
+    ///     POST /CreateActivityType
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "activityId": 1,
-    ///    "activityTypeId": 0,
-    ///    "activityTypeName": "OFFER LETTER",
-    ///    "activityTypeDescription": "A LETTER REQUIRED IN THE ACQUISITION PROCESS, SHOWING THE OFFER MADE TO THE APPLICANT",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "activityId": 1,
+    ///         "activityTypeId": 0,
+    ///         "activityTypeName": "OFFER LETTER",
+    ///         "activityTypeDescription": "A LETTER REQUIRED IN THE ACQUISITION PROCESS, SHOWING THE OFFER MADE TO THE APPLICANT",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Activity Type created successfully.",
+    ///         "data": {
+    ///             "activityTypeId": 1,
+    ///             "activityTypeName": "OFFER LETTER",
+    ///             "activityTypeDescription": "A LETTER REQUIRED IN THE ACQUISITION PROCESS"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
-    /// 
-    /// <param name="values"></param>
-    /// <returns></returns>
     [HttpPost]
     [Route("CreateActivityType")]
-    public async Task<ActionResult<ActivityTypeReadDto>> CreateActivityType([FromBody] ActivityTypeCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateActivityType([FromBody] ActivityTypeCreateDto values)
     {
         try
         {
-            return Ok(await _activityTypeService.CreateActivityTypeAsync(values));
+            var result = await _activityTypeService.CreateActivityTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting activity type
+    ///  Updates the details of an existing activity type
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing activity type based on the activity type id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateActivityType
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "activityTypeId": 1,
+    ///         "activityTypeName": "OFFER LETTER",
+    ///         "activityTypeDescription": "A LETTER REQUIRED IN THE ACQUISITION PROCESS",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Activity Type details modified successfully.",
+    ///         "data": {
+    ///             "activityTypeId": 1,
+    ///             "activityTypeName": "OFFER LETTER",
+    ///             "activityTypeDescription": "A LETTER REQUIRED IN THE ACQUISITION PROCESS"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateActivityType")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<ActivityTypeReadDto>> UpdateActivityType([FromBody] ActivityTypeUpdateDto values)
     {
-        return Ok(await _activityTypeService.UpdateActivityTypeAsync(values));
+        var result = await _activityTypeService.UpdateActivityTypeAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
+
     // DELETE api/values/5
     [HttpDelete("DeleteActivityType/{activityTypeId}")]
     public void DeleteActivityType(int activityTypeId)
@@ -243,46 +406,124 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// The allocation type indicates whether the property is a TDC direct allocation or a release to the traditional councils, large scale allocations and regularizations. <br/>
-    /// Maximum of three characters to represent names of the traditional councils
+    /// The allocation type indicates whether the property is a TDC direct allocation or a release to the traditional councils, large scale allocations and regularizations.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateAllocationType
+    ///     POST /CreateAllocationType
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "allocationTypeId": 0,
-    ///    "allocationTypeInitial": "KTC",
-    ///    "allocationTypes": "KPONE TRADTIONAL COUNCIL",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "allocationTypeId": 0,
+    ///         "allocationTypeInitial": "KTC",
+    ///         "allocationTypes": "KPONE TRADTIONAL COUNCIL",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Allocation Type created successfully.",
+    ///         "data": {
+    ///             "allocationTypeId": 1,
+    ///             "allocationTypeInitial": "KTC",
+    ///             "allocationTypes": "KPONE TRADTIONAL COUNCIL"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
-    /// 
-    /// <param name="values"></param>
-    /// <returns></returns>
     [HttpPost]
     [Route("CreateAllocationType")]
-    public async Task<ActionResult<AllocationTypeReadDto>> CreateAllocationType([FromBody] AllocationTypeCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateAllocationType([FromBody] AllocationTypeCreateDto values)
     {
         try
         {
-            return Ok(await _allocationTypeService.AddAllocationTypeAsync(values));
+            var result = await _allocationTypeService.CreateAllocationTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { detail = ex.Message });
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting allocation type
+    ///  Updates the details of an existing allocation type
     /// </summary>
-    ///     
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing allocation type based on the allocation type id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateAllocationType
+    ///
+    /// **Sample Request Body:**
+    /// 
+    ///     {
+    ///         "allocationTypeId": 1,
+    ///         "allocationTypeInitial": "KTC",
+    ///         "allocationTypes": "KPONE TRADTIONAL COUNCIL",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Allocation Type details modified successfully.",
+    ///         "data": {
+    ///             "allocationTypeId": 1,
+    ///             "allocationTypeInitial": "KTC",
+    ///             "allocationTypes": "KPONE TRADTIONAL COUNCIL"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateAllocationType")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<AllocationTypeReadDto>> UpdateAllocationType([FromBody] AllocationTypeUpdateDto values)
     {
-        return Ok(await _allocationTypeService.UpdateAllocationTypeAsync(values));
+        var result = await _allocationTypeService.UpdateAllocationTypeAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
 
     [HttpDelete("DeleteAllocationType/{allocationTypeId}")]
@@ -323,44 +564,130 @@ public class PropertyController : ControllerBase
     /// <remarks>
     /// Indicates the various types of apartments on sale.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateApartmentType
+    ///     POST /CreateApartmentType
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "apartmentTypeId": 0,
-    ///    "apartmentType": "STUDIO",
-    ///    "sellingPrice": 8,000,
-    ///    "currencyId": 1,
-    ///    "floorArea": 48.21,
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "apartmentTypeId": 0,
+    ///         "apartmentType": "STUDIO",
+    ///         "sellingPrice": 8000,
+    ///         "currencyId": 1,
+    ///         "floorArea": 48.21,
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Apartment Type created successfully.",
+    ///         "data": {
+    ///             "apartmentTypeId": 1,
+    ///             "apartmentType": "STUDIO",
+    ///             "sellingPrice": 8000,
+    ///             "currencyId": 1,
+    ///             "floorArea": 48.21
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
-    /// 
-    /// <param name="values"></param>
-    /// <returns></returns>
     [HttpPost]
     [Route("CreateApartmentType")]
-    public async Task<ActionResult<ApartmentTypeReadDto>> AddApartmentType([FromBody] ApartmentTypeCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateApartmentType([FromBody] ApartmentTypeCreateDto values)
     {
         try
         {
-            return Ok(await _apartmentTypeService.AddApartmentTypeAsync(values));
+            var result = await _apartmentTypeService.CreateApartmentTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting apartment type
+    ///  Updates the details of an existing apartment type
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing apartment type based on the apartment type id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateApartmentType
+    ///
+    /// **Sample Request Body:**
+    /// 
+    ///     {
+    ///         "apartmentTypeId": 1,
+    ///         "apartmentType": "STUDIO",
+    ///         "sellingPrice": 8000,
+    ///         "currencyId": 1,
+    ///         "floorArea": 48.21,
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Apartment Type details modified successfully.",
+    ///         "data": {
+    ///             "apartmentTypeId": 1,
+    ///             "apartmentType": "STUDIO",
+    ///             "sellingPrice": 8000,
+    ///             "currencyId": 1,
+    ///             "floorArea": 48.21
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateApartmentType")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<ApartmentTypeReadDto>> UpdateApartmentType([FromBody] ApartmentTypeUpdateDto values)
     {
-        return Ok(await _apartmentTypeService.UpdateApartmentTypeAsync(values));
+        var result = await _apartmentTypeService.UpdateApartmentTypeAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
 
     [HttpDelete("DeleteApartmentType/{apartmentTypeId}")]
@@ -385,41 +712,120 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// Alpha numeric indicating the block number of the property/plot 
+    /// Alpha numeric indicating the block number of the property/plot
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateBlockNumber
+    ///     POST /CreateBlockNumber
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "blockNumberId": 0,
-    ///    "blockNumbers": "A",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "blockNumberId": 0,
+    ///         "blockNumbers": "A",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Block Number created successfully.",
+    ///         "data": {
+    ///             "blockNumberId": 1,
+    ///             "blockNumbers": "A"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreateBlockNumber")]
-    public async Task<ActionResult<BlockNumberReadDto>> AddBlockNumber([FromBody] BlockNumberCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateBlockNumber([FromBody] BlockNumberCreateDto values)
     {
         try
         {
-            return Ok(await _blockNumberService.AddBlockNumberAsync(values));
+            var result = await _blockNumberService.CreateBlockNumberAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting block number
+    ///  Updates the details of an existing block number
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing block number based on the block number id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateBlockNumber
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "blockNumberId": 1,
+    ///         "blockNumbers": "A",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Block Number details modified successfully.",
+    ///         "data": {
+    ///             "blockNumberId": 1,
+    ///             "blockNumbers": "A"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateBlockNumber")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<BlockNumberReadDto>> UpdateBlockNumber([FromBody] BlockNumberUpdateDto values)
     {
-        return Ok(await _blockNumberService.UpdateBlockNumberAsync(values));
+        var result = await _blockNumberService.UpdateBlockNumberAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
     // DELETE api/values/5
     [HttpDelete("DeleteBlockNumber/{facilityId}")]
@@ -444,42 +850,121 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// Indicating the side on the block where the property/plot can be located.<br/>
-    /// Eithe the left side or right side.
+    /// Indicating the side on the block where the property/plot can be located.
+    /// Either the left side or right side.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateBlockSide
+    ///     POST /CreateBlockSide
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "sideId": 0,
-    ///    "side": "LEFT",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "sideId": 0,
+    ///         "side": "LEFT",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Block Side created successfully.",
+    ///         "data": {
+    ///             "sideId": 1,
+    ///             "side": "LEFT"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreateBlockSide")]
-    public async Task<ActionResult<BlockSideReadDto>> AddBlockSide([FromBody] BlockSideCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateBlockSide([FromBody] BlockSideCreateDto values)
     {
         try
         {
-            return Ok(await _blockSideService.AddBlockSideAsync(values));
+            var result = await _blockSideService.CreateBlockSideAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting block side
+    ///  Updates the details of an existing block side
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing block side based on the block side id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateBlockSide
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "sideId": 1,
+    ///         "side": "LEFT",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Block Side details modified successfully.",
+    ///         "data": {
+    ///             "sideId": 1,
+    ///             "side": "LEFT"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateBlockSide")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<BlockSideReadDto>> UpdateBlockSide([FromBody] BlockSideUpdateDto values)
     {
-        return Ok(await _blockSideService.UpdateBlockSideAsync(values));
+        var result = await _blockSideService.UpdateBlockSideAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
     // DELETE api/values/5
     [HttpDelete("DeleteBlockSide/{blockSideId}")]
@@ -505,41 +990,120 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// Indicating the block type,be it a single or twin block.
+    /// Indicating the block type, be it a single or twin block.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateBlockType
+    ///     POST /CreateBlockType
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "sideId": 0,
-    ///    "side": "LEFT",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "blockTypeId": 0,
+    ///         "blockType": "SINGLE",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Block Type created successfully.",
+    ///         "data": {
+    ///             "blockTypeId": 1,
+    ///             "blockType": "SINGLE"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreateBlockType")]
-    public async Task<ActionResult<BlockTypeReadDto>> AddBlockType([FromBody] BlockTypeCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateBlockType([FromBody] BlockTypeCreateDto values)
     {
         try
         {
-            return Ok(await _blockTypeService.AddBlockTypeAsync(values));
+            var result = await _blockTypeService.CreateBlockTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting block type
+    ///  Updates the details of an existing block type
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing block type based on the block type id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateBlockType
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "blockTypeId": 1,
+    ///         "blockType": "SINGLE",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Block Type details modified successfully.",
+    ///         "data": {
+    ///             "blockTypeId": 1,
+    ///             "blockType": "SINGLE"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateBlockType")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<BlockTypeReadDto>> UpdateBlockType([FromBody] BlockTypeUpdateDto values)
     {
-        return Ok(await _blockTypeService.UpdateBlockTypeAsync(values));
+        var result = await _blockTypeService.UpdateBlockTypeAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
     // DELETE api/values/5
     [HttpDelete("DeleteBlockType/{blockTypeId}")]
@@ -564,41 +1128,120 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// Indicating the block unt.
+    /// Indicating the block unit.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateBlockUnit
+    ///     POST /CreateBlockUnit
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "unitId": 0,
-    ///    "unit": "",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "unitId": 0,
+    ///         "unit": "A1",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Block Unit created successfully.",
+    ///         "data": {
+    ///             "unitId": 1,
+    ///             "unit": "A1"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreateBlockUnit")]
-    public async Task<ActionResult<BlockUnitReadDto>> CreateBlockUnit([FromBody] BlockUnitCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateBlockUnit([FromBody] BlockUnitCreateDto values)
     {
         try
         {
-            return Ok(await _blockUnitService.AddBlockUnitAsync(values));
+            var result = await _blockUnitService.CreateBlockUnitAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting block unit
+    ///  Updates the details of an existing block unit
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing block unit based on the block unit id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateBlockUnit
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "unitId": 1,
+    ///         "unit": "A1",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Block Unit details modified successfully.",
+    ///         "data": {
+    ///             "unitId": 1,
+    ///             "unit": "A1"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateBlockUnit")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<BlockUnitReadDto>> UpdateBlockUnit([FromBody] BlockUnitUpdateDto values)
     {
-        return Ok(await _blockUnitService.UpdateBlockUnitAsync(values));
+        var result = await _blockUnitService.UpdateBlockUnitAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
     // DELETE api/values/5
     [HttpDelete("DeleteBlockUnit/{blockUnitId}")]
@@ -619,45 +1262,124 @@ public class PropertyController : ControllerBase
 
     // POST: api/CreateFacility
     /// <summary>
-    ///  Creates a new facilities
+    ///  Creates a new facility
     /// </summary>
     ///     
     /// <remarks>
     /// Indicating the facilities under management.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateFacility
+    ///     POST /CreateFacility
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "facilityId": 0,
-    ///    "facility": "",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "facilityId": 0,
+    ///         "facility": "SWIMMING POOL",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Facility created successfully.",
+    ///         "data": {
+    ///             "facilityId": 1,
+    ///             "facility": "SWIMMING POOL"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreateFacility")]
-    public async Task<ActionResult<FacilitiesReadDto>> CreateFacility([FromBody] FacilitiesCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateFacility([FromBody] FacilitiesCreateDto values)
     {
         try
         {
-            return Ok(await _facilitiesService.AddFacilitiesAsync(values));
+            var result = await _facilitiesService.CreateFacilitiesAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting facility
+    ///  Updates the details of an existing facility
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing facility based on the facility id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateFacility
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "facilityId": 1,
+    ///         "facility": "SWIMMING POOL",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Facility details modified successfully.",
+    ///         "data": {
+    ///             "facilityId": 1,
+    ///             "facility": "SWIMMING POOL"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateFacility")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<FacilitiesReadDto>> UpdateFacility([FromBody] FacilitiesUpdateDto values)
     {
-        return Ok(await _facilitiesService.UpdateFacilitiesAsync(values));
+        var result = await _facilitiesService.UpdateFacilitiesAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
     // DELETE api/values/5
     [HttpDelete("DeleteFacility/{facilityId}")]
@@ -684,39 +1406,118 @@ public class PropertyController : ControllerBase
     /// <remarks>
     /// Indicating the various floors available in a block.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateFloorNumber
+    ///     POST /CreateFloorNumber
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "floorNumberId": 0,
-    ///    "floorNumber": "GROUND FLOOR",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "floorNumberId": 0,
+    ///         "floorNumber": "GROUND FLOOR",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Floor Number created successfully.",
+    ///         "data": {
+    ///             "floorNumberId": 1,
+    ///             "floorNumber": "GROUND FLOOR"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreateFloorNumber")]
-    public async Task<ActionResult<FloorNumberingReadDto>> CreateFloorNumber([FromBody] FloorNumberingCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateFloorNumber([FromBody] FloorNumberingCreateDto values)
     {
         try
         {
-            return Ok(await _floorNumberingService.AddFloorNumberingAsync(values));
+            var result = await _floorNumberingService.CreateFloorNumberingAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting floor number
+    ///  Updates the details of an existing floor number
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing floor number based on the floor number id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateFloorNumber
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "floorNumberId": 1,
+    ///         "floorNumber": "GROUND FLOOR",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Floor Number details modified successfully.",
+    ///         "data": {
+    ///             "floorNumberId": 1,
+    ///             "floorNumber": "GROUND FLOOR"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateFloorNumber")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<FloorNumberingReadDto>> UpdateFloorNumber([FromBody] FloorNumberingUpdateDto values)
     {
-        return Ok(await _floorNumberingService.UpdateFloorNumberingAsync(values));
+        var result = await _floorNumberingService.UpdateFloorNumberingAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
     // DELETE api/values/5
     [HttpDelete("DeleteFloorNumber/{floorNumberId}")]
@@ -755,50 +1556,145 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// The landuse indicates what the plot/property would be used for.<br/>
-    /// Maximum of three characters to represent names of the land use
+    /// The landuse indicates what the plot/property would be used for.
+    /// Maximum of three characters to represent initials of the land use
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateLandUse
+    ///     POST /UpdateLandUse
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "landUseId": 0,
-    ///    "landUseInitial": "RPL",
-    ///    "landUseName": "RESIDENTIAL",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "landUseInitial": "RPL",
+    ///         "landUseName": "RESIDENTIAL",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Land Use details created successfully.",
+    ///         "data": {
+    ///                     "landUseId": 14,
+    ///                     "landUseInitial": "RPL",
+    ///                     "landUseName": "RESIDENTIAL"
+    ///                 }
+    ///     }
+    /// 
     /// </remarks>
-    /// 
-    /// <param name="values"></param>
+    /// <param name="values">The land use details to be added or created</param>
     /// <returns></returns>
-
-
     [HttpPost]
     [Route("CreateLandUse")]
-    public async Task<ActionResult<LandUseReadDto>> CreateLandUse([FromBody] LandUseCreateDto values)
+    //[Authorize(Policy = "Permission:Customers.CREATE")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+
+    public async Task<ActionResult> CreateLandUse([FromBody] LandUseCreateDto values)
     {
-        //return Ok(await _landUseService.AddLandUseAsync(values));
         try
         {
-            return Ok(await _landUseService.AddLandUseAsync(values));
+            //var userId = _userContextService.GetUserId();
+            //if (!string.Equals(userId, values.CreatedBy))
+            //{
+            //    return Unauthorized();
+            //}
+
+            var result = await _landUseService.CreateLandUseAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
     ///  Updates the details of an exsiting land use
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing landuse based on the landuse id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateLandUse
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "landUseId": 14,
+    ///         "landUseInitial": "PPL",
+    ///         "landUseName": "RESIDENTIALS",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Land Use details modified successfully.",
+    ///         "data": {
+    ///                     "landUseId": 14,
+    ///                     "landUseInitial": "PPL",
+    ///                     "landUseName": "RESIDENTIALS"
+    ///                 }
+    ///     }
+    /// 
+    /// </remarks>
+    /// <param name="values">The land use details to be added or created</param>
+    /// <returns></returns>
     [HttpPut]
     [Route("UpdateLandUse")]
+    //[Authorize(Policy = "Permission:Customers.UPDATE")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<LandUseReadDto>> UpdateLandUse([FromBody] LandUseUpdateDto values)
     {
-        return Ok(await _landUseService.UpdateLandUseAsync(values));
+        //var userId = _userContextService.GetUserId();
+        //if (!string.Equals(userId, values.CreatedBy))
+        //{
+        //    return Unauthorized();
+        //}
+
+        var result = await _landUseService.UpdateLandUseAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
+
     // DELETE api/values/5
     [HttpDelete("DeleteLandUse/{landUseId}")]
     public void DeleteLandUse(int landUseId)
@@ -836,46 +1732,129 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// The land use type indicates the sub category the plot/property use falls under.<br/>
-    /// Maximum of three characters to represent names of the land use type
+    /// The land use type indicates the sub category the plot/property use falls under.
+    /// Maximum of three characters to represent names of the land use type.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateLandUseType
+    ///     POST /CreateLandUseType
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "landUseId": 1,
-    ///    "landUseTypeId": 0,
-    ///    "landUseTypeInitial": "HOS",
-    ///    "landUseTypeName": "TDC Built Houses(HOS)",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "landUseId": 1,
+    ///         "landUseTypeId": 0,
+    ///         "landUseTypeInitial": "HOS",
+    ///         "landUseTypeName": "TDC Built Houses(HOS)",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Land Use Type created successfully.",
+    ///         "data": {
+    ///             "landUseTypeId": 1,
+    ///             "landUseTypeInitial": "HOS",
+    ///             "landUseTypeName": "TDC Built Houses(HOS)"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     /// 
     [HttpPost]
     [Route("CreateLandUseType")]
-    public async Task<ActionResult<LandUseTypeReadDto>> CreateLandUseType([FromBody] LandUseTypeCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateLandUseType([FromBody] LandUseTypeCreateDto values)
     {
-        //return Ok(await _landUseService.AddLandUseAsync(values));
         try
         {
-            return Ok(await _landUseTypeService.AddLandUseTypeAsync(values));
+            var result = await _landUseTypeService.CreateLandUseTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting land use type
+    ///  Updates the details of an existing land use type
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing land use type based on the land use type id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateLandUseType
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "landUseTypeId": 1,
+    ///         "landUseTypeInitial": "HOS",
+    ///         "landUseTypeName": "TDC Built Houses(HOS)",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Land Use Type details modified successfully.",
+    ///         "data": {
+    ///             "landUseTypeId": 1,
+    ///             "landUseTypeInitial": "HOS",
+    ///             "landUseTypeName": "TDC Built Houses(HOS)"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
+    /// <param name="values">The land use details to be added or created</param>
+    /// <returns></returns>
     [HttpPut]
     [Route("UpdateLandUseType")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<LandUseReadDto>> UpdateLandUseType([FromBody] LandUseTypeUpdateDto values)
     {
-        return Ok(await _landUseTypeService.UpdateLandUseTypeAsync(values));
+        var result = await _landUseTypeService.UpdateLandUseTypeAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
 
     [HttpDelete("DeleteLandUseType/{landUseTypeId}")]
@@ -914,45 +1893,130 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// The locality or community indicates the area where the property/plot can be located.<br/>
+    /// The locality or community indicates the area where the property/plot can be located.
     /// An abbreviation of the locality. Maximum of three characters to represent the name of the area.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreateLocality
+    ///     POST /CreateLocality
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "localityId": 1,
-    ///    "localityInitial": "ASH",
-    ///    "localityName": "ASHIAMAN",
-    ///    "customerCode": "2W",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "localityId": 1,
+    ///         "localityInitial": "ASH",
+    ///         "localityName": "ASHIAMAN",
+    ///         "customerCode": "2W",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Locality created successfully.",
+    ///         "data": {
+    ///             "localityId": 1,
+    ///             "localityInitial": "ASH",
+    ///             "localityName": "ASHIAMAN",
+    ///             "customerCode": "2W"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     /// 
     [HttpPost]
     [Route("CreateLocality")]
-    public async Task<ActionResult<LocalityReadDto>> CreateLocality([FromBody] LocalityCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateLocality([FromBody] LocalityCreateDto values)
     {
         try
         {
-            return Ok(await _localityService.CreateLocalityAsync(values));
+            var result = await _localityService.CreateLocalityAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting locality
+    ///  Updates the details of an existing locality
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing locality based on the locality id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateLocality
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "localityId": 1,
+    ///         "localityInitial": "ASH",
+    ///         "localityName": "ASHIAMAN",
+    ///         "customerCode": "2W",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Locality details modified successfully.",
+    ///         "data": {
+    ///             "localityId": 1,
+    ///             "localityInitial": "ASH",
+    ///             "localityName": "ASHIAMAN",
+    ///             "customerCode": "2W"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdateLocality")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<LocalityReadDto>> UpdateLocality([FromBody] LocalityUpdateDto values)
     {
-        return Ok(await _localityService.UpdateLocalityAsync(values));
+        var result = await _localityService.UpdateLocalityAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
 
     [HttpDelete("DeleteLocality/{localityId}")]
@@ -991,41 +2055,120 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// The plot size indicates the lenght and breath of the property/plot.
+    /// The plot size indicates the length and breadth of the property/plot.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreatePlotSize
+    ///     POST /CreatePlotSize
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "plotSizeId": 0,
-    ///    "plotSizes": "70x100",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "plotSizeId": 0,
+    ///         "plotSizes": "70x100",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Plot Size created successfully.",
+    ///         "data": {
+    ///             "plotSizeId": 1,
+    ///             "plotSizes": "70x100"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreatePlotSize")]
-    public async Task<ActionResult<PlotSizeReadDto>> AddPlotSize([FromBody] PlotSizeCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreatePlotSize([FromBody] PlotSizeCreateDto values)
     {
         try
         {
-            return Ok(await _plotSizeService.AddPlotSizeAsync(values));
+            var result = await _plotSizeService.CreatePlotSizeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting plot size
+    ///  Updates the details of an existing plot size
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing plot size based on the plot size id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdatePlotSize
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "plotSizeId": 1,
+    ///         "plotSizes": "70x100",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Plot Size details modified successfully.",
+    ///         "data": {
+    ///             "plotSizeId": 1,
+    ///             "plotSizes": "70x100"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdatePlotSize")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<PlotSizeReadDto>> UpdatePlotSize([FromBody] PlotSizeUpdateDto values)
     {
-        return Ok(await _plotSizeService.UpdatePlotSizeAsync(values));
+        var result = await _plotSizeService.UpdatePlotSizeAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
 
     [HttpDelete("DeletePlotSize/{plotSizeId}")]
@@ -1046,45 +2189,124 @@ public class PropertyController : ControllerBase
 
     // POST: api/CreatePropertyHeight
     /// <summary>
-    ///  Creates a new zonning property height
+    ///  Creates a new property height
     /// </summary>
     ///     
     /// <remarks>
-    /// The property height indicates the acceptable zonning height of the property/plot for a locality.
+    /// The property height indicates the acceptable zoning height of the property/plot for a locality.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreatePropertyHeight
+    ///     POST /CreatePropertyHeight
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "propertyHeightId": 0,
-    ///    "propertyHeights": "SINGLE STOREY",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "propertyHeightId": 0,
+    ///         "propertyHeights": "SINGLE STOREY",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Property Height created successfully.",
+    ///         "data": {
+    ///             "propertyHeightId": 1,
+    ///             "propertyHeights": "SINGLE STOREY"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreatePropertyHeight")]
-    public async Task<ActionResult<PropertyHeightReadDto>> CreatePropertyHeight([FromBody] PropertyHeightCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreatePropertyHeight([FromBody] PropertyHeightCreateDto values)
     {
         try
         {
-            return Ok(await _propertyHeightService.AddPropertyHeightAsync(values));
+            var result = await _propertyHeightService.CreatePropertyHeightAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting property height
+    ///  Updates the details of an existing property height
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing property height based on the property height id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdatePropertyHeight
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "propertyHeightId": 1,
+    ///         "propertyHeights": "SINGLE STOREY",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Property Height details modified successfully.",
+    ///         "data": {
+    ///             "propertyHeightId": 1,
+    ///             "propertyHeights": "SINGLE STOREY"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdatePropertyHeight")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<PropertyHeightReadDto>> UpdatePropertyHeight([FromBody] PropertyHeightUpdateDto values)
     {
-        return Ok(await _propertyHeightService.UpdatePropertyHeightAsync(values));
+        var result = await _propertyHeightService.UpdatePropertyHeightAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
 
     [HttpDelete("DeletePropertyHeight/{propertyHeightId}")]
@@ -1122,41 +2344,120 @@ public class PropertyController : ControllerBase
     /// </summary>
     ///     
     /// <remarks>
-    /// The property types indicates the whether the property/plot is a serviced plot or a rental house.
+    /// The property types indicates whether the property/plot is a serviced plot or a rental house.
     ///
-    /// Sample Request:
+    /// **Sample Request:**
     ///
-    /// POST /CreatePropertyType
+    ///     POST /CreatePropertyType
+    ///
+    /// **Sample Request Body:**
     /// 
-    /// {
-    ///    "propertyTypeId": 0,
-    ///    "propertyTypes": "PARTIALLY-SERVICES PLOTS",
-    ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-    /// }
+    ///     {
+    ///         "propertyTypeId": 0,
+    ///         "propertyTypes": "PARTIALLY-SERVICES PLOTS",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Property Type created successfully.",
+    ///         "data": {
+    ///             "propertyTypeId": 1,
+    ///             "propertyTypes": "PARTIALLY-SERVICES PLOTS"
+    ///         }
+    ///     }
+    /// 
     /// </remarks>
     [HttpPost]
     [Route("CreatePropertyType")]
-    public async Task<ActionResult<PropertyTypeReadDto>> CreatePropertyType([FromBody] PropertyTypeCreateDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreatePropertyType([FromBody] PropertyTypeCreateDto values)
     {
         try
         {
-            return Ok(await _propertyTypeService.AddPropertyTypeAsync(values));
+            var result = await _propertyTypeService.CreatePropertyTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting property type
+    ///  Updates the details of an existing property type
     /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing property type based on the property type id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdatePropertyType
+    ///
+    /// **Sample Request Body:**
     /// 
+    ///     {
+    ///         "propertyTypeId": 1,
+    ///         "propertyTypes": "PARTIALLY-SERVICES PLOTS",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Property Type details modified successfully.",
+    ///         "data": {
+    ///             "propertyTypeId": 1,
+    ///             "propertyTypes": "PARTIALLY-SERVICES PLOTS"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut]
     [Route("UpdatePropertyType")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<PropertyTypeReadDto>> UpdatePropertyType([FromBody] PropertyTypeUpdateDto values)
     {
-        return Ok(await _propertyTypeService.UpdatePropertyTypeAsync(values));
+        var result = await _propertyTypeService.UpdatePropertyTypeAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
     }
 
     [HttpDelete("DeletePropertyType/{propertyTypeId}")]
@@ -1166,15 +2467,34 @@ public class PropertyController : ControllerBase
     //----------------------------------
     [HttpPost]
     [Route("CreateProperty")]
-    public async Task<ActionResult<PropertyTypeReadDto>> CreateProperty([FromBody] PropertyMasterCreatePlotDto values)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateProperty([FromBody] PropertyMasterCreatePlotDto values)
     {
         try
         {
-            return Ok(await _propertyMasterService.CreateProperty(values));
+            var result = await _propertyMasterService.CreateProperty(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
 

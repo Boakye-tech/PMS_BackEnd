@@ -207,18 +207,6 @@ namespace Modules.Customers.Application.UseCases
             }
         }
 
-        public Task<GenericResponseDto> DeleteComplaint(string complaintNumber)
-        {
-            throw new NotImplementedException();
-            //var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
-
-            //if (_complaint is null)
-            //{
-            //    return new GenericResponseDto { response = "Complaint number supplied doesnot exist." };
-            //}
-
-        }
-
         public async Task<ComplaintDto> GetComplaintDetails(string complaintNumber)
         {
             var complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == complaintNumber);
@@ -252,6 +240,7 @@ namespace Modules.Customers.Application.UseCases
                 EmailAddress = complaint.EmailAddress,
                 IsTheMatterInCourt = complaint.IsTheMatterInCourt,
                 DetailsOfComplaint = complaint.DetailsOfComplaint!.Trim(),
+                AvailableDate = complaint.AvailabilityDate,
                 ComplaintDate = complaint.ComplaintDate,
                 SubmittedBy = complaint.SubmittedBy,
                 SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
@@ -529,7 +518,7 @@ namespace Modules.Customers.Application.UseCases
                 //send to staff module
                 await _moduleComms.SendModifiedComplaintDetailsAsync(values);
 
-                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = $"Complaint {values.ComplaintNumber} has been successfully modified." };
+                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = $"Complaint has been successfully modified. - {values.ComplaintNumber}" };
             }
             catch (Exception ex)
             {
@@ -569,8 +558,15 @@ namespace Modules.Customers.Application.UseCases
 
                     ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.ACKNOWLEDGED, values.AcknowledgedBy, DateTime.UtcNow);
                     _unitOfWork.ComplaintHistory.Insert(complaintHistory);
-                    
-                    _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.ACKNOWLEDGED} by {values.AcknowledgedBy} at {DateTime.UtcNow}.");
+
+                    _logger.LogInformation(
+                        "Complaint Number: {ComplaintNumber} | Status changed from {PreviousStatus} to {NewStatus} by {AcknowledgedBy} at {TimeStamp}.",
+                        _complaintNumber ?? "N/A",
+                        ComplaintStatus.SUBMITTED,
+                        ComplaintStatus.ACKNOWLEDGED,
+                        values.AcknowledgedBy ?? "Unknown",
+                        DateTime.UtcNow
+                    );
                 }
 
                 await _unitOfWork.Complete();
@@ -625,7 +621,14 @@ namespace Modules.Customers.Application.UseCases
                     ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.DISPATCHED, values.DispatchedBy, DateTime.UtcNow);
                     _unitOfWork.ComplaintHistory.Insert(complaintHistory);
 
-                    _logger.LogInformation($"Complaint Number: {_complaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.DISPATCHED} by {values.DispatchedBy} at {DateTime.UtcNow}.");
+                    _logger.LogInformation(
+                        "Complaint Number: {ComplaintNumber} | Status changed from {PreviousStatus} to {NewStatus} by {AcknowledgedBy} at {TimeStamp}.",
+                        _complaintNumber ?? "N/A",
+                        ComplaintStatus.ACKNOWLEDGED,
+                        ComplaintStatus.DISPATCHED,
+                        values.DispatchedBy ?? "Unknown",
+                        DateTime.UtcNow
+                    );
                 }
 
                 await _unitOfWork.Complete();
