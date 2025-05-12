@@ -85,12 +85,12 @@ public class AllocationTypeService : IAllocationTypeService
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Allocation Type details created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Allocation Type created successfully.", Data = result },
             };
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
         }
     }
 
@@ -101,7 +101,12 @@ public class AllocationTypeService : IAllocationTypeService
             var allocationType = await _unitOfWork.AllocationType.Get(values.AllocationTypeId);
             if (allocationType == null)
             {
-                throw new Exception($"Allocation Type with ID {values.AllocationTypeId} not found.");
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Allocation Type with ID {values.AllocationTypeId} not found." },
+                    SuccessResponse = null
+                };
             }
 
             allocationType.Update(values.AllocationTypeId, values.AllocationTypeInitial!, values.AllocationTypes!);
@@ -117,12 +122,43 @@ public class AllocationTypeService : IAllocationTypeService
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Allocation Type details modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Allocation Type modified successfully.", Data = result },
             };
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.InnerException?.Message ?? ex.Message);
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> DeleteAllocationType(int allocationTypeId)
+    {
+        try
+        {
+            var allocationType = await _unitOfWork.AllocationType.Get(allocationTypeId);
+            if (allocationType == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Allocation Type with ID {allocationTypeId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.AllocationType.Delete(allocationType);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Allocation Type with ID {allocationTypeId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
         }
     }
 }

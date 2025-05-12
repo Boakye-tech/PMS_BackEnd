@@ -19,6 +19,7 @@ public interface IBlockUnitService
 {
     Task<ReturnResponsesDto> CreateBlockUnitAsync(BlockUnitCreateDto values);
     Task<ReturnResponsesDto> UpdateBlockUnitAsync(BlockUnitUpdateDto values);
+    Task<ReturnResponsesDto> DeleteBlockUnit(int unitId);
     Task<IEnumerable<BlockUnitReadDto>> GetBlockUnitAsync();
     Task<BlockUnitReadDto> GetBlockUnitAsync(int value);
     Task<BlockUnitReadDto> GetBlockUnitAsync(string value);

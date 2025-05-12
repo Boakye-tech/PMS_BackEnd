@@ -88,7 +88,7 @@ public class LandUseTypeService : ILandUseTypeService
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Land Use Type details created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Land Use Type created successfully.", Data = result },
             };
         }
         catch (Exception ex)
@@ -125,7 +125,38 @@ public class LandUseTypeService : ILandUseTypeService
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Land Use Type details modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Land Use Type modified successfully.", Data = result },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> DeleteLandUseType(int landUseTypeId)
+    {
+        try
+        {
+            var landUseType = await _unitOfWork.LandUseType.Get(landUseTypeId);
+            if (landUseType == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Land Use Type with ID {landUseTypeId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.LandUseType.Delete(landUseType);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Land Use Type with ID {landUseTypeId} deleted successfully." }
             };
         }
         catch (Exception ex)

@@ -122,5 +122,36 @@ public class PropertyHeightService : IPropertyHeightService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<ReturnResponsesDto> DeletePropertyHeight(int propertyHeightId)
+    {
+        try
+        {
+            var propertyHeight = await _unitOfWork.PropertyHeight.Get(propertyHeightId);
+            if (propertyHeight == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Property Height with ID {propertyHeightId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.PropertyHeight.Delete(propertyHeight);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Property Height with ID {propertyHeightId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
 }
 

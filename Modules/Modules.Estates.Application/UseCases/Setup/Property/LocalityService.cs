@@ -123,11 +123,35 @@ public class LocalityService : ILocalityService
         }
     }
 
-    public async Task<string> DeleteLocality(int localityId)
+    public async Task<ReturnResponsesDto> DeleteLocality(int localityId)
     {
-        var locality = await _unitOfWork.Locality.Get(localityId);
-        _unitOfWork.Locality.Delete(locality!);
-        return "success";
+        try
+        {
+            var locality = await _unitOfWork.Locality.Get(localityId);
+            if (locality == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Locality with ID {localityId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.Locality.Delete(locality);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Locality with ID {localityId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
     }
 }
 

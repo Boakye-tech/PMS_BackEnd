@@ -122,5 +122,36 @@ public class BlockSideService : IBlockSideService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<ReturnResponsesDto> DeleteBlockSide(int sideId)
+    {
+        try
+        {
+            var blockSide = await _unitOfWork.BlockSides.Get(sideId);
+            if (blockSide == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Block Side with ID {sideId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.BlockSides.Delete(blockSide);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Block Side with ID {sideId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
 }
 

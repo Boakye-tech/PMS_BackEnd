@@ -122,5 +122,36 @@ public class FloorNumberingService : IFloorNumberingService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<ReturnResponsesDto> DeleteFloorNumbering(int floorNumberId)
+    {
+        try
+        {
+            var floorNumbering = await _unitOfWork.FloorNumbering.Get(floorNumberId);
+            if (floorNumbering == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Floor Number with ID {floorNumberId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.FloorNumbering.Delete(floorNumbering);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Floor Number with ID {floorNumberId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
 }
 

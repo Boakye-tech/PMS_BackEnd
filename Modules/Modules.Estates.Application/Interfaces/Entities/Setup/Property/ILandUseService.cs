@@ -22,6 +22,7 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
         Task<IEnumerable<LandUseReadDto>> GetLandUseAsync();
         Task<LandUseReadDto> GetLandUseAsync(int value);
         Task<LandUseReadDto> GetLandUseAsync(string value);
+        Task<ReturnResponsesDto> DeleteLandUse(int landUseId);
     }
 }
 

@@ -19,9 +19,9 @@ public interface ILocalityService
 {
     Task<ReturnResponsesDto> CreateLocalityAsync(LocalityCreateDto values);
     Task<ReturnResponsesDto> UpdateLocalityAsync(LocalityUpdateDto values);
+    Task<ReturnResponsesDto> DeleteLocality(int localityId);
     Task<IEnumerable<LocalityReadDto>> GetLocalityAsync();
     Task<LocalityReadDto> GetLocalityAsync(int value);
     Task<LocalityReadDto> GetLocalityAsync(string value);
-    Task<string> DeleteLocality(int localityId);
 }
 

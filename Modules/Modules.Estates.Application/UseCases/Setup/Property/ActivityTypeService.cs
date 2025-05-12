@@ -119,6 +119,37 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
             }
         }
+
+        public async Task<ReturnResponsesDto> DeleteActivityType(int activityTypeId)
+        {
+            try
+            {
+                var activityType = await _unitOfWork.ActivityType.Get(activityTypeId);
+                if (activityType == null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Activity Type with ID {activityTypeId} not found." },
+                        SuccessResponse = null
+                    };
+                }
+
+                _unitOfWork.ActivityType.Delete(activityType);
+                await _unitOfWork.Complete();
+
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    ErrorResponse = null,
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Activity Type with ID {activityTypeId} deleted successfully." }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            }
+        }
     }
 }
 

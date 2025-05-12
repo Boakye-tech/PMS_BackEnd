@@ -19,6 +19,7 @@ public interface IBlockTypeService
 {
     Task<ReturnResponsesDto> CreateBlockTypeAsync(BlockTypeCreateDto values);
     Task<ReturnResponsesDto> UpdateBlockTypeAsync(BlockTypeUpdateDto values);
+    Task<ReturnResponsesDto> DeleteBlockType(int blockTypeId);
     Task<IEnumerable<BlockTypeReadDto>> GetBlockTypeAsync();
     Task<BlockTypeReadDto> GetBlockTypeAsync(int value);
     Task<BlockTypeReadDto> GetBlockTypeAsync(string value);

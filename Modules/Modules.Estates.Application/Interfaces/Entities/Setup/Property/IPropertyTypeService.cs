@@ -19,6 +19,7 @@ public interface IPropertyTypeService
 {
     Task<ReturnResponsesDto> CreatePropertyTypeAsync(PropertyTypeCreateDto values);
     Task<ReturnResponsesDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values);
+    Task<ReturnResponsesDto> DeletePropertyType(int propertyTypeId);
     Task<IEnumerable<PropertyTypeReadDto>> GetPropertyTypeAsync();
     Task<PropertyTypeReadDto> GetPropertyTypeAsync(int value);
     Task<PropertyTypeReadDto> GetPropertyTypeAsync(string value);

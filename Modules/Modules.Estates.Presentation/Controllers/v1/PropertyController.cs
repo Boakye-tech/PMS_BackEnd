@@ -1,9 +1,11 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Presentation
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Presentation/Controllers/v1/PropertyController.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/01/2025 
+// * Create Date: 12/05/202 01:0 AM 
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
@@ -16,15 +18,16 @@ using Modules.Estates.Domain.Exceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-/// <summary>
-/// Presentation controller to handle all propert management related routes
-/// </summary>
 namespace Modules.Estates.Presentation.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
+
+/// <summary>
+/// Controller for managing property-related operations
+/// </summary>
 public class PropertyController : ControllerBase
 {
     public readonly IAllocationTypeService _allocationTypeService;
@@ -218,10 +221,37 @@ public class PropertyController : ControllerBase
         };
     }
 
-    // DELETE api/values/5
+    /// <summary>
+    /// Deletes an activity by its ID
+    /// </summary>
+    /// <param name="activityId">The ID of the activity to delete</param>
+    /// <returns>Success or error response</returns>
     [HttpDelete("DeleteActivity/{activityId}")]
-    public void DeleteActivity(int activityId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteActivity(int activityId)
     {
+        try
+        {
+            var result = await _activityService.DeleteActivity(activityId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //--------------------ACTIVITY TYPES----------------
@@ -229,7 +259,7 @@ public class PropertyController : ControllerBase
     /// Returns a list of activity types types
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetActivityTypes")]
+    [Route("GetActivityTypes")]
     public async Task<ActionResult<IEnumerable<ActivityTypeReadDto>>> GetActivityTypes()
     {
         return Ok(await _activityTypeService.GetActivityTypeAsync());
@@ -362,10 +392,37 @@ public class PropertyController : ControllerBase
         };
     }
 
-    // DELETE api/values/5
+    /// <summary>
+    /// Deletes an activity type by its ID
+    /// </summary>
+    /// <param name="activityTypeId">The ID of the activity type to delete</param>
+    /// <returns>Success or error response</returns>
     [HttpDelete("DeleteActivityType/{activityTypeId}")]
-    public void DeleteActivityType(int activityTypeId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteActivityType(int activityTypeId)
     {
+        try
+        {
+            var result = await _activityTypeService.DeleteActivityType(activityTypeId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
 
@@ -526,9 +583,37 @@ public class PropertyController : ControllerBase
         };
     }
 
+    /// <summary>
+    /// Deletes an allocation type by its ID
+    /// </summary>
+    /// <param name="allocationTypeId">The ID of the allocation type to delete</param>
+    /// <returns>Success or error response</returns>
     [HttpDelete("DeleteAllocationType/{allocationTypeId}")]
-    public void DeleteAllocationType(int allocationTypeId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteAllocationType(int allocationTypeId)
     {
+        try
+        {
+            var result = await _allocationTypeService.DeleteAllocationType(allocationTypeId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //-------------------APARTMENT TYPE-----------------
@@ -690,9 +775,37 @@ public class PropertyController : ControllerBase
         };
     }
 
+    /// <summary>
+    /// Deletes an apartment type by its ID
+    /// </summary>
+    /// <param name="apartmentTypeId">The ID of the apartment type to delete</param>
+    /// <returns>Success or error response</returns>
     [HttpDelete("DeleteApartmentType/{apartmentTypeId}")]
-    public void DeleteApartmentType(int apartmentTypeId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteApartmentType(int apartmentTypeId)
     {
+        try
+        {
+            var result = await _apartmentTypeService.DeleteApartmentType(apartmentTypeId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //--------------------BLOCK NUMBER----------------
@@ -828,9 +941,32 @@ public class PropertyController : ControllerBase
         };
     }
     // DELETE api/values/5
-    [HttpDelete("DeleteBlockNumber/{facilityId}")]
-    public void DeleteBlockNumber(int facilityId)
+    [HttpDelete("DeleteBlockNumber/{blockNumberId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteBlockNumber(int blockNumberId)
     {
+        try
+        {
+            var result = await _blockNumberService.DeleteBlockNumber(blockNumberId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //--------------------BLOCK SIDE----------------
@@ -968,8 +1104,31 @@ public class PropertyController : ControllerBase
     }
     // DELETE api/values/5
     [HttpDelete("DeleteBlockSide/{blockSideId}")]
-    public void DeleteBlockSide(int blockSideId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteBlockSide(int blockSideId)
     {
+        try
+        {
+            var result = await _blockSideService.DeleteBlockSide(blockSideId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
 
@@ -1107,8 +1266,31 @@ public class PropertyController : ControllerBase
     }
     // DELETE api/values/5
     [HttpDelete("DeleteBlockType/{blockTypeId}")]
-    public void DeleteBlockType(int blockTypeId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteBlockType(int blockTypeId)
     {
+        try
+        {
+            var result = await _blockTypeService.DeleteBlockType(blockTypeId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //--------------------BLOCK UNIT----------------
@@ -1245,8 +1427,31 @@ public class PropertyController : ControllerBase
     }
     // DELETE api/values/5
     [HttpDelete("DeleteBlockUnit/{blockUnitId}")]
-    public void DeleteBlockUnit(int blockUnitId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteBlockUnit(int blockUnitId)
     {
+        try
+        {
+            var result = await _blockUnitService.DeleteBlockUnit(blockUnitId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //--------------------FACILITIES----------------
@@ -1383,8 +1588,31 @@ public class PropertyController : ControllerBase
     }
     // DELETE api/values/5
     [HttpDelete("DeleteFacility/{facilityId}")]
-    public void DeleteFacility(int facilityId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteFacility(int facilityId)
     {
+        try
+        {
+            var result = await _facilitiesService.DeleteFacilities(facilityId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //--------------------FLOOR NUMBERING----------------
@@ -1521,8 +1749,31 @@ public class PropertyController : ControllerBase
     }
     // DELETE api/values/5
     [HttpDelete("DeleteFloorNumber/{floorNumberId}")]
-    public void DeleteFloorNumber(int floorNumberId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteFloorNumber(int floorNumberId)
     {
+        try
+        {
+            var result = await _floorNumberingService.DeleteFloorNumbering(floorNumberId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //--------------------LANDUSE----------------
@@ -1697,8 +1948,31 @@ public class PropertyController : ControllerBase
 
     // DELETE api/values/5
     [HttpDelete("DeleteLandUse/{landUseId}")]
-    public void DeleteLandUse(int landUseId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteLandUse(int landUseId)
     {
+        try
+        {
+            var result = await _landUseService.DeleteLandUse(landUseId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //-------------------LANDUSE TYPE-----------------
@@ -1858,8 +2132,31 @@ public class PropertyController : ControllerBase
     }
 
     [HttpDelete("DeleteLandUseType/{landUseTypeId}")]
-    public void DeleteLandUseType(int landUseId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteLandUseType(int landUseTypeId)
     {
+        try
+        {
+            var result = await _landUseTypeService.DeleteLandUseType(landUseTypeId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //----------------------LOCALITY------------
@@ -2020,8 +2317,31 @@ public class PropertyController : ControllerBase
     }
 
     [HttpDelete("DeleteLocality/{localityId}")]
-    public void DeleteLocality(int localityId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteLocality(int localityId)
     {
+        try
+        {
+            var result = await _localityService.DeleteLocality(localityId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //----------------------PLOT SIZE------------
@@ -2172,8 +2492,31 @@ public class PropertyController : ControllerBase
     }
 
     [HttpDelete("DeletePlotSize/{plotSizeId}")]
-    public void DeletePlotSize(int localityId)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeletePlotSize(int plotSizeId)
     {
+        try
+        {
+            var result = await _plotSizeService.DeletePlotSize(plotSizeId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
     }
 
     //----------------------PROPERTY HEIGHT------------
@@ -2310,8 +2653,32 @@ public class PropertyController : ControllerBase
     }
 
     [HttpDelete("DeletePropertyHeight/{propertyHeightId}")]
-    public void DeletePropertyHeight(int propertyHeightId)
-    { }
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeletePropertyHeight(int propertyHeightId)
+    {
+        try
+        {
+            var result = await _propertyHeightService.DeletePropertyHeight(propertyHeightId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
 
     //----------------------PROPERTY TYPE------------
     /// <summary>
@@ -2461,8 +2828,33 @@ public class PropertyController : ControllerBase
     }
 
     [HttpDelete("DeletePropertyType/{propertyTypeId}")]
-    public void DeletePropertyType(int propertyTypeId)
-    { }
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeletePropertyType(int propertyTypeId)
+    {
+        try
+        {
+            var result = await _propertyTypeService.DeletePropertyType(propertyTypeId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
 
     //----------------------------------
     [HttpPost]

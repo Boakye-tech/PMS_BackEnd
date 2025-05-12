@@ -122,5 +122,36 @@ public class BlockNumberService : IBlockNumberService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<ReturnResponsesDto> DeleteBlockNumber(int blockNumberId)
+    {
+        try
+        {
+            var blockNumber = await _unitOfWork.BlockNumber.Get(blockNumberId);
+            if (blockNumber == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Block Number with ID {blockNumberId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.BlockNumber.Delete(blockNumber);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Block Number with ID {blockNumberId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
 }
 

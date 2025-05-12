@@ -18,5 +18,6 @@ public interface IAllocationTypeService
     Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync();
     Task<AllocationTypeReadDto> GetAllocationTypeAsync(int value);
     Task<AllocationTypeReadDto> GetAllocationTypeAsync(string value);
+    Task<ReturnResponsesDto> DeleteAllocationType(int allocationTypeId);
 }
 

@@ -122,5 +122,36 @@ public class BlockTypeService : IBlockTypeService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<ReturnResponsesDto> DeleteBlockType(int blockTypeId)
+    {
+        try
+        {
+            var blockType = await _unitOfWork.BlockType.Get(blockTypeId);
+            if (blockType == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Block Type with ID {blockTypeId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.BlockType.Delete(blockType);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Block Type with ID {blockTypeId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
 }
 

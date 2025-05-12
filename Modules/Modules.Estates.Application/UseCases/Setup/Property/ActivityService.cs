@@ -115,5 +115,36 @@ public class ActivityService : IActivityService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<ReturnResponsesDto> DeleteActivity(int activityId)
+    {
+        try
+        {
+            var activity = await _unitOfWork.Activity.Get(activityId);
+            if (activity == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Activity with ID {activityId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.Activity.Delete(activity);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Activity with ID {activityId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
 }
 

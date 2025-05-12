@@ -19,6 +19,7 @@ public interface IPropertyHeightService
 {
     Task<ReturnResponsesDto> CreatePropertyHeightAsync(PropertyHeightCreateDto values);
     Task<ReturnResponsesDto> UpdatePropertyHeightAsync(PropertyHeightUpdateDto values);
+    Task<ReturnResponsesDto> DeletePropertyHeight(int propertyHeightId);
     Task<IEnumerable<PropertyHeightReadDto>> GetPropertyHeightAsync();
     Task<PropertyHeightReadDto> GetPropertyHeightAsync(int value);
     Task<PropertyHeightReadDto> GetPropertyHeightAsync(string value);

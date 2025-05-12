@@ -11,12 +11,14 @@
 
 namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
 {
-	public interface IActivityService
-	{
+    public interface IActivityService
+    {
         Task<ReturnResponsesDto> CreateActivityAsync(ActivityCreateDto values);
         Task<ReturnResponsesDto> UpdateActivityAsync(ActivityUpdateDto values);
         Task<IEnumerable<ActivityReadDto>> GetActivitiesAsync();
         Task<ActivityReadDto> GetActivityAsync(int value);
+        Task<ActivityReadDto> GetActivityAsync(string value);
+        Task<ReturnResponsesDto> DeleteActivity(int activityId);
         //Task<ActivityReadDto> GetAllocationTypeAsync(string value);
     }
 }

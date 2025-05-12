@@ -19,6 +19,7 @@ public interface IFloorNumberingService
 {
     Task<ReturnResponsesDto> CreateFloorNumberingAsync(FloorNumberingCreateDto values);
     Task<ReturnResponsesDto> UpdateFloorNumberingAsync(FloorNumberingUpdateDto values);
+    Task<ReturnResponsesDto> DeleteFloorNumbering(int floorNumberId);
     Task<IEnumerable<FloorNumberingReadDto>> GetFloorNumberingAsync();
     Task<FloorNumberingReadDto> GetFloorNumberingAsync(int value);
     Task<FloorNumberingReadDto> GetFloorNumberingAsync(string value);

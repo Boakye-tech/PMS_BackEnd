@@ -19,6 +19,7 @@ public interface IPlotSizeService
 {
     Task<ReturnResponsesDto> CreatePlotSizeAsync(PlotSizeCreateDto values);
     Task<ReturnResponsesDto> UpdatePlotSizeAsync(PlotSizeUpdateDto values);
+    Task<ReturnResponsesDto> DeletePlotSize(int plotSizeId);
     Task<IEnumerable<PlotSizeReadDto>> GetPlotSizeAsync();
     Task<PlotSizeReadDto> GetPlotSizeAsync(int value);
     Task<PlotSizeReadDto> GetPlotSizeAsync(string value);

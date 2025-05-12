@@ -19,6 +19,7 @@ public interface ILandUseTypeService
 {
     Task<ReturnResponsesDto> CreateLandUseTypeAsync(LandUseTypeCreateDto values);
     Task<ReturnResponsesDto> UpdateLandUseTypeAsync(LandUseTypeUpdateDto values);
+    Task<ReturnResponsesDto> DeleteLandUseType(int landUseTypeId);
     Task<IEnumerable<LandUseTypeReadDto>> GetLandUseTypeAsync();
     Task<LandUseTypeReadDto> GetLandUseTypeAsync(int value);
     Task<LandUseTypeReadDto> GetLandUseTypeAsync(string value);

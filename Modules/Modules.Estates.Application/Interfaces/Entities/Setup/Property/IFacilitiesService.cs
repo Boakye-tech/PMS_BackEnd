@@ -19,6 +19,7 @@ public interface IFacilitiesService
 {
     Task<ReturnResponsesDto> CreateFacilitiesAsync(FacilitiesCreateDto values);
     Task<ReturnResponsesDto> UpdateFacilitiesAsync(FacilitiesUpdateDto values);
+    Task<ReturnResponsesDto> DeleteFacilities(int facilityId);
     Task<IEnumerable<FacilitiesReadDto>> GetFacilitiesAsync();
     Task<FacilitiesReadDto> GetFacilitiesAsync(int value);
     Task<FacilitiesReadDto> GetFacilitiesAsync(string value);

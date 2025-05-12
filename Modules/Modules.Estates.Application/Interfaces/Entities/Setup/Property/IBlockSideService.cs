@@ -19,6 +19,7 @@ public interface IBlockSideService
 {
     Task<ReturnResponsesDto> CreateBlockSideAsync(BlockSideCreateDto values);
     Task<ReturnResponsesDto> UpdateBlockSideAsync(BlockSideUpdateDto values);
+    Task<ReturnResponsesDto> DeleteBlockSide(int sideId);
     Task<IEnumerable<BlockSideReadDto>> GetBlockSideAsync();
     Task<BlockSideReadDto> GetBlockSideAsync(int value);
     Task<BlockSideReadDto> GetBlockSideAsync(string value);

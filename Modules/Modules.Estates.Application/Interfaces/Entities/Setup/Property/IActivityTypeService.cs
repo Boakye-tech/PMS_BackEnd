@@ -19,6 +19,7 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
         Task<IEnumerable<ActivityTypeReadDto>> GetActivityTypeAsync();
         Task<ActivityTypeReadDto> GetActivityTypeAsync(int value);
         Task<ActivityTypeReadDto> GetActivityTypeAsync(string value);
+        Task<ReturnResponsesDto> DeleteActivityType(int activityTypeId);
     }
 }
 
