@@ -50,7 +50,7 @@ public class AllocationType : AuditableEntity
 
     private static void Validate(int allocationTypeId, string allocationTypeInitial, string allocationTypes)
     {
-        if (allocationTypeId <= 0)
+        if (allocationTypeId < 0)
             throw new ArgumentException("Allocation Type Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(allocationTypeInitial))

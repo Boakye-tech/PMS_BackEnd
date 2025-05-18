@@ -26,7 +26,8 @@ public class FinanceDbContext : ModuleDbContext
     public DbSet<BankBranch> BankBranch { get; set; }
     public DbSet<BankSortCodes> BankSortCodes { get; set; }
     public DbSet<ChartOfAccounts> ChartOfAccounts { get; set; }
-    public DbSet<CurrencyAndExchangeRate> CurrencyAndExchangeRate { get; set; }
+    public DbSet<CurrencyExchangeRate> CurrencyExchangeRate { get; set; }
+    public DbSet<CurrencyExchangeRateHistory> CurrencyExchangeRateHistory { get; set; }
     public DbSet<Forms> Forms { get; set; }
     public DbSet<PaymentMode> PaymentMode { get; set; }
     public DbSet<PaymentType> PaymentType { get; set; }

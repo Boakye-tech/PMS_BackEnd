@@ -15,10 +15,17 @@ public class ApartmentTypeProfile : Profile
 {
 	public ApartmentTypeProfile()
 	{
-		CreateMap<ApartmentTypes, ApartmentTypeReadDto>();
+		CreateMap<ApartmentTypes, ApartmentTypeReadDto>()
+            .ForMember(dest => dest.apartmentCategory, opt => opt.MapFrom(src => src.ApartmentCategory.GetEnumDescription()));
+
 		CreateMap<ApartmentTypeCreateDto, ApartmentTypes>();
         CreateMap<ApartmentTypeUpdateDto, ApartmentTypes>();
         CreateMap<ApartmentTypeDeleteDto, ApartmentTypes>();
+
+
+        //CreateMap<ApartmentType, ApartmentTypeReadDto>()
+    
+
     }
 }
 

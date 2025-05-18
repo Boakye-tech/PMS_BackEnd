@@ -23,7 +23,7 @@ public class UnitOfWork : IUnitOfWork
         BankBranch = new BankBranchRepository(dbContext);
         BankSortCodes = new BankSortCodesRepository(dbContext);
         ChartOfAccounts = new ChartOfAccountsRepository(dbContext);
-        CurrencyAndExchangeRate = new CurrencyAndExchangeRateRepository(dbContext);
+        CurrencyExchangeRate = new CurrencyExchangeRateRepository(dbContext);
         Forms = new FormsRepository(dbContext);
         PaymentMode = new PaymentModeRepository(dbContext);
         PaymentType = new PaymentTypeRepository(dbContext);
@@ -39,7 +39,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IChartOfAccountsRepository ChartOfAccounts { get; private set; }
 
-    public ICurrencyAndExchangeRateRepository CurrencyAndExchangeRate { get; private set; }
+    public ICurrencyExchangeRateRepository CurrencyExchangeRate { get; private set; }
 
     public IFormsRepository Forms { get; private set; }
 

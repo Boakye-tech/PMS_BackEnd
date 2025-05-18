@@ -58,7 +58,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             if (activityId <= 0)
                 throw new ArgumentException("Activity Id must be greater than zero.");
 
-            if (activityTypeId <= 0)
+            if (activityTypeId < 0)
                 throw new ArgumentException("Activity Type Id must be greater than zero.");
 
             if (string.IsNullOrWhiteSpace(activityTypeName))

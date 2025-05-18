@@ -55,7 +55,7 @@ public class LandUseType : AuditableEntity
 
     private static void Validate(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName)
     {
-        if (landUseId <= 0)
+        if (landUseId < 0)
             throw new ArgumentException("Land Use Id must be greater than zero.");
 
         if (landUseTypeId < 0)

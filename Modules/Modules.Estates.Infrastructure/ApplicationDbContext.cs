@@ -34,17 +34,18 @@ public class ApplicationDbContext : ModuleDbContext
     //----property related tables
     public DbSet<AllocationType> AllocationType { get; set; }
     public DbSet<ApartmentTypes> ApartmentTypes { get; set; }
+    public DbSet<ApartmentFeatures> ApartmentFeatures { get; set; } 
     public DbSet<BlockNumber> BlockNumber { get; set; }
     public DbSet<BlockSides> BlockSides { get; set; }
     public DbSet<BlockStatus> BlockStatus { get; set; }
     public DbSet<BlockTypes> BlockTypes { get; set; }
     public DbSet<BlockUnit> BlockUnit { get; set; }
-    public DbSet<Facilities> Facilities { get; set; }
+    public DbSet<FloorArea> FloorArea { get; set; }
     public DbSet<FloorNumbering> FloorNumbering { get; set; }
     public DbSet<LandUse> LandUse { get; set; }
     public DbSet<LandUseType> LandUseType { get; set; }
     public DbSet<Locality> Locality { get; set; }
-    public DbSet<PlotSize> PlotSize { get; set; }
+    public DbSet<PlotDimension> PlotDimension { get; set; }
     public DbSet<PropertyHeight> PropertyHeight { get; set; }
     public DbSet<PropertyType> PropertyType { get; set; }
 
@@ -65,6 +66,9 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<Complaint> Complaints { get; set; }
     public DbSet<ComplaintHistory> ComplaintHistory { get; set; }
     public DbSet<ComplaintStatuses> ComplaintStatuses { get; set; }
+
+    public DbSet<LeaseTypeAndPeriod> LeaseTypeAndPeriod { get; set; }
+    public DbSet<PropertyStatus> PropertyStatus { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

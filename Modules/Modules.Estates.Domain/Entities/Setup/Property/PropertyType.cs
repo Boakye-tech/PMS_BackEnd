@@ -44,7 +44,7 @@ public class PropertyType : AuditableEntity
 
     private static void Validate(int propertyTypeId, string propertyTypes)
     {
-        if (propertyTypeId <= 0)
+        if (propertyTypeId < 0)
             throw new ArgumentException("Property Type Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(propertyTypes))

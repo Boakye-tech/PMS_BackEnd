@@ -16,11 +16,11 @@ namespace Modules.Estates.Presentation;
 
 public static class ModuleExtensions
 {
-    public static IServiceCollection AddEstateModule(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddEstateModule(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         services
             //.AddCatalogCore()
-            .AddEstateInfrastructure(configuration);
+            .AddEstateInfrastructure(configuration, environment);
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -30,14 +30,19 @@ public static class ModuleExtensions
         services.AddScoped<IBlockSideService, BlockSideService>();
         services.AddScoped<IBlockTypeService, BlockTypeService>();
         services.AddScoped<IBlockUnitService, BlockUnitService>();
-        services.AddScoped<IFacilitiesService, FacilitiesService>();
+        services.AddScoped<IFloorAreaService, FloorAreaService>();
         services.AddScoped<IFloorNumberingService, FloorNumberingService>();
         services.AddScoped<ILandUseService, LandUseService>();
         services.AddScoped<ILandUseTypeService, LandUseTypeService>();
         services.AddScoped<ILocalityService, LocalityService>();
-        services.AddScoped<IPlotSizeService, PlotSizeService>();
+        services.AddScoped<IPlotDimensionService, PlotDimensionService>();
         services.AddScoped<IPropertyHeightService, PropertyHeightService>();
         services.AddScoped<IPropertyTypeService, PropertyTypeService>();
+
+        services.AddScoped<ILeaseTypeAndPeriodService, LeaseTypeAndPeriodService>();
+        services.AddScoped<IPropertyStatusService, PropertyStatusService>();
+        services.AddScoped<IShopOfficeTypeAndDescriptionService, ShopOfficeTypeAndDescriptionService>();
+
 
         services.AddScoped<IActivityService, ActivityService>();
         services.AddScoped<IActivityTypeService, ActivityTypeService>();

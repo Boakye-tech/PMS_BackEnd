@@ -11,7 +11,10 @@
 
 namespace Modules.Estates.Application.DTO.Setup.Property;
 
-public record ApartmentTypeReadDto(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea);
-public record ApartmentTypeCreateDto(string apartmentType, float sellingPrice, int currencyId, double floorArea, string createdBy);
-public record ApartmentTypeUpdateDto(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string modifiedBy);
+public record ApartmentTypeReadDto(string apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, string currency, double floorArea);
+public record ApartmentTypeCreateDto(ApartmentCategoryEnum apartmentCategory, string apartmentType, float sellingPrice, int currencyId, double floorArea, string createdBy);
+public record ApartmentTypeUpdateDto(ApartmentCategoryEnum apartmentCategory,int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string modifiedBy);
 public record ApartmentTypeDeleteDto(int apartmentTypeId);
+
+
+

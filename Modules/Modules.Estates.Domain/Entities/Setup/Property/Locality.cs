@@ -61,16 +61,16 @@ public class Locality : AuditableEntity
 
     private static void Validate(int localityId, string localityInitial, string localityName, string customerCode, int customerCodeCounter)
     {
-        if (localityId <= 0)
+        if (localityId < 0)
             throw new ArgumentException("Locality Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(localityInitial))
+        if (string.IsNullOrWhiteSpace(localityInitial) || localityInitial.Length > 10)
             throw new ArgumentException("Locality Initial cannot be empty or exceed 10 characters.");
 
-        if (string.IsNullOrWhiteSpace(localityName))
+        if (string.IsNullOrWhiteSpace(localityName) || localityName.Length > 20)
             throw new ArgumentException("Locality Name cannot be empty or exceed 20 characters.");
 
-        if (string.IsNullOrWhiteSpace(customerCode))
+        if (string.IsNullOrWhiteSpace(customerCode) || customerCode.Length > 5)
             throw new ArgumentException("Customer Code cannot be empty or exceed 5 characters.");
 
         if (customerCodeCounter < 0)

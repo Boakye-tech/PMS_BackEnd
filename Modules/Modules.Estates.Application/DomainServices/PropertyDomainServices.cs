@@ -93,9 +93,9 @@ namespace Modules.Estates.Application.DomainServices
             return await _unitOfWork.BlockUnit.Get(blockUnitId) is not null;
         }
 
-        public async Task<bool> FacilitiesExists(int facilitiesId)
+        public async Task<bool> FloorAreaExists(int floorAreaId)
         {
-            return await _unitOfWork.Facilities.Get(facilitiesId) is not null;
+            return await _unitOfWork.FloorArea.Get(floorAreaId) is not null;
         }
 
         public async Task<bool> FloorNumberingExists(int floorNumberingId)
@@ -140,9 +140,9 @@ namespace Modules.Estates.Application.DomainServices
             return await _unitOfWork.Locality.Get(localityId) is not null;
         }
 
-        public async Task<bool> PlotSizeExists(int plotSizeId)
+        public async Task<bool> PlotDimensionExists(int plotDimensionId)
         {
-            return await _unitOfWork.PlotSize.Get(plotSizeId) is not null;
+            return await _unitOfWork.PlotDimension.Get(plotDimensionId) is not null;
         }
 
         public async Task<bool> PropertyHeightExists(int propertyHeightId)

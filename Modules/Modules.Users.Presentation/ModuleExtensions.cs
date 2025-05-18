@@ -20,10 +20,10 @@ namespace Modules.Users.Presentation
     /// 
     public static class ModuleExtensions
 	{
-        public static IServiceCollection AddUserModule(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddUserModule(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
             services
-                .AddUserInfrastructure(configuration);
+                .AddUserInfrastructure(configuration, environment);
 
             services.AddIdentity<ApplicationIdentityUser, ApplicationIdentityRole>(options =>
             {

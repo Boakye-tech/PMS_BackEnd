@@ -44,11 +44,11 @@ public class FloorNumbering : AuditableEntity
 
     private static void Validate(int floorNumberId, string floorNumber)
     {
-        if (floorNumberId <= 0)
-            throw new ArgumentException("Floor Number Id must be greater than zero.");
+        if (floorNumberId < 0)
+            throw new ArgumentException("Floor Numbering Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(floorNumber))
-            throw new ArgumentException("Floor Number cannot be empty or exceed 25 characters.");
+        if (string.IsNullOrWhiteSpace(floorNumber) || floorNumber.Length > 25)
+            throw new ArgumentException("Floor Numbering cannot be empty or exceed 25 characters.");
     }
 }
 

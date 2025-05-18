@@ -30,12 +30,12 @@ public class PropertyController : ControllerBase
     readonly IBlockTypeService _blockTypeService;
     readonly IBlockUnitService _blockUnitService;
 
-    readonly IFacilitiesService _facilitiesService;
+    readonly IFloorAreaService _floorAreaService;
     readonly IFloorNumberingService _floorNumberingService;
     readonly ILandUseService _landUseService;
     readonly ILandUseTypeService _landUseTypeService;
     readonly ILocalityService _localityService;
-    readonly IPlotSizeService _plotSizeService;
+    readonly IPlotDimensionService _plotDimensionService;
     readonly IPropertyHeightService _propertyHeightService;
     readonly IPropertyTypeService _propertyTypeService;
 
@@ -46,8 +46,8 @@ public class PropertyController : ControllerBase
 
 
 
-    public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotSizeService plotSizeService,
-                              IApartmentTypeService apartmentTypeService, IFacilitiesService facilitiesService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
+    public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotDimensionService plotDimensionService,
+                              IApartmentTypeService apartmentTypeService, IFloorAreaService floorAreaService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
                               IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService,
                               IActivityService activityService, IActivityTypeService activityTypeService, IPropertyMasterService propertyMasterService)
     {
@@ -59,12 +59,12 @@ public class PropertyController : ControllerBase
         _blockTypeService = blockTypeService;
         _blockUnitService = blockUnitService;
 
-        _facilitiesService = facilitiesService;
+        _floorAreaService = floorAreaService;
         _floorNumberingService = floorNumberingService;
         _landUseService = landUseService;
         _landUseTypeService = landUseTypeService;
         _localityService = localityService;
-        _plotSizeService = plotSizeService;
+        _plotDimensionService = plotDimensionService;
         _propertyHeightService = propertyHeightService;
         _propertyTypeService = propertyTypeService;
 
@@ -602,42 +602,42 @@ public class PropertyController : ControllerBase
     {
     }
 
-    //--------------------FACILITIES----------------
+    //--------------------FLOOR AREA----------------
     /// <summary>
-    /// Returns a list of facilities under management
+    /// Returns a list of floor areas
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetFacilities")]
-    public async Task<ActionResult<IEnumerable<FacilitiesReadDto>>> GetFacilities()
+    [Route("Setup/GetFloorArea")]
+    public async Task<ActionResult<IEnumerable<FloorAreaReadDto>>> GetFloorAreas()
     {
-        return Ok(await _facilitiesService.GetFacilitiesAsync());
+        return Ok(await _floorAreaService.GetFloorAreaAsync());
     }
 
-    // POST: api/CreateFacility
+    // POST: api/CreateFloorArea
     /// <summary>
-    ///  Creates a new facilities
+    ///  Creates a new floor area
     /// </summary>
     ///     
     /// <remarks>
-    /// Indicating the facilities under management.
+    /// Indicating the floor area .
     ///
     /// Sample Request:
     ///
-    /// POST /CreateFacility
+    /// POST /CreateFloorArea
     /// 
     /// {
-    ///    "facilityId": 0,
-    ///    "facility": "",
+    ///    "floorAreaId": 0,
+    ///    "area": "",
     ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
     /// }
     /// </remarks>
     [HttpPost]
-    [Route("CreateFacility")]
-    public async Task<ActionResult<FacilitiesReadDto>> CreateFacility([FromBody] FacilitiesCreateDto values)
+    [Route("CreateFloorArea")]
+    public async Task<ActionResult<FloorAreaReadDto>> CreateFloorArea([FromBody] FloorAreaCreateDto values)
     {
         try
         {
-            return Ok(await _facilitiesService.CreateFacilitiesAsync(values));
+            return Ok(await _floorAreaService.CreateFloorAreaAsync(values));
         }
         catch (Exception ex)
         {
@@ -646,19 +646,20 @@ public class PropertyController : ControllerBase
     }
 
     /// <summary>
-    ///  Updates the details of an exsiting facility
+    ///  Updates the details of an exsiting floor area
     /// </summary>
     /// 
     [HttpPut]
-    [Route("UpdateFacility")]
-    public async Task<ActionResult<FacilitiesReadDto>> UpdateFacility([FromBody] FacilitiesUpdateDto values)
+    [Route("UpdateFloorArea")]
+    public async Task<ActionResult<FloorAreaReadDto>> UpdateFloorArea([FromBody] FloorAreaUpdateDto values)
     {
-        return Ok(await _facilitiesService.UpdateFacilitiesAsync(values));
+        return Ok(await _floorAreaService.UpdateFloorAreaAsync(values));
     }
     // DELETE api/values/5
-    [HttpDelete("DeleteFacility/{facilityId}")]
-    public void DeleteFacility(int facilityId)
+    [HttpDelete("DeleteFloorArea/{floorAreaId}")]
+    public void DeleteFloorArea(int floorAreaId)
     {
+        _floorAreaService.DeleteFloorArea(floorAreaId);
     }
 
     //--------------------FLOOR NUMBERING----------------
@@ -956,56 +957,56 @@ public class PropertyController : ControllerBase
     {
     }
 
-    //----------------------PLOT SIZE------------
+    //----------------------PLOT DIMENSION------------
     /// <summary>
     /// Returns a list of exisiting plot sizes
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetPlotSize")]
-    public async Task<ActionResult<IEnumerable<PlotSizeReadDto>>> GetPlotSize()
+    [Route("Setup/GetPlotDimensions")]
+    public async Task<ActionResult<IEnumerable<PlotDimensionReadDto>>> GetPlotDimension()
     {
-        return Ok(await _plotSizeService.GetPlotSizeAsync());
+        return Ok(await _plotDimensionService.GetPlotDimensionAsync());
     }
 
     [HttpGet]
-    [Route("Setup/GetPlotSize/{value}")]
-    public async Task<ActionResult<PlotSizeReadDto>> GetPlotSize(string value)
+    [Route("Setup/GetPlotDimension/{value}")]
+    public async Task<ActionResult<PlotDimensionReadDto>> GetPlotDimension(string value)
     {
-        return Ok(await _plotSizeService.GetPlotSizeAsync(value));
+        return Ok(await _plotDimensionService.GetPlotDimensionAsync(value));
     }
 
     [HttpGet]
-    [Route("Setup/GetPlotSizeById/{plotSizeId}")]
-    public async Task<ActionResult<PlotSizeReadDto>> GetPlotSizeById(int plotSizeId)
+    [Route("Setup/GetPlotDimensionById/{PlotDimensionId}")]
+    public async Task<ActionResult<PlotDimensionReadDto>> GetPlotDimensionById(int PlotDimensionId)
     {
-        return Ok(await _plotSizeService.GetPlotSizeAsync(plotSizeId));
+        return Ok(await _plotDimensionService.GetPlotDimensionAsync(PlotDimensionId));
     }
 
-    // POST: api/CreatePlotSize
+    // POST: api/CreatePlotDimension
     /// <summary>
-    ///  Creates a new plot size
+    ///  Creates a new plot dimension
     /// </summary>
     ///     
     /// <remarks>
-    /// The plot size indicates the lenght and breath of the property/plot.
+    /// The plot dimension indicates the lenght and breath of the property/plot.
     ///
     /// Sample Request:
     ///
-    /// POST /CreatePlotSize
+    /// POST /CreatePlotDimension
     /// 
     /// {
-    ///    "plotSizeId": 0,
-    ///    "plotSizes": "70x100",
+    ///    "PlotDimensionId": 0,
+    ///    "PlotDimensions": "70x100",
     ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
     /// }
     /// </remarks>
     [HttpPost]
-    [Route("CreatePlotSize")]
-    public async Task<ActionResult<PlotSizeReadDto>> AddPlotSize([FromBody] PlotSizeCreateDto values)
+    [Route("CreatePlotDimension")]
+    public async Task<ActionResult<PlotDimensionReadDto>> AddPlotDimension([FromBody] PlotDimensionCreateDto values)
     {
         try
         {
-            return Ok(await _plotSizeService.CreatePlotSizeAsync(values));
+            return Ok(await _plotDimensionService.CreatePlotDimensionAsync(values));
         }
         catch (Exception ex)
         {
@@ -1018,14 +1019,14 @@ public class PropertyController : ControllerBase
     /// </summary>
     /// 
     [HttpPut]
-    [Route("UpdatePlotSize")]
-    public async Task<ActionResult<PlotSizeReadDto>> UpdatePlotSize([FromBody] PlotSizeUpdateDto values)
+    [Route("UpdatePlotDimension")]
+    public async Task<ActionResult<PlotDimensionReadDto>> UpdatePlotDimension([FromBody] PlotDimensionUpdateDto values)
     {
-        return Ok(await _plotSizeService.UpdatePlotSizeAsync(values));
+        return Ok(await _plotDimensionService.UpdatePlotDimensionAsync(values));
     }
 
-    [HttpDelete("DeletePlotSize/{plotSizeId}")]
-    public void DeletePlotSize(int localityId)
+    [HttpDelete("DeletePlotDimension/{PlotDimensionId}")]
+    public void DeletePlotDimension(int localityId)
     {
     }
 

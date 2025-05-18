@@ -133,7 +133,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             var result = await _controller.CreateCustomerType(createDto);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var okResult = Assert.IsType<ObjectResult>(result.Result);
             var returnValue = Assert.IsType<CustomerTypeReadDto>(okResult.Value);
             Assert.Equal(expectedResponse.customerTypeId, returnValue.customerTypeId);
         }

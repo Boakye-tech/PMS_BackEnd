@@ -44,10 +44,10 @@ public class BlockSides : AuditableEntity
 
     private static void Validate(int sideId, string side)
     {
-        if (sideId <= 0)
+        if (sideId < 0)
             throw new ArgumentException("Block Side Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(side))
+        if (string.IsNullOrWhiteSpace(side) ||side.Length > 10)
             throw new ArgumentException("Block Side cannot be empty or exceed 10 characters.");
     }
 }

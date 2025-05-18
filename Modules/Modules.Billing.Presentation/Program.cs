@@ -20,7 +20,7 @@ if (builder.Environment.IsDevelopment())
     }
 }
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsStaging() || builder.Environment.IsProduction())
 {
     var currentDirectory = Directory.GetCurrentDirectory();
     var solutionDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName ?? "";

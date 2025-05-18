@@ -58,11 +58,11 @@ public class LandUse : AuditableEntity
         if (landUseId < 0)
             throw new ArgumentException("Land Use Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(landUseInitial))
+        if (string.IsNullOrWhiteSpace(landUseInitial) || landUseInitial.Length > 5)
             throw new ArgumentException("Land Use Initial cannot be empty or exceed 5 characters.");
 
-        if (string.IsNullOrWhiteSpace(landUseName))
-            throw new ArgumentException("Land Use Name cannot be empty or exceed 50 characters.");
+        if (string.IsNullOrWhiteSpace(landUseName) || landUseName.Length > 30)
+            throw new ArgumentException("Land Use Name cannot be empty or exceed 30 characters.");
     }
 }
 

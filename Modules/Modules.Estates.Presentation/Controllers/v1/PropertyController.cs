@@ -10,10 +10,14 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using System.ComponentModel;
+using System.Reflection;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Estates.Application.DTO.Setup;
+using Modules.Estates.Application.UseCases.Setup.Property;
+using Modules.Estates.Domain.Entities.Setup.Property;
 using Modules.Estates.Domain.Exceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -28,53 +32,61 @@ namespace Modules.Estates.Presentation.Controllers.v1;
 /// <summary>
 /// Controller for managing property-related operations
 /// </summary>
-public class PropertyController : ControllerBase
+public partial class PropertyController : ControllerBase
 {
     public readonly IAllocationTypeService _allocationTypeService;
     public readonly IApartmentTypeService _apartmentTypeService;
+    public readonly ILeaseTypeAndPeriodService _leaseTypeAndPeriodService;
+    public readonly IPropertyStatusService _propertyStatusService;
+    public readonly IShopOfficeTypeAndDescriptionService _shopOfficeTypeAndDescriptionService;
 
     readonly IBlockNumberService _blockNumberService;
     readonly IBlockSideService _blockSideService;
     readonly IBlockTypeService _blockTypeService;
     readonly IBlockUnitService _blockUnitService;
 
-    readonly IFacilitiesService _facilitiesService;
+    readonly IFloorAreaService _floorAreaService;
     readonly IFloorNumberingService _floorNumberingService;
     readonly ILandUseService _landUseService;
     readonly ILandUseTypeService _landUseTypeService;
     readonly ILocalityService _localityService;
-    readonly IPlotSizeService _plotSizeService;
+    readonly IPlotDimensionService _plotDimensionService;
     readonly IPropertyHeightService _propertyHeightService;
     readonly IPropertyTypeService _propertyTypeService;
 
     readonly IActivityService _activityService;
     readonly IActivityTypeService _activityTypeService;
 
+        
     readonly IPropertyMasterService _propertyMasterService;
 
 
     /// <summary>
     /// Presentation controller constructor to handle dependency injection
     /// </summary>
-    public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotSizeService plotSizeService,
-                              IApartmentTypeService apartmentTypeService, IFacilitiesService facilitiesService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
+    public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotDimensionService plotDimensionService,
+                              IApartmentTypeService apartmentTypeService, IFloorAreaService floorAreaService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
                               IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService,
-                              IActivityService activityService, IActivityTypeService activityTypeService, IPropertyMasterService propertyMasterService)
+                              IActivityService activityService, IActivityTypeService activityTypeService, IPropertyMasterService propertyMasterService,
+                              ILeaseTypeAndPeriodService leaseTypeAndPeriodService, IPropertyStatusService propertyStatusService, IShopOfficeTypeAndDescriptionService shopOfficeTypeAndDescriptionService)
     {
         _allocationTypeService = allocationTypeService;
         _apartmentTypeService = apartmentTypeService;
+        _leaseTypeAndPeriodService = leaseTypeAndPeriodService;
+        _propertyStatusService = propertyStatusService;
+        _shopOfficeTypeAndDescriptionService = shopOfficeTypeAndDescriptionService;
 
         _blockNumberService = blockNumberService;
         _blockSideService = blockSideService;
         _blockTypeService = blockTypeService;
         _blockUnitService = blockUnitService;
 
-        _facilitiesService = facilitiesService;
+        _floorAreaService = floorAreaService;
         _floorNumberingService = floorNumberingService;
         _landUseService = landUseService;
         _landUseTypeService = landUseTypeService;
         _localityService = localityService;
-        _plotSizeService = plotSizeService;
+        _plotDimensionService = plotDimensionService;
         _propertyHeightService = propertyHeightService;
         _propertyTypeService = propertyTypeService;
 
@@ -89,7 +101,7 @@ public class PropertyController : ControllerBase
     /// Returns a list of activities
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetActivities")]
+    [Route("GetActivities")]
     public async Task<ActionResult<IEnumerable<ActivityReadDto>>> GetActivities()
     {
         return Ok(await _activityService.GetActivitiesAsync());
@@ -427,7 +439,7 @@ public class PropertyController : ControllerBase
 
 
     //-------------------ALLOCATION TYPE-----------------
-    // GET: api/Setup/GetAllocationType
+    // GET: api/GetAllocationType
     /// <summary>
     /// Returns a list of land allocation types
     /// </summary>
@@ -437,21 +449,21 @@ public class PropertyController : ControllerBase
     /// </remarks>
     /// <returns></returns>
     [HttpGet]
-    [Route("Setup/GetAllocationType")]
+    [Route("GetAllocationType")]
     public async Task<ActionResult<IEnumerable<AllocationTypeReadDto>>> GetAllocationType()
     {
         return Ok(await _allocationTypeService.GetAllocationTypeAsync());
     }
 
     [HttpGet]
-    [Route("Setup/GetAllocationType/{allocationType}")]
+    [Route("GetAllocationType/{allocationType}")]
     public async Task<ActionResult<AllocationTypeReadDto>> GetAllocationType(string allocationType)
     {
         return Ok(await _allocationTypeService.GetAllocationTypeAsync(allocationType));
     }
 
     [HttpGet]
-    [Route("Setup/GetAllocationTypeById/{allocationTypeId}")]
+    [Route("GetAllocationTypeById/{allocationTypeId}")]
     public async Task<ActionResult<AllocationTypeReadDto>> GetAllocationTypeById(int allocationTypeId)
     {
         return Ok(await _allocationTypeService.GetAllocationTypeAsync(allocationTypeId));
@@ -616,27 +628,52 @@ public class PropertyController : ControllerBase
         }
     }
 
+    //-------------------APARTMENT CATEGORIES-----------------
+    /// <summary>
+    /// Returns a list of apartment categories
+    /// </summary>
+    [HttpGet]
+    //[Authorize(Policy = "Permission:Customers.READ")]
+    [Route("ApartmentCategory")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    public IActionResult ApartmentCategory()
+    {
+        var statuses = Enum.GetValues(typeof(ApartmentCategoryEnum))
+                               .Cast<ApartmentCategoryEnum>()
+                               .Select(e => new
+                               {
+                                   Id = (int)e,
+                                   Name = e.ToString(),
+                                   DisplayName = e.GetType()
+                                                 .GetField(e.ToString())!
+                                                  .GetCustomAttribute<DescriptionAttribute>()?
+                                                  .Description
+
+                               });
+        return Ok(statuses);
+    }
+
     //-------------------APARTMENT TYPE-----------------
     /// <summary>
     /// Returns a list of apartment types
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetApartmentType")]
+    [Route("GetApartmentType")]
     public async Task<ActionResult<IEnumerable<ApartmentTypeReadDto>>> GetApartmentType()
     {
         return Ok(await _apartmentTypeService.GetApartmentTypeAsync());
     }
 
     [HttpGet]
-    [Route("Setup/GetApartmentType/{apartmentType}")]
-    public async Task<ActionResult<AllocationTypeReadDto>> GetApartmentType(string apartmentType)
+    [Route("GetApartmentType/{apartmentType}")]
+    public async Task<ActionResult<ApartmentTypeReadDto>> GetApartmentType(string apartmentType)
     {
         return Ok(await _apartmentTypeService.GetApartmentTypeAsync(apartmentType));
     }
 
     [HttpGet]
-    [Route("Setup/GetApartmentTypeById/{apartmentTypeId}")]
-    public async Task<ActionResult<AllocationTypeReadDto>> GetApartmentTypeById(int apartmentTypeId)
+    [Route("GetApartmentTypeById/{apartmentTypeId}")]
+    public async Task<ActionResult<ApartmentTypeReadDto>> GetApartmentTypeById(int apartmentTypeId)
     {
         return Ok(await _apartmentTypeService.GetApartmentTypeAsync(apartmentTypeId));
     }
@@ -813,7 +850,7 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting block numbers
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetBlockNumber")]
+    [Route("GetBlockNumber")]
     public async Task<ActionResult<IEnumerable<BlockNumberReadDto>>> GetBlockNumber()
     {
         return Ok(await _blockNumberService.GetBlockNumberAsync());
@@ -974,7 +1011,7 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting block sides
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetBlockSides")]
+    [Route("GetBlockSides")]
     public async Task<ActionResult<IEnumerable<BlockSideReadDto>>> GetBlockSides()
     {
         return Ok(await _blockSideService.GetBlockSideAsync());
@@ -1137,7 +1174,7 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting block types
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetBlockTypes")]
+    [Route("GetBlockTypes")]
     public async Task<ActionResult<IEnumerable<BlockTypeReadDto>>> GetBlockTypes()
     {
         return Ok(await _blockTypeService.GetBlockTypeAsync());
@@ -1298,7 +1335,7 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting block units
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetBlockUnits")]
+    [Route("GetBlockUnits")]
     public async Task<ActionResult<IEnumerable<BlockUnitReadDto>>> GetBlockUnits()
     {
         return Ok(await _blockUnitService.GetBlockUnitAsync());
@@ -1454,34 +1491,34 @@ public class PropertyController : ControllerBase
         }
     }
 
-    //--------------------FACILITIES----------------
+    //--------------------FLOOR AREA----------------
     /// <summary>
-    /// Returns a list of facilities under management
+    /// Returns a list of floor areas
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetFacilities")]
-    public async Task<ActionResult<IEnumerable<FacilitiesReadDto>>> GetFacilities()
+    [Route("GetFloorArea")]
+    public async Task<ActionResult<IEnumerable<FloorAreaReadDto>>> GetFloorArea()
     {
-        return Ok(await _facilitiesService.GetFacilitiesAsync());
+        return Ok(await _floorAreaService.GetFloorAreaAsync());
     }
 
-    // POST: api/CreateFacility
+    // POST: api/CreateFloorArea
     /// <summary>
-    ///  Creates a new facility
+    ///  Creates a new floor area
     /// </summary>
     ///     
     /// <remarks>
-    /// Indicating the facilities under management.
+    /// Indicating the floor area.
     ///
     /// **Sample Request:**
     ///
-    ///     POST /CreateFacility
+    ///     POST /CreateFloorArea
     ///
     /// **Sample Request Body:**
     /// 
     ///     {
-    ///         "facilityId": 0,
-    ///         "facility": "SWIMMING POOL",
+    ///         "floorAreaId": 0,
+    ///         "area": "106.23",
     ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
     ///     }
     ///
@@ -1489,26 +1526,26 @@ public class PropertyController : ControllerBase
     /// 
     ///     {
     ///         "code": 201,
-    ///         "message": "Facility created successfully.",
+    ///         "message": "Floor area created successfully.",
     ///         "data": {
-    ///             "facilityId": 1,
-    ///             "facility": "SWIMMING POOL"
+    ///             "floorAreaId": 1,
+    ///             "area": "106.23"
     ///         }
     ///     }
     /// 
     /// </remarks>
     [HttpPost]
-    [Route("CreateFacility")]
+    [Route("CreateFloorArea")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateFacility([FromBody] FacilitiesCreateDto values)
+    public async Task<ActionResult> CreateFloorArea([FromBody] FloorAreaCreateDto values)
     {
         try
         {
-            var result = await _facilitiesService.CreateFacilitiesAsync(values);
+            var result = await _floorAreaService.CreateFloorAreaAsync(values);
 
             if (result.IsSuccess)
             {
@@ -1531,21 +1568,21 @@ public class PropertyController : ControllerBase
     }
 
     /// <summary>
-    ///  Updates the details of an existing facility
+    ///  Updates the details of an existing floor area
     /// </summary>
     ///
     /// <remarks>
-    /// Modifies/updates an existing facility based on the facility id 
+    /// Modifies/updates an existing floor area based on the id 
     ///
     /// **Sample Request:**
     ///
-    ///     PUT /UpdateFacility
+    ///     PUT /UpdateFloorArea
     ///
     /// **Sample Request Body:**
     /// 
     ///     {
-    ///         "facilityId": 1,
-    ///         "facility": "SWIMMING POOL",
+    ///         "floorAreaId": 1,
+    ///         "area": 106.23,
     ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
     ///     }
     ///
@@ -1553,24 +1590,24 @@ public class PropertyController : ControllerBase
     /// 
     ///     {
     ///         "code": 200,
-    ///         "message": "Facility details modified successfully.",
+    ///         "message": "Floor area details modified successfully.",
     ///         "data": {
-    ///             "facilityId": 1,
-    ///             "facility": "SWIMMING POOL"
+    ///             "floorAreaId": 1,
+    ///             "area": 108.76
     ///         }
     ///     }
     /// 
     /// </remarks>
     [HttpPut]
-    [Route("UpdateFacility")]
+    [Route("UpdateFloorArea")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<FacilitiesReadDto>> UpdateFacility([FromBody] FacilitiesUpdateDto values)
+    public async Task<ActionResult<FloorAreaReadDto>> UpdateFacility([FromBody] FloorAreaUpdateDto values)
     {
-        var result = await _facilitiesService.UpdateFacilitiesAsync(values);
+        var result = await _floorAreaService.UpdateFloorAreaAsync(values);
 
         if (result.IsSuccess)
         {
@@ -1587,15 +1624,15 @@ public class PropertyController : ControllerBase
         };
     }
     // DELETE api/values/5
-    [HttpDelete("DeleteFacility/{facilityId}")]
+    [HttpDelete("DeleteFloorArea/{floorAreaId}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteFacility(int facilityId)
+    public async Task<ActionResult> DeleteFacility(int floorAreaId)
     {
         try
         {
-            var result = await _facilitiesService.DeleteFacilities(facilityId);
+            var result = await _floorAreaService.DeleteFloorArea(floorAreaId);
 
             if (result.IsSuccess)
             {
@@ -1620,7 +1657,7 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting floor numbers
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetFloorNumbering")]
+    [Route("GetFloorNumbering")]
     public async Task<ActionResult<IEnumerable<FloorNumberingReadDto>>> GetFloorNumbering()
     {
         return Ok(await _floorNumberingService.GetFloorNumberingAsync());
@@ -1781,21 +1818,21 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting land uses
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetLandUse")]
+    [Route("GetLandUse")]
     public async Task<ActionResult<IEnumerable<LandUseReadDto>>> GetLandUse()
     {
         return Ok(await _landUseService.GetLandUseAsync());
     }
 
     [HttpGet]
-    [Route("Setup/GetLandUse/{landUse}")]
+    [Route("GetLandUse/{landUse}")]
     public async Task<ActionResult<LandUseReadDto>> GetLandUse(string landUse)
     {
         return Ok(await _landUseService.GetLandUseAsync(landUse));
     }
 
     [HttpGet]
-    [Route("Setup/GetLandUseById/{landUseId}")]
+    [Route("GetLandUseById/{landUseId}")]
     public async Task<ActionResult<LandUseReadDto>> GetLandUseById(int landUseId)
     {
         return Ok(await _landUseService.GetLandUseAsync(landUseId));
@@ -1980,21 +2017,21 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting land use types
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetLandUseType")]
+    [Route("GetLandUseType")]
     public async Task<ActionResult<IEnumerable<LandUseTypeReadDto>>> GetLandUseType()
     {
         return Ok(await _landUseTypeService.GetLandUseTypeAsync());
     }
 
     [HttpGet]
-    [Route("Setup/GetLandUseType/{landUse}")]
+    [Route("GetLandUseType/{landUse}")]
     public async Task<ActionResult<LandUseTypeReadDto>> GetLandUseType(string landUse)
     {
         return Ok(await _landUseTypeService.GetLandUseTypeAsync(landUse));
     }
 
     [HttpGet]
-    [Route("Setup/GetLandUseTypeById/{landUseTypeId}")]
+    [Route("GetLandUseTypeById/{landUseTypeId}")]
     public async Task<ActionResult<LandUseReadDto>> GetLandUseTypeById(int landUseId)
     {
         return Ok(await _landUseTypeService.GetLandUseTypeAsync(landUseId));
@@ -2164,21 +2201,21 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting localities
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetLocality")]
+    [Route("GetLocality")]
     public async Task<ActionResult<IEnumerable<LocalityReadDto>>> GeLocality()
     {
         return Ok(await _localityService.GetLocalityAsync());
     }
 
     [HttpGet]
-    [Route("Setup/GetLocality/{value}")]
+    [Route("GetLocality/{value}")]
     public async Task<ActionResult<LocalityReadDto>> GetLocality(string value)
     {
         return Ok(await _localityService.GetLocalityAsync(value));
     }
 
     [HttpGet]
-    [Route("Setup/GetLocalityById/{localityId}")]
+    [Route("GetLocalityById/{localityId}")]
     public async Task<ActionResult<LocalityReadDto>> GetLocalityById(int localityId)
     {
         return Ok(await _localityService.GetLocalityAsync(localityId));
@@ -2344,32 +2381,32 @@ public class PropertyController : ControllerBase
         }
     }
 
-    //----------------------PLOT SIZE------------
+    //----------------------PLOT DIMENSION------------
     /// <summary>
-    /// Returns a list of exisiting plot sizes
+    /// Returns a list of exisiting plot dimensions
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetPlotSize")]
-    public async Task<ActionResult<IEnumerable<PlotSizeReadDto>>> GetPlotSize()
+    [Route("GetPlotDimension")]
+    public async Task<ActionResult<IEnumerable<PlotDimensionReadDto>>> GetPlotDimension()
     {
-        return Ok(await _plotSizeService.GetPlotSizeAsync());
+        return Ok(await _plotDimensionService.GetPlotDimensionAsync());
     }
 
     [HttpGet]
-    [Route("Setup/GetPlotSize/{value}")]
-    public async Task<ActionResult<PlotSizeReadDto>> GetPlotSize(string value)
+    [Route("GetPlotDimension/{value}")]
+    public async Task<ActionResult<PlotDimensionReadDto>> GetPlotDimension(string value)
     {
-        return Ok(await _plotSizeService.GetPlotSizeAsync(value));
+        return Ok(await _plotDimensionService.GetPlotDimensionAsync(value));
     }
 
     [HttpGet]
-    [Route("Setup/GetPlotSizeById/{plotSizeId}")]
-    public async Task<ActionResult<PlotSizeReadDto>> GetPlotSizeById(int plotSizeId)
+    [Route("GetPlotDimensionById/{PlotDimensionId}")]
+    public async Task<ActionResult<PlotDimensionReadDto>> GetPlotDimensionById(int PlotDimensionId)
     {
-        return Ok(await _plotSizeService.GetPlotSizeAsync(plotSizeId));
+        return Ok(await _plotDimensionService.GetPlotDimensionAsync(PlotDimensionId));
     }
 
-    // POST: api/CreatePlotSize
+    // POST: api/CreatePlotDimension
     /// <summary>
     ///  Creates a new plot size
     /// </summary>
@@ -2379,13 +2416,13 @@ public class PropertyController : ControllerBase
     ///
     /// **Sample Request:**
     ///
-    ///     POST /CreatePlotSize
+    ///     POST /CreatePlotDimension
     ///
     /// **Sample Request Body:**
     /// 
     ///     {
-    ///         "plotSizeId": 0,
-    ///         "plotSizes": "70x100",
+    ///         "PlotDimensionId": 0,
+    ///         "PlotDimensions": "70x100",
     ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
     ///     }
     ///
@@ -2395,24 +2432,24 @@ public class PropertyController : ControllerBase
     ///         "code": 201,
     ///         "message": "Plot Size created successfully.",
     ///         "data": {
-    ///             "plotSizeId": 1,
-    ///             "plotSizes": "70x100"
+    ///             "PlotDimensionId": 1,
+    ///             "PlotDimensions": "70x100"
     ///         }
     ///     }
     /// 
     /// </remarks>
     [HttpPost]
-    [Route("CreatePlotSize")]
+    [Route("CreatePlotDimension")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreatePlotSize([FromBody] PlotSizeCreateDto values)
+    public async Task<ActionResult> CreatePlotDimension([FromBody] PlotDimensionCreateDto values)
     {
         try
         {
-            var result = await _plotSizeService.CreatePlotSizeAsync(values);
+            var result = await _plotDimensionService.CreatePlotDimensionAsync(values);
 
             if (result.IsSuccess)
             {
@@ -2443,13 +2480,13 @@ public class PropertyController : ControllerBase
     ///
     /// **Sample Request:**
     ///
-    ///     PUT /UpdatePlotSize
+    ///     PUT /UpdatePlotDimension
     ///
     /// **Sample Request Body:**
     /// 
     ///     {
-    ///         "plotSizeId": 1,
-    ///         "plotSizes": "70x100",
+    ///         "PlotDimensionId": 1,
+    ///         "PlotDimensions": "70x100",
     ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
     ///     }
     ///
@@ -2459,22 +2496,22 @@ public class PropertyController : ControllerBase
     ///         "code": 200,
     ///         "message": "Plot Size details modified successfully.",
     ///         "data": {
-    ///             "plotSizeId": 1,
-    ///             "plotSizes": "70x100"
+    ///             "PlotDimensionId": 1,
+    ///             "PlotDimensions": "70x100"
     ///         }
     ///     }
     /// 
     /// </remarks>
     [HttpPut]
-    [Route("UpdatePlotSize")]
+    [Route("UpdatePlotDimension")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<PlotSizeReadDto>> UpdatePlotSize([FromBody] PlotSizeUpdateDto values)
+    public async Task<ActionResult<PlotDimensionReadDto>> UpdatePlotDimension([FromBody] PlotDimensionUpdateDto values)
     {
-        var result = await _plotSizeService.UpdatePlotSizeAsync(values);
+        var result = await _plotDimensionService.UpdatePlotDimensionAsync(values);
 
         if (result.IsSuccess)
         {
@@ -2491,15 +2528,15 @@ public class PropertyController : ControllerBase
         };
     }
 
-    [HttpDelete("DeletePlotSize/{plotSizeId}")]
+    [HttpDelete("DeletePlotDimension/{PlotDimensionId}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeletePlotSize(int plotSizeId)
+    public async Task<ActionResult> DeletePlotDimension(int PlotDimensionId)
     {
         try
         {
-            var result = await _plotSizeService.DeletePlotSize(plotSizeId);
+            var result = await _plotDimensionService.DeletePlotDimension(PlotDimensionId);
 
             if (result.IsSuccess)
             {
@@ -2524,7 +2561,7 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting property heights
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetPropertyHeight")]
+    [Route("GetPropertyHeight")]
     public async Task<ActionResult<IEnumerable<PropertyHeightReadDto>>> GetPropertyHeight()
     {
         return Ok(await _propertyHeightService.GetPropertyHeightAsync());
@@ -2685,21 +2722,21 @@ public class PropertyController : ControllerBase
     /// Returns a list of exisiting property types
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetPropertyType")]
+    [Route("GetPropertyType")]
     public async Task<ActionResult<IEnumerable<PropertyTypeReadDto>>> GetPropertyType()
     {
         return Ok(await _propertyTypeService.GetPropertyTypeAsync());
     }
 
     [HttpGet]
-    [Route("Setup/GetPropertyType/{value}")]
+    [Route("GetPropertyType/{value}")]
     public async Task<ActionResult<PropertyTypeReadDto>> GetPropertyType(string value)
     {
         return Ok(await _propertyTypeService.GetPropertyTypeAsync(value));
     }
 
     [HttpGet]
-    [Route("Setup/GetPropertyTypeById/{propertyTypeId}")]
+    [Route("GetPropertyTypeById/{propertyTypeId}")]
     public async Task<ActionResult<PropertyTypeReadDto>> GetPropertyTypeById(int propertyTypeId)
     {
         return Ok(await _propertyTypeService.GetPropertyTypeAsync(propertyTypeId));
@@ -2856,19 +2893,45 @@ public class PropertyController : ControllerBase
     }
 
 
-    //----------------------------------
+    
+
+    //--------------------LEASE TYPE AND PERIOD----------------
+    /// <summary>
+    /// Returns a list of lease types and periods
+    /// </summary>
+    [HttpGet]
+    [Route("GetLeaseTypeAndPeriod")]
+    public async Task<ActionResult<IEnumerable<LeaseTypeAndPeriodReadDto>>> GetLeaseTypeAndPeriod()
+    {
+        return Ok(await _leaseTypeAndPeriodService.GetLeaseTypeAndPeriodAsync());
+    }
+
+    //[HttpGet]
+    //[Route("GetLeaseTypeAndPeriod/{value}")]
+    //public async Task<ActionResult<LeaseTypeAndPeriodReadDto>> GetLeaseTypeAndPeriod(string value)
+    //{
+    //    return Ok(await _leaseTypeAndPeriodService.GetLeaseTypeAndPeriodAsync(value));
+    //}
+
+    //[HttpGet]
+    //[Route("GetLeaseTypeAndPeriodById/{leaseTypePeriodId}")]
+    //public async Task<ActionResult<LeaseTypeAndPeriodReadDto>> GetLeaseTypeAndPeriodById(int leaseTypePeriodId)
+    //{
+    //    return Ok(await _leaseTypeAndPeriodService.GetLeaseTypeAndPeriodAsync(leaseTypePeriodId));
+    //}
+
     [HttpPost]
-    [Route("CreateProperty")]
+    [Route("CreateLeaseTypeAndPeriod")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateProperty([FromBody] PropertyMasterCreatePlotDto values)
+    public async Task<ActionResult> CreateLeaseTypeAndPeriod([FromBody] LeaseTypeAndPeriodCreateDto values)
     {
         try
         {
-            var result = await _propertyMasterService.CreateProperty(values);
+            var result = await _leaseTypeAndPeriodService.CreateLeaseTypeAndPeriodAsync(values);
 
             if (result.IsSuccess)
             {
@@ -2889,6 +2952,289 @@ public class PropertyController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
+
+    [HttpPut]
+    [Route("UpdateLeaseTypeAndPeriod")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult<LeaseTypeAndPeriodReadDto>> UpdateLeaseTypeAndPeriod([FromBody] LeaseTypeAndPeriodUpdateDto values)
+    {
+        var result = await _leaseTypeAndPeriodService.UpdateLeaseTypeAndPeriodAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
+    }
+
+    [HttpDelete("DeleteLeaseTypeAndPeriod/{leaseTypePeriodId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteLeaseTypeAndPeriod(int leaseTypePeriodId)
+    {
+        try
+        {
+            var result = await _leaseTypeAndPeriodService.DeleteLeaseTypeAndPeriod(leaseTypePeriodId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    //--------------------PROPERTY STATUS----------------
+    /// <summary>
+    /// Returns a list of property statuses
+    /// </summary>
+    [HttpGet]
+    [Route("GetPropertyStatus")]
+    public async Task<ActionResult<IEnumerable<PropertyStatusReadDto>>> GetPropertyStatus()
+    {
+        return Ok(await _propertyStatusService.GetPropertyStatusAsync());
+    }
+
+    //[HttpGet]
+    //[Route("GetPropertyStatus/{value}")]
+    //public async Task<ActionResult<PropertyStatusReadDto>> GetPropertyStatus(string value)
+    //{
+    //    return Ok(await _propertyStatusService.GetPropertyStatusAsync(value));
+    //}
+
+    //[HttpGet]
+    //[Route("GetPropertyStatusById/{propertyStatusId}")]
+    //public async Task<ActionResult<PropertyStatusReadDto>> GetPropertyStatusById(int propertyStatusId)
+    //{
+    //    return Ok(await _propertyStatusService.GetPropertyStatusAsync(propertyStatusId));
+    //}
+
+    [HttpPost]
+    [Route("CreatePropertyStatus")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreatePropertyStatus([FromBody] PropertyStatusCreateDto values)
+    {
+        try
+        {
+            var result = await _propertyStatusService.CreatePropertyStatusAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdatePropertyStatus")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult<PropertyStatusReadDto>> UpdatePropertyStatus([FromBody] PropertyStatusUpdateDto values)
+    {
+        var result = await _propertyStatusService.UpdatePropertyStatusAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
+    }
+
+    [HttpDelete("DeletePropertyStatus/{propertyStatusId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeletePropertyStatus(int propertyStatusId)
+    {
+        try
+        {
+            var result = await _propertyStatusService.DeletePropertyStatus(propertyStatusId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    /*
+
+    //--------------------SHOP OFFICE TYPE AND DESCRIPTION----------------
+    /// <summary>
+    /// Returns a list of shop office types and descriptions
+    /// </summary>
+    [HttpGet]
+    [Route("GetShopOfficeTypeAndDescription")]
+    public async Task<ActionResult<IEnumerable<ShopOfficeTypeAndDescriptionReadDto>>> GetShopOfficeTypeAndDescription()
+    {
+        return Ok(await _shopOfficeTypeAndDescriptionService.GetShopOfficeTypeAndDescriptionAsync());
+    }
+
+    //[HttpGet]
+    //[Route("GetShopOfficeTypeAndDescription/{value}")]
+    //public async Task<ActionResult<ShopOfficeTypeAndDescriptionReadDto>> GetShopOfficeTypeAndDescription(string value)
+    //{
+    //    return Ok(await _shopOfficeTypeAndDescriptionService.GetShopOfficeTypeAndDescriptionAsync(value));
+    //}
+
+    //[HttpGet]
+    //[Route("GetShopOfficeTypeAndDescriptionById/{shopOfficeTypeId}")]
+    //public async Task<ActionResult<ShopOfficeTypeAndDescriptionReadDto>> GetShopOfficeTypeAndDescriptionById(int shopOfficeTypeId)
+    //{
+    //    return Ok(await _shopOfficeTypeAndDescriptionService.GetShopOfficeTypeAndDescriptionAsync(shopOfficeTypeId));
+    //}
+
+    [HttpPost]
+    [Route("CreateShopOfficeTypeAndDescription")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateShopOfficeTypeAndDescription([FromBody] ShopOfficeTypeAndDescriptionCreateDto values)
+    {
+        try
+        {
+            var result = await _shopOfficeTypeAndDescriptionService.CreateShopOfficeTypeAndDescriptionAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdateShopOfficeTypeAndDescription")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult<ShopOfficeTypeAndDescriptionReadDto>> UpdateShopOfficeTypeAndDescription([FromBody] ShopOfficeTypeAndDescriptionUpdateDto values)
+    {
+        var result = await _shopOfficeTypeAndDescriptionService.UpdateShopOfficeTypeAndDescriptionAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
+    }
+
+    [HttpDelete("DeleteShopOfficeTypeAndDescription/{shopOfficeTypeId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteShopOfficeTypeAndDescription(int shopOfficeTypeId)
+    {
+        try
+        {
+            var result = await _shopOfficeTypeAndDescriptionService.DeleteShopOfficeTypeAndDescription(shopOfficeTypeId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+    */
+
+
 
 }
 

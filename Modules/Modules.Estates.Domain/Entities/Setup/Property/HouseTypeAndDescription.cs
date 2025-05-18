@@ -14,7 +14,19 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 {
 	public class HouseTypeAndDescription : AuditableEntity
 	{
-		public HouseTypeAndDescription()
+        [Key]
+        [Required]
+        public int HouseTypeId { get; set; }
+
+        [Required]
+        [StringLength(10)]
+        public string TypeName { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Description { get; set; }
+
+        public HouseTypeAndDescription()
 		{
 		}
 	}

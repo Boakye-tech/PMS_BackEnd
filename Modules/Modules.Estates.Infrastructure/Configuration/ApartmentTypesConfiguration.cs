@@ -10,6 +10,8 @@
 
 
 
+using Modules.Estates.Domain.Enums;
+
 namespace Modules.Estates.Infrastructure.Configuration;
 
 public class ApartmentTypesConfiguration : IEntityTypeConfiguration<ApartmentTypes>
@@ -19,11 +21,12 @@ public class ApartmentTypesConfiguration : IEntityTypeConfiguration<ApartmentTyp
         builder.HasIndex(a => a.ApartmentType).IsUnique(true);
 
         builder.HasData(
-            new ApartmentTypes(1, "STUDIO", 8000, 1, 27.43),
-            new ApartmentTypes(2, "ONE BEDROOM", 17000, 1, 41.12),
-            new ApartmentTypes(3, "ONE BEDROOM (SPECIAL)", 24000, 1, 60.63),
-            new ApartmentTypes(4, "TWO BEDROOMS", 28000, 1, 74.80)
-
+            new ApartmentTypes(ApartmentCategoryEnum.AFFORDABLE, 1, "STUDIO", 8000, 2, 27.43),
+            new ApartmentTypes(ApartmentCategoryEnum.AFFORDABLE, 2, "ONE BEDROOM", 17000, 2, 41.12),
+            new ApartmentTypes(ApartmentCategoryEnum.AFFORDABLE, 3, "ONE BEDROOM (SPECIAL)", 24000, 2, 60.63),
+            new ApartmentTypes(ApartmentCategoryEnum.AFFORDABLE, 4, "TWO BEDROOMS", 28000, 2, 74.80),
+            new ApartmentTypes(ApartmentCategoryEnum.LUXURY, 5, "TWO BEDROOM", 197500, 2, 107.0),
+            new ApartmentTypes(ApartmentCategoryEnum.LUXURY, 6, "THREE BEDROOM", 286400, 2, 218.0)
             );
     }
 }

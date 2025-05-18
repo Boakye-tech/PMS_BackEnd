@@ -16,6 +16,7 @@ namespace Modules.Customers.Application.Dtos.PropertyDetails
     public record PropertySearchDto
     {
         public string? CustomerCode { get; set; }
+        public string? CustomerName { get; set; }
         public string? PropertyNumber { get; set; }
     }
 }

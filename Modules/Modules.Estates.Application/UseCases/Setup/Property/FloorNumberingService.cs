@@ -102,7 +102,7 @@ public class FloorNumberingService : IFloorNumberingService
             }
 
             floorNumber.Update(values.floorNumberId, values.floorNumber);
-            floorNumber.ModifiedBy = values.modified;
+            floorNumber.ModifiedBy = values.modifiedby;
             floorNumber.ModifiedOn = DateTime.Now;
 
             _unitOfWork.FloorNumbering.Update(floorNumber);

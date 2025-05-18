@@ -33,7 +33,7 @@ namespace Modules.Finance.Application.UseCases
             _unitOfWork.BankSortCodes.Insert(sortCodes);
             await _unitOfWork.Complete();
 
-            return new BankSortCodesReadDto(sortCodes.Id, sortCodes.SortCode!, sortCodes.BankName!, sortCodes.BranchName!);
+            return new BankSortCodesReadDto(sortCodes.BankSortCodesId, sortCodes.SortCode!, sortCodes.BankName!, sortCodes.BranchName!);
         }
 
         public async Task<IEnumerable<BankSortCodesReadDto>> GetBankSortCodesAsync()

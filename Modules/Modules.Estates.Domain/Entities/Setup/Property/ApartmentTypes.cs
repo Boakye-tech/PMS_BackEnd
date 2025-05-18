@@ -14,6 +14,9 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 {
     public class ApartmentTypes : AuditableEntity
     {
+        [Required]
+        public ApartmentCategoryEnum ApartmentCategory { get; set; }
+
         [Key]
         [Required]
         public int ApartmentTypeId { get; private set; }
@@ -31,22 +34,23 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [Required]
         public double FloorArea { get; private set; }
 
-        public ApartmentTypes(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
+        public ApartmentTypes(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
         {
             ApartmentTypeId = apartmentTypeId;
             ApartmentType = apartmentType;
             SellingPrice = sellingPrice;
             CurrencyId = currencyId;
             FloorArea = floorArea;
+            ApartmentCategory = apartmentCategory;
         }
 
-        public static ApartmentTypes Create(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
+        public static ApartmentTypes Create(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
         {
             Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea);
-            return new ApartmentTypes(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea);
+            return new ApartmentTypes(apartmentCategory, apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea);
         }
 
-        public void Update(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
+        public void Update(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
         {
             Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea);
 
@@ -59,7 +63,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 
         private static void Validate(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
         {
-            if (apartmentTypeId <= 0)
+            if (apartmentTypeId < 0)
                 throw new ArgumentException("Apartment Type Id must be greater than zero.");
 
             if (string.IsNullOrWhiteSpace(apartmentType))

@@ -44,10 +44,10 @@ public class PropertyHeight : AuditableEntity
 
     private static void Validate(int propertyHeightId, string propertyHeights)
     {
-        if (propertyHeightId <= 0)
+        if (propertyHeightId < 0)
             throw new ArgumentException("Property Height Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(propertyHeights))
+        if (string.IsNullOrWhiteSpace(propertyHeights) || propertyHeights.Length > 30)
             throw new ArgumentException("Property Heights cannot be empty or exceed 30 characters.");
     }
 }

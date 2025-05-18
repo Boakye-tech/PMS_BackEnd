@@ -22,7 +22,7 @@ namespace Modules.Finance.Application.UseCases
             _mapper = mapper;
         }
 
-        public async Task<BankReadDto> AddBankAsync(BankCreateDto values)
+        public async Task<BankReadDto> CreateBankAsync(BankCreateDto values)
         {
             Bank bank = new(values.BankId, values.BankName!)
             {

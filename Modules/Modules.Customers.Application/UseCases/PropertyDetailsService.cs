@@ -132,16 +132,18 @@ namespace Modules.Customers.Application.UseCases
         }
 
 
-
         public async Task<PaginatedResultDto<PropertySearchDto>> GetCustomerPropertySearch(string customerCode_OR_propertyNumber, int pageNumber, int pageSize)
         {
-            var query = from a in await _unitOfWork.PropertyDetails.GetAll(
-                            c => c.CustomerCode!.Contains(customerCode_OR_propertyNumber) ||
-                                 c.PropertyNumber!.Contains(customerCode_OR_propertyNumber))
+            var query = from p in await _unitOfWork.PropertyDetails.GetAll()
+                        join c in await _unitOfWork.CustomerDetails.GetAll()
+                        on p.CustomerCode equals c.CustomerCode into customerGroup
+                        from customer in customerGroup.DefaultIfEmpty()
+                        where p.CustomerCode!.Contains(customerCode_OR_propertyNumber) || p.PropertyNumber.Contains(customerCode_OR_propertyNumber)
                         select new PropertySearchDto
                         {
-                            CustomerCode = a.CustomerCode,
-                            PropertyNumber = a.PropertyNumber
+                            CustomerCode = p.CustomerCode,
+                            CustomerName = customer?.CustomerName ?? string.Empty,
+                            PropertyNumber = p.PropertyNumber
                         };
 
             var totalRecords = query.Count();

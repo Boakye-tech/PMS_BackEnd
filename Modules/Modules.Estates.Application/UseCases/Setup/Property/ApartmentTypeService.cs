@@ -11,12 +11,7 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
-using AutoMapper;
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.DTO.Setup.Property;
-using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
-using Modules.Estates.Domain;
-using Modules.Estates.Domain.Entities.Setup.Property;
+
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
@@ -66,7 +61,7 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
-            var newApartmentType = ApartmentTypes.Create(apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea);
+            var newApartmentType = ApartmentTypes.Create(values.apartmentCategory, apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea);
             newApartmentType.CreatedBy = values.createdBy;
             newApartmentType.CreatedOn = DateTime.Now;
 
@@ -103,7 +98,7 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
-            apartmentType.Update(values.apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea);
+            apartmentType.Update(values.apartmentCategory, values.apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea);
             apartmentType.ModifiedBy = values.modifiedBy;
             apartmentType.ModifiedOn = DateTime.Now;
 

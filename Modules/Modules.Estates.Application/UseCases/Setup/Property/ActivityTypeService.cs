@@ -11,6 +11,7 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
+using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
@@ -61,7 +62,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
-                var newActivityType = ActivityType.Create(0, activityTypeId, values.ActivityTypeName!, values.ActivityTypeDescription);
+                var newActivityType = ActivityType.Create(values.ActivityId, activityTypeId, values.ActivityTypeName!, values.ActivityTypeDescription);
                 newActivityType.CreatedBy = values.CreatedBy;
                 newActivityType.CreatedOn = DateTime.Now;
 
@@ -116,7 +117,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             }
             catch (Exception ex)
             {
-                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
             }
         }
 
@@ -147,7 +148,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             }
             catch (Exception ex)
             {
-                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
             }
         }
     }

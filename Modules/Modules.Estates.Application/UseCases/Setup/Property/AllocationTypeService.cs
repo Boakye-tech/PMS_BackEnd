@@ -11,7 +11,7 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
-using Modules.Estates.Domain.Entities.Setup.Property;
+
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 

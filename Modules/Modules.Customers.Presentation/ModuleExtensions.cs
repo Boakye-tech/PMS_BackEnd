@@ -16,10 +16,10 @@ namespace Modules.Customers.Presentation
 {
 	public static class ModuleExtensions
 	{
-        public static IServiceCollection AddCustomerModule(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomerModule(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
             services
-                .AddCustomerInfrastructure(configuration);
+                .AddCustomerInfrastructure(configuration, environment);
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

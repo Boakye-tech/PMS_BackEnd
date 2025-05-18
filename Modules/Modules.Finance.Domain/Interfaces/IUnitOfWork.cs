@@ -19,7 +19,7 @@ namespace Modules.Finance.Domain.Interfaces
         IBankBranchRepository BankBranch { get; }
         IBankSortCodesRepository BankSortCodes { get; }
         IChartOfAccountsRepository ChartOfAccounts { get; }
-        ICurrencyAndExchangeRateRepository CurrencyAndExchangeRate { get; }
+        ICurrencyExchangeRateRepository CurrencyExchangeRate { get; }
         IFormsRepository Forms { get; }
         IPaymentModeRepository PaymentMode { get; }
         IPaymentTypeRepository PaymentType { get; }

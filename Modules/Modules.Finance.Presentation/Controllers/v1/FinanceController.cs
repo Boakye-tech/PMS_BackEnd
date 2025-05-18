@@ -27,7 +27,7 @@ namespace Modules.Finance.Presentation.Controllers
         public readonly IBankService _bankService;
         public readonly IBankSortCodesService _bankSortCodesService;
         public readonly IChartOfAccountsService _chartOfAccountsService;
-        public readonly ICurrencyAndExchangeRateService _currencyAndExchangeRateService;
+        public readonly ICurrencyExchangeRateService _currencyAndExchangeRateService;
         public readonly IFormsService _formsService;
         public readonly IPaymentModeService _paymentModeService;
         public readonly IPaymentTypeService _paymentTypeService;
@@ -35,7 +35,7 @@ namespace Modules.Finance.Presentation.Controllers
         public readonly IInvoiceTypesService _invoiceTypesService;
 
         public FinanceController(IBankBranchService bankBranchService, IBankService bankService, IBankSortCodesService bankSortCodesService, IChartOfAccountsService chartOfAccountsService,
-                                 ICurrencyAndExchangeRateService currencyAndExchangeRateService, IFormsService formsService, IPaymentModeService paymentModeService, IPaymentTypeService paymentTypeService,
+                                 ICurrencyExchangeRateService currencyAndExchangeRateService, IFormsService formsService, IPaymentModeService paymentModeService, IPaymentTypeService paymentTypeService,
                                  IPayPointsService payPointsService, IInvoiceTypesService invoiceTypesService)
         {
             _bankService = bankService;
@@ -78,7 +78,7 @@ namespace Modules.Finance.Presentation.Controllers
         {
             try
             {
-                return Ok(await _bankService.AddBankAsync(values));
+                return Ok(await _bankService.CreateBankAsync(values));
             }
             catch (Exception ex)
             {
@@ -192,30 +192,181 @@ namespace Modules.Finance.Presentation.Controllers
         //}
 
         //----CURRENCIES & EXCHANGE RATES-----
+        /// <summary>
+        /// Returns a list of trading currencies and their respective exchange rates
+        /// </summary>
         [HttpGet]
-        [Route("Setup/CurrencyAndExchangeRates")]
-        public async Task<ActionResult<IEnumerable<CurrencyAndExchangeRateReadDto>>> GetCurrencyAndExchangeRates()
+        [Route("CurrencyAndExchangeRates")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CurrencyExchangeRateReadDto>))]
+        public async Task<ActionResult<IEnumerable<CurrencyExchangeRateReadDto>>> GetCurrencyAndExchangeRates()
         {
-            return Ok(await _currencyAndExchangeRateService.GetCurrencyAndExchangeRateAsync());
+            return Ok(await _currencyAndExchangeRateService.GetCurrencyExchangeRateAsync());
         }
 
+        // POST: api/CreateCurrencyAndExchangeRate
+        /// <summary>
+        ///  Creates a new trading currency with corresponding exchange rates for the day
+        /// </summary>
+        ///     
+        /// <remarks>
+        /// Addition/Creation of new trading currencies and exchanges rates for various conversion purposes
+        ///
+        /// **Sample Request:**
+        ///
+        ///     POST /CreateCurrencyAndExchangeRate
+        ///
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "currencyId": 0,
+        ///         "currencyInitial": "GHC",
+        ///         "currencyName": "GHANA CEDIS",
+        ///         "buyingRate": 1,
+        ///         "sellingRate": 1,
+        ///         "baseCurrency": true,
+        ///         "applicableDate": "2025-01-01T07:15:05.306Z",
+        ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        ///     }
+        ///
+        /// **Sample Response 201:**
+        /// 
+        ///     {
+        ///         "code": 201,
+        ///         "message": "Currency and exchange rate created successfully.",
+        ///         "data": {
+        ///             "currencyId": 1,
+        ///             "currencyInitial": "GHC",
+        ///             "currencyName": "GHANA CEDIS",
+        ///             "buyingRate": 1,
+        ///             "sellingRate": 1,
+        ///             "baseCurrency": true,
+        ///             "applicableDate": "2025-01-01T07:15:05.306Z",
+        ///             "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        ///         }
+        ///     }
+        /// 
+        /// </remarks>
         [HttpPost]
-        [Route("AddCurrencyAndExchangeRate")]
-        public async Task<ActionResult<CurrencyAndExchangeRateReadDto>> AddCurrencyAndExchangeRate([FromBody] CurrencyAndExchangeRateCreateDto values)
+        [Route("CreateCurrencyAndExchangeRate")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> CreateCurrencyAndExchangeRate([FromBody] CurrencyExchangeRateCreateDto values)
         {
             try
             {
-                return Ok(await _currencyAndExchangeRateService.AddCurrencyAndExchangeRateAsync(values));
+                var response = await _currencyAndExchangeRateService.CreateCurrencyExchangeRateAsync(values);
+
+                if (response.IsSuccess)
+                {
+                    return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
+                }
+
+                var status = response.ErrorResponse!.Code;
+                return status switch
+                {
+                    204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+                    400 => BadRequest(response.ErrorResponse),
+                    404 => NotFound(response.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+                };
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateCurrencyExchangeRate")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> UpdateCurrencyExchangeRate([FromBody] CurrencyExchangeRateUpdateDto values)
+        {
+            var response = await _currencyAndExchangeRateService.UpdateCurrencyExchangeRateAsync(values);
+
+            if (response.IsSuccess)
+            {
+                return Ok(response.SuccessResponse);
+            }
+
+            var status = response.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+                400 => BadRequest(response.ErrorResponse),
+                404 => NotFound(response.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("UpdateCurrencyDetails")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> UpdateCurrencyDetails([FromBody] CurrencyDetailsUpdateDto values)
+        {
+            var response = await _currencyAndExchangeRateService.UpdateCurrencyDetailsAsync(values);
+
+            if (response.IsSuccess)
+            {
+                return Ok(response.SuccessResponse);
+            }
+
+            var status = response.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+                400 => BadRequest(response.ErrorResponse),
+                404 => NotFound(response.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+            };
+        }
+
+        /// <summary>
+        /// Deletes an exsiting currency and exhange rate by the currency ID
+        /// </summary>
+        /// <param name="currencyId">The ID of the currency to delete</param>
+        /// <returns>Success or error response</returns>
+        [HttpDelete("DeleteCurrencyExchangeRate/{currencyId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> DeleteCurrencyExchangeRate(int currencyId)
+        {
+            try
+            {
+                var response = await _currencyAndExchangeRateService.DeleteCurrencyExchangeRateAsync(currencyId);
+
+                if (response.IsSuccess)
+                {
+                    return Ok(response.SuccessResponse);
+                }
+
+                var status = response.ErrorResponse!.Code;
+                return status switch
+                {
+                    404 => NotFound(response.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
             }
         }
 
         //----INVOICE TYPES-----
         [HttpGet]
-        [Route("Setup/GetInvoiceTypes")]
+        [Route("GetInvoiceTypes")]
         public async Task<ActionResult<IEnumerable<InvoiceTypesReadDto>>> GetInvoiceTypes()
         {
             return Ok(await _invoiceTypesService.GetInvoiceTypesAsync());
@@ -237,7 +388,7 @@ namespace Modules.Finance.Presentation.Controllers
 
         //----FORMS-----
         [HttpGet]
-        [Route("Setup/GetForms")]
+        [Route("GetForms")]
         public async Task<ActionResult<IEnumerable<FormsReadDto>>> GetForms()
         {
             return Ok(await _formsService.GetFormsAsync());

@@ -28,7 +28,7 @@ namespace Modules.Finance.Presentation.Controllers.v2
         public readonly IBankService _bankService;
         public readonly IBankSortCodesService _bankSortCodesService;
         public readonly IChartOfAccountsService _chartOfAccountsService;
-        public readonly ICurrencyAndExchangeRateService _currencyAndExchangeRateService;
+        public readonly ICurrencyExchangeRateService _currencyAndExchangeRateService;
         public readonly IFormsService _formsService;
         public readonly IPaymentModeService _paymentModeService;
         public readonly IPaymentTypeService _paymentTypeService;
@@ -36,7 +36,7 @@ namespace Modules.Finance.Presentation.Controllers.v2
         public readonly IInvoiceTypesService _invoiceTypesService;
 
         public FinanceController(IBankBranchService bankBranchService, IBankService bankService, IBankSortCodesService bankSortCodesService, IChartOfAccountsService chartOfAccountsService,
-                                 ICurrencyAndExchangeRateService currencyAndExchangeRateService, IFormsService formsService, IPaymentModeService paymentModeService, IPaymentTypeService paymentTypeService,
+                                 ICurrencyExchangeRateService currencyAndExchangeRateService, IFormsService formsService, IPaymentModeService paymentModeService, IPaymentTypeService paymentTypeService,
                                  IPayPointsService payPointsService, IInvoiceTypesService invoiceTypesService)
         {
             _bankService = bankService;
@@ -79,7 +79,7 @@ namespace Modules.Finance.Presentation.Controllers.v2
         {
             try
             {
-                return Ok(await _bankService.AddBankAsync(values));
+                return Ok(await _bankService.CreateBankAsync(values));
             }
             catch (Exception ex)
             {
@@ -195,18 +195,18 @@ namespace Modules.Finance.Presentation.Controllers.v2
         //----CURRENCIES & EXCHANGE RATES-----
         [HttpGet]
         [Route("Setup/CurrencyAndExchangeRates")]
-        public async Task<ActionResult<IEnumerable<CurrencyAndExchangeRateReadDto>>> GetCurrencyAndExchangeRates()
+        public async Task<ActionResult<IEnumerable<CurrencyExchangeRateReadDto>>> GetCurrencyAndExchangeRates()
         {
-            return Ok(await _currencyAndExchangeRateService.GetCurrencyAndExchangeRateAsync());
+            return Ok(await _currencyAndExchangeRateService.GetCurrencyExchangeRateAsync());
         }
 
         [HttpPost]
         [Route("AddCurrencyAndExchangeRate")]
-        public async Task<ActionResult<CurrencyAndExchangeRateReadDto>> AddCurrencyAndExchangeRate([FromBody] CurrencyAndExchangeRateCreateDto values)
+        public async Task<ActionResult<CurrencyExchangeRateReadDto>> AddCurrencyAndExchangeRate([FromBody] CurrencyExchangeRateCreateDto values)
         {
             try
             {
-                return Ok(await _currencyAndExchangeRateService.AddCurrencyAndExchangeRateAsync(values));
+                return Ok(await _currencyAndExchangeRateService.CreateCurrencyExchangeRateAsync(values));
             }
             catch (Exception ex)
             {

@@ -12,16 +12,38 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Modules.Users.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddUserInfrastructure(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddUserInfrastructure(this IServiceCollection services, IConfiguration config, IHostEnvironment env)
         {
-            services
-                .AddDbContext<UserDbContext>(options => options.UseSqlServer(config.GetConnectionString("MsSQLConnection")));
+            string? connectionString = null!;
 
+
+            if (env.IsDevelopment())
+            {
+                connectionString = config.GetConnectionString("MsSQLConnection_Development");
+            }
+
+            if (env.IsStaging())
+            {
+                connectionString = config.GetConnectionString("MsSQLConnection_Staging");
+            }
+
+            if (env.IsProduction())
+            {
+                connectionString = config.GetConnectionString("MsSQLConnection");
+            }
+
+
+            //services
+            //    .AddDbContext<UserDbContext>(options => options.UseSqlServer(config.GetConnectionString("MsSQLConnection")));
+
+            services
+              .AddDbContext<UserDbContext>(options => options.UseSqlServer(connectionString));
 
             return services;
         }

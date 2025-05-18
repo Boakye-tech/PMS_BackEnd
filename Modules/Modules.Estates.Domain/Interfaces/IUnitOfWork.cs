@@ -25,16 +25,17 @@ public interface IUnitOfWork : IDisposable
     //----property
     IAllocationTypeRepository AllocationType { get; }
     IApartmentTypesRepository ApartmentTypes { get; }
+    IApartmentFeaturesRepository ApartmentFeatures { get; }
     IBlockNumberRepository BlockNumber { get; }
     IBlockSidesRepository BlockSides { get; }
     IBlockTypeRepository BlockType { get; }
     IBlockUnitRepository BlockUnit { get; }
-    IFacilitiesRepository Facilities { get; }
+    IFloorAreaRepository FloorArea { get; }
     IFloorNumberingRepository FloorNumbering { get; }
     ILandUseRepository LandUse { get; }
     ILandUseTypeRepository LandUseType { get; }
     ILocalityRepository Locality { get; }
-    IPlotSizeRepository PlotSize { get; }
+    IPlotDimensionRepository PlotDimension { get; }
     IPropertyHeightRepository PropertyHeight { get; }
     IPropertyTypeRepository PropertyType { get; }
 
@@ -60,6 +61,11 @@ public interface IUnitOfWork : IDisposable
     INatureOfComplaintRepository NatureOfComplaint { get; }
     IComplaintStatusesRepository ComplaintStatuses { get; }
     IComplaintHistoryRepository ComplaintHistory { get; }
+
+    //May 15 '25
+    ILeaseTypeAndPeriodRepository LeaseTypeAndPeriod { get; }
+    IShopOfficeTypeAndDescriptionRepository ShopOfficeTypeAndDescription { get; }
+    IPropertyStatusRepository PropertyStatus { get; }
 
     Task<int> Complete();
 }

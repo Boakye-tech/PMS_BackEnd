@@ -44,10 +44,10 @@ public class BlockStatus : AuditableEntity
 
     private static void Validate(int blockStatusId, string blockStatusType)
     {
-        if (blockStatusId <= 0)
+        if (blockStatusId < 0)
             throw new ArgumentException("Block Status Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(blockStatusType))
+        if (string.IsNullOrWhiteSpace(blockStatusType) || blockStatusType.Length > 25)
             throw new ArgumentException("Block Status Type cannot be empty or exceed 25 characters.");
     }
 }

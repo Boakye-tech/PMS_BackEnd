@@ -45,10 +45,10 @@ public class BlockUnit : AuditableEntity
 
     private static void Validate(int unitId, string unit)
     {
-        if (unitId <= 0)
+        if (unitId < 0)
             throw new ArgumentException("Block Unit Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(unit))
+        if (string.IsNullOrWhiteSpace(unit) || unit.Length > 2)
             throw new ArgumentException("Block Unit cannot be empty or exceed 2 characters.");
     }
 }

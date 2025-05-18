@@ -12,15 +12,34 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Modules.Finance.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddFinanceInfrastructure(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddFinanceInfrastructure(this IServiceCollection services, IConfiguration config, IHostEnvironment env)
     {
+        string? connectionString = null!;
+
+
+        if (env.IsDevelopment())
+        {
+            connectionString = config.GetConnectionString("MsSQLConnection_Development");
+        }
+
+        if (env.IsStaging())
+        {
+            connectionString = config.GetConnectionString("MsSQLConnection_Staging");
+        }
+
+        if (env.IsProduction())
+        {
+            connectionString = config.GetConnectionString("MsSQLConnection");
+        }
+
         services
-            .AddDbContext<FinanceDbContext>(options => options.UseSqlServer(config.GetConnectionString("MsSQLConnection")));
+            .AddDbContext<FinanceDbContext>(options => options.UseSqlServer(connectionString));
 
 
         return services;

@@ -32,8 +32,8 @@ namespace Modules.Estates.Domain.Interfaces.DomainServices
         //Task<bool> LandUseInitialExists(string landUseInitial);
 
         Task<bool> LandUseTypeExists(int landUseTypeId); 
-        Task<bool> FacilitiesExists(int facilitiesId); 
-        Task<bool> PlotSizeExists(int plotSizeId); 
+        Task<bool> FloorAreaExists(int floorAreaId); 
+        Task<bool> PlotDimensionExists(int plotDimensionId); 
         Task<bool> PropertyHeightExists(int propertyHeightId); 
         Task<bool> PropertyTypeExists(int propertyTypeId);
 

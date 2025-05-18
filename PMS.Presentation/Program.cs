@@ -42,16 +42,17 @@ if (builder.Environment.IsDevelopment())
         builder.Configuration.AddJsonFile(solutionLevelConfigPath, optional: false, reloadOnChange: true);
     }
 }
-
-if (builder.Environment.IsProduction())
+else if (builder.Environment.IsStaging() || builder.Environment.IsProduction())
 {
     var solutionLevelConfigPath = Path.Combine(Directory.GetCurrentDirectory() ?? "", "appsettings.json");
-    Console.WriteLine($"Config Path: {solutionLevelConfigPath}");
+
     if (File.Exists(solutionLevelConfigPath))
     {
         builder.Configuration.AddJsonFile(solutionLevelConfigPath, optional: false, reloadOnChange: true);
     }
 }
+
+
 
 // Add services to the container.
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
@@ -59,15 +60,15 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 
-builder.Services.AddEstateModule(builder.Configuration);
+builder.Services.AddEstateModule(builder.Configuration, builder.Environment);
 
-builder.Services.AddFinanceModule(builder.Configuration);
+builder.Services.AddFinanceModule(builder.Configuration, builder.Environment);
 
-builder.Services.AddUserModule(builder.Configuration);
+builder.Services.AddUserModule(builder.Configuration, builder.Environment);
 
-builder.Services.AddNotificationModule(builder.Configuration);
+builder.Services.AddNotificationModule(builder.Configuration, builder.Environment);
 
-builder.Services.AddCustomerModule(builder.Configuration);
+builder.Services.AddCustomerModule(builder.Configuration, builder.Environment);
 
 var module = "Modules.Estates.Presentation";
 var user_module = "Modules.Users.Presentation";
@@ -183,12 +184,11 @@ if (builder.Environment.IsDevelopment())
 {
     FirebaseApp.Create(new AppOptions
     {
-
         Credential = GoogleCredential.FromFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", "firebase.json"))
     });
 }
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsStaging() || builder.Environment.IsProduction())
 {
     FirebaseApp.Create(new AppOptions
     {
@@ -253,7 +253,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-if (app.Environment.IsProduction())
+if (app.Environment.IsStaging() ||app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>

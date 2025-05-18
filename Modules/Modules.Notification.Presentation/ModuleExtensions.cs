@@ -15,10 +15,10 @@ namespace Modules.Notification.Presentation
 {
     public static class ModuleExtensions
     {
-        public static IServiceCollection AddNotificationModule(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddNotificationModule(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
             services
-                .AddNotificationInfrastructure(configuration);
+                .AddNotificationInfrastructure(configuration, environment);
 
             services.AddMediatR(cfg => cfg.AsTransient(), typeof(SendNotificationHandler).Assembly);
 

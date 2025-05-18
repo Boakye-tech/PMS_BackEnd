@@ -13,16 +13,34 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Modules.Notification.Infrastructure.Services;
 
 namespace Modules.Notification.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddNotificationInfrastructure(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddNotificationInfrastructure(this IServiceCollection services, IConfiguration config, IHostEnvironment env)
     {
+        string? connectionString = null!;
+
+        if (env.IsDevelopment())
+        {
+            connectionString = config.GetConnectionString("MsSQLConnection_Development");
+        }
+
+        if (env.IsStaging())
+        {
+            connectionString = config.GetConnectionString("MsSQLConnection_Staging");
+        }
+
+        if (env.IsProduction())
+        {
+            connectionString = config.GetConnectionString("MsSQLConnection");
+        }
+
         services
-            .AddDbContext<NotificationDbContext>(options => options.UseSqlServer(config.GetConnectionString("MsSQLConnection")));
+            .AddDbContext<NotificationDbContext>(options => options.UseSqlServer(connectionString));
 
         services.AddTransient<IEmailSender, EmailSender>(i => new EmailSender(
             config["O356mailSender:Host"]!,

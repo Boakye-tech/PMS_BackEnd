@@ -1515,6 +1515,9 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApartmentTypeId"));
 
+                    b.Property<int>("ApartmentCategory")
+                        .HasColumnType("int");
+
                     b.Property<string>("ApartmentType")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -1558,6 +1561,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 1,
+                            ApartmentCategory = 1,
                             ApartmentType = "STUDIO",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 1,
@@ -1569,6 +1573,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 2,
+                            ApartmentCategory = 1,
                             ApartmentType = "ONE BEDROOM",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 1,
@@ -1580,6 +1585,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 3,
+                            ApartmentCategory = 1,
                             ApartmentType = "ONE BEDROOM (SPECIAL)",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 1,
@@ -1591,6 +1597,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 4,
+                            ApartmentCategory = 1,
                             ApartmentType = "TWO BEDROOMS",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 1,
@@ -1598,6 +1605,30 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FloorArea = 74.799999999999997,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 28000f
+                        },
+                        new
+                        {
+                            ApartmentTypeId = 5,
+                            ApartmentCategory = 2,
+                            ApartmentType = "TWO BEDROOM",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 1,
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FloorArea = 107.0,
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SellingPrice = 8000f
+                        },
+                        new
+                        {
+                            ApartmentTypeId = 6,
+                            ApartmentCategory = 2,
+                            ApartmentType = "THREE BEDROOM",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 1,
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FloorArea = 218.0,
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SellingPrice = 17000f
                         });
                 });
 
@@ -1682,8 +1713,27 @@ namespace Modules.Estates.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BlockStatusId"));
 
                     b.Property<string>("BlockStatusType")
+                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("BlockStatusId");
 
@@ -1762,13 +1812,16 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.ToTable("BlockUnit", "est");
                 });
 
-            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Facilities", b =>
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.FloorArea", b =>
                 {
-                    b.Property<int>("FacilityId")
+                    b.Property<int>("FloorAreaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FacilityId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FloorAreaId"));
+
+                    b.Property<decimal>("Area")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -1782,20 +1835,15 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Facility")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("FacilityId");
+                    b.HasKey("FloorAreaId");
 
-                    b.ToTable("Facilities", "est");
+                    b.ToTable("FloorArea", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.FloorNumbering", b =>
@@ -1861,8 +1909,8 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<string>("LandUseName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -2298,6 +2346,45 @@ namespace Modules.Estates.Infrastructure.Migrations
                             LandUseTypeName = "HORTICULTURE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LeaseTypeAndPeriod", b =>
+                {
+                    b.Property<int>("LeaseTypePeriodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LeaseTypePeriodId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LeasePeriod")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LeaseType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("LeaseTypePeriodId");
+
+                    b.ToTable("LeaseTypeAndPeriod", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Locality", b =>
@@ -2904,13 +2991,13 @@ namespace Modules.Estates.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PlotSize", b =>
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PlotDimension", b =>
                 {
-                    b.Property<int>("PlotSizeId")
+                    b.Property<int>("PlotDimensionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlotSizeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlotDimensionId"));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -2930,14 +3017,14 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PlotSizes")
+                    b.Property<string>("PlotDimensions")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("PlotSizeId");
+                    b.HasKey("PlotDimensionId");
 
-                    b.ToTable("PlotSize", "est");
+                    b.ToTable("PlotDimension", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PropertyHeight", b =>
@@ -2974,6 +3061,42 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.HasKey("PropertyHeightId");
 
                     b.ToTable("PropertyHeight", "est");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PropertyStatus", b =>
+                {
+                    b.Property<int>("PropertyStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyStatusId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PropertyStatusName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("PropertyStatusId");
+
+                    b.ToTable("PropertyStatus", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PropertyType", b =>
