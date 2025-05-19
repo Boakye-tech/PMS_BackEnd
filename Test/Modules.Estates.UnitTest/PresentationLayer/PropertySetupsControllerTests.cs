@@ -23,6 +23,7 @@ using Modules.Estates.Application.Interfaces.Management.Property;
 using Modules.Estates.Domain.Exceptions; // For SuccessResponseDto, ErrorResponseDto
 using Modules.Estates.Presentation.Controllers.v1;
 using Xunit;
+using Modules.Estates.Application.Interfaces.Entities.Setup;
 
 namespace Modules.Estates.UnitTest.PresentationLayer
 {
@@ -46,10 +47,14 @@ namespace Modules.Estates.UnitTest.PresentationLayer
 		private readonly Mock<IActivityTypeService> _activityTypeServiceMock;
 		private readonly Mock<IPropertyMasterService> _propertyMasterServiceMock;
 
-
 		private readonly Mock<ILeaseTypeAndPeriodService> _leaseTypeAndPeriodServiceMock;
         private readonly Mock<IPropertyStatusService> _propertyStatusServiceMock;
 		private readonly Mock<IShopOfficeTypeAndDescriptionService> _shopOfficeTypeAndDescriptionServiceMock;
+
+        private readonly Mock<IFeaturesService> _featuresService;
+        private readonly Mock<IApartmentFeaturesService> _apartmentFeaturesService;
+        private readonly Mock<ICurrencyExchangeRateService> _currencyExchangeRateService;
+
 
 
         private readonly PropertyController _controller;
@@ -78,7 +83,13 @@ namespace Modules.Estates.UnitTest.PresentationLayer
 			_propertyStatusServiceMock = new Mock<IPropertyStatusService>();
 			_shopOfficeTypeAndDescriptionServiceMock = new Mock<IShopOfficeTypeAndDescriptionService>();
 
-            _controller = new PropertyController(
+             _featuresService = new Mock<IFeaturesService>();
+			_apartmentFeaturesService = new Mock<IApartmentFeaturesService>();
+			_currencyExchangeRateService = new Mock<ICurrencyExchangeRateService>();
+
+
+
+        _controller = new PropertyController(
 				_allocationTypeServiceMock.Object,
 				_landUseServiceMock.Object,
 				_landUseTypeServiceMock.Object,
@@ -93,12 +104,16 @@ namespace Modules.Estates.UnitTest.PresentationLayer
 				_blockSideServiceMock.Object,
 				_blockTypeServiceMock.Object,
 				_blockUnitServiceMock.Object,
-				_activityServiceMock.Object,
+                _currencyExchangeRateService.Object,
+                _activityServiceMock.Object,
 				_activityTypeServiceMock.Object,
 				_propertyMasterServiceMock.Object,
-				_leaseTypeAndPeriodServiceMock.Object,
+                _featuresService.Object,
+                _apartmentFeaturesService.Object,
+                _leaseTypeAndPeriodServiceMock.Object,
 				_propertyStatusServiceMock.Object,
 				_shopOfficeTypeAndDescriptionServiceMock.Object
+				
 			);
 		}
 

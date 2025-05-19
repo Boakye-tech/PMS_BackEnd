@@ -25,5 +25,17 @@ namespace Modules.Estates.Domain.Enums
         [Description("MID-RANGE")]
         MIDRANGE = 3,
     }
+
+    public static class ApartmentCategoryEnumDescription
+    {
+        public static string GetApartmentCategoryEnumDescription(this Enum enumValue)
+        {
+            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+            var descriptionAttribute = fieldInfo?.GetCustomAttributes(typeof(DescriptionAttribute), false)
+                                                 .FirstOrDefault() as DescriptionAttribute;
+
+            return descriptionAttribute?.Description ?? enumValue.ToString();
+        }
+    }
 }
 

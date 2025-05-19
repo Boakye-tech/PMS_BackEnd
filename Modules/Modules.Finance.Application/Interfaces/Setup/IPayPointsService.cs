@@ -8,16 +8,16 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
 namespace Modules.Finance.Application.Interfaces.Setup
 {
-	public interface IPayPointsService
+    public interface IPayPointsService
     {
-        Task<PaypointsReadDto> AddPaypointsAsync(PaypointsCreateDto values);
-        Task<PaypointsReadDto> UpdatePaypointsAsync(PaypointsUpdateDto values);
         Task<IEnumerable<PaypointsReadDto>> GetPaypointsAsync();
         Task<PaypointsReadDto> GetPaypointsAsync(int value);
         Task<PaypointsReadDto> GetPaypointsAsync(string value);
+        Task<ReturnResponsesDto> CreatePaypointsAsync(PaypointsCreateDto values);
+        Task<ReturnResponsesDto> UpdatePaypointsAsync(PaypointsUpdateDto values);
+        Task<ReturnResponsesDto> DeletePaypointsAsync(int paypointId);
     }
 }
 

@@ -73,6 +73,12 @@ public static class ModuleExtensions
         services.AddScoped<IComplaintMasterService, ComplaintMasterService>();
         services.AddScoped<IComplaintStatusesService, ComplaintStatusesService>();
 
+        services.AddScoped<IFeaturesService, FeaturesService>();
+        services.AddScoped<IApartmentFeaturesService, ApartmentFeaturesService>();
+
+        services.AddScoped<ICurrencyExchangeRateService, CurrencyExchangeRateService>();
+
+
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<IdentificationTypeDtoValidator>();

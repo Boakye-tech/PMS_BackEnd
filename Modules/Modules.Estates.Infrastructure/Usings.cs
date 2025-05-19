@@ -30,3 +30,7 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 global using Modules.Common.Infrastructure;
+global using Modules.Estates.Domain.Interfaces.Entities.Setup;
+global using Modules.Estates.Domain.Entities.Setup;
+
+global using Modules.Estates.Infrastructure.Repositories.Entities.Setup;

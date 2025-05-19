@@ -12,10 +12,10 @@
 using System;
 namespace Modules.Estates.Application.Profiles.Property
 {
-	public class ApartmentFeaturesProfile : Profile
-	{
-		public ApartmentFeaturesProfile()
-		{
+    public class ApartmentFeaturesProfile : Profile
+    {
+        public ApartmentFeaturesProfile()
+        {
             CreateMap<ApartmentFeatures, ApartmentFeaturesReadDto>()
                 .ForMember(dest => dest.ApartmentCategory, opt => opt.MapFrom(src => src.ApartmentCategory.GetEnumDescription()));
             CreateMap<ApartmentFeaturesCreateDto, ApartmentFeatures>();
@@ -25,4 +25,3 @@ namespace Modules.Estates.Application.Profiles.Property
         }
     }
 }
-

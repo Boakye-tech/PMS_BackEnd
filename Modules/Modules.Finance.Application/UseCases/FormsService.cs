@@ -22,7 +22,7 @@ namespace Modules.Finance.Application.UseCases
             _mapper = mapper;
         }
 
-        public async Task<FormsReadDto> AddFormsAsync(FormsCreateDto values)
+        public async Task<FormsReadDto> CreateFormsAsync(FormsCreateDto values)
         {
             Forms form = new(values.FormCode!, values.FormName!, values.Amount, values.AccountCode)
             {

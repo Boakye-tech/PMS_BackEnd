@@ -30,3 +30,5 @@ global using Modules.Estates.Domain.Constants;
 
 
 global using Modules.Estates.Domain.Events.Complaints;
+global using Modules.Estates.Domain.Entities.Setup;
+global using Modules.Estates.Domain.Interfaces.Entities.Setup;

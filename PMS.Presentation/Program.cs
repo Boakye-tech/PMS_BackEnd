@@ -73,6 +73,7 @@ builder.Services.AddCustomerModule(builder.Configuration, builder.Environment);
 var module = "Modules.Estates.Presentation";
 var user_module = "Modules.Users.Presentation";
 var customers_module = "Modules.Customers.Presentation";
+var finance_module = "Modules.Finance.Presentation";
 
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
@@ -175,6 +176,7 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{module}.xml"));
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{user_module}.xml"));
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{customers_module}.xml"));
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{finance_module}.xml"));
 });
 
 builder.Services.AddHttpContextAccessor();

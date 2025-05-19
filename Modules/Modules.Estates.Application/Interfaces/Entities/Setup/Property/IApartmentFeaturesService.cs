@@ -12,7 +12,7 @@
 using System;
 namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
 {
-	public interface IApartmentFeaturesService
+    public interface IApartmentFeaturesService
     {
         Task<ReturnResponsesDto> CreateApartmentFeaturesAsync(ApartmentFeaturesCreateDto values);
         Task<ReturnResponsesDto> UpdateApartmentFeaturesAsync(ApartmentFeaturesUpdateDto values);
@@ -21,4 +21,3 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
 
     }
 }
-

@@ -9,6 +9,7 @@
 //  **************************************************/
 
 
+
 namespace Modules.Estates.Domain;
 
 public interface IUnitOfWork : IDisposable
@@ -26,6 +27,7 @@ public interface IUnitOfWork : IDisposable
     IAllocationTypeRepository AllocationType { get; }
     IApartmentTypesRepository ApartmentTypes { get; }
     IApartmentFeaturesRepository ApartmentFeatures { get; }
+    IFeaturesRepository Features { get; }
     IBlockNumberRepository BlockNumber { get; }
     IBlockSidesRepository BlockSides { get; }
     IBlockTypeRepository BlockType { get; }
@@ -66,6 +68,10 @@ public interface IUnitOfWork : IDisposable
     ILeaseTypeAndPeriodRepository LeaseTypeAndPeriod { get; }
     IShopOfficeTypeAndDescriptionRepository ShopOfficeTypeAndDescription { get; }
     IPropertyStatusRepository PropertyStatus { get; }
+
+    //May 19 '25
+    ICurrencyExchangeRateRepository CurrencyExchangeRate { get; }
+    
 
     Task<int> Complete();
 }

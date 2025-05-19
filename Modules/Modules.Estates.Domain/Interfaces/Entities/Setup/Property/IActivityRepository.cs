@@ -1,5 +1,6 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Domain
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited

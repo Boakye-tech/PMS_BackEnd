@@ -8,10 +8,11 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Http;
 
 namespace Modules.Finance.Application.UseCases
 {
-	public class InvoiceTypesService : IInvoiceTypesService
+    public class InvoiceTypesService : IInvoiceTypesService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -22,36 +23,155 @@ namespace Modules.Finance.Application.UseCases
             _mapper = mapper;
         }
 
-        public async Task<InvoiceTypesReadDto> AddInvoiceTypesAsync(InvoiceTypesCreateDto values)
-        {
-            InvoiceTypes invoiceTypes = new InvoiceTypes(values.InvoiceTypesId, values.InvoiceInitials, values.InvoiceDescriptions, values.InvoiceAmount)
-            {
-                CreatedBy = values.CreatedBy,
-                CreatedOn = DateTime.UtcNow
-            };
-
-            _unitOfWork.InvoiceTypes.Insert(invoiceTypes);
-            await _unitOfWork.Complete();
-
-            return new InvoiceTypesReadDto(invoiceTypes.InvoiceTypesId, invoiceTypes.InvoiceInitials!, invoiceTypes.InvoiceDescriptions!, invoiceTypes.InvoiceAmount);
-        }
-
         public async Task<IEnumerable<InvoiceTypesReadDto>> GetInvoiceTypesAsync()
         {
-            //throw new NotImplementedException();
-            var inv_types = await _unitOfWork.InvoiceTypes.GetAll();
-            return _mapper.Map<IEnumerable<InvoiceTypesReadDto>>(inv_types);
-
+            var types = await _unitOfWork.InvoiceTypes.GetAll();
+            return _mapper.Map<IEnumerable<InvoiceTypesReadDto>>(types);
         }
 
-        public Task<InvoiceTypesReadDto> GetInvoiceTypesAsync(int value)
+        public async Task<InvoiceTypesReadDto> GetInvoiceTypesAsync(int value)
         {
-            throw new NotImplementedException();
+            var type = await _unitOfWork.InvoiceTypes.Get(value);
+            return _mapper.Map<InvoiceTypesReadDto>(type);
         }
 
-        public Task<InvoiceTypesReadDto> UpdateInvoiceTypesAsync(InvoiceTypesUpdateDto values)
+        public async Task<InvoiceTypesReadDto> GetInvoiceTypesAsync(string value)
         {
-            throw new NotImplementedException();
+            var type = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == value);
+            return _mapper.Map<InvoiceTypesReadDto>(type);
+        }
+
+        public async Task<ReturnResponsesDto> CreateInvoiceTypesAsync(InvoiceTypesCreateDto values)
+        {
+            try
+            {
+                var existingType = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == values.InvoiceInitials);
+                if (existingType != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Invoice type already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+                var type = new InvoiceTypes(values.InvoiceTypesId, values.InvoiceInitials!, values.InvoiceDescriptions!, values.InvoiceAmount)
+                {
+                    CreatedBy = values.CreatedBy,
+                    CreatedOn = DateTime.Now
+                };
+
+                _unitOfWork.InvoiceTypes.Insert(type);
+                await _unitOfWork.Complete();
+
+                var result = _mapper.Map<InvoiceTypesReadDto>(type);
+
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    ErrorResponse = null,
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Invoice type created successfully.", Data = result }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message },
+                    SuccessResponse = null
+                };
+            }
+        }
+
+        public async Task<ReturnResponsesDto> UpdateInvoiceTypesAsync(InvoiceTypesUpdateDto values)
+        {
+            try
+            {
+                var type = await _unitOfWork.InvoiceTypes.Get(values.InvoiceTypesId);
+                if (type == null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Invoice type not found." },
+                        SuccessResponse = null
+                    };
+                }
+
+                var existingType = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == values.InvoiceInitials && p.InvoiceTypesId != values.InvoiceTypesId);
+                if (existingType != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Invoice type already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+                type.Update(values.InvoiceTypesId, values.InvoiceInitials!, values.InvoiceDescriptions!, values.InvoiceAmount);
+                type.ModifiedBy = values.ModifiedBy;
+                type.ModifiedOn = DateTime.Now;
+
+                _unitOfWork.InvoiceTypes.Update(type);
+                await _unitOfWork.Complete();
+
+                var result = _mapper.Map<InvoiceTypesReadDto>(type);
+
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    ErrorResponse = null,
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Invoice type updated successfully.", Data = result }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message },
+                    SuccessResponse = null
+                };
+            }
+        }
+
+        public async Task<ReturnResponsesDto> DeleteInvoiceTypesAsync(int invoiceTypesId)
+        {
+            try
+            {
+                var type = await _unitOfWork.InvoiceTypes.Get(invoiceTypesId);
+                if (type == null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Invoice type not found." },
+                        SuccessResponse = null
+                    };
+                }
+
+                _unitOfWork.InvoiceTypes.Delete(type);
+                await _unitOfWork.Complete();
+
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    ErrorResponse = null,
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Invoice type deleted successfully.", Data = null }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message },
+                    SuccessResponse = null
+                };
+            }
         }
     }
 }

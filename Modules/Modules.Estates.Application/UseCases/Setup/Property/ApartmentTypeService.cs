@@ -11,6 +11,7 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
@@ -28,8 +29,25 @@ public class ApartmentTypeService : IApartmentTypeService
 
     public async Task<IEnumerable<ApartmentTypeReadDto>> GetApartmentTypeAsync()
     {
-        var response = await _unitOfWork.ApartmentTypes.GetAll();
-        return _mapper.Map<IEnumerable<ApartmentTypeReadDto>>(response);
+        //var response = await _unitOfWork.ApartmentTypes.GetAll();
+
+        var apartmentDetails = (from at in await _unitOfWork.ApartmentTypes.GetAll()
+                                join cer in await _unitOfWork.CurrencyExchangeRate.GetAll()
+                                on at.CurrencyId equals cer.CurrencyId
+                                select new ApartmentTypeReadDto
+                                (
+                                    ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(at.ApartmentCategory),
+                                    at.ApartmentTypeId,
+                                    at.ApartmentType,
+                                    at.SellingPrice,
+                                    at.CurrencyId,
+                                    cer.CurrencyInitial!,
+                                    cer.CurrencyName!,
+                                    at.FloorArea
+                                )).ToList();
+
+
+        return _mapper.Map<IEnumerable<ApartmentTypeReadDto>>(apartmentDetails);
     }
 
     public async Task<ApartmentTypeReadDto> GetApartmentTypeAsync(int value)

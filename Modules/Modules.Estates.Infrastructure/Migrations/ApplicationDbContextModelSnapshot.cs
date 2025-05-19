@@ -623,6 +623,59 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.ToTable("PropertyMaster", "est");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.CurrencyExchangeRate", b =>
+                {
+                    b.Property<int>("CurrencyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CurrencyId"));
+
+                    b.Property<DateTime>("ApplicableDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("BaseCurrency")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("BuyingRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CurrencyInitial")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("CurrencyName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("SellingRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("CurrencyId");
+
+                    b.ToTable("CurrencyExchangeRate", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Customer.ComplaintStatuses", b =>
                 {
                     b.Property<int>("ComplaintStatusId")
@@ -1507,6 +1560,51 @@ namespace Modules.Estates.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentFeatures", b =>
+                {
+                    b.Property<int>("ApartmentFeaturesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApartmentFeaturesId"));
+
+                    b.Property<int>("ApartmentCategory")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ApartmentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Feature")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("FloorArea")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ApartmentFeaturesId");
+
+                    b.ToTable("ApartmentFeatures", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentTypes", b =>
                 {
                     b.Property<int>("ApartmentTypeId")
@@ -1564,7 +1662,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             ApartmentCategory = 1,
                             ApartmentType = "STUDIO",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CurrencyId = 1,
+                            CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 27.43,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1576,7 +1674,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             ApartmentCategory = 1,
                             ApartmentType = "ONE BEDROOM",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CurrencyId = 1,
+                            CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 41.119999999999997,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1588,7 +1686,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             ApartmentCategory = 1,
                             ApartmentType = "ONE BEDROOM (SPECIAL)",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CurrencyId = 1,
+                            CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 60.630000000000003,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1600,7 +1698,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             ApartmentCategory = 1,
                             ApartmentType = "TWO BEDROOMS",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CurrencyId = 1,
+                            CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 74.799999999999997,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1612,11 +1710,11 @@ namespace Modules.Estates.Infrastructure.Migrations
                             ApartmentCategory = 2,
                             ApartmentType = "TWO BEDROOM",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CurrencyId = 1,
+                            CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 107.0,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SellingPrice = 8000f
+                            SellingPrice = 197500f
                         },
                         new
                         {
@@ -1624,11 +1722,11 @@ namespace Modules.Estates.Infrastructure.Migrations
                             ApartmentCategory = 2,
                             ApartmentType = "THREE BEDROOM",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CurrencyId = 1,
+                            CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 218.0,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SellingPrice = 17000f
+                            SellingPrice = 286400f
                         });
                 });
 
@@ -1810,6 +1908,42 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.HasKey("UnitId");
 
                     b.ToTable("BlockUnit", "est");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Features", b =>
+                {
+                    b.Property<int>("FeaturesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeaturesId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Feature")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("FeaturesId");
+
+                    b.ToTable("Features", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.FloorArea", b =>

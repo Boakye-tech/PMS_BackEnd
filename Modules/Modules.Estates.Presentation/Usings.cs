@@ -51,3 +51,6 @@ global using Modules.Estates.Application.Services;
 global using Modules.Estates.Application.UseCases.Management.Complaints;
 global using Modules.Estates.Application.UseCases.ModuleServices;
 global using Modules.Estates.Domain.Events;
+
+global using Modules.Estates.Application.Interfaces.Entities.Setup;
+global using Modules.Estates.Application.UseCases.Setup;

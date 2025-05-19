@@ -13,12 +13,10 @@
 using System.ComponentModel;
 using System.Reflection;
 using Asp.Versioning;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.UseCases.Setup.Property;
-using Modules.Estates.Domain.Entities.Setup.Property;
-using Modules.Estates.Domain.Exceptions;
+using Modules.Estates.Application.Interfaces.Entities.Setup;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,11 +32,11 @@ namespace Modules.Estates.Presentation.Controllers.v1;
 /// </summary>
 public partial class PropertyController : ControllerBase
 {
-    public readonly IAllocationTypeService _allocationTypeService;
-    public readonly IApartmentTypeService _apartmentTypeService;
-    public readonly ILeaseTypeAndPeriodService _leaseTypeAndPeriodService;
-    public readonly IPropertyStatusService _propertyStatusService;
-    public readonly IShopOfficeTypeAndDescriptionService _shopOfficeTypeAndDescriptionService;
+    readonly IAllocationTypeService _allocationTypeService;
+    readonly IApartmentTypeService _apartmentTypeService;
+    readonly ILeaseTypeAndPeriodService _leaseTypeAndPeriodService;
+    readonly IPropertyStatusService _propertyStatusService;
+    readonly IShopOfficeTypeAndDescriptionService _shopOfficeTypeAndDescriptionService;
 
     readonly IBlockNumberService _blockNumberService;
     readonly IBlockSideService _blockSideService;
@@ -60,14 +58,18 @@ public partial class PropertyController : ControllerBase
         
     readonly IPropertyMasterService _propertyMasterService;
 
+    readonly IFeaturesService _featuresService;
+    readonly IApartmentFeaturesService _apartmentFeaturesService;
+    readonly ICurrencyExchangeRateService _currencyExchangeRateService;
 
+ 
     /// <summary>
     /// Presentation controller constructor to handle dependency injection
     /// </summary>
     public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotDimensionService plotDimensionService,
                               IApartmentTypeService apartmentTypeService, IFloorAreaService floorAreaService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
-                              IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService,
-                              IActivityService activityService, IActivityTypeService activityTypeService, IPropertyMasterService propertyMasterService,
+                              IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService, ICurrencyExchangeRateService currencyExchangeRateService,
+                              IActivityService activityService, IActivityTypeService activityTypeService, IPropertyMasterService propertyMasterService, IFeaturesService featuresService, IApartmentFeaturesService apartmentFeaturesService,
                               ILeaseTypeAndPeriodService leaseTypeAndPeriodService, IPropertyStatusService propertyStatusService, IShopOfficeTypeAndDescriptionService shopOfficeTypeAndDescriptionService)
     {
         _allocationTypeService = allocationTypeService;
@@ -94,6 +96,10 @@ public partial class PropertyController : ControllerBase
         _activityTypeService = activityTypeService;
 
         _propertyMasterService = propertyMasterService;
+
+        _featuresService = featuresService;
+        _apartmentFeaturesService = apartmentFeaturesService;
+        _currencyExchangeRateService = currencyExchangeRateService;
     }
 
     //--------------------ACTIVITY----------------
@@ -1491,6 +1497,342 @@ public partial class PropertyController : ControllerBase
         }
     }
 
+    //--------------------FEATURES----------------
+    /// <summary>
+    /// Returns a list of property features
+    /// </summary>
+    [HttpGet]
+    [Route("GetFeatures")]
+    public async Task<ActionResult<IEnumerable<FeaturesReadDto>>> GetFeatures()
+    {
+        return Ok(await _featuresService.GetFeaturesAsync());
+    }
+
+    // POST: api/CreateFeature
+    /// <summary>
+    ///  Creates a new property feature
+    /// </summary>
+    ///     
+    /// <remarks>
+    /// Indicating the various property features captured.
+    ///
+    /// **Sample Request:**
+    ///
+    ///     POST /CreateFeature
+    ///
+    /// **Sample Request Body:**
+    /// 
+    ///     {
+    ///         "feature": "BEDROOM",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Feature created successfully.",
+    ///         "data": {
+    ///             "featureId": 1,
+    ///             "feature": "BEDROOM",
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
+    [HttpPost]
+    [Route("CreateFeature")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateFeature([FromBody] FeaturesCreateDto values)
+    {
+        try
+        {
+            var result = await _featuresService.CreateFeaturesAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    /// <summary>
+    ///  Updates the details of an existing property feature
+    /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing property feature based on the id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateFeature
+    ///
+    /// **Sample Request Body:**
+    /// 
+    ///     {
+    ///         "featureId": 1,
+    ///         "feature": "BEDROOMS",
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Feature details modified successfully.",
+    ///         "data": {
+    ///             "featureId": 1,
+    ///             "feature": "BEDROOMS"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
+    [HttpPut]
+    [Route("UpdateFeature")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult<FloorAreaReadDto>> UpdateFeature([FromBody] FeaturesUpdateDto values)
+    {
+        var result = await _featuresService.UpdateFeaturesAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
+    }
+    // DELETE api/values/5
+    [HttpDelete("DeleteFeature/{featureId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteFeature(int floorAreaId)
+    {
+        try
+        {
+            var result = await _featuresService.DeleteFeatures(floorAreaId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    //--------------------APARTMENT FEATURES----------------
+    /// <summary>
+    /// Returns a list of apartment features
+    /// </summary>
+    [HttpGet]
+    [Route("GetApartmentFeatures")]
+    public async Task<ActionResult<IEnumerable<ApartmentFeaturesReadDto>>> GetApartmentFeatures()
+    {
+        return Ok(await _apartmentFeaturesService.GetApartmentFeaturesAsync());
+    }
+
+    // POST: api/CreateAparmentFeature
+    /// <summary>
+    ///  Creates a new property feature
+    /// </summary>
+    ///     
+    /// <remarks>
+    /// Indicating the various property features captured.
+    ///
+    /// **Sample Request:**
+    ///
+    ///     POST /CreateAparmentFeature
+    ///
+    /// **Sample Request Body:**
+    /// 
+    ///     {
+    ///         "apartmentCategory": 1,
+    ///         "apartmentTypeId": 0,
+    ///         "feature": "string",
+    ///         "floorArea": 0,
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Feature created successfully.",
+    ///         "data": {
+    ///                     "apartmentCategory": 1,
+    ///                     "apartmentTypeId": 0,
+    ///                     "feature": "string",
+    ///                     "floorArea": 0,
+    ///                     "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///                 }
+    ///     }
+    /// 
+    /// </remarks>
+    [HttpPost]
+    [Route("CreateAparmentFeature")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateAparmentFeature([FromBody] ApartmentFeaturesCreateDto values)
+    {
+        try
+        {
+            var result = await _apartmentFeaturesService.CreateApartmentFeaturesAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    /// <summary>
+    ///  Updates the details of an existing apartment feature
+    /// </summary>
+    ///
+    /// <remarks>
+    /// Modifies/updates an existing apartment feature based on the id 
+    ///
+    /// **Sample Request:**
+    ///
+    ///     PUT /UpdateAparmentFeature
+    ///
+    /// **Sample Request Body:**
+    ///     
+    ///     {
+    ///         "apartmentfeatureId": 1,
+    ///         "apartmentCategory": 3,
+    ///         "apartmentTypeId": 9,
+    ///         "feature": "SITTING ROOM",
+    ///         "floorArea": 201.56,
+    ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 200:**
+    /// 
+    ///     {
+    ///         "code": 200,
+    ///         "message": "Feature details modified successfully.",
+    ///         "data": {
+    ///                     "apartmentfeatureId": 1,
+    ///                     "apartmentCategory": 3,
+    ///                     "apartmentTypeId": 9,
+    ///                     "feature": "SITTING ROOM",
+    ///                     "floorArea": 201.56,
+    ///                     "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///             }
+    ///     }
+    /// 
+    /// </remarks>
+    [HttpPut]
+    [Route("UpdateAparmentFeature")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult<FloorAreaReadDto>> UpdateAparmentFeature([FromBody] ApartmentFeaturesUpdateDto values)
+    {
+        var result = await _apartmentFeaturesService.UpdateApartmentFeaturesAsync(values);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.SuccessResponse);
+        }
+
+        var status = result.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+            400 => BadRequest(result.ErrorResponse),
+            404 => NotFound(result.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+        };
+    }
+    // DELETE api/values/5
+    [HttpDelete("DeleteApartmentFeature/{ApartmentfeatureId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteApartmentFeature(int ApartmentfeatureId)
+    {
+        try
+        {
+            var result = await _apartmentFeaturesService.DeleteApartmentFeatures(ApartmentfeatureId);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+
+
     //--------------------FLOOR AREA----------------
     /// <summary>
     /// Returns a list of floor areas
@@ -1605,7 +1947,7 @@ public partial class PropertyController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<FloorAreaReadDto>> UpdateFacility([FromBody] FloorAreaUpdateDto values)
+    public async Task<ActionResult<FloorAreaReadDto>> UpdateFloorArea([FromBody] FloorAreaUpdateDto values)
     {
         var result = await _floorAreaService.UpdateFloorAreaAsync(values);
 
@@ -1628,7 +1970,7 @@ public partial class PropertyController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteFacility(int floorAreaId)
+    public async Task<ActionResult> DeleteFloorArea(int floorAreaId)
     {
         try
         {
@@ -3118,6 +3460,156 @@ public partial class PropertyController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
         }
     }
+
+
+    //----CURRENCIES & EXCHANGE RATES-----
+    /// <summary>
+    /// Returns a list of trading currencies and their respective exchange rates
+    /// </summary>
+    [HttpGet]
+    [Route("CurrencyAndExchangeRates")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CurrencyExchangeRateReadDto>))]
+    public async Task<ActionResult<IEnumerable<CurrencyExchangeRateReadDto>>> GetCurrencyAndExchangeRates()
+    {
+        return Ok(await _currencyExchangeRateService.GetCurrencyExchangeRateAsync());
+    }
+
+    // POST: api/CreateCurrencyAndExchangeRate
+    /// <summary>
+    ///  Creates a new trading currency with corresponding exchange rates for the day
+    /// </summary>
+    ///     
+    /// <remarks>
+    /// Addition/Creation of new trading currencies and exchanges rates for various conversion purposes
+    ///
+    /// **Sample Request:**
+    ///
+    ///     POST /CreateCurrencyAndExchangeRate
+    ///
+    /// **Sample Request Body:**
+    /// 
+    ///     {
+    ///         "currencyId": 0,
+    ///         "currencyInitial": "GHC",
+    ///         "currencyName": "GHANA CEDIS",
+    ///         "buyingRate": 1,
+    ///         "sellingRate": 1,
+    ///         "baseCurrency": true,
+    ///         "applicableDate": "2025-01-01T07:15:05.306Z",
+    ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///     }
+    ///
+    /// **Sample Response 201:**
+    /// 
+    ///     {
+    ///         "code": 201,
+    ///         "message": "Currency and exchange rate created successfully.",
+    ///         "data": {
+    ///             "currencyId": 1,
+    ///             "currencyInitial": "GHC",
+    ///             "currencyName": "GHANA CEDIS",
+    ///             "buyingRate": 1,
+    ///             "sellingRate": 1,
+    ///             "baseCurrency": true,
+    ///             "applicableDate": "2025-01-01T07:15:05.306Z",
+    ///             "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+    ///         }
+    ///     }
+    /// 
+    /// </remarks>
+    [HttpPost]
+    [Route("CreateCurrencyAndExchangeRate")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateCurrencyAndExchangeRate([FromBody] CurrencyExchangeRateCreateDto values)
+    {
+        try
+        {
+            var response = await _currencyExchangeRateService.CreateCurrencyExchangeRateAsync(values);
+
+            if (response.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
+            }
+
+            var status = response.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+                400 => BadRequest(response.ErrorResponse),
+                404 => NotFound(response.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdateCurrencyExchangeRate")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> UpdateCurrencyExchangeRate([FromBody] CurrencyExchangeRateUpdateDto values)
+    {
+        var response = await _currencyExchangeRateService.UpdateCurrencyExchangeRateAsync(values);
+
+        if (response.IsSuccess)
+        {
+            return Ok(response.SuccessResponse);
+        }
+
+        var status = response.ErrorResponse!.Code;
+        return status switch
+        {
+            204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+            400 => BadRequest(response.ErrorResponse),
+            404 => NotFound(response.ErrorResponse),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+        };
+    }
+
+    
+    /// <summary>
+    /// Deletes an exsiting currency and exhange rate by the currency ID
+    /// </summary>
+    /// <param name="currencyId">The ID of the currency to delete</param>
+    /// <returns>Success or error response</returns>
+    [HttpDelete("DeleteCurrencyExchangeRate/{currencyId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> DeleteCurrencyExchangeRate(int currencyId)
+    {
+        try
+        {
+            var response = await _currencyExchangeRateService.DeleteCurrencyExchangeRateAsync(currencyId);
+
+            if (response.IsSuccess)
+            {
+                return Ok(response.SuccessResponse);
+            }
+
+            var status = response.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(response.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
 
     /*
 

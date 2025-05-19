@@ -13,11 +13,10 @@
 
 namespace Modules.Estates.Infrastructure.Repositories.Entities.Setup.Property
 {
-	public class ApartmentFeaturesRepository : Repository<ApartmentFeatures>, IApartmentFeaturesRepository
+    public class ApartmentFeaturesRepository : Repository<ApartmentFeatures>, IApartmentFeaturesRepository
     {
-		public ApartmentFeaturesRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public ApartmentFeaturesRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
     }
 }
-

@@ -15,8 +15,8 @@ public class ApartmentTypeProfile : Profile
 {
 	public ApartmentTypeProfile()
 	{
-		CreateMap<ApartmentTypes, ApartmentTypeReadDto>()
-            .ForMember(dest => dest.apartmentCategory, opt => opt.MapFrom(src => src.ApartmentCategory.GetEnumDescription()));
+        CreateMap<ApartmentTypes, ApartmentTypeReadDto>();
+            //.ForMember(dest => dest.apartmentCategory, opt => opt.MapFrom(src => src.ApartmentCategory.GetApartmentCategoryEnumDescription()));
 
 		CreateMap<ApartmentTypeCreateDto, ApartmentTypes>();
         CreateMap<ApartmentTypeUpdateDto, ApartmentTypes>();

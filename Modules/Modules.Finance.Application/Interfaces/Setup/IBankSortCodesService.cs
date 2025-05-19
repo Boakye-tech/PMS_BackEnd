@@ -8,16 +8,16 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
 namespace Modules.Finance.Application.Interfaces.Setup
 {
-	public interface IBankSortCodesService
-	{
-        Task<BankSortCodesReadDto> AddBankSortCodesAsync(BankSortCodesCreateDto values);
-        Task<BankSortCodesReadDto> UpdateBankSortCodesAsync(BankSortCodesUpdateDto values);
+    public interface IBankSortCodesService
+    {
         Task<IEnumerable<BankSortCodesReadDto>> GetBankSortCodesAsync();
         Task<BankSortCodesReadDto> GetBankSortCodesAsync(int value);
         Task<BankSortCodesReadDto> GetBankSortCodesAsync(string value);
+        Task<ReturnResponsesDto> CreateBankSortCodesAsync(BankSortCodesCreateDto values);
+        Task<ReturnResponsesDto> UpdateBankSortCodesAsync(BankSortCodesUpdateDto values);
+        Task<ReturnResponsesDto> DeleteBankSortCodesAsync(int id);
     }
 }
 

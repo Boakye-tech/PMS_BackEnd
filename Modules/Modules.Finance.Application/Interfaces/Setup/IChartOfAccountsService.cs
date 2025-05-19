@@ -8,16 +8,16 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
 namespace Modules.Finance.Application.Interfaces.Setup
 {
-	public interface IChartOfAccountsService
-	{
-        Task<ChartOfAccountsReadDto> AddChartOfAccountsAsync(ChartOfAccountsCreateDto values);
-        Task<ChartOfAccountsReadDto> UpdateChartOfAccountsAsync(ChartOfAccountsUpdateDto values);
+    public interface IChartOfAccountsService
+    {
         Task<IEnumerable<ChartOfAccountsReadDto>> GetChartOfAccountsAsync();
         Task<ChartOfAccountsReadDto> GetChartOfAccountsAsync(int value);
         Task<ChartOfAccountsReadDto> GetChartOfAccountsAsync(string value);
+        Task<ReturnResponsesDto> CreateChartOfAccountsAsync(ChartOfAccountsCreateDto values);
+        Task<ReturnResponsesDto> UpdateChartOfAccountsAsync(ChartOfAccountsUpdateDto values);
+        Task<ReturnResponsesDto> DeleteChartOfAccountsAsync(int accountCode);
     }
 }
 

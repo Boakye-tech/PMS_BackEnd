@@ -11,10 +11,12 @@
 //  **************************************************/
 using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Modules.Estates.Domain.Enums;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
 {
-	public class ApartmentFeaturesService : IApartmentFeaturesService
+    public class ApartmentFeaturesService : IApartmentFeaturesService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -30,7 +32,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         {
             int apartmentFeaturesId = 0;
 
-            var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId &&  at.Feature == values.Feature);
+            var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId && at.Feature == values.Feature);
             if (apartmentType != null)
             {
                 return new ReturnResponsesDto
@@ -63,9 +65,23 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ApartmentFeaturesReadDto>> GetApartmentFeaturesAsync()
+        public async Task<IEnumerable<ApartmentFeaturesReadDto>> GetApartmentFeaturesAsync()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
+            var apartmentFeatures = (from af in await _unitOfWork.ApartmentFeatures.GetAll()
+                                     join at in await _unitOfWork.ApartmentTypes.GetAll()
+                                     on af.ApartmentTypeId equals at.ApartmentTypeId
+                                     select new ApartmentFeaturesReadDto
+                                     (
+                                         af.ApartmentFeaturesId,
+                                         ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(af.ApartmentCategory),
+                                         at.ApartmentType,
+                                         af.Feature,
+                                         af.FloorArea
+                                     )).ToList();
+
+            return apartmentFeatures;
         }
 
         public async Task<ReturnResponsesDto> UpdateApartmentFeaturesAsync(ApartmentFeaturesUpdateDto values)
@@ -81,7 +97,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 };
             }
 
-            apartmentTypeFeature.Update(values.ApartmentFeaturesId, values.ApartmentTypeId, values.Feature , values.FloorArea);
+            apartmentTypeFeature.Update(values.ApartmentFeaturesId, values.ApartmentTypeId, values.Feature, values.FloorArea);
             apartmentTypeFeature.ModifiedBy = values.ModifiedBy;
             apartmentTypeFeature.ModifiedOn = DateTime.Now;
 
@@ -99,4 +115,3 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         }
     }
 }
-

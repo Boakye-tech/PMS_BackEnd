@@ -34,7 +34,8 @@ public class ApplicationDbContext : ModuleDbContext
     //----property related tables
     public DbSet<AllocationType> AllocationType { get; set; }
     public DbSet<ApartmentTypes> ApartmentTypes { get; set; }
-    public DbSet<ApartmentFeatures> ApartmentFeatures { get; set; } 
+    public DbSet<ApartmentFeatures> ApartmentFeatures { get; set; }
+    public DbSet<Features> Features { get; set; } 
     public DbSet<BlockNumber> BlockNumber { get; set; }
     public DbSet<BlockSides> BlockSides { get; set; }
     public DbSet<BlockStatus> BlockStatus { get; set; }
@@ -69,6 +70,8 @@ public class ApplicationDbContext : ModuleDbContext
 
     public DbSet<LeaseTypeAndPeriod> LeaseTypeAndPeriod { get; set; }
     public DbSet<PropertyStatus> PropertyStatus { get; set; }
+
+    public DbSet<CurrencyExchangeRate> CurrencyExchangeRate { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -9,7 +9,6 @@
 //  **************************************************/
 
 
-using Modules.Estates.Domain.Interfaces.Entities.Setup.Property;
 
 namespace Modules.Estates.Infrastructure.UnitOfWork;
 
@@ -52,6 +51,8 @@ public class UnitOfWork: IUnitOfWork
 
         ApartmentFeatures = new ApartmentFeaturesRepository(_dbContext);
 
+        Features = new FeaturesRepository(_dbContext);
+
         BlockNumber = new BlockNumberRepository(_dbContext);
 
         BlockSides = new BlockSidesRepository(_dbContext);
@@ -88,13 +89,15 @@ public class UnitOfWork: IUnitOfWork
 
         ComplaintStatuses = new ComplaintStatusesRepository(_dbContext);
 
-        ComplaintHistory = new ComplaintHistoryRepository(dbContext);
+        ComplaintHistory = new ComplaintHistoryRepository(_dbContext);
 
-        LeaseTypeAndPeriod = new LeaseTypeAndPeriodRepository(dbContext);
+        LeaseTypeAndPeriod = new LeaseTypeAndPeriodRepository(_dbContext);
 
-        ShopOfficeTypeAndDescription = new ShopOfficeTypeAndDescriptionRepository(dbContext);
+        ShopOfficeTypeAndDescription = new ShopOfficeTypeAndDescriptionRepository(_dbContext);
 
-        PropertyStatus = new PropertyStatusRepository(dbContext);
+        PropertyStatus = new PropertyStatusRepository(_dbContext);
+
+        CurrencyExchangeRate = new CurrencyExchangeRateRepository(_dbContext);
     }
 
 
@@ -127,6 +130,8 @@ public class UnitOfWork: IUnitOfWork
     public IApartmentTypesRepository ApartmentTypes { get; private set; }
 
     public IApartmentFeaturesRepository ApartmentFeatures { get; private set; }
+
+    public IFeaturesRepository Features { get; private set; }
 
     public IBlockNumberRepository BlockNumber { get; private set; }
 
@@ -175,6 +180,7 @@ public class UnitOfWork: IUnitOfWork
     public IPropertyStatusRepository PropertyStatus { get; private set; }
     public IShopOfficeTypeAndDescriptionRepository ShopOfficeTypeAndDescription { get; private set; }
 
+    public ICurrencyExchangeRateRepository CurrencyExchangeRate { get; private set; }
 
     public Task<int> Complete()
     {

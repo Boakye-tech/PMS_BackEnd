@@ -26,11 +26,11 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [Required]
         public int ApartmentFeaturesId { get; private set; }
 
-         [Required]
+        [Required]
         [StringLength(50)]
         public string Feature { get; private set; }
 
-        //[Required]
+        [Required]
         public decimal FloorArea { get; private set; }
 
         public ApartmentFeatures(ApartmentCategoryEnum apartmentCategory, int apartmentFeaturesId, int apartmentTypeId, string feature, decimal floorArea)
@@ -69,11 +69,10 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             if (string.IsNullOrWhiteSpace(feature))
                 throw new ArgumentException("Feature cannot be empty or exceed 50 characters.");
 
-            if (floorArea <= 0)
+            if (floorArea < 0)
                 throw new ArgumentException("Floor Area must be greater than zero.");
         }
 
-        
+
     }
 }
-

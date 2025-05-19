@@ -41,3 +41,4 @@ global using Modules.Estates.Application.Interfaces.Management.Property;
 
 global using Modules.Estates.Application.DTO.Setup;
 
+global using Modules.Estates.Application.Interfaces.Entities.Setup;

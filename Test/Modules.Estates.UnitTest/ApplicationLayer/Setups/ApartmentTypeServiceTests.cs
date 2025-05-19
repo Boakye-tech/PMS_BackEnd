@@ -59,7 +59,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Arrange
 			int apartmentTypeId = 1;
 			var apartmentType = new ApartmentTypes(ApartmentCategoryEnum.AFFORDABLE ,1, "STUDIO", 8000, 2, 21.2);
-			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", 8000, "USD", 21.2);
+			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", 8000, 2, "USD","U.S. DOLLAR", 21.2);
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(apartmentTypeId)).ReturnsAsync(apartmentType);
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(apartmentType)).Returns(apartmentTypeDto);
 
@@ -77,7 +77,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Arrange
 			string value = "test";
 			var apartmentType = new ApartmentTypes(ApartmentCategoryEnum.AFFORDABLE, 1, "STUDIO", 8000, 2, 21.2);
-			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", 8000, "USD", 21.2);
+			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", 8000, 2, "USD", "U.S. DOLLAR", 21.2);
             _unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(It.IsAny< Expression<Func<ApartmentTypes, bool>>>(), null)).ReturnsAsync(apartmentType);
 
             _mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(apartmentType)).Returns(apartmentTypeDto);
@@ -104,7 +104,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 				createdBy: "testuser"
 			);
 
-			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 0, createDto.apartmentType!, createDto.sellingPrice, "USD", createDto.floorArea);
+			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 0, createDto.apartmentType!, createDto.sellingPrice,2, "USD", "U.S. DOLLAR", createDto.floorArea);
 
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(It.IsAny<Expression<Func<ApartmentTypes, bool>>>(), null)).ReturnsAsync((ApartmentTypes)null!);
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(It.IsAny<ApartmentTypes>())).Returns(apartmentTypeDto);
@@ -161,7 +161,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			);
 
 			var existingApartmentType = ApartmentTypes.Create(apartmentCategory: ApartmentCategoryEnum.AFFORDABLE, 1, "Old Apartment", 100000, 1, 100);
-			var apartmentTypeDto = new ApartmentTypeReadDto(apartmentCategory: "AFFORDABLE", 1, "Updated Apartment", 150000, "USD", 150);
+			var apartmentTypeDto = new ApartmentTypeReadDto(apartmentCategory: "AFFORDABLE", 1, "Updated Apartment", 150000, 2, "USD","U.S. DOLLAR", 150);
 
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(updateDto.apartmentTypeId)).ReturnsAsync(existingApartmentType);
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(It.IsAny<ApartmentTypes>())).Returns(apartmentTypeDto);
