@@ -131,7 +131,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Assert
 			Assert.False(result.IsSuccess);
 			Assert.Equal(StatusCodes.Status400BadRequest, result.ErrorResponse!.Code);
-			Assert.Equal("Floor Numbering already exists.", result.ErrorResponse.Message);
+			Assert.Equal("Floor Number already exists.", result.ErrorResponse.Message);
 		}
 
 		[Fact]

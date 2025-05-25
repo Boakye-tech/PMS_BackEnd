@@ -21,51 +21,64 @@ public class LandUseType : AuditableEntity
     [Required]
     public int LandUseTypeId { get; private set; }
 
+    // Navigation property for LandUse
+    public virtual LandUse? LandUse { get; private set; }
+
     [Required]
     [StringLength(5)]
-    public string LandUseTypeInitial { get; private set; }
+    public string? LandUseTypeInitial { get; private set; }
 
     [Required]
     [StringLength(30)]
-    public string LandUseTypeName { get; private set; }
+    public string? LandUseTypeName { get; private set; }
 
-    public LandUseType(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName)
+    [StringLength(250)]
+    public string? LandUseTypeDescription { get; private set; }
+
+
+    public LandUseType(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName, string landUseTypeDescription)
     {
         LandUseId = landUseId;
         LandUseTypeId = landUseTypeId;
         LandUseTypeInitial = landUseTypeInitial;
         LandUseTypeName = landUseTypeName;
+        LandUseTypeDescription = landUseTypeDescription;
     }
 
-    public static LandUseType Create(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName)
+    public static LandUseType Create(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName, string landUseTypeDescription)
     {
-        Validate(landUseId, landUseTypeId, landUseTypeInitial, landUseTypeName);
-        return new LandUseType(landUseId, landUseTypeId, landUseTypeInitial, landUseTypeName);
+        Validate(landUseId, landUseTypeId, landUseTypeInitial, landUseTypeName, landUseTypeDescription);
+        return new LandUseType(landUseId, landUseTypeId, landUseTypeInitial, landUseTypeName, landUseTypeDescription);
     }
 
-    public void Update(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName)
+    public void Update(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName, string landUseTypeDescription)
     {
-        Validate(landUseId, landUseTypeId, landUseTypeInitial, landUseTypeName);
+        Validate(landUseId, landUseTypeId, landUseTypeInitial, landUseTypeName, landUseTypeDescription);
 
         LandUseId = landUseId;
         LandUseTypeId = landUseTypeId;
         LandUseTypeInitial = landUseTypeInitial;
         LandUseTypeName = landUseTypeName;
+        LandUseTypeDescription = landUseTypeDescription;
     }
 
-    private static void Validate(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName)
+    private static void Validate(int landUseId, int landUseTypeId, string landUseTypeInitial, string landUseTypeName, string landUseTypeDescription)
     {
-        if (landUseId < 0)
+        if (landUseId <= 0)
             throw new ArgumentException("Land Use Id must be greater than zero.");
 
         if (landUseTypeId < 0)
             throw new ArgumentException("Land Use Type Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(landUseTypeInitial))
-            throw new ArgumentException("Land Use Type Initial cannot be empty or exceed 5 characters..");
+        if (string.IsNullOrWhiteSpace(landUseTypeInitial) || landUseTypeInitial.Length > 5)
+            throw new ArgumentException("Land Use Type Initial cannot be empty or exceed 5 characters.");
 
-        if (string.IsNullOrWhiteSpace(landUseTypeName))
-            throw new ArgumentException("Land Use Type Name cannot be empty or exceed 50 characters..");
+        if (string.IsNullOrWhiteSpace(landUseTypeName) || landUseTypeName.Length > 50)
+            throw new ArgumentException("Land Use Type Name cannot be empty or exceed 50 characters.");
+
+        if (!string.IsNullOrWhiteSpace(landUseTypeDescription) && landUseTypeDescription.Length > 250)
+            throw new ArgumentException("Land Use Type Description cannot be empty or exceed 250 characters.");
+
     }
 }
 

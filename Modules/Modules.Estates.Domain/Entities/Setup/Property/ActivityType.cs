@@ -25,8 +25,11 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [StringLength(50)]
         public string ActivityTypeName { get; private set; }
 
-        [StringLength(50)]
+        [StringLength(250)]
         public string? ActivityTypeDescription { get; private set; }
+
+        // Navigation property for Activity
+        public virtual Activity? Activity { get; private set; }
 
 
         public ActivityType(int activityId, int activityTypeId, string activityTypeName, string? activityTypeDescription)
@@ -61,11 +64,11 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             if (activityTypeId < 0)
                 throw new ArgumentException("Activity Type Id must be greater than zero.");
 
-            if (string.IsNullOrWhiteSpace(activityTypeName))
+            if (string.IsNullOrWhiteSpace(activityTypeName) || activityTypeName.Length > 50)
                 throw new ArgumentException("Activity Type Name cannot be empty or exceed 50 characters.");
 
-            if (activityTypeDescription != null && activityTypeDescription.Length > 50)
-                throw new ArgumentException("Activity Type Description cannot exceed 50 characters.");
+            if (activityTypeDescription != null && activityTypeDescription.Length > 250)
+                throw new ArgumentException("Activity Type Description cannot exceed 250 characters.");
         }
     }
 }

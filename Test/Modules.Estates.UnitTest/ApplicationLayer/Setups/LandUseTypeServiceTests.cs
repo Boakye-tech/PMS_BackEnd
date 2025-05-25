@@ -56,8 +56,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			// Arrange
 			int landUseTypeId = 1;
-			var landUseType = new LandUseType(1,2,"SHP","SHOPS");
-			var landUseTypeDto = new LandUseTypeReadDto(1, 2, "SHP", "SHOPS");
+			var landUseType = new LandUseType(1,2,"SHP","SHOPS","");
+			var landUseTypeDto = new LandUseTypeReadDto(1, 2, "SHP", "SHOPS", "");
 			_unitOfWorkMock.Setup(x => x.LandUseType.Get(landUseTypeId)).ReturnsAsync(landUseType);
 			_mapperMock.Setup(x => x.Map<LandUseTypeReadDto>(landUseType)).Returns(landUseTypeDto);
 
@@ -74,8 +74,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			// Arrange
 			string value = "test";
-			var landUseType = new LandUseType(1, 2, "SHP", "SHOPS");
-			var landUseTypeDto = new LandUseTypeReadDto(1, 2, "SHP", "SHOPS");
+			var landUseType = new LandUseType(1, 2, "SHP", "SHOPS", "");
+			var landUseTypeDto = new LandUseTypeReadDto(1, 2, "SHP", "SHOPS", "");
 			_unitOfWorkMock.Setup(x => x.LandUseType.Get(It.IsAny<Expression<Func<LandUseType, bool>>>(), null)).ReturnsAsync(landUseType);
 			_mapperMock.Setup(x => x.Map<LandUseTypeReadDto>(landUseType)).Returns(landUseTypeDto);
 
@@ -93,14 +93,15 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Arrange
 			var createDto = new LandUseTypeCreateDto
 			(
-				LandUseTypeId : 1,
+				LandUseId : 1,
 				LandUseTypeInitial : "TEST",
 				LandUseTypeName : "Test Land Use Type",
+				LandUseTypeDescription : "Test land use type description",
 				CreatedBy : "testuser"
 			);
 
-			var landUseType = LandUseType.Create(createDto.LandUseTypeId, createDto.LandUseTypeId, createDto.LandUseTypeInitial!, createDto.LandUseTypeName!);
-			var landUseTypeDto = new LandUseTypeReadDto(createDto.LandUseTypeId, createDto.LandUseTypeId, createDto.LandUseTypeInitial!, createDto.LandUseTypeName!);
+			var landUseType = LandUseType.Create(createDto.LandUseId, 0, createDto.LandUseTypeInitial!, createDto.LandUseTypeName!,"");
+			var landUseTypeDto = new LandUseTypeReadDto(createDto.LandUseId, 1, createDto.LandUseTypeInitial!, createDto.LandUseTypeName!, createDto.LandUseTypeDescription);
 
 			_unitOfWorkMock.Setup(x => x.LandUseType.Get(It.IsAny<Expression<Func<LandUseType, bool>>>(), null)).ReturnsAsync((LandUseType)null!);
 			_mapperMock.Setup(x => x.Map<LandUseTypeReadDto>(It.IsAny<LandUseType>())).Returns(landUseTypeDto);
@@ -121,13 +122,14 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Arrange
 			var createDto = new LandUseTypeCreateDto
 			(
-				LandUseTypeId : 1,
+                LandUseId: 1,
 				LandUseTypeInitial : "TEST",
 				LandUseTypeName: "Test Land Use Type",
-				CreatedBy : "testuser"
+                LandUseTypeDescription: "Test land use type description",
+                CreatedBy : "testuser"
 			);
 
-			var existingLandUseType = LandUseType.Create(2, 2, "TEST", "Existing Land Use Type");
+			var existingLandUseType = LandUseType.Create(2, 2, "TEST", "Existing Land Use Type","");
 			_unitOfWorkMock.Setup(x => x.LandUseType.Get(It.IsAny<Expression<Func<LandUseType, bool>>>(), null)).ReturnsAsync(existingLandUseType);
 
 			// Act
@@ -149,11 +151,12 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 				LandUseTypeId : 2,
 				LandUseTypeInitial : "TEST",
 				LandUseTypeName : "Updated Land Use Type",
-				ModifiedBy : "testuser"
+                LandUseTypeDescription: "Update Test land use type description",
+                ModifiedBy : "testuser"
 			);
 
-			var existingLandUseType = LandUseType.Create(1, 2, "OLD", "Old Land Use Type");
-			var landUseTypeDto = new LandUseTypeReadDto(1, 2, "OLD", "Old Land Use Type");
+			var existingLandUseType = LandUseType.Create(1, 2, "OLD", "Old Land Use Type","");
+			var landUseTypeDto = new LandUseTypeReadDto(1, 2, "OLD", "Old Land Use Type","");
 
 			_unitOfWorkMock.Setup(x => x.LandUseType.Get(updateDto.LandUseTypeId)).ReturnsAsync(existingLandUseType);
 			_mapperMock.Setup(x => x.Map<LandUseTypeReadDto>(It.IsAny<LandUseType>())).Returns(landUseTypeDto);
@@ -178,7 +181,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 				LandUseTypeId : 999,
 				LandUseTypeInitial : "TEST",
 				LandUseTypeName : "Test Land Use Type",
-				ModifiedBy : "testuser"
+                LandUseTypeDescription: "Test land use type description",
+                ModifiedBy : "testuser"
 			);
 
 			_unitOfWorkMock.Setup(x => x.LandUseType.Get(updateDto.LandUseTypeId)).ReturnsAsync((LandUseType)null!);
@@ -196,7 +200,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			// Arrange
 			int landUseTypeId = 1;
-			var existingLandUseType = LandUseType.Create(landUseTypeId, landUseTypeId, "TEST", "Test Land Use Type");
+			var existingLandUseType = LandUseType.Create(landUseTypeId, landUseTypeId, "TEST", "Test Land Use Type","");
 			_unitOfWorkMock.Setup(x => x.LandUseType.Get(landUseTypeId)).ReturnsAsync(existingLandUseType);
 
 			// Act

@@ -40,6 +40,7 @@
     <None Remove="DTO\Management\Complaints\" />
     <None Remove="Interfaces\Management\Complaints\" />
     <None Remove="UseCases\Management\Complaints\" />
+    <None Remove="Interfaces\ControllerServices\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -72,6 +73,7 @@
     <Folder Include="DTO\Management\Complaints\" />
     <Folder Include="Interfaces\Management\Complaints\" />
     <Folder Include="UseCases\Management\Complaints\" />
+    <Folder Include="Interfaces\ControllerServices\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

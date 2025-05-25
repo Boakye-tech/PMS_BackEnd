@@ -11,7 +11,6 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
-using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
@@ -69,18 +68,16 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 _unitOfWork.ActivityType.Insert(newActivityType);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<ActivityTypeReadDto>(newActivityType);
-
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Activity Type details created successfully.", Data = result },
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Activity Type details created successfully." },
                 };
             }
             catch (Exception ex)
             {
-                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message }, SuccessResponse = null };
             }
         }
 
@@ -106,18 +103,16 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 _unitOfWork.ActivityType.Update(activityType);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<ActivityTypeReadDto>(activityType);
-
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Activity Type details modified successfully.", Data = result },
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Activity Type details modified successfully." },
                 };
             }
             catch (Exception ex)
             {
-                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message }, SuccessResponse = null };
             }
         }
 
@@ -148,7 +143,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             }
             catch (Exception ex)
             {
-                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message }, SuccessResponse = null };
             }
         }
     }

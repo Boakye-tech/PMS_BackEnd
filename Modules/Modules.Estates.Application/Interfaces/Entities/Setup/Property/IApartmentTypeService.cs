@@ -16,7 +16,7 @@ public interface IApartmentTypeService
     Task<ReturnResponsesDto> CreateApartmentTypeAsync(ApartmentTypeCreateDto values);
     Task<ReturnResponsesDto> UpdateApartmentTypeAsync(ApartmentTypeUpdateDto values);
     Task<ReturnResponsesDto> DeleteApartmentType(int apartmentTypeId);
-    Task<IEnumerable<ApartmentTypeReadDto>> GetApartmentTypeAsync();
+    Task<IEnumerable<ApartmentTypesReadDto>> GetApartmentTypeAsync();
     Task<ApartmentTypeReadDto> GetApartmentTypeAsync(int value);
     Task<ApartmentTypeReadDto> GetApartmentTypeAsync(string value);
 }

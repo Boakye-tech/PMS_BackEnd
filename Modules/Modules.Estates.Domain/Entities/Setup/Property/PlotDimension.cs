@@ -45,7 +45,7 @@ public class PlotDimension : AuditableEntity
     private static void Validate(int plotDimensionId, string plotDimensions)
     {
         if (plotDimensionId < 0)
-            throw new ArgumentException("Plot Size Id must be greater than zero.");
+            throw new ArgumentException("Plot Dimension Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(plotDimensions) || plotDimensions.Length > 20)
             throw new ArgumentException("Plot Dimensions cannot be empty or exceed 20 characters.");

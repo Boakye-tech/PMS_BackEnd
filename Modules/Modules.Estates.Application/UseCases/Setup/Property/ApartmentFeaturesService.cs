@@ -11,21 +11,20 @@
 //  **************************************************/
 using System;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Modules.Estates.Domain.Enums;
+
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
 {
     public class ApartmentFeaturesService : IApartmentFeaturesService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
 
-        public ApartmentFeaturesService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ApartmentFeaturesService(IUnitOfWork unitOfWork) //, IMapper mapper
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            //_mapper = mapper;
         }
 
         public async Task<ReturnResponsesDto> CreateApartmentFeaturesAsync(ApartmentFeaturesCreateDto values)
@@ -50,13 +49,11 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             _unitOfWork.ApartmentFeatures.Insert(newApartmentFeature);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<ApartmentFeaturesReadDto>(newApartmentFeature);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Apartment type feature created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Apartment type feature created successfully." },
             };
         }
 
@@ -67,8 +64,6 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
 
         public async Task<IEnumerable<ApartmentFeaturesReadDto>> GetApartmentFeaturesAsync()
         {
-            //throw new NotImplementedException();
-
             var apartmentFeatures = (from af in await _unitOfWork.ApartmentFeatures.GetAll()
                                      join at in await _unitOfWork.ApartmentTypes.GetAll()
                                      on af.ApartmentTypeId equals at.ApartmentTypeId
@@ -104,13 +99,11 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             _unitOfWork.ApartmentFeatures.Update(apartmentTypeFeature);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<ApartmentFeaturesReadDto>(apartmentTypeFeature);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Apartment Type modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Apartment Type modified successfully." },
             };
         }
     }

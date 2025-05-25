@@ -66,13 +66,11 @@ public class PlotDimensionService : IPlotDimensionService
             _unitOfWork.PlotDimension.Insert(plotDimension);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<PlotDimensionReadDto>(plotDimension);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Plot Dimension created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Plot Dimension created successfully." },
             };
         }
         catch (Exception ex)
@@ -103,13 +101,11 @@ public class PlotDimensionService : IPlotDimensionService
             _unitOfWork.PlotDimension.Update(plotDimension);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<PlotDimensionReadDto>(plotDimension);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Plot Dimension modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Plot Dimension modified successfully." },
             };
         }
         catch (Exception ex)

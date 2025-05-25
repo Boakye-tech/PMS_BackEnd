@@ -25,6 +25,26 @@ public class LandUseTypeService : ILandUseTypeService
         _mapper = mapper;
     }
 
+    //public async Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseTypeAsync()
+    //{
+    //    // Get all land uses and land use types in a single query using Include
+    //    var landuses = await _unitOfWork.LandUse.GetAll(includes: new List<string> { "LandUseTypes" });
+
+    //    // Create a dictionary for quick lookup of land use types by land use ID
+    //    var landUseAndLandUseType = landuses.Select(landUse =>
+    //    {
+    //        var landUseTypes = _mapper.Map<List<LandUseTypeReadDto>>(landUse.LandUseTypes);
+    //        return new LandUseAndLandUseTypeReadDto(
+    //            landUse.LandUseId,
+    //            landUse.LandUseInitial!,
+    //            landUse.LandUseName!,
+    //            landUseTypes
+    //        );
+    //    }).ToList();
+
+    //    return landUseAndLandUseType;
+    //}
+
     public async Task<IEnumerable<LandUseTypeReadDto>> GetLandUseTypeAsync()
     {
         var landuseType = await _unitOfWork.LandUseType.GetAll();
@@ -47,6 +67,8 @@ public class LandUseTypeService : ILandUseTypeService
     {
         try
         {
+            int landUseTypeId = 0;
+
             var landUseTypeInitial = await _unitOfWork.LandUseType.Get(lt => lt.LandUseTypeInitial == values.LandUseTypeInitial);
             if (landUseTypeInitial != null)
             {
@@ -69,25 +91,23 @@ public class LandUseTypeService : ILandUseTypeService
                 };
             }
 
-            var newLandUseType = LandUseType.Create(values.LandUseTypeId, values.LandUseTypeId, values.LandUseTypeInitial!, values.LandUseTypeName!);
+            var newLandUseType = LandUseType.Create(values.LandUseId, landUseTypeId, values.LandUseTypeInitial!, values.LandUseTypeName!, values.LandUseTypeDescription);
             newLandUseType.CreatedBy = values.CreatedBy;
             newLandUseType.CreatedOn = DateTime.Now;
 
             _unitOfWork.LandUseType.Insert(newLandUseType);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<LandUseTypeReadDto>(newLandUseType);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Land Use Type created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Land Use Type created successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -106,25 +126,23 @@ public class LandUseTypeService : ILandUseTypeService
                 };
             }
 
-            landUseType.Update(values.LandUseId, values.LandUseTypeId, values.LandUseTypeInitial!, values.LandUseTypeName!);
+            landUseType.Update(values.LandUseId, values.LandUseTypeId, values.LandUseTypeInitial!, values.LandUseTypeName!, values.LandUseTypeDescription);
             landUseType.ModifiedBy = values.ModifiedBy;
             landUseType.ModifiedOn = DateTime.Now;
 
             _unitOfWork.LandUseType.Update(landUseType);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<LandUseTypeReadDto>(landUseType);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Land Use Type modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Land Use Type modified successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -155,7 +173,7 @@ public class LandUseTypeService : ILandUseTypeService
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 }

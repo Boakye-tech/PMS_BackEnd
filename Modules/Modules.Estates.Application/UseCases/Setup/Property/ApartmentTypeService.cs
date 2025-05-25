@@ -27,15 +27,16 @@ public class ApartmentTypeService : IApartmentTypeService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ApartmentTypeReadDto>> GetApartmentTypeAsync()
+    public async Task<IEnumerable<ApartmentTypesReadDto>> GetApartmentTypeAsync()
     {
         //var response = await _unitOfWork.ApartmentTypes.GetAll();
 
         var apartmentDetails = (from at in await _unitOfWork.ApartmentTypes.GetAll()
                                 join cer in await _unitOfWork.CurrencyExchangeRate.GetAll()
                                 on at.CurrencyId equals cer.CurrencyId
-                                select new ApartmentTypeReadDto
+                                select new ApartmentTypesReadDto
                                 (
+                                    (int)at.ApartmentCategory,
                                     ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(at.ApartmentCategory),
                                     at.ApartmentTypeId,
                                     at.ApartmentType,
@@ -43,11 +44,13 @@ public class ApartmentTypeService : IApartmentTypeService
                                     at.CurrencyId,
                                     cer.CurrencyInitial!,
                                     cer.CurrencyName!,
-                                    at.FloorArea
+                                    at.FloorArea,
+                                    //new string[] { at!.ImageOne!, at.ImageTwo!, at.ImageThree!, at.ImageFour!, at.ImageFive! }
+                                    at.Images
                                 )).ToList();
 
 
-        return _mapper.Map<IEnumerable<ApartmentTypeReadDto>>(apartmentDetails);
+        return _mapper.Map<IEnumerable<ApartmentTypesReadDto>>(apartmentDetails);
     }
 
     public async Task<ApartmentTypeReadDto> GetApartmentTypeAsync(int value)
@@ -79,20 +82,18 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
-            var newApartmentType = ApartmentTypes.Create(values.apartmentCategory, apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea);
+            var newApartmentType = ApartmentTypes.Create(values.apartmentCategory, apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
             newApartmentType.CreatedBy = values.createdBy;
             newApartmentType.CreatedOn = DateTime.Now;
 
             _unitOfWork.ApartmentTypes.Insert(newApartmentType);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<ApartmentTypeReadDto>(newApartmentType);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Apartment Type created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Apartment Type created successfully." },
             };
         }
         catch (Exception ex)
@@ -116,20 +117,18 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
-            apartmentType.Update(values.apartmentCategory, values.apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea);
+            apartmentType.Update(values.apartmentCategory, values.apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
             apartmentType.ModifiedBy = values.modifiedBy;
             apartmentType.ModifiedOn = DateTime.Now;
 
             _unitOfWork.ApartmentTypes.Update(apartmentType);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<ApartmentTypeReadDto>(apartmentType);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Apartment Type modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Apartment Type modified successfully." },
             };
         }
         catch (Exception ex)

@@ -66,7 +66,6 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                     {
                         Code = 201,
                         Message = "Property created successfully.",
-                        Data = response
                     }
                 };
             }

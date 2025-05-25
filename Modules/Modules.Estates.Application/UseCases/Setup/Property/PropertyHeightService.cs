@@ -65,18 +65,16 @@ public class PropertyHeightService : IPropertyHeightService
             _unitOfWork.PropertyHeight.Insert(propertyHeight);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<PropertyHeightReadDto>(propertyHeight);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Property Height created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Property Height created successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -102,18 +100,16 @@ public class PropertyHeightService : IPropertyHeightService
             _unitOfWork.PropertyHeight.Update(propertyHeight);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<PropertyHeightReadDto>(propertyHeight);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Property Height modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Property Height modified successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -144,7 +140,7 @@ public class PropertyHeightService : IPropertyHeightService
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 }

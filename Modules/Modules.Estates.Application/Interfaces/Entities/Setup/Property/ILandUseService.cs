@@ -10,9 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-using Modules.Estates.Application.DTO.Setup;
-
 namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
 {
     public interface ILandUseService

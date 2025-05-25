@@ -26,11 +26,15 @@ public class LandUse : AuditableEntity
     [StringLength(30)]
     public string? LandUseName { get; private set; }
 
+    // Navigation property for LandUseTypes
+    public virtual ICollection<LandUseType> LandUseTypes { get; private set; }
+
     public LandUse(int landUseId, string? landUseInitial, string? landUseName)
     {
         LandUseId = landUseId;
         LandUseInitial = landUseInitial;
         LandUseName = landUseName;
+        LandUseTypes = new List<LandUseType>();
     }
 
 

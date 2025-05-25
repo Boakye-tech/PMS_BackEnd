@@ -1365,8 +1365,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ActivityTypeDescription")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("ActivityTypeName")
                         .IsRequired()
@@ -1392,6 +1392,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("ActivityTypeId");
+
+                    b.HasIndex("ActivityId");
 
                     b.HasIndex("ActivityTypeName")
                         .IsUnique();
@@ -1639,6 +1641,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<double>("FloorArea")
                         .HasColumnType("float");
 
+                    b.Property<string>("Images")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -1665,6 +1671,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 27.43,
+                            Images = "[\"\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 8000f
                         },
@@ -1677,6 +1684,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 41.119999999999997,
+                            Images = "[\"https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Affordable1Bed.png\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 17000f
                         },
@@ -1689,6 +1697,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 60.630000000000003,
+                            Images = "[\"\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 24000f
                         },
@@ -1701,6 +1710,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 74.799999999999997,
+                            Images = "[\"https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Affordable2Bed.png\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 28000f
                         },
@@ -1713,6 +1723,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 107.0,
+                            Images = "[\"\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 197500f
                         },
@@ -1725,6 +1736,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FloorArea = 218.0,
+                            Images = "[\"https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Luxury3Bed.png\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 286400f
                         });
@@ -2016,6 +2028,135 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.ToTable("FloorNumbering", "est");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.HouseTypes", b =>
+                {
+                    b.Property<int>("HouseTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HouseTypeId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Features")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("RentalCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RentalTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("HouseTypeId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("TypeName")
+                        .IsUnique();
+
+                    b.ToTable("HouseTypes", "est");
+
+                    b.HasData(
+                        new
+                        {
+                            HouseTypeId = 1,
+                            Code = "BB50",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"2 bedrooms\",\"1 livingRoom\",\"private kitchen\",\"private toilet\",\"private bath\",\"1 garage\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Spacious layout with attached garage and private kitchen.",
+                            RentalCategoryId = 1,
+                            RentalTypeId = 3,
+                            TypeName = "BB50 - 2 Bedroom House with Garage"
+                        },
+                        new
+                        {
+                            HouseTypeId = 2,
+                            Code = "IRO8",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"1 bedrooms\",\"shared toilet\",\"shared bath\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Affordable housing for low-income earners, shared facilities.",
+                            RentalCategoryId = 1,
+                            RentalTypeId = 1,
+                            TypeName = "IRO8 - Single Room Low-Income Unit"
+                        },
+                        new
+                        {
+                            HouseTypeId = 3,
+                            Code = "RRT87",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"3 bedrooms\",\"1 livingRoom\",\"kitchen\",\"private toilet\",\"private bath\",\"0 garage\",\"storeRoom\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Typical 3-bedroom family house with kitchen and living area.",
+                            RentalCategoryId = 1,
+                            RentalTypeId = 3,
+                            TypeName = "RRT87 - 3 Bedroom Standard House"
+                        },
+                        new
+                        {
+                            HouseTypeId = 4,
+                            Code = "YYU9",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"3 bedrooms\",\"1 livingRoom\",\"kitchen\",\"private toilet\",\"private bath\",\"2 garage\",\"storeRoom\",\"lobby\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Premium family house with dual garages and ample storage space.",
+                            RentalCategoryId = 1,
+                            RentalTypeId = 4,
+                            TypeName = "YYU9 - 3 Bedroom House with 2 Garages"
+                        },
+                        new
+                        {
+                            HouseTypeId = 5,
+                            Code = "FLAT",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"1 bedrooms\",\"1 livingRoom\",\"private kitchen\",\"private toilet\",\"private bath\",\"0 garage\",\"storeRoom\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Ideal for singles or couples. Compact but complete flat unit.",
+                            RentalCategoryId = 3,
+                            RentalTypeId = 13,
+                            TypeName = "1-Bedroom Self-Contained Flat"
+                        });
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LandUse", b =>
                 {
                     b.Property<int>("LandUseId")
@@ -2196,6 +2337,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("LandUseId")
                         .HasColumnType("int");
 
+                    b.Property<string>("LandUseTypeDescription")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<string>("LandUseTypeInitial")
                         .IsRequired()
                         .HasMaxLength(5)
@@ -2214,6 +2359,8 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasKey("LandUseTypeId");
 
+                    b.HasIndex("LandUseId");
+
                     b.HasIndex("LandUseTypeInitial", "LandUseTypeName")
                         .IsUnique();
 
@@ -2226,6 +2373,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 1,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "",
                             LandUseTypeName = "TDC BUILT HOUSES (HOS)",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2236,6 +2384,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 1,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "",
                             LandUseTypeName = "LESSEE BUILT HOUSES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2246,6 +2395,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 1,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "",
                             LandUseTypeName = "APARTMENTS",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2256,6 +2406,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 1,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "",
                             LandUseTypeName = "HOUSES BY ESTATE DEVELOPERS",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2266,6 +2417,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "SHP",
                             LandUseTypeName = "SHOPS & OFFICES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2276,8 +2428,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "RES",
-                            LandUseTypeName = "RESTAURANTS & PUS",
+                            LandUseTypeName = "RESTAURANTS & PUBS",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2286,6 +2439,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "HTL",
                             LandUseTypeName = "GUEST HOUSE & HOTELS",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2296,6 +2450,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "PFS",
                             LandUseTypeName = "PETROL FILLING STATION",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2306,6 +2461,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "EVT",
                             LandUseTypeName = "EVENT CENTRES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2316,6 +2472,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "CLH",
                             LandUseTypeName = "CLUB HOUSES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2326,6 +2483,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "WHB",
                             LandUseTypeName = "WASHING BAY",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2336,6 +2494,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "CMS",
                             LandUseTypeName = "CORN MILL SITE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2346,6 +2505,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 6,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "LIC",
                             LandUseTypeName = "LICENSE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2356,6 +2516,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 9,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "HIA",
                             LandUseTypeName = "HEAVY INDUSTRIAL ACTIVITIES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2366,6 +2527,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 9,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "LIA",
                             LandUseTypeName = "LIGHT INDUSTRIAL ACTIVITIES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2376,6 +2538,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 9,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "AGR",
                             LandUseTypeName = "AGRO INDUSTRIAL ACTIVITIES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2386,6 +2549,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 9,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "EMT",
                             LandUseTypeName = "EASEMENT",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2396,6 +2560,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 11,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "SCH",
                             LandUseTypeName = "SCHOOLS",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2406,6 +2571,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 11,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "CHU",
                             LandUseTypeName = "CHURCHES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2416,6 +2582,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 11,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "MOS",
                             LandUseTypeName = "MOSQUES",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2426,6 +2593,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 11,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "LIB",
                             LandUseTypeName = "LIBRARY",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2436,6 +2604,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 11,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "PUB",
                             LandUseTypeName = "PUBLIC INSTITUTIONS",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2446,6 +2615,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 11,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "CLI",
                             LandUseTypeName = "CLINICS & HOSPITALS",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2456,6 +2626,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 12,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "GOC",
                             LandUseTypeName = "GOLF COURSE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2466,6 +2637,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 12,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "PLG",
                             LandUseTypeName = "PLAYGROUND",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -2476,6 +2648,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LandUseId = 12,
+                            LandUseTypeDescription = "",
                             LandUseTypeInitial = "HOR",
                             LandUseTypeName = "HORTICULTURE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -3336,6 +3509,483 @@ namespace Modules.Estates.Infrastructure.Migrations
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PropertyTypes = "APARTMENT"
                         });
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.RentalCategory", b =>
+                {
+                    b.Property<int>("RentalCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RentalCategoryId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RentalCategories")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("RentalCategoryId");
+
+                    b.HasIndex("RentalCategories")
+                        .IsUnique();
+
+                    b.ToTable("RentalCategory", "est");
+
+                    b.HasData(
+                        new
+                        {
+                            RentalCategoryId = 1,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategories = "HOUSE"
+                        },
+                        new
+                        {
+                            RentalCategoryId = 2,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategories = "SHOP/OFFICE"
+                        },
+                        new
+                        {
+                            RentalCategoryId = 3,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategories = "FLAT"
+                        },
+                        new
+                        {
+                            RentalCategoryId = 4,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategories = "PREFAB"
+                        },
+                        new
+                        {
+                            RentalCategoryId = 5,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategories = "APARTMENTS"
+                        });
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.RentalType", b =>
+                {
+                    b.Property<int>("RentalTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RentalTypeId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RentalCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RentalTypes")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("RentalTypeId");
+
+                    b.HasIndex("RentalCategoryId");
+
+                    b.ToTable("RentalType", "est");
+
+                    b.HasData(
+                        new
+                        {
+                            RentalTypeId = 1,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 1,
+                            RentalTypes = "LOW INCOME UNIT"
+                        },
+                        new
+                        {
+                            RentalTypeId = 2,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 1,
+                            RentalTypes = "SELF-CONTAINED"
+                        },
+                        new
+                        {
+                            RentalTypeId = 3,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 1,
+                            RentalTypes = "STANDARD"
+                        },
+                        new
+                        {
+                            RentalTypeId = 4,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 1,
+                            RentalTypes = "EXECUTIVE"
+                        },
+                        new
+                        {
+                            RentalTypeId = 5,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 1,
+                            RentalTypes = "RENT-TO-OWN"
+                        },
+                        new
+                        {
+                            RentalTypeId = 6,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 1,
+                            RentalTypes = "AFFORDABLE UNIT"
+                        },
+                        new
+                        {
+                            RentalTypeId = 7,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 2,
+                            RentalTypes = "SHELL & CORE"
+                        },
+                        new
+                        {
+                            RentalTypeId = 8,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 2,
+                            RentalTypes = "WARM SHELL"
+                        },
+                        new
+                        {
+                            RentalTypeId = 9,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 2,
+                            RentalTypes = "FITTED"
+                        },
+                        new
+                        {
+                            RentalTypeId = 10,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 2,
+                            RentalTypes = "FULLY-FURNISHED"
+                        },
+                        new
+                        {
+                            RentalTypeId = 11,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 2,
+                            RentalTypes = "SERVICED"
+                        },
+                        new
+                        {
+                            RentalTypeId = 12,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 3,
+                            RentalTypes = "SHORT-TERM RENTAL"
+                        },
+                        new
+                        {
+                            RentalTypeId = 13,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 3,
+                            RentalTypes = "LONG-TERM RENTAL"
+                        },
+                        new
+                        {
+                            RentalTypeId = 14,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 3,
+                            RentalTypes = "FITTED"
+                        },
+                        new
+                        {
+                            RentalTypeId = 15,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 3,
+                            RentalTypes = "FULLY-FURNISHED"
+                        },
+                        new
+                        {
+                            RentalTypeId = 16,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 3,
+                            RentalTypes = "SERVICED"
+                        },
+                        new
+                        {
+                            RentalTypeId = 17,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 4,
+                            RentalTypes = "PREFAB BLOCK"
+                        },
+                        new
+                        {
+                            RentalTypeId = 18,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 5,
+                            RentalTypes = "RENT-TO-OWN"
+                        },
+                        new
+                        {
+                            RentalTypeId = 19,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 5,
+                            RentalTypes = "SHORT-TERM RENTAL"
+                        },
+                        new
+                        {
+                            RentalTypeId = 20,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 5,
+                            RentalTypes = "LONG-TERM RENTAL"
+                        },
+                        new
+                        {
+                            RentalTypeId = 21,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentalCategoryId = 5,
+                            RentalTypes = "FULLY-FURNISHED"
+                        });
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ShopOfficeTypes", b =>
+                {
+                    b.Property<int>("ShopOfficeTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShopOfficeTypeId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Features")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("RentalCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RentalTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ShopOfficeTypeId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("TypeName")
+                        .IsUnique();
+
+                    b.ToTable("ShopOfficeTypes", "est");
+
+                    b.HasData(
+                        new
+                        {
+                            ShopOfficeTypeId = 1,
+                            Code = "A1",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"30 usableAreaSqm\",\"shared toilet\",\"shared bath\",\"PaidInternet\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Shared washroom, tiled floor, suitable for shop or office.",
+                            RentalCategoryId = 2,
+                            RentalTypeId = 9,
+                            TypeName = "A1 - Community Commercial Unit"
+                        },
+                        new
+                        {
+                            ShopOfficeTypeId = 2,
+                            Code = "B2",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"45 usableAreaSqm\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Tenant to install internal partitions, ceiling, toilet. Power available.",
+                            RentalCategoryId = 2,
+                            RentalTypeId = 7,
+                            TypeName = "B2 - Shell Commercial Unit"
+                        },
+                        new
+                        {
+                            ShopOfficeTypeId = 3,
+                            Code = "C3",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"25 usableAreaSqm\",\"shared toilet\",\"shared bath\",\"airConditioned\",\"internetReady\",\"furnished\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Includes reception, conference room, cleaning, utilities, WiFi. Ideal for professionals/startups.",
+                            RentalCategoryId = 2,
+                            RentalTypeId = 10,
+                            TypeName = "C3 - Serviced Office Suite"
+                        },
+                        new
+                        {
+                            ShopOfficeTypeId = 4,
+                            Code = "D4",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Features = "[\"35 usableAreaSqm\",\"private toilet\",\"private bath\",\"airConditioned\",\"internetReady\",\"furnished\"]",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Notes = "Tiled floor, private toilet, retail shelving, ceiling fan, lockable shutters.",
+                            RentalCategoryId = 2,
+                            RentalTypeId = 11,
+                            TypeName = "D4 - Retail Shop Unit"
+                        });
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ActivityType", b =>
+                {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Activity", "Activity")
+                        .WithMany("ActivityTypes")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Activity");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LandUseType", b =>
+                {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.LandUse", "LandUse")
+                        .WithMany("LandUseTypes")
+                        .HasForeignKey("LandUseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LandUse");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.RentalType", b =>
+                {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.RentalCategory", "RentalCategory")
+                        .WithMany("RentalTypes")
+                        .HasForeignKey("RentalCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RentalCategory");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Activity", b =>
+                {
+                    b.Navigation("ActivityTypes");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LandUse", b =>
+                {
+                    b.Navigation("LandUseTypes");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.RentalCategory", b =>
+                {
+                    b.Navigation("RentalTypes");
                 });
 #pragma warning restore 612, 618
         }

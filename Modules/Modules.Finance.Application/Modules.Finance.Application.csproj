@@ -17,6 +17,9 @@
     <None Remove="Profiles\Setup\" />
     <None Remove="Validations\" />
     <None Remove="Validations\Setup\" />
+    <None Remove="UseCases\Setups\" />
+    <None Remove="UseCases\ModuleServices\" />
+    <None Remove="Interfaces\ModuleServices\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -28,6 +31,9 @@
     <Folder Include="Profiles\Setup\" />
     <Folder Include="Validations\" />
     <Folder Include="Validations\Setup\" />
+    <Folder Include="UseCases\Setups\" />
+    <Folder Include="UseCases\ModuleServices\" />
+    <Folder Include="Interfaces\ModuleServices\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
@@ -35,5 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Finance.Domain\Modules.Finance.Domain.csproj" />
+    <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

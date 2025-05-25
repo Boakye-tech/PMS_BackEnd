@@ -11,12 +11,6 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
-using AutoMapper;
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.DTO.Setup.Property;
-using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
-using Modules.Estates.Domain;
-using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
@@ -71,18 +65,16 @@ public class BlockNumberService : IBlockNumberService
             _unitOfWork.BlockNumber.Insert(blockNumber);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<BlockNumberReadDto>(blockNumber);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Block Number created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Block Number created successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -108,18 +100,16 @@ public class BlockNumberService : IBlockNumberService
             _unitOfWork.BlockNumber.Update(blockNumber);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<BlockNumberReadDto>(blockNumber);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Block Number modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Block Number modified successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -150,7 +140,7 @@ public class BlockNumberService : IBlockNumberService
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 }

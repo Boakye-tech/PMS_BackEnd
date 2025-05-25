@@ -66,18 +66,16 @@ public class PropertyTypeService : IPropertyTypeService
             _unitOfWork.PropertyType.Insert(propertyType);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<PropertyTypeReadDto>(propertyType);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Property Type created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Property Type created successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -103,18 +101,16 @@ public class PropertyTypeService : IPropertyTypeService
             _unitOfWork.PropertyType.Update(propertyType);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<PropertyTypeReadDto>(propertyType);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Property Type modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Property Type modified successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -145,7 +141,7 @@ public class PropertyTypeService : IPropertyTypeService
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 }

@@ -19,17 +19,23 @@ namespace Modules.Estates.Application.DTO.Setup
         public ErrorResponseDto? ErrorResponse { get; init; }
     }
 
+    public record SuccessResponseDto
+    {
+        public int Code { get; init; }
+        public string? Message { get; init; }
+    }
+
     public record ErrorResponseDto
     {
         public int Code { get; init; }
         public string? Message { get; init; }
     }
 
-    public record SuccessResponseDto
-    {
-        public int Code { get; init; }
-        public string? Message { get; init; }
-        public object? Data { get; init; }
-    }
+    //public record SuccessResponseDto
+    //{
+    //    public int Code { get; init; }
+    //    public string? Message { get; init; }
+    //    public object? Data { get; init; }
+    //}
 }
 

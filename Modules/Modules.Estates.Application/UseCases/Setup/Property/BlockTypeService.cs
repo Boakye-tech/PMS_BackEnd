@@ -11,12 +11,6 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
-using AutoMapper;
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.DTO.Setup.Property;
-using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
-using Modules.Estates.Domain;
-using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
@@ -71,18 +65,16 @@ public class BlockTypeService : IBlockTypeService
             _unitOfWork.BlockType.Insert(blockType);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<BlockTypeReadDto>(blockType);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Block Type created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Block Type created successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -108,18 +100,16 @@ public class BlockTypeService : IBlockTypeService
             _unitOfWork.BlockType.Update(blockType);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<BlockTypeReadDto>(blockType);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Block Type modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Block Type modified successfully." },
             };
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 
@@ -150,7 +140,7 @@ public class BlockTypeService : IBlockTypeService
         }
         catch (Exception ex)
         {
-            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
 }

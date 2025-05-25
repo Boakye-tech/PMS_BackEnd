@@ -20,3 +20,4 @@ public record CurrencyExchangeRateUpdateDto(int CurrencyId, decimal BuyingRate, 
 public record CurrencyExchangeRateDeleteDto(int CurrencyId);
 
 
+public record CurrencyUpdateDto(int CurrencyId, string CurrencyInitial, string CurrencyName, bool BaseCurrency, decimal BuyingRate, decimal SellingRate, DateTime ApplicableDate, string ModifiedBy);

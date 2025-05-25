@@ -9,6 +9,7 @@
 //  **************************************************/
 
 
+
 namespace Modules.Finance.Presentation
 {
     public static class ModuleExtensions
@@ -30,6 +31,7 @@ namespace Modules.Finance.Presentation
             services.AddScoped<IPayPointsService, PayPointsService>();
             services.AddScoped<IInvoiceTypesService, InvoiceTypesService>();
 
+            services.AddScoped<IModuleCommunicationServices, ModuleCommunicationServices>();
 
             //// Dependency Injection - Register AutoMapper 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -47,7 +47,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             var floorArea = new FloorArea(floorAreaId, 102.56m);
             var floorAreaDto = new FloorAreaReadDto(floorAreaId, 102.56m);
             _unitOfWorkMock.Setup(x => x.FloorArea.Get(floorAreaId)).ReturnsAsync(floorArea);
-            _mapperMock.Setup(x => x.Map<FloorAreaReadDto>(floorAreaId)).Returns(floorAreaDto);
+            _mapperMock.Setup(x => x.Map<FloorAreaReadDto>(floorArea)).Returns(floorAreaDto);
 
             // Act
             var result = await _floorAreaService.GetFloorAreaAsync(floorAreaId);
@@ -120,7 +120,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             // Assert
             Assert.False(result.IsSuccess);
             Assert.Equal(StatusCodes.Status400BadRequest, result.ErrorResponse!.Code);
-            Assert.Equal("Facility Initial already exists.", result.ErrorResponse.Message);
+            Assert.Equal("Floor Area already exists.", result.ErrorResponse.Message);
         }
 
         [Fact]

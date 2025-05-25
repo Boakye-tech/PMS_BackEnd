@@ -93,7 +93,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Arrange
 			var createDto = new BlockUnitCreateDto
 			(
-				unit: "Test Unit",
+				unit: "A1",
 				createdby: "testuser"
 			);
 
@@ -119,11 +119,11 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Arrange
 			var createDto = new BlockUnitCreateDto
 			(
-				unit: "Test Unit",
+				unit: "A2",
 				createdby: "testuser"
 			);
 
-			var existingBlockUnit = BlockUnit.Create(2, "Test Unit");
+			var existingBlockUnit = BlockUnit.Create(2, "A2");
 			_unitOfWorkMock.Setup(x => x.BlockUnit.Get(It.IsAny<Expression<Func<BlockUnit, bool>>>(), null)).ReturnsAsync(existingBlockUnit);
 
 			// Act
@@ -142,12 +142,12 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			var updateDto = new BlockUnitUpdateDto
 			(
 				unitId: 1,
-				unit: "Updated Unit",
+				unit: "A3",
 				modifiedby: "testuser"
 			);
 
-			var existingBlockUnit = BlockUnit.Create(1, "Old Unit");
-			var blockUnitDto = new BlockUnitReadDto(1, "Old Unit");
+			var existingBlockUnit = BlockUnit.Create(1, "A2");
+			var blockUnitDto = new BlockUnitReadDto(1, "A2");
 
 			_unitOfWorkMock.Setup(x => x.BlockUnit.Get(updateDto.unitId)).ReturnsAsync(existingBlockUnit);
 			_mapperMock.Setup(x => x.Map<BlockUnitReadDto>(It.IsAny<BlockUnit>())).Returns(blockUnitDto);
@@ -188,7 +188,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			// Arrange
 			int blockUnitId = 1;
-			var existingBlockUnit = BlockUnit.Create(blockUnitId, "Test Unit");
+			var existingBlockUnit = BlockUnit.Create(blockUnitId, "A2");
 			_unitOfWorkMock.Setup(x => x.BlockUnit.Get(blockUnitId)).ReturnsAsync(existingBlockUnit);
 
 			// Act
@@ -214,6 +214,105 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Assert
 			Assert.False(result.IsSuccess);
 			Assert.Equal(StatusCodes.Status404NotFound, result.ErrorResponse!.Code);
+		}
+
+		[Fact]
+		public async Task CreateBlockUnitAsync_WithTooLongUnitName_ShouldReturnError()
+		{
+			// Arrange
+			var createDto = new BlockUnitCreateDto
+			(
+				unit: "A123456789012345678901234567890", // Assuming max length is 10 characters
+				createdby: "testuser"
+			);
+
+            var blockUnit = BlockUnit.Create(0, "AA");
+            var blockUnitDto = new BlockUnitReadDto(0, "AA");
+
+            _unitOfWorkMock.Setup(x => x.BlockUnit.Get(It.IsAny<Expression<Func<BlockUnit, bool>>>(), null)).ReturnsAsync((BlockUnit)null!);
+            _mapperMock.Setup(x => x.Map<BlockUnitReadDto>(It.IsAny<BlockUnit>())).Returns(blockUnitDto);
+
+            // Act
+            var result = await _blockUnitService.CreateBlockUnitAsync(createDto);
+
+			// Assert
+			Assert.False(result.IsSuccess);
+			Assert.Equal(StatusCodes.Status500InternalServerError, result.ErrorResponse!.Code);
+			Assert.Equal("Block Unit cannot be empty or exceed 2 characters.", result.ErrorResponse.Message);
+			_unitOfWorkMock.Verify(x => x.BlockUnit.Insert(It.IsAny<BlockUnit>()), Times.Never);
+			_unitOfWorkMock.Verify(x => x.Complete(), Times.Never);
+		}
+
+
+		[Fact]
+		public async Task UpdateBlockUnitAsync_WithTooLongUnitName_ShouldReturnError()
+		{
+			// Arrange
+			var updateDto = new BlockUnitUpdateDto
+			(
+				unitId: 1,
+				unit: "A123456789012345678901234567890", // Assuming max length is 10 characters
+				modifiedby: "testuser"
+			);
+
+			var existingBlockUnit = BlockUnit.Create(1, "A2");
+			_unitOfWorkMock.Setup(x => x.BlockUnit.Get(updateDto.unitId)).ReturnsAsync(existingBlockUnit);
+
+			// Act
+			var result = await _blockUnitService.UpdateBlockUnitAsync(updateDto);
+
+			// Assert
+			Assert.False(result.IsSuccess);
+			Assert.Equal(StatusCodes.Status500InternalServerError, result.ErrorResponse!.Code);
+			Assert.Equal("Block Unit cannot be empty or exceed 2 characters.", result.ErrorResponse.Message);
+			_unitOfWorkMock.Verify(x => x.BlockUnit.Update(It.IsAny<BlockUnit>()), Times.Never);
+			_unitOfWorkMock.Verify(x => x.Complete(), Times.Never);
+		}
+
+		[Fact]
+		public async Task CreateBlockUnitAsync_WithEmptyUnitName_ShouldReturnError()
+		{
+			// Arrange
+			var createDto = new BlockUnitCreateDto
+			(
+				unit: "",
+				createdby: "testuser"
+			);
+
+			// Act
+			var result = await _blockUnitService.CreateBlockUnitAsync(createDto);
+
+			// Assert
+			Assert.False(result.IsSuccess);
+			Assert.Equal(StatusCodes.Status400BadRequest, result.ErrorResponse!.Code);
+			Assert.Equal("Block Unit name cannot be empty.", result.ErrorResponse.Message);
+			_unitOfWorkMock.Verify(x => x.BlockUnit.Insert(It.IsAny<BlockUnit>()), Times.Never);
+			_unitOfWorkMock.Verify(x => x.Complete(), Times.Never);
+		}
+
+		[Fact]
+		public async Task UpdateBlockUnitAsync_WithEmptyUnitName_ShouldReturnError()
+		{
+			// Arrange
+			var updateDto = new BlockUnitUpdateDto
+			(
+				unitId: 1,
+				unit: "",
+				modifiedby: "testuser"
+			);
+
+			var existingBlockUnit = BlockUnit.Create(1, "A2");
+			_unitOfWorkMock.Setup(x => x.BlockUnit.Get(updateDto.unitId)).ReturnsAsync(existingBlockUnit);
+
+			// Act
+			var result = await _blockUnitService.UpdateBlockUnitAsync(updateDto);
+
+			// Assert
+			Assert.False(result.IsSuccess);
+			Assert.Equal(StatusCodes.Status500InternalServerError, result.ErrorResponse!.Code);
+			Assert.Equal("Block Unit cannot be empty or exceed 2 characters.", result.ErrorResponse.Message);
+			_unitOfWorkMock.Verify(x => x.BlockUnit.Update(It.IsAny<BlockUnit>()), Times.Never);
+			_unitOfWorkMock.Verify(x => x.Complete(), Times.Never);
 		}
 	}
 }

@@ -88,13 +88,11 @@ namespace Modules.Estates.Application.UseCases.Setup
                 _unitOfWork.CurrencyExchangeRate.Insert(currency);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
-
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Currency exchange rate created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Currency exchange rate created successfully." }
                 };
             }
             catch (Exception ex)
@@ -139,13 +137,11 @@ namespace Modules.Estates.Application.UseCases.Setup
                 _unitOfWork.CurrencyExchangeRate.Update(currency);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
-
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Currency exchange rates updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Currency exchange rates updated successfully." }
                 };
             }
             catch (Exception ex)

@@ -10,7 +10,7 @@
 
 
 using FluentValidation;
-
+using Modules.Estates.Application.ControllerServices;
 
 namespace Modules.Estates.Presentation;
 
@@ -41,8 +41,6 @@ public static class ModuleExtensions
 
         services.AddScoped<ILeaseTypeAndPeriodService, LeaseTypeAndPeriodService>();
         services.AddScoped<IPropertyStatusService, PropertyStatusService>();
-        services.AddScoped<IShopOfficeTypeAndDescriptionService, ShopOfficeTypeAndDescriptionService>();
-
 
         services.AddScoped<IActivityService, ActivityService>();
         services.AddScoped<IActivityTypeService, ActivityTypeService>();
@@ -78,6 +76,22 @@ public static class ModuleExtensions
 
         services.AddScoped<ICurrencyExchangeRateService, CurrencyExchangeRateService>();
 
+        services.AddScoped<IRentalCategoryService, RentalCategoryService>();
+        services.AddScoped<IRentalTypeService, RentalTypeService>();
+        services.AddScoped<IShopOfficeTypesService, ShopOfficeTypesService>();
+        services.AddScoped<IHouseTypesService, HouseTypesService>();
+
+
+
+        services.AddScoped<IActivityServices, ActivityServices>();
+        services.AddScoped<IBlockServices, BlockServices>();
+        services.AddScoped<IRentalsServices, RentalsServices>();
+        services.AddScoped<IPropertyFeatureServices, PropertyFeatureServices>();
+        services.AddScoped<IPropertySetupServices, PropertySetupServices>();
+
+        services.AddScoped<ILandUseAndLandUseTypeService, LandUseAndLandUseTypeService>();
+        services.AddScoped<IActivityAndActivityTypeService, ActivityAndActivityTypeService>();
+        services.AddScoped<IRentalCategoryAndRentalTypeService, RentalCategoryAndRentalTypeService>();
 
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();

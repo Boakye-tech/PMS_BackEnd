@@ -25,12 +25,15 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [StringLength(50)]
         public string? ActivityDescription { get; private set; }
 
+        // Navigation property for ActivityType
+        public virtual ICollection<ActivityType> ActivityTypes { get; private set; }
 
         public Activity(int activityId, string activityName, string? activityDescription)
         {
             ActivityId = activityId;
             ActivityName = activityName;
             ActivityDescription = activityDescription;
+            ActivityTypes = new List<ActivityType>();
         }
 
         public static Activity Create(int activityId, string activityName, string? activityDescription)

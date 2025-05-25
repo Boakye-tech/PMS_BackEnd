@@ -10,6 +10,8 @@
 
 
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Modules.Estates.Domain;
 
 public interface IUnitOfWork : IDisposable
@@ -66,12 +68,16 @@ public interface IUnitOfWork : IDisposable
 
     //May 15 '25
     ILeaseTypeAndPeriodRepository LeaseTypeAndPeriod { get; }
-    IShopOfficeTypeAndDescriptionRepository ShopOfficeTypeAndDescription { get; }
+    IShopOfficeTypesRepository ShopOfficeTypes { get; }
     IPropertyStatusRepository PropertyStatus { get; }
 
     //May 19 '25
     ICurrencyExchangeRateRepository CurrencyExchangeRate { get; }
-    
+
+    //23 May 2025
+    IRentalCategoryRepository RentalCategory  { get;  }
+    IRentalTypeRepository RentalType  { get;  }
+    IHouseTypesRepository HouseTypes { get;  }
 
     Task<int> Complete();
 }

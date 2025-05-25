@@ -18,11 +18,13 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IModuleCommunicationServices _moduleCommunication;
 
-    public CurrencyExchangeRateService(IUnitOfWork unitOfWork, IMapper mapper)
+    public CurrencyExchangeRateService(IUnitOfWork unitOfWork, IMapper mapper, IModuleCommunicationServices moduleCommunication)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _moduleCommunication = moduleCommunication;
     }
 
     public async Task<IEnumerable<CurrencyExchangeRateReadDto>> GetCurrencyExchangeRateAsync()
@@ -85,6 +87,13 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
             _unitOfWork.CurrencyExchangeRate.Insert(currency);
             await _unitOfWork.Complete();
 
+            //send to estates module
+            var response = await _moduleCommunication.SendCurrencyDetailsAsync(values);
+            if (!response)
+            {
+                //_logger.LogWarning($"Failed to send customer details to online customer module {customer_payload.CustomerCode}", customer_payload.CustomerCode);
+            }
+
             var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
 
             return new ReturnResponsesDto
@@ -134,6 +143,15 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
             await _unitOfWork.Complete();
 
             var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
+
+            //send to estates module
+            var payload = new CurrencyUpdateDto(currency.CurrencyId, currency.CurrencyInitial!, currency.CurrencyName!, currency.BaseCurrency, currency.BuyingRate, currency.SellingRate, currency.ApplicableDate, currency.ModifiedBy);
+            var response = await _moduleCommunication.SendModifiedCurrencyDetailsAsync(payload);
+            if (!response)
+            {
+                //_logger.LogWarning($"Failed to send customer details to online customer module {customer_payload.CustomerCode}", customer_payload.CustomerCode);
+            }
+
 
             return new ReturnResponsesDto
             {

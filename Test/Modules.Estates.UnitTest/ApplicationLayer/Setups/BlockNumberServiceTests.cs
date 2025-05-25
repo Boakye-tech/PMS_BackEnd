@@ -92,7 +92,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Arrange
 			var createDto = new BlockNumberCreateDto
 			(
-				blockNumbers: "No. 8A",
+				blockNumbers: "8A",
 				createdby: "testuser"
 			);
 
@@ -118,11 +118,11 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Arrange
 			var createDto = new BlockNumberCreateDto
 			(
-				blockNumbers: "No. 108A",
+				blockNumbers: "8B",
 				createdby: "testuser"
 			);
 
-			var existingBlockNumber = BlockNumber.Create(2, "No. 108A");
+			var existingBlockNumber = BlockNumber.Create(2, "8B");
 			_unitOfWorkMock.Setup(x => x.BlockNumber.Get(It.IsAny<Expression<Func<BlockNumber, bool>>>(), null)).ReturnsAsync(existingBlockNumber);
 
 			// Act
@@ -141,12 +141,12 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			var updateDto = new BlockNumberUpdateDto
 			(
 				blockNumberId: 1,
-				blockNumbers: "No. 108B",
+				blockNumbers: "108B",
 				modifiedby: "testuser"
 			);
 
-			var existingBlockNumber = BlockNumber.Create(1, "Old Block");
-			var blockNumberDto = new BlockNumberReadDto(1, "Old Block");
+			var existingBlockNumber = BlockNumber.Create(1, "118B");
+			var blockNumberDto = new BlockNumberReadDto(1, "118B");
 
 			_unitOfWorkMock.Setup(x => x.BlockNumber.Get(updateDto.blockNumberId)).ReturnsAsync(existingBlockNumber);
 			_mapperMock.Setup(x => x.Map<BlockNumberReadDto>(It.IsAny<BlockNumber>())).Returns(blockNumberDto);
@@ -187,7 +187,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			// Arrange
 			int blockNumberId = 1;
-			var existingBlockNumber = BlockNumber.Create(blockNumberId, "Test Block");
+			var existingBlockNumber = BlockNumber.Create(blockNumberId, "107D");
 			_unitOfWorkMock.Setup(x => x.BlockNumber.Get(blockNumberId)).ReturnsAsync(existingBlockNumber);
 
 			// Act

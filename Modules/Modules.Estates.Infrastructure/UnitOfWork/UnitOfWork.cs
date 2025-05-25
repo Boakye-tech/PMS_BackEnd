@@ -93,15 +93,20 @@ public class UnitOfWork: IUnitOfWork
 
         LeaseTypeAndPeriod = new LeaseTypeAndPeriodRepository(_dbContext);
 
-        ShopOfficeTypeAndDescription = new ShopOfficeTypeAndDescriptionRepository(_dbContext);
+        ShopOfficeTypes = new ShopOfficeTypesRepository(_dbContext);
 
         PropertyStatus = new PropertyStatusRepository(_dbContext);
 
         CurrencyExchangeRate = new CurrencyExchangeRateRepository(_dbContext);
-    }
+
+        RentalCategory = new RentalCategoryRepository(_dbContext);
+        RentalType = new RentalTypeRepository(_dbContext);
+        HouseTypes = new HouseTypesRepository(dbContext);
+
+}
 
 
-    public IAllocationTypeRepository AllocationType { get; private set; }
+public IAllocationTypeRepository AllocationType { get; private set; }
 
     public ILandUseRepository LandUse { get; private set; }
 
@@ -178,9 +183,14 @@ public class UnitOfWork: IUnitOfWork
     //May 15 '25
     public ILeaseTypeAndPeriodRepository LeaseTypeAndPeriod { get; private set; }
     public IPropertyStatusRepository PropertyStatus { get; private set; }
-    public IShopOfficeTypeAndDescriptionRepository ShopOfficeTypeAndDescription { get; private set; }
+    public IShopOfficeTypesRepository ShopOfficeTypes { get; private set; }
 
     public ICurrencyExchangeRateRepository CurrencyExchangeRate { get; private set; }
+
+    public IRentalCategoryRepository RentalCategory { get; private set; }
+    public IRentalTypeRepository RentalType { get; private set; }
+    public IHouseTypesRepository HouseTypes { get; private set; }
+
 
     public Task<int> Complete()
     {

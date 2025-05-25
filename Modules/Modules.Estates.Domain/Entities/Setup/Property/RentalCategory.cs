@@ -10,13 +10,53 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Modules.Estates.Domain.Entities.Setup.Property
 {
-	public class RentalCategory
-	{
-		public RentalCategory()
-		{
-		}
-	}
+    public class RentalCategory : AuditableEntity
+    {
+        [Key]
+        [Required]
+        public int RentalCategoryId { get; private set; }
+
+        [Required]
+        [StringLength(50)]
+        public string RentalCategories { get; private set; }
+
+        // Navigation property for RentalTypes
+        public virtual ICollection<RentalType> RentalTypes { get; private set; }
+
+        public RentalCategory(int rentalCategoryId, string rentalCategories)
+        {
+            RentalCategoryId = rentalCategoryId;
+            RentalCategories = rentalCategories;
+            RentalTypes = new List<RentalType>();
+        }
+
+        public static RentalCategory Create(int rentalCategoryId, string rentalCategories)
+        {
+            Validate(rentalCategoryId, rentalCategories);
+            return new RentalCategory(rentalCategoryId, rentalCategories);
+
+        }
+
+        public void Update(int rentalCategoryId, string rentalCategories)
+        {
+            Validate(rentalCategoryId, rentalCategories);
+
+            RentalCategoryId = rentalCategoryId;
+            RentalCategories = rentalCategories;
+        }
+
+        private static void Validate(int rentalCategoryId, string rentalCategories)
+        {
+            if (rentalCategoryId < 0)
+                throw new ArgumentException("Rental Category Id must be greater than zero.");
+
+            if (string.IsNullOrWhiteSpace(rentalCategories) || rentalCategories.Length > 50)
+                throw new ArgumentException("Rental Category cannot be empty or exceed 50 characters.");
+        }
+    }
 }
 

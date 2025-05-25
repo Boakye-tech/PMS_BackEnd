@@ -27,9 +27,10 @@ namespace Modules.Estates.UnitTest.DomainLayer.Setups
 			float sellingPrice = 150000.00f;
 			int currencyId = 1;
 			double floorArea = 120.5;
+			string[] images = { "https://images.com",string.Empty, string.Empty, string.Empty, string.Empty };
 
-			// Act	
-			var apartmentType = ApartmentTypes.Create(ApartmentCategoryEnum.AFFORDABLE ,apartmentTypeId, apartmentTypeName, sellingPrice, currencyId, floorArea);
+            // Act	
+            var apartmentType = ApartmentTypes.Create(ApartmentCategoryEnum.AFFORDABLE ,apartmentTypeId, apartmentTypeName, sellingPrice, currencyId, floorArea, images);
 
 			// Assert
 			Assert.Equal(apartmentTypeId, apartmentType.ApartmentTypeId);
@@ -40,17 +41,20 @@ namespace Modules.Estates.UnitTest.DomainLayer.Setups
 		[Fact]
 		public void Update_WithValidParameters_ShouldUpdateApartmentTypes()
 		{
-			// Arrange		
-			var apartmentType = ApartmentTypes.Create(ApartmentCategoryEnum.AFFORDABLE, 1, "2 Bedroom Apartment", 150000.00f, 1, 120.5);
+            string[] images = { "https://images.com", string.Empty, string.Empty, string.Empty, string.Empty };
+
+            // Arrange		
+            var apartmentType = ApartmentTypes.Create(ApartmentCategoryEnum.AFFORDABLE, 1, "2 Bedroom Apartment", 150000.00f, 1, 120.5, images);
 
 			int newApartmentTypeId = 1;
 			string newApartmentTypeName = "3 Bedroom Apartment";
 			float newSellingPrice = 180000.00f;
 			int newCurrencyId = 1;
 			double newFloorArea = 150.0;
+            string[] newImages = { "https://images.com", "https://images1.com", string.Empty, string.Empty, string.Empty };
 
-			// Act
-			apartmentType.Update(ApartmentCategoryEnum.AFFORDABLE,newApartmentTypeId, newApartmentTypeName, newSellingPrice, newCurrencyId, newFloorArea);
+            // Act
+            apartmentType.Update(ApartmentCategoryEnum.AFFORDABLE,newApartmentTypeId, newApartmentTypeName, newSellingPrice, newCurrencyId, newFloorArea, newImages);
 
 			// Assert
 			Assert.Equal(newApartmentTypeId, apartmentType.ApartmentTypeId);

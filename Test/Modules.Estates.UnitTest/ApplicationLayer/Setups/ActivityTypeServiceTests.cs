@@ -174,8 +174,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
         public async Task CreateActivityTypeAsync_WithActivityTypeDescriptionLong_ShouldReturnError()
         {
             // Arrange
-            // Assuming a max length of 155 for Activity Type Decription for this test example
-            string _activityTypeDescription = new string('A', 155);
+            // Assuming a max length of 255 for Activity Type Decription for this test example
+            string _activityTypeDescription = new string('A', 255);
             var createDto = new ActivityTypeCreateDto
             (
                 ActivityId: 1,
@@ -194,7 +194,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             Assert.False(result.IsSuccess);
             Assert.NotNull(result.ErrorResponse);
             Assert.Equal(StatusCodes.Status500InternalServerError, result.ErrorResponse!.Code);
-            Assert.False(string.IsNullOrEmpty(result.ErrorResponse.Message), "Activity Type Description cannot be empty or exceed 50 characters.");
+            Assert.False(string.IsNullOrEmpty(result.ErrorResponse.Message), "Activity Type Description cannot be empty or exceed 250 characters.");
 
             _unitOfWorkMock.Verify(x => x.ActivityType.Insert(It.IsAny<ActivityType>()), Times.Never);
             _unitOfWorkMock.Verify(x => x.Complete(), Times.Never);

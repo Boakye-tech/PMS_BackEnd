@@ -17,7 +17,8 @@ namespace Modules.Estates.Application.Profiles.Property
         public ApartmentFeaturesProfile()
         {
             CreateMap<ApartmentFeatures, ApartmentFeaturesReadDto>()
-                .ForMember(dest => dest.ApartmentCategory, opt => opt.MapFrom(src => src.ApartmentCategory.GetEnumDescription()));
+                .ForMember(dest => dest.ApartmentCategory, opt => opt.MapFrom(src => src.ApartmentCategory.GetApartmentCategoryEnumDescription()));
+
             CreateMap<ApartmentFeaturesCreateDto, ApartmentFeatures>();
             CreateMap<ApartmentFeaturesUpdateDto, ApartmentFeatures>();
             CreateMap<ApartmentFeaturesDeleteDto, ApartmentFeatures>();

@@ -57,12 +57,14 @@ namespace Modules.Estates.UnitTest.DomainLayer.Setups
 
 		[Theory]
 		[InlineData(-1, 1, "Property Inspection", "Description", "Activity Id must be greater than zero.")]
-		[InlineData(1, 0, "Property Inspection", "Description", "Activity Type Id must be greater than zero.")]
+		[InlineData(1, -1, "Property Inspection", "Description", "Activity Type Id must be greater than zero.")]
 		[InlineData(1, 1, "", "Description", "Activity Type Name cannot be empty or exceed 50 characters.")]
 		[InlineData(1, 1, null, "Description", "Activity Type Name cannot be empty or exceed 50 characters.")]
-		[InlineData(1, 1, "Property Inspection", "This description is way too long and exceeds the maximum allowed length of 50 characters", "Activity Type Description cannot exceed 50 characters.")]
-		public void Create_WithInvalidParameters_ShouldThrowArgumentException(
-			int activityId, int activityTypeId, string activityTypeName, string activityTypeDescription, string expectedMessage)
+		[InlineData(1, 1, "Property Inspection", "This description is way too long and exceeds the maximum allowed length of 250 characters,This description is way too long and exceeds the maximum allowed length of 250 characters," +
+											     "This description is way too long and exceeds the maximum allowed length of 250 characters,This description is way too long and exceeds the maximum allowed length of 250 characters," +
+												 "This description is way too long and exceeds the maximum allowed length of 250 characters",
+			"Activity Type Description cannot exceed 250 characters.")]
+		public void Create_WithInvalidParameters_ShouldThrowArgumentException(int activityId, int activityTypeId, string activityTypeName, string activityTypeDescription, string expectedMessage)
 		{
 			// Act & Assert
 			var exception = Assert.Throws<ArgumentException>(() =>
@@ -112,11 +114,14 @@ namespace Modules.Estates.UnitTest.DomainLayer.Setups
 
 		[Theory]
 		[InlineData(-1, 1, "Property Inspection", "Description", "Activity Id must be greater than zero.")]
-		[InlineData(1, 0, "Property Inspection", "Description", "Activity Type Id must be greater than zero.")]
+		[InlineData(1, -1, "Property Inspection", "Description", "Activity Type Id must be greater than zero.")]
 		[InlineData(1, 1, "", "Description", "Activity Type Name cannot be empty or exceed 50 characters.")]
 		[InlineData(1, 1, null, "Description", "Activity Type Name cannot be empty or exceed 50 characters.")]
-		[InlineData(1, 1, "Property Inspection", "This description is way too long and exceeds the maximum allowed length of 50 characters", "Activity Type Description cannot exceed 50 characters.")]
-		public void Update_WithInvalidParameters_ShouldThrowArgumentException(
+        [InlineData(1, 1, "Property Inspection", "This description is way too long and exceeds the maximum allowed length of 250 characters,This description is way too long and exceeds the maximum allowed length of 250 characters," +
+                                                 "This description is way too long and exceeds the maximum allowed length of 250 characters,This description is way too long and exceeds the maximum allowed length of 250 characters," +
+                                                 "This description is way too long and exceeds the maximum allowed length of 250 characters",
+            "Activity Type Description cannot exceed 250 characters.")]
+        public void Update_WithInvalidParameters_ShouldThrowArgumentException(
 			int activityId, int activityTypeId, string activityTypeName, string activityTypeDescription, string expectedMessage)
 		{
 			// Arrange

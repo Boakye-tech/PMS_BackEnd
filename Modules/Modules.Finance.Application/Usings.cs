@@ -14,3 +14,6 @@ global using Modules.Finance.Application.Dtos.Setup;
 global using Modules.Finance.Domain.Entities.Setup;
 global using Modules.Finance.Application.Interfaces.Setup;
 global using Modules.Finance.Domain.Interfaces;
+
+global using Modules.Common.Infrastructure.Authentication;
+global using Modules.Finance.Application.Interfaces.ModuleServices;

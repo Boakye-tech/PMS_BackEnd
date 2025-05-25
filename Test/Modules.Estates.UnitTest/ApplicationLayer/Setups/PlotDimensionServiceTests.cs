@@ -132,15 +132,15 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Assert
 			Assert.False(result.IsSuccess);
 			Assert.Equal(StatusCodes.Status400BadRequest, result.ErrorResponse!.Code);
-			Assert.Equal("Plot Size already exists.", result.ErrorResponse.Message);
+			Assert.Equal("Plot Dimension already exists.", result.ErrorResponse.Message);
 		}
 
 		[Fact]
 		public async Task CreatePlotDimensionAsync_WithPlotDimensionsTooLong_ShouldReturnError()
 		{
 			// Arrange
-			// Assuming a max length of 12 for PlotDimensions for this test example
-			string longPlotDimension = new string('x', 12);
+			// Assuming a max length of 22 for PlotDimensions for this test example
+			string longPlotDimension = new string('x', 22);
 			var createDto = new PlotDimensionCreateDto
 			(
 				PlotDimensions: longPlotDimension,
@@ -157,7 +157,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			Assert.False(result.IsSuccess);
 			Assert.NotNull(result.ErrorResponse);
 			Assert.Equal(StatusCodes.Status500InternalServerError, result.ErrorResponse!.Code);
-			Assert.False(string.IsNullOrEmpty(result.ErrorResponse.Message), "Plot Sizes cannot be empty or exceed 10 characters.");
+			Assert.False(string.IsNullOrEmpty(result.ErrorResponse.Message), "Plot Dimension cannot be empty or exceed 20 characters.");
 
 			_unitOfWorkMock.Verify(x => x.PlotDimension.Insert(It.IsAny<PlotDimension>()), Times.Never);
 			_unitOfWorkMock.Verify(x => x.Complete(), Times.Never);
@@ -215,8 +215,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		public async Task UpdatePlotDimensionAsync_WithPlotDimensionsTooLong_ShouldReturnError()
 		{
 			// Arrange
-			// Assuming a max length of 15 for PlotDimensions for this test example
-			string longPlotDimension = new string('p', 15);
+			// Assuming a max length of 21 for PlotDimensions for this test example
+			string longPlotDimension = new string('p', 21);
 			var updateDto = new PlotDimensionUpdateDto
 			(
 				PlotDimensionId: 1,
@@ -238,7 +238,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			Assert.False(result.IsSuccess);
 			Assert.NotNull(result.ErrorResponse);
 			Assert.Equal(StatusCodes.Status500InternalServerError, result.ErrorResponse!.Code);
-			Assert.False(string.IsNullOrEmpty(result.ErrorResponse.Message), "Plot Sizes cannot be empty or exceed 10 characters.");
+			Assert.False(string.IsNullOrEmpty(result.ErrorResponse.Message), "Plot Dimension cannot be empty or exceed 20 characters.");
 
 			_unitOfWorkMock.Verify(x => x.PlotDimension.Update(It.IsAny<PlotDimension>()), Times.Never);
 			_unitOfWorkMock.Verify(x => x.Complete(), Times.Never);

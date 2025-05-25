@@ -54,3 +54,6 @@ global using Modules.Estates.Domain.Events;
 
 global using Modules.Estates.Application.Interfaces.Entities.Setup;
 global using Modules.Estates.Application.UseCases.Setup;
+global using Modules.Estates.Application.DTO.Setup;
+
+global using Modules.Estates.Application.Interfaces.ControllerServices;

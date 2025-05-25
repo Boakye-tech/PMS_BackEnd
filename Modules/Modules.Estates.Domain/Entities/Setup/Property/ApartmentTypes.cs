@@ -10,6 +10,10 @@
 // * Description: Property Management System
 //  **************************************************/
 
+
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Modules.Estates.Domain.Entities.Setup.Property
 {
     public class ApartmentTypes : AuditableEntity
@@ -34,7 +38,10 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [Required]
         public double FloorArea { get; private set; }
 
-        public ApartmentTypes(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
+        [Column(TypeName = "nvarchar(max)")]
+        public string[] Images { get; private set; }
+
+        public ApartmentTypes(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
         {
             ApartmentTypeId = apartmentTypeId;
             ApartmentType = apartmentType;
@@ -42,31 +49,33 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             CurrencyId = currencyId;
             FloorArea = floorArea;
             ApartmentCategory = apartmentCategory;
+            Images = images;
         }
 
-        public static ApartmentTypes Create(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
+        public static ApartmentTypes Create(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
         {
-            Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea);
-            return new ApartmentTypes(apartmentCategory, apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea);
+            Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea, images);
+            return new ApartmentTypes(apartmentCategory, apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea, images);
         }
 
-        public void Update(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
+        public void Update(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
         {
-            Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea);
+            Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea, images);
 
             ApartmentTypeId = apartmentTypeId;
             ApartmentType = apartmentType;
             SellingPrice = sellingPrice;
             CurrencyId = currencyId;
             FloorArea = floorArea;
+            Images = images;
         }
 
-        private static void Validate(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea)
+        private static void Validate(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
         {
             if (apartmentTypeId < 0)
                 throw new ArgumentException("Apartment Type Id must be greater than zero.");
 
-            if (string.IsNullOrWhiteSpace(apartmentType))
+            if (string.IsNullOrWhiteSpace(apartmentType) || apartmentType.Length > 50)
                 throw new ArgumentException("Apartment Type cannot be empty or exceed 50 characters.");
 
             if (sellingPrice <= 0)
@@ -77,6 +86,9 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 
             if (floorArea <= 0)
                 throw new ArgumentException("Floor Area must be greater than zero.");
+
+            if (images.Count() == 0)
+                throw new ArgumentException("There must be at least one image.");
         }
     }
 }

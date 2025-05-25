@@ -135,18 +135,46 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			Assert.Equal("Block Side already exists.", result.ErrorResponse.Message);
 		}
 
-		[Fact]
+        [Fact]
+        public async Task CreateBlockSideAsync_WithLongerName_ShouldReturnError()
+        {
+            // Arrange
+            var createDto = new BlockSideCreateDto
+            (
+                side: "Testing Sides",
+                createdby: "testuser"
+            );
+
+            var blockSide = BlockSides.Create(0, "Side One");
+            var blockSideDto = new BlockSideReadDto(0, "Side One");
+
+            _unitOfWorkMock.Setup(x => x.BlockSides.Get(It.IsAny<Expression<Func<BlockSides, bool>>>(), null)).ReturnsAsync((BlockSides)null!);
+            _mapperMock.Setup(x => x.Map<BlockSideReadDto>(It.IsAny<BlockSides>())).Returns(blockSideDto);
+
+
+            // Act
+            var result = await _blockSideService.CreateBlockSideAsync(createDto);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.ErrorResponse!.Code);
+            Assert.Equal("Block Side cannot be empty or exceed 10 characters.", result.ErrorResponse.Message);
+        }
+
+        [Fact]
 		public async Task UpdateBlockSideAsync_WithValidData_ShouldUpdateBlockSide()
 		{
 			// Arrange
 			var updateDto = new BlockSideUpdateDto
 			(
 				sideId: 1,
-				side: "Updated Side",
+				side: "New Side",
 				modifiedby: "testuser"
 			);
 
-			var existingBlockSide = BlockSides.Create(1, "Old Side");
+            
+
+            var existingBlockSide = BlockSides.Create(1, "Old Side");
 			var blockSideDto = new BlockSideReadDto(1, "Old Side");
 
 			_unitOfWorkMock.Setup(x => x.BlockSides.Get(updateDto.sideId)).ReturnsAsync(existingBlockSide);
@@ -161,6 +189,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			_unitOfWorkMock.Verify(x => x.BlockSides.Update(It.IsAny<BlockSides>()), Times.Once);
 			_unitOfWorkMock.Verify(x => x.Complete(), Times.Once);
 		}
+
+
 
 		[Fact]
 		public async Task UpdateBlockSideAsync_WithNonExistentId_ShouldReturnError()

@@ -73,6 +73,12 @@ public class ApplicationDbContext : ModuleDbContext
 
     public DbSet<CurrencyExchangeRate> CurrencyExchangeRate { get; set; }
 
+    //23 May 2025
+    public DbSet<RentalCategory> RentalCategory { get; set; }
+    public DbSet<RentalType> RentalType { get; set; }
+    public DbSet<ShopOfficeTypes> ShopOfficeTypes { get; set; }
+    public DbSet<HouseTypes> HouseTypes { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

@@ -48,13 +48,11 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             _unitOfWork.Features.Insert(newFeature);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<FeaturesReadDto>(newFeature);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Feature created successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Feature created successfully." },
             };
         }
 
@@ -78,7 +76,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Feature deleted successfully.", Data = feature },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Feature deleted successfully." },
             };
 
         }
@@ -110,13 +108,11 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             _unitOfWork.Features.Update(TypeFeature);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<FeaturesReadDto>(TypeFeature);
-
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Feature modified successfully.", Data = result },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Feature modified successfully." },
             };
         }
     }

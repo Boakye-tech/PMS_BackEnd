@@ -34,9 +34,9 @@ namespace Modules.Estates.UnitTest.DomainLayer.Setups
 
 		[Theory]
 		[InlineData(-1, "100X100", "Plot Dimension Id must be greater than zero.")]
-		[InlineData(1, "", "Plot Dimensions cannot be empty or exceed 10 characters.")]
-		[InlineData(1, null, "Plot Dimensions cannot be empty or exceed 10 characters.")]
-		[InlineData(1, "This plot Dimension is way too long and exceeds the maximum allowed length", "Plot Dimensions cannot be empty or exceed 10 characters.")]
+		[InlineData(1, "", "Plot Dimensions cannot be empty or exceed 20 characters.")]
+		[InlineData(1, null, "Plot Dimensions cannot be empty or exceed 20 characters.")]
+		[InlineData(1, "This plot Dimension is way too long and exceeds the maximum allowed length", "Plot Dimensions cannot be empty or exceed 20 characters.")]
 		public void Create_WithInvalidParameters_ShouldThrowArgumentException(
 			int plotDimensionId, string plotDimension, string expectedMessage)
 		{
@@ -63,9 +63,9 @@ namespace Modules.Estates.UnitTest.DomainLayer.Setups
 
 		[Theory]
 		[InlineData(-1, "100 sqm", "Plot Dimension Id must be greater than zero.")]
-		[InlineData(1, "", "Plot Dimensions cannot be empty or exceed 10 characters.")]
-		[InlineData(1, null, "Plot Dimensions cannot be empty or exceed 10 characters.")]
-		[InlineData(1, "This plot Dimension is way too long and exceeds the maximum allowed length", "Plot Dimensions cannot be empty or exceed 10 characters.")]
+		[InlineData(1, "", "Plot Dimensions cannot be empty or exceed 20 characters.")]
+		[InlineData(1, null, "Plot Dimensions cannot be empty or exceed 20 characters.")]
+		[InlineData(1, "This plot Dimension is way too long and exceeds the maximum allowed length", "Plot Dimensions cannot be empty or exceed 20 characters.")]
 		public void Update_WithInvalidParameters_ShouldThrowArgumentException(int plotDimensionId, string plotDimension, string expectedMessage)
 		{
 			// Arrange

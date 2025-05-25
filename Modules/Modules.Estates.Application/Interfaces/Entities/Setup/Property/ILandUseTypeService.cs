@@ -10,8 +10,7 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.DTO.Setup.Property;
+
 
 namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 
