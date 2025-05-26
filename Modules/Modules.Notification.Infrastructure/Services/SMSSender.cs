@@ -26,79 +26,18 @@ namespace Modules.Notification.Infrastructure.Services
             _configuration = configuration;
 		}
 
-        public string SendMessage(SendSmsRequestDto smsRequest)
-        {
-            //throw new NotImplementedException();
-            try
-            {
-                return sendSMS_Via_BECSMS(smsRequest.mobileNumber!, smsRequest.message_content!);
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
 
         public async Task<string> SendMessageAsync(SendSmsRequestDto smsRequest)
         {
-            //throw new NotImplementedException();
             try
             {
                 return await sendSMS_Via_mNotify(smsRequest.mobileNumber!, smsRequest.message_content!);
-
             }
             catch (Exception ex)
             {
                 return ex.ToString();
             }
         }
-
-
-
-        private string sendSMS_Via_BECSMS(string mobileNumber, string message)
-        {
-            try
-            {
-                string api_Key = _configuration["becsms:APIKey"]!;
-                string sender_Id = _configuration["becsms:SenderId"]!;
-                string phone_Number = mobileNumber;
-                string message_to_send = message;
-
-                string sendMessageUrl = _configuration["becsms:BaseUrl"] + "/smsapi?key=" + api_Key + "&to=" + phone_Number + "&msg=" + HttpUtility.UrlEncode(message_to_send) + "&sender_id=" + sender_Id;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(sendMessageUrl);
-
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string inputLine = reader.ReadLine()!.Trim();
-
-                    var sms_response = JsonSerializer.Deserialize<BecsmsResponseDto>(inputLine);
-
-                    return sms_response!.message is not null ? sms_response.code switch
-                    {
-                        1000 => sms_response.message,
-                        1002 => sms_response.message,
-                        1003 => sms_response.message,
-                        1004 => sms_response.message,
-                        1005 => sms_response.message,
-                        1006 => sms_response.message,
-                        1008 => "Empty message",
-                        _ => string.Empty,
-
-                    } : string.Empty;
-
-                   
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
 
         private async Task<string> sendSMS_Via_mNotify(string mobileNumber, string message)
         {
@@ -135,9 +74,6 @@ namespace Modules.Notification.Infrastructure.Services
                 return ex.ToString();
             }
         }
-
-
-
 
 
     }

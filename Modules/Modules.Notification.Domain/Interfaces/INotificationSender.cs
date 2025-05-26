@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Notification.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Interfaces/INotificationSender.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -12,10 +14,10 @@ namespace Modules.Notification.Domain.Interfaces
 {
 	public interface INotificationSender
 	{
-        Task<bool> SendAsync(Notifications notification);
-        Task<string> Send(Notifications notification);
-
+        Task<string> SendSMSAsync(Notifications values);
+        Task<string> SendEmailAsync(Notifications values);
         Task<string> PushAsync(Notifications values);
+        Task<string> InAppAsync(Notifications values);
     }
 }
 
