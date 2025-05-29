@@ -5,7 +5,7 @@
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Modified Date: 01/01/2025 
+// * Create Date: 11/02/2025 
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
@@ -89,7 +89,7 @@ builder.Services.AddCors(o =>
             builder.AllowAnyOrigin()
                    .AllowAnyHeader()
                    .AllowAnyMethod();
-                   //.AllowCredentials();
+            //.AllowCredentials();
         });
 });
 
@@ -174,6 +174,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors();
+
+app.UseGlobalExceptionHandler();
 
 app.MapControllers();
 

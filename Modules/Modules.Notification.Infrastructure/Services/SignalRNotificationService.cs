@@ -10,10 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
-using Modules.Notification.Presentation.Hubs;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Modules.Notification.Infrastructure.Services
 {
@@ -24,7 +20,7 @@ namespace Modules.Notification.Infrastructure.Services
         private readonly ILogger<SignalRNotificationService> _logger;
         private readonly INotificationRepository _repository;
 
-        public SignalRNotificationService(IHubContext<NotificationHub> hubContext,ILogger<SignalRNotificationService> logger, INotificationRepository repository)
+        public SignalRNotificationService(IHubContext<NotificationHub> hubContext, ILogger<SignalRNotificationService> logger, INotificationRepository repository)
         {
             _hubContext = hubContext;
             _logger = logger;

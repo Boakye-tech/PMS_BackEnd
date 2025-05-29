@@ -1,18 +1,18 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
-// * Project Name: Modules.Notification.Domain
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Domain/Enums/NotificationReadStatus.cs
+// * Project Name: Modules.Customers.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Application/Interfaces/ModuleServices/INotificationModuleService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 26/05/2025 5:43 PM
+// * Create Date: 27/05/2025 11:08 AM
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
 using System;
-namespace Modules.Notification.Domain.Enums
+namespace Modules.Customers.Application.Interfaces.ModuleServices
 {
-	public enum NotificationReadStatus
+	public interface INotificationModuleService
 	{
 	}
 }

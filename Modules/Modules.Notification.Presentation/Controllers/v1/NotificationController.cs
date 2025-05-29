@@ -5,18 +5,11 @@
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/01/2025 
+// * Create Date: 12/02/2025 
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
-using Modules.Notification.Domain.Enums;
-using Modules.Notification.Domain.Entities;
-using System.ComponentModel;
-using System.Reflection;
-using Newtonsoft.Json.Linq;
 
 namespace Modules.Notification.Presentation.Controllers.v1;
 
@@ -40,7 +33,9 @@ public class NotificationController : ControllerBase
     }
 
 
-
+    /// <summary>
+    /// Returns a list of notifications types e.g. SMS, Email, Push etc
+    /// </summary>
     [HttpGet]
     [Route("NotificationType")]
     [AllowAnonymous]
@@ -61,7 +56,9 @@ public class NotificationController : ControllerBase
         return Ok(types);
     }
 
-
+    /// <summary>
+    /// Returns a list of notifications status e.g. Pending, Sent, Failed etc
+    /// </summary>
     [HttpGet]
     [Route("NotificationStatus")]
     [AllowAnonymous]
@@ -82,12 +79,15 @@ public class NotificationController : ControllerBase
         return Ok(types);
     }
 
-
+    /// <summary>
+    /// Returns a list of notifications for a specific user based on a valid User ID and other query parameters
+    /// </summary>
     [HttpGet]
     [Route("GetUserNotifications")]
-    public IActionResult GetUserNotifications([FromQuery] NotificationQueryParametersDto query)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserNotificationsReadDto))]
+    public async Task<IActionResult> GetUserNotifications([FromQuery] NotificationQueryParametersDto query)
     {
-        return Ok(_repo.GetUserNotifications(query.UserId, query.PageNumber, query.PageSize, query.IsRead, query.IsArchive));
+        return Ok(await _repo.GetUserNotifications(query.UserId, query.PageNumber, query.PageSize, query.IsRead, query.IsArchive));
     }
 
     /// <summary>
@@ -191,7 +191,7 @@ public class NotificationController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error sending group notification");
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new FeedbackDto(StatusCodes.Status500InternalServerError, ex.Message));
         }
     }
 
@@ -219,7 +219,7 @@ public class NotificationController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error broadcasting notification");
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new FeedbackDto(StatusCodes.Status500InternalServerError, ex.Message));
         }
     }
 
@@ -228,16 +228,19 @@ public class NotificationController : ControllerBase
     /// </summary>
     [HttpPut]
     [Route("SetNotificationReadStatus")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FeedbackDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(FeedbackDto))]
     public async Task<IActionResult> UpdateNotificationReadStatus([FromBody] NotificationIdDto value)
     {
         try
         {
             await _repo.UpdateIsRead(value.notificationId);
-            return Ok();
+            return Ok(new FeedbackDto(StatusCodes.Status200OK, "Notification read status changed successfully."));
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            _logger.LogError(ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new FeedbackDto(StatusCodes.Status500InternalServerError, ex.Message));
         }
 
     }
@@ -248,20 +251,77 @@ public class NotificationController : ControllerBase
     /// </summary>
     [HttpPut]
     [Route("SetNotificationArchiveStatus")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FeedbackDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(FeedbackDto))]
     public async Task<IActionResult> UpdateNotificationArchiveStatus([FromBody] NotificationIdDto value)
     {
         try
         {
             await _repo.UpdateIsArchive(value.notificationId);
-            return Ok();
+            return Ok(new FeedbackDto(StatusCodes.Status200OK, "Notifications archived successfully."));
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            _logger.LogError(ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new FeedbackDto(StatusCodes.Status500InternalServerError, ex.Message));
         }
 
     }
 
+    /// <summary>
+    /// Returns the notification preferences for a specific user based on a valid User ID
+    /// </summary>
+    [HttpGet]
+    [Route("GetUserNotificationPreferences/{userid}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(NotificationPreferencesReadDto))]
+    public async Task<IActionResult> GetUserNotificationPreferences(string userid)
+    {
+        return Ok(await _repo.GetUserPreferencesAsync(userid));
+    }
+
+    /// <summary>
+    /// Set various notification preferences for user accounts. User can opt for a combination of any of these Email,SMS,Push,InApp
+    /// </summary>
+    [HttpPost]
+    [Route("AddNotificationPreference")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(FeedbackDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(FeedbackDto))]
+    public async Task<IActionResult> AddNotificationPreference([FromBody] NotificationPreferencesCreateDto values)
+    {
+        try
+        {
+            await _repo.CreatePreferencesAsync(values);
+            return StatusCode(StatusCodes.Status201Created, "User notification preferences added successfully.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new FeedbackDto(StatusCodes.Status500InternalServerError, ex.Message));
+        }
+
+    }
+
+    /// <summary>
+    /// Update exsiting notification preferences for user accounts. User can opt for a combination of any of these Email,SMS,Push,InApp
+    /// </summary>
+    [HttpPut]
+    [Route("UpdateNotificationPreference")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FeedbackDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(FeedbackDto))]
+    public async Task<IActionResult> UpdateNotificationPreference([FromBody] NotificationPreferencesUpdateDto values)
+    {
+        try
+        {
+            await _repo.UpdatePreferencesAsync(values);
+            return Ok(new FeedbackDto(StatusCodes.Status200OK, "User notification preferences updated successfully."));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new FeedbackDto(StatusCodes.Status500InternalServerError, ex.Message));
+        }
+
+    }
 
 }
 

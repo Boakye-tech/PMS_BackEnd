@@ -9,7 +9,7 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-using System;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Notification.Application.Dtos

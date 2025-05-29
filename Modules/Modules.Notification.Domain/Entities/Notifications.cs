@@ -5,7 +5,7 @@
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/01/2025 
+// * Create Date: 11/02/2025 
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
@@ -16,12 +16,25 @@ namespace Modules.Notification.Domain.Entities
     public class Notifications
     {
         public Guid Id { get; private set; }
+
+        [Required]
+        [StringLength(100)]
         public string? RecipientContact { get; private set; }  // Can be email, phone number, or Firebase ID
+
+        [Required]
+        [StringLength(100)]
         public string? Subject { get; private set; }
+
+        [Required]
         public string? Message { get; private set; }
+
         public NotificationType Type { get; private set; }
         public NotificationStatus Status { get; set; }
+
+        [Required]
+        [StringLength(36)]
         public string? UserId { get; private set; }  // System user ID of the recipient
+
         public DateTime CreatedAt { get; private set; }
         public bool IsRead { get; set; }
         public DateTime? ReadAt { get; set; }
@@ -45,8 +58,6 @@ namespace Modules.Notification.Domain.Entities
         }
 
         public void MarkAsSent() => Status = NotificationStatus.Sent;
-
-        
     }
 
 }

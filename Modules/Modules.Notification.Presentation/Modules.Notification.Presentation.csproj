@@ -37,6 +37,9 @@
     <ProjectReference Include="..\Modules.Notification.Infrastructure\Modules.Notification.Infrastructure.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Modules.Notification.Domain\Modules.Notification.Domain.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Controllers\v1\" />

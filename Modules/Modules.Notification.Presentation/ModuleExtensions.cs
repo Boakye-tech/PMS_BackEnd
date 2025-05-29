@@ -5,13 +5,11 @@
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/01/2025 
+// * Create Date: 12/02/2025 
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
 
-using Modules.Notification.Application.Interfaces;
-using Modules.Notification.Presentation.Hubs;
 
 namespace Modules.Notification.Presentation
 {
@@ -23,6 +21,8 @@ namespace Modules.Notification.Presentation
                 .AddNotificationInfrastructure(configuration, environment);
 
             services.AddMediatR(cfg => cfg.AsTransient(), typeof(SendNotificationHandler).Assembly);
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<INotificationSender, NotificationService>();
