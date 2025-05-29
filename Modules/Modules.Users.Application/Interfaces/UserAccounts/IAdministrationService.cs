@@ -55,6 +55,8 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 
         Task<IEnumerable<ComplaintAssigneeDto>> GetComplaintAssignee(int departmentId, int unitId);
 
+        Task<List<UsersPerRole>> GetStaffUsersPerRoles(string roleName);
+
     }
 }
 

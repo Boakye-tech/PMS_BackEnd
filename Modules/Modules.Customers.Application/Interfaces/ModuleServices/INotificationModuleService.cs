@@ -14,6 +14,7 @@ namespace Modules.Customers.Application.Interfaces.ModuleServices
 {
 	public interface INotificationModuleService
 	{
-	}
+        Task<bool> SendNotificationDetailsAsync(SendNotificationRequestDto payload);
+    }
 }
 

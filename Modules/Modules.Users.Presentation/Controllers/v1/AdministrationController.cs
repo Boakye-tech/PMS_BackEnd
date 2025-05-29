@@ -1190,6 +1190,19 @@ namespace Modules.Users.Presentation.Controllers.v1
         {
             return Ok (await _adminService.GetComplaintAssignee(departmentId,unitId) );
         }
+
+
+        /// <summary>
+        /// Returns some detials of registered staff users for a specific role. Details needed for notification purposes.
+        /// </summary>
+        [HttpGet]
+        [Route("StaffNotification")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UsersPerRole>))]
+        public async Task<ActionResult> StaffNotification(string roleFilter)
+        {
+            return Ok(await _adminService.GetStaffUsersPerRoles(roleFilter));
+        }
     }
 }
 

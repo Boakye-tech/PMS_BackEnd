@@ -10,6 +10,8 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Modules.Customers.Domain.Entities
 {
@@ -74,14 +76,8 @@ namespace Modules.Customers.Domain.Entities
         [StringLength(15)]
         public string? SubmittedBy_PhoneNumber { get; set; }
 
-        [StringLength(255)]
-        public string? DocumentOne { get; set; }
-
-        [StringLength(255)]
-        public string? DocumentTwo { get; set; }
-
-        [StringLength(255)]
-        public string? DocumentThree { get; set; }
+        [Column(TypeName = "nvarchar(max)")]
+        public string[]? DocumentList { get; set; }
 
         public ComplaintStatus ComplaintStatus { get; set; }
 
@@ -114,7 +110,7 @@ namespace Modules.Customers.Domain.Entities
                          string propertyNumber, string propertyLocation, string customerCode, string customerName,
                          string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus,
+                         string[] documentList, ComplaintStatus complaintStatus,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
                          string resolvedBy, DateTime resolutionDate, string notes, ComplaintSource source, string ReviewNotes, string CancelNotes, string ReopenNotes, string ClosedNotes)
         {
@@ -124,7 +120,7 @@ namespace Modules.Customers.Domain.Entities
                          string propertyNumber, string propertyLocation, string customerCode, string customerName,
                          string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, ComplaintStatus complaintStatus, ComplaintSource source)
+                         string[] documentList, ComplaintStatus complaintStatus, ComplaintSource source)
         {
             if (complaintTypeId <= 0)
             {
@@ -190,9 +186,7 @@ namespace Modules.Customers.Domain.Entities
                 ComplaintDate = DateTime.UtcNow,
                 SubmittedBy = submittedBy,
                 SubmittedBy_PhoneNumber = submittedBy_PhoneNumber,
-                DocumentOne = documentOne,
-                DocumentTwo = documentTwo,
-                DocumentThree = documentThree,
+                DocumentList = documentList,
                 ComplaintStatus = complaintStatus,
                 DispatachedTo_Department = 0,
                 DispatachedTo_DepartmentUnit = 0,

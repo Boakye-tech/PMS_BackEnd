@@ -16,5 +16,7 @@ namespace Modules.Users.Application.Dtos.Administration
 
     public record AssignUserRoleDto(string EmailAddress, string RoleName);
     public record UsersAndRolesReadDto(string userId, string userName, string roleId, string roleName);
+
+    public record UsersPerRole(string userId, string fullName, string phoneNumber, string emailAddress);
 }
 

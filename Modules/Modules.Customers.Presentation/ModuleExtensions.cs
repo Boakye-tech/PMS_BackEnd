@@ -34,7 +34,10 @@ namespace Modules.Customers.Presentation
             services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
             services.AddScoped<IComplaintService, ComplaintService>();
 
-            services.AddHttpClient<ICustomerModuleCommunicationServices, CustomerModuleCommunicationServices>();
+            services.AddHttpClient<IDispatchService, DispatchService>();
+            services.AddScoped<ICustomerModuleCommunicationServices, CustomerModuleCommunicationServices>();
+            services.AddScoped<INotificationModuleService, NotificationModuleService>();
+
 
             services.AddSingleton(s =>
             {

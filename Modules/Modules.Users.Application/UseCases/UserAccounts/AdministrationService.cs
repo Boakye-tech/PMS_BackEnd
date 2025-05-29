@@ -1297,6 +1297,34 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             return staff_UserList;
         }
+
+        public async Task<List<UsersPerRole>> GetStaffUsersPerRoles(string roleFilter)
+        {
+            var staff_UserList = (
+                from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff)
+                join usrole in await _unitOfWork.UsersRoles.GetAll()
+                    on user.Id equals usrole.UserId
+                join role in await _unitOfWork.Roles.GetAll()
+                    on usrole.RoleId equals role.Id
+                where !string.IsNullOrWhiteSpace(roleFilter)
+                      ? role.Name != null && role.Name.Contains(roleFilter, StringComparison.OrdinalIgnoreCase)
+                      : true
+                orderby user.RegistrationDate descending
+                select new UsersPerRole
+                (
+                    user.Id,
+                    string.Concat(user.FirstName!,' ',user.MiddleName!, ' ',user.LastName!).Trim(),
+                    user.PhoneNumber!,
+                    user.Email!
+                )
+            ).ToList();
+
+            return staff_UserList;
+        }
+
+
+
+
     }
 }
 

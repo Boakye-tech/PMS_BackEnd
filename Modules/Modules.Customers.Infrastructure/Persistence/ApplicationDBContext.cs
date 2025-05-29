@@ -8,6 +8,7 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Modules.Common.Infrastructure;
 
@@ -80,6 +81,12 @@ public class ApplicationDBContext : ModuleDbContext
             .HasIndex(c => c.ComplaintNumber)
             .IsUnique(true);
 
+         modelBuilder.Entity<Complaint>().Property(x => x.DocumentList)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null!),
+                v => JsonSerializer.Deserialize<string[]>(v, (JsonSerializerOptions)null!)!)
+            .HasColumnType("nvarchar(max)");
+
         modelBuilder.Entity<ComplaintStatuses>()
             .HasIndex(c => c.ComplaintStatus)
             .IsUnique(true);
@@ -87,6 +94,7 @@ public class ApplicationDBContext : ModuleDbContext
         modelBuilder.Entity<ComplaintHistory>()
             .HasIndex(ch => new { ch.ComplaintNumber, ch.ComplaintStatus })
             .IsUnique(true);
+
 
         //modelBuilder.ApplyConfiguration(new ComplaintStatusConfiguration());
 

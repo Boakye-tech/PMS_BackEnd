@@ -20,15 +20,17 @@ namespace Modules.Customers.Application.UseCases
         private readonly IMapper _mapper;
         //private readonly ICustomerDomainService _domainService;
         private readonly ICustomerModuleCommunicationServices _moduleComms;
+        private readonly INotificationModuleService _notification;
         private readonly ILogger<ComplaintService> _logger;
         //private readonly IDomainEventDispatcher _domainEventDispatcher;
 
-        public ComplaintService(IUnitOfWork unitOfWork, ICustomerModuleCommunicationServices moduleComms, IMapper mapper,  ILogger<ComplaintService> logger) //ICustomerDomainService domainService, , IDomainEventDispatcher domainEventDispatcher
+        public ComplaintService(IUnitOfWork unitOfWork, ICustomerModuleCommunicationServices moduleComms, IMapper mapper,  ILogger<ComplaintService> logger, INotificationModuleService notification) //ICustomerDomainService domainService, , IDomainEventDispatcher domainEventDispatcher
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             //_domainService = domainService;
             _moduleComms = moduleComms;
+            _notification = notification;
             _logger = logger;
             //_domainEventDispatcher = domainEventDispatcher;
         }
@@ -36,7 +38,7 @@ namespace Modules.Customers.Application.UseCases
         public async Task<GenericResponseDto> AddNewComplaint(ComplaintCreateDto values)
         {
             string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty;
-            int imageCount;
+            //int imageCount;
             string natureofComplaint = string.Empty;
 
             if (values.NatureOfComplaintId!.Count() == 0)
@@ -47,24 +49,24 @@ namespace Modules.Customers.Application.UseCases
 
             natureofComplaint = string.Join(',', values.NatureOfComplaintId!);
 
-            imageCount = values.DocumentImages!.Count();
-            switch (imageCount)
-            {
-                case 1:
-                    _imageOne = values.DocumentImages![0];
-                    break;
+            //imageCount = values.DocumentImages!.Count();
+            //switch (imageCount)
+            //{
+            //    case 1:
+            //        _imageOne = values.DocumentImages![0];
+            //        break;
 
-                case 2:
-                    _imageOne = values.DocumentImages![0];
-                    _imageTwo = values.DocumentImages![1];
-                    break;
+            //    case 2:
+            //        _imageOne = values.DocumentImages![0];
+            //        _imageTwo = values.DocumentImages![1];
+            //        break;
 
-                case 3:
-                    _imageOne = values.DocumentImages![0];
-                    _imageTwo = values.DocumentImages![1];
-                    _imageThree = values.DocumentImages![2];
-                    break;
-            }
+            //    case 3:
+            //        _imageOne = values.DocumentImages![0];
+            //        _imageTwo = values.DocumentImages![1];
+            //        _imageThree = values.DocumentImages![2];
+            //        break;
+            //}
 
 
             try
@@ -86,9 +88,7 @@ namespace Modules.Customers.Application.UseCases
                     complaintDate: DateTime.UtcNow,
                     submittedBy: values.SubmittedBy!,
                     submittedBy_PhoneNumber: values.SubmittedBy_PhoneNumber!,
-                    documentOne: _imageOne,
-                    documentTwo: _imageTwo,
-                    documentThree: _imageThree,
+                    documentList: values.DocumentImages!,
                     complaintStatus: ComplaintStatus.SUBMITTED,
                     source: values.Source
                     );
@@ -99,8 +99,8 @@ namespace Modules.Customers.Application.UseCases
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
-                _logger.LogInformation($"User comlaint with complaint number {complaint.ComplaintNumber} submitted successfully on {DateTime.UtcNow.ToString()}", complaint.ComplaintNumber);
-                _logger.LogInformation($"User comlaint with complaint number {complaint.ComplaintNumber} submission action successful on {DateTime.UtcNow.ToString()}. Complaint submitted by {values.CreatedBy}", complaint.ComplaintNumber, values.CreatedBy);
+                _logger.LogInformation($"User complaint with complaint number {complaint.ComplaintNumber} submitted successfully on {DateTime.UtcNow.ToString()}", complaint.ComplaintNumber);
+                _logger.LogInformation($"User complaint with complaint number {complaint.ComplaintNumber} submission action successful on {DateTime.UtcNow.ToString()}. Complaint submitted by {values.CreatedBy}", complaint.ComplaintNumber, values.CreatedBy);
 
                 if (values.Source == ComplaintSource.CUSTOMER)
                 {
@@ -108,11 +108,16 @@ namespace Modules.Customers.Application.UseCases
                     values.ComplaintNumber = complaint.ComplaintNumber;
                     var response = await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
 
+                    //send notification module
+                    //var result = await _notification.SendNotificationDetailsAsync()
+
                     if (!response)
                     {
-                        _logger.LogCritical($"User comlaint with complaint number {complaint.ComplaintNumber} modualar communication submitted unsuccessfully on {DateTime.UtcNow.ToString()}", complaint.ComplaintNumber);
+                        _logger.LogCritical($"User complaint with complaint number {complaint.ComplaintNumber} modualar communication submitted unsuccessfully on {DateTime.UtcNow.ToString()}", complaint.ComplaintNumber);
                     }
                 }
+
+                
 
                 return new GenericResponseDto{ responseCode = StatusCodes.Status201Created, response = $"Complaint submitted successfully with complaint number - {complaint.ComplaintNumber!}." };
             }
@@ -244,7 +249,7 @@ namespace Modules.Customers.Application.UseCases
                 ComplaintDate = complaint.ComplaintDate,
                 SubmittedBy = complaint.SubmittedBy,
                 SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
-                DocumentList = new List<string> { complaint.DocumentOne!, complaint.DocumentTwo!, complaint.DocumentThree! }.Where(d => !string.IsNullOrEmpty(d)).ToList(),
+                DocumentList = complaint.DocumentList!.ToList(),
                 ComplaintStatus = await GetComplaintStatus(complaintNumber)
             };
 
@@ -455,27 +460,28 @@ namespace Modules.Customers.Application.UseCases
         {
             try
             {
-                string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty;
-                int imageCount;
+                //string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty;
+                //int imageCount;
 
-                imageCount = values.DocumentImages!.Count();
-                switch (imageCount)
-                {
-                    case 1:
-                        _imageOne = values.DocumentImages![0];
-                        break;
+                //imageCount = values.DocumentImages!.Count();
+                //switch (imageCount)
+                //{
+                //    case 1:
+                //        _imageOne = values.DocumentImages![0];
+                //        break;
 
-                    case 2:
-                        _imageOne = values.DocumentImages![0];
-                        _imageTwo = values.DocumentImages![1];
-                        break;
+                //    case 2:
+                //        _imageOne = values.DocumentImages![0];
+                //        _imageTwo = values.DocumentImages![1];
+                //        break;
 
-                    case 3:
-                        _imageOne = values.DocumentImages![0];
-                        _imageTwo = values.DocumentImages![1];
-                        _imageThree = values.DocumentImages![2];
-                        break;
-                }
+                //    case 3:
+                //        _imageOne = values.DocumentImages![0];
+                //        _imageTwo = values.DocumentImages![1];
+                //        _imageThree = values.DocumentImages![2];
+                //        break;
+                //}
+
                 //check for existing complaint
                 var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
 
@@ -506,9 +512,7 @@ namespace Modules.Customers.Application.UseCases
                 _complaint.IsTheMatterInCourt = values.IsTheMatterInCourt;
                 _complaint.DetailsOfComplaint = values.DetailsOfComplaint;
                 _complaint.AvailabilityDate = values.AvailabilityDate;
-                _complaint.DocumentOne = _imageOne;
-                _complaint.DocumentTwo = _imageTwo;
-                _complaint.DocumentThree = _imageThree;
+                _complaint.DocumentList = values.DocumentImages;
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();

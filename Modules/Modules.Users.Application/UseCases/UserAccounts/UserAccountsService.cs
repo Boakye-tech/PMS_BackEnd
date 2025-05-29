@@ -543,7 +543,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
 
             string oldAccessToken = tokens!.BearerToken;
-            //string oldRefreshToken = tokens.RefreshToken;
 
             var principal = _tokenService.GetClaimsPrincipalFromExpiredBearerToken(oldAccessToken);
             var userId = principal.Claims.FirstOrDefault()!.Value;
