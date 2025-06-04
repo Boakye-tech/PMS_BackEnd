@@ -445,7 +445,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = default!; // Optional
             string submittedBy_PhoneNumber = default!; // Optional
-            string[] documentList = { };// Optional
+            string[] documentList = default!;// Optional
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";

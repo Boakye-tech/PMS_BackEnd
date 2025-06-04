@@ -38,6 +38,22 @@ public class FinanceDbContext : ModuleDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<CurrencyExchangeRate>()
+            .Property(c => c.BuyingRate)
+            .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<CurrencyExchangeRate>()
+            .Property(c => c.SellingRate)
+            .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<CurrencyExchangeRateHistory>()
+        .Property(c => c.BuyingRate)
+        .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<CurrencyExchangeRateHistory>()
+            .Property(c => c.SellingRate)
+            .HasColumnType("decimal(18,4)");
     }
 
 }

@@ -11,6 +11,7 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Modules.Common.Infrastructure;
+using Modules.Customers.Domain.Events;
 
 namespace Modules.Customers.Infrastructure.Persistence;
 
@@ -41,6 +42,9 @@ public class ApplicationDBContext : ModuleDbContext
     {
 
         base.OnModelCreating(modelBuilder);
+
+        //ignore domain events entity
+        modelBuilder.Ignore<ComplaintDomainEvent>();
 
         //set custom schema
         modelBuilder.HasDefaultSchema(Schema);

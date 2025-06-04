@@ -124,12 +124,7 @@ namespace Modules.Customers.Domain.Events
         public int DepartmentId { get; }
         public int DepartmentUnitId { get; }
 
-        public ComplaintDispatchedEvent(
-            string complaintNumber,
-            string dispatchedBy,
-            int departmentId,
-            int departmentUnitId)
-            : base(complaintNumber)
+        public ComplaintDispatchedEvent(string complaintNumber,string dispatchedBy,int departmentId, int departmentUnitId): base(complaintNumber)
         {
             DispatchedBy = dispatchedBy;
             DepartmentId = departmentId;

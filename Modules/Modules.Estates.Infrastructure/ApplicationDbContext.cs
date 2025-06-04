@@ -158,6 +158,15 @@ public class ApplicationDbContext : ModuleDbContext
 
         modelBuilder.Entity<CustomerMaster>().Ignore(x => x.DomainEvents);
 
+        modelBuilder.Entity<CurrencyExchangeRate>()
+            .Property(c => c.BuyingRate)
+            .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<CurrencyExchangeRate>()
+            .Property(c => c.SellingRate)
+            .HasColumnType("decimal(18,4)");
+
+
         //modelBuilder.Entity<ApartmentTypes>
 
         //modelBuilder.ApplyConfiguration(new AllocationTypeConfiguration());
