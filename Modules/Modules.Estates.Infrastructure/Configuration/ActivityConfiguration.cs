@@ -22,7 +22,7 @@ public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
         builder.HasMany(a => a.ActivityTypes)
                .WithOne(at => at.Activity)
                .HasForeignKey(at => at.ActivityId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasData(
             new Activity(1, "LETTERS", "VARIOUS LETTERS ON PROPERTY" ),

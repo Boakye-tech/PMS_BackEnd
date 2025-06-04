@@ -29,7 +29,23 @@ namespace Modules.Users.Domain.Entities
             DepartmentName = departmentName;
         }
 
-        public static Department CreateUpdate(int departmentId, string departmentName)
+        public static Department Create(int departmentId, string departmentName)
+        {
+            if (string.IsNullOrWhiteSpace(departmentName) || departmentId != 0)
+            {
+                throw new ArgumentException("Invalid department data.");
+            }
+
+            if (departmentId != 0)
+                throw new ArgumentException("The department id must be equal to zero.");
+
+            if (string.IsNullOrWhiteSpace(departmentName) || departmentName.Length > 50)
+                throw new ArgumentException("The department name must not be null or exceed 50 characters.");
+
+            return new Department(departmentId, departmentName);
+        }
+
+        public static Department Update(int departmentId, string departmentName)
         {
             if (string.IsNullOrWhiteSpace(departmentName) || departmentId < 0)
             {
@@ -44,6 +60,8 @@ namespace Modules.Users.Domain.Entities
 
             return new Department(departmentId, departmentName);
         }
+
+
 
     }
 }

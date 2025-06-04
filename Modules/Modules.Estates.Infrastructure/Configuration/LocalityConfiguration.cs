@@ -18,6 +18,11 @@ public class LocalityConfiguration : IEntityTypeConfiguration<Locality>
         builder.HasIndex(c => new { c.LocalityInitial, c.LocalityName })
                .IsUnique(true);
 
+        // Configure the one-to-many relationship with sites
+        builder.HasMany(s => s.Sites)
+               .WithOne(st => st.Locality)
+               .HasForeignKey(st => st.LocalityId)
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasData(
                 new Locality(1, "C01", "COMMUNITY 1", "2A",1052),

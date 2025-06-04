@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Domain/Interfaces/IUnitOfWork.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,9 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-
-using Microsoft.EntityFrameworkCore;
 
 namespace Modules.Estates.Domain;
 
@@ -78,6 +77,9 @@ public interface IUnitOfWork : IDisposable
     IRentalCategoryRepository RentalCategory  { get;  }
     IRentalTypeRepository RentalType  { get;  }
     IHouseTypesRepository HouseTypes { get;  }
+
+    //June 4, 2025
+    ISitesRepository Sites { get; }
 
     Task<int> Complete();
 }

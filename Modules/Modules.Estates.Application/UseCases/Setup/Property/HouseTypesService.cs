@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Modules.Estates.Application.DTO.Setup.Property;
 using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 using Modules.Estates.Domain;
+using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
 {
@@ -31,7 +32,25 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         public async Task<IEnumerable<HouseTypesReadDto>> GetHouseTypesAsync()
         {
             var houseTypes = await _unitOfWork.HouseTypes.GetAll();
-            return _mapper.Map<IEnumerable<HouseTypesReadDto>>(houseTypes);
+            var rentalCategory = await _unitOfWork.RentalCategory.GetAll();
+            var rentalType = await _unitOfWork.RentalType.GetAll();
+
+            var result = from s in houseTypes
+                         join rc in rentalCategory on s.RentalCategoryId equals rc.RentalCategoryId
+                         join rt in rentalType on s.RentalTypeId equals rt.RentalTypeId
+                         select new HouseTypesReadDto(
+                             s.HouseTypeId,
+                             s.Code,
+                             s.TypeName,
+                             s.RentalCategoryId,
+                             rc.RentalCategories,
+                             s.RentalTypeId,
+                             rt.RentalTypes,
+                             s.Features, // Assuming Features is already a string[]
+                             s.Notes
+                         );
+
+            return result;
         }
 
         public async Task<ReturnResponsesDto> CreateHouseTypesAsync(HouseTypesCreateDto values)

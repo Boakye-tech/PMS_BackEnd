@@ -31,7 +31,6 @@
     <None Remove="Events\Property\" />
     <None Remove="Interfaces\Management\" />
     <None Remove="Events\Complaints\" />
-    <None Remove="Entities\Registration\Property\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -52,6 +51,5 @@
     <Folder Include="Events\Property\" />
     <Folder Include="Interfaces\Management\" />
     <Folder Include="Events\Complaints\" />
-    <Folder Include="Entities\Registration\Property\" />
   </ItemGroup>
 </Project>

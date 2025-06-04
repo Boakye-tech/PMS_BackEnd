@@ -12,16 +12,25 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
+using Modules.Customers.Domain.Events;
 
 namespace Modules.Customers.Domain.Entities
 {
     public class Complaint //: AuditableEntity
     {
-        //private readonly List<DomainEvent> _domainEvents = new();
+        private readonly List<ComplaintDomainEvent> _domainEvents = new();
 
-        //[NotMapped]
-        //public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+        public IReadOnlyCollection<ComplaintDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
+        public void AddDomainEvent(ComplaintDomainEvent domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
+        }
 
         [Key]
         [Required]
@@ -162,7 +171,7 @@ namespace Modules.Customers.Domain.Entities
                 throw new ArgumentException("Complaint details must not be null or empty");
             }
 
-            if(source == ComplaintSource.CUSTOMER)
+            if (source == ComplaintSource.CUSTOMER)
             {
                 string _complaintNumber = new Random().Next(0, 100000).ToString();
                 complaintNumber = string.Concat("C", _complaintNumber);
@@ -199,14 +208,58 @@ namespace Modules.Customers.Domain.Entities
                 CancelNotes = string.Empty
             };
 
-            //_newComplaint._domainEvents.Add(new ComplaintCreatedEvent(_complaintNumber, natureOfComplaintId.ToString(), propertyNumber, createdBy));
+            _newComplaint.AddDomainEvent(new ComplaintSubmittedEvent(_newComplaint, submittedBy));
 
             return _newComplaint;
-
         }
 
+        public void ChangeStatus(ComplaintStatus newStatus, string changedBy)
+        {
+            var oldStatus = ComplaintStatus;
+            ComplaintStatus = newStatus;
+            AddDomainEvent(new ComplaintStatusChangedEvent(ComplaintNumber!, oldStatus, newStatus, changedBy));
+        }
 
+        public void Assign(string assignedTo, string assignedBy)
+        {
+            AssignedTo = assignedTo;
+            AddDomainEvent(new ComplaintAssignedEvent(ComplaintNumber!, assignedTo, assignedBy));
+        }
 
+        public void Cancel(string cancelledBy, string cancelNotes)
+        {
+            CancelNotes = cancelNotes;
+            ComplaintStatus = ComplaintStatus.CANCELLED;
+            AddDomainEvent(new ComplaintCancelledEvent(ComplaintNumber!, cancelledBy, cancelNotes));
+        }
+
+        public void Reopen(string reopenedBy, string reopenNotes)
+        {
+            ReopenNotes = reopenNotes;
+            ComplaintStatus = ComplaintStatus.REOPEN;
+            AddDomainEvent(new ComplaintReopenedEvent(ComplaintNumber!, reopenedBy, reopenNotes));
+        }
+
+        public void Close(string closedBy, string closeNotes)
+        {
+            ClosedNotes = closeNotes;
+            ComplaintStatus = ComplaintStatus.CLOSED;
+            AddDomainEvent(new ComplaintClosedEvent(ComplaintNumber!, closedBy, closeNotes));
+        }
+
+        public void Acknowledge(string acknowledgedBy)
+        {
+            ComplaintStatus = ComplaintStatus.ACKNOWLEDGED;
+            AddDomainEvent(new ComplaintAcknowledgedEvent(ComplaintNumber!, acknowledgedBy));
+        }
+
+        public void Dispatch(string dispatchedBy, int departmentId, int departmentUnitId)
+        {
+            DispatachedTo_Department = departmentId;
+            DispatachedTo_DepartmentUnit = departmentUnitId;
+            ComplaintStatus = ComplaintStatus.DISPATCHED;
+            AddDomainEvent(new ComplaintDispatchedEvent(ComplaintNumber!, dispatchedBy, departmentId, departmentUnitId));
+        }
     }
 }
 

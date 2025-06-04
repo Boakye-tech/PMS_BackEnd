@@ -33,6 +33,10 @@ public class Locality : AuditableEntity
     [Required]
     public int CustomerCodeCounter { get; set; }
 
+    // Navigation property for sites
+    public virtual ICollection<Sites> Sites { get; private set; }
+
+
     public Locality(int localityId, string localityInitial, string localityName, string customerCode, int customerCodeCounter)
     {
         LocalityId = localityId;
@@ -40,6 +44,7 @@ public class Locality : AuditableEntity
         LocalityName = localityName;
         CustomerCode = customerCode;
         CustomerCodeCounter = customerCodeCounter;
+        Sites = new List<Sites>();
     }
 
     public static Locality Create(int localityId, string localityInitial, string localityName, string customerCode, int customerCodeCounter)

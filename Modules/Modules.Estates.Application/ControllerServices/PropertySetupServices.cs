@@ -11,27 +11,33 @@
 //  **************************************************/
 
 
+using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
+using Modules.Estates.Application.UseCases.Setup.Property;
+
 namespace Modules.Estates.Application.ControllerServices;
 
 public class PropertySetupServices : IPropertySetupServices
 {
     public ILocalityService LocalityService { get; }
+    public ISitesService SitesService { get; }
+    public ILocalityAndSitesService LocalityAndSitesService { get; }
+
     public IAllocationTypeService AllocationTypeService { get; }
-    public ILeaseTypeAndPeriodService LeaseTypeAndPeriodService { get; }
-    public ICurrencyExchangeRateService CurrencyExchangeRateService { get; }
+
     public ILandUseService LandUseService { get; }
     public ILandUseTypeService LandUseTypeService { get; }
     public ILandUseAndLandUseTypeService LandUseAndLandUseTypeService { get; }
 
 
-
-    public PropertySetupServices(IAllocationTypeService allocationTypeService, ILocalityService localityService, ILeaseTypeAndPeriodService leaseTypeAndPeriodService, ICurrencyExchangeRateService currencyExchangeRateService,
+    public PropertySetupServices(IAllocationTypeService allocationTypeService, ILocalityService localityService,ISitesService sitesService, ILocalityAndSitesService localityAndSitesService,
                                  ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILandUseAndLandUseTypeService landUseAndLandUseTypeService)
     {
         AllocationTypeService = allocationTypeService;
+
         LocalityService = localityService;
-        LeaseTypeAndPeriodService = leaseTypeAndPeriodService;
-        CurrencyExchangeRateService = currencyExchangeRateService;
+        SitesService = sitesService;
+        LocalityAndSitesService = localityAndSitesService;
+
         LandUseService = landUseService;
         LandUseTypeService = landUseTypeService;
         LandUseAndLandUseTypeService = landUseAndLandUseTypeService;
@@ -76,18 +82,7 @@ public class PropertySetupServices : IPropertySetupServices
     public async Task<ReturnResponsesDto> DeleteAllocationType(int allocationTypeId) =>
         await AllocationTypeService.DeleteAllocationType(allocationTypeId);
 
-    //Currency methods
-    public async Task<IEnumerable<CurrencyExchangeRateReadDto>> GetCurrencyExchangeRateAsync() =>
-       await CurrencyExchangeRateService.GetCurrencyExchangeRateAsync();
 
-    public async Task<ReturnResponsesDto> CreateCurrencyExchangeRateAsync(CurrencyExchangeRateCreateDto values) =>
-        await CurrencyExchangeRateService.CreateCurrencyExchangeRateAsync(values);
-
-    public async Task<ReturnResponsesDto> UpdateCurrencyExchangeRateAsync(CurrencyExchangeRateUpdateDto values) =>
-        await CurrencyExchangeRateService.UpdateCurrencyExchangeRateAsync(values);
-
-    public async Task<ReturnResponsesDto> DeleteCurrencyExchangeRateAsync(int currencyId) =>
-        await CurrencyExchangeRateService.DeleteCurrencyExchangeRateAsync(currencyId);
 
     // Land Use methods
     public async Task<IEnumerable<LandUseReadDto>> GetLandUseAsync() =>
@@ -132,17 +127,21 @@ public class PropertySetupServices : IPropertySetupServices
         await LandUseAndLandUseTypeService.GetLandUseAndLandUseTypeAsync();
 
 
-    // Lease Types and Periods methods
-    public async Task<IEnumerable<LeaseTypeAndPeriodReadDto>> GetLeaseTypeAndPeriodAsync() =>
-        await LeaseTypeAndPeriodService.GetLeaseTypeAndPeriodAsync();
 
-    public async Task<ReturnResponsesDto> CreateLeaseTypeAndPeriodAsync(LeaseTypeAndPeriodCreateDto values) =>
-        await LeaseTypeAndPeriodService.CreateLeaseTypeAndPeriodAsync(values);
+    //Sites methods
+    public async Task<IEnumerable<SitesReadDto>> GetSitesAsync() =>
+        await SitesService.GetSitesAsync();
 
-    public async Task<ReturnResponsesDto> UpdateLeaseTypeAndPeriodAsync(LeaseTypeAndPeriodUpdateDto values) =>
-        await LeaseTypeAndPeriodService.UpdateLeaseTypeAndPeriodAsync(values);
+    public async Task<ReturnResponsesDto> CreateSiteAsync(SitesCreateDto values) =>
+        await SitesService.CreateSitesAsync(values);
 
-    public async Task<ReturnResponsesDto> DeleteLeaseTypeAndPeriod(int leaseTypeAndPeriodId) =>
-        await LeaseTypeAndPeriodService.DeleteLeaseTypeAndPeriod(leaseTypeAndPeriodId);
+    public async Task<ReturnResponsesDto> UpdateSiteAsync(SitesUpdateDto values) =>
+        await SitesService.UpdateSitesAsync(values);
+
+    public async Task<ReturnResponsesDto> DeleteSite(int siteId) =>
+        await SitesService.DeleteSites(siteId);
+
+    public async Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync() =>
+        await LocalityAndSitesService.GetLocalityAndSitesAsync();
 
 }

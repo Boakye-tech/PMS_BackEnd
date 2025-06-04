@@ -24,7 +24,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentReadDto> AddDepartmentAsync(DepartmentCreateDto values)
         {
-            Department department = Department.CreateUpdate(values.DepartmentId, values.DepartmentName!);
+            Department department = Department.Create(values.DepartmentId, values.DepartmentName!);
 
             department.CreatedBy = values.CreatedBy;
             department.CreatedOn = DateTime.Now;
@@ -69,7 +69,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentReadDto> UpdateDepartmentAsync(DepartmentUpdateDto values)
         {
-            Department department = Department.CreateUpdate(values.DepartmentId, values.DepartmentName!);
+            Department department = Department.Update(values.DepartmentId, values.DepartmentName!);
             department.ModifiedBy = values.ModifiedBy;
             department.ModifiedOn = DateTime.UtcNow;
 

@@ -15,6 +15,9 @@ namespace Modules.Customers.Application.Interfaces.ModuleServices
 	public interface IDispatchService
 	{
         Task<bool> SendDataAsync<T>(string endpoint, T payload, string httpMethod);
+
+        Task<TResponse?> SendGetAsync<TResponse>(string endpoint);
+        Task<TResponse?> SendGetWithQueryAsync<TResponse, TQuery>(string endpoint, TQuery queryParams);
     }
 }
 

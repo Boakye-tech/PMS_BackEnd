@@ -25,7 +25,7 @@ public class LandUseConfiguration : IEntityTypeConfiguration<LandUse>
         builder.HasMany(l => l.LandUseTypes)
                .WithOne(lt => lt.LandUse)
                .HasForeignKey(lt => lt.LandUseId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
 
         builder.HasData(

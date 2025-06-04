@@ -691,6 +691,18 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
+        /// Returns a list of localities and their associated sites
+        /// </summary>
+        [HttpGet]
+        [Route("GetLocalityAndSites")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<LocalityAndSitesReadDto>))]
+        public async Task<ActionResult<List<LocalityAndSitesReadDto>>> LocalityAndSites()
+        {
+            return Ok(await _propertySetupServices.GetLocalityAndSitesAsync());
+        }
+
+
+        /// <summary>
         /// Returns a list of all localities
         /// </summary>
         [HttpGet]
@@ -857,6 +869,160 @@ namespace Modules.Estates.Presentation.Controllers.v1
             try
             {
                 var result = await _propertySetupServices.DeleteLocality(localityId);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.Code;
+                return status switch
+                {
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of all sites
+        /// </summary>
+        [HttpGet]
+        [Route("GetSites")]
+        public async Task<ActionResult<IEnumerable<SitesReadDto>>> GetSites()
+        {
+            return Ok(await _propertySetupServices.GetSitesAsync());
+        }
+
+        /// <summary>
+        /// Creates a new site
+        /// </summary>
+        /// <remarks>
+        /// Creates a new site in the system
+        ///
+        /// **Sample Request:**
+        ///
+        ///     POST /CreateSite
+        ///
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "localityId": 15,
+        ///         "siteId": 0,
+        ///         "siteName": "Site 3",
+        ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        ///     }
+        ///
+        /// **Sample Response 201:**
+        /// 
+        ///     {
+        ///         "code": 201,
+        ///         "message": "Site created successfully.",
+        ///     }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateSite")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> CreateSite([FromBody] SitesCreateDto values)
+        {
+            try
+            {
+                var result = await _propertySetupServices.CreateSiteAsync(values);
+
+                if (result.IsSuccess)
+                {
+                    return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.Code;
+                return status switch
+                {
+                    204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates the details of an existing site
+        /// </summary>
+        /// <remarks>
+        /// Modifies/updates an existing site based on the site id 
+        ///
+        /// **Sample Request:**
+        ///
+        ///     PUT /UpdateSite
+        ///
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "localityId": 15,
+        ///         "siteId": 2,
+        ///         "siteName": "Site Three(3)",
+        ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        ///     }
+        ///
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "code": 200,
+        ///         "message": "Site details modified successfully.",
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateSite")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult<LocalityReadDto>> UpdateSite([FromBody] SitesUpdateDto values)
+        {
+            var result = await _propertySetupServices.UpdateSiteAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        /// <summary>
+        /// Deletes a site by its ID
+        /// </summary>
+        /// <param name="siteId">The ID of the site to delete</param>
+        /// <returns>Success or error response</returns>
+        [HttpDelete("DeleteSite/{siteId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> DeleteSite(int siteId)
+        {
+            try
+            {
+                var result = await _propertySetupServices.DeleteSite(siteId);
 
                 if (result.IsSuccess)
                 {
@@ -1070,7 +1236,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Route("GetCurrencyExchangeRates")]
         public async Task<ActionResult<IEnumerable<CurrencyExchangeRateReadDto>>> GetCurrencyExchangeRates()
         {
-            return Ok(await _propertySetupServices.GetCurrencyExchangeRateAsync());
+            return Ok(await _activityServices.GetCurrencyExchangeRateAsync());
         }
 
         /// <summary>
@@ -1115,7 +1281,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
-                var result = await _propertySetupServices.CreateCurrencyExchangeRateAsync(values);
+                var result = await _activityServices.CreateCurrencyExchangeRateAsync(values);
 
                 if (result.IsSuccess)
                 {
@@ -1177,7 +1343,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<CurrencyExchangeRateReadDto>> UpdateCurrencyExchangeRate([FromBody] CurrencyExchangeRateUpdateDto values)
         {
-            var result = await _propertySetupServices.UpdateCurrencyExchangeRateAsync(values);
+            var result = await _activityServices.UpdateCurrencyExchangeRateAsync(values);
 
             if (result.IsSuccess)
             {
@@ -1207,7 +1373,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
-                var result = await _propertySetupServices.DeleteCurrencyExchangeRateAsync(currencyId);
+                var result = await _activityServices.DeleteCurrencyExchangeRateAsync(currencyId);
 
                 if (result.IsSuccess)
                 {

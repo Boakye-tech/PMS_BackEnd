@@ -38,8 +38,8 @@ namespace Modules.Customers.Application.Services
         public async Task<bool> SendDataAsync<T>(string endpoint, T payload, string httpMethod)
         {
             var baseurl = _config!.GetSection("ModuleUrl").GetSection("BaseUrl").Value;
-            var Url = $"{baseurl}{endpoint}";
             var token = _userContextService!.GetAccessToken();
+            var Url = $"{baseurl}{endpoint}";
 
             try
             {
@@ -57,7 +57,7 @@ namespace Modules.Customers.Application.Services
                 if (response == null)
                 {
                     _logger!.LogWarning("Unsupported HTTP method: {HttpMethod}", httpMethod);
-                    return false;
+                    return default;
                 }
 
                 using (response)
@@ -73,8 +73,76 @@ namespace Modules.Customers.Application.Services
             catch (Exception ex)
             {
                 _logger!.LogError(ex, "Error occurred while sending data to moodule: {Endpoint}", endpoint);
-                return false;
+                return default;
             }
+        }
+
+        public async Task<TResponse?> SendGetAsync<TResponse>(string endpoint)
+        {
+            var baseUrl = _config!.GetSection("ModuleUrl").GetSection("BaseUrl").Value;
+            var token = _userContextService!.GetAccessToken();
+            var url = $"{baseUrl}{endpoint}";
+
+            try
+            {
+                _httpClient!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger!.LogWarning("GET request failed. URL: {Url}, Status Code: {StatusCode}", url, response.StatusCode);
+                    return default!;
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<TResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+                _logger!.LogError(ex, "Error during GET request to: {Endpoint}", endpoint);
+                return default;
+            }
+        }
+
+        public async Task<TResponse?> SendGetWithQueryAsync<TResponse, TQuery>(string endpoint, TQuery queryParams)
+        {
+            var baseUrl = _config!.GetSection("ModuleUrl").GetSection("BaseUrl").Value;
+            var token = _userContextService!.GetAccessToken();
+            var url = BuildUrlWithQueryParams($"{baseUrl}{endpoint}", queryParams);
+
+            try
+            {
+                _httpClient!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger!.LogWarning("GET with query failed. URL: {Url}, Status Code: {StatusCode}", url, response.StatusCode);
+                    return default!;
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<TResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+                _logger!.LogError(ex, "Error during GET request with query to: {Endpoint}", endpoint);
+                return default!;
+            }
+        }
+
+
+        private static string BuildUrlWithQueryParams<T>(string baseUrl, T queryParams)
+        {
+            if (queryParams == null)
+                return baseUrl;
+
+            var props = typeof(T).GetProperties()
+                .Where(p => p.GetValue(queryParams) != null)
+                .Select(p => $"{Uri.EscapeDataString(p.Name)}={Uri.EscapeDataString(p.GetValue(queryParams)!.ToString()!)}");
+
+            var query = string.Join("&", props);
+            return string.IsNullOrWhiteSpace(query) ? baseUrl : $"{baseUrl}?{query}";
         }
 
 

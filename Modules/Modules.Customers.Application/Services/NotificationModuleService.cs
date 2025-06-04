@@ -22,6 +22,14 @@ namespace Modules.Customers.Application.Services
             _dispatchService = dispatchService;
         }
 
+        public async Task<List<ComplaintStaffDto>?> GetComplaintStaffAsync(string query)
+        {
+            //throw new NotImplementedException();
+
+            var result = await _dispatchService.SendGetWithQueryAsync<List<ComplaintStaffDto>?, object>("Administration/StaffNotification", new { roleFilter = query });
+            return result;
+        }
+
         public async Task<bool> SendNotificationDetailsAsync(SendNotificationRequestDto payload)
         {
             return await _dispatchService.SendDataAsync("Notification/SendNotification", payload, "POST");

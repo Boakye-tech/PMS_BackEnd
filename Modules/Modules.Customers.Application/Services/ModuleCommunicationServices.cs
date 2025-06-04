@@ -49,8 +49,10 @@ namespace Modules.Customers.Application.Services
         }
 
 
-
-
+        public async Task<bool> SendComplaintAssignedAsync(ComplaintAssignedDto payload)
+        {
+            return await _dispatchService.SendDataAsync("Customer/AssignComplaint", payload, "PUT");
+        }
     }
 }
 

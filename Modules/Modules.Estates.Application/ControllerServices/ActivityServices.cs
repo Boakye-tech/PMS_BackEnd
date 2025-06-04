@@ -21,12 +21,20 @@ public class ActivityServices : IActivityServices
     public IActivityAndActivityTypeService ActivityAndActivityTypeService { get; }
     public IPropertyStatusService PropertyStatusService { get; }
 
-    public ActivityServices(IActivityService activityService,IActivityTypeService activityTypeService, IActivityAndActivityTypeService activityAndActivityTypeService, IPropertyStatusService propertyStatusService)
+    public ICurrencyExchangeRateService CurrencyExchangeRateService { get; }
+    public ILeaseTypeAndPeriodService LeaseTypeAndPeriodService { get; }
+
+
+    public ActivityServices(IActivityService activityService,IActivityTypeService activityTypeService, IActivityAndActivityTypeService activityAndActivityTypeService, IPropertyStatusService propertyStatusService,
+                            ICurrencyExchangeRateService currencyExchangeRateService, ILeaseTypeAndPeriodService leaseTypeAndPeriodService)
     {
         ActivityService = activityService;
         ActivityTypeService = activityTypeService;
         ActivityAndActivityTypeService = activityAndActivityTypeService;
         PropertyStatusService = propertyStatusService;
+
+        CurrencyExchangeRateService = currencyExchangeRateService;
+        LeaseTypeAndPeriodService = leaseTypeAndPeriodService;
     }
 
     public async Task<IEnumerable<ActivityReadDto>> GetActivitiesAsync() =>
@@ -67,4 +75,31 @@ public class ActivityServices : IActivityServices
         await PropertyStatusService.UpdatePropertyStatusAsync(values);
     public async Task<ReturnResponsesDto> DeletePropertyStatus(int propertyStatusId) =>
         await PropertyStatusService.DeletePropertyStatus(propertyStatusId);
+
+    //Currency methods
+    public async Task<IEnumerable<CurrencyExchangeRateReadDto>> GetCurrencyExchangeRateAsync() =>
+       await CurrencyExchangeRateService.GetCurrencyExchangeRateAsync();
+
+    public async Task<ReturnResponsesDto> CreateCurrencyExchangeRateAsync(CurrencyExchangeRateCreateDto values) =>
+        await CurrencyExchangeRateService.CreateCurrencyExchangeRateAsync(values);
+
+    public async Task<ReturnResponsesDto> UpdateCurrencyExchangeRateAsync(CurrencyExchangeRateUpdateDto values) =>
+        await CurrencyExchangeRateService.UpdateCurrencyExchangeRateAsync(values);
+
+    public async Task<ReturnResponsesDto> DeleteCurrencyExchangeRateAsync(int currencyId) =>
+        await CurrencyExchangeRateService.DeleteCurrencyExchangeRateAsync(currencyId);
+
+    // Lease Types and Periods methods
+    public async Task<IEnumerable<LeaseTypeAndPeriodReadDto>> GetLeaseTypeAndPeriodAsync() =>
+        await LeaseTypeAndPeriodService.GetLeaseTypeAndPeriodAsync();
+
+    public async Task<ReturnResponsesDto> CreateLeaseTypeAndPeriodAsync(LeaseTypeAndPeriodCreateDto values) =>
+        await LeaseTypeAndPeriodService.CreateLeaseTypeAndPeriodAsync(values);
+
+    public async Task<ReturnResponsesDto> UpdateLeaseTypeAndPeriodAsync(LeaseTypeAndPeriodUpdateDto values) =>
+        await LeaseTypeAndPeriodService.UpdateLeaseTypeAndPeriodAsync(values);
+
+    public async Task<ReturnResponsesDto> DeleteLeaseTypeAndPeriod(int leaseTypeAndPeriodId) =>
+        await LeaseTypeAndPeriodService.DeleteLeaseTypeAndPeriod(leaseTypeAndPeriodId);
+
 }

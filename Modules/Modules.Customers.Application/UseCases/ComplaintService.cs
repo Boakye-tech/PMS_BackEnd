@@ -11,10 +11,13 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Modules.Customers.Application.Services;
+using Modules.Customers.Domain.Events;
+using Modules.Customers.Application.EventHandlers;
 
 namespace Modules.Customers.Application.UseCases
 {
-	public class ComplaintService: IComplaintService
+    public class ComplaintService : IComplaintService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -22,9 +25,23 @@ namespace Modules.Customers.Application.UseCases
         private readonly ICustomerModuleCommunicationServices _moduleComms;
         private readonly INotificationModuleService _notification;
         private readonly ILogger<ComplaintService> _logger;
-        //private readonly IDomainEventDispatcher _domainEventDispatcher;
+        private readonly IComplaintCreationService _complaintCreationService;
+        private readonly IComplaintNotificationService _complaintNotificationService;
+        private readonly IDomainEventDispatcher _domainEventDispatcher;
+        private readonly ComplaintSubmittedEventHandler _complaintSubmittedHandler;
+        private readonly ComplaintStatusChangedEventHandler _statusChangedHandler;
 
-        public ComplaintService(IUnitOfWork unitOfWork, ICustomerModuleCommunicationServices moduleComms, IMapper mapper,  ILogger<ComplaintService> logger, INotificationModuleService notification) //ICustomerDomainService domainService, , IDomainEventDispatcher domainEventDispatcher
+        public ComplaintService(
+            IUnitOfWork unitOfWork,
+            ICustomerModuleCommunicationServices moduleComms,
+            IMapper mapper,
+            ILogger<ComplaintService> logger,
+            INotificationModuleService notification,
+            IComplaintCreationService complaintCreationService,
+            IComplaintNotificationService complaintNotificationService,
+            IDomainEventDispatcher domainEventDispatcher,
+            ComplaintSubmittedEventHandler complaintSubmittedHandler,
+            ComplaintStatusChangedEventHandler statusChangedHandler)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -32,46 +49,60 @@ namespace Modules.Customers.Application.UseCases
             _moduleComms = moduleComms;
             _notification = notification;
             _logger = logger;
-            //_domainEventDispatcher = domainEventDispatcher;
+            _complaintCreationService = complaintCreationService;
+            _complaintNotificationService = complaintNotificationService;
+            _domainEventDispatcher = domainEventDispatcher;
+            _complaintSubmittedHandler = complaintSubmittedHandler;
+            _statusChangedHandler = statusChangedHandler;
         }
 
         public async Task<GenericResponseDto> AddNewComplaint(ComplaintCreateDto values)
         {
-            string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty;
-            //int imageCount;
-            string natureofComplaint = string.Empty;
-
-            if (values.NatureOfComplaintId!.Count() == 0)
-            {
-                _logger.LogWarning("Nature of complaint cannot be null or empty");
-                return new GenericResponseDto{ responseCode = StatusCodes.Status204NoContent , response = "Nature of complaint cannot be null or empty" };
-            }
-
-            natureofComplaint = string.Join(',', values.NatureOfComplaintId!);
-
-            //imageCount = values.DocumentImages!.Count();
-            //switch (imageCount)
-            //{
-            //    case 1:
-            //        _imageOne = values.DocumentImages![0];
-            //        break;
-
-            //    case 2:
-            //        _imageOne = values.DocumentImages![0];
-            //        _imageTwo = values.DocumentImages![1];
-            //        break;
-
-            //    case 3:
-            //        _imageOne = values.DocumentImages![0];
-            //        _imageTwo = values.DocumentImages![1];
-            //        _imageThree = values.DocumentImages![2];
-            //        break;
-            //}
-
-
             try
             {
-                Complaint complaint = Complaint.CreateNewComplaint(
+                //check of complaint type exist
+                var complaintType = await _unitOfWork.ComplaintType.Get(values.ComplaintTypeId);
+                if(complaintType is null)
+                {
+                    _logger.LogWarning($"Complaint Type Id {values.ComplaintTypeId} provided does not exist.");
+                    return new GenericResponseDto
+                    {
+                        responseCode = StatusCodes.Status404NotFound,
+                        response = $"Complaint Type Id {values.ComplaintTypeId} provided does not exist."
+                    };
+
+                }
+
+                //check of the nature of complaint is empty
+                if (values.NatureOfComplaintId!.Count() == 0)
+                {
+                    _logger.LogWarning("Nature of complaint cannot be null or empty");
+                    return new GenericResponseDto
+                    {
+                        responseCode = StatusCodes.Status204NoContent,
+                        response = "Nature of complaint cannot be null or empty"
+                    };
+                }
+
+                //check of nature of complaint exist
+                foreach (var item in values.NatureOfComplaintId!)
+                {
+                    var nature = await _unitOfWork.NatureOfComplaint.Get(item);
+                    if (nature is null)
+                    {
+                        _logger.LogWarning($"Nature Of Complaint Id {item} provided does not exist.");
+                        return new GenericResponseDto
+                        {
+                            responseCode = StatusCodes.Status404NotFound,
+                            response = $"Nature Of Complaint Id {item} provided does not exist."
+                        };
+                    }
+                }
+
+
+                string natureofComplaint = string.Join(',', values.NatureOfComplaintId!);
+
+                var complaint = Complaint.CreateNewComplaint(
                     complaintId: 0,
                     complaintNumber: values.ComplaintNumber!,
                     complaintTypeId: values.ComplaintTypeId,
@@ -91,39 +122,45 @@ namespace Modules.Customers.Application.UseCases
                     documentList: values.DocumentImages!,
                     complaintStatus: ComplaintStatus.SUBMITTED,
                     source: values.Source
-                    );
+                );
 
                 _unitOfWork.Complaint.Insert(complaint);
 
-                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, complaint.ComplaintNumber, ComplaintStatus.SUBMITTED, values.CreatedBy, DateTime.UtcNow);
+                var complaintHistory = ComplaintHistory.ProcessComplaint(
+                    0,
+                    complaint.ComplaintNumber,
+                    ComplaintStatus.SUBMITTED,
+                    values.SubmittedBy!,
+                    DateTime.UtcNow
+                );
+
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
-                _logger.LogInformation($"User complaint with complaint number {complaint.ComplaintNumber} submitted successfully on {DateTime.UtcNow.ToString()}", complaint.ComplaintNumber);
-                _logger.LogInformation($"User complaint with complaint number {complaint.ComplaintNumber} submission action successful on {DateTime.UtcNow.ToString()}. Complaint submitted by {values.CreatedBy}", complaint.ComplaintNumber, values.CreatedBy);
+                // Dispatch domain events
+                await _domainEventDispatcher.DispatchEventsAsync(complaint.DomainEvents);
+                complaint.ClearDomainEvents();
 
+                // Handle customer-specific notifications
                 if (values.Source == ComplaintSource.CUSTOMER)
                 {
-                    //send to staff module
-                    values.ComplaintNumber = complaint.ComplaintNumber;
-                    var response = await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
-
-                    //send notification module
-                    //var result = await _notification.SendNotificationDetailsAsync()
-
-                    if (!response)
-                    {
-                        _logger.LogCritical($"User complaint with complaint number {complaint.ComplaintNumber} modualar communication submitted unsuccessfully on {DateTime.UtcNow.ToString()}", complaint.ComplaintNumber);
-                    }
+                    await _complaintNotificationService.NotifyStaffAboutNewComplaint(values, complaint.ComplaintNumber!);
                 }
 
-                
-
-                return new GenericResponseDto{ responseCode = StatusCodes.Status201Created, response = $"Complaint submitted successfully with complaint number - {complaint.ComplaintNumber!}." };
+                return new GenericResponseDto
+                {
+                    responseCode = StatusCodes.Status201Created,
+                    response = $"Complaint submitted successfully with complaint number - {complaint.ComplaintNumber}."
+                };
             }
             catch (Exception ex)
             {
-                return new GenericResponseDto { responseCode = StatusCodes.Status500InternalServerError, response = ex.Message };
+                _logger.LogError(ex, "Error creating new complaint");
+                return new GenericResponseDto
+                {
+                    responseCode = StatusCodes.Status500InternalServerError,
+                    response = ex.Message
+                };
             }
         }
 
@@ -131,40 +168,63 @@ namespace Modules.Customers.Application.UseCases
         {
             try
             {
-                var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
+                var complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
 
-                if (_complaint is null)
+                if (complaint is null)
                 {
                     _logger.LogWarning($"Complaint number {values.ComplaintNumber} supplied doesnot exist.");
-                    return new GenericResponseDto { responseCode = StatusCodes.Status204NoContent, response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist." };
+                    return new GenericResponseDto
+                    {
+                        responseCode = StatusCodes.Status204NoContent,
+                        response = $"Complaint number {values.ComplaintNumber} supplied doesnot exist."
+                    };
                 }
 
-                // Status is neither DISPATCHED nor REVIEWED
-                if (!new[] { ComplaintStatus.DISPATCHED, ComplaintStatus.REVIEWED }.Contains(_complaint.ComplaintStatus))
+                if (!new[] { ComplaintStatus.DISPATCHED, ComplaintStatus.REVIEWED }.Contains(complaint.ComplaintStatus))
                 {
                     _logger.LogWarning($"Complaint number {values.ComplaintNumber} cannot be assigned as it has not been dispatched or reviewed yet.");
-                    return new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = $"Complaint number {values.ComplaintNumber} cannot be assigned as it has not been dispatched or reviewed yet." };
+                    return new GenericResponseDto
+                    {
+                        responseCode = StatusCodes.Status403Forbidden,
+                        response = $"Complaint number {values.ComplaintNumber} cannot be assigned as it has not been dispatched or reviewed yet."
+                    };
                 }
 
-                _complaint.AssignedTo = values.AssignedTo;
-                _complaint.ComplaintStatus = ComplaintStatus.ASSIGNED;
+                complaint.Assign(values.AssignedTo!, values.AssignedBy!);
+                complaint.ChangeStatus(ComplaintStatus.ASSIGNED, values.AssignedBy!);
 
-                _unitOfWork.Complaint.Update(_complaint);
+                _unitOfWork.Complaint.Update(complaint);
 
-                ComplaintHistory complaintHistory = ComplaintHistory.ProcessComplaint(0, _complaint.ComplaintNumber, ComplaintStatus.ASSIGNED, values.AssignedBy, DateTime.UtcNow);
+                var complaintHistory = ComplaintHistory.ProcessComplaint(
+                    0,
+                    complaint.ComplaintNumber,
+                    ComplaintStatus.ASSIGNED,
+                    values.AssignedBy,
+                    DateTime.UtcNow
+                );
+
                 _unitOfWork.ComplaintHistory.Insert(complaintHistory);
                 await _unitOfWork.Complete();
 
-                _logger.LogInformation($"Complaint Number: {values.ComplaintNumber} | Status changed from {_complaint.ComplaintStatus} to {ComplaintStatus.ASSIGNED} by {values.AssignedBy} at {DateTime.UtcNow}.");
+                // Dispatch domain events
+                await _domainEventDispatcher.DispatchEventsAsync(complaint.DomainEvents);
+                complaint.ClearDomainEvents();
 
-                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = "Complaint assigned successfully." };
-
+                return new GenericResponseDto
+                {
+                    responseCode = StatusCodes.Status200OK,
+                    response = "Complaint assigned successfully."
+                };
             }
             catch (Exception ex)
             {
-                return new GenericResponseDto { responseCode = StatusCodes.Status200OK, response = ex.Message };
+                _logger.LogError(ex, "Error assigning complaint {ComplaintNumber}", values.ComplaintNumber);
+                return new GenericResponseDto
+                {
+                    responseCode = StatusCodes.Status500InternalServerError,
+                    response = ex.Message
+                };
             }
-
         }
 
         public async Task<GenericResponseDto> CancelComplaint(ComplaintCancellationDto values)
@@ -226,7 +286,7 @@ namespace Modules.Customers.Application.UseCases
 
             foreach (var item in natureofComplaints)
             {
-                var result =  await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item));
+                var result = await _unitOfWork.NatureOfComplaint.Get(n => n.NatureOfComplaintId == Convert.ToInt32(item));
                 natureofComplaints_list.Add(new NatureOfComplaints(result!.NatureOfComplaintId, result.NatureOfComplaints!));
             }
 
@@ -308,7 +368,7 @@ namespace Modules.Customers.Application.UseCases
         public async Task<ComplaintReadDto> GetComplaintSummary(string complaintNumber)
         {
             var complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == complaintNumber);
-            
+
 
             if (complaint == null)
             {

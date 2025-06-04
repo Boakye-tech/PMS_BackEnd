@@ -54,14 +54,19 @@ public class RentalsServices : IRentalsServices
     // Shop/Office Type methods
     public async Task<IEnumerable<ShopOfficeTypesReadDto>> GetShopOfficeTypesAsync() =>
         await ShopOfficeTypesService.GetShopOfficeTypesAsync();
+
     public async Task<ShopOfficeTypesReadDto> GetShopOfficeTypesAsync(int value) =>
         await ShopOfficeTypesService.GetShopOfficeTypesAsync(value);
+
     public async Task<ShopOfficeTypesReadDto> GetShopOfficeTypesAsync(string value) =>
         await ShopOfficeTypesService.GetShopOfficeTypesAsync(value);
+
     public async Task<ReturnResponsesDto> CreateShopOfficeTypesAsync(ShopOfficeTypesCreateDto values) =>
         await ShopOfficeTypesService.CreateShopOfficeTypesAsync(values);
+
     public async Task<ReturnResponsesDto> UpdateShopOfficeTypesAsync(ShopOfficeTypesUpdateDto values) =>
         await ShopOfficeTypesService.UpdateShopOfficeTypesAsync(values);
+
     public async Task<ReturnResponsesDto> DeleteShopOfficeTypes(int shopOfficeTypesId) =>
         await ShopOfficeTypesService.DeleteShopOfficeTypes(shopOfficeTypesId);
 

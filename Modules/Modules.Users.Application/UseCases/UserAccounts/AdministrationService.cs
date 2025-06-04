@@ -27,8 +27,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly ILogger<AdministrationService> _logger;
         private readonly INotificationServices _notifyService;
 
-        public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,
-                                     ValidationService validationService, ILogger<AdministrationService> logger, INotificationServices notifyService) //, HttpClient httpClient 
+        public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,ValidationService validationService, ILogger<AdministrationService> logger, INotificationServices notifyService) 
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -785,21 +784,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            //if ((RegistrationStatus)user.Status != RegistrationStatus.Approved)
-            //{
-            //    _logger.LogWarning($"User account with id '{accountDisapproval.UserId}' has not been approved. Account cannot be disapproved", accountDisapproval.UserId);
-            //    return new DisapprovedUserAccountResponseDto
-            //    {
-            //        IsSuccess = false,
-            //        ErrorResponse = new DisapprovedUserAccountErrorResponseDto
-            //        {
-            //            StatusCode = StatusCodes.Status404NotFound,
-            //            StatusMessage = $"User account with id '{accountDisapproval.UserId}' has not been approved. Account cannot be disapproved"
-            //        }
-            //    };
-
-            //}
-
             var staff = await _userManager.FindByIdAsync(accountDisapproval.DisapprovedBy);
             if (staff is null)
             {
@@ -1133,55 +1117,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         public async Task<IEnumerable<ComplaintAssigneeDto>> GetComplaintAssignee(int departmentId, int unitId)
         {
-            /*
-            var staff_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff)
-                                  join department in await _unitOfWork.Department.GetAll()
-                                      on user.DepartmentId equals department.DepartmentId
-                                  join unit in await _unitOfWork.DepartmentUnit.GetAll()
-                                      on user.UnitId equals unit.UnitId
-                                  join usrole in await _unitOfWork.UsersRoles.GetAll()
-                                      on user.Id equals usrole.UserId
-                                  join role in await _unitOfWork.Roles.GetAll()
-                                      on usrole.RoleId equals role.Id
-                                  where user.DepartmentId == departmentId
-                                  orderby user.RegistrationDate descending
-                                  select new AdministrationStaffDto
-                                  (
-                                      user.Id,
-                                      user.IdentificationNumber!,
-                                      user.FirstName!,
-                                      user.MiddleName!,
-                                      user.LastName!,
-                                      department.DepartmentName,
-                                      unit.UnitName,
-                                      user.Email!,
-                                      user.PhoneNumber!,
-                                      role.Name!,
-                                      RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString(),
-                                      user.RegistrationDate
-                                  ));
-
-            if (!string.IsNullOrWhiteSpace(status))
-            {
-                staff_UserList = staff_UserList.Where(s => s.Status.Contains(status));
-            }
-
-            if (!string.IsNullOrWhiteSpace(searchParam))
-            {
-                staff_UserList = staff_UserList.Where(s =>
-                    s.FirstName!.Contains(searchParam) ||
-                    s.MiddleName!.Contains(searchParam) ||
-                    s.LastName!.Contains(searchParam) ||
-                    s.DepartmentName!.Contains(searchParam) ||
-                    s.UnitName!.Contains(searchParam) ||
-                    s.IdentificationNumber!.Contains(searchParam) ||
-                    s.EmailAddress!.Contains(searchParam) ||
-                    s.PhoneNumber!.Contains(searchParam)
-                );
-            }
-            */
-            
-
             var staff_UserList = (await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff && u.DepartmentId == departmentId && (u.UnitId == unitId || unitId == 0)))
                 .Select(u => new ComplaintAssigneeDto
                 (
@@ -1194,7 +1129,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         }
 
-        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId, string? searchParam, string? status)
+        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId, int unitId, string? searchParam, string? status)
         {
             var staff_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff)
                                   join department in await _unitOfWork.Department.GetAll()
@@ -1206,6 +1141,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                   join role in await _unitOfWork.Roles.GetAll()
                                       on usrole.RoleId equals role.Id
                                   where user.DepartmentId == departmentId
+                                  && (unitId == 0 || user.UnitId == unitId)
                                   orderby user.RegistrationDate descending
                                   select new AdministrationStaffDto
                                   (

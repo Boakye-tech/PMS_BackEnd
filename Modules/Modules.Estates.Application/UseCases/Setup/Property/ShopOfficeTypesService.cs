@@ -11,6 +11,7 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
+using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
 {
@@ -28,7 +29,25 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
 		public async Task<IEnumerable<ShopOfficeTypesReadDto>> GetShopOfficeTypesAsync()
 		{
 			var shopOfficeTypes = await _unitOfWork.ShopOfficeTypes.GetAll();
-			return _mapper.Map<IEnumerable<ShopOfficeTypesReadDto>>(shopOfficeTypes);
+			var rentalCategory = await _unitOfWork.RentalCategory.GetAll();
+			var rentalType = await _unitOfWork.RentalType.GetAll();
+
+            var result = from s in shopOfficeTypes
+                         join rc in rentalCategory on s.RentalCategoryId equals rc.RentalCategoryId
+                         join rt in rentalType on s.RentalTypeId equals rt.RentalTypeId
+                         select new ShopOfficeTypesReadDto(
+                             s.ShopOfficeTypeId,
+                             s.Code,
+                             s.TypeName,
+                             s.RentalCategoryId,
+                             rc.RentalCategories,
+                             s.RentalTypeId,
+                             rt.RentalTypes,
+                             s.Features, // Assuming Features is already a string[]
+                             s.Notes
+                         );
+
+            return result;
 		}
 
 		public async Task<ShopOfficeTypesReadDto> GetShopOfficeTypesAsync(int value)

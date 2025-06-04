@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Modules.Estates.Application.UseCases.Management.Complaints
 {
-	public class ComplaintMasterService : IComplaintMasterService
+    public class ComplaintMasterService : IComplaintMasterService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICustomerDomainService _domainService;
@@ -126,35 +126,48 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         public async Task<BaseResponseDto> CreateNewComplaint(ComplaintCreateDto values)
         {
-            string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty; 
-            int imageCount;
             string natureofComplaint = string.Empty;
 
-            if(values.NatureOfComplaintId!.Count() == 0)
+            //check of complaint type exist
+            var complaintType = await _unitOfWork.ComplaintType.Get(values.ComplaintTypeId);
+            if (complaintType is null)
             {
-                return new BaseResponseDto { StatusCode = 204 , StatusMessage = "Nature of complaint cannot be null or empty" };
+                _logger.LogWarning($"Complaint Type Id {values.ComplaintTypeId} provided does not exist.");
+                return new BaseResponseDto
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    StatusMessage = $"Complaint Type Id {values.ComplaintTypeId} provided does not exist."
+                };
+
+            }
+
+            //check of the nature of complaint is empty
+            if (values.NatureOfComplaintId!.Count() == 0)
+            {
+                _logger.LogWarning("Nature of complaint cannot be null or empty");
+                return new BaseResponseDto
+                {
+                    StatusCode = StatusCodes.Status204NoContent,
+                    StatusMessage = "Nature of complaint cannot be null or empty"
+                };
+            }
+
+            //check of nature of complaint exist
+            foreach (var item in values.NatureOfComplaintId!)
+            {
+                var nature = await _unitOfWork.NatureOfComplaint.Get(item);
+                if (nature is null)
+                {
+                    _logger.LogWarning($"Nature Of Complaint Id {item} provided does not exist.");
+                    return new BaseResponseDto
+                    {
+                        StatusCode = StatusCodes.Status404NotFound,
+                        StatusMessage = $"Nature Of Complaint Id {item} provided does not exist."
+                    };
+                }
             }
 
             natureofComplaint = string.Join(',', values.NatureOfComplaintId!);
-
-            imageCount = values.DocumentImages!.Count();
-            switch (imageCount)
-            {
-                case 1:
-                    _imageOne = values.DocumentImages![0];
-                    break;
-
-                case 2:
-                    _imageOne = values.DocumentImages![0];
-                    _imageTwo = values.DocumentImages![1];
-                    break;
-
-                case 3:
-                    _imageOne = values.DocumentImages![0];
-                    _imageTwo = values.DocumentImages![1];
-                    _imageThree = values.DocumentImages![2];
-                    break;
-            }
 
             try
             {
@@ -175,9 +188,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     complaintDate: DateTime.UtcNow,
                     submittedBy: values.SubmittedBy!,
                     submittedBy_PhoneNumber: values.SubmittedBy_PhoneNumber!,
-                    documentOne: _imageOne,
-                    documentTwo: _imageTwo,
-                    documentThree: _imageThree,
+                    documentList: values.DocumentImages!,
                     complaintStatus: ComplaintStatusEnum.SUBMITTED,
                     source: values.Source,
                     createdBy: values.CreatedBy!
@@ -199,11 +210,11 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     await _moduleComms.SendSubmittedComplaintDetailsAsync(values);
                 }
 
-                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Complaint submitted successfully." };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = $"Complaint submitted successfully with complaint number - {complaint.ComplaintNumber}." };
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.InnerException!.Message };
+                return new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.Message };
             }
         }
 
@@ -243,7 +254,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 ComplaintDate = complaint.ComplaintDate,
                 SubmittedBy = complaint.SubmittedBy,
                 SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
-                DocumentList = new List<string> { complaint.DocumentOne!, complaint.DocumentTwo!, complaint.DocumentThree! }.Where(d => !string.IsNullOrWhiteSpace(d)).ToList(),
+                DocumentList = complaint.DocumentList!.ToList(),
                 ComplaintStatus = await GetComplaintStatus(complaintNumber)
             };
 
@@ -260,7 +271,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                           select new ComplaintHistoryReadDto
                           {
                               ComplaintStatus = b.ComplaintStatus!,
-                              ComplaintDescription =  b.Description!,
+                              ComplaintDescription = b.Description!,
                               ActionOn = a.ActionOn
                           }).ToList();
 
@@ -483,7 +494,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                     return new BaseResponseDto { StatusCode = StatusCodes.Status403Forbidden, StatusMessage = $"Complaint number {values.ComplaintNumber} cannot be reviewed at this stage." };
                 }
 
-                if(values.IsReviewed!.ToUpper() == "NO")
+                if (values.IsReviewed!.ToUpper() == "NO")
                 {
                     _logger.LogWarning($"Complaint number {values.ComplaintNumber} has not been reviewed at this stage.");
                     return new BaseResponseDto { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = $"Complaint number {values.ComplaintNumber} has not been reviewed at this stage." };
@@ -514,28 +525,6 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         public async Task<BaseResponseDto> UpdateComplaint(ComplaintUpdateDto values)
         {
-            string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty;
-            int imageCount;
-
-            imageCount = values.DocumentImages!.Count();
-            switch (imageCount)
-            {
-                case 1:
-                    _imageOne = values.DocumentImages![0];
-                    break;
-
-                case 2:
-                    _imageOne = values.DocumentImages![0];
-                    _imageTwo = values.DocumentImages![1];
-                    break;
-
-                case 3:
-                    _imageOne = values.DocumentImages![0];
-                    _imageTwo = values.DocumentImages![1];
-                    _imageThree = values.DocumentImages![2];
-                    break;
-            }
-
             try
             {
                 var _complaint = await _unitOfWork.Complaint.Get(c => c.ComplaintNumber == values.ComplaintNumber);
@@ -558,9 +547,8 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 _complaint.IsTheMatterInCourt = values.IsTheMatterInCourt;
                 _complaint.DetailsOfComplaint = values.DetailsOfComplaint;
                 _complaint.AvailabilityDate = values.AvailabilityDate;
-                _complaint.DocumentOne = _imageOne;
-                _complaint.DocumentTwo = _imageTwo;
-                _complaint.DocumentThree = _imageThree;
+                _complaint.DocumentList = values.DocumentImages;
+
 
                 _unitOfWork.Complaint.Update(_complaint);
                 await _unitOfWork.Complete();
@@ -581,7 +569,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
         {
             try
             {
-                if(values.ComplaintNumber!.Count == 0)
+                if (values.ComplaintNumber!.Count == 0)
                 {
                     _logger.LogWarning("The complaint number list cannot be empty or null, it must contain at least one valid complaint number.");
                     return new BaseResponseDto { StatusCode = StatusCodes.Status204NoContent, StatusMessage = "The complaint number list cannot be empty or null, it must contain at least one valid complaint number." };
@@ -814,12 +802,12 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                              ).Trim(),
                              PhoneNumber = a.PrimaryMobileNumber,
                              EmailAddress = a.EmailAddress,
-                             PropertyNumber = property?.PropertyNumber,
+                             PropertyNumber = property?.PropertyNumber.Value,
                              PropertyLocation = locality?.LocalityName
                          };
 
             return result.ToList();
-          
+
         }
 
         public async Task<ComplainantDetailsDto> GetComplainantDetailsByPropertyNumber(string propertyNumber)
@@ -836,7 +824,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                          from property in propertyGroup.DefaultIfEmpty()
                          join c in allLocalities on property?.LocalityId equals c.LocalityId into localityGroup
                          from locality in localityGroup.DefaultIfEmpty()
-                         where property != null && property.PropertyNumber == propertyNumber
+                         where property != null && property.PropertyNumber.Value == propertyNumber
                          select new ComplainantDetailsDto
                          {
                              CustomerCode = a.CustomerCode,
@@ -848,7 +836,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                              ).Trim(),
                              PhoneNumber = a.PrimaryMobileNumber,
                              EmailAddress = a.EmailAddress,
-                             PropertyNumber = property?.PropertyNumber,
+                             PropertyNumber = property?.PropertyNumber.Value,
                              PropertyLocation = locality?.LocalityName
                          };
 
@@ -858,11 +846,11 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         public async Task<List<ComplainantSearchDto>> GetComplainantSearch(string customerCode_OR_propertyNumber)
         {
-            var result = from a in await _unitOfWork.PropertyMaster.GetAll(c => c.CustomerCode!.Contains(customerCode_OR_propertyNumber) || c.PropertyNumber!.Contains(customerCode_OR_propertyNumber))
+            var result = from a in await _unitOfWork.PropertyMaster.GetAll(c => c.CustomerCode!.Contains(customerCode_OR_propertyNumber) || c.PropertyNumber.Value.Contains(customerCode_OR_propertyNumber))
                          select new ComplainantSearchDto
                          {
                              CustomerCode = a.CustomerCode,
-                             PropertyNumber = a.PropertyNumber
+                             PropertyNumber = a.PropertyNumber.Value
                          };
 
             return result.ToList();

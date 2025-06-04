@@ -101,7 +101,9 @@ public class UnitOfWork: IUnitOfWork
 
         RentalCategory = new RentalCategoryRepository(_dbContext);
         RentalType = new RentalTypeRepository(_dbContext);
-        HouseTypes = new HouseTypesRepository(dbContext);
+        HouseTypes = new HouseTypesRepository(_dbContext);
+
+        Sites = new SitesRepository(_dbContext);
 
 }
 
@@ -191,6 +193,10 @@ public IAllocationTypeRepository AllocationType { get; private set; }
     public IRentalTypeRepository RentalType { get; private set; }
     public IHouseTypesRepository HouseTypes { get; private set; }
 
+    //June 4 '25
+    public ISitesRepository Sites { get; private set; }
+
+    //public ISitesRepository SitesRepository { get; private set; }
 
     public Task<int> Complete()
     {

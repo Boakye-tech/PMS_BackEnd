@@ -81,6 +81,8 @@ public static class ModuleExtensions
         services.AddScoped<IShopOfficeTypesService, ShopOfficeTypesService>();
         services.AddScoped<IHouseTypesService, HouseTypesService>();
 
+        services.AddScoped<ISitesService, SitesService>();
+        services.AddScoped<ILocalityAndSitesService, LocalityAndSitesService>();
 
 
         services.AddScoped<IActivityServices, ActivityServices>();

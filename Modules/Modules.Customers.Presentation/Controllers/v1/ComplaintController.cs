@@ -739,7 +739,7 @@ public class ComplaintController : ControllerBase
         try
         {
             var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.CreatedBy))
+            if (!string.Equals(userId, values.SubmittedBy))
             {
                 return Unauthorized();
             }

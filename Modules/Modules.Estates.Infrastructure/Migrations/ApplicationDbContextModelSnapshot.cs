@@ -78,17 +78,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("DispatachedTo_DepartmentUnit")
                         .HasColumnType("int");
 
-                    b.Property<string>("DocumentOne")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("DocumentThree")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("DocumentTwo")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<string>("DocumentList")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -442,16 +433,7 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyMasterId"));
 
-                    b.Property<double>("AcreageOne")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AcreageTwo")
-                        .HasColumnType("float");
-
                     b.Property<int>("AllocationTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ApartmentBlockNumberId")
                         .HasColumnType("int");
 
                     b.Property<int>("ApartmentTypeId")
@@ -464,6 +446,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("BlockNumber")
+                        .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
@@ -476,53 +459,15 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("BlockUnitId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CadastralPlanNumber")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Comments")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("CoordinateFive")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CoordinateFour")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CoordinateOne")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CoordinateSix")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CoordinateThree")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CoordinateTwo")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CustomerCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("DebtorType")
-                        .HasColumnType("int");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
@@ -530,15 +475,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FloorArea")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("FloorNumberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GroupNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("Images")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -552,12 +491,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("LandUseTypeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("LeaseExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("LeaseTerm")
-                        .HasColumnType("int");
-
                     b.Property<int>("LocalityId")
                         .HasColumnType("int");
 
@@ -567,58 +500,27 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MotherPropertyNumber")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
                     b.Property<string>("PlotNumber")
+                        .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("PlotSizeId")
+                    b.Property<int>("PropertyStatusId")
                         .HasColumnType("int");
-
-                    b.Property<int>("PropertyHeightId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PropertyNumber")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
 
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("RentalType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("RightOfEntry")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoomsOccupied")
                         .HasColumnType("int");
 
                     b.Property<int>("SchemeTypeId")
                         .HasColumnType("int");
 
-                    b.Property<double>("SellingPrice")
-                        .HasColumnType("float");
-
-                    b.Property<string>("SitePlanNumber")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("TotalNumberOfRooms")
+                    b.Property<int>("SiteId")
                         .HasColumnType("int");
 
                     b.HasKey("PropertyMasterId");
-
-                    b.HasIndex("PropertyNumber")
-                        .IsUnique();
 
                     b.ToTable("PropertyMaster", "est");
                 });
@@ -3940,12 +3842,229 @@ namespace Modules.Estates.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Sites", b =>
+                {
+                    b.Property<int>("SitesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SitesId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LocalityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SiteName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("SitesId");
+
+                    b.HasIndex("LocalityId", "SiteName")
+                        .IsUnique();
+
+                    b.ToTable("Sites", "est");
+
+                    b.HasData(
+                        new
+                        {
+                            SitesId = 1,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LocalityId = 1,
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteName = "SITE 3"
+                        },
+                        new
+                        {
+                            SitesId = 2,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LocalityId = 1,
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteName = "SITE 5"
+                        },
+                        new
+                        {
+                            SitesId = 3,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LocalityId = 1,
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteName = "SITE 7"
+                        },
+                        new
+                        {
+                            SitesId = 4,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LocalityId = 2,
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteName = "SITE 3"
+                        },
+                        new
+                        {
+                            SitesId = 5,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LocalityId = 2,
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SiteName = "TOWERS"
+                        });
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Registration.PropertyMaster", b =>
+                {
+                    b.OwnsOne("Modules.Estates.Domain.ValueObjects.Property.LeasePeriod", "Lease", b1 =>
+                        {
+                            b1.Property<int>("PropertyMasterId")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime>("CommencementDate")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("CommencementDate");
+
+                            b1.Property<DateTime>("ExpiryDate")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("LeaseExpiryDate");
+
+                            b1.Property<int>("TermInYears")
+                                .HasColumnType("int")
+                                .HasColumnName("LeaseTermInYears");
+
+                            b1.HasKey("PropertyMasterId");
+
+                            b1.ToTable("PropertyMaster", "est");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PropertyMasterId");
+                        });
+
+                    b.OwnsOne("Modules.Estates.Domain.ValueObjects.Property.PlotSize", "PlotSize", b1 =>
+                        {
+                            b1.Property<int>("PropertyMasterId")
+                                .HasColumnType("int");
+
+                            b1.Property<double>("Acreage")
+                                .HasColumnType("float")
+                                .HasColumnName("PlotAcreage");
+
+                            b1.Property<double>("Dimension")
+                                .HasColumnType("float")
+                                .HasColumnName("PlotDimension");
+
+                            b1.HasKey("PropertyMasterId");
+
+                            b1.ToTable("PropertyMaster", "est");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PropertyMasterId");
+                        });
+
+                    b.OwnsOne("Modules.Estates.Domain.ValueObjects.Property.PropertyCoordinates", "Coordinates", b1 =>
+                        {
+                            b1.Property<int>("PropertyMasterId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("CoordinateFive")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("CoordinateFive");
+
+                            b1.Property<string>("CoordinateFour")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("CoordinateFour");
+
+                            b1.Property<string>("CoordinateOne")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("CoordinateOne");
+
+                            b1.Property<string>("CoordinateSix")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("CoordinateSix");
+
+                            b1.Property<string>("CoordinateThree")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("CoordinateThree");
+
+                            b1.Property<string>("CoordinateTwo")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("CoordinateTwo");
+
+                            b1.HasKey("PropertyMasterId");
+
+                            b1.ToTable("PropertyMaster", "est");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PropertyMasterId");
+                        });
+
+                    b.OwnsOne("Modules.Estates.Domain.ValueObjects.Property.PropertyNumber", "PropertyNumber", b1 =>
+                        {
+                            b1.Property<int>("PropertyMasterId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("PropertyNumber");
+
+                            b1.HasKey("PropertyMasterId");
+
+                            b1.ToTable("PropertyMaster", "est");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PropertyMasterId");
+                        });
+
+                    b.Navigation("Coordinates")
+                        .IsRequired();
+
+                    b.Navigation("Lease")
+                        .IsRequired();
+
+                    b.Navigation("PlotSize")
+                        .IsRequired();
+
+                    b.Navigation("PropertyNumber")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ActivityType", b =>
                 {
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Activity", "Activity")
                         .WithMany("ActivityTypes")
                         .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Activity");
@@ -3956,7 +4075,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.LandUse", "LandUse")
                         .WithMany("LandUseTypes")
                         .HasForeignKey("LandUseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("LandUse");
@@ -3973,6 +4092,17 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Navigation("RentalCategory");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Sites", b =>
+                {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Locality", "Locality")
+                        .WithMany("Sites")
+                        .HasForeignKey("LocalityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Locality");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Activity", b =>
                 {
                     b.Navigation("ActivityTypes");
@@ -3981,6 +4111,11 @@ namespace Modules.Estates.Infrastructure.Migrations
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LandUse", b =>
                 {
                     b.Navigation("LandUseTypes");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Locality", b =>
+                {
+                    b.Navigation("Sites");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.RentalCategory", b =>

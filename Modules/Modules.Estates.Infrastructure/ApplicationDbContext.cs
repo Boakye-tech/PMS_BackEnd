@@ -10,6 +10,8 @@
 
 
 
+using System.Text.Json;
+
 namespace Modules.Estates.Infrastructure;
 
 public class ApplicationDbContext : ModuleDbContext
@@ -79,6 +81,10 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<ShopOfficeTypes> ShopOfficeTypes { get; set; }
     public DbSet<HouseTypes> HouseTypes { get; set; }
 
+    //4 June, 2025
+    public DbSet<Sites> Sites { get; set; }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -87,9 +93,46 @@ public class ApplicationDbContext : ModuleDbContext
         //set custom schema
         modelBuilder.HasDefaultSchema("est");
 
-        modelBuilder.Entity<PropertyMaster>()
-            .HasIndex(pm => pm.PropertyNumber)
-            .IsUnique(true);
+        modelBuilder.Entity<PropertyMaster>(builder =>
+        {
+            builder.OwnsOne(p => p.PropertyNumber, owned =>
+            {
+                owned.Property(pm => pm.Value)
+                .HasColumnName("PropertyNumber")
+                .IsRequired();
+            });
+
+            builder.OwnsOne(e => e.PlotSize, owned =>
+            {
+                owned.Property(p => p.Dimension)
+                     .HasColumnName("PlotDimension")
+                     .IsRequired();
+
+                owned.Property(p => p.Acreage)
+                     .HasColumnName("PlotAcreage")
+                     .IsRequired();
+            });
+
+
+            builder.OwnsOne(e => e.Coordinates, owned =>
+            {
+                owned.Property(p => p.CoordinateOne).HasColumnName("CoordinateOne").HasMaxLength(50).IsRequired();
+                owned.Property(p => p.CoordinateTwo).HasColumnName("CoordinateTwo").HasMaxLength(50).IsRequired();
+                owned.Property(p => p.CoordinateThree).HasColumnName("CoordinateThree").HasMaxLength(50);
+                owned.Property(p => p.CoordinateFour).HasColumnName("CoordinateFour").HasMaxLength(50);
+                owned.Property(p => p.CoordinateFive).HasColumnName("CoordinateFive").HasMaxLength(50);
+                owned.Property(p => p.CoordinateSix).HasColumnName("CoordinateSix").HasMaxLength(50);
+            });
+
+            builder.OwnsOne(e => e.Lease, owned =>
+            {
+                owned.Property(p => p.CommencementDate).HasColumnName("CommencementDate");
+                owned.Property(p => p.TermInYears).HasColumnName("LeaseTermInYears");
+                owned.Property(p => p.ExpiryDate).HasColumnName("LeaseExpiryDate");
+            });
+        });
+
+
 
         modelBuilder.Entity<CustomerMaster>()
             .HasIndex(cm => cm.CustomerCode)
@@ -98,6 +141,12 @@ public class ApplicationDbContext : ModuleDbContext
         modelBuilder.Entity<Complaint>()
             .HasIndex(c => c.ComplaintNumber)
             .IsUnique(true);
+
+        modelBuilder.Entity<Complaint>().Property(x => x.DocumentList)
+           .HasConversion(
+               v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null!),
+               v => JsonSerializer.Deserialize<string[]>(v, (JsonSerializerOptions)null!)!)
+           .HasColumnType("nvarchar(max)");
 
         modelBuilder.Entity<ComplaintStatuses>()
             .HasIndex(c => c.ComplaintStatus)

@@ -15,6 +15,14 @@ namespace Modules.Customers.Application.Interfaces.ModuleServices
 	public interface INotificationModuleService
 	{
         Task<bool> SendNotificationDetailsAsync(SendNotificationRequestDto payload);
+
+        //Task<TResponse?> SendGetAsync<TResponse>(string endpoint);
+        //Task<List<ComplaintStaffDto>?> GetComplaintStaffAsync<TResponse, TQuery>(TQuery query);
+
+        Task<List<ComplaintStaffDto>?> GetComplaintStaffAsync(string query);
+
     }
+
+
 }
 

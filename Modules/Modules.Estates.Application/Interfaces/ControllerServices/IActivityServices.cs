@@ -35,6 +35,18 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
 		Task<ReturnResponsesDto> CreatePropertyStatusAsync(PropertyStatusCreateDto values);
 		Task<ReturnResponsesDto> UpdatePropertyStatusAsync(PropertyStatusUpdateDto values);
 		Task<ReturnResponsesDto> DeletePropertyStatus(int propertyStatusId);
-	}
+
+        // Currency Exchange Rate methods
+        Task<IEnumerable<CurrencyExchangeRateReadDto>> GetCurrencyExchangeRateAsync();
+        Task<ReturnResponsesDto> CreateCurrencyExchangeRateAsync(CurrencyExchangeRateCreateDto values);
+        Task<ReturnResponsesDto> UpdateCurrencyExchangeRateAsync(CurrencyExchangeRateUpdateDto values);
+        Task<ReturnResponsesDto> DeleteCurrencyExchangeRateAsync(int currencyId);
+
+        // Lease Type and Period methods
+        Task<IEnumerable<LeaseTypeAndPeriodReadDto>> GetLeaseTypeAndPeriodAsync();
+        Task<ReturnResponsesDto> CreateLeaseTypeAndPeriodAsync(LeaseTypeAndPeriodCreateDto values);
+        Task<ReturnResponsesDto> UpdateLeaseTypeAndPeriodAsync(LeaseTypeAndPeriodUpdateDto values);
+        Task<ReturnResponsesDto> DeleteLeaseTypeAndPeriod(int leaseTypeAndPeriodId);
+    }
 }
 

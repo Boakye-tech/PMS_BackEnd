@@ -25,23 +25,20 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
 		Task<ReturnResponsesDto> UpdateLocalityAsync(LocalityUpdateDto values);
 		Task<ReturnResponsesDto> DeleteLocality(int localityId);
 
-		// Allocation Type methods
-		Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync();
+        //Site methods
+        Task<IEnumerable<SitesReadDto>> GetSitesAsync();
+        Task<ReturnResponsesDto> CreateSiteAsync(SitesCreateDto values);
+        Task<ReturnResponsesDto> UpdateSiteAsync(SitesUpdateDto values);
+        Task<ReturnResponsesDto> DeleteSite(int siteId);
+
+        //Locality and Sites method
+        Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync();
+
+        // Allocation Type methods
+        Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync();
 		Task<ReturnResponsesDto> CreateAllocationTypeAsync(AllocationTypeCreateDto values);
 		Task<ReturnResponsesDto> UpdateAllocationTypeAsync(AllocationTypeUpdateDto values);
 		Task<ReturnResponsesDto> DeleteAllocationType(int allocationTypeId);
-
-		// Lease Type and Period methods
-		Task<IEnumerable<LeaseTypeAndPeriodReadDto>> GetLeaseTypeAndPeriodAsync();
-		Task<ReturnResponsesDto> CreateLeaseTypeAndPeriodAsync(LeaseTypeAndPeriodCreateDto values);
-		Task<ReturnResponsesDto> UpdateLeaseTypeAndPeriodAsync(LeaseTypeAndPeriodUpdateDto values);
-		Task<ReturnResponsesDto> DeleteLeaseTypeAndPeriod(int leaseTypeAndPeriodId);
-
-		// Currency Exchange Rate methods
-		Task<IEnumerable<CurrencyExchangeRateReadDto>> GetCurrencyExchangeRateAsync();
-		Task<ReturnResponsesDto> CreateCurrencyExchangeRateAsync(CurrencyExchangeRateCreateDto values);
-		Task<ReturnResponsesDto> UpdateCurrencyExchangeRateAsync(CurrencyExchangeRateUpdateDto values);
-		Task<ReturnResponsesDto> DeleteCurrencyExchangeRateAsync(int currencyId);
 
 		// Land Use methods
 		Task<IEnumerable<LandUseReadDto>> GetLandUseAsync();
@@ -55,8 +52,11 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
 		Task<ReturnResponsesDto> UpdateLandUseTypeAsync(LandUseTypeUpdateDto values);
 		Task<ReturnResponsesDto> DeleteLandUseType(int landUseTypeId);
 
-		// Land Use and Land Use Type methods
+		// Land Use and Land Use Type method
 		Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync();
-	}
+
+
+
+    }
 }
 
