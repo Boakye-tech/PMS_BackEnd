@@ -94,8 +94,8 @@ namespace Modules.Notification.Infrastructure.Migrations
 
                     b.Property<string>("RecipientContact")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

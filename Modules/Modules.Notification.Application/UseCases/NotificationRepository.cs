@@ -106,6 +106,10 @@ namespace Modules.Notification.Application.UseCases
         public async Task<NotificationPreferencesReadDto?> GetUserPreferencesAsync(string userid)
         {
             var response = await _dbRepo.Get(np => np.UserId == userid);
+            if (response is null)
+                return null!;
+
+
             return new NotificationPreferencesReadDto
             {
                 Id = response!.Id,

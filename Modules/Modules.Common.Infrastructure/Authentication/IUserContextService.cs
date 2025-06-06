@@ -20,6 +20,10 @@ namespace Modules.Common.Infrastructure.Authentication
         string? GetAccessToken();
 
         string? UserCode();
+
+        string? UserEmail();
+
+        //string? UserFirebaseId();
     }
 }
 

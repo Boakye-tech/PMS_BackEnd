@@ -67,6 +67,22 @@ namespace Modules.Common.Infrastructure.Authentication
             return user?.FindFirst(ClaimTypes.PrimarySid)?.Value
                    ?? user?.FindFirst("primarysid")?.Value;
         }
+
+        public string? UserEmail()
+        {
+            var user = _httpContextAccessor.HttpContext?.User;
+            return user?.FindFirst(ClaimTypes.Email)?.Value
+                   ?? user?.FindFirst("email")?.Value;
+
+        }
+
+        //public string? UserFirebaseId()
+        //{
+        //    var user = _httpContextAccessor.HttpContext?.User;
+        //    return user?.FindFirst(ClaimTypes.UserData)?.Value
+        //           ?? user?.FindFirst("email")?.Value;
+
+        //}
     }
 }
 

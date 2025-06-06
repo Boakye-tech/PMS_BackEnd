@@ -11,6 +11,8 @@
 //  **************************************************/
 
 
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 namespace Modules.Notification.Presentation
 {
     public static class ModuleExtensions

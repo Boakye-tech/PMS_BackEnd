@@ -18,12 +18,12 @@ namespace Modules.Notification.Domain.Entities
         public Guid Id { get; private set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(200)]
         public string? RecipientContact { get; private set; }  // Can be email, phone number, or Firebase ID
 
         [Required]
         [StringLength(100)]
-        public string? Subject { get; private set; }
+        public string? Subject { get;  set; }
 
         [Required]
         public string? Message { get; private set; }

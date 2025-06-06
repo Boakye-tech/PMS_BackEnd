@@ -75,8 +75,39 @@ namespace Modules.Notification.Infrastructure.Repositories
 
         public async Task Update(T entity)
         {
+            /*
             var _udbs = _dbs.Attach(entity);
             _udbs.State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+            
+
+            var existing = _dbs.Local.FirstOrDefault(e => EF.Property<object>(e, "Id") == EF.Property<object>(entity, "Id"));
+
+            if (existing != null)
+            {
+                _dbContext.Entry(existing).State = EntityState.Detached;
+            }
+
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+            */
+
+            // Get the value of the "Id" property from the incoming entity
+            var entityId = entity.GetType().GetProperty("Id")?.GetValue(entity);
+
+            if (entityId != null)
+            {
+                var trackedEntity = _dbs.Local
+                    .FirstOrDefault(e =>
+                        e.GetType().GetProperty("Id")?.GetValue(e)?.Equals(entityId) == true);
+
+                if (trackedEntity != null)
+                {
+                    _dbContext.Entry(trackedEntity).State = EntityState.Detached;
+                }
+            }
+
+            _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
 

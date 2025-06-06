@@ -36,6 +36,7 @@ public static class ServiceCollectionExtensions
         services
             .AddDbContext<NotificationDbContext>(options => options.UseSqlServer(connectionString));
 
+
         services.AddTransient<IEmailSender, EmailSender>(i => new EmailSender(
             config["O356mailSender:Host"]!,
             config.GetValue<int>("O356mailSender:Port"),
@@ -44,6 +45,16 @@ public static class ServiceCollectionExtensions
             config["O356mailSender:Password"]!
             )
         );
+
+
+        //services.AddTransient<IEmailSender, EmailSender>(i => new EmailSender(
+        //    config["GmailSender:Host"]!,
+        //    config.GetValue<int>("GmailSender:Port"),
+        //    config.GetValue<bool>("GmailSender:EnableSSL"),
+        //    config["GmailSender:UserName"]!,
+        //    config["GmailSender:Password"]!
+        //    )
+        //);
 
 
         return services;

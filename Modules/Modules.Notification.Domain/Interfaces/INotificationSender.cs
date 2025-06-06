@@ -16,6 +16,7 @@ namespace Modules.Notification.Domain.Interfaces
 	{
         Task<string> SendSMSAsync(Notifications values);
         Task<string> SendEmailAsync(Notifications values);
+        //string SendEmailAsync(Notifications values);
         Task<string> PushAsync(Notifications values);
         Task<string> InAppAsync(Notifications values);
     }

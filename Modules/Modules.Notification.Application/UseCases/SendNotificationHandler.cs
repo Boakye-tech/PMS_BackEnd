@@ -13,7 +13,7 @@
 
 namespace Modules.Notification.Application.UseCases
 {
-    public class SendNotificationHandler : IRequestHandler<SendNotificationCommand, Guid>
+    public class SendNotificationHandler : IRequestHandler<SendNotificationCommand, string>
     {
         private readonly INotificationRepository _repository;
         private readonly INotificationSender _sender;
@@ -24,10 +24,19 @@ namespace Modules.Notification.Application.UseCases
             _sender = sender;
         }
 
-        public async Task<Guid> Handle(SendNotificationCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(SendNotificationCommand command, CancellationToken cancellationToken)
         {
             var notification_msg = new Notifications(command.Request.RecipientContact, command.Request.Subject, command.Request.Message, command.Request.Type, command.Request.UserId);
-            await _repository.AddAsync(notification_msg);
+
+
+            if (command.Request.Type != NotificationType.Email)
+            {
+                await _repository.AddAsync(notification_msg);
+            }
+
+            
+
+            var result = string.Empty;
 
             // Get user preferences
             var userPreferences = await _repository.GetUserPreferencesAsync(command.Request.UserId);
@@ -35,63 +44,99 @@ namespace Modules.Notification.Application.UseCases
             // If no preferences found, use the default type from the command
             if (userPreferences == null)
             {
-                return await SendNotificationByType(command.Request.Type, notification_msg);
+                return await SendNotificationByType(command.Request.Type, command);
             }
 
             // Send notifications based on user preferences
             if (userPreferences.EnableEmail)
             {
-                var emailNotification = new Notifications(command.Request.RecipientContact, $"{command.Request.Subject}-{command.Request.DisplayName}", command.Request.Message, NotificationType.Email, command.Request.UserId);
-                var result = await _sender.SendEmailAsync(emailNotification);
+                //var emailNotification = new Notifications(command.Request.RecipientContact, $"{command.Request.Subject}-{command.Request.DisplayName}", command.Request.Message, NotificationType.Email, command.Request.UserId);
+                //await _repository.AddAsync(emailNotification);
+                notification_msg.Subject = $"{command.Request.Subject}-{command.Request.DisplayName}";
+                await _repository.AddAsync(notification_msg);
+
+                result = await _sender.SendEmailAsync(notification_msg);
                 if (result == "success")
-                    emailNotification.MarkAsSent();
+                    notification_msg.MarkAsSent();
                 else
-                    emailNotification.Status = NotificationStatus.Failed;
-                await _repository.UpdateStatusAsync(emailNotification.Id, emailNotification.Status);
+                    notification_msg.Status = NotificationStatus.Failed;
+
+                //await _repository.UpdateStatusAsync(emailNotification.Id, emailNotification.Status);
+
+                //_response = result.ToString();
             }
 
             if (userPreferences.EnableSms)
             {
-                var smsNotification = new Notifications(command.Request.RecipientContact, command.Request.Subject, command.Request.Message, NotificationType.SMS, command.Request.UserId);
-                var result = await _sender.SendSMSAsync(smsNotification);
+                //var smsNotification = new Notifications(command.Request.RecipientContact, command.Request.Subject, command.Request.Message, NotificationType.SMS, command.Request.UserId);
+                //await _repository.AddAsync(smsNotification);
+
+                result = await _sender.SendSMSAsync(notification_msg);
                 if (result == "success")
-                    smsNotification.MarkAsSent();
+                    notification_msg.MarkAsSent();
                 else
-                    smsNotification.Status = NotificationStatus.Failed;
-                await _repository.UpdateStatusAsync(smsNotification.Id, smsNotification.Status);
+                    notification_msg.Status = NotificationStatus.Failed;
+
+                //await _repository.UpdateStatusAsync(smsNotification.Id, smsNotification.Status);
+                //_response = result.ToString();
             }
 
             if (userPreferences.EnablePush)
             {
-                var pushNotification = new Notifications(command.Request.RecipientContact, command.Request.Subject, command.Request.Message, NotificationType.Push, command.Request.UserId);
-                var result = await _sender.PushAsync(pushNotification);
+                //var pushNotification = new Notifications(command.Request.RecipientContact, command.Request.Subject, command.Request.Message, NotificationType.Push, command.Request.UserId);
+                //await _repository.AddAsync(pushNotification);
+
+                result = await _sender.PushAsync(notification_msg);
                 if (result.Contains("/messages/"))
-                    pushNotification.MarkAsSent();
+                    notification_msg.MarkAsSent();
                 else
-                    pushNotification.Status = NotificationStatus.Failed;
-                await _repository.UpdateStatusAsync(pushNotification.Id, pushNotification.Status);
+                    notification_msg.Status = NotificationStatus.Failed;
+
+                //await _repository.UpdateStatusAsync(pushNotification.Id, pushNotification.Status);
+                //_response = result.ToString();
             }
 
             if (userPreferences.EnableInApp)
             {
-                var inAppNotification = new Notifications(command.Request.RecipientContact, command.Request.Subject, command.Request.Message, NotificationType.InApp, command.Request.UserId);
-                var result = await _sender.InAppAsync(inAppNotification);
+                //var inAppNotification = new Notifications(command.Request.RecipientContact, command.Request.Subject, command.Request.Message, NotificationType.InApp, command.Request.UserId);
+                //await _repository.AddAsync(inAppNotification);
+
+                result = await _sender.InAppAsync(notification_msg);
                 if (result == "success")
-                    inAppNotification.MarkAsSent();
+                    notification_msg.MarkAsSent();
                 else
-                    inAppNotification.Status = NotificationStatus.Failed;
-                await _repository.UpdateStatusAsync(inAppNotification.Id, inAppNotification.Status);
+                    notification_msg.Status = NotificationStatus.Failed;
+
+
+                //await _repository.UpdateStatusAsync(inAppNotification.Id, inAppNotification.Status);
+                //_response = result.ToString();
             }
 
-            return notification_msg.Id;
+            await _repository.UpdateStatusAsync(notification_msg.Id, notification_msg.Status);
+
+            return result;
         }
 
-        private async Task<Guid> SendNotificationByType(NotificationType type, Notifications notification)
+        private async Task<string> SendNotificationByType(NotificationType type, SendNotificationCommand command)
         {
+            var result = string.Empty;
+
+
+            var notification = new Notifications(command.Request.RecipientContact, command.Request.Subject, command.Request.Message, type, command.Request.UserId);
+
+            if (type != NotificationType.Email)
+            {
+                await _repository.AddAsync(notification);
+            }
+
             switch (type)
             {
+                
                 case NotificationType.Email:
-                    var result = await _sender.SendEmailAsync(notification);
+                    notification = new Notifications(command.Request.RecipientContact, $"{command.Request.Subject}-{command.Request.DisplayName}", command.Request.Message, NotificationType.Email, command.Request.UserId);
+                    await _repository.AddAsync(notification);
+
+                    result = await _sender.SendEmailAsync(notification);
                     if (result == "success")
                         notification.MarkAsSent();
                     else
@@ -99,24 +144,24 @@ namespace Modules.Notification.Application.UseCases
                     break;
 
                 case NotificationType.SMS:
-                    var sent = await _sender.SendSMSAsync(notification);
-                    if (sent == "success")
+                    result = await _sender.SendSMSAsync(notification);
+                    if (result == "success")
                         notification.MarkAsSent();
                     else
                         notification.Status = NotificationStatus.Failed;
                     break;
 
                 case NotificationType.Push:
-                    var response = await _sender.PushAsync(notification);
-                    if (response.Contains("/messages/"))
+                    result = await _sender.PushAsync(notification);
+                    if (result.Contains("/messages/"))
                         notification.MarkAsSent();
                     else
                         notification.Status = NotificationStatus.Failed;
                     break;
 
                 case NotificationType.InApp:
-                    var _response = await _sender.InAppAsync(notification);
-                    if (_response == "success")
+                    result = await _sender.InAppAsync(notification);
+                    if (result == "success")
                         notification.MarkAsSent();
                     else
                         notification.Status = NotificationStatus.Failed;
@@ -124,7 +169,7 @@ namespace Modules.Notification.Application.UseCases
             }
 
             await _repository.UpdateStatusAsync(notification.Id, notification.Status);
-            return notification.Id;
+            return result;
         }
     }
 

@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
@@ -124,15 +126,28 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
-//builder.Services.AddTransient<IEmailSender, EmailSender>(i => new
-//        EmailSender(
-//            builder.Configuration["O356mailSender:Host"]!,
-//            builder.Configuration.GetValue<int>("O356mailSender:Port"),
-//            builder.Configuration.GetValue<bool>("O356mailSender:EnableSSL"),
-//            builder.Configuration["O356mailSender:UserName"]!,
-//            builder.Configuration["O356mailSender:Password"]!
-//            )
-//    );
+/*
+builder.Services.AddTransient<IEmailSender, EmailSender>(i => new
+        EmailSender(
+            builder.Configuration["O356mailSender:Host"]!,
+            builder.Configuration.GetValue<int>("O356mailSender:Port"),
+            builder.Configuration.GetValue<bool>("O356mailSender:EnableSSL"),
+            builder.Configuration["O356mailSender:UserName"]!,
+            builder.Configuration["O356mailSender:Password"]!
+            )
+    );
+
+
+builder.Services.AddTransient<IEmailSender, EmailSender>(i => new
+        EmailSender(
+            builder.Configuration["GmailSender:Host"]!,
+            builder.Configuration.GetValue<int>("GmailSender:Port"),
+            builder.Configuration.GetValue<bool>("GmailSender:EnableSSL"),
+            builder.Configuration["GmailSender:UserName"]!,
+            builder.Configuration["GmailSender:Password"]!
+            )
+    );
+*/
 
 FirebaseApp.Create(new AppOptions
 {

@@ -13,7 +13,7 @@
 
 namespace Modules.Notification.Application.UseCases
 {
-    public class SendNotificationCommand : IRequest<Guid>
+    public class SendNotificationCommand : IRequest<string>
     {
         public SendNotificationRequest Request { get; }
 

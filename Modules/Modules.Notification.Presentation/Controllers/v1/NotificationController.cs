@@ -11,6 +11,8 @@
 //  **************************************************/
 
 
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 namespace Modules.Notification.Presentation.Controllers.v1;
 
 [ApiController]
@@ -24,12 +26,16 @@ public class NotificationController : ControllerBase
     private readonly ISignalRNotificationService _signalRNotificationService;
     private readonly INotificationRepository _repo;
 
-    public NotificationController(ILogger<NotificationController> logger, IMediator mediator, ISignalRNotificationService signalRNotificationService, INotificationRepository repo)
+    private readonly IEmailSender _sendEmail;
+
+    public NotificationController(ILogger<NotificationController> logger, IMediator mediator, ISignalRNotificationService signalRNotificationService, INotificationRepository repo, IEmailSender sendEmail)
     {
         _logger = logger;
         _repo = repo;
         _mediator = mediator;
         _signalRNotificationService = signalRNotificationService;
+
+        _sendEmail = sendEmail;
     }
 
 
@@ -109,7 +115,32 @@ public class NotificationController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
+    }
 
+    /// <summary>
+    /// sends notification to recipient mobile phone or email address via email,sms,push,InApp
+    /// </summary>
+    [HttpPost]
+    [Route("SendEmailNotification")]
+    public async Task<IActionResult> SendEmailNotification([FromBody] SendNotificationRequestDto values)
+    {
+        try
+        {
+            SendNotificationRequestDto request = new SendNotificationRequestDto(values.RecipientContact, values.DisplayName, values.Subject, values.Message, values.Type, values.UserId);
+
+            //var notificationId = await _mediator.Send(new SendEmailNotificationCommand(request));
+
+            string subject_and_display = string.Concat(values.Subject, "-", values.DisplayName);
+            await _sendEmail.SendEmailAsync(values.RecipientContact, subject_and_display, values.Message);
+            return Ok();
+
+            //return Ok(notificationId);
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
     /// <summary>
@@ -148,7 +179,7 @@ public class NotificationController : ControllerBase
     {
         try
         {
-            var results = new List<Guid>();
+            var results = new List<string>();
 
             // Create and send individual notifications for each recipient
             foreach (var recipient in values.Recipients)
@@ -185,7 +216,7 @@ public class NotificationController : ControllerBase
             return Ok(new
             {
                 message = "Group notification sent successfully",
-                notificationIds = results
+                result = results
             });
         }
         catch (Exception ex)

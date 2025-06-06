@@ -13,7 +13,7 @@
 namespace Modules.Notification.Infrastructure.Services
 {
 	public class EmailSender : IEmailSender
-	{
+    {
         private string _host;
         private int _port;
         private bool _enableSSL;
@@ -43,7 +43,7 @@ namespace Modules.Notification.Infrastructure.Services
             string emailSubject = subject.Split("-")[0];
 
             return client.SendMailAsync(new MailMessage(new MailAddress(_userName, displayName).ToString(), email, emailSubject, htmlMessage) { IsBodyHtml = true });
-
+            //return result;
         }
     }
 }
