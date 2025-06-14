@@ -11,6 +11,8 @@
 //  **************************************************/
 
 
+using Modules.Estates.Application.DTO.Registration.Property;
+
 namespace Modules.Estates.Application.Interfaces.Management.Property
 {
     public interface IPropertyMasterService
@@ -21,6 +23,17 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
         //Task<AllocationTypeReadDto> GetAllocationTypeAsync(int value);
         //Task<AllocationTypeReadDto> GetAllocationTypeAsync(string value);
 
+
+
+        Task<ReturnResponsesDto> CreateApartment(ApartmentTypeCreateDto values);
+
+        //Task<ReturnResponsesDto> CreatePlot(PlotCreateDto values);
+
+        //Task<ReturnResponsesDto> CreateShopsOffice(ShopsOfficesDto values);
+
+        //Task<ReturnResponsesDto> CreateHouse(HouseCreateDto values);
+
+        //Task<ReturnResponsesDto> CreateRentalHouse(RentalHouseCreateDto values);
     }
 }
 

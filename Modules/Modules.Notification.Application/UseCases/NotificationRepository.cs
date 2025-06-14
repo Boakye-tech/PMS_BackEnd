@@ -121,14 +121,14 @@ namespace Modules.Notification.Application.UseCases
             };
         }
 
-        public async Task UpdateIsArchive(Guid notificationId)
+        public async Task UpdateIsArchive(NotificationIdDto values)
         {
             try
             {
-                var notification_msg = await _dbContext.Get(n => n.Id == notificationId);
+                var notification_msg = await _dbContext.Get(n => n.Id == values.notificationId);
                 if (notification_msg != null)
                 {
-                    notification_msg.IsArchive = true;
+                    notification_msg.IsArchive = values.ArchiveStatus;
                     await _dbContext.Update(notification_msg);
                 }
             }

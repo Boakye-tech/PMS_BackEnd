@@ -31,6 +31,8 @@ namespace Modules.Notification.Application.Dtos
     public record NotificationIdDto
     {
         public Guid notificationId { get; set; }
+
+        public bool ArchiveStatus { get; set; }
     }
 
 }

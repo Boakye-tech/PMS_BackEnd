@@ -41,7 +41,22 @@ namespace Modules.Estates.Presentation.Controllers.v1
         public IActionResult CreateRentalCategory([FromBody] RentalCategoryCreateDto values)
         {
             var result = _rentalsService.CreateRentalCategoryAsync(values).Result;
-            return Ok(result);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+
+
         }
 
         /// <summary>
@@ -90,7 +105,20 @@ namespace Modules.Estates.Presentation.Controllers.v1
         public IActionResult CreateRentalType([FromBody] RentalTypeCreateDto values)
         {
             var result = _rentalsService.CreateRentalTypeAsync(values).Result;
-            return Ok(result);
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+
         }
 
         /// <summary>

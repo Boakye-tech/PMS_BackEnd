@@ -319,8 +319,8 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                         new Claim(ClaimTypes.Role, userRoles!),
                         new Claim(ClaimTypes.Email, user.Email!),
                         new Claim(ClaimTypes.PrimarySid, user.IdentificationNumber!),
-                        new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!),
-                        new Claim(ClaimTypes.UserData, user.FirebaseId!)
+                        new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!)
+                        //new Claim(ClaimTypes.UserData, user.FirebaseId!)
                     };
 
             foreach (var permission in claims)

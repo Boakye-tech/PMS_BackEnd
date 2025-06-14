@@ -17,7 +17,7 @@ namespace Modules.Customers.Application.Interfaces.ModuleServices
         Task<bool> SendDataAsync<T>(string endpoint, T payload, string httpMethod);
 
         Task<TResponse?> SendGetAsync<TResponse>(string endpoint);
-        Task<TResponse?> SendGetWithQueryAsync<TResponse, TQuery>(string endpoint, TQuery queryParams);
+        Task<TResponse?> SendGetWithQueryAsync<TResponse>(string endpoint, string queryParams);
     }
 }
 

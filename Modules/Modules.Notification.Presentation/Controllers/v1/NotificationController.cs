@@ -288,7 +288,7 @@ public class NotificationController : ControllerBase
     {
         try
         {
-            await _repo.UpdateIsArchive(value.notificationId);
+            await _repo.UpdateIsArchive(value);
             return Ok(new FeedbackDto(StatusCodes.Status200OK, "Notifications archived successfully."));
         }
         catch (Exception ex)

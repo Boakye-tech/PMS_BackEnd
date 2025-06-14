@@ -26,7 +26,7 @@ global using Modules.Estates.Application.Interfaces.Management.Complaints;
 global using Modules.Estates.Application.UseCases.Setup.Property;
 global using Modules.Estates.Application.UseCases.Setup.Customer;
 global using Modules.Estates.Application.UseCases.Management.Customer;
-global using Modules.Estates.Application.UseCases.Management.Property;
+global using Modules.Estates.Application.UseCases.Registration.Property;
 
 global using Modules.Estates.Application.DTO.Management.Customer;
 global using Modules.Estates.Application.DTO.Management.Complaints;
@@ -43,7 +43,7 @@ global using Modules.Estates.Presentation.Constants;
 
 global using Modules.Estates.Application.DTO;
 
-global using Modules.Estates.Application.DTO.Management.Property;
+global using Modules.Estates.Application.DTO.Registration.Property;
 
 
 global using Modules.Estates.Application.Interfaces.ModuleServices;

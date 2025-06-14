@@ -20,7 +20,7 @@ namespace Modules.Notification.Application.Interfaces
         Task UpdateStatusAsync(Guid notificationId, NotificationStatus status);
 
         Task UpdateIsRead(Guid notificationId);
-        Task UpdateIsArchive(Guid notificationId);
+        Task UpdateIsArchive(NotificationIdDto values);
 
         Task<UserNotificationsReadDto> GetUserNotifications(string userId, int pageNumber, int pageSize, bool? isRead, bool? isArchive);
 

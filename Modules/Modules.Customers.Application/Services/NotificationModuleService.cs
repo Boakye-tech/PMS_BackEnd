@@ -26,7 +26,7 @@ namespace Modules.Customers.Application.Services
         {
             //throw new NotImplementedException();
 
-            var result = await _dispatchService.SendGetWithQueryAsync<List<ComplaintStaffDto>?, object>("Administration/StaffNotification", new { roleFilter = query });
+            var result = await _dispatchService.SendGetWithQueryAsync<List<ComplaintStaffDto>?>("Administration/StaffNotification","?roleFilter=" + query);
             return result;
         }
 

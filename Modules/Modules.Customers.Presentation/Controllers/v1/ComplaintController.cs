@@ -738,11 +738,11 @@ public class ComplaintController : ControllerBase
     {
         try
         {
-            var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.SubmittedBy))
-            {
-                return Unauthorized();
-            }
+            //var userId = _userContextService.GetUserId();
+            //if (!string.Equals(userId, values.CreatedBy))
+            //{
+            //    return Unauthorized();
+            //}
 
             if(values.Source == ComplaintSource.CUSTOMER)
             {

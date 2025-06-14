@@ -23,10 +23,14 @@ namespace Modules.Users.Domain.Entities
         [StringLength(50)]
         public string DepartmentName { get; set; }
 
+        //Navigation property for DepartmentUnits
+        public virtual ICollection<DepartmentUnit> DepartmentUnits { get; private set; }
+
         public Department(int departmentId, string departmentName)
         {
             DepartmentId = departmentId;
             DepartmentName = departmentName;
+            DepartmentUnits = new List<DepartmentUnit>();
         }
 
         public static Department Create(int departmentId, string departmentName)

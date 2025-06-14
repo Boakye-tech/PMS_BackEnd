@@ -51,6 +51,43 @@ namespace Modules.Estates.Domain.Entities.Registration
         public string CustomerCode { get; set; }
         public bool IsDeleted { get; private set; }
 
+        public double CostPrice { get; set; }
+        public double SellingPrice { get; set; }
+        public int CurrencyId { get; set; }
+
+        [StringLength(50)]
+        public string? RentalType { get; set; }
+        public int TotalNumberOfRooms { get; set; }
+        public int RoomsOccupied { get; set; }
+
+        public int ApartmentBlockNumberId { get; set; }
+        public int FloorNumberId { get; set; }
+
+        [StringLength(10)]
+        public string? FloorArea { get; set; }
+
+        public DateTime RightOfEntry { get; set; }
+
+        public int DebtorType { get; set; }
+
+        public int GroupNumber { get; set; }
+
+        [StringLength(25)]
+        public string? MotherPropertyNumber { get; set; }
+
+        [StringLength(255)]
+        public string? Comments { get; set; }
+
+        [StringLength(30)]
+        public string? SitePlanNumber { get; set; }
+
+        [StringLength(30)]
+        public string? CadastralPlanNumber { get; set; }
+
+
+
+
+
         // For EF Core
         private PropertyMaster() { }
 
@@ -58,7 +95,8 @@ namespace Modules.Estates.Domain.Entities.Registration
             int allocationTypeId,
             string allocationTypeInitial,
             string blockNumber,
-            string plotNumber,
+            int NumberFrom,
+            int NumberTo,
             double plotDimension,
             PropertyCoordinates coordinates, bool isApartment = false, string blockUnit = null, bool isLargeScale = false)
         {
@@ -69,7 +107,8 @@ namespace Modules.Estates.Domain.Entities.Registration
                 localityInitial,
                 allocationTypeInitial,
                 blockNumber,
-                plotNumber,
+                NumberFrom,
+                NumberTo,
                 isApartment,
                 blockUnit);
 

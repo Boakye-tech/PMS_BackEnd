@@ -9,6 +9,8 @@
 //  **************************************************/
 
 
+using System.Linq;
+
 namespace Modules.Users.Application.UseCases
 {
 	public class DepartmentUnitService : IDepartmentUnitService
@@ -47,6 +49,27 @@ namespace Modules.Users.Application.UseCases
             _unitOfWork.DepartmentUnit.Delete(unit!);
             await _unitOfWork.Complete();
             return new GenericResponseDto("success");
+        }
+
+        public async Task<List<DepartmentsAndUnitsReadDto>> GetDepartmentsAndUnitsAsync()
+        {
+            // Get all departments and units in a single query using Include
+            var departments = await _unitOfWork.Department.GetAll(includes: new List<string> { "DepartmentUnits" });
+
+            // Create a dictionary for quick lookup of units by department id
+            var departmentsUnits = departments.Select(departments =>
+            {
+                var departmentUnits = _mapper.Map<List<DepartmentsUnitsReadDto>>(departments.DepartmentUnits);
+                return new DepartmentsAndUnitsReadDto(
+                    new DepartmentsReadDto(
+                    departments.DepartmentId,
+                    departments.DepartmentName,
+                    false),
+                    departmentUnits
+                );
+            }).ToList();
+
+            return departmentsUnits;
         }
 
         public async Task<IEnumerable<DepartmentUnitReadDto>> GetDepartmentUnitAsync()

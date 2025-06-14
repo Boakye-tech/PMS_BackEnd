@@ -78,17 +78,8 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<int>("DispatachedTo_DepartmentUnit")
                         .HasColumnType("int");
 
-                    b.Property<string>("DocumentOne")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("DocumentThree")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("DocumentTwo")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<string>("DocumentList")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()

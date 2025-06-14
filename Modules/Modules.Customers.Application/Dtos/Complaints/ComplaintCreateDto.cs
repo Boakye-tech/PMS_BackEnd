@@ -72,6 +72,9 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         public ComplaintSource Source { get; set; }
 
+        //[StringLength(36)]
+        //public string? CreatedBy { get; set; }
+
     }
 }
 

@@ -19,5 +19,9 @@ namespace Modules.Users.Application.Dtos.Entities
 
     public record UnitReadDto(int UnitId, string UnitName);
 
+
+    public record DepartmentsReadDto(int DepartmentId, string DepartmentName, bool IsOpen);
+    public record DepartmentsUnitsReadDto(int UnitId, string UnitName);
+    public record DepartmentsAndUnitsReadDto(DepartmentsReadDto Department, List<DepartmentsUnitsReadDto> DepartmentUnits);
 }
 

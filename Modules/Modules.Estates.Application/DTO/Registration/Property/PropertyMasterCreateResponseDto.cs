@@ -11,7 +11,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Management.Property
+namespace Modules.Estates.Application.DTO.Registration.Property
 {
 
     public record PropertyMasterCreatePlotResponseDto

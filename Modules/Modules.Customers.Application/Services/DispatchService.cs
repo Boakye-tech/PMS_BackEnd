@@ -104,11 +104,13 @@ namespace Modules.Customers.Application.Services
             }
         }
 
-        public async Task<TResponse?> SendGetWithQueryAsync<TResponse, TQuery>(string endpoint, TQuery queryParams)
+        public async Task<TResponse?> SendGetWithQueryAsync<TResponse>(string endpoint, string queryParams)
         {
             var baseUrl = _config!.GetSection("ModuleUrl").GetSection("BaseUrl").Value;
             var token = _userContextService!.GetAccessToken();
-            var url = BuildUrlWithQueryParams($"{baseUrl}{endpoint}", queryParams);
+            //var url = BuildUrlWithQueryParams($"{baseUrl}{endpoint}", queryParams);
+
+            var url = $"{baseUrl}{endpoint}{queryParams}";
 
             try
             {

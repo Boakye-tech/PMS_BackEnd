@@ -27,7 +27,7 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 			Value = value;
 		}
 
-		public static Result<PropertyNumber> Create(string landUseInitial,string landUseTypeInitial,string localityInitial,string allocationTypeInitial,string blockNumber,string plotNumber,bool isApartment = false,string blockUnit = null!)
+		public static Result<PropertyNumber> Create(string landUseInitial,string landUseTypeInitial,string localityInitial,string allocationTypeInitial,string blockNumber,int NumberFrom, int NumberTo,bool isApartment = false,string blockUnit = null!)
 		{
 			if (string.IsNullOrWhiteSpace(landUseInitial) || landUseInitial.Length > 3)
 				return Result<PropertyNumber>.Failure("Land use initial must not be null or exceed 3 characters.");
@@ -38,7 +38,7 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 			if (string.IsNullOrWhiteSpace(allocationTypeInitial) || allocationTypeInitial.Length > 3)
 				return Result<PropertyNumber>.Failure("Allocation Type Initial must not be null or exceed 3 characters.");
 
-			if (string.IsNullOrWhiteSpace(plotNumber) || plotNumber == "0")
+			if (NumberFrom == 0)
 				return Result<PropertyNumber>.Failure("Plot number cannot be null or zero.");
 
 			if (isApartment && string.IsNullOrWhiteSpace(blockUnit))
@@ -50,18 +50,18 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 			if (landUseInitial == "SHP")
 			{
 				propertyNumber = string.IsNullOrWhiteSpace(blockNumber)
-					? $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{plotNumber}"
-					: $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{plotNumber}";
+					? $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{NumberFrom}"
+					: $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{NumberFrom}";
 			}
 			else if (isApartment)
 			{
-				propertyNumber = $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{blockUnit}{delimiter}{plotNumber}";
+				propertyNumber = $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{blockUnit}{delimiter}{NumberFrom}";
 			}
 			else
 			{
 				propertyNumber = string.IsNullOrWhiteSpace(blockNumber)
-					? $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{plotNumber}"
-					: $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{plotNumber}";
+					? $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{NumberFrom}"
+					: $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{NumberFrom}";
 			}
 
 			return Result<PropertyNumber>.Success(new PropertyNumber(propertyNumber));

@@ -833,6 +833,18 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// Returns a list of exisitng departments
         /// </summary>
         [HttpGet]
+        [Route("GetDepartmentsAndDepartmentUnits")]
+        [AllowAnonymous]
+        //[Authorize(Policy = "Permission:Users.READ")]
+        public async Task<ActionResult<IEnumerable<DepartmentsAndUnitsReadDto>>> GetDeGetDepartmentsAndDepartmentUnitspartments()
+        {
+            return Ok(await _departmentUnitService.GetDepartmentsAndUnitsAsync());
+        }
+
+        /// <summary>
+        /// Returns a list of exisitng departments
+        /// </summary>
+        [HttpGet]
         [Route("GetDepartments")]
         [AllowAnonymous]
         //[Authorize(Policy = "Permission:Users.READ")]

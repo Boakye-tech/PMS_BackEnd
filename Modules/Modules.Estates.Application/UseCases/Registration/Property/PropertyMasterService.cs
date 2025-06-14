@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Registration/Property/PropertyMasterService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,9 +10,10 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Modules.Estates.Application.DTO.Registration.Property;
 using Modules.Estates.Domain.ValueObjects.Property;
 
-namespace Modules.Estates.Application.UseCases.Management.Property
+namespace Modules.Estates.Application.UseCases.Registration.Property
 {
     public class PropertyMasterService : IPropertyMasterService
     {
@@ -23,6 +26,26 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             _mapper = mapper;
         }
 
+        public Task<ReturnResponsesDto> CreateApartment(ApartmentTypeCreateDto values)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public Task<ReturnResponsesDto> CreateApartment(ApartmentTypeCreateDto values)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task<ReturnResponsesDto> CreateHouse(HouseCreateDto values)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task<ReturnResponsesDto> CreatePlot(PlotCreateDto values)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         public async Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values)
         {
             try
@@ -30,20 +53,22 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                 var propertyResult = PropertyMaster.Create(
                     values.PropertyTypeId,
                     values.LandUseId,
-                    values.LandUseInitial,
+                    string.Empty, //values.LandUseInitial,
                     values.LandUseTypeId,
-                    values.LandUseTypeInitial,
+                     string.Empty, //values.LandUseTypeInitial,
                     values.LocalityId,
-                    values.LocalityInitial,
+                     string.Empty, //values.LocalityInitial,
                     values.AllocationTypeId,
-                    values.AllocationTypeInitial,
+                     string.Empty, //values.AllocationTypeInitial,
                     values.BlockNumber!,
-                    values.PlotNumber,
+                    values.NumberFrom,
+                    values.NumberTo,
                     values.AcreageOne,
                     PropertyCoordinates.Create("", "", "", "", "", "").Value,
                     false,
                     null,
-                    false);
+                    false
+                    );
 
                 if (!propertyResult.IsSuccess)
                 {
@@ -111,6 +136,16 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                 };
             }
         }
+
+        public Task<ReturnResponsesDto> CreateRentalHouse(RentalHouseCreateDto values)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public Task<ReturnResponsesDto> CreateShopsOffice(ShopsOfficesDto values)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Task<IEnumerable<PropertyMasterDto>> GetProperties(int localityId)
         {

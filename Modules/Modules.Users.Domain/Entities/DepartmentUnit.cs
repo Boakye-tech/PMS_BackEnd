@@ -18,7 +18,10 @@ namespace Modules.Users.Domain.Entities
 		[Required]
 		public int DepartmentId { get; set; }
 
-		[Key]
+        // Navigation property for Department
+        public virtual Department? Department { get; private set; }
+
+        [Key]
 		[Required]
         public int UnitId { get; set; }
 
@@ -26,7 +29,10 @@ namespace Modules.Users.Domain.Entities
 		[StringLength(30)]
         public string UnitName { get; set; }
 
-		public DepartmentUnit(int departmentId, int unitId, string unitName)
+
+
+
+        public DepartmentUnit(int departmentId, int unitId, string unitName)
 		{
 			DepartmentId = departmentId;
 			UnitId = unitId;
