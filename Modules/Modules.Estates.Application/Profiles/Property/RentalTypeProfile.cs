@@ -10,9 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using AutoMapper;
-using Modules.Estates.Application.DTO.Setup.Property;
-using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.Profiles.Property
 {

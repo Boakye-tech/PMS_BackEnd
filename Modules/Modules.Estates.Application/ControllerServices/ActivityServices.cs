@@ -18,19 +18,21 @@ public class ActivityServices : IActivityServices
 {
     public IActivityService ActivityService { get; }
     public IActivityTypeService ActivityTypeService { get; }
-    public IActivityAndActivityTypeService ActivityAndActivityTypeService { get; }
+
+    //public IActivityAndActivityTypeService ActivityAndActivityTypeService { get; }
+
     public IPropertyStatusService PropertyStatusService { get; }
 
     public ICurrencyExchangeRateService CurrencyExchangeRateService { get; }
     public ILeaseTypeAndPeriodService LeaseTypeAndPeriodService { get; }
 
 
-    public ActivityServices(IActivityService activityService,IActivityTypeService activityTypeService, IActivityAndActivityTypeService activityAndActivityTypeService, IPropertyStatusService propertyStatusService,
-                            ICurrencyExchangeRateService currencyExchangeRateService, ILeaseTypeAndPeriodService leaseTypeAndPeriodService)
+    public ActivityServices(IActivityService activityService,IActivityTypeService activityTypeService,IPropertyStatusService propertyStatusService,
+                            ICurrencyExchangeRateService currencyExchangeRateService, ILeaseTypeAndPeriodService leaseTypeAndPeriodService) // IActivityAndActivityTypeService activityAndActivityTypeService, 
     {
         ActivityService = activityService;
         ActivityTypeService = activityTypeService;
-        ActivityAndActivityTypeService = activityAndActivityTypeService;
+        //ActivityAndActivityTypeService = activityAndActivityTypeService;
         PropertyStatusService = propertyStatusService;
 
         CurrencyExchangeRateService = currencyExchangeRateService;
@@ -64,7 +66,7 @@ public class ActivityServices : IActivityServices
 
 
     public async Task<List<ActivityAndActivityTypeReadDto>> GetActivityAndActivityTypeAsync() =>
-        await ActivityAndActivityTypeService.GeActivityAndActivityTypeAsync();
+        await ActivityService.GeActivityAndActivityTypeAsync();
 
     // Property Status methods
     public async Task<IEnumerable<PropertyStatusReadDto>> GetPropertyStatusAsync() =>

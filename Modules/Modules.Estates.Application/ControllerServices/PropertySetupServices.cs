@@ -11,7 +11,7 @@
 //  **************************************************/
 
 
-using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
+
 using Modules.Estates.Application.UseCases.Setup.Property;
 
 namespace Modules.Estates.Application.ControllerServices;
@@ -20,28 +20,25 @@ public class PropertySetupServices : IPropertySetupServices
 {
     public ILocalityService LocalityService { get; }
     public ISitesService SitesService { get; }
-    public ILocalityAndSitesService LocalityAndSitesService { get; }
 
     public IAllocationTypeService AllocationTypeService { get; }
 
     public ILandUseService LandUseService { get; }
     public ILandUseTypeService LandUseTypeService { get; }
-    public ILandUseAndLandUseTypeService LandUseAndLandUseTypeService { get; }
 
+    public ISchemeTypeService SchemeTypeService { get; }
 
-    public PropertySetupServices(IAllocationTypeService allocationTypeService, ILocalityService localityService,ISitesService sitesService, ILocalityAndSitesService localityAndSitesService,
-                                 ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILandUseAndLandUseTypeService landUseAndLandUseTypeService)
+    public PropertySetupServices(IAllocationTypeService allocationTypeService, ILocalityService localityService,ISitesService sitesService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ISchemeTypeService schemeTypeService) 
     {
         AllocationTypeService = allocationTypeService;
 
         LocalityService = localityService;
         SitesService = sitesService;
-        LocalityAndSitesService = localityAndSitesService;
 
         LandUseService = landUseService;
         LandUseTypeService = landUseTypeService;
-        LandUseAndLandUseTypeService = landUseAndLandUseTypeService;
 
+        SchemeTypeService = schemeTypeService;
     }
 
     // Locality methods
@@ -62,6 +59,10 @@ public class PropertySetupServices : IPropertySetupServices
 
     public async Task<ReturnResponsesDto> DeleteLocality(int localityId) =>
         await LocalityService.DeleteLocality(localityId);
+
+
+    public async Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync() =>
+        await LocalityService.GetLocalityAndSitesAsync();
 
     //Allocation type methods
     public async Task<IEnumerable<AllocationTypeReadDto>> GetAllocationTypeAsync() =>
@@ -103,6 +104,8 @@ public class PropertySetupServices : IPropertySetupServices
     public async Task<ReturnResponsesDto> DeleteLandUse(int landUseId) =>
         await LandUseService.DeleteLandUse(landUseId);
 
+    public async Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync() =>
+        await LandUseService.GetLandUseAndLandUseTypeAsync();
 
     // Land Use Type methods
     public async Task<IEnumerable<LandUseTypeReadDto>> GetLandUseTypeAsync() =>
@@ -123,10 +126,6 @@ public class PropertySetupServices : IPropertySetupServices
     public async Task<ReturnResponsesDto> DeleteLandUseType(int landUseTypeId) =>
         await LandUseTypeService.DeleteLandUseType(landUseTypeId);
 
-    public async Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync() =>
-        await LandUseAndLandUseTypeService.GetLandUseAndLandUseTypeAsync();
-
-
 
     //Sites methods
     public async Task<IEnumerable<SitesReadDto>> GetSitesAsync() =>
@@ -141,7 +140,18 @@ public class PropertySetupServices : IPropertySetupServices
     public async Task<ReturnResponsesDto> DeleteSite(int siteId) =>
         await SitesService.DeleteSites(siteId);
 
-    public async Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync() =>
-        await LocalityAndSitesService.GetLocalityAndSitesAsync();
+    //scheme methods
+    public async Task<IEnumerable<SchemeTypeReadDto>> GetSchemeTypeAsync() =>
+        await SchemeTypeService.GetSchemeTypeAsync();
+
+    public async Task<ReturnResponsesDto> CreateSchemeTypeAsync(SchemeTypeCreateDto values) =>
+        await SchemeTypeService.CreateSchemeTypeAsync(values);
+
+    public async Task<ReturnResponsesDto> UpdateSchemeTypeAsync(SchemeTypeUpdateDto values) =>
+        await SchemeTypeService.UpdateSchemeTypeAsync(values);
+
+    public async Task<ReturnResponsesDto> DeleteSchemeType(int schemeId) =>
+        await SchemeTypeService.DeleteSchemeType(schemeId);
+
 
 }

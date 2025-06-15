@@ -50,7 +50,7 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<Locality> Locality { get; set; }
     public DbSet<PlotDimension> PlotDimension { get; set; }
     public DbSet<PropertyHeight> PropertyHeight { get; set; }
-    public DbSet<PropertyType> PropertyType { get; set; }
+    public DbSet<PlotType> PlotType { get; set; }
 
     public DbSet<Activity> Activity { get; set; }
     public DbSet<ActivityType> ActivityType { get; set; }
@@ -84,6 +84,9 @@ public class ApplicationDbContext : ModuleDbContext
     //4 June, 2025
     public DbSet<Sites> Sites { get; set; }
 
+    //15 June, 2025
+    public DbSet<Types> Types { get; set; }
+    public DbSet<SchemeType> SchemeType { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

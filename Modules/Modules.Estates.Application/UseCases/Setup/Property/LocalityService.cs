@@ -143,5 +143,29 @@ public class LocalityService : ILocalityService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync()
+    {
+        // Get all localities and sites in a single query using Include
+        var localities = await _unitOfWork.Locality.GetAll(includes: new List<string> { "Sites" });
+
+        // Create a dictionary for quick lookup of land use types by land use ID
+        var localitiesAndSites = localities.Select(locality =>
+        {
+            var sites = _mapper.Map<List<SitesReadDto>>(locality.Sites);
+            return new LocalityAndSitesReadDto(
+                new LocalityReadsDto(
+                locality.LocalityId,
+                locality.LocalityInitial!,
+                locality.LocalityName!,
+                locality.CustomerCode,
+                locality.CustomerCodeCounter,
+                false),
+                sites
+            );
+        }).ToList();
+
+        return localitiesAndSites;
+    }
 }
 

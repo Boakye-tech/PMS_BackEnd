@@ -363,31 +363,30 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Returns a list of property types
+        /// Returns a list of plot types
         /// </summary>
         [HttpGet]
-        [Route("GetPropertyTypes")]
-        public async Task<ActionResult<IEnumerable<PropertyTypeReadDto>>> GetPropertyTypes()
+        [Route("GetPlotTypes")]
+        public async Task<ActionResult<IEnumerable<PlotTypeReadDto>>> GetPlotTypes()
         {
-            return Ok(await _propertyFeatureServices.GetPropertyTypeAsync());
+            return Ok(await _propertyFeatureServices.GetPlotTypeAsync());
         }
 
         /// <summary>
-        /// Creates a new property type
+        /// Creates a new plot type
         /// </summary>
         /// <remarks>
         /// Creates a new property type in the system
         ///
         /// **Sample Request:**
         ///
-        ///     POST /CreatePropertyType
+        ///     POST /CreatePlotType
         ///
         /// **Sample Request Body:**
         /// 
         ///     {
-        ///         "propertyTypeId": 0,
-        ///         "propertyType": "RESIDENTIAL",
-        ///         "propertyTypeDescription": "Residential property",
+        ///         "PlotTypeId": 0,
+        ///         "PlotType": "SERVICED PLOT",
         ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
         ///     }
         ///
@@ -395,26 +394,21 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// 
         ///     {
         ///         "code": 201,
-        ///         "message": "Property type created successfully.",
-        ///         "data": {
-        ///             "propertyTypeId": 1,
-        ///             "propertyType": "RESIDENTIAL",
-        ///             "propertyTypeDescription": "Residential property"
-        ///         }
+        ///         "message": "Plot type created successfully."
         ///     }
         /// </remarks>
         [HttpPost]
-        [Route("CreatePropertyType")]
+        [Route("CreatePlotType")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> CreatePropertyType([FromBody] PropertyTypeCreateDto values)
+        public async Task<ActionResult> CreatePlotType([FromBody] PlotTypeCreateDto values)
         {
             try
             {
-                var result = await _propertyFeatureServices.CreatePropertyTypeAsync(values);
+                var result = await _propertyFeatureServices.CreatePlotTypeAsync(values);
 
                 if (result.IsSuccess)
                 {
@@ -437,21 +431,20 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Updates the details of an existing property type
+        /// Updates the details of an existing plot type
         /// </summary>
         /// <remarks>
-        /// Modifies/updates an existing property type based on the property type id 
+        /// Modifies/updates an existing plot type based on the plot type id 
         ///
         /// **Sample Request:**
         ///
-        ///     PUT /UpdatePropertyType
+        ///     PUT /UpdatePlotType
         ///
         /// **Sample Request Body:**
         /// 
         ///     {
-        ///         "propertyTypeId": 1,
-        ///         "propertyType": "RESIDENTIAL",
-        ///         "propertyTypeDescription": "Updated Residential property",
+        ///         "PlotTypeId": 1,
+        ///         "PlotType": "SEMI-SERVICED PLOT",
         ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
         ///     }
         ///
@@ -459,24 +452,19 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// 
         ///     {
         ///         "code": 200,
-        ///         "message": "Property type details modified successfully.",
-        ///         "data": {
-        ///             "propertyTypeId": 1,
-        ///             "propertyType": "RESIDENTIAL",
-        ///             "propertyTypeDescription": "Updated Residential property"
-        ///         }
+        ///         "message": "Plot type details modified successfully."
         ///     }
         /// </remarks>
         [HttpPut]
-        [Route("UpdatePropertyType")]
+        [Route("UpdatePlotType")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult<PropertyTypeReadDto>> UpdatePropertyType([FromBody] PropertyTypeUpdateDto values)
+        public async Task<ActionResult<PlotTypeReadDto>> UpdatePlotType([FromBody] PlotTypeUpdateDto values)
         {
-            var result = await _propertyFeatureServices.UpdatePropertyTypeAsync(values);
+            var result = await _propertyFeatureServices.UpdatePlotTypeAsync(values);
 
             if (result.IsSuccess)
             {
@@ -496,17 +484,17 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Deletes a property type by its ID
         /// </summary>
-        /// <param name="propertyTypeId">The ID of the property type to delete</param>
+        /// <param name="PlotTypeId">The ID of the property type to delete</param>
         /// <returns>Success or error response</returns>
-        [HttpDelete("DeletePropertyType/{propertyTypeId}")]
+        [HttpDelete("DeletePlotType/{plotTypeId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> DeletePropertyType(int propertyTypeId)
+        public async Task<ActionResult> DeletePlotType(int plotTypeId)
         {
             try
             {
-                var result = await _propertyFeatureServices.DeletePropertyType(propertyTypeId);
+                var result = await _propertyFeatureServices.DeletePlotType(plotTypeId);
 
                 if (result.IsSuccess)
                 {
@@ -1556,6 +1544,162 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        //------scheme types
+
+        /// <summary>
+        /// Returns a list of all scheme types
+        /// </summary>
+        [HttpGet]
+        [Route("GetSchemeTypes")]
+        public async Task<ActionResult<IEnumerable<SchemeTypeReadDto>>> GetSchemeTypes()
+        {
+            return Ok(await _propertySetupServices.GetSchemeTypeAsync());
+        }
+
+        /// <summary>
+        /// Creates a new scheme type
+        /// </summary>
+        /// <remarks>
+        /// Creates a new scheme type in the system
+        ///
+        /// **Sample Request:**
+        ///
+        ///     POST /CreateSchemeType
+        ///
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "schemeType": "TDC HOUSE OWNERHISP SCHEME",
+        ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        ///     }
+        ///
+        /// **Sample Response 201:**
+        /// 
+        ///     {
+        ///         "code": 201,
+        ///         "message": "Scheme Type created successfully.",
+        ///     }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateSchemeType")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> CreateSchemeType([FromBody] SchemeTypeCreateDto values)
+        {
+            try
+            {
+                var result = await _propertySetupServices.CreateSchemeTypeAsync(values);
+
+                if (result.IsSuccess)
+                {
+                    return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.Code;
+                return status switch
+                {
+                    204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates the details of an existing scheme type
+        /// </summary>
+        /// <remarks>
+        /// Modifies/updates an existing scheme type based on the scheme type id 
+        ///
+        /// **Sample Request:**
+        ///
+        ///     PUT /UpdateSchemeType
+        ///
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "schemeTypeId": 1,
+        ///         "schemeType": "TDC HOUSE OWNERHISP SCHEME (H.O.S)",
+        ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        ///     }
+        ///
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "code": 200,
+        ///         "message": "Site details modified successfully.",
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateSchemeType")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult<LocalityReadDto>> UpdateSchemeType([FromBody] SchemeTypeUpdateDto values)
+        {
+            var result = await _propertySetupServices.UpdateSchemeTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        /// <summary>
+        /// Deletes a scheme type by its ID
+        /// </summary>
+        /// <param name="schemeTypeId">The ID of the scheme type to delete</param>
+        /// <returns>Success or error response</returns>
+        [HttpDelete("DeleteSchemeType/{schemeTypeId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> DeleteSchemeType(int schemeTypeId)
+        {
+            try
+            {
+                var result = await _propertySetupServices.DeleteSchemeType(schemeTypeId);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.Code;
+                return status switch
+                {
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+
     }
 }
 

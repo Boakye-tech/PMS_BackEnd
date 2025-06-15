@@ -18,18 +18,18 @@ public class PropertyFeatureServices : IPropertyFeatureServices
     public IApartmentFeaturesService ApartmentFeaturesService { get; }
     public IPlotDimensionService PlotDimensionService { get; }
     public IApartmentTypeService ApartmentTypeService { get; }
-    public IPropertyTypeService PropertyTypeService { get; }
+    public IPlotTypeService PlotTypeService { get; }
     public IPropertyHeightService PropertyHeightService { get; }
     public ILeaseTypeAndPeriodService LeaseTypeAndPeriodService { get; }
 
     public PropertyFeatureServices(IFeaturesService featuresService, IApartmentFeaturesService apartmentFeaturesService, IApartmentTypeService apartmentTypeService, IPlotDimensionService plotDimensionService,
-                                   IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService, ILeaseTypeAndPeriodService leaseTypeAndPeriodService)
+                                   IPlotTypeService plotTypeService, IPropertyHeightService propertyHeightService, ILeaseTypeAndPeriodService leaseTypeAndPeriodService)
     {
         FeaturesService = featuresService;
         ApartmentFeaturesService = apartmentFeaturesService;
         ApartmentTypeService = apartmentTypeService;
         PlotDimensionService = plotDimensionService;
-        PropertyTypeService = propertyTypeService;
+        PlotTypeService = plotTypeService;
         PropertyHeightService = propertyHeightService;
         LeaseTypeAndPeriodService = leaseTypeAndPeriodService;
     }
@@ -78,15 +78,15 @@ public class PropertyFeatureServices : IPropertyFeatureServices
     public async Task<ReturnResponsesDto> DeleteApartmentType(int apartmentTypeId) =>
         await ApartmentTypeService.DeleteApartmentType(apartmentTypeId);
 
-    // Property Type methods
-    public async Task<IEnumerable<PropertyTypeReadDto>> GetPropertyTypeAsync() =>
-        await PropertyTypeService.GetPropertyTypeAsync();
-    public async Task<ReturnResponsesDto> CreatePropertyTypeAsync(PropertyTypeCreateDto values) =>
-        await PropertyTypeService.CreatePropertyTypeAsync(values);
-    public async Task<ReturnResponsesDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values) =>
-        await PropertyTypeService.UpdatePropertyTypeAsync(values);
-    public async Task<ReturnResponsesDto> DeletePropertyType(int propertyTypeId) =>
-        await PropertyTypeService.DeletePropertyType(propertyTypeId);
+    // Plot Type methods
+    public async Task<IEnumerable<PlotTypeReadDto>> GetPlotTypeAsync() =>
+        await PlotTypeService.GetPlotTypeAsync();
+    public async Task<ReturnResponsesDto> CreatePlotTypeAsync(PlotTypeCreateDto values) =>
+        await PlotTypeService.CreatePlotTypeAsync(values);
+    public async Task<ReturnResponsesDto> UpdatePlotTypeAsync(PlotTypeUpdateDto values) =>
+        await PlotTypeService.UpdatePlotTypeAsync(values);
+    public async Task<ReturnResponsesDto> DeletePlotType(int PlotTypeId) =>
+        await PlotTypeService.DeletePlotType(PlotTypeId);
 
     // Property Height methods
     public async Task<IEnumerable<PropertyHeightReadDto>> GetPropertyHeightAsync() =>

@@ -142,5 +142,27 @@ public class ActivityService : IActivityService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<List<ActivityAndActivityTypeReadDto>> GeActivityAndActivityTypeAsync()
+    {
+        // Get all activities and activity types in a single query using Include
+        var activities = await _unitOfWork.Activity.GetAll(includes: new List<string> { "ActivityTypes" });
+
+        // Create a dictionary for quick lookup of activity types by activity ID
+        var activityAndactivitiesType = activities.Select(activity =>
+        {
+            var activityTypes = _mapper.Map<List<ActivityTypeReadDto>>(activity.ActivityTypes);
+            return new ActivityAndActivityTypeReadDto(
+                new ActivityReadsDto(
+                activity.ActivityId,
+                activity.ActivityName,
+                activity.ActivityDescription!,
+                false),
+                activityTypes
+            );
+        }).ToList();
+
+        return activityAndactivitiesType;
+    }
 }
 

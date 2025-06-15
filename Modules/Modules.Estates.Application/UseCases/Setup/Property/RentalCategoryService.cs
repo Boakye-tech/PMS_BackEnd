@@ -159,5 +159,26 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 };
             }
         }
+
+        public async Task<List<RentalCategoryAndRentalTypeReadDto>> GeRentalCategoryAndRentalTypeAsync()
+        {
+            // Get all rental categories and rental types in a single query using Include
+            var rentals = await _unitOfWork.RentalCategory.GetAll(includes: new List<string> { "RentalTypes" });
+
+            // Create a dictionary for quick lookup of rental types by rental ID
+            var rentalCategoryAndTypes = rentals.Select(rental =>
+            {
+                var rentalTypes = _mapper.Map<List<RentalTypeReadDto>>(rental.RentalTypes);
+                return new RentalCategoryAndRentalTypeReadDto(
+                    new RentalCategoryReadsDto(
+                    rental.RentalCategoryId,
+                    rental.RentalCategories,
+                    false),
+                    rentalTypes
+                );
+            }).ToList();
+
+            return rentalCategoryAndTypes;
+        }
     }
 }

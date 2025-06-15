@@ -1,7 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Estates.Application
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Setup/Property/PropertyTypeService.cs
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Setup/Property/PlotTypeService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -15,40 +15,29 @@ using Microsoft.AspNetCore.Http;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
-public class PropertyTypeService : IPropertyTypeService
+public class PlotTypeService : IPlotTypeService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public PropertyTypeService(IUnitOfWork unitOfWork, IMapper mapper)
+    public PlotTypeService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<PropertyTypeReadDto>> GetPropertyTypeAsync()
+    public async Task<IEnumerable<PlotTypeReadDto>> GetPlotTypeAsync()
     {
-        var propertyType = await _unitOfWork.PropertyType.GetAll();
-        return _mapper.Map<IEnumerable<PropertyTypeReadDto>>(propertyType);
+        var PlotType = await _unitOfWork.PlotType.GetAll();
+        return _mapper.Map<IEnumerable<PlotTypeReadDto>>(PlotType);
     }
 
-    public async Task<PropertyTypeReadDto> GetPropertyTypeAsync(int value)
-    {
-        var propertyType = await _unitOfWork.PropertyType.Get(value);
-        return _mapper.Map<PropertyTypeReadDto>(propertyType);
-    }
 
-    public async Task<PropertyTypeReadDto> GetPropertyTypeAsync(string value)
-    {
-        var propertyType = await _unitOfWork.PropertyType.Get(p => p.PropertyTypes == value);
-        return _mapper.Map<PropertyTypeReadDto>(propertyType);
-    }
-
-    public async Task<ReturnResponsesDto> CreatePropertyTypeAsync(PropertyTypeCreateDto values)
+    public async Task<ReturnResponsesDto> CreatePlotTypeAsync(PlotTypeCreateDto values)
     {
         try
         {
-            var existingType = await _unitOfWork.PropertyType.Get(p => p.PropertyTypes == values.PropertyTypes);
+            var existingType = await _unitOfWork.PlotType.Get(p => p.PlotTypes == values.PlotTypes);
             if (existingType != null)
             {
                 return new ReturnResponsesDto
@@ -59,11 +48,11 @@ public class PropertyTypeService : IPropertyTypeService
                 };
             }
 
-            var propertyType = PropertyType.Create(0, values.PropertyTypes!);
-            propertyType.CreatedBy = values.CreatedBy;
-            propertyType.CreatedOn = DateTime.Now;
+            var plotType = PlotType.Create(0, values.PlotTypes!);
+            plotType.CreatedBy = values.CreatedBy;
+            plotType.CreatedOn = DateTime.Now;
 
-            _unitOfWork.PropertyType.Insert(propertyType);
+            _unitOfWork.PlotType.Insert(plotType);
             await _unitOfWork.Complete();
 
             return new ReturnResponsesDto
@@ -79,26 +68,26 @@ public class PropertyTypeService : IPropertyTypeService
         }
     }
 
-    public async Task<ReturnResponsesDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values)
+    public async Task<ReturnResponsesDto> UpdatePlotTypeAsync(PlotTypeUpdateDto values)
     {
         try
         {
-            var propertyType = await _unitOfWork.PropertyType.Get(values.PropertyTypeId);
-            if (propertyType == null)
+            var PlotType = await _unitOfWork.PlotType.Get(values.PlotTypeId);
+            if (PlotType == null)
             {
                 return new ReturnResponsesDto
                 {
                     IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Property Type with ID {values.PropertyTypeId} not found." },
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Property Type with ID {values.PlotTypeId} not found." },
                     SuccessResponse = null
                 };
             }
 
-            propertyType.Update(values.PropertyTypeId, values.PropertyTypes!);
-            propertyType.ModifiedBy = values.ModifiedBy;
-            propertyType.ModifiedOn = DateTime.Now;
+            PlotType.Update(values.PlotTypeId, values.PlotTypes!);
+            PlotType.ModifiedBy = values.ModifiedBy;
+            PlotType.ModifiedOn = DateTime.Now;
 
-            _unitOfWork.PropertyType.Update(propertyType);
+            _unitOfWork.PlotType.Update(PlotType);
             await _unitOfWork.Complete();
 
             return new ReturnResponsesDto
@@ -114,29 +103,29 @@ public class PropertyTypeService : IPropertyTypeService
         }
     }
 
-    public async Task<ReturnResponsesDto> DeletePropertyType(int propertyTypeId)
+    public async Task<ReturnResponsesDto> DeletePlotType(int PlotTypeId)
     {
         try
         {
-            var propertyType = await _unitOfWork.PropertyType.Get(propertyTypeId);
-            if (propertyType == null)
+            var PlotType = await _unitOfWork.PlotType.Get(PlotTypeId);
+            if (PlotType == null)
             {
                 return new ReturnResponsesDto
                 {
                     IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Property Type with ID {propertyTypeId} not found." },
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Property Type with ID {PlotTypeId} not found." },
                     SuccessResponse = null
                 };
             }
 
-            _unitOfWork.PropertyType.Delete(propertyType);
+            _unitOfWork.PlotType.Delete(PlotType);
             await _unitOfWork.Complete();
 
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Property Type with ID {propertyTypeId} deleted successfully." }
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Property Type with ID {PlotTypeId} deleted successfully." }
             };
         }
         catch (Exception ex)

@@ -20,6 +20,8 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
         Task<LandUseReadDto> GetLandUseAsync(int value);
         Task<LandUseReadDto> GetLandUseAsync(string value);
         Task<ReturnResponsesDto> DeleteLandUse(int landUseId);
+
+        Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync();
     }
 }
 

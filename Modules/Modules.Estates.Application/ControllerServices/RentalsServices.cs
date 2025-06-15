@@ -12,6 +12,8 @@
 
 
 
+using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
+
 namespace Modules.Estates.Application.ControllerServices;
 
 public class RentalsServices : IRentalsServices
@@ -20,26 +22,34 @@ public class RentalsServices : IRentalsServices
     public IRentalTypeService RentalTypeService { get; }
     public IShopOfficeTypesService ShopOfficeTypesService { get; }
     public IHouseTypesService HouseTypesService { get; }
-    public IRentalCategoryAndRentalTypeService RentalCategoryAndRentalTypeService { get; }
 
-    public RentalsServices(IRentalCategoryService rentalCategoryService, IRentalTypeService rentalTypeService,IShopOfficeTypesService shopOfficeTypesService, IHouseTypesService houseTypesService, IRentalCategoryAndRentalTypeService rentalCategoryAndRentalTypeService)
+    public ITypesService AllTypesService { get; }
+
+    public RentalsServices(IRentalCategoryService rentalCategoryService, IRentalTypeService rentalTypeService,IShopOfficeTypesService shopOfficeTypesService, IHouseTypesService houseTypesService, ITypesService allTypesService) //IRentalCategoryAndRentalTypeService rentalCategoryAndRentalTypeService,
     {
         RentalCategoryService = rentalCategoryService;
         RentalTypeService = rentalTypeService;
         ShopOfficeTypesService = shopOfficeTypesService;
         HouseTypesService = houseTypesService;
-        RentalCategoryAndRentalTypeService = rentalCategoryAndRentalTypeService;
+        AllTypesService = allTypesService;
     }
 
     // Rental Category methods
     public async Task<IEnumerable<RentalCategoryReadDto>> GetRentalCategoryAsync() =>
         await RentalCategoryService.GetRentalCategoryAsync();
+
     public async Task<ReturnResponsesDto> CreateRentalCategoryAsync(RentalCategoryCreateDto values) =>
         await RentalCategoryService.CreateRentalCategoryAsync(values);
+
     public async Task<ReturnResponsesDto> UpdateRentalCategoryAsync(RentalCategoryUpdateDto values) =>
         await RentalCategoryService.UpdateRentalCategoryAsync(values);
+
     public async Task<ReturnResponsesDto> DeleteRentalCategory(int rentalCategoryId) =>
         await RentalCategoryService.DeleteRentalCategory(rentalCategoryId);
+
+    // Rental Category and Rental Type methods
+    public async Task<List<RentalCategoryAndRentalTypeReadDto>> GetRentalCategoryAndRentalTypeAsync() =>
+        await RentalCategoryService.GeRentalCategoryAndRentalTypeAsync();
 
     // Rental Type methods
     public async Task<IEnumerable<RentalTypeReadDto>> GetRentalTypeAsync(int rentalCategoryId) =>
@@ -73,16 +83,29 @@ public class RentalsServices : IRentalsServices
     // House Type methods
     public async Task<IEnumerable<HouseTypesReadDto>> GetHouseTypesAsync() =>
         await HouseTypesService.GetHouseTypesAsync();
+
     public async Task<ReturnResponsesDto> CreateHouseTypesAsync(HouseTypesCreateDto values) =>
         await HouseTypesService.CreateHouseTypesAsync(values);
+
     public async Task<ReturnResponsesDto> UpdateHouseTypesAsync(HouseTypesUpdateDto values) =>
         await HouseTypesService.UpdateHouseTypesAsync(values);
+
     public async Task<ReturnResponsesDto> DeleteHouseTypes(int houseTypesId) =>
         await HouseTypesService.DeleteHouseTypes(houseTypesId);
 
-    // Rental Category and Rental Type methods
-    public async Task<List<RentalCategoryAndRentalTypeReadDto>> GetRentalCategoryAndRentalTypeAsync() =>
-        await RentalCategoryAndRentalTypeService.GeRentalCategoryAndRentalTypeAsync();
 
+
+    //All types methods
+    public async Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync() =>
+        await AllTypesService.GetAllTypesAsync();
+
+    public async Task<ReturnResponsesDto> CreateTypesAsync(TypesCreateDto values) =>
+        await AllTypesService.CreateTypesAsync(values);
+
+    public async Task<ReturnResponsesDto> UpdateTypesAsync(TypesUpdateDto values) =>
+        await AllTypesService.UpdateTypesAsync(values);
+
+    public async Task<ReturnResponsesDto> DeleteTypes(int typesId) =>
+        await AllTypesService.DeleteTypes(typesId);
 
 }

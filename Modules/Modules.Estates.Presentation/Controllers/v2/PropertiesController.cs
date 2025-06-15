@@ -37,7 +37,7 @@ public class PropertyController : ControllerBase
     readonly ILocalityService _localityService;
     readonly IPlotDimensionService _plotDimensionService;
     readonly IPropertyHeightService _propertyHeightService;
-    readonly IPropertyTypeService _propertyTypeService;
+    readonly IPlotTypeService _plotTypeService;
 
     readonly IActivityService _activityService;
     readonly IActivityTypeService _activityTypeService;
@@ -47,7 +47,7 @@ public class PropertyController : ControllerBase
 
 
     public PropertyController(IAllocationTypeService allocationTypeService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ILocalityService localityService, IPlotDimensionService plotDimensionService,
-                              IApartmentTypeService apartmentTypeService, IFloorAreaService floorAreaService, IFloorNumberingService floorNumberingService, IPropertyTypeService propertyTypeService, IPropertyHeightService propertyHeightService,
+                              IApartmentTypeService apartmentTypeService, IFloorAreaService floorAreaService, IFloorNumberingService floorNumberingService, IPlotTypeService plotTypeService, IPropertyHeightService propertyHeightService,
                               IBlockNumberService blockNumberService, IBlockSideService blockSideService, IBlockTypeService blockTypeService, IBlockUnitService blockUnitService,
                               IActivityService activityService, IActivityTypeService activityTypeService, IPropertyMasterService propertyMasterService)
     {
@@ -66,7 +66,7 @@ public class PropertyController : ControllerBase
         _localityService = localityService;
         _plotDimensionService = plotDimensionService;
         _propertyHeightService = propertyHeightService;
-        _propertyTypeService = propertyTypeService;
+        _plotTypeService = plotTypeService;
 
         _activityService = activityService;
         _activityTypeService = activityTypeService;
@@ -1088,32 +1088,19 @@ public class PropertyController : ControllerBase
     public void DeletePropertyHeight(int propertyHeightId)
     { }
 
-    //----------------------PROPERTY TYPE------------
+    //----------------------PLOT TYPE------------
     /// <summary>
     /// Returns a list of exisiting property types
     /// </summary>
     [HttpGet]
-    [Route("Setup/GetPropertyType")]
-    public async Task<ActionResult<IEnumerable<PropertyTypeReadDto>>> GetPropertyType()
+    [Route("Setup/GetPlotType")]
+    public async Task<ActionResult<IEnumerable<PlotTypeReadDto>>> GetPlotType()
     {
-        return Ok(await _propertyTypeService.GetPropertyTypeAsync());
+        return Ok(await _plotTypeService.GetPlotTypeAsync());
     }
 
-    [HttpGet]
-    [Route("Setup/GetPropertyType/{value}")]
-    public async Task<ActionResult<PropertyTypeReadDto>> GetPropertyType(string value)
-    {
-        return Ok(await _propertyTypeService.GetPropertyTypeAsync(value));
-    }
-
-    [HttpGet]
-    [Route("Setup/GetPropertyTypeById/{propertyTypeId}")]
-    public async Task<ActionResult<PropertyTypeReadDto>> GetPropertyTypeById(int propertyTypeId)
-    {
-        return Ok(await _propertyTypeService.GetPropertyTypeAsync(propertyTypeId));
-    }
-
-    // POST: api/CreatePropertyType
+    
+    // POST: api/CreatePlotType
     /// <summary>
     ///  Creates a new property type
     /// </summary>
@@ -1123,21 +1110,21 @@ public class PropertyController : ControllerBase
     ///
     /// Sample Request:
     ///
-    /// POST /CreatePropertyType
+    /// POST /CreatePlotType
     /// 
     /// {
-    ///    "propertyTypeId": 0,
-    ///    "propertyTypes": "PARTIALLY-SERVICES PLOTS",
+    ///    "PlotTypeId": 0,
+    ///    "PlotTypes": "PARTIALLY-SERVICES PLOTS",
     ///    "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
     /// }
     /// </remarks>
     [HttpPost]
-    [Route("CreatePropertyType")]
-    public async Task<ActionResult<PropertyTypeReadDto>> CreatePropertyType([FromBody] PropertyTypeCreateDto values)
+    [Route("CreatePlotType")]
+    public async Task<ActionResult<PlotTypeReadDto>> CreatePlotType([FromBody] PlotTypeCreateDto values)
     {
         try
         {
-            return Ok(await _propertyTypeService.CreatePropertyTypeAsync(values));
+            return Ok(await _plotTypeService.CreatePlotTypeAsync(values));
         }
         catch (Exception ex)
         {
@@ -1150,20 +1137,20 @@ public class PropertyController : ControllerBase
     /// </summary>
     /// 
     [HttpPut]
-    [Route("UpdatePropertyType")]
-    public async Task<ActionResult<PropertyTypeReadDto>> UpdatePropertyType([FromBody] PropertyTypeUpdateDto values)
+    [Route("UpdatePlotType")]
+    public async Task<ActionResult<PlotTypeReadDto>> UpdatePlotType([FromBody] PlotTypeUpdateDto values)
     {
-        return Ok(await _propertyTypeService.UpdatePropertyTypeAsync(values));
+        return Ok(await _plotTypeService.UpdatePlotTypeAsync(values));
     }
 
-    [HttpDelete("DeletePropertyType/{propertyTypeId}")]
-    public void DeletePropertyType(int propertyTypeId)
+    [HttpDelete("DeletePlotType/{PlotTypeId}")]
+    public void DeletePlotType(int PlotTypeId)
     { }
 
     //----------------------------------
     [HttpPost]
     [Route("CreateProperty")]
-    public async Task<ActionResult<PropertyTypeReadDto>> CreateProperty([FromBody] PropertyMasterCreatePlotDto values)
+    public async Task<ActionResult<PlotTypeReadDto>> CreateProperty([FromBody] PropertyMasterCreatePlotDto values)
     {
         try
         {

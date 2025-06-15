@@ -37,7 +37,7 @@ public static class ModuleExtensions
         services.AddScoped<ILocalityService, LocalityService>();
         services.AddScoped<IPlotDimensionService, PlotDimensionService>();
         services.AddScoped<IPropertyHeightService, PropertyHeightService>();
-        services.AddScoped<IPropertyTypeService, PropertyTypeService>();
+        services.AddScoped<IPlotTypeService, PlotTypeService>();
 
         services.AddScoped<ILeaseTypeAndPeriodService, LeaseTypeAndPeriodService>();
         services.AddScoped<IPropertyStatusService, PropertyStatusService>();
@@ -82,18 +82,15 @@ public static class ModuleExtensions
         services.AddScoped<IHouseTypesService, HouseTypesService>();
 
         services.AddScoped<ISitesService, SitesService>();
-        services.AddScoped<ILocalityAndSitesService, LocalityAndSitesService>();
+        services.AddScoped<ISchemeTypeService, SchemeTypeService>();
 
 
+        services.AddScoped<ITypesService, TypesService>();
         services.AddScoped<IActivityServices, ActivityServices>();
         services.AddScoped<IBlockServices, BlockServices>();
         services.AddScoped<IRentalsServices, RentalsServices>();
         services.AddScoped<IPropertyFeatureServices, PropertyFeatureServices>();
         services.AddScoped<IPropertySetupServices, PropertySetupServices>();
-
-        services.AddScoped<ILandUseAndLandUseTypeService, LandUseAndLandUseTypeService>();
-        services.AddScoped<IActivityAndActivityTypeService, ActivityAndActivityTypeService>();
-        services.AddScoped<IRentalCategoryAndRentalTypeService, RentalCategoryAndRentalTypeService>();
 
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();

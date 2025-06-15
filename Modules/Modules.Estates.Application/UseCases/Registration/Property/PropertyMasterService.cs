@@ -93,7 +93,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 var response = new PropertyMasterCreatePlotResponseDto
                 {
                     PropertyNumber = property.PropertyNumber.Value,
-                    PropertyType = _unitOfWork.PropertyType.Get(pt => pt.PropertyTypeId == property.PropertyTypeId).Result!.PropertyTypes,
+                    PropertyType = _unitOfWork.PlotType.Get(pt => pt.PlotTypeId == property.PropertyTypeId).Result!.PlotTypes, //remember to check this line
                     Locality = _unitOfWork.Locality.Get(l => l.LocalityId == property.LocalityId).Result!.LocalityName,
                     LandUse = "",
                     LandUseType = "",

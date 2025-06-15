@@ -44,10 +44,10 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
 		Task<ReturnResponsesDto> DeleteApartmentType(int apartmentTypeId);
 
 		// Property Type methods
-		Task<IEnumerable<PropertyTypeReadDto>> GetPropertyTypeAsync();
-		Task<ReturnResponsesDto> CreatePropertyTypeAsync(PropertyTypeCreateDto values);
-		Task<ReturnResponsesDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values);
-		Task<ReturnResponsesDto> DeletePropertyType(int propertyTypeId);
+		Task<IEnumerable<PlotTypeReadDto>> GetPlotTypeAsync();
+		Task<ReturnResponsesDto> CreatePlotTypeAsync(PlotTypeCreateDto values);
+		Task<ReturnResponsesDto> UpdatePlotTypeAsync(PlotTypeUpdateDto values);
+		Task<ReturnResponsesDto> DeletePlotType(int PlotTypeId);
 
 		// Property Height methods
 		Task<IEnumerable<PropertyHeightReadDto>> GetPropertyHeightAsync();

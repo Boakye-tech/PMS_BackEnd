@@ -1,7 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Estates.Application
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Setup/Property/PropertyTypeDto.cs
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Setup/Property/PlotTypeDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -13,7 +13,7 @@
 
 namespace Modules.Estates.Application.DTO.Setup.Property;
 
-public record PropertyTypeReadDto(int PropertyTypeId, string PropertyTypes);
-public record PropertyTypeCreateDto(string PropertyTypes, string CreatedBy);
-public record PropertyTypeUpdateDto(int PropertyTypeId, string PropertyTypes, string ModifiedBy);
-public record PropertyTypeDeleteDto(int PropertyTypeId);
+public record PlotTypeReadDto(int PlotTypeId, string PlotTypes);
+public record PlotTypeCreateDto(string PlotTypes, string CreatedBy);
+public record PlotTypeUpdateDto(int PlotTypeId, string PlotTypes, string ModifiedBy);
+public record PlotTypeDeleteDto(int PlotTypeId);

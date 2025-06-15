@@ -19,7 +19,8 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
         Task<ActivityReadDto> GetActivityAsync(int value);
         Task<ActivityReadDto> GetActivityAsync(string value);
         Task<ReturnResponsesDto> DeleteActivity(int activityId);
-        //Task<ActivityReadDto> GetAllocationTypeAsync(string value);
+
+        Task<List<ActivityAndActivityTypeReadDto>> GeActivityAndActivityTypeAsync();
     }
 }
 

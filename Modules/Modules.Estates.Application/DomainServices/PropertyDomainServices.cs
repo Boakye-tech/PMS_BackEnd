@@ -150,9 +150,9 @@ namespace Modules.Estates.Application.DomainServices
             return await _unitOfWork.PropertyHeight.Get(propertyHeightId) is not null;
         }
 
-        public async Task<bool> PropertyTypeExists(int propertyTypeId)
+        public async Task<bool> PlotTypeExists(int plotTypeId)
         {
-            return await _unitOfWork.PropertyType.Get(propertyTypeId) is not null;
+            return await _unitOfWork.PlotType.Get(plotTypeId) is not null;
         }
 
         public Task<bool> ShopOfficeTypeAndDescriptionExists(int shopOfficeTypeId)

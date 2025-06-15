@@ -10,8 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.DTO.Setup.Property;
 
 namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 
@@ -23,5 +21,7 @@ public interface ILocalityService
     Task<IEnumerable<LocalityReadDto>> GetLocalityAsync();
     Task<LocalityReadDto> GetLocalityAsync(int value);
     Task<LocalityReadDto> GetLocalityAsync(string value);
+
+    Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync();
 }
 

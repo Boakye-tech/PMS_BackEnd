@@ -9,9 +9,6 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Modules.Estates.Application.Interfaces.ControllerServices
 {
@@ -56,7 +53,11 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
 		Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync();
 
 
-
+		//scheme methods
+		Task<IEnumerable<SchemeTypeReadDto>> GetSchemeTypeAsync();
+		Task<ReturnResponsesDto> CreateSchemeTypeAsync(SchemeTypeCreateDto values);
+		Task<ReturnResponsesDto> UpdateSchemeTypeAsync(SchemeTypeUpdateDto values);
+		Task<ReturnResponsesDto> DeleteSchemeType(int schemeId);
     }
 }
 

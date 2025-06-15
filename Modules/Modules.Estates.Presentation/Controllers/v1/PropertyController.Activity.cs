@@ -11,7 +11,7 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetActivityAndActivityTypes")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(List<ActivityAndActivityTypeReadDto>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ActivityAndActivityTypeReadDto>))]
     public async Task<ActionResult<List<ActivityAndActivityTypeReadDto>>> GetActivityAndActivityTypes()
     {
         return Ok(await _activityServices.GetActivityAndActivityTypeAsync());

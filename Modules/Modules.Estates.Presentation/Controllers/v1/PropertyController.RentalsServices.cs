@@ -145,6 +145,95 @@ namespace Modules.Estates.Presentation.Controllers.v1
             return Ok(result);
         }
 
+        //-------------------TYPES (e.g. Houses, ShopsAndOffices, Apartments etc)-----------------
+        /// <summary>
+        /// Returns a list of types(e.g. Houses, ShopsAndOffices, Apartments etc)
+        /// </summary>
+        [HttpGet]
+        [Route("GetAllTypes")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AllTypesRentalCategoryDto>))]
+        public IActionResult AllTypes()
+        {
+            var result = _rentalsService.GetAllTypesAsync().Result;
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Creates a new type (e.g. Houses, ShopsAndOffices, Apartments etc)
+        /// </summary>
+        [HttpPost]
+        [Route("CreateType")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public IActionResult CreateType([FromBody] TypesCreateDto values)
+        {
+            var result = _rentalsService.CreateTypesAsync(values).Result;
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+
+        }
+
+        /// <summary>
+        /// Updates an existing type (e.g. Houses, ShopsAndOffices, Apartments etc)
+        /// </summary>
+        [HttpPut]
+        [Route("UpdateType")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public IActionResult UpdateType([FromBody] TypesUpdateDto values)
+        {
+            var result = _rentalsService.UpdateTypesAsync(values).Result;
+            
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+
+        }
+
+        /// <summary>
+        /// Deletes a type
+        /// </summary>
+        [HttpDelete]
+        [Route("DeleteType/{typeId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public IActionResult DeleteType(int typeId)
+        {
+            var result = _rentalsService.DeleteTypes(typeId).Result;
+            return Ok(result);
+        }
+
+        #region Obsolete Enpoints
+        
         //-------------------SHOP/OFFICE TYPES-----------------
         /// <summary>
         /// Returns a list of shop/office types
@@ -152,6 +241,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpGet]
         [Route("GetShopOfficeTypes")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [Obsolete]
         public IActionResult ShopOfficeType()
         {
             var result = _rentalsService.GetShopOfficeTypesAsync().Result;
@@ -188,6 +278,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateShopOfficeType")]
         [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+        [Obsolete]
         public IActionResult CreateShopOfficeType([FromBody] ShopOfficeTypesCreateDto values)
         {
             var result = _rentalsService.CreateShopOfficeTypesAsync(values).Result;
@@ -200,6 +291,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateShopOfficeType")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [Obsolete]
         public IActionResult UpdateShopOfficeType([FromBody] ShopOfficeTypesUpdateDto values)
         {
             var result = _rentalsService.UpdateShopOfficeTypesAsync(values).Result;
@@ -212,6 +304,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpDelete]
         [Route("DeleteShopOfficeType/{shopOfficeTypeId}")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [Obsolete]
         public IActionResult DeleteShopOfficeType(int shopOfficeTypeId)
         {
             var result = _rentalsService.DeleteShopOfficeTypes(shopOfficeTypeId).Result;
@@ -225,6 +318,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpGet]
         [Route("GetHouseTypes")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [Obsolete]
         public IActionResult HouseType()
         {
             var result = _rentalsService.GetHouseTypesAsync().Result;
@@ -261,6 +355,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateHouseType")]
         [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+        [Obsolete]
         public IActionResult CreateHouseType([FromBody] HouseTypesCreateDto values)
         {
             var result = _rentalsService.CreateHouseTypesAsync(values).Result;
@@ -273,6 +368,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateHouseType")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [Obsolete]
         public IActionResult UpdateHouseType([FromBody] HouseTypesUpdateDto values)
         {
             var result = _rentalsService.UpdateHouseTypesAsync(values).Result;
@@ -285,11 +381,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpDelete]
         [Route("DeleteHouseType/{houseTypeId}")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [Obsolete]
         public IActionResult DeleteHouseType(int houseTypeId)
         {
             var result = _rentalsService.DeleteHouseTypes(houseTypeId).Result;
             return Ok(result);
         }
+
+        #endregion
     }
 }
 

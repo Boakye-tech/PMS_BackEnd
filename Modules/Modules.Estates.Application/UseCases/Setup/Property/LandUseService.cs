@@ -161,5 +161,26 @@ public class LandUseService : ILandUseService
         }
     }
 
+    public async Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync()
+    {
+        // Get all land uses and land use types in a single query using Include
+        var landuses = await _unitOfWork.LandUse.GetAll(includes: new List<string> { "LandUseTypes" });
+
+        // Create a dictionary for quick lookup of land use types by land use ID
+        var landUseAndLandUseType = landuses.Select(landUse =>
+        {
+            var landUseTypes = _mapper.Map<List<LandUseTypeReadDto>>(landUse.LandUseTypes);
+            return new LandUseAndLandUseTypeReadDto(
+                new LandUsesReadDto(
+                landUse.LandUseId,
+                landUse.LandUseInitial!,
+                landUse.LandUseName!,
+                false),
+                landUseTypes
+            );
+        }).ToList();
+
+        return landUseAndLandUseType;
+    }
 }
 

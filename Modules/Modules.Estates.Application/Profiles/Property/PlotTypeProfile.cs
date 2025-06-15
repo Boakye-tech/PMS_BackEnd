@@ -1,7 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Estates.Application
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/Profiles/Property/PropertyTypeProfile.cs
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/Profiles/Property/PlotTypeProfile.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -13,15 +13,15 @@
 
 namespace Modules.Estates.Application.Profiles.Property;
 
-public class PropertyTypeProfile : Profile
+public class PlotTypeProfile : Profile
 {
-	public PropertyTypeProfile()
+	public PlotTypeProfile()
 	{
-        CreateMap<PropertyType, PropertyTypeReadDto>();
+        CreateMap<PlotType, PlotTypeReadDto>();
 
-        CreateMap<PropertyTypeCreateDto, PropertyType>();
-        CreateMap<PropertyTypeUpdateDto, PropertyType>();
-        CreateMap<PropertyTypeDeleteDto, PropertyType>();
+        CreateMap<PlotTypeCreateDto, PlotType>();
+        CreateMap<PlotTypeUpdateDto, PlotType>();
+        CreateMap<PlotTypeDeleteDto, PlotType>();
     }
 }
 

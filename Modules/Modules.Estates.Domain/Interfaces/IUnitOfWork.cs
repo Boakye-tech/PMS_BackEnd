@@ -40,7 +40,7 @@ public interface IUnitOfWork : IDisposable
     ILocalityRepository Locality { get; }
     IPlotDimensionRepository PlotDimension { get; }
     IPropertyHeightRepository PropertyHeight { get; }
-    IPropertyTypeRepository PropertyType { get; }
+    IPlotTypeRepository PlotType { get; }
 
     //Jan 1 '25
     ICustomerMasterRepository CustomerMaster { get; }
@@ -80,6 +80,10 @@ public interface IUnitOfWork : IDisposable
 
     //June 4, 2025
     ISitesRepository Sites { get; }
+
+    //15 June, 2025
+    ITypesRepository Types { get; }
+    ISchemeTypeRepository SchemeTypes { get; }
 
     Task<int> Complete();
 }

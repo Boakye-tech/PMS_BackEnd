@@ -19,6 +19,8 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
 		Task<ReturnResponsesDto> UpdateRentalCategoryAsync(RentalCategoryUpdateDto values);
 		Task<ReturnResponsesDto> DeleteRentalCategory(int rentalCategoryId);
 		Task<IEnumerable<RentalCategoryReadDto>> GetRentalCategoryAsync();
-	}
+
+        Task<List<RentalCategoryAndRentalTypeReadDto>> GeRentalCategoryAndRentalTypeAsync();
+    }
 }
 

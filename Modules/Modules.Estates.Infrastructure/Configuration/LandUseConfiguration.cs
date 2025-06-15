@@ -29,18 +29,11 @@ public class LandUseConfiguration : IEntityTypeConfiguration<LandUse>
 
 
         builder.HasData(
-            new LandUse(1, "RPL", "RESIDENTIAL"),
-            new LandUse(2, "HOS", "HOUSE OWNERSHIP SCHEME"),
-            new LandUse(3, "LSD", "LARGE SCALE DEVELOPMENT"),
-            new LandUse(4, "HSE", "HOUSE"),
-            new LandUse(5, "FLT", "FLAT"),
-            new LandUse(6, "CPL", "COMMERCIAL"),
-            new LandUse(7, "SHP", "SHOPS & OFFICES"),
-            new LandUse(8, "LIC", "LICENSE"),
-            new LandUse(9, "IND", "INDUSTRIAL"),
-            new LandUse(10, "EMT", "EASEMENT"),
-            new LandUse(11, "INS", "INSTITUTIONAL"),
-            new LandUse(12, "REC", "RECREATIONAL")
+            new LandUse(1, "RES", "RESIDENTIAL USE"),
+            new LandUse(2, "COM", "COMMERCIAL USE"),
+            new LandUse(3, "IND", "INDUSTRIAL"),
+            new LandUse(4, "INS", "INSTITUTIONAL"),
+            new LandUse(5, "REC", "RECREATIONAL")
         );
     }
 }

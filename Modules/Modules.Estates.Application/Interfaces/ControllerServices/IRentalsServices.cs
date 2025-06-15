@@ -44,6 +44,15 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
 		Task<ReturnResponsesDto> CreateHouseTypesAsync(HouseTypesCreateDto values);
 		Task<ReturnResponsesDto> UpdateHouseTypesAsync(HouseTypesUpdateDto values);
 		Task<ReturnResponsesDto> DeleteHouseTypes(int houseTypesId);
-	}
+
+        // Types methods
+        Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync();
+        Task<ReturnResponsesDto> CreateTypesAsync(TypesCreateDto values);
+        Task<ReturnResponsesDto> UpdateTypesAsync(TypesUpdateDto values);
+        Task<ReturnResponsesDto> DeleteTypes(int typesId);
+        
+
+
+    }
 }
 

@@ -29,7 +29,7 @@ public class UnitOfWork: IUnitOfWork
 
         Locality = new LocalityRepository(_dbContext);
 
-        PropertyType = new PropertyTypeRepository(_dbContext);
+        PlotType = new PlotTypeRepository(_dbContext);
 
         PlotDimension = new PlotDimensionRepository(_dbContext);
 
@@ -105,6 +105,9 @@ public class UnitOfWork: IUnitOfWork
 
         Sites = new SitesRepository(_dbContext);
 
+        Types = new TypesRepository(_dbContext);
+        SchemeTypes = new SchemeTypeRepository(_dbContext);
+
 }
 
 
@@ -116,7 +119,7 @@ public IAllocationTypeRepository AllocationType { get; private set; }
 
     public ILocalityRepository Locality { get; private set; }
 
-    public IPropertyTypeRepository PropertyType { get; private set; }
+    public IPlotTypeRepository PlotType { get; private set; }
 
     public IPlotDimensionRepository PlotDimension { get; private set; }
 
@@ -196,7 +199,9 @@ public IAllocationTypeRepository AllocationType { get; private set; }
     //June 4 '25
     public ISitesRepository Sites { get; private set; }
 
-    //public ISitesRepository SitesRepository { get; private set; }
+    //June 15 '25
+    public ITypesRepository Types { get; private set; }
+    public ISchemeTypeRepository SchemeTypes { get; private set; }
 
     public Task<int> Complete()
     {

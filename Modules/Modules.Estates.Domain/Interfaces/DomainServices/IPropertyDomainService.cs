@@ -35,7 +35,7 @@ namespace Modules.Estates.Domain.Interfaces.DomainServices
         Task<bool> FloorAreaExists(int floorAreaId); 
         Task<bool> PlotDimensionExists(int plotDimensionId); 
         Task<bool> PropertyHeightExists(int propertyHeightId); 
-        Task<bool> PropertyTypeExists(int propertyTypeId);
+        Task<bool> PlotTypeExists(int plotTypeId);
 
         Task<bool> LeaseTypeAndPeriodExists(int leaseTypeId);
         Task<bool> ShopOfficeTypeAndDescriptionExists(int shopOfficeTypeId);
