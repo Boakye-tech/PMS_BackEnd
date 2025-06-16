@@ -36,8 +36,8 @@ public class ApartmentTypeService : IApartmentTypeService
                                 on at.CurrencyId equals cer.CurrencyId
                                 select new ApartmentTypesReadDto
                                 (
-                                    (int)at.ApartmentCategory,
-                                    ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(at.ApartmentCategory),
+                                    //at.ApartmentCategory,
+                                    //ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(at.ApartmentCategory),
                                     at.ApartmentTypeId,
                                     at.ApartmentType,
                                     at.SellingPrice,
@@ -82,7 +82,7 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
-            var newApartmentType = ApartmentTypes.Create(values.apartmentCategory, apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
+            var newApartmentType = ApartmentTypes.Create(apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
             newApartmentType.CreatedBy = values.createdBy;
             newApartmentType.CreatedOn = DateTime.Now;
 
@@ -117,7 +117,7 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
-            apartmentType.Update(values.apartmentCategory, values.apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
+            apartmentType.Update(values.apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
             apartmentType.ModifiedBy = values.modifiedBy;
             apartmentType.ModifiedOn = DateTime.Now;
 

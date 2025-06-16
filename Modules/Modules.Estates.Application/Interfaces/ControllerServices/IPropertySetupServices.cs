@@ -58,6 +58,16 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
 		Task<ReturnResponsesDto> CreateSchemeTypeAsync(SchemeTypeCreateDto values);
 		Task<ReturnResponsesDto> UpdateSchemeTypeAsync(SchemeTypeUpdateDto values);
 		Task<ReturnResponsesDto> DeleteSchemeType(int schemeId);
+
+        //apartment category
+        Task<IEnumerable<ApartmentCategoryReadDto>> GetApartmentCategoryAsync();
+        Task<ReturnResponsesDto> CreateApartmentCategoryAsync(ApartmentCategoryCreateDto values);
+        Task<ReturnResponsesDto> UpdateApartmentCategoryAsync(ApartmentCategoryUpdateDto values);
+        Task<ReturnResponsesDto> DeleteApartmentCategory(int categoryId);
+
+        // apartment category and apartment type
+        Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync();
+
     }
 }
 

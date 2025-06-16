@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Modules.Estates.Presentation.Controllers.v1
 {

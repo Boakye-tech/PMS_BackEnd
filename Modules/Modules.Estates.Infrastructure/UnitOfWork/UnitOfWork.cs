@@ -108,6 +108,8 @@ public class UnitOfWork: IUnitOfWork
         Types = new TypesRepository(_dbContext);
         SchemeTypes = new SchemeTypeRepository(_dbContext);
 
+        ApartmentCategory = new ApartmentCategoryRepository(_dbContext);
+
 }
 
 
@@ -202,6 +204,9 @@ public IAllocationTypeRepository AllocationType { get; private set; }
     //June 15 '25
     public ITypesRepository Types { get; private set; }
     public ISchemeTypeRepository SchemeTypes { get; private set; }
+
+    //June 16 25
+    public IApartmentCategoryRepository ApartmentCategory { get; private set; }
 
     public Task<int> Complete()
     {

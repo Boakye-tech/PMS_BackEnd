@@ -88,6 +88,9 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<Types> Types { get; set; }
     public DbSet<SchemeType> SchemeType { get; set; }
 
+    //16 JUne, 2025
+    public DbSet<ApartmentCategory> ApartmentCategory { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

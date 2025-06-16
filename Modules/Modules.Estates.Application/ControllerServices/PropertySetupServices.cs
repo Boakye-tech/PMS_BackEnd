@@ -12,6 +12,7 @@
 
 
 
+using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 using Modules.Estates.Application.UseCases.Setup.Property;
 
 namespace Modules.Estates.Application.ControllerServices;
@@ -28,7 +29,9 @@ public class PropertySetupServices : IPropertySetupServices
 
     public ISchemeTypeService SchemeTypeService { get; }
 
-    public PropertySetupServices(IAllocationTypeService allocationTypeService, ILocalityService localityService,ISitesService sitesService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ISchemeTypeService schemeTypeService) 
+    public IApartmentCategoryService ApartmentCategoryService  { get; }
+
+    public PropertySetupServices(IAllocationTypeService allocationTypeService, ILocalityService localityService,ISitesService sitesService, ILandUseService landUseService, ILandUseTypeService landUseTypeService, ISchemeTypeService schemeTypeService, IApartmentCategoryService apartmentCategoryService)
     {
         AllocationTypeService = allocationTypeService;
 
@@ -39,6 +42,8 @@ public class PropertySetupServices : IPropertySetupServices
         LandUseTypeService = landUseTypeService;
 
         SchemeTypeService = schemeTypeService;
+
+        ApartmentCategoryService = apartmentCategoryService;
     }
 
     // Locality methods
@@ -153,5 +158,21 @@ public class PropertySetupServices : IPropertySetupServices
     public async Task<ReturnResponsesDto> DeleteSchemeType(int schemeId) =>
         await SchemeTypeService.DeleteSchemeType(schemeId);
 
+
+    //apartment category methods
+    public async Task<IEnumerable<ApartmentCategoryReadDto>> GetApartmentCategoryAsync() =>
+        await ApartmentCategoryService.GetApartmentCategoryAsync();
+
+    public async Task<ReturnResponsesDto> CreateApartmentCategoryAsync(ApartmentCategoryCreateDto values) =>
+        await ApartmentCategoryService.CreateApartmentCategoryAsync(values);
+
+    public async Task<ReturnResponsesDto> UpdateApartmentCategoryAsync(ApartmentCategoryUpdateDto values) =>
+        await ApartmentCategoryService.UpdateApartmentCategoryAsync(values);
+
+    public async Task<ReturnResponsesDto> DeleteApartmentCategory(int categoryId) =>
+        await ApartmentCategoryService.DeleteApartmentCategory(categoryId);
+
+    public async Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync() =>
+        await ApartmentCategoryService.GetApartmentCategoryAndTypesAsync();
 
 }

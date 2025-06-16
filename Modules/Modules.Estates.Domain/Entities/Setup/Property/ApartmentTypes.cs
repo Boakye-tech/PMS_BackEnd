@@ -10,20 +10,19 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Modules.Estates.Domain.Entities.Setup.Property
 {
     public class ApartmentTypes : AuditableEntity
     {
-        [Required]
-        public ApartmentCategoryEnum ApartmentCategory { get; set; }
-
         [Key]
         [Required]
         public int ApartmentTypeId { get; private set; }
+
+        [Required]
+        public int ApartmentCategoryId { get; private set; }
 
         [Required]
         [StringLength(50)]
@@ -35,34 +34,40 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [Required]
         public int CurrencyId { get; private set; }
 
+        public virtual CurrencyExchangeRate? Currency { get; private set; }
+
         [Required]
         public double FloorArea { get; private set; }
 
         [Column(TypeName = "nvarchar(max)")]
         public string[] Images { get; private set; }
 
-        public ApartmentTypes(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
+        // Navigation property
+        public virtual ApartmentCategory? ApartmentCategory { get; private set; }
+
+        public ApartmentTypes(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
         {
             ApartmentTypeId = apartmentTypeId;
+            ApartmentCategoryId = apartmentCategoryId;
             ApartmentType = apartmentType;
             SellingPrice = sellingPrice;
             CurrencyId = currencyId;
             FloorArea = floorArea;
-            ApartmentCategory = apartmentCategory;
             Images = images;
         }
 
-        public static ApartmentTypes Create(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
+        public static ApartmentTypes Create(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
         {
             Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea, images);
-            return new ApartmentTypes(apartmentCategory, apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea, images);
+            return new ApartmentTypes(apartmentTypeId, apartmentCategoryId, apartmentType, sellingPrice, currencyId, floorArea, images);
         }
 
-        public void Update(ApartmentCategoryEnum apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
+        public void Update(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
         {
             Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea, images);
 
             ApartmentTypeId = apartmentTypeId;
+            ApartmentCategoryId = apartmentCategoryId;
             ApartmentType = apartmentType;
             SellingPrice = sellingPrice;
             CurrencyId = currencyId;

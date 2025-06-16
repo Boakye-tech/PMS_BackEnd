@@ -83,6 +83,7 @@ public static class ModuleExtensions
 
         services.AddScoped<ISitesService, SitesService>();
         services.AddScoped<ISchemeTypeService, SchemeTypeService>();
+        services.AddScoped<IApartmentCategoryService, ApartmentCategoryService>();
 
 
         services.AddScoped<ITypesService, TypesService>();

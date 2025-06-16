@@ -1518,6 +1518,71 @@ namespace Modules.Estates.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentCategory", b =>
+                {
+                    b.Property<int>("ApartmentCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApartmentCategoryId"));
+
+                    b.Property<string>("ApartmentCategoryName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ApartmentCategoryId");
+
+                    b.HasIndex("ApartmentCategoryName")
+                        .IsUnique();
+
+                    b.ToTable("ApartmentCategory", "est");
+
+                    b.HasData(
+                        new
+                        {
+                            ApartmentCategoryId = 1,
+                            ApartmentCategoryName = "AFFORDABLE",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ApartmentCategoryId = 2,
+                            ApartmentCategoryName = "LUXURY",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ApartmentCategoryId = 3,
+                            ApartmentCategoryName = "MIDRANGE",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentFeatures", b =>
                 {
                     b.Property<int>("ApartmentFeaturesId")
@@ -1571,7 +1636,7 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApartmentTypeId"));
 
-                    b.Property<int>("ApartmentCategory")
+                    b.Property<int>("ApartmentCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("ApartmentType")
@@ -1612,6 +1677,8 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasKey("ApartmentTypeId");
 
+                    b.HasIndex("ApartmentCategoryId");
+
                     b.HasIndex("ApartmentType")
                         .IsUnique();
 
@@ -1621,7 +1688,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 1,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentType = "STUDIO",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
@@ -1634,7 +1701,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 2,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentType = "ONE BEDROOM",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
@@ -1647,7 +1714,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 3,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentType = "ONE BEDROOM (SPECIAL)",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
@@ -1660,7 +1727,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 4,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentType = "TWO BEDROOMS",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
@@ -1673,7 +1740,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 5,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentType = "TWO BEDROOM",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
@@ -1686,7 +1753,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentTypeId = 6,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentType = "THREE BEDROOM",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
@@ -4337,6 +4404,17 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Navigation("Activity");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentTypes", b =>
+                {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentCategory", "ApartmentCategory")
+                        .WithMany("ApartmentTypes")
+                        .HasForeignKey("ApartmentCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApartmentCategory");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LandUseType", b =>
                 {
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.LandUse", "LandUse")
@@ -4392,6 +4470,11 @@ namespace Modules.Estates.Infrastructure.Migrations
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Activity", b =>
                 {
                     b.Navigation("ActivityTypes");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentCategory", b =>
+                {
+                    b.Navigation("ApartmentTypes");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LandUse", b =>

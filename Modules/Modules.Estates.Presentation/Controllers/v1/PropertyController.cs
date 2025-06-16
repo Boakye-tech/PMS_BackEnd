@@ -58,7 +58,7 @@ public partial class PropertyController : ControllerBase
     //[Authorize(Policy = "Permission:Customers.READ")]
     [Route("ApartmentCategory")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    public IActionResult ApartmentCategory()
+    private IActionResult ApartmentCategory()
     {
         var statuses = Enum.GetValues(typeof(ApartmentCategoryEnum))
                                .Cast<ApartmentCategoryEnum>()

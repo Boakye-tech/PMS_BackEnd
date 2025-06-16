@@ -85,6 +85,9 @@ public interface IUnitOfWork : IDisposable
     ITypesRepository Types { get; }
     ISchemeTypeRepository SchemeTypes { get; }
 
+    //16 June, 2025
+    IApartmentCategoryRepository ApartmentCategory { get; }
+
     Task<int> Complete();
 }
 
