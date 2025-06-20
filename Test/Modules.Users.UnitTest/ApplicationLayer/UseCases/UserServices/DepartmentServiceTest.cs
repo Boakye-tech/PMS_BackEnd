@@ -40,7 +40,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
             // Arrange
             var createDto = new DepartmentCreateDto
             (
-                DepartmentId: 1,
+                DepartmentId: 0,
                 DepartmentName: "Test Department",
                 CreatedBy: "system"
             );
@@ -55,7 +55,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(1, result.DepartmentId);
+            Assert.Equal(0, result.DepartmentId);
             Assert.Equal("Test Department", result.DepartmentName);
             _mockUnitOfWork.Verify(u => u.Department.Insert(It.IsAny<Department>()), Times.Once);
             _mockUnitOfWork.Verify(u => u.Complete(), Times.Once);

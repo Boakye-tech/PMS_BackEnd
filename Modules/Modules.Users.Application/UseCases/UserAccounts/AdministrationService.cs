@@ -27,8 +27,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         private readonly ILogger<AdministrationService> _logger;
         private readonly INotificationServices _notifyService;
 
-        public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,
-                                     ValidationService validationService, ILogger<AdministrationService> logger, INotificationServices notifyService) //, HttpClient httpClient 
+        public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,ValidationService validationService, ILogger<AdministrationService> logger, INotificationServices notifyService) 
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -322,6 +321,48 @@ namespace Modules.Users.Application.UseCases.UserAccounts
         {
 
             var roles = await _roleManager.Roles
+                 .OrderByDescending(role => role.CreatedOn)
+                 .ToListAsync();
+
+            var roleDtos = new List<RolesDto>();
+
+            foreach (var role in roles)
+            {
+                var department = await _unitOfWork.Department.Get(role.DepartmentId);
+                var unit = await _unitOfWork.DepartmentUnit.Get(role.UnitId);
+
+                var createdByUser = await _userManager.Users
+                    .Where(u => u.Id == role.CreatedBy)
+                    .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                    .FirstOrDefaultAsync();
+
+                var approvedByUser = await _userManager.Users
+                    .Where(u => u.Id == role.ApprovedBy)
+                    .Select(u => (u.FirstName + " " + (string.IsNullOrEmpty(u.MiddleName) ? "" : u.MiddleName + " ") + u.LastName).Trim())
+                    .FirstOrDefaultAsync();
+
+                roleDtos.Add(new RolesDto(
+                    role.Id,
+                    role.Name!,
+                    role.DepartmentId,
+                    department?.DepartmentName ?? string.Empty,
+                    role.UnitId,
+                    unit?.UnitName ?? string.Empty,
+                    createdByUser ?? string.Empty,
+                    role.CreatedOn,
+                    approvedByUser ?? string.Empty,
+                    role.ApprovedOn,
+                    RegistrationStatusEnumDescription.RegistrationStatusEnum(role.Status).ToString()
+                ));
+            }
+
+            return roleDtos;
+        }
+
+        public async Task<List<RolesDto>> GetUserRoles(string roleName)
+        {
+            var roles = await _roleManager.Roles
+                 .Where(r => r.Name!.Contains(roleName))
                  .OrderByDescending(role => role.CreatedOn)
                  .ToListAsync();
 
@@ -743,21 +784,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             }
 
-            //if ((RegistrationStatus)user.Status != RegistrationStatus.Approved)
-            //{
-            //    _logger.LogWarning($"User account with id '{accountDisapproval.UserId}' has not been approved. Account cannot be disapproved", accountDisapproval.UserId);
-            //    return new DisapprovedUserAccountResponseDto
-            //    {
-            //        IsSuccess = false,
-            //        ErrorResponse = new DisapprovedUserAccountErrorResponseDto
-            //        {
-            //            StatusCode = StatusCodes.Status404NotFound,
-            //            StatusMessage = $"User account with id '{accountDisapproval.UserId}' has not been approved. Account cannot be disapproved"
-            //        }
-            //    };
-
-            //}
-
             var staff = await _userManager.FindByIdAsync(accountDisapproval.DisapprovedBy);
             if (staff is null)
             {
@@ -1088,7 +1114,22 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return partner_UserList;
         }
 
-        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId, string? searchParam, string? status)
+
+        public async Task<IEnumerable<ComplaintAssigneeDto>> GetComplaintAssignee(int departmentId, int unitId)
+        {
+            var staff_UserList = (await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff && u.DepartmentId == departmentId && (u.UnitId == unitId || unitId == 0)))
+                .Select(u => new ComplaintAssigneeDto
+                (
+                    u.Id,
+                    string.Join(" ", new[] { u.FirstName, u.MiddleName, u.LastName }
+                                           .Where(name => !string.IsNullOrWhiteSpace(name)))
+                )).ToList();
+
+            return staff_UserList;
+
+        }
+
+        public async Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId, int unitId, string? searchParam, string? status)
         {
             var staff_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff)
                                   join department in await _unitOfWork.Department.GetAll()
@@ -1100,6 +1141,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                                   join role in await _unitOfWork.Roles.GetAll()
                                       on usrole.RoleId equals role.Id
                                   where user.DepartmentId == departmentId
+                                  && (unitId == 0 || user.UnitId == unitId)
                                   orderby user.RegistrationDate descending
                                   select new AdministrationStaffDto
                                   (
@@ -1191,6 +1233,34 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             return staff_UserList;
         }
+
+        public async Task<List<UsersPerRole>> GetStaffUsersPerRoles(string roleFilter)
+        {
+            var staff_UserList = (
+                from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff)
+                join usrole in await _unitOfWork.UsersRoles.GetAll()
+                    on user.Id equals usrole.UserId
+                join role in await _unitOfWork.Roles.GetAll()
+                    on usrole.RoleId equals role.Id
+                where !string.IsNullOrWhiteSpace(roleFilter)
+                      ? role.Name != null && role.Name.Contains(roleFilter, StringComparison.OrdinalIgnoreCase)
+                      : true
+                orderby user.RegistrationDate descending
+                select new UsersPerRole
+                (
+                    user.Id,
+                    string.Concat(user.FirstName!,' ',user.MiddleName!, ' ',user.LastName!).Trim(),
+                    user.PhoneNumber!,
+                    user.Email!
+                )
+            ).ToList();
+
+            return staff_UserList;
+        }
+
+
+
+
     }
 }
 

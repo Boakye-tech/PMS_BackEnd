@@ -9,20 +9,22 @@
 //  **************************************************/
 
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace Modules.Estates.Application.Interfaces.Management.Complaints
 {
 	public interface IComplaintMasterService
 	{
-        Task<BaseResponseDto> DeleteComplaint(string ComplaintNumber);
 
-
-        Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList(string searchParameter, int complaintType, int complaintStatus);
+        Task<IEnumerable<ComplaintStaffReadDto>> GetComplaintsList(string? searchParameter, int complaintType, int complaintStatus, int departmentId, int departmentUnitId, string userId);
 
 		Task<IEnumerable<ComplaintStaffReadDto>> GetCustomerComplaintsList(string customerCode_OR_propertyNumber);
 
         Task<ComplaintStaffReadDto> GetComplaintSummary(string complaintNumber);
 
         Task<ComplaintDto> GetComplaintDetails(string complaintNumber);
+
+        Task<ComplainantDetailsDto> GetComplainantDetailsByPropertyNumber(string propertyNumber);
 
         Task<List<ComplainantDetailsDto>> GetComplainantDetails(string customerCode);
 
@@ -49,6 +51,11 @@ namespace Modules.Estates.Application.Interfaces.Management.Complaints
         Task<BaseResponseDto> CancelComplaint(ComplaintCancellationDto values);
 
         Task<BaseResponseDto> InProgressComplaint(ComplaintInProgressDto values);
+
+        Task<IEnumerable<ComplaintStaffReadDto>> GetListOfComplaintsByDepartment(int departmentId, [FromQuery] int departmentUnitId, [FromQuery] int complaintStatus);
+
+        Task<IEnumerable<ComplaintStaffReadDto>> GetListOfComplaintsByAssignee(string userId, [FromQuery] int complaintStatus);
+
     }
 }
 

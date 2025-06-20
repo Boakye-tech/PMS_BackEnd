@@ -16,6 +16,8 @@ namespace Modules.Users.Application.Profiles
 		public DepartmentUnitProfile()
 		{
             CreateMap<DepartmentUnit, UnitReadDto>();
+            CreateMap<DepartmentUnit, DepartmentsUnitsReadDto>();
+            
 
             CreateMap<DepartmentUnit, DepartmentUnitReadDto>();
             CreateMap<DepartmentUnitCreateDto, DepartmentUnit>();

@@ -64,6 +64,11 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
             return await SendDataAsync("Complaint/DispatchComplaint", payload, "PUT");
         }
 
+        public async Task<bool> SendComplaintInProgressAsync(ComplaintInProgressDto payload)
+        {
+            return await SendDataAsync("Complaint/InProgressComplaint", payload, "PUT");
+        }
+
         public async Task<bool> SendComplaintReopenAsync(ComplaintReopenedDto payload)
         {
             return await SendDataAsync("Complaint/ReopenComplaint", payload, "PUT");
@@ -93,6 +98,9 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
         {
             return await SendDataAsync("Complaint/ModifyComplaint", payload, "PUT");
         }
+
+
+
 
         public async Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload)
         {
@@ -141,6 +149,7 @@ namespace Modules.Estates.Application.UseCases.ModuleServices
                     "PUT" => await _httpClient.PutAsync(Url, httpContent),
                     _ => null!
                 };
+
 
                 if (response == null)
                 {

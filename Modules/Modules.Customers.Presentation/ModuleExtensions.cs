@@ -10,16 +10,18 @@
 
 using System;
 using Azure.Storage.Blobs;
-
+using Modules.Customers.Application.EventHandlers;
+using Modules.Customers.Application.Services;
+using Modules.Customers.Domain.Interfaces;
 
 namespace Modules.Customers.Presentation
 {
-	public static class ModuleExtensions
-	{
-        public static IServiceCollection AddCustomerModule(this IServiceCollection services, IConfiguration configuration)
+    public static class ModuleExtensions
+    {
+        public static IServiceCollection AddCustomerModule(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
             services
-                .AddCustomerInfrastructure(configuration);
+                .AddCustomerInfrastructure(configuration, environment);
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -33,8 +35,25 @@ namespace Modules.Customers.Presentation
             services.AddScoped<IComplaintTypeService, ComplaintTypeService>();
             services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
             services.AddScoped<IComplaintService, ComplaintService>();
+            services.AddScoped<IComplaintCreationService, ComplaintCreationService>();
+            services.AddScoped<IComplaintNotificationService, ComplaintNotificationService>();
 
-            services.AddHttpClient<ICustomerModuleCommunicationServices, CustomerModuleCommunicationServices>();
+            // Register event handlers
+            services.AddScoped<ComplaintSubmittedEventHandler>();
+            services.AddScoped<ComplaintStatusChangedEventHandler>();
+            services.AddScoped<ComplaintAssignedEventHandler>();
+            services.AddScoped<ComplaintCancelledEventHandler>();
+            services.AddScoped<ComplaintReopenedEventHandler>();
+            services.AddScoped<ComplaintClosedEventHandler>();
+            services.AddScoped<ComplaintAcknowledgedEventHandler>();
+            services.AddScoped<ComplaintDispatchedEventHandler>();
+
+            // Register domain event dispatcher
+            services.AddScoped<IDomainEventDispatcher, ComplaintDomainEventDispatcher>();
+
+            services.AddHttpClient<IDispatchService, DispatchService>();
+            services.AddScoped<ICustomerModuleCommunicationServices, CustomerModuleCommunicationServices>();
+            services.AddScoped<INotificationModuleService, NotificationModuleService>();
 
             services.AddSingleton(s =>
             {
@@ -42,10 +61,8 @@ namespace Modules.Customers.Presentation
             });
             services.AddScoped<IAzureBlobService, AzureBlobService>();
 
-
             // Dependency Injection - Register AutoMapper 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
             return services;
         }

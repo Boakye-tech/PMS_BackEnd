@@ -24,6 +24,10 @@ namespace Modules.Users.Application.Interfaces
         Task<IEnumerable<UnitReadDto>> GetUnitAsync(int value);
 
         Task<GenericResponseDto> DeleteDepartmentUnit(int unitId);
+
+        // Departments and Departments Units method
+        Task<List<DepartmentsAndUnitsReadDto>> GetDepartmentsAndUnitsAsync();
+
     }
 }
 

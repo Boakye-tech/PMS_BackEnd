@@ -58,6 +58,8 @@ public record ComplaintDto
 
     public DateTime ComplaintDate { get; set; }
 
+    public DateTime AvailableDate { get; set; }
+
     [StringLength(150)]
     public string? SubmittedBy { get; set; }
 

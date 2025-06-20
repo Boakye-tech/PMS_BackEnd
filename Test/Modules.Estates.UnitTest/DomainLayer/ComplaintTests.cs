@@ -38,9 +38,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -51,7 +49,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source, createdBy);
+                documentList, complaintStatus, source, createdBy);
 
             // Assert
             Assert.NotNull(complaint);
@@ -68,9 +66,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             Assert.Equal(isTheMatterInCourt, complaint.IsTheMatterInCourt);
             Assert.Equal(detailsOfComplaint, complaint.DetailsOfComplaint);
             Assert.Equal(availabilityDate, complaint.AvailabilityDate);
-            Assert.Equal(documentOne, complaint.DocumentOne);
-            Assert.Equal(documentTwo, complaint.DocumentTwo);
-            Assert.Equal(documentThree, complaint.DocumentThree);
+            Assert.Equal(documentList, complaint.DocumentList);
             Assert.Equal(complaintStatus, complaint.ComplaintStatus);
             Assert.Equal(source, complaint.Source);
             Assert.Equal(0, complaint.DispatachedTo_Department);
@@ -99,9 +95,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -112,7 +106,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source, createdBy);
+                documentList, complaintStatus, source, createdBy);
 
             // Assert
             Assert.NotNull(complaint);
@@ -145,9 +139,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -158,7 +150,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy));
+                documentList, complaintStatus, source,createdBy));
 
             Assert.Equal("Complaint type id must be greater than zero.", exception.Message);
         }
@@ -185,9 +177,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -198,7 +188,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy));
+                documentList, complaintStatus, source,createdBy));
 
             Assert.Equal("Nature of complaint must not be null or empty", exception.Message);
         }
@@ -225,9 +215,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -238,7 +226,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy));
+                documentList, complaintStatus, source,createdBy));
 
             Assert.Equal("Property number must not be null or empty", exception.Message);
         }
@@ -265,9 +253,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -278,7 +264,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy));
+                documentList, complaintStatus, source,createdBy));
 
             Assert.Equal("Property location must not be null or empty", exception.Message);
         }
@@ -305,9 +291,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -318,7 +302,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy));
+                documentList, complaintStatus, source,createdBy));
 
             Assert.Equal("Customer code must not be null or empty", exception.Message);
         }
@@ -345,9 +329,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -358,7 +340,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy));
+                documentList, complaintStatus, source,createdBy));
 
             Assert.Equal("Customer name must not be null or empty", exception.Message);
         }
@@ -385,9 +367,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -398,7 +378,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy));
+                documentList, complaintStatus, source,createdBy));
 
             Assert.Equal("Phone number must not be null or empty", exception.Message);
         }
@@ -425,9 +405,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = "John Doe";
             string submittedBy_PhoneNumber = "0241234567";
-            string documentOne = "document1.pdf";
-            string documentTwo = "document2.pdf";
-            string documentThree = "document3.pdf";
+            string[] documentList = { "document1.pdf", "document2.pdf", "document3.pdf" };
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -438,7 +416,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy));
+                documentList, complaintStatus, source,createdBy));
 
             Assert.Equal("Complaint details must not be null or empty", exception.Message);
         }
@@ -467,9 +445,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             DateTime complaintDate = DateTime.UtcNow;
             string submittedBy = default!; // Optional
             string submittedBy_PhoneNumber = default!; // Optional
-            string documentOne = default!; // Optional
-            string documentTwo = default!; // Optional
-            string documentThree = default!; // Optional
+            string[] documentList = default!;// Optional
             ComplaintStatusEnum complaintStatus = ComplaintStatusEnum.SUBMITTED;
             ComplaintSourceEnum source = ComplaintSourceEnum.STAFF;
             string createdBy = "32ea339b-75f2-4f57-8153-915f127a9612";
@@ -480,7 +456,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
                 propertyNumber, propertyLocation, customerCode, customerName,
                 phoneNumber, emailAddress, isTheMatterInCourt, detailsOfComplaint,
                 availabilityDate, complaintDate, submittedBy, submittedBy_PhoneNumber,
-                documentOne, documentTwo, documentThree, complaintStatus, source,createdBy);
+                documentList, complaintStatus, source,createdBy);
 
             // Assert
             Assert.NotNull(complaint);
@@ -497,9 +473,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             Assert.Null(complaint.IsTheMatterInCourt);
             Assert.Equal(detailsOfComplaint, complaint.DetailsOfComplaint);
             Assert.Equal(availabilityDate, complaint.AvailabilityDate);
-            Assert.Null(complaint.DocumentOne);
-            Assert.Null(complaint.DocumentTwo);
-            Assert.Null(complaint.DocumentThree);
+            Assert.Null(complaint.DocumentList);
             Assert.Equal(complaintStatus, complaint.ComplaintStatus);
         }
 
@@ -531,9 +505,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             Assert.Equal(default(DateTime), complaint.ComplaintDate);
             Assert.Null(complaint.SubmittedBy);
             Assert.Null(complaint.SubmittedBy_PhoneNumber);
-            Assert.Null(complaint.DocumentOne);
-            Assert.Null(complaint.DocumentTwo);
-            Assert.Null(complaint.DocumentThree);
+            Assert.Null(complaint.DocumentList);
             Assert.Equal(default(ComplaintStatusEnum), complaint.ComplaintStatus);
             Assert.Equal(0, complaint.DispatachedTo_Department);
             Assert.Equal(0, complaint.DispatachedTo_DepartmentUnit);

@@ -11,6 +11,7 @@
 using System.Net.NetworkInformation;
 using System.Web;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Modules.Customers.Presntation.Controllers.v1;
@@ -172,6 +173,38 @@ public class OnlineCustomerController : ControllerBase
     {
         return await _paymentsService.AddNewCustomerPaymentDetails(values);
     }
+
+    /// <summary>
+    /// Returns a paginated list of customer codes and property numbers based on customer code or property number full or partial search parameter
+    /// </summary>
+    [HttpGet]
+    [Route("CustomerPropertySearch")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PropertySearchDto>))]
+    public async Task<ActionResult> CustomerPropertySearch([FromQuery] string? propertyNumber_OR_customerCode, int pageNumber = 1, int pageSize = 10)
+    {
+        try
+        {
+            if (propertyNumber_OR_customerCode is not null)
+            {
+                string param = HttpUtility.UrlDecode(propertyNumber_OR_customerCode!);
+
+                var result = await _propertyDetailsService.GetCustomerPropertySearch(param, pageNumber, pageSize);
+
+                return Ok(result);
+            }
+
+            return Ok(Array.Empty<string>());
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.InnerException!.Message);
+        }
+
+    }
+
+
+
 
 }
 

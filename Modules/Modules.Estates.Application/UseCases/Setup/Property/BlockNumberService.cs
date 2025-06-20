@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Setup/Property/BlockNumberService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,10 +10,11 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Http;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
-public class BlockNumberService: IBlockNumberService
+public class BlockNumberService : IBlockNumberService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -20,20 +23,6 @@ public class BlockNumberService: IBlockNumberService
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-    }
-
-    public async Task<BlockNumberReadDto> AddBlockNumberAsync(BlockNumberCreateDto values)
-    {
-        BlockNumber input_values = new(values.blockNumberId, values.blockNumbers!)
-        {
-            CreatedBy = values.createdby,
-            CreatedOn = DateTime.Now
-        };
-
-        _unitOfWork.BlockNumber.Insert(input_values);
-        await _unitOfWork.Complete();
-
-        return new BlockNumberReadDto(input_values.BlockNumberId, input_values.BlockNumbers!);
     }
 
     public async Task<IEnumerable<BlockNumberReadDto>> GetBlockNumberAsync()
@@ -54,18 +43,105 @@ public class BlockNumberService: IBlockNumberService
         return _mapper.Map<BlockNumberReadDto>(response);
     }
 
-    public async Task<BlockNumberReadDto> UpdateBlockNumberAsync(BlockNumberUpdateDto values)
+    public async Task<ReturnResponsesDto> CreateBlockNumberAsync(BlockNumberCreateDto values)
     {
-        BlockNumber input_values = new(values.blockNumberId, values.blockNumbers!)
+        try
         {
-            ModifiedBy = values.modifiedby,
-            ModifiedOn = DateTime.Now
-        };
+            var existingBlockNumber = await _unitOfWork.BlockNumber.Get(bn => bn.BlockNumbers == values.blockNumbers);
+            if (existingBlockNumber != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Block Number already exists." },
+                    SuccessResponse = null
+                };
+            }
 
-        _unitOfWork.BlockNumber.Update(input_values);
-        await _unitOfWork.Complete();
+            var blockNumber = BlockNumber.Create(0, values.blockNumbers!);
+            blockNumber.CreatedBy = values.createdby;
+            blockNumber.CreatedOn = DateTime.Now;
 
-        return new BlockNumberReadDto(input_values.BlockNumberId, input_values.BlockNumbers!);
+            _unitOfWork.BlockNumber.Insert(blockNumber);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Block Number created successfully." },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> UpdateBlockNumberAsync(BlockNumberUpdateDto values)
+    {
+        try
+        {
+            var blockNumber = await _unitOfWork.BlockNumber.Get(values.blockNumberId);
+            if (blockNumber == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Block Number with ID {values.blockNumberId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            blockNumber.Update(values.blockNumberId, values.blockNumbers!);
+            blockNumber.ModifiedBy = values.modifiedby;
+            blockNumber.ModifiedOn = DateTime.Now;
+
+            _unitOfWork.BlockNumber.Update(blockNumber);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Block Number modified successfully." },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> DeleteBlockNumber(int blockNumberId)
+    {
+        try
+        {
+            var blockNumber = await _unitOfWork.BlockNumber.Get(blockNumberId);
+            if (blockNumber == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Block Number with ID {blockNumberId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.BlockNumber.Delete(blockNumber);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Block Number with ID {blockNumberId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
+        }
     }
 }
 

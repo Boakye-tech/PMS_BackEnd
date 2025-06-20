@@ -23,13 +23,33 @@ namespace Modules.Users.Domain.Entities
         [StringLength(50)]
         public string DepartmentName { get; set; }
 
+        //Navigation property for DepartmentUnits
+        public virtual ICollection<DepartmentUnit> DepartmentUnits { get; private set; }
+
         public Department(int departmentId, string departmentName)
         {
             DepartmentId = departmentId;
             DepartmentName = departmentName;
+            DepartmentUnits = new List<DepartmentUnit>();
         }
 
-        public static Department CreateUpdate(int departmentId, string departmentName)
+        public static Department Create(int departmentId, string departmentName)
+        {
+            if (string.IsNullOrWhiteSpace(departmentName) || departmentId != 0)
+            {
+                throw new ArgumentException("Invalid department data.");
+            }
+
+            if (departmentId != 0)
+                throw new ArgumentException("The department id must be equal to zero.");
+
+            if (string.IsNullOrWhiteSpace(departmentName) || departmentName.Length > 50)
+                throw new ArgumentException("The department name must not be null or exceed 50 characters.");
+
+            return new Department(departmentId, departmentName);
+        }
+
+        public static Department Update(int departmentId, string departmentName)
         {
             if (string.IsNullOrWhiteSpace(departmentName) || departmentId < 0)
             {
@@ -44,6 +64,8 @@ namespace Modules.Users.Domain.Entities
 
             return new Department(departmentId, departmentName);
         }
+
+
 
     }
 }

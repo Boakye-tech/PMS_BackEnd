@@ -38,6 +38,7 @@
     <None Remove="PresentationLayer\" />
     <None Remove="InfrastructureLayer\" />
     <None Remove="InfrastructureLayer\Data\" />
+    <None Remove="ApplicationLayer\Setups\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DomainLayer\" />
@@ -47,6 +48,7 @@
     <Folder Include="PresentationLayer\" />
     <Folder Include="InfrastructureLayer\" />
     <Folder Include="InfrastructureLayer\Data\" />
+    <Folder Include="ApplicationLayer\Setups\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\Modules.Estates.Application\Modules.Estates.Application.csproj" />

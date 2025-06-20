@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Setup/Property/LandUseDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -12,6 +14,6 @@
 namespace Modules.Estates.Application.DTO.Setup.Property;
 
 public record LandUseReadDto(int LandUseId, string LandUseInitial, string LandUseName);
-public record LandUseCreateDto(int LandUseId, string? LandUseInitial, string? LandUseName, string CreatedBy);
+public record LandUseCreateDto(string? LandUseInitial, string? LandUseName, string CreatedBy);
 public record LandUseUpdateDto(int LandUseId, string? LandUseInitial, string? LandUseName, string ModifiedBy);
 public record LandUseDeleteDto(int LandUseId);

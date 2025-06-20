@@ -14,6 +14,7 @@ using System.Reflection;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Modules.Customers.Presntation.Controllers.v1;
@@ -523,6 +524,7 @@ public class ComplaintController : ControllerBase
             }
 
             var result = await _complaintService.GetComplaintDetails(complaintNumber);
+
             if(result is null)
             {
                 return NotFound($"No records found for complaint number {complaintNumber}");
@@ -690,7 +692,7 @@ public class ComplaintController : ControllerBase
     ///         "createdBy": "3fba6d17-3e29-4f61-8d8a-1a1f249cf111"
     ///     }
     /// 
-    /// **Sample Response 200:**
+    /// **Sample Response 201:**
     /// 
     ///     {
     ///         "responseCode": 201,
@@ -720,7 +722,7 @@ public class ComplaintController : ControllerBase
     /// </remarks>
     /// <param name="values">The complaint details to be submitted.</param>
     /// <returns>
-    /// Returns HTTP 200 OK with the response if the complaint is successfully submitted.
+    /// Returns HTTP 201 Created with the response if the complaint is successfully submitted.
     /// Returns HTTP 204 No Content if nature of complaint is empty.
     /// Returns HTTP 403 Forbidden if trying to submit on behalf of another customer.
     /// Returns HTTP 500 Internal Server Error if an unexpected error occurs.
@@ -728,7 +730,7 @@ public class ComplaintController : ControllerBase
     [HttpPost]
     [Route("SubmitComplaint")]
     [Authorize(Policy = "Permission:Complaints.COMPLAINT")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GenericResponseDto))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(GenericResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(GenericResponseDto))]
     [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(GenericResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(GenericResponseDto))]
@@ -736,16 +738,19 @@ public class ComplaintController : ControllerBase
     {
         try
         {
-            var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.CreatedBy))
-            {
-                return Unauthorized();
-            }
+            //var userId = _userContextService.GetUserId();
+            //if (!string.Equals(userId, values.CreatedBy))
+            //{
+            //    return Unauthorized();
+            //}
 
-            var customer_code = _userContextService.UserCode();
-            if(!string.Equals(customer_code, values.CustomerCode))
+            if(values.Source == ComplaintSource.CUSTOMER)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, "Sorry you cannot submit complaints on behalf of another customer.");
+                var customer_code = _userContextService.UserCode();
+                if (!string.Equals(customer_code, values.CustomerCode))
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, "Sorry you cannot submit complaints on behalf of another customer.");
+                }
             }
 
             if (values.NatureOfComplaintId!.Count() == 0)
@@ -757,12 +762,12 @@ public class ComplaintController : ControllerBase
             var status = result.responseCode;
             return status switch
             {
-                201 => Ok(result.response),
+                201 => StatusCode(StatusCodes.Status201Created, result),
                 204 => NoContent(),
-                400 => BadRequest(result.response),
-                404 => NotFound(result.response),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
-            }; ;
+                400 => BadRequest(result),
+                404 => NotFound(result),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result),
+            }; 
 
         }
         catch (Exception ex)
@@ -851,10 +856,10 @@ public class ComplaintController : ControllerBase
             var status = result.responseCode;
             return status switch
             {
-                200 => Ok(result.response),
+                200 => Ok(result),
                 204 => NoContent(),
-                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, result.response),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result),
             };
 
         }
@@ -937,17 +942,22 @@ public class ComplaintController : ControllerBase
             var role = _userContextService.GetUserRole(ComplaintSourceDescription.GetEnumDescription(ComplaintSource.CUSTOMER));
             if ((bool)role!)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, new GenericResponseDto { response = "The user role is forbidden from accessing this resource." });
+                return StatusCode(StatusCodes.Status403Forbidden, new GenericResponseDto { responseCode = StatusCodes.Status403Forbidden, response = "The user role is forbidden from accessing this resource." });
+            }
+
+            if (values.ComplaintNumber!.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status204NoContent, new { message = "The complaint number cannot be empty or null, it must contain at least one valid complaint number." });
             }
 
             var result = await _complaintService.AcknowledgeComplaint(values); //change
             var status = result.responseCode;
             return status switch
             {
-                200 => Ok(result.response),
-                204 => NoContent(),
-                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
-                _ => StatusCode(500, result.response),
+                200 => Ok(result),
+                204 => StatusCode(StatusCodes.Status204NoContent, result),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result),
             };
         }
         catch (Exception ex)
@@ -1038,9 +1048,10 @@ public class ComplaintController : ControllerBase
             var status = result.responseCode;
             return status switch
             {
-                200 => Ok(result.response),
-                204 => NoContent(),
-                _ => StatusCode(500, result.response),
+                200 => Ok(result),
+                204 => StatusCode(StatusCodes.Status204NoContent, result),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result),
             };
         }
         catch (Exception ex)
@@ -1130,10 +1141,10 @@ public class ComplaintController : ControllerBase
             var status = result.responseCode;
             return status switch
             {
-                200 => Ok(result.response),
-                204 => NoContent(),
-                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
-                _ => StatusCode(500, result.response),
+                200 => Ok(result),
+                204 => StatusCode(StatusCodes.Status204NoContent, result),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result),
             };
 
         }
@@ -1226,10 +1237,10 @@ public class ComplaintController : ControllerBase
             var status = result.responseCode;
             return status switch
             {
-                200 => Ok(result.response),
-                204 => NoContent(),
-                403 => StatusCode(StatusCodes.Status403Forbidden, result.response),
-                _ => StatusCode(500, result.response),
+                200 => Ok(result),
+                204 => StatusCode(StatusCodes.Status204NoContent, result),
+                403 => StatusCode(StatusCodes.Status403Forbidden, result),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result),
             };
 
         }

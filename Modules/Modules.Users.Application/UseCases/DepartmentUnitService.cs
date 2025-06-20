@@ -9,6 +9,8 @@
 //  **************************************************/
 
 
+using System.Linq;
+
 namespace Modules.Users.Application.UseCases
 {
 	public class DepartmentUnitService : IDepartmentUnitService
@@ -24,7 +26,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentUnitReadDto> AddDepartmentUnitAsync(DepartmentUnitCreateDto values)
         {
-            DepartmentUnit departmentUnit = DepartmentUnit.CreateUpdate(values.DepartmentId, values.UnitId ,values.UnitName!);
+            DepartmentUnit departmentUnit = DepartmentUnit.Create(values.DepartmentId, values.UnitId ,values.UnitName!);
 
             departmentUnit.CreatedBy = values.CreatedBy;
             departmentUnit.CreatedOn = DateTime.Now;
@@ -47,6 +49,27 @@ namespace Modules.Users.Application.UseCases
             _unitOfWork.DepartmentUnit.Delete(unit!);
             await _unitOfWork.Complete();
             return new GenericResponseDto("success");
+        }
+
+        public async Task<List<DepartmentsAndUnitsReadDto>> GetDepartmentsAndUnitsAsync()
+        {
+            // Get all departments and units in a single query using Include
+            var departments = await _unitOfWork.Department.GetAll(includes: new List<string> { "DepartmentUnits" });
+
+            // Create a dictionary for quick lookup of units by department id
+            var departmentsUnits = departments.Select(departments =>
+            {
+                var departmentUnits = _mapper.Map<List<DepartmentsUnitsReadDto>>(departments.DepartmentUnits);
+                return new DepartmentsAndUnitsReadDto(
+                    new DepartmentsReadDto(
+                    departments.DepartmentId,
+                    departments.DepartmentName,
+                    false),
+                    departmentUnits
+                );
+            }).ToList();
+
+            return departmentsUnits;
         }
 
         public async Task<IEnumerable<DepartmentUnitReadDto>> GetDepartmentUnitAsync()
@@ -77,7 +100,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentUnitReadDto> UpdateDepartmentUnitAsync(DepartmentUnitUpdateDto values)
         {
-            DepartmentUnit departmentUnit = DepartmentUnit.CreateUpdate(values.DepartmentId, values.UnitId, values.UnitName!);
+            DepartmentUnit departmentUnit = DepartmentUnit.Update(values.DepartmentId, values.UnitId, values.UnitName!);
 
             departmentUnit.ModifiedBy = values.ModifiedBy;
             departmentUnit.ModifiedOn = DateTime.Now;

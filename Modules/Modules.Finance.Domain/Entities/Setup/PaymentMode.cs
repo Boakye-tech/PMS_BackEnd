@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Finance.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Setup/PaymentMode.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,42 +10,45 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Finance.Domain.Entities.Setup
+namespace Modules.Finance.Domain.Entities.Setup;
+
+public class PaymentMode : AuditableEntity
 {
-	public class PaymentMode : AuditableEntity
+    [Key]
+    [Required]
+    public int PaymentModeId { get; private set; }
+
+    [Required]
+    [StringLength(20)]
+    public string? PaymentModes { get; private set; }
+
+    public PaymentMode(int paymentModeId, string paymentModes)
     {
-        [Key]
-        [Required]
-        public int PaymentModeId { get; private set; }
+        PaymentModeId = paymentModeId;
+        PaymentModes = paymentModes;
+    }
 
-        [Required]
-        [StringLength(20)]
-        public string? PaymentModes { get; private set; }
+    public static PaymentMode Create(int paymentModeId, string paymentMode)
+    {
+        Validate(paymentModeId, paymentMode);
+        return new PaymentMode(paymentModeId, paymentMode);
+    }
 
-        public PaymentMode(int PaymentModeId, string PaymentModes)
-        {
-            this.PaymentModeId = PaymentModeId;
-            this.PaymentModes = PaymentModes;
-        }
+    public void Update(int paymentModeId, string paymentMode)
+    {
+        Validate(paymentModeId, paymentMode);
+        PaymentModes = paymentMode;
+    }
 
-        public static PaymentMode CreateUpdate(int paymentModeId, string paymentMode)
-        {
-            if (string.IsNullOrWhiteSpace(paymentMode) || paymentModeId < 0)
-            {
-                throw new ArgumentException("Invalid payment mode data.");
-            }
+    private static void Validate(int paymentModeId, string paymentMode)
+    {
+        if (paymentModeId <= 0)
+            throw new ArgumentException("The payment mode id must be greater than zero.");
 
-            if (paymentModeId <= 0)
-                throw new ArgumentException("The payment mode id must be greater than zero.");
-
-            if (string.IsNullOrWhiteSpace(paymentMode) || paymentMode.Length > 20)
-                throw new ArgumentException("The payment mode must not be null or exceed 20 characters.");
-
-            return new PaymentMode(paymentModeId, paymentMode);
-        }
+        if (string.IsNullOrWhiteSpace(paymentMode) || paymentMode.Length > 20)
+            throw new ArgumentException("The payment mode must not be null or exceed 20 characters.");
     }
 }
 

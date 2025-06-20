@@ -281,7 +281,7 @@ namespace Modules.Users.Application.UseCases
                         items.Add(new PermissionAccessSubMenuItemsWithActionsDto(item.SubMenuItemName, permissions));
                     }
 
-                    sections.Add(new PermissionAccessSubMenusWithActionsDto(_subMenu.SubMenuName,  permissions, items));
+                    sections.Add(new PermissionAccessSubMenusWithActionsDto(_subMenu.SubMenuName!,  permissions, items));
                 }
 
                 accessModules.Add(new PermissionAccessMenusWithActionsDto(_menuItem.MenuName, permissions, sections));

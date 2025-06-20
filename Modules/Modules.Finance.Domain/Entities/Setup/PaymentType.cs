@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Finance.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Domain/Entities/Setup/PaymentType.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,43 +10,45 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Finance.Domain.Entities.Setup
+namespace Modules.Finance.Domain.Entities.Setup;
+
+public class PaymentType : AuditableEntity
 {
-	public class PaymentType : AuditableEntity
+    [Key]
+    [Required]
+    public int PaymentTypeId { get; private set; }
+
+    [Required]
+    [StringLength(20)]
+    public string PaymentTypes { get; private set; }
+
+    public PaymentType(int paymentTypeId, string paymentTypes)
     {
-        [Key]
-        [Required]
-        public int PaymentTypeId { get; private set; }
+        PaymentTypeId = paymentTypeId;
+        PaymentTypes = paymentTypes;
+    }
 
-        [Required]
-        [StringLength(20)]
-        public string PaymentTypes { get; private set; }
+    public static PaymentType Create(int paymentTypeId, string paymentType)
+    {
+        Validate(paymentTypeId, paymentType);
+        return new PaymentType(paymentTypeId, paymentType);
+    }
 
+    public void Update(int paymentTypeId, string paymentType)
+    {
+        Validate(paymentTypeId, paymentType);
+        PaymentTypes = paymentType;
+    }
 
-        public PaymentType(int PaymentTypeId, string PaymentTypes)
-        {
-            this.PaymentTypeId = PaymentTypeId;
-            this.PaymentTypes = PaymentTypes;
-        }
+    private static void Validate(int paymentTypeId, string paymentType)
+    {
+        if (paymentTypeId <= 0)
+            throw new ArgumentException("The payment type id must be greater than zero.");
 
-        public static PaymentType CreateUpdate(int paymentTypeId, string paymentType)
-        {
-            if (string.IsNullOrWhiteSpace(paymentType) || paymentTypeId < 0)
-            {
-                throw new ArgumentException("Invalid Payment Type Data.");
-            }
-
-            if (paymentTypeId <= -1)
-                throw new ArgumentException("The payment type id must be greater than zero.");
-
-            if (string.IsNullOrWhiteSpace(paymentType) || paymentType.Length > 20)
-                throw new ArgumentException("The payment type must not be null or exceed 20 characters.");
-
-            return new PaymentType(paymentTypeId, paymentType);
-        }
+        if (string.IsNullOrWhiteSpace(paymentType) || paymentType.Length > 20)
+            throw new ArgumentException("The payment type must not be null or exceed 20 characters.");
     }
 }
 

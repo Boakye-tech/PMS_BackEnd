@@ -18,3 +18,6 @@ global using Modules.Finance.Application.UseCases;
 global using Modules.Finance.Domain.Interfaces;
 global using Modules.Finance.Infrastructure.Extensions;
 global using Modules.Finance.Infrastructure.Repositories;
+
+global using Modules.Finance.Application.Interfaces.ModuleServices;
+global using Modules.Finance.Application.UseCases.ModuleServices;

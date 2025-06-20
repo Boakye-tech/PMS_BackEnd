@@ -31,7 +31,7 @@ if (builder.Environment.IsDevelopment())
     }
 }
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsStaging() || builder.Environment.IsProduction())
 {
     var currentDirectory = Directory.GetCurrentDirectory();
     var solutionDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName ?? "";
@@ -57,10 +57,23 @@ if (builder.Environment.IsDevelopment())
             break;
 
         case "MsSQLServer":
-            builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection")).EnableDetailedErrors().EnableSensitiveDataLogging());
+            builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection_Development")).EnableDetailedErrors().EnableSensitiveDataLogging());
             break;
     }
 
+}
+
+if (builder.Environment.IsProduction())
+{
+    switch (builder.Configuration.GetSection("Provider").GetSection("DatabaseProvider").Value)
+    {
+        case "Sqlite":
+            //builder.Services.AddDbContext<FinanceDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
+            break;
+        case "MsSQLServer":
+            builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection_Staging")));
+            break;
+    }
 }
 
 if (builder.Environment.IsProduction())
@@ -89,7 +102,7 @@ builder.Services.AddCors(o =>
 });
 
 
-builder.Services.AddUserModule(builder.Configuration);
+builder.Services.AddUserModule(builder.Configuration, builder.Environment);
 
 builder.Services.AddControllers();
 

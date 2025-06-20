@@ -27,9 +27,7 @@ namespace Modules.Users.Presentation.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Policy = "Permission:Users.READ")]
-
-
+    
     public class AdministrationController : ControllerBase
     {
         readonly IAdministrationService _adminService;
@@ -60,6 +58,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetChannels")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<ChannelReadDto>>> GetChannels()
         {
             return Ok(await _channelService.GetChannelAsync());
@@ -140,6 +139,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetAccessMenus")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<AccessModulesDto> GetAccessMenus()
         {
             return await _menuService.GetAccessMenus();
@@ -150,6 +150,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetUserActions")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public IEnumerable<MenuActionsDto> GetUserActions()
         {
             return _menuService.GetActions();
@@ -160,6 +161,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetAllMenus")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<IEnumerable<AllMenusDto>> GetAllMenus()
         {
             return await _menuService.GetAllMenus();
@@ -170,6 +172,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetMenus")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<IEnumerable<MenusDto>> GetMenus()
         {
             return await _menuService.GetMenus();
@@ -217,6 +220,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetSubMenus")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<IEnumerable<SubMenusDto>> GetSubMenus()
         {
             return await _menuService.GetSubMenus();
@@ -264,6 +268,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetSubMenuItems")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<IEnumerable<SubMenuItemsDto>> GetSubMenuItems()
         {
             return await _menuService.GetSubMenuItems();
@@ -375,6 +380,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetApprovedUserRoles")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<List<RolesDto>> GetApprovedUserRoles([FromQuery] int departmentId, [FromQuery] int unitId)
         {
             if ((bool)_userContextService.GetUserRole("MISAdministrator")!)
@@ -397,6 +403,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetDepartmentUserRoles/{departmentId}")]
+        [Authorize(Policy = "Permission:Users.READ")]
         [Obsolete("GetDepartmentUserRoles is obsolete and will be removed in a future release.")]
         public async Task<List<RolesDto>> GetDepartmentUserRoles(int departmentId)
         {
@@ -409,6 +416,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetDepartmentUnitUserRoles/{unitId}")]
+        [Authorize(Policy = "Permission:Users.READ")]
         [Obsolete("GetDepartmentUnitUserRoles is obsolete and will be removed in a future release.")]
         public async Task<List<RolesDto>> GetDepartmentUnitUserRoles(int unitId)
         {
@@ -421,6 +429,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetRejectedUserRoles")]
+        [Authorize(Policy = "Permission:Users.READ")]
         [Obsolete("GetRejectedUserRoles is obsolete and will be removed in a future release. Use GetUserRoles with 'Rejected' status instead.")]
         public async Task<List<RolesDto>> GetRejectedUserRoles()
         {
@@ -433,6 +442,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         // GET: api/values
         [HttpGet]
         [Route("GetUserRoles")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<List<RolesDto>> GetUserRoles([FromQuery] int departmentId, [FromQuery] int unitId)
         {
             if ((bool)_userContextService.GetUserRole("MISAdministrator")!)
@@ -585,6 +595,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetUserPermissions/{userId}")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public Task<IEnumerable<PermissionsAccessModulesReadDto>> GetUserPermissions(string userId)
         {
             return null!;
@@ -596,6 +607,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetRolePermissions/{roleId}")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<PermissionsAccessModulesReadDto> GetRolePermissions(string roleId)
         {
             return await _menuService.GetRolesPermissions(roleId);
@@ -821,7 +833,21 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// Returns a list of exisitng departments
         /// </summary>
         [HttpGet]
+        [Route("GetDepartmentsAndDepartmentUnits")]
+        [AllowAnonymous]
+        //[Authorize(Policy = "Permission:Users.READ")]
+        public async Task<ActionResult<IEnumerable<DepartmentsAndUnitsReadDto>>> GetDeGetDepartmentsAndDepartmentUnitspartments()
+        {
+            return Ok(await _departmentUnitService.GetDepartmentsAndUnitsAsync());
+        }
+
+        /// <summary>
+        /// Returns a list of exisitng departments
+        /// </summary>
+        [HttpGet]
         [Route("GetDepartments")]
+        [AllowAnonymous]
+        //[Authorize(Policy = "Permission:Users.READ")]
         public async Task<ActionResult<IEnumerable<DepartmentReadDto>>> GetDepartments()
         {
             return Ok(await _departmentService.GetDepartmentAsync());
@@ -832,6 +858,8 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetDepartmentUnits/{departmentId}")]
+        [AllowAnonymous]
+        //[Authorize(Policy = "Permission:Users.READ")]
         public async Task<ActionResult<IEnumerable<UnitReadDto>>> GetDepartmentUnits(int departmentId)
         {
             return Ok(await _departmentUnitService.GetUnitAsync(departmentId));
@@ -842,6 +870,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetDepartmentById/{departmentId}")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<ActionResult<DepartmentReadDto>> GetDepartmentById(int departmentId)
         {
             return Ok(await _departmentService.GetDepartmentAsync(departmentId));
@@ -853,7 +882,8 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateDepartment")]
         [Authorize(Policy = "Permission:Users.CREATE")]
-        public async Task<ActionResult<DepartmentReadDto>> CreateDepartment([FromBody] DepartmentCreateDto values)
+        [ProducesResponseType(201)]
+        public async Task<ActionResult> CreateDepartment([FromBody] DepartmentCreateDto values)
         {
             try
             {
@@ -869,12 +899,12 @@ namespace Modules.Users.Presentation.Controllers.v1
                     return BadRequest(result);
                 }
 
-                return StatusCode(StatusCodes.Status201Created, result);
+                return StatusCode(StatusCodes.Status201Created, new { code = StatusCodes.Status201Created, message="Department created successfully."});
                 
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError , new { code = StatusCodes.Status201Created, message = ex.Message } );
             }
         }
 
@@ -884,21 +914,31 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateDepartment")]
         [Authorize(Policy = "Permission:Users.UPDATE")]
-        public async Task<ActionResult<DepartmentReadDto>> UpdateDepartment([FromBody] DepartmentUpdateDto values)
+        public async Task<ActionResult> UpdateDepartment([FromBody] DepartmentUpdateDto values)
         {
-            var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.ModifiedBy))
+            try
             {
-                return Unauthorized();
-            }
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ModifiedBy))
+                {
+                    return Unauthorized();
+                }
 
-            var result = _departmentService.GetDepartmentAsync(values.DepartmentId);
-            if(result is null)
+                var result = _departmentService.GetDepartmentAsync(values.DepartmentId);
+                if (result is null)
+                {
+                    return BadRequest();
+                }
+
+                await _departmentService.UpdateDepartmentAsync(values);
+
+                return Ok(new { code = StatusCodes.Status200OK, message = "Department updated successfully." });
+
+            }
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, new { code = StatusCodes.Status201Created, message = ex.Message });
             }
-
-            return Ok(await _departmentService.UpdateDepartmentAsync(values));
         }
 
         /// <summary>
@@ -921,6 +961,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetDepartmentUnits")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<DepartmentUnitReadDto>>> GetDepartmentUnits()
         {
             return Ok(await _departmentUnitService.GetDepartmentUnitAsync());
@@ -931,6 +972,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetDepartmentUnitsByDepartmentId/{departmentId}")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<DepartmentUnitReadDto>>> GetDepartmentUnitsByDepartmentId(int departmentId)
         {
             return Ok(await _departmentUnitService.GetDepartmentUnitAsync(departmentId));
@@ -942,7 +984,8 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateDepartmentUnit")]
         [Authorize(Policy = "Permission:Users.CREATE")]
-        public async Task<ActionResult<DepartmentUnitReadDto>> CreateDepartmentUnit([FromBody] DepartmentUnitCreateDto values)
+        [ProducesResponseType(201)]
+        public async Task<ActionResult> CreateDepartmentUnit([FromBody] DepartmentUnitCreateDto values)
         {
             try
             {
@@ -958,12 +1001,13 @@ namespace Modules.Users.Presentation.Controllers.v1
                     return BadRequest(result);
                 }
 
-                return StatusCode(StatusCodes.Status201Created, result);
+                return StatusCode(StatusCodes.Status201Created, new { code = StatusCodes.Status201Created, message = "Department unit created successfully." });
+
 
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -972,7 +1016,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPut]
         [Route("UpdateDepartmentUnit")]
-        public async Task<ActionResult<DepartmentReadDto>> UpdateDepartmentUnit([FromBody] DepartmentUnitUpdateDto values)
+        public async Task<ActionResult> UpdateDepartmentUnit([FromBody] DepartmentUnitUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.ModifiedBy))
@@ -986,7 +1030,10 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return BadRequest();
             }
 
-            return Ok(await _departmentUnitService.UpdateDepartmentUnitAsync(values));
+            await _departmentUnitService.UpdateDepartmentUnitAsync(values);
+
+            return Ok(new { code = StatusCodes.Status200OK, message = "Department updated successfully." });
+
         }
 
         /// <summary>
@@ -1032,6 +1079,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetIdentificationTypes")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<ActionResult<IEnumerable<IIdentificationTypeService>>> GetIdentificationTypes()
         {
             return Ok(await _identificationTypeService.GetIdentificationTypeAsync());
@@ -1113,7 +1161,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("StaffAccounts")]
-        //[Authorize(Roles = "MIS Officer, MISAdministrator")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff([FromQuery] string? searchParameter, [FromQuery] string? status)
         {
             return Ok(await _adminService.GetAdministrationStaff(searchParameter, status));
@@ -1134,6 +1182,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("CustomerAccounts")]
+        [Authorize(Policy = "Permission:Users.READ")]
         public async Task<ActionResult<IEnumerable<AdministrationCustomerDto>>> GetAdministrationCustomers([FromQuery] string? searchParameter, [FromQuery] string? status)
         {
             return Ok(await _adminService.GetAdministrationCustomer(searchParameter, status));
@@ -1155,6 +1204,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("ThirdPartyAccounts")]
+        [Authorize(Policy = "Permission:Users.READ")]
         //[Authorize(Roles = "MIS Officer, MISAdministrator")] 
         public async Task<ActionResult<IEnumerable<AdministrationPartnersDto>>> GetAdministrationPartner([FromQuery] string? searchParameter, [FromQuery] string? status)
         {
@@ -1166,9 +1216,10 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("DepartmentStaffAccounts/{departmentId}")]
-        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentStaff(int departmentId, [FromQuery] string? searchParameter, [FromQuery] string? status)
+        [Authorize(Policy = "Permission:Users.READ")]
+        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentStaff(int departmentId, [FromQuery] int unitId, [FromQuery] string? searchParameter, [FromQuery] string? status)
         {
-            return Ok(await _adminService.GetAdministrationDepartmentStaff(departmentId, searchParameter, status));
+            return Ok(await _adminService.GetAdministrationDepartmentStaff(departmentId, unitId, searchParameter, status));
         }
 
         /// <summary>
@@ -1176,12 +1227,36 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("DepartmentUnitStaffAccounts/{unitId}")]
+        [Authorize(Policy = "Permission:Users.READ")]
+        [Obsolete]
         public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationDepartmentUnitStaff(int unitId, [FromQuery] string? searchParameter, [FromQuery] string? status)
         {
             return Ok(await _adminService.GetAdministrationDepartmentUnitStaff(unitId, searchParameter, status));
         }
 
+        /// <summary>
+        /// Returns a list of system registered staff users for a specific department and or unit
+        /// </summary>
+        [HttpGet]
+        [Route("ComplaintAssignee")]
+        [Authorize(Policy = "Permission:Users.READ")]
+        public async Task<ActionResult<IEnumerable<ComplaintAssigneeDto>>> GetComplaintAssignee( [FromQuery] int departmentId, [FromQuery] int unitId)
+        {
+            return Ok (await _adminService.GetComplaintAssignee(departmentId,unitId) );
+        }
 
+
+        /// <summary>
+        /// Returns some detials of registered staff users for a specific role. Details needed for notification purposes.
+        /// </summary>
+        [HttpGet]
+        [Route("StaffNotification")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UsersPerRole>))]
+        public async Task<ActionResult> StaffNotification(string roleFilter)
+        {
+            return Ok(await _adminService.GetStaffUsersPerRoles(roleFilter));
+        }
     }
 }
 

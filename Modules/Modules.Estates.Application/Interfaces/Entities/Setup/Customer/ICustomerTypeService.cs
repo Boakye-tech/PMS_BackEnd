@@ -19,6 +19,6 @@ public interface ICustomerTypeService
     Task<CustomerTypeReadDto> GetCustomerTypeAsync(int value);
     Task<CustomerTypeReadDto> GetCustomerTypeAsync(string value);
 
-    Task<string> DeleteCustomerTyeAsync(int value);
+    Task<CustomerTypeReadDto> DeleteCustomerTyeAsync(int value);
 }
 

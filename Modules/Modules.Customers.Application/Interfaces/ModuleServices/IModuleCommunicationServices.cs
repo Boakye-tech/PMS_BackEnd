@@ -11,8 +11,11 @@
 
 namespace Modules.Customers.Application.Interfaces.ModuleServices
 {
-	public interface ICustomerModuleCommunicationServices
-	{
+    public interface ICustomerModuleCommunicationServices
+    {
+        //Task SendComplaintCreatedAsync(ComplaintCreatedDto complaintCreatedDto);
+        Task<bool> SendComplaintAssignedAsync(ComplaintAssignedDto payload);
+
         Task<bool> SendSubmittedComplaintDetailsAsync(ComplaintCreateDto payload);
         Task<bool> SendModifiedComplaintDetailsAsync(ComplaintUpdateDto payload);
 

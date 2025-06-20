@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Setup/Property/ApartmentTypeDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -11,7 +13,9 @@
 
 namespace Modules.Estates.Application.DTO.Setup.Property;
 
-public record ApartmentTypeReadDto(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea);
-public record ApartmentTypeCreateDto(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string createdBy);
-public record ApartmentTypeUpdateDto(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string modifiedBy);
+public record ApartmentTypeReadDto(string apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice,int currencyId, double floorArea, string[]? images);
+public record ApartmentTypeCreateDto(int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[]? images, string createdBy);
+public record ApartmentTypeUpdateDto(int apartmentCategoryId, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[]? images, string modifiedBy);
 public record ApartmentTypeDeleteDto(int apartmentTypeId);
+
+

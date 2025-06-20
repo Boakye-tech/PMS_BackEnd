@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Setup/Property/BlockUnitDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -12,7 +14,7 @@
 namespace Modules.Estates.Application.DTO.Setup.Property;
 
 public record BlockUnitReadDto(int unitId, string unit);
-public record BlockUnitCreateDto(int unitId, string unit, string createdby);
+public record BlockUnitCreateDto(string unit, string createdby);
 public record BlockUnitUpdateDto(int unitId, string unit, string modifiedby);
 public record BlockUnitDeleteDto(int unitId);
 

@@ -20,39 +20,45 @@ public class LandUseTypeConfiguration : IEntityTypeConfiguration<LandUseType>
 
 
         builder.HasData(
-            new LandUseType(1, 1, "", "TDC BUILT HOUSES (HOS)"),
-            new LandUseType(1, 2, "", "LESSEE BUILT HOUSES"),
-            new LandUseType(1, 3, "", "APARTMENTS"),
-            new LandUseType(1, 4, "", "HOUSES BY ESTATE DEVELOPERS"),
+            new LandUseType(1, 1, "RPL", "RESIDENTIAL PLOT", "Lesse Built Houses"),
+            new LandUseType(1, 2, "HOS", "HOUSE OWNERSHIP SCHEME", "TDC Built Houses"),
+            new LandUseType(1, 3, "LSD", "LARGE SCALE DEVELOPMENT", "Houses by Estates Developer"),
+            new LandUseType(1, 4, "HSE", "HOUSE", ""),
+            new LandUseType(1, 5, "FLT", "FLAT", ""),
+            new LandUseType(1, 6, "HOS", "APARTMENTS", ""),
 
-            new LandUseType(6, 5, "SHP", "SHOPS & OFFICES"),
-            new LandUseType(6, 6, "RES", "RESTAURANTS & PUS"),
-            new LandUseType(6, 7, "HTL", "GUEST HOUSE & HOTELS"),
-            new LandUseType(6, 8, "PFS", "PETROL FILLING STATION"),
-            new LandUseType(6, 9, "EVT", "EVENT CENTRES"),
-            new LandUseType(6, 10, "CLH", "CLUB HOUSES"),
-            new LandUseType(6, 11, "WHB", "WASHING BAY"),
-            new LandUseType(6, 12, "CMS", "CORN MILL SITE"),
-            new LandUseType(6, 13, "LIC", "LICENSE"),
+            new LandUseType(2, 7, "CPL", "COMMERCIAL PLOT", ""),
+            new LandUseType(2, 8, "SHP", "SHOPS & OFFICES", ""),
+            new LandUseType(2, 9, "LIC", "LICENSE", ""),
+            new LandUseType(2, 10, "RSP", "RESTAURANTS & PUBS", ""),
+            new LandUseType(2, 11, "HTL", "GUEST HOUSE & HOTELS", ""),
+            new LandUseType(2, 12, "PFS", "PETROL FILLING STATION", ""),
+            new LandUseType(2, 13, "EVC", "EVENT CENTRES", ""),
+            new LandUseType(2, 14, "CLH", "CLUB HOUSES", ""),
+            new LandUseType(2, 15, "WHB", "WASHING BAY", ""),
+            new LandUseType(2, 16, "CMS", "CORN MILL SITE", ""),
 
-            new LandUseType(9, 14, "HIA", "HEAVY INDUSTRIAL ACTIVITIES"),
-            new LandUseType(9, 15, "LIA", "LIGHT INDUSTRIAL ACTIVITIES"),
-            new LandUseType(9, 16, "AGR", "AGRO INDUSTRIAL ACTIVITIES"),
-            new LandUseType(9, 17, "EMT", "EASEMENT"),
 
-            new LandUseType(11, 18, "SCH", "SCHOOLS"),
-            new LandUseType(11, 19, "CHU", "CHURCHES"),
-            new LandUseType(11, 20, "MOS", "MOSQUES"),
-            new LandUseType(11, 21, "LIB", "LIBRARY"),
-            new LandUseType(11, 22, "PUB", "PUBLIC INSTITUTIONS"),
-            new LandUseType(11, 23, "CLI", "CLINICS & HOSPITALS"),
+            new LandUseType(3, 17, "IND", "INDUSTRIAL PLOT", ""),
+            new LandUseType(3, 18, "HIA", "HEAVY INDUSTRIAL ACTIVITIES", ""),
+            new LandUseType(3, 19, "LIA", "LIGHT INDUSTRIAL ACTIVITIES", ""),
+            new LandUseType(3, 20, "AGR", "AGRO INDUSTRIAL ACTIVITIES", ""),
+            new LandUseType(3, 21, "EMT", "EASEMENT", ""),
 
-            new LandUseType(12, 24, "GOC", "GOLF COURSE"),
-            new LandUseType(12, 25, "PLG", "PLAYGROUND"),
-            new LandUseType(12, 26, "HOR", "HORTICULTURE")
+            new LandUseType(4, 22, "INS", "INSTITUTIONAL PLOT", ""),
+            new LandUseType(4, 23, "SCH", "SCHOOLS", ""),
+            new LandUseType(4, 24, "CHU", "CHURCHES", ""),
+            new LandUseType(4, 25, "MOS", "MOSQUES", ""),
+            new LandUseType(4, 26, "LIB", "LIBRARY", ""),
+            new LandUseType(4, 27, "PIN", "PUBLIC INSTITUTIONS", ""),
+            new LandUseType(4, 28, "CLI", "CLINICS & HOSPITALS", ""),
+
+            new LandUseType(5, 29, "REC", "RECREATIONAL plot", ""),
+            new LandUseType(5, 30, "GOC", "GOLF COURSE", ""),
+            new LandUseType(5, 31, "PLG", "PLAYGROUND", ""),
+            new LandUseType(5, 32, "HOR", "HORTICULTURE", "")
 
             );
 
     }
 }
-

@@ -13,3 +13,4 @@ namespace Modules.Users.Application.Shared;
 
 public record GenericResponseDto(string response);
 
+public record GenericResponsesDTO : BaseResponse;

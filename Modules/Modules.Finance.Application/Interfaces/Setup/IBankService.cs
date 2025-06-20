@@ -8,16 +8,18 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Modules.Finance.Application.Dtos.Setup;
+
 
 namespace Modules.Finance.Application.Interfaces.Setup
 {
-	public interface IBankService
-	{
-        Task<BankReadDto> AddBankAsync(BankCreateDto values);
-        Task<BankReadDto> UpdateBankAsync(BankUpdateDto values);
+    public interface IBankService
+    {
         Task<IEnumerable<BankReadDto>> GetBankAsync();
-        Task<BankReadDto> GetBankAsync(int value);
         Task<BankReadDto> GetBankAsync(string value);
+        Task<ReturnResponsesDto> CreateBankAsync(BankCreateDto values);
+        Task<ReturnResponsesDto> UpdateBankAsync(BankUpdateDto values);
+        Task<ReturnResponsesDto> DeleteBankAsync(string bankId);
     }
 }
 

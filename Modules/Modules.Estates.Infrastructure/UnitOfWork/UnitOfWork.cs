@@ -9,6 +9,7 @@
 //  **************************************************/
 
 
+
 namespace Modules.Estates.Infrastructure.UnitOfWork;
 
 public class UnitOfWork: IUnitOfWork
@@ -28,9 +29,9 @@ public class UnitOfWork: IUnitOfWork
 
         Locality = new LocalityRepository(_dbContext);
 
-        PropertyType = new PropertyTypeRepository(_dbContext);
+        PlotType = new PlotTypeRepository(_dbContext);
 
-        PlotSize = new PlotSizeRepository(_dbContext);
+        PlotDimension = new PlotDimensionRepository(_dbContext);
 
         CustomerType = new CustomerTypeRepository(_dbContext);
 
@@ -48,6 +49,10 @@ public class UnitOfWork: IUnitOfWork
 
         ApartmentTypes = new ApartmentTypesRepository(_dbContext);
 
+        ApartmentFeatures = new ApartmentFeaturesRepository(_dbContext);
+
+        Features = new FeaturesRepository(_dbContext);
+
         BlockNumber = new BlockNumberRepository(_dbContext);
 
         BlockSides = new BlockSidesRepository(_dbContext);
@@ -56,7 +61,7 @@ public class UnitOfWork: IUnitOfWork
 
         BlockUnit = new BlockUnitRepository(_dbContext);
 
-        Facilities = new FacilitiesRepository(_dbContext);
+        FloorArea = new FloorAreaRepository(_dbContext);
 
         FloorNumbering = new FloorNumberingRepository(_dbContext);
 
@@ -84,11 +89,31 @@ public class UnitOfWork: IUnitOfWork
 
         ComplaintStatuses = new ComplaintStatusesRepository(_dbContext);
 
-        ComplaintHistory = new ComplaintHistoryRepository(dbContext);
-    }
+        ComplaintHistory = new ComplaintHistoryRepository(_dbContext);
+
+        LeaseTypeAndPeriod = new LeaseTypeAndPeriodRepository(_dbContext);
+
+        ShopOfficeTypes = new ShopOfficeTypesRepository(_dbContext);
+
+        PropertyStatus = new PropertyStatusRepository(_dbContext);
+
+        CurrencyExchangeRate = new CurrencyExchangeRateRepository(_dbContext);
+
+        RentalCategory = new RentalCategoryRepository(_dbContext);
+        RentalType = new RentalTypeRepository(_dbContext);
+        HouseTypes = new HouseTypesRepository(_dbContext);
+
+        Sites = new SitesRepository(_dbContext);
+
+        Types = new TypesRepository(_dbContext);
+        SchemeTypes = new SchemeTypeRepository(_dbContext);
+
+        ApartmentCategory = new ApartmentCategoryRepository(_dbContext);
+
+}
 
 
-    public IAllocationTypeRepository AllocationType { get; private set; }
+public IAllocationTypeRepository AllocationType { get; private set; }
 
     public ILandUseRepository LandUse { get; private set; }
 
@@ -96,9 +121,9 @@ public class UnitOfWork: IUnitOfWork
 
     public ILocalityRepository Locality { get; private set; }
 
-    public IPropertyTypeRepository PropertyType { get; private set; }
+    public IPlotTypeRepository PlotType { get; private set; }
 
-    public IPlotSizeRepository PlotSize { get; private set; }
+    public IPlotDimensionRepository PlotDimension { get; private set; }
 
     public ICustomerTypeRepository CustomerType { get; private set; }
 
@@ -116,6 +141,10 @@ public class UnitOfWork: IUnitOfWork
 
     public IApartmentTypesRepository ApartmentTypes { get; private set; }
 
+    public IApartmentFeaturesRepository ApartmentFeatures { get; private set; }
+
+    public IFeaturesRepository Features { get; private set; }
+
     public IBlockNumberRepository BlockNumber { get; private set; }
 
     public IBlockSidesRepository BlockSides { get; private set; }
@@ -124,7 +153,7 @@ public class UnitOfWork: IUnitOfWork
 
     public IBlockUnitRepository BlockUnit { get; private set; }
 
-    public IFacilitiesRepository Facilities { get; private set; }
+    public IFloorAreaRepository FloorArea { get; private set; }
 
     public IFloorNumberingRepository FloorNumbering { get; private set; }
 
@@ -157,6 +186,27 @@ public class UnitOfWork: IUnitOfWork
     public IComplaintStatusesRepository ComplaintStatuses { get; private set; }
 
     public IComplaintHistoryRepository ComplaintHistory { get; private set; }
+
+    //May 15 '25
+    public ILeaseTypeAndPeriodRepository LeaseTypeAndPeriod { get; private set; }
+    public IPropertyStatusRepository PropertyStatus { get; private set; }
+    public IShopOfficeTypesRepository ShopOfficeTypes { get; private set; }
+
+    public ICurrencyExchangeRateRepository CurrencyExchangeRate { get; private set; }
+
+    public IRentalCategoryRepository RentalCategory { get; private set; }
+    public IRentalTypeRepository RentalType { get; private set; }
+    public IHouseTypesRepository HouseTypes { get; private set; }
+
+    //June 4 '25
+    public ISitesRepository Sites { get; private set; }
+
+    //June 15 '25
+    public ITypesRepository Types { get; private set; }
+    public ISchemeTypeRepository SchemeTypes { get; private set; }
+
+    //June 16 25
+    public IApartmentCategoryRepository ApartmentCategory { get; private set; }
 
     public Task<int> Complete()
     {

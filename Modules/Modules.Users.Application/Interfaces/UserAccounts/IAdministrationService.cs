@@ -50,8 +50,12 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
         //Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners();
         Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners(string? searchParam, string? status);
 
-        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId,string? searchParam, string? status);
+        Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentStaff(int departmentId, int unitId, string? searchParam, string? status);
         Task<IEnumerable<AdministrationStaffDto>> GetAdministrationDepartmentUnitStaff(int unitId, string? searchParam, string? status);
+
+        Task<IEnumerable<ComplaintAssigneeDto>> GetComplaintAssignee(int departmentId, int unitId);
+
+        Task<List<UsersPerRole>> GetStaffUsersPerRoles(string roleName);
 
     }
 }

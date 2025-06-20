@@ -43,7 +43,7 @@ namespace Modules.Users.Application.Services
             sb.AppendLine($"TDC Ghana Ltd.<br>");
             sb.AppendLine($"0302211211<br>");
 
-            var email_payload = new { userId = user.Email, displayName = "Notifications", subject = "Account Activation", message = sb.ToString(), type = 0 };
+            var email_payload = new { recipientContact = user.Email, displayName = "Notifications", subject = "Account Activation", message = sb.ToString(), type = 0, userId = user.Id };
 
             string json_emailpayload = JsonSerializer.Serialize(email_payload);
             var email_httpContent = new StringContent(json_emailpayload, Encoding.UTF8, "application/json");

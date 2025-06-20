@@ -18,7 +18,14 @@ namespace Modules.Users.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Department> builder)
         {
-            builder.HasIndex(d => d.DepartmentName);
+            builder.HasIndex(d => d.DepartmentName)
+                   .IsUnique();
+
+            // Configure the one-to-many relationship with Department Unit
+            builder.HasMany(d => d.DepartmentUnits)
+                   .WithOne(dt => dt.Department)
+                   .HasForeignKey(dt => dt.DepartmentId)
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasData(
                 new Department(401,"Finance"),
@@ -32,7 +39,8 @@ namespace Modules.Users.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<DepartmentUnit> builder)
         {
-            builder.HasIndex(u => u.UnitName);
+            builder.HasIndex(u => u.UnitName)
+                   .IsUnique();
 
             builder.HasData(
                 new DepartmentUnit(401,210,"M.I.S"),

@@ -1,15 +1,26 @@
-﻿namespace Modules.Estates.Domain.Entities.Setup.Property;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Domain/Entities/Setup/Property/BlockSides.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 11/05/2025 01:04 PM
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+namespace Modules.Estates.Domain.Entities.Setup.Property;
 
 public class BlockSides : AuditableEntity
 {
     [Key]
     [Required]
-    public int SideId { get; set; }
-
+    public int SideId { get; private set; }
 
     [Required]
     [StringLength(10)]
-    public string? Side { get; set; }
+    public string Side { get; private set; }
 
     public BlockSides(int sideId, string side)
     {
@@ -19,37 +30,25 @@ public class BlockSides : AuditableEntity
 
     public static BlockSides Create(int sideId, string side)
     {
-        if (string.IsNullOrWhiteSpace(side) || sideId < 0)
-        {
-            throw new ArgumentException("Invalid Block Side Data.");
-        }
-
-        if (sideId <= -1)
-            throw new ArgumentException("Block Side Id must be greater than zero.");
-
-        if (string.IsNullOrWhiteSpace(side) || side.Length > 10)
-            throw new ArgumentException("Block Side must not be null or exceed 10 characters.");
-
-
+        Validate(sideId, side);
         return new BlockSides(sideId, side);
     }
 
-    public static BlockSides Update(int sideId, string side)
+    public void Update(int sideId, string side)
     {
-        if (string.IsNullOrWhiteSpace(side) || sideId < 0)
-        {
-            throw new ArgumentException("Invalid Block Side Data.");
-        }
+        Validate(sideId, side);
 
-        if (sideId <= -1)
-            throw new ArgumentException("Block Side Id must be greater than zero.");
-
-        if (string.IsNullOrWhiteSpace(side) || side.Length > 10)
-            throw new ArgumentException("Block Side must not be null or exceed 10 characters.");
-
-
-        return new BlockSides(sideId, side);
+        SideId = sideId;
+        Side = side;
     }
 
+    private static void Validate(int sideId, string side)
+    {
+        if (sideId < 0)
+            throw new ArgumentException("Block Side Id must be greater than zero.");
+
+        if (string.IsNullOrWhiteSpace(side) ||side.Length > 10)
+            throw new ArgumentException("Block Side cannot be empty or exceed 10 characters.");
+    }
 }
 

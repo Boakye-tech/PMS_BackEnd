@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Setup/Property/PropertyHeightDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -12,6 +14,6 @@
 namespace Modules.Estates.Application.DTO.Setup.Property;
 
 public record PropertyHeightReadDto(int propertyHeightId, string propertyHeights);
-public record PropertyHeightCreateDto(int propertyHeightId, string propertyHeights, string createdBy);
+public record PropertyHeightCreateDto(string propertyHeights, string createdBy);
 public record PropertyHeightUpdateDto(int propertyHeightId, string propertyHeights, string modifiedBy);
 public record PropertyHeightDeleteDto(int propertyHeightId);

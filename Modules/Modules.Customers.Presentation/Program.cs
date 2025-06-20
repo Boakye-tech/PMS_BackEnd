@@ -37,7 +37,7 @@ if (builder.Environment.IsDevelopment())
     }
 }
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsStaging() || builder.Environment.IsProduction())
 {
     var currentDirectory = Directory.GetCurrentDirectory();
     var solutionDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName ?? "";
@@ -61,10 +61,23 @@ if (builder.Environment.IsDevelopment())
             //builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
             break;
         case "MsSQLServer":
-            builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection")));
+            builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection_Development")));
             break;
     }
 
+}
+
+if (builder.Environment.IsStaging())
+{
+    switch (builder.Configuration.GetSection("Provider").GetSection("DatabaseProvider").Value)
+    {
+        case "Sqlite":
+            //builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
+            break;
+        case "MsSQLServer":
+            builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection_Staging")));
+            break;
+    }
 }
 
 if (builder.Environment.IsProduction())
@@ -75,7 +88,7 @@ if (builder.Environment.IsProduction())
             //builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
             break;
         case "MsSQLServer":
-            builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection_Production")));
+            builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection")));
             break;
     }
 }
@@ -123,7 +136,7 @@ builder.Services.AddCors(o =>
 
 //});
 
-builder.Services.AddCustomerModule(builder.Configuration);
+builder.Services.AddCustomerModule(builder.Configuration, builder.Environment);
 builder.Services.AddControllers();
 
 //register global exception handler

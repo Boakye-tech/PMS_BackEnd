@@ -14,17 +14,21 @@
     <None Remove="UseCases\" />
     <None Remove="Interfaces\" />
     <None Remove="Dtos\Sms\" />
+    <None Remove="Hubs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
     <Folder Include="UseCases\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Dtos\Sms\" />
+    <Folder Include="Hubs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules.Notification.Domain\Modules.Notification.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.12" />
   </ItemGroup>
 </Project>

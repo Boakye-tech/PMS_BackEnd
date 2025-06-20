@@ -333,8 +333,12 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 {
                     _logger.LogInformation($"User account with email address {userLoginDetails.Phone_OR_Email} logged in successfully {DateTime.UtcNow.ToString()}", userLoginDetails.Phone_OR_Email);
 
-                    user.RefreshToken = _tokenService.GetJwRefreshToken().Token;
-                    user.RefreshTokenExpires = _tokenService.GetJwRefreshToken().Expires;
+                    var _refreshToken = _tokenService.GetJwRefreshToken().Token;
+                    var _refreshTokenExpires = _tokenService.GetJwRefreshToken().Expires;
+
+
+                    user.RefreshToken = _refreshToken;
+                    user.RefreshTokenExpires = _refreshTokenExpires;
 
                     _unitOfWork.Users.Update(user);
                     await _unitOfWork.Complete();
@@ -348,8 +352,8 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                             UserId = user.Id,
                             IsFirstTime = user.IsFirstTime,
                             BearerToken = _tokenService.GetJwToken(user, 8).Token!,
-                            RefreshToken = _tokenService.GetJwRefreshToken().Token!,
-                            ExpiresAt = _tokenService.GetJwRefreshToken().Expires 
+                            RefreshToken = _refreshToken!,//_tokenService.GetJwRefreshToken().Token!,
+                            ExpiresAt = _refreshTokenExpires //_tokenService.GetJwRefreshToken().Expires 
                         }
                     };
                 }
@@ -539,7 +543,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             }
 
             string oldAccessToken = tokens!.BearerToken;
-            //string oldRefreshToken = tokens.RefreshToken;
 
             var principal = _tokenService.GetClaimsPrincipalFromExpiredBearerToken(oldAccessToken);
             var userId = principal.Claims.FirstOrDefault()!.Value;

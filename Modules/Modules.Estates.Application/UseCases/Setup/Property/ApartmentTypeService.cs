@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Setup/Property/ApartmentTypeService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -8,10 +10,13 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
-public class ApartmentTypeService: IApartmentTypeService
+public class ApartmentTypeService : IApartmentTypeService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -22,24 +27,30 @@ public class ApartmentTypeService: IApartmentTypeService
         _mapper = mapper;
     }
 
-    public async Task<ApartmentTypeReadDto> AddApartmentTypeAsync(ApartmentTypeCreateDto values)
+    public async Task<IEnumerable<ApartmentTypesReadDto>> GetApartmentTypeAsync()
     {
-        ApartmentTypes input_values = new(values.apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea)
-        {
-            CreatedBy = values.createdBy,
-            CreatedOn = DateTime.Now
-        };
+        //var response = await _unitOfWork.ApartmentTypes.GetAll();
 
-        _unitOfWork.ApartmentTypes.Insert(input_values);
-        await _unitOfWork.Complete();
+        var apartmentDetails = (from at in await _unitOfWork.ApartmentTypes.GetAll()
+                                join cer in await _unitOfWork.CurrencyExchangeRate.GetAll()
+                                on at.CurrencyId equals cer.CurrencyId
+                                select new ApartmentTypesReadDto
+                                (
+                                    //at.ApartmentCategory,
+                                    //ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(at.ApartmentCategory),
+                                    at.ApartmentTypeId,
+                                    at.ApartmentType,
+                                    at.SellingPrice,
+                                    at.CurrencyId,
+                                    cer.CurrencyInitial!,
+                                    cer.CurrencyName!,
+                                    at.FloorArea,
+                                    //new string[] { at!.ImageOne!, at.ImageTwo!, at.ImageThree!, at.ImageFour!, at.ImageFive! }
+                                    at.Images
+                                )).ToList();
 
-        return new ApartmentTypeReadDto(input_values.ApartmentTypeId, input_values.ApartmentType!, input_values.SellingPrice, input_values.CurrencyId, input_values.FloorArea);
-    }
 
-    public async Task<IEnumerable<ApartmentTypeReadDto>> GetApartmentTypeAsync()
-    {
-        var response = await _unitOfWork.ApartmentTypes.GetAll();
-        return _mapper.Map<IEnumerable<ApartmentTypeReadDto>>(response);
+        return _mapper.Map<IEnumerable<ApartmentTypesReadDto>>(apartmentDetails);
     }
 
     public async Task<ApartmentTypeReadDto> GetApartmentTypeAsync(int value)
@@ -54,18 +65,107 @@ public class ApartmentTypeService: IApartmentTypeService
         return _mapper.Map<ApartmentTypeReadDto>(response);
     }
 
-    public async Task<ApartmentTypeReadDto> UpdateApartmentTypeAsync(ApartmentTypeUpdateDto values)
+    public async Task<ReturnResponsesDto> CreateApartmentTypeAsync(ApartmentTypeCreateDto values)
     {
-        ApartmentTypes input_values = new(values.apartmentTypeId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea)
+        try
         {
-            ModifiedBy = values.modifiedBy,
-            ModifiedOn = DateTime.Now
-        };
+            int apartmentTypeId = 0;
 
-        _unitOfWork.ApartmentTypes.Update(input_values);
-        await _unitOfWork.Complete();
+            var apartmentType = await _unitOfWork.ApartmentTypes.Get(at => at.ApartmentType == values.apartmentType);
+            if (apartmentType != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Apartment Type already exists." },
+                    SuccessResponse = null
+                };
+            }
 
-        return new ApartmentTypeReadDto(input_values.ApartmentTypeId, input_values.ApartmentType!, input_values.SellingPrice, input_values.CurrencyId, input_values.FloorArea);
+            var newApartmentType = ApartmentTypes.Create(apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
+            newApartmentType.CreatedBy = values.createdBy;
+            newApartmentType.CreatedOn = DateTime.Now;
+
+            _unitOfWork.ApartmentTypes.Insert(newApartmentType);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Apartment Type created successfully." },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> UpdateApartmentTypeAsync(ApartmentTypeUpdateDto values)
+    {
+        try
+        {
+            var apartmentType = await _unitOfWork.ApartmentTypes.Get(values.apartmentTypeId);
+            if (apartmentType == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Apartment Type with ID {values.apartmentTypeId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            apartmentType.Update(values.apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
+            apartmentType.ModifiedBy = values.modifiedBy;
+            apartmentType.ModifiedOn = DateTime.Now;
+
+            _unitOfWork.ApartmentTypes.Update(apartmentType);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Apartment Type modified successfully." },
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
+    }
+
+    public async Task<ReturnResponsesDto> DeleteApartmentType(int apartmentTypeId)
+    {
+        try
+        {
+            var apartmentType = await _unitOfWork.ApartmentTypes.Get(apartmentTypeId);
+            if (apartmentType == null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Apartment Type with ID {apartmentTypeId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            _unitOfWork.ApartmentTypes.Delete(apartmentType);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = null,
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Apartment Type with ID {apartmentTypeId} deleted successfully." }
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message }, SuccessResponse = null };
+        }
     }
 }
 

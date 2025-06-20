@@ -10,17 +10,17 @@
 
 
 using FluentValidation;
-
+using Modules.Estates.Application.ControllerServices;
 
 namespace Modules.Estates.Presentation;
 
 public static class ModuleExtensions
 {
-    public static IServiceCollection AddEstateModule(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddEstateModule(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         services
             //.AddCatalogCore()
-            .AddEstateInfrastructure(configuration);
+            .AddEstateInfrastructure(configuration, environment);
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -30,14 +30,17 @@ public static class ModuleExtensions
         services.AddScoped<IBlockSideService, BlockSideService>();
         services.AddScoped<IBlockTypeService, BlockTypeService>();
         services.AddScoped<IBlockUnitService, BlockUnitService>();
-        services.AddScoped<IFacilitiesService, FacilitiesService>();
+        services.AddScoped<IFloorAreaService, FloorAreaService>();
         services.AddScoped<IFloorNumberingService, FloorNumberingService>();
         services.AddScoped<ILandUseService, LandUseService>();
         services.AddScoped<ILandUseTypeService, LandUseTypeService>();
         services.AddScoped<ILocalityService, LocalityService>();
-        services.AddScoped<IPlotSizeService, PlotSizeService>();
+        services.AddScoped<IPlotDimensionService, PlotDimensionService>();
         services.AddScoped<IPropertyHeightService, PropertyHeightService>();
-        services.AddScoped<IPropertyTypeService, PropertyTypeService>();
+        services.AddScoped<IPlotTypeService, PlotTypeService>();
+
+        services.AddScoped<ILeaseTypeAndPeriodService, LeaseTypeAndPeriodService>();
+        services.AddScoped<IPropertyStatusService, PropertyStatusService>();
 
         services.AddScoped<IActivityService, ActivityService>();
         services.AddScoped<IActivityTypeService, ActivityTypeService>();
@@ -67,6 +70,28 @@ public static class ModuleExtensions
         services.AddScoped<INatureOfComplaintService, NatureOfComplaintService>();
         services.AddScoped<IComplaintMasterService, ComplaintMasterService>();
         services.AddScoped<IComplaintStatusesService, ComplaintStatusesService>();
+
+        services.AddScoped<IFeaturesService, FeaturesService>();
+        services.AddScoped<IApartmentFeaturesService, ApartmentFeaturesService>();
+
+        services.AddScoped<ICurrencyExchangeRateService, CurrencyExchangeRateService>();
+
+        services.AddScoped<IRentalCategoryService, RentalCategoryService>();
+        services.AddScoped<IRentalTypeService, RentalTypeService>();
+        services.AddScoped<IShopOfficeTypesService, ShopOfficeTypesService>();
+        services.AddScoped<IHouseTypesService, HouseTypesService>();
+
+        services.AddScoped<ISitesService, SitesService>();
+        services.AddScoped<ISchemeTypeService, SchemeTypeService>();
+        services.AddScoped<IApartmentCategoryService, ApartmentCategoryService>();
+
+
+        services.AddScoped<ITypesService, TypesService>();
+        services.AddScoped<IActivityServices, ActivityServices>();
+        services.AddScoped<IBlockServices, BlockServices>();
+        services.AddScoped<IRentalsServices, RentalsServices>();
+        services.AddScoped<IPropertyFeatureServices, PropertyFeatureServices>();
+        services.AddScoped<IPropertySetupServices, PropertySetupServices>();
 
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();

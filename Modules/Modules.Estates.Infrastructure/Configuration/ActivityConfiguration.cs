@@ -18,6 +18,11 @@ public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
         builder.HasIndex(a => a.ActivityName)
                .IsUnique();
 
+        // Configure the one-to-many relationship with ActivityType
+        builder.HasMany(a => a.ActivityTypes)
+               .WithOne(at => at.Activity)
+               .HasForeignKey(at => at.ActivityId)
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasData(
             new Activity(1, "LETTERS", "VARIOUS LETTERS ON PROPERTY" ),

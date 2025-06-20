@@ -11,8 +11,10 @@
 
 namespace Modules.Customers.Application.Dtos.Complaints
 {
-	public class ComplaintCreateDto
-	{
+    public class ComplaintCreateDto
+    {
+        [Required]
+        public int ComplaintId { get; set; }
 
         [Required]
         public int ComplaintTypeId { get; set; }
@@ -56,6 +58,8 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         public DateTime AvailabilityDate { get; set; }
 
+        public DateTime ComplaintDate { get; set; }
+
         [StringLength(300)]
         public string? SubmittedBy { get; set; }
 
@@ -64,10 +68,13 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         public string[]? DocumentImages { get; set; }
 
+        public ComplaintStatus ComplaintStatus { get; set; }
+
         public ComplaintSource Source { get; set; }
 
-        [StringLength(36)]
-        public string? CreatedBy { get; set; }
+        //[StringLength(36)]
+        //public string? CreatedBy { get; set; }
+
     }
 }
 

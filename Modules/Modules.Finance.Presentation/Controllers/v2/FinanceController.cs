@@ -28,7 +28,7 @@ namespace Modules.Finance.Presentation.Controllers.v2
         public readonly IBankService _bankService;
         public readonly IBankSortCodesService _bankSortCodesService;
         public readonly IChartOfAccountsService _chartOfAccountsService;
-        public readonly ICurrencyAndExchangeRateService _currencyAndExchangeRateService;
+        public readonly ICurrencyExchangeRateService _currencyAndExchangeRateService;
         public readonly IFormsService _formsService;
         public readonly IPaymentModeService _paymentModeService;
         public readonly IPaymentTypeService _paymentTypeService;
@@ -36,7 +36,7 @@ namespace Modules.Finance.Presentation.Controllers.v2
         public readonly IInvoiceTypesService _invoiceTypesService;
 
         public FinanceController(IBankBranchService bankBranchService, IBankService bankService, IBankSortCodesService bankSortCodesService, IChartOfAccountsService chartOfAccountsService,
-                                 ICurrencyAndExchangeRateService currencyAndExchangeRateService, IFormsService formsService, IPaymentModeService paymentModeService, IPaymentTypeService paymentTypeService,
+                                 ICurrencyExchangeRateService currencyAndExchangeRateService, IFormsService formsService, IPaymentModeService paymentModeService, IPaymentTypeService paymentTypeService,
                                  IPayPointsService payPointsService, IInvoiceTypesService invoiceTypesService)
         {
             _bankService = bankService;
@@ -79,7 +79,7 @@ namespace Modules.Finance.Presentation.Controllers.v2
         {
             try
             {
-                return Ok(await _bankService.AddBankAsync(values));
+                return Ok(await _bankService.CreateBankAsync(values));
             }
             catch (Exception ex)
             {
@@ -131,12 +131,12 @@ namespace Modules.Finance.Presentation.Controllers.v2
         }
 
         [HttpPost]
-        [Route("AddBankSortCodes")]
-        public async Task<ActionResult<BankSortCodesReadDto>> AddBankSortCodes([FromBody] BankSortCodesCreateDto values)
+        [Route("CreateBankSortCodes")]
+        public async Task<ActionResult<BankSortCodesReadDto>> CreateBankSortCodes([FromBody] BankSortCodesCreateDto values)
         {
             try
             {
-                return Ok(await _bankSortCodesService.AddBankSortCodesAsync(values));
+                return Ok(await _bankSortCodesService.CreateBankSortCodesAsync(values));
             }
             catch (Exception ex)
             {
@@ -167,12 +167,12 @@ namespace Modules.Finance.Presentation.Controllers.v2
         //}
 
         [HttpPost]
-        [Route("AddChartOfAccount")]
-        public async Task<ActionResult<ChartOfAccountsReadDto>> AddChartOfAccount([FromBody] ChartOfAccountsCreateDto values)
+        [Route("CreateChartOfAccount")]
+        public async Task<ActionResult<ChartOfAccountsReadDto>> CreateChartOfAccount([FromBody] ChartOfAccountsCreateDto values)
         {
             try
             {
-                return Ok(await _chartOfAccountsService.AddChartOfAccountsAsync(values));
+                return Ok(await _chartOfAccountsService.CreateChartOfAccountsAsync(values));
             }
             catch (Exception ex)
             {
@@ -195,18 +195,18 @@ namespace Modules.Finance.Presentation.Controllers.v2
         //----CURRENCIES & EXCHANGE RATES-----
         [HttpGet]
         [Route("Setup/CurrencyAndExchangeRates")]
-        public async Task<ActionResult<IEnumerable<CurrencyAndExchangeRateReadDto>>> GetCurrencyAndExchangeRates()
+        public async Task<ActionResult<IEnumerable<CurrencyExchangeRateReadDto>>> GetCurrencyAndExchangeRates()
         {
-            return Ok(await _currencyAndExchangeRateService.GetCurrencyAndExchangeRateAsync());
+            return Ok(await _currencyAndExchangeRateService.GetCurrencyExchangeRateAsync());
         }
 
         [HttpPost]
         [Route("AddCurrencyAndExchangeRate")]
-        public async Task<ActionResult<CurrencyAndExchangeRateReadDto>> AddCurrencyAndExchangeRate([FromBody] CurrencyAndExchangeRateCreateDto values)
+        public async Task<ActionResult<CurrencyExchangeRateReadDto>> AddCurrencyAndExchangeRate([FromBody] CurrencyExchangeRateCreateDto values)
         {
             try
             {
-                return Ok(await _currencyAndExchangeRateService.AddCurrencyAndExchangeRateAsync(values));
+                return Ok(await _currencyAndExchangeRateService.CreateCurrencyExchangeRateAsync(values));
             }
             catch (Exception ex)
             {
@@ -223,12 +223,12 @@ namespace Modules.Finance.Presentation.Controllers.v2
         }
 
         [HttpPost]
-        [Route("AddInvoiceTypes")]
-        public async Task<ActionResult<InvoiceTypesReadDto>> AddInvoiceTypes([FromBody] InvoiceTypesCreateDto values)
+        [Route("CreateInvoiceTypes")]
+        public async Task<ActionResult<InvoiceTypesReadDto>> CreateInvoiceTypes([FromBody] InvoiceTypesCreateDto values)
         {
             try
             {
-                return Ok(await _invoiceTypesService.AddInvoiceTypesAsync(values));
+                return Ok(await _invoiceTypesService.CreateInvoiceTypesAsync(values));
             }
             catch (Exception ex)
             {
@@ -245,12 +245,12 @@ namespace Modules.Finance.Presentation.Controllers.v2
         }
 
         [HttpPost]
-        [Route("AddForm")]
-        public async Task<ActionResult<FormsReadDto>> AddForm([FromBody] FormsCreateDto values)
+        [Route("CreateForm")]
+        public async Task<ActionResult<FormsReadDto>> CreateForm([FromBody] FormsCreateDto values)
         {
             try
             {
-                return Ok(await _formsService.AddFormsAsync(values));
+                return Ok(await _formsService.CreateFormsAsync(values));
             }
             catch (Exception ex)
             {
@@ -267,12 +267,12 @@ namespace Modules.Finance.Presentation.Controllers.v2
         }
 
         [HttpPost]
-        [Route("AddPaymentMode")]
-        public async Task<ActionResult<PaymentModeReadDto>> AddPaymentMode([FromBody] PaymentModeCreateDto values)
+        [Route("CreatePaymentMode")]
+        public async Task<ActionResult<PaymentModeReadDto>> CreatePaymentMode([FromBody] PaymentModeCreateDto values)
         {
             try
             {
-                return Ok(await _paymentModeService.AddPaymentModeAsync(values));
+                return Ok(await _paymentModeService.CreatePaymentModeAsync(values));
             }
             catch (Exception ex)
             {
@@ -289,12 +289,12 @@ namespace Modules.Finance.Presentation.Controllers.v2
         }
 
         [HttpPost]
-        [Route("AddPaymentType")]
-        public async Task<ActionResult<PaymentTypeReadDto>> AddPaymentType([FromBody] PaymentTypeCreateDto values)
+        [Route("CreatePaymentType")]
+        public async Task<ActionResult<PaymentTypeReadDto>> CreatePaymentType([FromBody] PaymentTypeCreateDto values)
         {
             try
             {
-                return Ok(await _paymentTypeService.AddPaymentTypeAsync(values));
+                return Ok(await _paymentTypeService.CreatePaymentTypeAsync(values));
             }
             catch (Exception ex)
             {
@@ -312,12 +312,12 @@ namespace Modules.Finance.Presentation.Controllers.v2
         }
 
         [HttpPost]
-        [Route("AddPaypoint")]
-        public async Task<ActionResult<PaypointsReadDto>> AddPaypoint([FromBody] PaypointsCreateDto values)
+        [Route("CreatePaypoint")]
+        public async Task<ActionResult<PaypointsReadDto>> CreatePaypoint([FromBody] PaypointsCreateDto values)
         {
             try
             {
-                return Ok(await _payPointsService.AddPaypointsAsync(values));
+                return Ok(await _payPointsService.CreatePaypointsAsync(values));
             }
             catch (Exception ex)
             {

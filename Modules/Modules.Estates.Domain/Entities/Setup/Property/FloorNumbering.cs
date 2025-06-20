@@ -1,14 +1,26 @@
-﻿namespace Modules.Estates.Domain.Entities.Setup.Property;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Domain/Entities/Setup/Property/FloorNumbering.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 11/05/2025 01:12 PM
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+namespace Modules.Estates.Domain.Entities.Setup.Property;
 
 public class FloorNumbering : AuditableEntity
 {
     [Key]
     [Required]
-    public int FloorNumberId { get; set; }
+    public int FloorNumberId { get; private set; }
 
-    [StringLength(25)]
     [Required]
-    public string? FloorNumber { get; set; }
+    [StringLength(25)]
+    public string FloorNumber { get; private set; }
 
     public FloorNumbering(int floorNumberId, string floorNumber)
     {
@@ -18,36 +30,25 @@ public class FloorNumbering : AuditableEntity
 
     public static FloorNumbering Create(int floorNumberId, string floorNumber)
     {
-        if (string.IsNullOrWhiteSpace(floorNumber) || floorNumberId < 0)
-        {
-            throw new ArgumentException("Invalid Floor Number Data.");
-        }
-
-        if (floorNumberId <= -1)
-            throw new ArgumentException("Floor Number Id must be greater than zero.");
-
-        if (string.IsNullOrWhiteSpace(floorNumber) || floorNumber.Length > 25)
-            throw new ArgumentException("Floor Number must not be null or exceed 25 characters.");
-
-
+        Validate(floorNumberId, floorNumber);
         return new FloorNumbering(floorNumberId, floorNumber);
     }
 
-    public static FloorNumbering Update(int floorNumberId, string floorNumber)
+    public void Update(int floorNumberId, string floorNumber)
     {
-        if (string.IsNullOrWhiteSpace(floorNumber) || floorNumberId < 0)
-        {
-            throw new ArgumentException("Invalid Floor Number Data.");
-        }
+        Validate(floorNumberId, floorNumber);
 
-        if (floorNumberId <= -1)
-            throw new ArgumentException("Floor Number Id must be greater than zero.");
+        FloorNumberId = floorNumberId;
+        FloorNumber = floorNumber;
+    }
+
+    private static void Validate(int floorNumberId, string floorNumber)
+    {
+        if (floorNumberId < 0)
+            throw new ArgumentException("Floor Numbering Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(floorNumber) || floorNumber.Length > 25)
-            throw new ArgumentException("Floor Number must not be null or exceed 25 characters.");
-
-
-        return new FloorNumbering(floorNumberId, floorNumber);
+            throw new ArgumentException("Floor Numbering cannot be empty or exceed 25 characters.");
     }
 }
 

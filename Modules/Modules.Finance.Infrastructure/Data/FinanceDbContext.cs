@@ -26,7 +26,8 @@ public class FinanceDbContext : ModuleDbContext
     public DbSet<BankBranch> BankBranch { get; set; }
     public DbSet<BankSortCodes> BankSortCodes { get; set; }
     public DbSet<ChartOfAccounts> ChartOfAccounts { get; set; }
-    public DbSet<CurrencyAndExchangeRate> CurrencyAndExchangeRate { get; set; }
+    public DbSet<CurrencyExchangeRate> CurrencyExchangeRate { get; set; }
+    public DbSet<CurrencyExchangeRateHistory> CurrencyExchangeRateHistory { get; set; }
     public DbSet<Forms> Forms { get; set; }
     public DbSet<PaymentMode> PaymentMode { get; set; }
     public DbSet<PaymentType> PaymentType { get; set; }
@@ -37,6 +38,22 @@ public class FinanceDbContext : ModuleDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<CurrencyExchangeRate>()
+            .Property(c => c.BuyingRate)
+            .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<CurrencyExchangeRate>()
+            .Property(c => c.SellingRate)
+            .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<CurrencyExchangeRateHistory>()
+        .Property(c => c.BuyingRate)
+        .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<CurrencyExchangeRateHistory>()
+            .Property(c => c.SellingRate)
+            .HasColumnType("decimal(18,4)");
     }
 
 }

@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Domain/Interfaces/IUnitOfWork.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -25,18 +27,20 @@ public interface IUnitOfWork : IDisposable
     //----property
     IAllocationTypeRepository AllocationType { get; }
     IApartmentTypesRepository ApartmentTypes { get; }
+    IApartmentFeaturesRepository ApartmentFeatures { get; }
+    IFeaturesRepository Features { get; }
     IBlockNumberRepository BlockNumber { get; }
     IBlockSidesRepository BlockSides { get; }
     IBlockTypeRepository BlockType { get; }
     IBlockUnitRepository BlockUnit { get; }
-    IFacilitiesRepository Facilities { get; }
+    IFloorAreaRepository FloorArea { get; }
     IFloorNumberingRepository FloorNumbering { get; }
     ILandUseRepository LandUse { get; }
     ILandUseTypeRepository LandUseType { get; }
     ILocalityRepository Locality { get; }
-    IPlotSizeRepository PlotSize { get; }
+    IPlotDimensionRepository PlotDimension { get; }
     IPropertyHeightRepository PropertyHeight { get; }
-    IPropertyTypeRepository PropertyType { get; }
+    IPlotTypeRepository PlotType { get; }
 
     //Jan 1 '25
     ICustomerMasterRepository CustomerMaster { get; }
@@ -60,6 +64,29 @@ public interface IUnitOfWork : IDisposable
     INatureOfComplaintRepository NatureOfComplaint { get; }
     IComplaintStatusesRepository ComplaintStatuses { get; }
     IComplaintHistoryRepository ComplaintHistory { get; }
+
+    //May 15 '25
+    ILeaseTypeAndPeriodRepository LeaseTypeAndPeriod { get; }
+    IShopOfficeTypesRepository ShopOfficeTypes { get; }
+    IPropertyStatusRepository PropertyStatus { get; }
+
+    //May 19 '25
+    ICurrencyExchangeRateRepository CurrencyExchangeRate { get; }
+
+    //23 May 2025
+    IRentalCategoryRepository RentalCategory  { get;  }
+    IRentalTypeRepository RentalType  { get;  }
+    IHouseTypesRepository HouseTypes { get;  }
+
+    //June 4, 2025
+    ISitesRepository Sites { get; }
+
+    //15 June, 2025
+    ITypesRepository Types { get; }
+    ISchemeTypeRepository SchemeTypes { get; }
+
+    //16 June, 2025
+    IApartmentCategoryRepository ApartmentCategory { get; }
 
     Task<int> Complete();
 }

@@ -75,14 +75,16 @@ namespace Modules.Estates.Domain.Entities.Management
         [StringLength(15)]
         public string? SubmittedBy_PhoneNumber { get; set; }
 
-        [StringLength(255)]
-        public string? DocumentOne { get; set; }
+        [Column(TypeName = "nvarchar(max)")]
+        public string[]? DocumentList { get; set; }
+        //[StringLength(255)]
+        //public string? DocumentOne { get; set; }
 
-        [StringLength(255)]
-        public string? DocumentTwo { get; set; }
+        //[StringLength(255)]
+        //public string? DocumentTwo { get; set; }
 
-        [StringLength(255)]
-        public string? DocumentThree { get; set; }
+        //[StringLength(255)]
+        //public string? DocumentThree { get; set; }
 
         public ComplaintStatusEnum ComplaintStatus { get; set; }
 
@@ -96,6 +98,14 @@ namespace Modules.Estates.Domain.Entities.Management
 
         public string? Notes { get; set; }
 
+        public string? ReviewNotes { get; set; }
+
+        public string? CancelNotes { get; set; }
+
+        public string? ReopenNotes { get; set; }
+
+        public string? ClosedNotes { get; set; }
+
         public ComplaintSourceEnum Source { get; set; }
 
         public Complaint()
@@ -106,9 +116,9 @@ namespace Modules.Estates.Domain.Entities.Management
                          string propertyNumber, string propertyLocation, string customerCode, string customerName,
                          string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, ComplaintStatusEnum complaintStatus, string createdBy,
+                         string[] documentList, ComplaintStatusEnum complaintStatus, string createdBy,
                          string reviewedBy, DateTime dateReviewed, string assignedTo, string assignedBy, DateTime dateAssigned,
-                         string resolvedBy, DateTime resolutionDate, ComplaintSourceEnum Source,string notes)
+                         string resolvedBy, DateTime resolutionDate, ComplaintSourceEnum Source,string notes, string ReviewNotes, string CancelNotes, string ReopenNotes, string ClosedNotes)
         {
         }
 
@@ -116,7 +126,7 @@ namespace Modules.Estates.Domain.Entities.Management
                          string propertyNumber, string propertyLocation, string customerCode, string customerName,
                          string phoneNumber, string emailAddress, string isTheMatterInCourt, string detailsOfComplaint,
                          DateTime availabilityDate, DateTime complaintDate, string submittedBy, string submittedBy_PhoneNumber,
-                         string documentOne, string documentTwo, string documentThree, ComplaintStatusEnum complaintStatus, ComplaintSourceEnum source, string createdBy)
+                         string[] documentList, ComplaintStatusEnum complaintStatus, ComplaintSourceEnum source, string createdBy)
         {
             if(complaintTypeId <= 0)
             {
@@ -182,14 +192,16 @@ namespace Modules.Estates.Domain.Entities.Management
                 ComplaintDate = DateTime.UtcNow,
                 SubmittedBy = submittedBy,
                 SubmittedBy_PhoneNumber = submittedBy_PhoneNumber,
-                DocumentOne = documentOne,
-                DocumentTwo = documentTwo,
-                DocumentThree = documentThree,
+                DocumentList = documentList,
                 ComplaintStatus = complaintStatus,
                 DispatachedTo_Department = 0,
                 DispatachedTo_DepartmentUnit = 0,
                 AssignedTo = string.Empty,
                 Notes = string.Empty,
+                ReviewNotes = string.Empty,
+                ReopenNotes = string.Empty,
+                ClosedNotes = string.Empty,
+                CancelNotes = string.Empty,
                 Source = source
             };
 

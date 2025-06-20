@@ -100,7 +100,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </remarks>
         [HttpPost]
         [Route("CreateCustomerType")]
-        [Authorize(Policy = "Permission:Customers.CREATE")] 
+        [Authorize(Policy = "Permission:Customers.CREATE")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CustomerTypeReadDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<CustomerTypeReadDto>> CreateCustomerType([FromBody] CustomerTypeCreateDto values)
         {
             try
@@ -112,11 +114,23 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                return Ok(await _customerTypeService.AddCustomerTypeAsync(values));
+                var result = await _customerTypeService.AddCustomerTypeAsync(values);
+
+                if(result.customerTypeId == -2146233088)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new { response = $"Cannot insert duplicate key value. The duplicate key value is ({values.customerTypes})." });
+                }
+
+                if (result.customerTypeId == 500)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new { response = result.customerTypes });
+                }
+
+                return StatusCode(StatusCodes.Status201Created, result);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
             }
         }
 
@@ -130,7 +144,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// PUT /UpdateCustomerType
         /// 
         /// {
-        ///    "customerTypeId": 0,
+        ///    "customerTypeId": 12,
         ///    "customerTypes": "RESIDENT",
         ///    "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
         /// }
@@ -140,13 +154,33 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.UPDATE")] 
         public async Task<ActionResult<CustomerTypeReadDto>> UpdateCustomerType([FromBody] CustomerTypeUpdateDto values)
         {
-            var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.modifiedBy))
+            try
             {
-                return Unauthorized();
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.modifiedBy))
+                {
+                    return Unauthorized();
+                }
+
+                var result = await _customerTypeService.UpdateCustomerTypeAsync(values);
+
+                if (result.customerTypeId == 404)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { response = result.customerTypes });
+                }
+
+                if (result.customerTypeId == 500)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new { response = result.customerTypes });
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
             }
 
-            return Ok(await _customerTypeService.UpdateCustomerTypeAsync(values));
         }
 
         /// <summary>
@@ -156,14 +190,27 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.DELETE")]
         public async Task<ActionResult> DeleteCustomerType(int customerTypeId)
         {
-            var response = await _customerTypeService.DeleteCustomerTyeAsync(customerTypeId);
-
-            if(response == "success")
+            try
             {
-                return Ok(await _customerTypeService.DeleteCustomerTyeAsync(customerTypeId));
-            }
+                var response = await _customerTypeService.DeleteCustomerTyeAsync(customerTypeId);
 
-            return BadRequest();
+                if (response.customerTypeId == 404)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { response = response.customerTypes });
+                }
+
+                if (response.customerTypeId == 500)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new { response = response.customerTypes });
+                }
+
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+            }
         }
 
         //----------------------GENDER------------

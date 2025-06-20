@@ -40,6 +40,11 @@
     <None Remove="DTO\Management\Complaints\" />
     <None Remove="Interfaces\Management\Complaints\" />
     <None Remove="UseCases\Management\Complaints\" />
+    <None Remove="Interfaces\ControllerServices\" />
+    <None Remove="DTO\Registration\" />
+    <None Remove="DTO\Registration\Property\" />
+    <None Remove="UseCases\Registration\" />
+    <None Remove="UseCases\Registration\Property\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -72,6 +77,11 @@
     <Folder Include="DTO\Management\Complaints\" />
     <Folder Include="Interfaces\Management\Complaints\" />
     <Folder Include="UseCases\Management\Complaints\" />
+    <Folder Include="Interfaces\ControllerServices\" />
+    <Folder Include="DTO\Registration\" />
+    <Folder Include="DTO\Registration\Property\" />
+    <Folder Include="UseCases\Registration\" />
+    <Folder Include="UseCases\Registration\Property\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

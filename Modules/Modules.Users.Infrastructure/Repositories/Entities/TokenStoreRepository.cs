@@ -83,8 +83,8 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
             sb.AppendLine($"0302211211<br>");
 
             
-            var email_payload = new { userId = user.Email, displayName = "Notifications", subject = "OTP VERIFICATION", message = sb.ToString(), type = 0 };
-            var sms_payload = new { userId = user.PhoneNumber, displayName = string.Empty, subject = string.Empty, message = $"Kindly use OTP {token}  for account verification. 'NEVER SHARE THIS OTP WITH ANYONE'" , type = 1 };
+            var email_payload = new { recipientContact = user.Email, displayName = "Notifications", subject = "OTP VERIFICATION", message = sb.ToString(), type = 0, userId = user.Email };
+            var sms_payload = new { recipientContact = user.PhoneNumber, displayName = string.Empty, subject = string.Empty, message = $"Kindly use OTP {token}  for account verification. 'NEVER SHARE THIS OTP WITH ANYONE'" , type = 1, userId = user.PhoneNumber };
 
 
             string json_smspayload = JsonSerializer.Serialize(sms_payload);
@@ -320,6 +320,7 @@ namespace Modules.Users.Infrastructure.Repositories.Entities
                         new Claim(ClaimTypes.Email, user.Email!),
                         new Claim(ClaimTypes.PrimarySid, user.IdentificationNumber!),
                         new Claim(ClaimTypes.MobilePhone, user.PhoneNumber!)
+                        //new Claim(ClaimTypes.UserData, user.FirebaseId!)
                     };
 
             foreach (var permission in claims)

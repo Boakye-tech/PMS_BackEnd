@@ -38,6 +38,12 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<DateTime>("AvailabilityDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CancelNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClosedNotes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ComplaintDate")
                         .HasColumnType("datetime2");
 
@@ -52,12 +58,6 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<int>("ComplaintTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("CustomerCode")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -66,12 +66,6 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DeletedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("DetailsOfComplaint")
                         .IsRequired()
@@ -84,17 +78,8 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<int>("DispatachedTo_DepartmentUnit")
                         .HasColumnType("int");
 
-                    b.Property<string>("DocumentOne")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("DocumentThree")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("DocumentTwo")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<string>("DocumentList")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -104,12 +89,6 @@ namespace Modules.Customers.Infrastructure.Migrations
                     b.Property<string>("IsTheMatterInCourt")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("NatureOfComplaintId")
                         .HasMaxLength(50)
@@ -132,6 +111,12 @@ namespace Modules.Customers.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ReopenNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviewNotes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Source")
                         .HasColumnType("int");

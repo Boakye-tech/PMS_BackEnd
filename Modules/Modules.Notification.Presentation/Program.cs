@@ -1,12 +1,16 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Notification.Presentation
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Notification.Presentation/Program.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/01/2025 
+// * Create Date: 11/02/2025 
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
+
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +26,7 @@ if (builder.Environment.IsDevelopment())
     }
 }
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsStaging() || builder.Environment.IsProduction())
 {
     var currentDirectory = Directory.GetCurrentDirectory();
     var solutionDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName ?? "";
@@ -47,10 +51,23 @@ if (builder.Environment.IsDevelopment())
             //builder.Services.AddDbContext<NotificationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
             break;
         case "MsSQLServer":
-            builder.Services.AddDbContext<NotificationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection")));
+            builder.Services.AddDbContext<NotificationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection_Development")));
             break;
     }
 
+}
+
+if (builder.Environment.IsStaging())
+{
+    switch (builder.Configuration.GetSection("Provider").GetSection("DatabaseProvider").Value)
+    {
+        case "Sqlite":
+            //builder.Services.AddDbContext<NotificationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
+            break;
+        case "MsSQLServer":
+            builder.Services.AddDbContext<NotificationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSQLConnection_Staging")));
+            break;
+    }
 }
 
 if (builder.Environment.IsProduction())
@@ -74,11 +91,11 @@ builder.Services.AddCors(o =>
             builder.AllowAnyOrigin()
                    .AllowAnyHeader()
                    .AllowAnyMethod();
-                   //.AllowCredentials();
+            //.AllowCredentials();
         });
 });
 
-builder.Services.AddNotificationModule(builder.Configuration);
+builder.Services.AddNotificationModule(builder.Configuration, builder.Environment);
 
 //register global exception handler
 builder.Services.AddExceptionHandler<HttpGlobalExceptionFilter>();
@@ -109,15 +126,28 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
-//builder.Services.AddTransient<IEmailSender, EmailSender>(i => new
-//        EmailSender(
-//            builder.Configuration["O356mailSender:Host"]!,
-//            builder.Configuration.GetValue<int>("O356mailSender:Port"),
-//            builder.Configuration.GetValue<bool>("O356mailSender:EnableSSL"),
-//            builder.Configuration["O356mailSender:UserName"]!,
-//            builder.Configuration["O356mailSender:Password"]!
-//            )
-//    );
+/*
+builder.Services.AddTransient<IEmailSender, EmailSender>(i => new
+        EmailSender(
+            builder.Configuration["O356mailSender:Host"]!,
+            builder.Configuration.GetValue<int>("O356mailSender:Port"),
+            builder.Configuration.GetValue<bool>("O356mailSender:EnableSSL"),
+            builder.Configuration["O356mailSender:UserName"]!,
+            builder.Configuration["O356mailSender:Password"]!
+            )
+    );
+
+
+builder.Services.AddTransient<IEmailSender, EmailSender>(i => new
+        EmailSender(
+            builder.Configuration["GmailSender:Host"]!,
+            builder.Configuration.GetValue<int>("GmailSender:Port"),
+            builder.Configuration.GetValue<bool>("GmailSender:EnableSSL"),
+            builder.Configuration["GmailSender:UserName"]!,
+            builder.Configuration["GmailSender:Password"]!
+            )
+    );
+*/
 
 FirebaseApp.Create(new AppOptions
 {
@@ -159,6 +189,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors();
+
+app.UseGlobalExceptionHandler();
 
 app.MapControllers();
 

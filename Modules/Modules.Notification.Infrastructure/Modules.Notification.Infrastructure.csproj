@@ -32,12 +32,10 @@
     <None Remove="Repositories\" />
     <None Remove="Services\" />
     <None Remove="Extensions\" />
-    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Services\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>

@@ -1,25 +1,16 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Domain/Entities/Setup/Property/LandUse.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 11/05/2025 01:28 PM
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
 
 namespace Modules.Estates.Domain.Entities.Setup.Property;
-
-/*
-	public class LandUse : AuditableEntity
-{
-    [Key]
-    [Required]
-    public required int LandUseId { get; set; }
-
-    [Required]
-    [StringLength(5)]
-    public required string LandUseInitial { get; set; }
-
-    [Required]
-    [StringLength(30)]
-    public required string LandUseName { get; set; }
-}
-*/
 
 public class LandUse : AuditableEntity
 {
@@ -32,61 +23,50 @@ public class LandUse : AuditableEntity
     public string? LandUseInitial { get; private set; }
 
     [Required]
-    [StringLength(50)]
+    [StringLength(30)]
     public string? LandUseName { get; private set; }
 
-    //public LandUse(int landUseId, string landUseInitial, string landUseName)
-    //{
-    //    LandUseId = landUseId;
-    //    LandUseInitial = landUseInitial ?? throw new ArgumentNullException(nameof(landUseInitial));
-    //    LandUseName = landUseName ?? throw new ArgumentNullException(nameof(landUseName));
-    //}
+    // Navigation property for LandUseTypes
+    public virtual ICollection<LandUseType> LandUseTypes { get; private set; }
 
-    public LandUse(int landUseId, string landUseInitial, string landUseName)
+    public LandUse(int landUseId, string? landUseInitial, string? landUseName)
     {
         LandUseId = landUseId;
-        LandUseInitial = landUseInitial ?? throw new ArgumentNullException(nameof(landUseInitial));
-        LandUseName = landUseName ?? throw new ArgumentNullException(nameof(landUseName));
+        LandUseInitial = landUseInitial;
+        LandUseName = landUseName;
+        LandUseTypes = new List<LandUseType>();
     }
 
 
     public static LandUse Create(int landUseId, string landUseInitial, string landUseName)
     {
-        if (string.IsNullOrWhiteSpace(landUseInitial) || string.IsNullOrWhiteSpace(landUseName) || landUseId < 0)
-        {
-            throw new ArgumentException("Invalid Land Use Data.");
-        }
-
-        if (landUseId <= -1)
-            throw new ArgumentException("Land Use Id must be greater than zero.");
-
-        if (string.IsNullOrWhiteSpace(landUseInitial) || landUseInitial.Length > 5)
-            throw new ArgumentException("Land Use Initial must not be null or exceed 5 characters.");
-
-        if (string.IsNullOrWhiteSpace(landUseName) || landUseName.Length > 50)
-            throw new ArgumentException("Land Use Name must not be null or exceed 50 characters.");
-
-        return new LandUse(landUseId,landUseInitial, landUseName);
-    }
-
-    public LandUse Update(int landUseId, string landUseInitial, string landUseName)
-    {
-        if (string.IsNullOrWhiteSpace(landUseInitial) || string.IsNullOrWhiteSpace(landUseName) || landUseId < 0)
-        {
-            throw new ArgumentException("Invalid Land Use Data.");
-        }
-
-        if (landUseId <= -1)
-            throw new ArgumentException("Land Use Id must be greater than zero.");
-
-        if (string.IsNullOrWhiteSpace(landUseInitial) || landUseInitial.Length > 5)
-            throw new ArgumentException("Land Use Initial must not be null or exceed 5 characters.");
-
-        if (string.IsNullOrWhiteSpace(landUseName) || landUseName.Length > 50)
-            throw new ArgumentException("Land Use Name must not be null or exceed 50 characters.");
-
+        Validate(landUseId, landUseInitial, landUseName);
         return new LandUse(landUseId, landUseInitial, landUseName);
     }
 
+    public void Update(int landUseId, string landUseInitial, string landUseName)
+    {
+        Validate(landUseId, landUseInitial!, landUseName!);
+
+        LandUseInitial = landUseInitial;
+        LandUseName = landUseName;
+    }
+
+    private static void Validate(int landUseId, string landUseInitial, string landUseName)
+    {
+        if ((landUseId < 0 || string.IsNullOrWhiteSpace(landUseInitial) || string.IsNullOrWhiteSpace(landUseName)))
+        {
+            throw new ArgumentException("Land Use Data.");
+        }
+
+        if (landUseId < 0)
+            throw new ArgumentException("Land Use Id must be greater than zero.");
+
+        if (string.IsNullOrWhiteSpace(landUseInitial) || landUseInitial.Length > 5)
+            throw new ArgumentException("Land Use Initial cannot be empty or exceed 5 characters.");
+
+        if (string.IsNullOrWhiteSpace(landUseName) || landUseName.Length > 30)
+            throw new ArgumentException("Land Use Name cannot be empty or exceed 30 characters.");
+    }
 }
 
