@@ -37,7 +37,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("CreateRentalCategory")]
-        [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult CreateRentalCategory([FromBody] RentalCategoryCreateDto values)
         {
             var result = _rentalsService.CreateRentalCategoryAsync(values).Result;
@@ -56,7 +60,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
             };
 
-
         }
 
         /// <summary>
@@ -64,11 +67,24 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpPut]
         [Route("UpdateRentalCategory")]
-        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult UpdateRentalCategory([FromBody] RentalCategoryUpdateDto values)
         {
             var result = _rentalsService.UpdateRentalCategoryAsync(values).Result;
-            return Ok(result);
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+
         }
 
         /// <summary>
@@ -76,11 +92,23 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete]
         [Route("DeleteRentalCategory/{rentalCategoryId}")]
-        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult DeleteRentalCategory(int rentalCategoryId)
         {
             var result = _rentalsService.DeleteRentalCategory(rentalCategoryId).Result;
-            return Ok(result);
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
 
         //-------------------RENTAL TYPES-----------------
@@ -101,7 +129,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("CreateRentalType")]
-        [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult CreateRentalType([FromBody] RentalTypeCreateDto values)
         {
             var result = _rentalsService.CreateRentalTypeAsync(values).Result;
@@ -126,11 +158,23 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpPut]
         [Route("UpdateRentalType")]
-        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult UpdateRentalType([FromBody] RentalTypeUpdateDto values)
         {
             var result = _rentalsService.UpdateRentalTypeAsync(values).Result;
-            return Ok(result);
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
 
         /// <summary>
@@ -138,11 +182,23 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete]
         [Route("DeleteRentalType/{rentalTypeId}")]
-        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult DeleteRentalType(int rentalTypeId)
         {
             var result = _rentalsService.DeleteRentalType(rentalTypeId).Result;
-            return Ok(result);
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
 
         //-------------------TYPES (e.g. Houses, ShopsAndOffices, Apartments etc)-----------------

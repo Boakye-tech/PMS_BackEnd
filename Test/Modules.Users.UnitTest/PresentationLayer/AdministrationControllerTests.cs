@@ -182,7 +182,7 @@ namespace Modules.Users.UnitTest.PresentationLayer
             var result = await _controller.CreateDepartment(departmentDto);
 
             // Assert
-            var createdResult = Assert.IsType<ObjectResult>(result.Result);
+            var createdResult = Assert.IsType<ObjectResult>(result);
 
         }
     }

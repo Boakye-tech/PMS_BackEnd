@@ -61,7 +61,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             if (rentalCategoryId <= 0)
                 throw new ArgumentException("Rental Category Id must be greater than zero.");
 
-            if (rentalTypeId <= 0)
+            if (rentalTypeId < 0)
                 throw new ArgumentException("Rental Type Id must be greater than zero.");
 
             if (string.IsNullOrWhiteSpace(rentalTypes) || rentalTypes.Length > 50)

@@ -341,11 +341,22 @@ public class PropertyController : ControllerBase
     {
         try
         {
-            return Ok(await _apartmentTypeService.CreateApartmentTypeAsync(values));
+            var resut = await _apartmentTypeService.CreateApartmentTypeAsync(values);
+            if(resut.IsSuccess == true)
+            {
+                return StatusCode(StatusCodes.Status201Created, new { code = resut.SuccessResponse!.Code, message = resut.SuccessResponse!.Message });
+            }
+
+            if(resut.ErrorResponse!.Code == 400)
+            {
+                return BadRequest(resut.ErrorResponse);
+            }
+            
+            return StatusCode(StatusCodes.Status500InternalServerError, new { code = resut.ErrorResponse!.Code, message = resut.ErrorResponse!.Message });
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.InnerException!.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 

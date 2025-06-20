@@ -158,9 +158,10 @@ public class ApartmentCategoryService : IApartmentCategoryService
             )).ToList();
 
             return new ApartmentCategoryAndTypesReadDto(
+				new ApartmentCategoriesReadDto(
                 category.ApartmentCategoryId,
                 category.ApartmentCategoryName!,
-				false,
+				false),
                 apartmentTypes
             );
         }).ToList();

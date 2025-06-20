@@ -882,7 +882,8 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateDepartment")]
         [Authorize(Policy = "Permission:Users.CREATE")]
-        public async Task<ActionResult<DepartmentReadDto>> CreateDepartment([FromBody] DepartmentCreateDto values)
+        [ProducesResponseType(201)]
+        public async Task<ActionResult> CreateDepartment([FromBody] DepartmentCreateDto values)
         {
             try
             {
@@ -898,12 +899,12 @@ namespace Modules.Users.Presentation.Controllers.v1
                     return BadRequest(result);
                 }
 
-                return StatusCode(StatusCodes.Status201Created, result);
+                return StatusCode(StatusCodes.Status201Created, new { code = StatusCodes.Status201Created, message="Department created successfully."});
                 
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError , new { code = StatusCodes.Status201Created, message = ex.Message } );
             }
         }
 
@@ -913,21 +914,31 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateDepartment")]
         [Authorize(Policy = "Permission:Users.UPDATE")]
-        public async Task<ActionResult<DepartmentReadDto>> UpdateDepartment([FromBody] DepartmentUpdateDto values)
+        public async Task<ActionResult> UpdateDepartment([FromBody] DepartmentUpdateDto values)
         {
-            var userId = _userContextService.GetUserId();
-            if (!string.Equals(userId, values.ModifiedBy))
+            try
             {
-                return Unauthorized();
-            }
+                var userId = _userContextService.GetUserId();
+                if (!string.Equals(userId, values.ModifiedBy))
+                {
+                    return Unauthorized();
+                }
 
-            var result = _departmentService.GetDepartmentAsync(values.DepartmentId);
-            if(result is null)
+                var result = _departmentService.GetDepartmentAsync(values.DepartmentId);
+                if (result is null)
+                {
+                    return BadRequest();
+                }
+
+                await _departmentService.UpdateDepartmentAsync(values);
+
+                return Ok(new { code = StatusCodes.Status200OK, message = "Department updated successfully." });
+
+            }
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, new { code = StatusCodes.Status201Created, message = ex.Message });
             }
-
-            return Ok(await _departmentService.UpdateDepartmentAsync(values));
         }
 
         /// <summary>
@@ -973,7 +984,8 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateDepartmentUnit")]
         [Authorize(Policy = "Permission:Users.CREATE")]
-        public async Task<ActionResult<DepartmentUnitReadDto>> CreateDepartmentUnit([FromBody] DepartmentUnitCreateDto values)
+        [ProducesResponseType(201)]
+        public async Task<ActionResult> CreateDepartmentUnit([FromBody] DepartmentUnitCreateDto values)
         {
             try
             {
@@ -989,7 +1001,8 @@ namespace Modules.Users.Presentation.Controllers.v1
                     return BadRequest(result);
                 }
 
-                return StatusCode(StatusCodes.Status201Created, result);
+                return StatusCode(StatusCodes.Status201Created, new { code = StatusCodes.Status201Created, message = "Department unit created successfully." });
+
 
             }
             catch (Exception ex)
@@ -1003,7 +1016,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPut]
         [Route("UpdateDepartmentUnit")]
-        public async Task<ActionResult<DepartmentReadDto>> UpdateDepartmentUnit([FromBody] DepartmentUnitUpdateDto values)
+        public async Task<ActionResult> UpdateDepartmentUnit([FromBody] DepartmentUnitUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.ModifiedBy))
@@ -1017,7 +1030,10 @@ namespace Modules.Users.Presentation.Controllers.v1
                 return BadRequest();
             }
 
-            return Ok(await _departmentUnitService.UpdateDepartmentUnitAsync(values));
+            await _departmentUnitService.UpdateDepartmentUnitAsync(values);
+
+            return Ok(new { code = StatusCodes.Status200OK, message = "Department updated successfully." });
+
         }
 
         /// <summary>
