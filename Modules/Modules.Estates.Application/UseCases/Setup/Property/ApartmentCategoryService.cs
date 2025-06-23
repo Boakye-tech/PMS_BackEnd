@@ -10,6 +10,7 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 
@@ -149,6 +150,7 @@ public class ApartmentCategoryService : IApartmentCategoryService
             var apartmentTypes = category.ApartmentTypes.Select(type => new ApartmentTypesReadDto(
                 apartmentTypeId: type.ApartmentTypeId,
                 apartmentType: type.ApartmentType!,
+				features: (List<ApartmentFeatures>)type.Features,
                 sellingPrice: type.SellingPrice,
                 currencyId: type.CurrencyId,
                 currencyInitial: type.Currency?.CurrencyInitial ?? "",

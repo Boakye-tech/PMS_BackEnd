@@ -11,11 +11,13 @@
 //  **************************************************/
 
 
+using Modules.Estates.Domain.ValueObjects.Property;
+
 namespace Modules.Estates.Application.DTO.Setup.Property;
 
-public record ApartmentTypeReadDto(string apartmentCategory, int apartmentTypeId, string apartmentType, float sellingPrice,int currencyId, double floorArea, string[]? images);
-public record ApartmentTypeCreateDto(int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[]? images, string createdBy);
-public record ApartmentTypeUpdateDto(int apartmentCategoryId, int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[]? images, string modifiedBy);
+public record ApartmentTypeReadDto(string apartmentCategory, int apartmentTypeId, string apartmentType, List<ApartmentFeaturesDto> features, float sellingPrice,int currencyId, double floorArea, string[]? images);
+public record ApartmentTypeCreateDto(int apartmentCategoryId, string apartmentType, ApartmentFeaturesDto[]? features, float sellingPrice, int currencyId, double floorArea, string[]? images, string createdBy);
+public record ApartmentTypeUpdateDto(int apartmentCategoryId, int apartmentTypeId, string apartmentType, ApartmentFeaturesDto[]? features, float sellingPrice, int currencyId, double floorArea, string[]? images, string modifiedBy);
 public record ApartmentTypeDeleteDto(int apartmentTypeId);
 
 

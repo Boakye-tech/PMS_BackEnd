@@ -43,7 +43,14 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			// Arrange
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
-			var apartmentTypes = new List<ApartmentTypes>
+
+            var features = new List<ApartmentFeatures>
+            {
+                new ApartmentFeatures(ApartmentCategoryEnum.AFFORDABLE, 1,1,1,10.9m),
+				// Add more if needed
+			};
+
+            var apartmentTypes = new List<ApartmentTypes>
 			{
 				new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 21.2, images)
 			};
@@ -55,7 +62,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 
 			var expectedDtos = new List<ApartmentTypesReadDto>
 			{
-				new ApartmentTypesReadDto(1, "STUDIO", 8000, 2, "USD","U.S. DOLLAR", 21.2, images)
+				new ApartmentTypesReadDto(1, "STUDIO",features, 8000, 2, "USD","U.S. DOLLAR", 21.2, images)
 			};
 
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.GetAll()).ReturnsAsync(apartmentTypes);
@@ -77,10 +84,17 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
 
-			// Arrange
-			int apartmentTypeId = 1;
+            // Arrange
+
+            var features = new List<ApartmentFeaturesDto>
+            {
+                new ApartmentFeaturesDto(FeatureId: 1, FloorArea: 10.9m),
+				// Add more if needed
+			};
+
+            int apartmentTypeId = 1;
 			var apartmentType = new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 21.2, images);
-			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", 8000, 2, 21.2, images);
+			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", features, 8000, 2, 21.2, images);
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(apartmentTypeId)).ReturnsAsync(apartmentType);
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(apartmentType)).Returns(apartmentTypeDto);
 
@@ -97,10 +111,17 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
 
-			// Arrange
-			string value = "test";
+            // Arrange
+            var features = new List<ApartmentFeaturesDto>
+			{
+				new ApartmentFeaturesDto(FeatureId: 1, FloorArea: 10.9m),
+				// Add more if needed
+			};
+
+
+            string value = "test";
 			var apartmentType = new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 21.2, images);
-			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", 8000, 2, 21.2, images);
+			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", features, 8000, 2, 21.2, images);
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(It.IsAny<Expression<Func<ApartmentTypes, bool>>>(), null)).ReturnsAsync(apartmentType);
 
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(apartmentType)).Returns(apartmentTypeDto);
@@ -117,19 +138,28 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		public async Task CreateApartmentTypeAsync_WithValidData_ShouldCreateApartmentType()
 		{
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
-			// Arrange
-			var createDto = new ApartmentTypeCreateDto
+            // Arrange
+
+            var features = new List<ApartmentFeaturesDto>
+            {
+                new ApartmentFeaturesDto(FeatureId: 1, FloorArea: 10.9m),
+				// Add more if needed
+			};
+
+            var createDto = new ApartmentTypeCreateDto
 			(
 				1,
 				apartmentType: "Test Apartment",
-				sellingPrice: 100000,
+                new[] { new ApartmentFeaturesDto(FeatureId: 1, FloorArea: 10.9m) },
+
+                sellingPrice: 100000,
 				currencyId: 1,
 				floorArea: 100.25,
 				images: images,
 				createdBy: "testuser"
 			);
 
-			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 0, createDto.apartmentType!, createDto.sellingPrice, 2, createDto.floorArea, images);
+			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 0, createDto.apartmentType!, features, createDto.sellingPrice, 2, createDto.floorArea, images);
 
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(It.IsAny<Expression<Func<ApartmentTypes, bool>>>(), null)).ReturnsAsync((ApartmentTypes)null!);
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(It.IsAny<ApartmentTypes>())).Returns(apartmentTypeDto);
@@ -153,7 +183,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			(
 				1,
 				apartmentType: "Test Apartment",
-				sellingPrice: 100000,
+                features: new[] { new ApartmentFeaturesDto(FeatureId: 1, FloorArea: 10.9m) },
+                sellingPrice: 100000,
 				currencyId: 1,
 				floorArea: 100,
 				images: images,
@@ -176,12 +207,21 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		public async Task UpdateApartmentTypeAsync_WithValidData_ShouldUpdateApartmentType()
 		{
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
-			// Arrange
-			var updateDto = new ApartmentTypeUpdateDto
+            // Arrange
+
+            var features = new List<ApartmentFeaturesDto>
+            {
+                new ApartmentFeaturesDto(FeatureId: 1, FloorArea: 10.9m),
+				// Add more if needed
+			};
+
+
+            var updateDto = new ApartmentTypeUpdateDto
 			(
 				1,
 				apartmentTypeId: 1,
 				apartmentType: "Updated Apartment",
+				features: features.ToArray(),
 				sellingPrice: 150000,
 				currencyId: 1,
 				floorArea: 150,
@@ -190,7 +230,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			);
 
 			var existingApartmentType = ApartmentTypes.Create(1, 1, "Old Apartment", 100000, 1, 100, images);
-			var apartmentTypeDto = new ApartmentTypeReadDto(apartmentCategory: "AFFORDABLE", 1, "Updated Apartment", 150000, 2, 150, images);
+			var apartmentTypeDto = new ApartmentTypeReadDto(apartmentCategory: "AFFORDABLE", 1, "Updated Apartment", features, 150000, 2, 150, images);
 
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(updateDto.apartmentTypeId)).ReturnsAsync(existingApartmentType);
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(It.IsAny<ApartmentTypes>())).Returns(apartmentTypeDto);
@@ -215,6 +255,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 				1,
 				apartmentTypeId: 999,
 				apartmentType: "Test Apartment",
+				features: new[] { new ApartmentFeaturesDto(FeatureId: 1, FloorArea: 10.9m) },
 				sellingPrice: 100000,
 				currencyId: 1,
 				floorArea: 100,

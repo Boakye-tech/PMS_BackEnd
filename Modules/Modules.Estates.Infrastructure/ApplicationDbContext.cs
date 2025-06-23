@@ -173,6 +173,7 @@ public class ApplicationDbContext : ModuleDbContext
             .HasColumnType("decimal(18,4)");
 
 
+
         //modelBuilder.Entity<ApartmentTypes>
 
         //modelBuilder.ApplyConfiguration(new AllocationTypeConfiguration());

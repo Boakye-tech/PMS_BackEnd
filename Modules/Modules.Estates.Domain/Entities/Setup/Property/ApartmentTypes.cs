@@ -10,7 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Modules.Estates.Domain.Entities.Setup.Property
@@ -27,6 +26,9 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [Required]
         [StringLength(50)]
         public string ApartmentType { get; private set; }
+
+        // Navigation property for Apartment features
+        public virtual ICollection<ApartmentFeatures> Features { get; private set; }
 
         [Required]
         public float SellingPrice { get; private set; }
@@ -54,6 +56,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             CurrencyId = currencyId;
             FloorArea = floorArea;
             Images = images;
+            Features = new List<ApartmentFeatures>();
         }
 
         public static ApartmentTypes Create(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
@@ -94,6 +97,8 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 
             if (images.Count() == 0)
                 throw new ArgumentException("There must be at least one image.");
+
+
         }
     }
 }

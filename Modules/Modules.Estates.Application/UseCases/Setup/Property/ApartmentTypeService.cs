@@ -40,6 +40,7 @@ public class ApartmentTypeService : IApartmentTypeService
                                     //ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(at.ApartmentCategory),
                                     at.ApartmentTypeId,
                                     at.ApartmentType,
+                                    (List<ApartmentFeatures>)at.Features,
                                     at.SellingPrice,
                                     at.CurrencyId,
                                     cer.CurrencyInitial!,

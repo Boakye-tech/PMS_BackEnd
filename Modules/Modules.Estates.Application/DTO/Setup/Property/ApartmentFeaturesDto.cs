@@ -12,9 +12,13 @@
 
 namespace Modules.Estates.Application.DTO.Setup.Property
 {
-    public record ApartmentFeaturesReadDto(int ApartmentFeaturesId, string ApartmentCategory, string ApartmentType, string Feature, decimal FloorArea);
 
-    public record ApartmentFeaturesCreateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, string Feature, decimal FloorArea, string CreatedBy);
-    public record ApartmentFeaturesUpdateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, int ApartmentFeaturesId, string Feature, decimal FloorArea, string ModifiedBy);
+    public record ApartmentFeaturesDto(int FeatureId, decimal FloorArea);
+
+
+    public record ApartmentFeaturesReadDto(int ApartmentFeaturesId, string ApartmentCategory, string ApartmentType, int FeatureId, List<string> Feature, decimal FloorArea);
+
+    public record ApartmentFeaturesCreateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, int FeatureId, decimal FloorArea, string CreatedBy);
+    public record ApartmentFeaturesUpdateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, int ApartmentFeaturesId, int FeatureId, decimal FloorArea, string ModifiedBy);
     public record ApartmentFeaturesDeleteDto(int ApartmentFeaturesId, string DeletedBy);
 }

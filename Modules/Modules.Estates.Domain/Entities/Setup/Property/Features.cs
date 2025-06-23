@@ -25,6 +25,9 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         [StringLength(50)]
         public string Feature { get; private set; }
 
+        // Navigation property for Apartment features
+        public virtual ApartmentFeatures? ApartmentFeatures { get; private set; }
+
 
         public Features( int featuresId, string feature)
         {

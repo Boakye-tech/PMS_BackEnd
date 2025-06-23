@@ -31,7 +31,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         {
             int apartmentFeaturesId = 0;
 
-            var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId && at.Feature == values.Feature);
+            var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId && at.FeaturesId == values.FeatureId);
             if (apartmentType != null)
             {
                 return new ReturnResponsesDto
@@ -42,7 +42,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 };
             }
 
-            var newApartmentFeature = ApartmentFeatures.Create(values.ApartmentCategory, apartmentFeaturesId, values.ApartmentTypeId!, values.Feature, values.FloorArea);
+            var newApartmentFeature = ApartmentFeatures.Create(values.ApartmentCategory, apartmentFeaturesId, values.ApartmentTypeId!, values.FeatureId, values.FloorArea);
             newApartmentFeature.CreatedBy = values.CreatedBy;
             newApartmentFeature.CreatedOn = DateTime.Now;
 
@@ -72,7 +72,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                          af.ApartmentFeaturesId,
                                          ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(af.ApartmentCategory),
                                          at.ApartmentType,
-                                         af.Feature,
+                                         af.FeaturesId,
+                                         (List<string>)af.Features,
                                          af.FloorArea
                                      )).ToList();
 
@@ -92,7 +93,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 };
             }
 
-            apartmentTypeFeature.Update(values.ApartmentFeaturesId, values.ApartmentTypeId, values.Feature, values.FloorArea);
+            apartmentTypeFeature.Update(values.ApartmentFeaturesId, values.ApartmentTypeId, values.FeatureId, values.FloorArea);
             apartmentTypeFeature.ModifiedBy = values.ModifiedBy;
             apartmentTypeFeature.ModifiedOn = DateTime.Now;
 
