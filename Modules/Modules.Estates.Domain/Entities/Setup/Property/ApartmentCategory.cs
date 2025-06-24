@@ -10,8 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Modules.Estates.Domain.Entities.Setup.Property
 {
@@ -28,7 +26,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 		// Navigation property for ApartmentTypes
 		public virtual ICollection<ApartmentTypes> ApartmentTypes { get; private set; }
 
-		public ApartmentCategory(int apartmentCategoryId, string? apartmentCategoryName)
+        public ApartmentCategory(int apartmentCategoryId, string? apartmentCategoryName)
 		{
 			ApartmentCategoryId = apartmentCategoryId;
 			ApartmentCategoryName = apartmentCategoryName;

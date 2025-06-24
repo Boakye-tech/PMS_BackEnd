@@ -51,13 +51,26 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
+                List<string> featureNames = new List<string>();
+
+                foreach (var featureId in values.Features)
+                {
+                    var feature = await _unitOfWork.Features.Get(featureId); 
+                    if (feature != null)
+                    {
+                        featureNames.Add(feature.Feature); 
+                    }
+                }
+
+                string[] features = featureNames.ToArray();
+
                 var types = Types.Create(
                     typeId,
                     values.Code!,
                     values.TypeName!,
                     values.RentalCategoryId,
                     values.RentalTypeId,
-                    values.Features!,
+                    features!,
                     values.Notes!
                 );
 
@@ -185,13 +198,26 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
+                List<string> featureNames = new List<string>();
+
+                foreach (var featureId in values.Features)
+                {
+                    var feature = await _unitOfWork.Features.Get(featureId);
+                    if (feature != null)
+                    {
+                        featureNames.Add(feature.Feature);
+                    }
+                }
+
+                string[] features = featureNames.ToArray();
+
                 types.Update(
                     values.TypeId,
                     values.Code!,
                     values.TypeName!,
-                    values.RentalCategoryId,
-                    values.RentalTypeId,
-                    values.Features!,
+                    types.RentalCategoryId,
+                    types.RentalTypeId,
+                    features!,
                     values.Notes!
                 );
 

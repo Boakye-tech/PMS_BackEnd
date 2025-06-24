@@ -227,6 +227,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult CreateType([FromBody] TypesCreateDto values)
         {
+
+
+
             var result = _rentalsService.CreateTypesAsync(values).Result;
             if (result.IsSuccess)
             {

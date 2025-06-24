@@ -10,15 +10,20 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using System.Collections.Generic;
+
 namespace Modules.Estates.Application.DTO.Setup.Property
 {
 
-    public record ApartmentFeaturesDto(int FeatureId, decimal FloorArea);
+    public record ApartmentFeatureCreateDto(int FeatureId, decimal FloorArea);
+
+    public record ApartmentFeatureReadDto(int FeatureId, string Feature, decimal FloorArea);
 
 
-    public record ApartmentFeaturesReadDto(int ApartmentFeaturesId, string ApartmentCategory, string ApartmentType, int FeatureId, List<string> Feature, decimal FloorArea);
 
-    public record ApartmentFeaturesCreateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, int FeatureId, decimal FloorArea, string CreatedBy);
-    public record ApartmentFeaturesUpdateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, int ApartmentFeaturesId, int FeatureId, decimal FloorArea, string ModifiedBy);
+    public record ApartmentFeaturesReadDto(int ApartmentFeaturesId, string ApartmentCategory, string ApartmentType, List<ApartmentFeatureReadDto> Features);
+
+    public record ApartmentFeaturesCreateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, List<ApartmentFeatureCreateDto> Features, string CreatedBy);
+    public record ApartmentFeaturesUpdateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, int ApartmentFeaturesId, List<ApartmentFeatureCreateDto> Features, string ModifiedBy);
     public record ApartmentFeaturesDeleteDto(int ApartmentFeaturesId, string DeletedBy);
 }

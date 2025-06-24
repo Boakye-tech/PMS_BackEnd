@@ -32,10 +32,14 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         public int FeaturesId { get; private set; }
 
         // Navigation property for Features
-        public virtual ICollection<Features> Features { get; private set; }
+        public virtual Features? Features { get; private set; }
 
         [Required]
         public decimal FloorArea { get; private set; }
+
+        public ApartmentFeatures()
+        {
+        }
 
         public ApartmentFeatures(ApartmentCategoryEnum apartmentCategory, int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)
         {
@@ -44,7 +48,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             ApartmentTypeId = apartmentTypeId;
             FeaturesId = featureId;
             FloorArea = floorArea;
-            Features = new List<Features>();
+            Features = Features;
         }
 
         public static ApartmentFeatures Create(ApartmentCategoryEnum apartmentCategory, int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)

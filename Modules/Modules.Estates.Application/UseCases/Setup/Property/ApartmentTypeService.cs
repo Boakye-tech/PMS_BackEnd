@@ -10,8 +10,10 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Modules.Estates.Application.DTO.Setup.Property;
 
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
@@ -29,29 +31,28 @@ public class ApartmentTypeService : IApartmentTypeService
 
     public async Task<IEnumerable<ApartmentTypesReadDto>> GetApartmentTypeAsync()
     {
-        //var response = await _unitOfWork.ApartmentTypes.GetAll();
-
-        var apartmentDetails = (from at in await _unitOfWork.ApartmentTypes.GetAll()
-                                join cer in await _unitOfWork.CurrencyExchangeRate.GetAll()
-                                on at.CurrencyId equals cer.CurrencyId
-                                select new ApartmentTypesReadDto
-                                (
-                                    //at.ApartmentCategory,
-                                    //ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(at.ApartmentCategory),
-                                    at.ApartmentTypeId,
-                                    at.ApartmentType,
-                                    (List<ApartmentFeatures>)at.Features,
-                                    at.SellingPrice,
-                                    at.CurrencyId,
-                                    cer.CurrencyInitial!,
-                                    cer.CurrencyName!,
-                                    at.FloorArea,
-                                    //new string[] { at!.ImageOne!, at.ImageTwo!, at.ImageThree!, at.ImageFour!, at.ImageFive! }
-                                    at.Images
-                                )).ToList();
+        var apartmentDetails = await _unitOfWork.ApartmentTypes.GetAll(includes: new List<string> { "ApartmentFeatures.Features", "Currency" });
 
 
-        return _mapper.Map<IEnumerable<ApartmentTypesReadDto>>(apartmentDetails);
+        var apartmentFeatureDetails = apartmentDetails.Select(apartment => new ApartmentTypesReadDto(
+            apartmentTypeId: apartment.ApartmentTypeId,
+            apartmentType: apartment.ApartmentType,
+            apartmentfeatures: apartment.ApartmentFeatures.Select(f => new ApartmentFeatureReadDto(
+                FeatureId: f.FeaturesId,
+                Feature: f.Features!.Feature,
+                FloorArea: f.FloorArea
+            )).ToList(),
+            sellingPrice: apartment.SellingPrice,
+            currencyId: apartment.CurrencyId,
+            currencyInitial: apartment.Currency?.CurrencyInitial ?? "",
+            currency: apartment.Currency?.CurrencyName ?? "",
+            floorArea: apartment.FloorArea,
+            images: apartment.Images
+        ));
+
+
+        return apartmentFeatureDetails;
+
     }
 
     public async Task<ApartmentTypeReadDto> GetApartmentTypeAsync(int value)

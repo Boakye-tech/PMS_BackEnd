@@ -26,7 +26,10 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         public string Feature { get; private set; }
 
         // Navigation property for Apartment features
-        public virtual ApartmentFeatures? ApartmentFeatures { get; private set; }
+        //public virtual ApartmentFeatures? ApartmentFeatures { get; private set; }
+
+        // One feature can be linked to many apartment features
+        public virtual ICollection<ApartmentFeatures> ApartmentFeatures { get; private set; } = new List<ApartmentFeatures>();
 
 
         public Features( int featuresId, string feature)

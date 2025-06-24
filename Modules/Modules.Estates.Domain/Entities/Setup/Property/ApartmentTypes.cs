@@ -28,7 +28,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         public string ApartmentType { get; private set; }
 
         // Navigation property for Apartment features
-        public virtual ICollection<ApartmentFeatures> Features { get; private set; }
+        public virtual ICollection<ApartmentFeatures> ApartmentFeatures { get; private set; }
 
         [Required]
         public float SellingPrice { get; private set; }
@@ -56,7 +56,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             CurrencyId = currencyId;
             FloorArea = floorArea;
             Images = images;
-            Features = new List<ApartmentFeatures>();
+            ApartmentFeatures = new List<ApartmentFeatures>();
         }
 
         public static ApartmentTypes Create(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)

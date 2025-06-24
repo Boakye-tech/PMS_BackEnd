@@ -9,7 +9,6 @@
 //  **************************************************/
 
 using System.Text.Json;
-using Modules.Estates.Domain.ValueObjects.Property;
 
 namespace Modules.Estates.Infrastructure.Configuration;
 
@@ -17,6 +16,7 @@ public class ApartmentTypesConfiguration : IEntityTypeConfiguration<ApartmentTyp
 {
     public void Configure(EntityTypeBuilder<ApartmentTypes> builder)
     {
+        builder.HasIndex(a => a.ApartmentType).IsUnique(true);
 
         // Configure the Images array to be stored as JSON
         builder.Property(x => x.Images)
@@ -25,7 +25,13 @@ public class ApartmentTypesConfiguration : IEntityTypeConfiguration<ApartmentTyp
                 v => JsonSerializer.Deserialize<string[]>(v, (JsonSerializerOptions)null!)!)
             .HasColumnType("nvarchar(max)");
 
-        builder.HasIndex(a => a.ApartmentType).IsUnique(true);
+
+        // Configure the one-to-many relationship with ApartmentFeatures
+        builder.HasMany(a => a.ApartmentFeatures)
+               .WithOne(at => at.ApartmentType)
+               .HasForeignKey(at => at.ApartmentTypeId)
+               .OnDelete(DeleteBehavior.Restrict);
+
 
         builder.HasData(
             new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 27.43, new[] {""} ),
