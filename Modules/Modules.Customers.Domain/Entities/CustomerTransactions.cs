@@ -21,10 +21,6 @@ namespace Modules.Customers.Domain.Entities
 
         [Required]
         [StringLength(50)]
-        public required string VoucherNumber { get; set; }
-
-        [Required]
-        [StringLength(50)]
         public required string PropertyNumber { get; set; }
 
         [Required]
@@ -33,6 +29,11 @@ namespace Modules.Customers.Domain.Entities
 
         [Required]
         public required DateTime TransactionDate { get; set; }
+
+
+        [Required]
+        [StringLength(50)]
+        public required string VoucherNumber { get; set; }
 
         [StringLength(50)]
         public string? ReferenceNumber { get; set; }
@@ -44,7 +45,7 @@ namespace Modules.Customers.Domain.Entities
         public required string Narration { get; set; }
 
         [Required]
-        public required double Amount { get; set; }
+        public required decimal Amount { get; set; }
 
         public required int AccountCode { get; set; }
 
@@ -66,11 +67,11 @@ namespace Modules.Customers.Domain.Entities
         }
 
 
-        public CustomerTransactions(int customerTransactionId, string voucherNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, double amount, int accountCode, string transactionType, string voucherType)
+        public CustomerTransactions(int customerTransactionId, string voucherNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, decimal amount, int accountCode, string transactionType, string voucherType)
         {
         }
 
-        public static CustomerTransactions AddCustomerTransaction(int customerTransactionId, string voucherNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, double amount, int accountCode, string transactionType, string voucherType)
+        public static CustomerTransactions AddCustomerTransaction(int customerTransactionId, string voucherNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, decimal amount, int accountCode, string transactionType, string voucherType)
         {
             if (string.IsNullOrWhiteSpace(voucherNumber) || string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(customerCode) || string.IsNullOrWhiteSpace(transactionType) || string.IsNullOrWhiteSpace(voucherType) || string.IsNullOrWhiteSpace(narration) || amount < 0 || accountCode < 0)
             {

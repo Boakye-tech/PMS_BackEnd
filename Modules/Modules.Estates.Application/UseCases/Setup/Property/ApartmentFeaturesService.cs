@@ -9,10 +9,8 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-using System;
-using Microsoft.AspNetCore.Http;
-using Modules.Estates.Domain.Entities.Setup.Property;
 
+using Microsoft.AspNetCore.Http;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
 {
@@ -31,12 +29,13 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         public async Task<ReturnResponsesDto> CreateApartmentFeaturesAsync(ApartmentFeaturesCreateDto values)
         {
             int apartmentFeaturesId = 0;
+            decimal floorArea = 0.00m;
 
 
             foreach (var item in values.Features)
             {
 
-                var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId && at.FeaturesId == item.FeatureId);
+                var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId && at.FeaturesId == item.Features);
                 if (apartmentType != null)
                 {
                     return new ReturnResponsesDto
@@ -47,7 +46,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
-                var newApartmentFeature = ApartmentFeatures.Create(values.ApartmentCategory, apartmentFeaturesId, values.ApartmentTypeId!, item.FeatureId, item.FloorArea);
+                var newApartmentFeature = ApartmentFeatures.Create(values.ApartmentCategory, apartmentFeaturesId, values.ApartmentTypeId!, item.Features, floorArea ); //item.FloorArea
                 newApartmentFeature.CreatedBy = values.CreatedBy;
                 newApartmentFeature.CreatedOn = DateTime.Now;
 
@@ -89,34 +88,20 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     ApartmentType: group.Key.ApartmentType,
                     Features: group.Select(f => new ApartmentFeatureReadDto(
                         FeatureId: f.FeaturesId,
-                        Feature: f.Features?.Feature ?? "",
-                        FloorArea: f.FloorArea
+                        Feature: f.Features?.Feature ?? ""
+                        //FloorArea: f.FloorArea
                     )).ToList()
                 ))
                 .ToList();
 
             return grouped;
 
-            //var apartmentFeatures = (from af in await _unitOfWork.ApartmentFeatures.GetAll()
-            //                         join at in await _unitOfWork.ApartmentTypes.GetAll()
-            //                         on af.ApartmentTypeId equals at.ApartmentTypeId
-            //                         select new ApartmentFeaturesReadDto
-            //                         (
-            //                             af.ApartmentFeaturesId,
-            //                             ApartmentCategoryEnumDescription.GetApartmentCategoryEnumDescription(af.ApartmentCategory),
-            //                             at.ApartmentType,
-            //                             af.FeaturesId,
-            //                             (List<ApartmentFeatureReadDto>)af.,
-
-            //                         )).ToList();
-
-            //return apartmentFeatures;
-
-
         }
 
         public async Task<ReturnResponsesDto> UpdateApartmentFeaturesAsync(ApartmentFeaturesUpdateDto values)
         {
+            decimal floorArea = 0.00m;
+
             var apartmentTypeFeature = await _unitOfWork.ApartmentFeatures.Get(values.ApartmentFeaturesId);
             if (apartmentTypeFeature == null)
             {
@@ -130,7 +115,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
 
             foreach (var item in values.Features)
             {
-                apartmentTypeFeature.Update(values.ApartmentFeaturesId, values.ApartmentTypeId, item.FeatureId, item.FloorArea);
+                apartmentTypeFeature.Update(values.ApartmentFeaturesId, values.ApartmentTypeId, item.Features, floorArea); //item.FloorArea
                 apartmentTypeFeature.ModifiedBy = values.ModifiedBy;
                 apartmentTypeFeature.ModifiedOn = DateTime.Now;
 

@@ -34,17 +34,17 @@ public class ApartmentTypesConfiguration : IEntityTypeConfiguration<ApartmentTyp
 
 
         builder.HasData(
-            new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 27.43, new[] {""} ),
+            new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 28, new[] {""} ),
 
-            new ApartmentTypes(2, 1, "ONE BEDROOM", 17000, 2, 41.123, new[] { "https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Affordable1Bed.png" }),
+            new ApartmentTypes(2, 1, "ONE BEDROOM", 17000, 2, 29, new[] { "https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Affordable1Bed.png" }),
 
-            new ApartmentTypes(3, 1, "ONE BEDROOM (SPECIAL)", 24000, 2, 60.634, new[] { "" }),
+            new ApartmentTypes(3, 1, "ONE BEDROOM (SPECIAL)", 24000, 2, 30, new[] { "" }),
 
-            new ApartmentTypes(4, 1, "TWO BEDROOM", 28000, 2, 74.80, new[]{ "https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Affordable2Bed.png" }),
+            new ApartmentTypes(4, 1, "TWO BEDROOM", 28000, 2, 31, new[]{ "https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Affordable2Bed.png" }),
 
-            new ApartmentTypes(5, 2, "TWO BEDROOMS", 197500, 2, 107.0, new[] { "" }),
+            new ApartmentTypes(5, 2, "TWO BEDROOMS", 197500, 2, 25, new[] { "" }),
 
-            new ApartmentTypes(6, 2, "THREE BEDROOMS", 286400, 2, 218.0, new[] { "https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Luxury3Bed.png" })
+            new ApartmentTypes(6, 2, "THREE BEDROOMS", 286400, 2, 26, new[] { "https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Luxury3Bed.png" })
 
             );
     }

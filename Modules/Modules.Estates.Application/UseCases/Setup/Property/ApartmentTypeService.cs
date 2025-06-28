@@ -10,10 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using System.Linq;
+
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Modules.Estates.Application.DTO.Setup.Property;
 
 
 namespace Modules.Estates.Application.UseCases.Setup.Property;
@@ -31,6 +29,7 @@ public class ApartmentTypeService : IApartmentTypeService
 
     public async Task<IEnumerable<ApartmentTypesReadDto>> GetApartmentTypeAsync()
     {
+
         var apartmentDetails = await _unitOfWork.ApartmentTypes.GetAll(includes: new List<string> { "ApartmentFeatures.Features", "Currency" });
 
 
@@ -39,14 +38,15 @@ public class ApartmentTypeService : IApartmentTypeService
             apartmentType: apartment.ApartmentType,
             apartmentfeatures: apartment.ApartmentFeatures.Select(f => new ApartmentFeatureReadDto(
                 FeatureId: f.FeaturesId,
-                Feature: f.Features!.Feature,
-                FloorArea: f.FloorArea
+                Feature: f.Features!.Feature
+                //FloorArea: f.FloorArea
             )).ToList(),
             sellingPrice: apartment.SellingPrice,
             currencyId: apartment.CurrencyId,
             currencyInitial: apartment.Currency?.CurrencyInitial ?? "",
             currency: apartment.Currency?.CurrencyName ?? "",
-            floorArea: apartment.FloorArea,
+            floorAreaId: apartment.FloorAreaId,
+            floorArea: apartment.FloorArea!.Area,
             images: apartment.Images
         ));
 
@@ -84,7 +84,7 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
-            var newApartmentType = ApartmentTypes.Create(apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
+            var newApartmentType = ApartmentTypes.Create(apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorAreaId, values.images!);
             newApartmentType.CreatedBy = values.createdBy;
             newApartmentType.CreatedOn = DateTime.Now;
 
@@ -119,7 +119,7 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
-            apartmentType.Update(values.apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorArea, values.images!);
+            apartmentType.Update(values.apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorAreaId, values.images!);
             apartmentType.ModifiedBy = values.modifiedBy;
             apartmentType.ModifiedOn = DateTime.Now;
 

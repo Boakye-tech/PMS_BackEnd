@@ -173,5 +173,172 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
             }
         }
+
+
+
+        /// <summary>
+        /// Returns a list of apartment types
+        /// </summary>
+        [HttpGet]
+        [Route("GetApartmentTypes")]
+        public async Task<ActionResult<IEnumerable<ApartmentTypesReadDto>>> GetApartmentTypes()
+        {
+            return Ok(await _propertyFeatureServices.GetApartmentTypeAsync());
+        }
+
+        /// <summary>
+        /// Creates a new apartment type
+        /// </summary>
+        /// <remarks>
+        /// Creates a new apartment type in the system
+        ///
+        /// **Sample Request:**
+        ///
+        ///     POST /CreateApartmentType
+        ///
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "apartmentTypeId": 0,
+        ///         "apartmentType": "STUDIO",
+        ///         "apartmentTypeDescription": "Studio apartment",
+        ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        ///     }
+        ///
+        /// **Sample Response 201:**
+        /// 
+        ///     {
+        ///         "code": 201,
+        ///         "message": "Apartment type created successfully.",
+        ///         "data": {
+        ///             "apartmentTypeId": 1,
+        ///             "apartmentType": "STUDIO",
+        ///             "apartmentTypeDescription": "Studio apartment"
+        ///         }
+        ///     }
+        /// </remarks>
+        [HttpPost]
+        [Route("CreateApartmentType")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> CreateApartmentType([FromBody] ApartmentTypeCreateDto values)
+        {
+            try
+            {
+                var result = await _propertyFeatureServices.CreateApartmentTypeAsync(values);
+
+                if (result.IsSuccess)
+                {
+                    return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.Code;
+                return status switch
+                {
+                    204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates the details of an existing apartment type
+        /// </summary>
+        /// <remarks>
+        /// Modifies/updates an existing apartment type based on the apartment type id 
+        ///
+        /// **Sample Request:**
+        ///
+        ///     PUT /UpdateApartmentType
+        ///
+        /// **Sample Request Body:**
+        /// 
+        ///     {
+        ///         "apartmentTypeId": 1,
+        ///         "apartmentType": "STUDIO",
+        ///         "apartmentTypeDescription": "Updated Studio apartment",
+        ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
+        ///     }
+        ///
+        /// **Sample Response 200:**
+        /// 
+        ///     {
+        ///         "code": 200,
+        ///         "message": "Apartment type details modified successfully.",
+        ///         "data": {
+        ///             "apartmentTypeId": 1,
+        ///             "apartmentType": "STUDIO",
+        ///             "apartmentTypeDescription": "Updated Studio apartment"
+        ///         }
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        [Route("UpdateApartmentType")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult<ApartmentTypeReadDto>> UpdateApartmentType([FromBody] ApartmentTypeUpdateDto values)
+        {
+            var result = await _propertyFeatureServices.UpdateApartmentTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        /// <summary>
+        /// Deletes an apartment type by its ID
+        /// </summary>
+        /// <param name="apartmentTypeId">The ID of the apartment type to delete</param>
+        /// <returns>Success or error response</returns>
+        [HttpDelete("DeleteApartmentType/{apartmentTypeId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> DeleteApartmentType(int apartmentTypeId)
+        {
+            try
+            {
+                var result = await _propertyFeatureServices.DeleteApartmentType(apartmentTypeId);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.Code;
+                return status switch
+                {
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
     }
 }

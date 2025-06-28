@@ -87,13 +87,13 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             // Arrange
             var features = new List<ApartmentFeatureReadDto>
             {
-                new ApartmentFeatureReadDto(FeatureId: 1, Feature: "LIVING ROOM", FloorArea: 10.9m),
+                new ApartmentFeatureReadDto(FeatureId: 1, Feature: "LIVING ROOM"),
 				// Add more if needed
 			};
 
             int apartmentTypeId = 1;
-			var apartmentType = new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 21.2, images);
-			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", features, 8000, 2, 21.2, images);
+			var apartmentType = new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 10, images);
+			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", features, 8000, 2, 11, images);
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(apartmentTypeId)).ReturnsAsync(apartmentType);
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(apartmentType)).Returns(apartmentTypeDto);
 
@@ -113,13 +113,13 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             // Arrange
             var features = new List<ApartmentFeatureReadDto>
 			{
-				new ApartmentFeatureReadDto(FeatureId: 1, Feature: "LIVING RO", FloorArea: 10.9m),
+				new ApartmentFeatureReadDto(FeatureId: 1, Feature: "LIVING ROOM"),
 				// Add more if needed
 			};
 
             string value = "test";
-			var apartmentType = new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 21.2, images);
-			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", features, 8000, 2, 21.2, images);
+			var apartmentType = new ApartmentTypes(1, 1, "STUDIO", 8000, 2, 10, images);
+			var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 1, "STUDIO", features, 8000, 2, 11, images);
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(It.IsAny<Expression<Func<ApartmentTypes, bool>>>(), null)).ReturnsAsync(apartmentType);
 
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(apartmentType)).Returns(apartmentTypeDto);
@@ -140,7 +140,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             // Arrange
             var features = new List<ApartmentFeatureCreateDto>
             {
-                new ApartmentFeatureCreateDto(FeatureId: 1, FloorArea: 10.9m),
+                new ApartmentFeatureCreateDto(Features: 1),
 				// Add more if needed
 			};
 
@@ -151,19 +151,19 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
                 features,
                 sellingPrice: 100000,
 				currencyId: 1,
-				floorArea: 100.25,
+				floorAreaId: 11,
 				images: images,
 				createdBy: "testuser"
 			);
 
             var feature = new List<ApartmentFeatureReadDto>
             {
-                new ApartmentFeatureReadDto(FeatureId: 1, "LIVING ROOM", FloorArea: 10.9m),
+                new ApartmentFeatureReadDto(FeatureId: 1, "LIVING ROOM"),
 				// Add more if needed
 			};
 
 
-            var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 0, createDto.apartmentType!, feature, createDto.sellingPrice, 2, createDto.floorArea, images);
+            var apartmentTypeDto = new ApartmentTypeReadDto("AFFORDABLE", 0, createDto.apartmentType!, feature, createDto.sellingPrice, 2, createDto.floorAreaId, images);
 
 			_unitOfWorkMock.Setup(x => x.ApartmentTypes.Get(It.IsAny<Expression<Func<ApartmentTypes, bool>>>(), null)).ReturnsAsync((ApartmentTypes)null!);
 			_mapperMock.Setup(x => x.Map<ApartmentTypeReadDto>(It.IsAny<ApartmentTypes>())).Returns(apartmentTypeDto);
@@ -185,7 +185,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 
             var apartmentFeaturesDto = new List<ApartmentFeatureCreateDto>
             {
-                new ApartmentFeatureCreateDto(FeatureId: 1, FloorArea: 10.9m),
+                new ApartmentFeatureCreateDto(Features: 1),
 				// Add more if needed
 			};
 
@@ -197,7 +197,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
                 features: apartmentFeaturesDto,
                 sellingPrice: 100000,
 				currencyId: 1,
-				floorArea: 100,
+				floorAreaId: 100,
 				images: images,
 				createdBy: "testuser"
 			);
@@ -222,14 +222,14 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 
             var features = new List<ApartmentFeatureCreateDto>
             {
-                new ApartmentFeatureCreateDto(FeatureId: 1, FloorArea: 10.9m),
+                new ApartmentFeatureCreateDto(Features: 1),
 				// Add more if needed
 			};
 
 
             var feature = new List<ApartmentFeatureReadDto>
             {
-                new ApartmentFeatureReadDto(FeatureId: 1, "LIVING ROOM", FloorArea: 10.9m),
+                new ApartmentFeatureReadDto(FeatureId: 1, "LIVING ROOM"),
 				// Add more if needed
 			};
 
@@ -241,7 +241,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 				features: features,
 				sellingPrice: 150000,
 				currencyId: 1,
-				floorArea: 150,
+				floorAreaId: 150,
 				images: images,
 				modifiedBy: "testuser"
 			);
@@ -268,7 +268,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
             var features = new List<ApartmentFeatureCreateDto>
             {
-                new ApartmentFeatureCreateDto(FeatureId: 1, FloorArea: 10.9m),
+                new ApartmentFeatureCreateDto(Features: 1),
 				// Add more if needed
 			};
 
@@ -281,7 +281,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 				features: features,
 				sellingPrice: 100000,
 				currencyId: 1,
-				floorArea: 100,
+				floorAreaId: 100,
 				images: images,
 				modifiedBy: "testuser"
 			);

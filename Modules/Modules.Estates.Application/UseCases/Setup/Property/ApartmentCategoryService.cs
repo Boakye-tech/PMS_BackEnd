@@ -138,23 +138,23 @@ public class ApartmentCategoryService : IApartmentCategoryService
 
 	public async Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync()
 	{
-        var apartmentCategories = await _unitOfWork.ApartmentCategory.GetAll(includes: new List<string>{ "ApartmentTypes.Currency", "ApartmentTypes.ApartmentFeatures.Features" });
+        var apartmentCategories = await _unitOfWork.ApartmentCategory.GetAll(includes: new List<string>{ "ApartmentTypes.FloorArea", "ApartmentTypes.Currency", "ApartmentTypes.ApartmentFeatures.Features" });
 
         var apartmentCategoryAndTypes = apartmentCategories.Select(category =>
         {
             var apartmentTypes = category.ApartmentTypes.Select(type => new ApartmentTypesReadDto(
                 apartmentTypeId: type.ApartmentTypeId,
-                apartmentType: type.ApartmentType!,
+                apartmentType: type.ApartmentType ?? "",
                 apartmentfeatures: type.ApartmentFeatures.Select(f => new ApartmentFeatureReadDto(
                     FeatureId: f.FeaturesId,
-                    Feature: f.Features!.Feature,
-                    FloorArea: f.FloorArea
+                    Feature: f.Features!.Feature ?? ""
                 )).ToList(),
                 sellingPrice: type.SellingPrice,
                 currencyId: type.CurrencyId,
                 currencyInitial: type.Currency?.CurrencyInitial ?? "",
                 currency: type.Currency?.CurrencyName ?? "",
-                floorArea: type.FloorArea,
+				floorAreaId: type.FloorAreaId,
+                floorArea: type.FloorArea?.Area ?? 0,
                 images: type.Images
             )).ToList();
 
@@ -170,53 +170,6 @@ public class ApartmentCategoryService : IApartmentCategoryService
 
         return apartmentCategoryAndTypes;
 
-
-        //// Get all apartment categories and their types in a single query using Include
-        //var apartmentCategories = await _unitOfWork.ApartmentCategory.GetAll(includes: new List<string> { "ApartmentTypes.Currency" });
-
-        //      //var apartmentCategories = await _unitOfWork.ApartmentCategory.GetAll(includes: new List<string> { "ApartmentTypes" });
-
-        //      // Map the results to DTOs
-        //      var apartmentCategoryAndTypes = apartmentCategories.Select(category =>
-        //      {
-        //          var apartmentTypes = category.ApartmentTypes.Select(type => new ApartmentTypesReadDto(
-        //              apartmentTypeId: type.ApartmentTypeId,
-        //              apartmentType: type.ApartmentType!,
-        //		apartmentfeatures:_mapper.Map<List<ApartmentFeatureReadDto>>(type.ApartmentFeatures)!,
-        //              sellingPrice: type.SellingPrice,
-        //              currencyId: type.CurrencyId,
-        //              currencyInitial: type.Currency?.CurrencyInitial ?? "",
-        //              currency: type.Currency?.CurrencyName ?? "",
-        //              floorArea: type.FloorArea,
-        //              images: type.Images
-        //          )).ToList();
-
-        //          return new ApartmentCategoryAndTypesReadDto(
-        //		new ApartmentCategoriesReadDto(
-        //              category.ApartmentCategoryId,
-        //              category.ApartmentCategoryName!,
-        //		false),
-        //              apartmentTypes
-        //          );
-        //      }).ToList();
-
-        //      return apartmentCategoryAndTypes;
-
-
-
-        /*
-        var apartmentCategoryAndTypes = apartmentCategories.Select(category =>
-		{
-			var apartmentTypes = _mapper.Map<List<ApartmentTypesReadDto>>(category.ApartmentTypes);
-			return new ApartmentCategoryAndTypesReadDto(
-				category.ApartmentCategoryId,
-				category.ApartmentCategoryName!,
-				apartmentTypes
-			);
-		}).ToList();
-
-		return apartmentCategoryAndTypes;
-		*/
     }
 }
 

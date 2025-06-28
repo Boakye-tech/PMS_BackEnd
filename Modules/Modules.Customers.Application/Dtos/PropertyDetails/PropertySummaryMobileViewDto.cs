@@ -17,7 +17,7 @@ namespace Modules.Customers.Application.Dtos.PropertyDetails
         public string? LandUse { get; set; }
 		public string? PropertyNumber { get; set; }
 		public string? Address { get; set; }
-        public double Balance { get; set; }
+        public decimal Balance { get; set; }
 
 	}
 }

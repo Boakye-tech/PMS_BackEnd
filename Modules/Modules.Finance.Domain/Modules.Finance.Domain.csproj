@@ -13,6 +13,7 @@
     <None Remove="Interfaces\" />
     <None Remove="Interfaces\Entities\" />
     <None Remove="Interfaces\Entities\Setup\" />
+    <None Remove="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -20,6 +21,7 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Interfaces\Entities\" />
     <Folder Include="Interfaces\Entities\Setup\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />

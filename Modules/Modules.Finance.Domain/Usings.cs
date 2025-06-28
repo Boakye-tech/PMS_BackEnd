@@ -8,5 +8,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
+global using System.ComponentModel.DataAnnotations;
 
 global using Modules.Finance.Domain.Entities.Setup;

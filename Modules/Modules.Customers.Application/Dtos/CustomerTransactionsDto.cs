@@ -36,7 +36,7 @@ namespace Modules.Customers.Application.Dtos
         [StringLength(255)]
         public required string Narration { get; set; }
 
-        public required double Amount { get; set; }
+        public required decimal Amount { get; set; }
 
         public required int AccountCode { get; set; }
 
@@ -71,7 +71,7 @@ namespace Modules.Customers.Application.Dtos
         [StringLength(255)]
         public required string Narration { get; set; }
 
-        public required double Amount { get; set; }
+        public required decimal Amount { get; set; }
 
         public string? PaymentMethod { get; set; }
 

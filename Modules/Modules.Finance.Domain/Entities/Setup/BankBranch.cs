@@ -20,6 +20,9 @@ public class BankBranch : AuditableEntity
     [StringLength(10)]
     public string BankId { get; private set; }
 
+    // Navigation property for Bank
+    public virtual Bank? Bank { get; private set; }
+
     [Key]
     [Required]
     [StringLength(10)]
@@ -28,6 +31,7 @@ public class BankBranch : AuditableEntity
     [Required]
     [StringLength(120)]
     public string BranchName { get; private set; }
+
 
     public BankBranch(string bankId, string branchId, string branchName)
     {

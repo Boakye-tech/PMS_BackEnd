@@ -1623,8 +1623,9 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasKey("ApartmentFeaturesId");
 
-                    b.HasIndex("FeaturesId", "FloorArea")
-                        .IsUnique();
+                    b.HasIndex("ApartmentTypeId");
+
+                    b.HasIndex("FeaturesId");
 
                     b.ToTable("ApartmentFeatures", "est");
 
@@ -2355,8 +2356,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("FloorArea")
-                        .HasColumnType("float");
+                    b.Property<int>("FloorAreaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Images")
                         .IsRequired()
@@ -2380,6 +2381,8 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasIndex("CurrencyId");
 
+                    b.HasIndex("FloorAreaId");
+
                     b.ToTable("ApartmentTypes", "est");
 
                     b.HasData(
@@ -2391,7 +2394,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FloorArea = 27.43,
+                            FloorAreaId = 28,
                             Images = "[\"\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 8000f
@@ -2404,7 +2407,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FloorArea = 41.122999999999998,
+                            FloorAreaId = 29,
                             Images = "[\"https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Affordable1Bed.png\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 17000f
@@ -2417,7 +2420,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FloorArea = 60.634,
+                            FloorAreaId = 30,
                             Images = "[\"\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 24000f
@@ -2430,7 +2433,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FloorArea = 74.799999999999997,
+                            FloorAreaId = 31,
                             Images = "[\"https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Affordable2Bed.png\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 28000f
@@ -2443,7 +2446,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FloorArea = 107.0,
+                            FloorAreaId = 25,
                             Images = "[\"\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 197500f
@@ -2456,7 +2459,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FloorArea = 218.0,
+                            FloorAreaId = 26,
                             Images = "[\"https://mindspringsimagesonline.blob.core.windows.net/mindspringsimagesonline/Luxury3Bed.png\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SellingPrice = 286400f
@@ -2646,7 +2649,10 @@ namespace Modules.Estates.Infrastructure.Migrations
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Features", b =>
                 {
                     b.Property<int>("FeaturesId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeaturesId"));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -2820,7 +2826,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 18,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "KITCHEN",
+                            Feature = "KITCHEN TERRACE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2828,7 +2834,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 19,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "KITCHEN TERRACE",
+                            Feature = "LIVING AREA",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2836,7 +2842,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 20,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "LIVING AREA",
+                            Feature = "STUDY",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2844,7 +2850,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 21,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "STUDY",
+                            Feature = "BALCONY",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2852,7 +2858,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 22,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "BALCONY",
+                            Feature = "CLOSET SPACE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2860,7 +2866,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 23,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "CLOSET SPACE",
+                            Feature = "WASHROOM",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2868,7 +2874,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 24,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "WASHROOM",
+                            Feature = "SHARED WASHROOM",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2876,7 +2882,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 25,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "SHARED WASHROOM",
+                            Feature = "ESCAPE STAIRCASE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -2884,20 +2890,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             FeaturesId = 26,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Feature = "ESCAPE STAIRCASE",
-                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            FeaturesId = 27,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Feature = "STAIR HALL",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            FeaturesId = 28,
+                            FeaturesId = 27,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Feature = "LIFT",
@@ -5331,12 +5329,20 @@ namespace Modules.Estates.Infrastructure.Migrations
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentFeatures", b =>
                 {
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentTypes", "ApartmentType")
-                        .WithMany("Features")
-                        .HasForeignKey("FeaturesId")
+                        .WithMany("ApartmentFeatures")
+                        .HasForeignKey("ApartmentTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Features", "Features")
+                        .WithMany("ApartmentFeatures")
+                        .HasForeignKey("FeaturesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApartmentType");
+
+                    b.Navigation("Features");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentTypes", b =>
@@ -5353,20 +5359,17 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.FloorArea", "FloorArea")
+                        .WithMany()
+                        .HasForeignKey("FloorAreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApartmentCategory");
 
                     b.Navigation("Currency");
-                });
 
-            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Features", b =>
-                {
-                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentFeatures", "ApartmentFeatures")
-                        .WithMany("Features")
-                        .HasForeignKey("FeaturesId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApartmentFeatures");
+                    b.Navigation("FloorArea");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LandUseType", b =>
@@ -5431,14 +5434,14 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Navigation("ApartmentTypes");
                 });
 
-            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentFeatures", b =>
-                {
-                    b.Navigation("Features");
-                });
-
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentTypes", b =>
                 {
-                    b.Navigation("Features");
+                    b.Navigation("ApartmentFeatures");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Features", b =>
+                {
+                    b.Navigation("ApartmentFeatures");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.LandUse", b =>

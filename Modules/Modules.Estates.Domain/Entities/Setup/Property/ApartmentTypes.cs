@@ -39,7 +39,9 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         public virtual CurrencyExchangeRate? Currency { get; private set; }
 
         [Required]
-        public double FloorArea { get; private set; }
+        public int FloorAreaId { get; private set; }
+
+        public virtual FloorArea? FloorArea { get; private set; }
 
         [Column(TypeName = "nvarchar(max)")]
         public string[] Images { get; private set; }
@@ -47,38 +49,38 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         // Navigation property
         public virtual ApartmentCategory? ApartmentCategory { get; private set; }
 
-        public ApartmentTypes(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
+        public ApartmentTypes(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, int floorAreaId, string[] images)
         {
             ApartmentTypeId = apartmentTypeId;
             ApartmentCategoryId = apartmentCategoryId;
             ApartmentType = apartmentType;
             SellingPrice = sellingPrice;
             CurrencyId = currencyId;
-            FloorArea = floorArea;
+            FloorAreaId = floorAreaId;
             Images = images;
             ApartmentFeatures = new List<ApartmentFeatures>();
         }
 
-        public static ApartmentTypes Create(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
+        public static ApartmentTypes Create(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, int floorAreaId, string[] images)
         {
-            Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea, images);
-            return new ApartmentTypes(apartmentTypeId, apartmentCategoryId, apartmentType, sellingPrice, currencyId, floorArea, images);
+            Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorAreaId, images);
+            return new ApartmentTypes(apartmentTypeId, apartmentCategoryId, apartmentType, sellingPrice, currencyId, floorAreaId, images);
         }
 
-        public void Update(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
+        public void Update(int apartmentTypeId, int apartmentCategoryId, string apartmentType, float sellingPrice, int currencyId, int floorAreaId, string[] images)
         {
-            Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorArea, images);
+            Validate(apartmentTypeId, apartmentType, sellingPrice, currencyId, floorAreaId, images);
 
             ApartmentTypeId = apartmentTypeId;
             ApartmentCategoryId = apartmentCategoryId;
             ApartmentType = apartmentType;
             SellingPrice = sellingPrice;
             CurrencyId = currencyId;
-            FloorArea = floorArea;
+            FloorAreaId = floorAreaId;
             Images = images;
         }
 
-        private static void Validate(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, double floorArea, string[] images)
+        private static void Validate(int apartmentTypeId, string apartmentType, float sellingPrice, int currencyId, int floorAreaId, string[] images)
         {
             if (apartmentTypeId < 0)
                 throw new ArgumentException("Apartment Type Id must be greater than zero.");
@@ -92,8 +94,8 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             if (currencyId <= 0)
                 throw new ArgumentException("Currency Id must be greater than zero.");
 
-            if (floorArea <= 0)
-                throw new ArgumentException("Floor Area must be greater than zero.");
+            if (floorAreaId <= 0)
+                throw new ArgumentException("Floor Area Id must be greater than zero.");
 
             if (images.Count() == 0)
                 throw new ArgumentException("There must be at least one image.");

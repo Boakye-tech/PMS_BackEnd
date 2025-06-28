@@ -228,8 +228,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
         public IActionResult CreateType([FromBody] TypesCreateDto values)
         {
 
-
-
             var result = _rentalsService.CreateTypesAsync(values).Result;
             if (result.IsSuccess)
             {
@@ -288,7 +286,17 @@ namespace Modules.Estates.Presentation.Controllers.v1
         public IActionResult DeleteType(int typeId)
         {
             var result = _rentalsService.DeleteTypes(typeId).Result;
-            return Ok(result);
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
 
         #region Obsolete Enpoints

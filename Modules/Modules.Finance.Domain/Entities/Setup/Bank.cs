@@ -11,6 +11,7 @@
 //  **************************************************/
 
 using System.ComponentModel.DataAnnotations;
+using Modules.Finance.Domain.Entities.Management;
 
 namespace Modules.Finance.Domain.Entities.Setup;
 
@@ -24,6 +25,10 @@ public class Bank : AuditableEntity
     [Required]
     [StringLength(50)]
     public string BankName { get; private set; }
+
+    // Navigation property for BankBranch
+    public virtual ICollection<BankBranch> BankBranch { get; private set; }
+
 
     public Bank(string bankId, string bankName)
     {

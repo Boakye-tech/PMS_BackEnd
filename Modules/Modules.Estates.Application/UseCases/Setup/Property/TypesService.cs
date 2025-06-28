@@ -58,7 +58,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     var feature = await _unitOfWork.Features.Get(featureId); 
                     if (feature != null)
                     {
-                        featureNames.Add(feature.Feature); 
+                        featureNames.Add(string.Concat(featureId," - ", feature.Feature)); 
                     }
                 }
 
@@ -150,6 +150,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                             .GroupBy(t => new { t.RentalTypeId, t.RentalType!.RentalTypes })
                             .Select(typeGroup =>
                             {
+                                /*
                                 var typesPerRentalType = typeGroup.Select(t => new AllTypesReadDto(
                                     t.TypeId,
                                     t.Code,
@@ -157,6 +158,44 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                     t.Features,
                                     t.Notes
                                 )).ToList();
+                                */
+
+                                var typesPerRentalType = typeGroup.Select(t =>
+                                {
+                                    var featureDtos = new List<AllTypesFeaturesReadDto>();
+
+                                    if (t.Features != null)
+                                    {
+                                        foreach (var f in t.Features)
+                                        {
+                                            if (string.IsNullOrWhiteSpace(f))
+                                                continue;
+
+                                            var parts = f.Split(" - ", 2, StringSplitOptions.TrimEntries);
+
+                                            if (parts.Length == 2 && int.TryParse(parts[0], out int featureId))
+                                            {
+                                                // Format: "9 - BEDROOM 1"
+                                                featureDtos.Add(new AllTypesFeaturesReadDto(featureId, parts[1]));
+                                            }
+                                            else
+                                            {
+                                                // Format: "BEDROOM 1" — no ID
+                                                featureDtos.Add(new AllTypesFeaturesReadDto(0, f.Trim()));
+                                            }
+                                        }
+                                    }
+
+                                    return new AllTypesReadDto(
+                                        t.TypeId,
+                                        t.Code,
+                                        t.TypeName,
+                                        featureDtos,
+                                        t.Notes
+                                    );
+                                }).ToList();
+
+
 
                                 return new AllRentalTypesReadDto(
                                     typeGroup.Key.RentalTypeId,
@@ -205,7 +244,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     var feature = await _unitOfWork.Features.Get(featureId);
                     if (feature != null)
                     {
-                        featureNames.Add(feature.Feature);
+                        featureNames.Add(string.Concat(featureId, " - ", feature.Feature));
                     }
                 }
 

@@ -26,7 +26,7 @@ namespace Modules.Estates.UnitTest.DomainLayer.Setups
 			string apartmentTypeName = "2 Bedroom Apartment";
 			float sellingPrice = 150000.00f;
 			int currencyId = 1;
-			double floorArea = 120.5;
+			int floorArea = 120;
 			string[] images = { "https://images.com",string.Empty, string.Empty, string.Empty, string.Empty };
 
             // Act	
@@ -44,13 +44,13 @@ namespace Modules.Estates.UnitTest.DomainLayer.Setups
             string[] images = { "https://images.com", string.Empty, string.Empty, string.Empty, string.Empty };
 
             // Arrange		
-            var apartmentType = ApartmentTypes.Create(1, 1, "2 Bedroom Apartment", 150000.00f, 1, 120.5, images);
+            var apartmentType = ApartmentTypes.Create(1, 1, "2 Bedroom Apartment", 150000.00f, 1, 120, images);
 
 			int newApartmentTypeId = 1;
 			string newApartmentTypeName = "3 Bedroom Apartment";
 			float newSellingPrice = 180000.00f;
 			int newCurrencyId = 1;
-			double newFloorArea = 150.0;
+			int newFloorArea = 150;
             string[] newImages = { "https://images.com", "https://images1.com", string.Empty, string.Empty, string.Empty };
 
             // Act
