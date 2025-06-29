@@ -1591,7 +1591,7 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApartmentFeaturesId"));
 
-                    b.Property<int>("ApartmentCategory")
+                    b.Property<int>("ApartmentCategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("ApartmentTypeId")
@@ -1623,6 +1623,8 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasKey("ApartmentFeaturesId");
 
+                    b.HasIndex("ApartmentCategoryId");
+
                     b.HasIndex("ApartmentTypeId");
 
                     b.HasIndex("FeaturesId");
@@ -1633,7 +1635,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 1,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1644,7 +1646,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 2,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1655,7 +1657,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 3,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1666,7 +1668,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 4,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1677,7 +1679,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 5,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1688,7 +1690,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 6,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1699,7 +1701,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 7,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1710,7 +1712,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 8,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1721,7 +1723,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 9,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1732,7 +1734,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 10,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1743,7 +1745,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 11,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1754,7 +1756,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 12,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1765,7 +1767,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 13,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1776,7 +1778,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 14,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1787,7 +1789,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 15,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1798,7 +1800,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 16,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1809,7 +1811,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 17,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1820,7 +1822,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 18,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1831,7 +1833,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 19,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1842,7 +1844,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 20,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1853,7 +1855,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 21,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1864,7 +1866,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 22,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1875,7 +1877,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 23,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1886,7 +1888,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 24,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1897,7 +1899,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 25,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1908,7 +1910,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 26,
-                            ApartmentCategory = 1,
+                            ApartmentCategoryId = 1,
                             ApartmentTypeId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1919,7 +1921,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 27,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1930,7 +1932,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 28,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1941,7 +1943,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 29,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1952,7 +1954,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 30,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1963,7 +1965,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 31,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1974,7 +1976,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 32,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1985,7 +1987,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 33,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1996,7 +1998,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 34,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2007,7 +2009,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 35,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2018,7 +2020,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 36,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2029,7 +2031,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 37,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2040,7 +2042,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 38,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2051,7 +2053,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 39,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2062,7 +2064,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 40,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2073,7 +2075,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 41,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2084,7 +2086,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 42,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2095,7 +2097,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 43,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2106,7 +2108,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 44,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2117,7 +2119,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 45,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2128,7 +2130,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 46,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2139,7 +2141,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 47,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2150,7 +2152,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 48,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2161,7 +2163,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 49,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2172,7 +2174,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 50,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2183,7 +2185,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 51,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2194,7 +2196,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 52,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2205,7 +2207,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 53,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2216,7 +2218,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 54,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2227,7 +2229,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 55,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2238,7 +2240,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 56,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2249,7 +2251,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 57,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2260,7 +2262,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 58,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2271,7 +2273,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 59,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2282,7 +2284,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 60,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2293,7 +2295,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 61,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2304,7 +2306,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 62,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2315,7 +2317,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         new
                         {
                             ApartmentFeaturesId = 63,
-                            ApartmentCategory = 2,
+                            ApartmentCategoryId = 2,
                             ApartmentTypeId = 6,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -2374,14 +2376,12 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasKey("ApartmentTypeId");
 
-                    b.HasIndex("ApartmentCategoryId");
-
-                    b.HasIndex("ApartmentType")
-                        .IsUnique();
-
                     b.HasIndex("CurrencyId");
 
                     b.HasIndex("FloorAreaId");
+
+                    b.HasIndex("ApartmentCategoryId", "ApartmentType")
+                        .IsUnique();
 
                     b.ToTable("ApartmentTypes", "est");
 
@@ -5328,6 +5328,12 @@ namespace Modules.Estates.Infrastructure.Migrations
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ApartmentFeatures", b =>
                 {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentCategory", "ApartmentCategory")
+                        .WithMany()
+                        .HasForeignKey("ApartmentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentTypes", "ApartmentType")
                         .WithMany("ApartmentFeatures")
                         .HasForeignKey("ApartmentTypeId")
@@ -5339,6 +5345,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasForeignKey("FeaturesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApartmentCategory");
 
                     b.Navigation("ApartmentType");
 

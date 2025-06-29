@@ -23,7 +23,7 @@ namespace Modules.Customers.Application.UseCases
         public async Task<GenericResponseDto> AddNewCustomerTransactionDetails(CustomerTransactionsDto values)
         {
             //throw new NotImplementedException();
-            CustomerTransactions transactions = CustomerTransactions.AddCustomerTransaction(0, values.VoucherNumber, values.PropertyNumber, values.CustomerCode, values.TransactionDate, values.ReferenceNumber, values.ChequeNumber, values.Narration ,values.Amount, values.AccountCode, values.TransactionType,values.VoucherType);
+            CustomerTransactions transactions = CustomerTransactions.AddCustomerTransaction(0, values.TransactionNumber, values.PropertyNumber, values.CustomerCode, values.TransactionDate, values.ReferenceNumber, values.ChequeNumber, values.Narration ,values.Amount, values.AccountCode, values.EntryType,values.TransactionType);
 
             _unitOfWork.CustomerTransaction.Insert(transactions);
             await _unitOfWork.Complete();
@@ -38,7 +38,7 @@ namespace Modules.Customers.Application.UseCases
                                     .OrderByDescending(t => t.TransactionDate) // Order by latest TransactionDate first
                                     .Select(t => new CustomerTransactionsReadDto
                                     {
-                                        VoucherNumber = t.VoucherNumber,
+                                        TransactionNumber = t.TransactionNumber,
                                         CustomerCode = t.CustomerCode,
                                         PropertyNumber = t.PropertyNumber,
                                         TransactionDate = t.TransactionDate,
@@ -49,8 +49,9 @@ namespace Modules.Customers.Application.UseCases
                                         PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
                                             ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
                                             : "Cheque",
-                                        VoucherType = t.VoucherType,
-                                        TransactionType = t.TransactionType
+                                        TransactionType = t.TransactionType,
+                                        EntryType = t.EntryType
+
                                     }).AsQueryable();
 
             if (!string.IsNullOrEmpty(customerCode))
@@ -80,7 +81,7 @@ namespace Modules.Customers.Application.UseCases
                 transactionsQuery = transactionsQuery.Where(t => t.PropertyNumber == propertyNumber);
 
             if (!string.IsNullOrEmpty(receipt_or_invoiceNumber))
-                transactionsQuery = transactionsQuery.Where(t => t.VoucherNumber == receipt_or_invoiceNumber);
+                transactionsQuery = transactionsQuery.Where(t => t.TransactionNumber == receipt_or_invoiceNumber);
 
             if (!string.IsNullOrEmpty(transactionType)) 
                 transactionsQuery = transactionsQuery.Where(t => t.TransactionType == transactionType);
@@ -96,7 +97,7 @@ namespace Modules.Customers.Application.UseCases
             // Execute the query (fetch from DB)
             var transactions = transactionsQuery.Select(t => new CustomerTransactionsReadDto
             {
-                VoucherNumber = t.VoucherNumber,
+                TransactionNumber = t.TransactionNumber,
                 CustomerCode = t.CustomerCode,
                 PropertyNumber = t.PropertyNumber,
                 TransactionDate = t.TransactionDate,
@@ -107,7 +108,7 @@ namespace Modules.Customers.Application.UseCases
                 PaymentMethod = string.IsNullOrEmpty(t.ChequeNumber)
                     ? (!string.IsNullOrEmpty(t.ReferenceNumber) ? "Transfers" : "Cash")
                     : "Cheque",
-                VoucherType = t.VoucherType,
+                EntryType = t.EntryType,
                 TransactionType = t.TransactionType
             }).ToList(); // Executes the query
 

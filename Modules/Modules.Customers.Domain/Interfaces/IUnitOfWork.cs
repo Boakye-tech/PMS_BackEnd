@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Customers.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Customers.Domain/Interfaces/IUnitOfWork.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -25,6 +27,9 @@ namespace Modules.Customers.Domain.Interfaces
         INatureOfComplaintRepository NatureOfComplaint { get; }
         IComplaintHistoryRepository ComplaintHistory { get; }
         IComplaintStatusesRepository ComplaintStatuses { get; }
+
+        //june 28, 2025
+        ICustomerOpeningBalancesRepository CustomerOpeningBalances { get; }
 
         Task<int> Complete();
     }

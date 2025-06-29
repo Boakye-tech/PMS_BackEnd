@@ -44,7 +44,7 @@ public class Paypoints : AuditableEntity
 
 	private static void Validate(int paypointId, string paypoint)
 	{
-		if (paypointId <= 0)
+		if (paypointId < 0)
 			throw new ArgumentException("The pay point id must be greater than zero.");
 
 		if (string.IsNullOrWhiteSpace(paypoint) || paypoint.Length > 30)

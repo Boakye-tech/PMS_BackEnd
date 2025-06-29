@@ -14,8 +14,8 @@ using System.ComponentModel;
 
 namespace Modules.Estates.Domain.Enums
 {
-	public enum ApartmentCategoryEnum
-	{
+    public enum ApartmentCategoryEnum
+    {
         [Description("AFFORDABLE")]
         AFFORDABLE = 1,
 
@@ -28,6 +28,18 @@ namespace Modules.Estates.Domain.Enums
 
     public static class ApartmentCategoryEnumDescription
     {
+        public static ApartmentCategoryEnum ApartmentCategory(int input)
+        {
+            if (Enum.IsDefined(typeof(ApartmentCategoryEnum), input))
+            {
+                return (ApartmentCategoryEnum)input;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid input for apartment category enum.");
+            }
+        }
+
         public static string GetApartmentCategoryEnumDescription(this Enum enumValue)
         {
             var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());

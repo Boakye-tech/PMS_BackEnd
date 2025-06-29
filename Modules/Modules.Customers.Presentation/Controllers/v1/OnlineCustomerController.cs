@@ -28,8 +28,10 @@ public class OnlineCustomerController : ControllerBase
     private readonly ICustomerTransactionsService _transactionsService;
     private readonly ICustomerInvoiceService _invoiceService;
     private readonly ICustomerPaymentsService _paymentsService;
+    private readonly ICustomerOpeningBalancesService _balancesService;
 
-    public OnlineCustomerController(ILogger<OnlineCustomerController> logger, IPropertyDetailsService propertyDetailsService, ICustomerDetailsService customerDetailsService, ICustomerTransactionsService transactionsService, ICustomerInvoiceService invoiceService, ICustomerPaymentsService paymentsService)
+    public OnlineCustomerController(ILogger<OnlineCustomerController> logger, IPropertyDetailsService propertyDetailsService, ICustomerDetailsService customerDetailsService, ICustomerTransactionsService transactionsService, ICustomerInvoiceService invoiceService,
+                                    ICustomerPaymentsService paymentsService, ICustomerOpeningBalancesService balancesService)
     {
         _logger = logger;
         _propertyDetailsService = propertyDetailsService;
@@ -37,6 +39,7 @@ public class OnlineCustomerController : ControllerBase
         _transactionsService = transactionsService;
         _invoiceService = invoiceService;
         _paymentsService = paymentsService;
+        _balancesService = balancesService;
     }
 
     [HttpGet("AvailableProperties")]
@@ -63,6 +66,18 @@ public class OnlineCustomerController : ControllerBase
     {
         string propertynumber = HttpUtility.UrlDecode(propertyNumber);
         return await _propertyDetailsService.GetPropertyDetails(propertynumber);
+    }
+
+    [HttpGet("CustomerOpeningBalances")]
+    public async Task<IEnumerable<CustomerOpeningBalancesDto>> CustomerOpeningBalances([FromQuery] string customerCode, [FromQuery] string propertyNumber, [FromQuery] int year)
+    {
+        if (propertyNumber == null && customerCode == null && year == 0)
+        {
+            return null!;
+        }
+
+        return await _balancesService.GetCustomerOpeningBalances(customerCode!, propertyNumber!, year);
+
     }
 
     [HttpGet("CustomerTransactions")]
@@ -153,6 +168,13 @@ public class OnlineCustomerController : ControllerBase
     public async Task<GenericResponseDto> PropertyDetails(PropertyDetailsDto values)
     {
         return await _propertyDetailsService.AddNewPropertyDetails(values);
+    }
+
+    [HttpPost("AddCustomerOpeningBalance")]
+    public async Task<GenericResponseDto> AddCustomerTranAddCustomerOpeningBalancesactions(CustomerOpeningBalancesDto values)
+    {
+        return await _balancesService.AddCustomerOpeningBalance(values);
+        //null!;
     }
 
     [HttpPost("AddCustomerTransactions")]

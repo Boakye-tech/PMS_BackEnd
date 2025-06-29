@@ -50,31 +50,6 @@ public partial class PropertyController : ControllerBase
     }
 
 
-    //-------------------APARTMENT CATEGORIES-----------------
-    /// <summary>
-    /// Returns a list of apartment categories
-    /// </summary>
-    [HttpGet]
-    //[Authorize(Policy = "Permission:Customers.READ")]
-    [Route("ApartmentCategory")]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    private IActionResult ApartmentCategory()
-    {
-        var statuses = Enum.GetValues(typeof(ApartmentCategoryEnum))
-                               .Cast<ApartmentCategoryEnum>()
-                               .Select(e => new
-                               {
-                                   Id = (int)e,
-                                   Name = e.ToString(),
-                                   DisplayName = e.GetType()
-                                                 .GetField(e.ToString())!
-                                                  .GetCustomAttribute<DescriptionAttribute>()?
-                                                  .Description
-
-                               });
-        return Ok(statuses);
-    }
-
 
 
 

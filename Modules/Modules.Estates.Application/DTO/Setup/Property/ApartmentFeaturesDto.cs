@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace Modules.Estates.Application.DTO.Setup.Property
 {
 
-    public record ApartmentFeatureCreateDto(int Features); //, decimal FloorArea
+    //public record ApartmentFeatureCreateDto(int Features); //, decimal FloorArea
 
     public record ApartmentFeatureReadDto(int FeatureId, string Feature); //, decimal FloorArea
 
@@ -23,7 +23,9 @@ namespace Modules.Estates.Application.DTO.Setup.Property
 
     public record ApartmentFeaturesReadDto(int ApartmentFeaturesId, string ApartmentCategory, string ApartmentType, List<ApartmentFeatureReadDto> Features);
 
-    public record ApartmentFeaturesCreateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, List<ApartmentFeatureCreateDto> Features, string CreatedBy);
-    public record ApartmentFeaturesUpdateDto(ApartmentCategoryEnum ApartmentCategory, int ApartmentTypeId, int ApartmentFeaturesId, List<ApartmentFeatureCreateDto> Features, string ModifiedBy);
+    public record ApartmentFeaturesCreateDto(int ApartmentCategoryId, int ApartmentTypeId, int[] Features, string CreatedBy); // List<ApartmentFeatureCreateDto> Features
+
+    public record ApartmentFeaturesUpdateDto(int ApartmentCategoryId, int ApartmentTypeId, int[] Features, string ModifiedBy); // List<ApartmentFeatureCreateDto> Features
+
     public record ApartmentFeaturesDeleteDto(int ApartmentFeaturesId, string DeletedBy);
 }

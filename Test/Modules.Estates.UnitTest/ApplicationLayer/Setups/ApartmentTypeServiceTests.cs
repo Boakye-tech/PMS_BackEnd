@@ -18,9 +18,7 @@ using Modules.Estates.Application.UseCases.Setup.Property;
 using Modules.Estates.Domain.Entities.Setup.Property;
 using Modules.Estates.Domain;
 using System.Linq.Expressions;
-using Modules.Estates.Domain.Enums;
-using Modules.Estates.Domain.Entities.Setup;
-
+using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 
 namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 {
@@ -28,13 +26,17 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 	{
 		private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 		private readonly Mock<IMapper> _mapperMock;
-		private readonly ApartmentTypeService _apartmentTypeService;
+		private readonly Mock<IApartmentFeaturesService> _apartmentFeaturesService;
+
+        private readonly ApartmentTypeService _apartmentTypeService;
+        //private readonly ApartmentFeaturesService _apartmentFeaturesService;
 
 		public ApartmentTypeServiceTests()
 		{
 			_unitOfWorkMock = new Mock<IUnitOfWork>();
 			_mapperMock = new Mock<IMapper>();
-			_apartmentTypeService = new ApartmentTypeService(_unitOfWorkMock.Object, _mapperMock.Object);
+            _apartmentFeaturesService = new Mock<IApartmentFeaturesService>();
+            _apartmentTypeService = new ApartmentTypeService(_unitOfWorkMock.Object, _mapperMock.Object, _apartmentFeaturesService!.Object);
 		}
 
 		//[Fact]
@@ -138,11 +140,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
 
             // Arrange
-            var features = new List<ApartmentFeatureCreateDto>
-            {
-                new ApartmentFeatureCreateDto(Features: 1),
-				// Add more if needed
-			};
+            int[] features = { 1, 2 };
 
             var createDto = new ApartmentTypeCreateDto
 			(
@@ -183,11 +181,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		{
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
 
-            var apartmentFeaturesDto = new List<ApartmentFeatureCreateDto>
-            {
-                new ApartmentFeatureCreateDto(Features: 1),
-				// Add more if needed
-			};
+            var apartmentFeaturesDto = new[] { 1, 2 };
 
             // Arrange
             var createDto = new ApartmentTypeCreateDto
@@ -220,11 +214,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
             // Arrange
 
-            var features = new List<ApartmentFeatureCreateDto>
-            {
-                new ApartmentFeatureCreateDto(Features: 1),
-				// Add more if needed
-			};
+            var features = new[] { 1, 2 };
 
 
             var feature = new List<ApartmentFeatureReadDto>
@@ -266,11 +256,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 		public async Task UpdateApartmentTypeAsync_WithNonExistentId_ShouldReturnError()
 		{
 			string[] images = { "https://images.com", "https://images1.com", "https://images2.com", "https://images3.com", "https://images4.com" };
-            var features = new List<ApartmentFeatureCreateDto>
-            {
-                new ApartmentFeatureCreateDto(Features: 1),
-				// Add more if needed
-			};
+            var features = new[] { 1, 2 };
 
             // Arrange
             var updateDto = new ApartmentTypeUpdateDto

@@ -11,28 +11,31 @@
 //  **************************************************/
 using System;
 using Modules.Finance.Domain.Entities.Management;
+using Modules.Finance.Domain.Enums;
 
 namespace Modules.Finance.Domain.Entities.Setup
 {
 	public class TransactionTypes
 	{
+        [Required]
+        public EntryTypeEnum EntryType { get; set; }
+
         [Key]
+        [Required]
 		public int TransactionTypesId { get; set; }
 
         [Required]
         [StringLength(3)]
 		public string TransactionTypeInitial { get; set; }
 
+        [Required]
+        [StringLength(50)]
         public string TransactionTypeName { get; set; }
-
-        // Navigation property for VoucherTypes
-        public virtual ICollection<VoucherTypes> VoucherTypes { get; private set; }
 
 
         public TransactionTypes()
 		{
 
-            VoucherTypes = new List<VoucherTypes>();
 
         }
     }

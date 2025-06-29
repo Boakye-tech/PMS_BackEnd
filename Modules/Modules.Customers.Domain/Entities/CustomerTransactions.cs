@@ -14,13 +14,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Modules.Customers.Domain.Entities
 {
-	public class CustomerTransactions
+	public class CustomerTransactions : AuditableEntity
 	{
         [Key]
         public int CustomerTransactionId { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(75)]
         public required string PropertyNumber { get; set; }
 
         [Required]
@@ -32,8 +32,8 @@ namespace Modules.Customers.Domain.Entities
 
 
         [Required]
-        [StringLength(50)]
-        public required string VoucherNumber { get; set; }
+        [StringLength(25)]
+        public required string TransactionNumber { get; set; }
 
         [StringLength(50)]
         public string? ReferenceNumber { get; set; }
@@ -50,16 +50,11 @@ namespace Modules.Customers.Domain.Entities
         public required int AccountCode { get; set; }
 
         [Required]
-        [StringLength(2)]
-        public required string TransactionType { get; set; }
+        public required EntryTypeEnum EntryType { get; set; }
 
         [Required]
         [StringLength(3)]
-        public required string VoucherType { get; set; }
-
-
-
-
+        public required string TransactionType { get; set; }
 
 
         public CustomerTransactions()
@@ -67,21 +62,21 @@ namespace Modules.Customers.Domain.Entities
         }
 
 
-        public CustomerTransactions(int customerTransactionId, string voucherNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, decimal amount, int accountCode, string transactionType, string voucherType)
+        public CustomerTransactions(int customerTransactionId, string transactionNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, decimal amount, int accountCode, EntryTypeEnum entryType, string transactionType)
         {
         }
 
-        public static CustomerTransactions AddCustomerTransaction(int customerTransactionId, string voucherNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, decimal amount, int accountCode, string transactionType, string voucherType)
+        public static CustomerTransactions AddCustomerTransaction(int customerTransactionId, string transactionNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, decimal amount, int accountCode, EntryTypeEnum entryType, string transactionType)
         {
-            if (string.IsNullOrWhiteSpace(voucherNumber) || string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(customerCode) || string.IsNullOrWhiteSpace(transactionType) || string.IsNullOrWhiteSpace(voucherType) || string.IsNullOrWhiteSpace(narration) || amount < 0 || accountCode < 0)
+            if (string.IsNullOrWhiteSpace(transactionNumber) || string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(customerCode) || string.IsNullOrWhiteSpace(transactionType) || string.IsNullOrWhiteSpace(transactionType) || string.IsNullOrWhiteSpace(narration) || amount < 0 || accountCode < 0)
             {
                 throw new ArgumentException("Invalid customer transaction details data.");
             }
 
 
-            if (string.IsNullOrWhiteSpace(voucherNumber))
+            if (string.IsNullOrWhiteSpace(transactionNumber))
             {
-                throw new ArgumentException("Voucher number must not be null or empty.");
+                throw new ArgumentException("transaction number must not be null or empty.");
             }
 
             if (string.IsNullOrWhiteSpace(propertyNumber))
@@ -119,16 +114,12 @@ namespace Modules.Customers.Domain.Entities
                 throw new ArgumentException("Transaction Type must not be null or empty.");
             }
 
-            if (string.IsNullOrWhiteSpace(voucherType))
-            {
-                throw new ArgumentException("Voucher type must not be null or empty.");
-            }
 
 
             return new CustomerTransactions
             {
                 CustomerTransactionId = customerTransactionId,
-                VoucherNumber = voucherNumber,
+                TransactionNumber = transactionNumber,
                 PropertyNumber = propertyNumber,
                 CustomerCode = customerCode,
                 TransactionDate = transactionDate,
@@ -138,7 +129,7 @@ namespace Modules.Customers.Domain.Entities
                 Amount = amount,
                 AccountCode = accountCode,
                 TransactionType = transactionType,
-                VoucherType = voucherType
+                EntryType =  entryType
             };
 
         }

@@ -11,6 +11,7 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
+using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
 {
@@ -32,10 +33,10 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             decimal floorArea = 0.00m;
 
 
-            foreach (var item in values.Features)
+            foreach (var featureId in values.Features)
             {
 
-                var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId && at.FeaturesId == item.Features);
+                var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId && at.FeaturesId == featureId);
                 if (apartmentType != null)
                 {
                     return new ReturnResponsesDto
@@ -46,7 +47,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
-                var newApartmentFeature = ApartmentFeatures.Create(values.ApartmentCategory, apartmentFeaturesId, values.ApartmentTypeId!, item.Features, floorArea ); //item.FloorArea
+                var newApartmentFeature = ApartmentFeatures.Create(values.ApartmentCategoryId, apartmentFeaturesId, values.ApartmentTypeId!, featureId, floorArea ); //item.FloorArea
                 newApartmentFeature.CreatedBy = values.CreatedBy;
                 newApartmentFeature.CreatedOn = DateTime.Now;
 
@@ -59,7 +60,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Apartment type feature created successfully." },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Apartment type features created successfully." },
             };
         }
 
@@ -71,7 +72,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         public async Task<IEnumerable<ApartmentFeaturesReadDto>> GetApartmentFeaturesAsync()
         {
 
-            var apartmentDetails = await _unitOfWork.ApartmentFeatures.GetAll(includes: new List<string> { "ApartmentType", "Features" });
+            var apartmentDetails = await _unitOfWork.ApartmentFeatures.GetAll(includes: new List<string> { "ApartmentType", "Features", "ApartmentCategory" });
 
             // Grouping by ApartmentTypeId so we can collect all features per apartment type
             var grouped = apartmentDetails
@@ -80,11 +81,12 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     af.ApartmentFeaturesId,
                     af.ApartmentTypeId,
                     af.ApartmentType!.ApartmentType,
-                    af.ApartmentCategory
+                    af.ApartmentCategoryId,
+                    af.ApartmentType!.ApartmentCategory
                 })
                 .Select(group => new ApartmentFeaturesReadDto(
                     ApartmentFeaturesId: group.Key.ApartmentFeaturesId,
-                    ApartmentCategory: group.Key.ApartmentCategory.GetApartmentCategoryEnumDescription(),
+                    ApartmentCategory: group.Key.ApartmentCategory!.ApartmentCategoryName!,
                     ApartmentType: group.Key.ApartmentType,
                     Features: group.Select(f => new ApartmentFeatureReadDto(
                         FeatureId: f.FeaturesId,
@@ -102,25 +104,60 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         {
             decimal floorArea = 0.00m;
 
-            var apartmentTypeFeature = await _unitOfWork.ApartmentFeatures.Get(values.ApartmentFeaturesId);
+            var apartmentTypeFeature = (await _unitOfWork.ApartmentFeatures.GetAll(af => af.ApartmentTypeId == values.ApartmentTypeId)).AsQueryable();
             if (apartmentTypeFeature == null)
             {
                 return new ReturnResponsesDto
                 {
                     IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Apartment type feature with ID {values.ApartmentFeaturesId} not found." },
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Apartment type features not found." },
                     SuccessResponse = null
                 };
             }
 
-            foreach (var item in values.Features)
-            {
-                apartmentTypeFeature.Update(values.ApartmentFeaturesId, values.ApartmentTypeId, item.Features, floorArea); //item.FloorArea
-                apartmentTypeFeature.ModifiedBy = values.ModifiedBy;
-                apartmentTypeFeature.ModifiedOn = DateTime.Now;
 
-                _unitOfWork.ApartmentFeatures.Update(apartmentTypeFeature);
+            var existingFeature = apartmentTypeFeature.Select(j => j.FeaturesId).ToList();
+
+            //remove unselected features
+            var toRemove = apartmentTypeFeature.Where(j => !values.Features.Contains(j.FeaturesId));
+            _unitOfWork.ApartmentFeatures.DeleteRange(toRemove);
+
+
+            //add new ones
+            int[] newFeatureIdsToAdd = values.Features.Where(id => !existingFeature.Contains(id)).ToArray();
+
+            //foreach (var featureId in values.Features)
+            foreach (var featureId in newFeatureIdsToAdd)
+            {
+
+                var apartmentType = await _unitOfWork.ApartmentFeatures.Get(at => at.ApartmentTypeId == values.ApartmentTypeId && at.FeaturesId == featureId);
+                if (apartmentType != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Apartment type feature already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+                var newApartmentFeature = ApartmentFeatures.Create(values.ApartmentCategoryId, 0, values.ApartmentTypeId!, featureId, floorArea); //item.FloorArea
+                newApartmentFeature.ModifiedBy = values.ModifiedBy;
+                newApartmentFeature.ModifiedOn = DateTime.Now;
+
+                _unitOfWork.ApartmentFeatures.Insert(newApartmentFeature);
+
             }
+            await _unitOfWork.Complete();
+
+            //foreach (var featureId in values.Features)
+            //{
+            //    apartmentTypeFeature.Update(values.ApartmentFeaturesId, values.ApartmentTypeId, featureId, floorArea); //item.FloorArea
+            //    apartmentTypeFeature.ModifiedBy = values.ModifiedBy;
+            //    apartmentTypeFeature.ModifiedOn = DateTime.Now;
+
+            //    _unitOfWork.ApartmentFeatures.Update(apartmentTypeFeature);
+            //}
 
             await _unitOfWork.Complete();
 
@@ -128,7 +165,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Apartment Type modified successfully." },
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Apartment type features modified successfully." },
             };
         }
     }

@@ -21,17 +21,18 @@ public class ApartmentTypeService : IApartmentTypeService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ApartmentTypeService(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IApartmentFeaturesService _apartmentFeaturesService;
+
+    public ApartmentTypeService(IUnitOfWork unitOfWork, IMapper mapper, IApartmentFeaturesService apartmentFeaturesService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _apartmentFeaturesService = apartmentFeaturesService;
     }
 
     public async Task<IEnumerable<ApartmentTypesReadDto>> GetApartmentTypeAsync()
     {
-
-        var apartmentDetails = await _unitOfWork.ApartmentTypes.GetAll(includes: new List<string> { "ApartmentFeatures.Features", "Currency" });
-
+        var apartmentDetails = await _unitOfWork.ApartmentTypes.GetAll(includes: new List<string> { "ApartmentFeatures.Features", "Currency", "FloorArea" });
 
         var apartmentFeatureDetails = apartmentDetails.Select(apartment => new ApartmentTypesReadDto(
             apartmentTypeId: apartment.ApartmentTypeId,
@@ -46,7 +47,7 @@ public class ApartmentTypeService : IApartmentTypeService
             currencyInitial: apartment.Currency?.CurrencyInitial ?? "",
             currency: apartment.Currency?.CurrencyName ?? "",
             floorAreaId: apartment.FloorAreaId,
-            floorArea: apartment.FloorArea!.Area,
+            floorArea: apartment.FloorArea?.Area ?? 0,
             images: apartment.Images
         ));
 
@@ -73,7 +74,7 @@ public class ApartmentTypeService : IApartmentTypeService
         {
             int apartmentTypeId = 0;
 
-            var apartmentType = await _unitOfWork.ApartmentTypes.Get(at => at.ApartmentType == values.apartmentType);
+            var apartmentType = await _unitOfWork.ApartmentTypes.Get(at => at.ApartmentType == values.apartmentType && at.ApartmentCategoryId == values.apartmentCategoryId);
             if (apartmentType != null)
             {
                 return new ReturnResponsesDto
@@ -83,6 +84,7 @@ public class ApartmentTypeService : IApartmentTypeService
                     SuccessResponse = null
                 };
             }
+            
 
             var newApartmentType = ApartmentTypes.Create(apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorAreaId, values.images!);
             newApartmentType.CreatedBy = values.createdBy;
@@ -90,6 +92,10 @@ public class ApartmentTypeService : IApartmentTypeService
 
             _unitOfWork.ApartmentTypes.Insert(newApartmentType);
             await _unitOfWork.Complete();
+
+
+            var _features = new ApartmentFeaturesCreateDto(values.apartmentCategoryId, newApartmentType.ApartmentTypeId, values.features!, newApartmentType.CreatedBy);
+            var result = await _apartmentFeaturesService.CreateApartmentFeaturesAsync(_features);
 
             return new ReturnResponsesDto
             {
@@ -125,6 +131,10 @@ public class ApartmentTypeService : IApartmentTypeService
 
             _unitOfWork.ApartmentTypes.Update(apartmentType);
             await _unitOfWork.Complete();
+
+
+            var _features = new ApartmentFeaturesUpdateDto(values.apartmentCategoryId, apartmentType.ApartmentTypeId, values.features!, apartmentType.ModifiedBy);
+            await _apartmentFeaturesService.UpdateApartmentFeaturesAsync(_features);
 
             return new ReturnResponsesDto
             {

@@ -16,7 +16,7 @@ namespace Modules.Customers.Application.Dtos
 	public record CustomerTransactionsDto
 	{
         [StringLength(50)]
-        public required string VoucherNumber { get; set; }
+        public required string TransactionNumber { get; set; }
 
         [StringLength(50)]
         public required string PropertyNumber { get; set; }
@@ -41,17 +41,17 @@ namespace Modules.Customers.Application.Dtos
         public required int AccountCode { get; set; }
 
         [StringLength(2)]
-        public required string TransactionType { get; set; }
+        public required EntryTypeEnum EntryType { get; set; }
 
         [StringLength(3)]
-        public required string VoucherType { get; set; }
+        public required string TransactionType { get; set; }
     }
 
 
     public record CustomerTransactionsReadDto
     {
         [StringLength(50)]
-        public required string VoucherNumber { get; set; }
+        public required string TransactionNumber { get; set; }
 
         [StringLength(50)]
         public required string PropertyNumber { get; set; }
@@ -76,10 +76,10 @@ namespace Modules.Customers.Application.Dtos
         public string? PaymentMethod { get; set; }
 
         [StringLength(2)]
-        public required string TransactionType { get; set; }
+        public required EntryTypeEnum EntryType { get; set; }
 
         [StringLength(3)]
-        public required string VoucherType { get; set; }
+        public required string TransactionType { get; set; }
     }
 
 

@@ -37,6 +37,7 @@ public class ApplicationDBContext : ModuleDbContext
     public DbSet<CustomerPayments> CustomerPayments { get; set; }
     public DbSet<CustomerTransactions> CustomerTransactions { get; set; }
 
+    public DbSet<CustomerOpeningBalances> CustomerOpeningBalances { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,7 +59,7 @@ public class ApplicationDBContext : ModuleDbContext
             .IsUnique(true);
 
         modelBuilder.Entity<CustomerTransactions>()
-            .HasIndex(pm => pm.VoucherNumber)
+            .HasIndex(pm => pm.TransactionNumber)
             .IsUnique(true);
 
         modelBuilder.Entity<CustomerInvoice>()
@@ -70,7 +71,7 @@ public class ApplicationDBContext : ModuleDbContext
             .IsUnique(true);
 
         modelBuilder.Entity<CustomerTransactions>()
-            .HasIndex(ct => new { ct.VoucherNumber, ct.CustomerCode })
+            .HasIndex(ct => new { ct.TransactionNumber, ct.CustomerCode })
             .IsUnique(true);
 
         modelBuilder.Entity<CustomerInvoice>()

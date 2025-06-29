@@ -20,8 +20,8 @@ public class ChartOfAccounts : AuditableEntity
     [Required]
     public int AccountCode { get; private set; }
 
-    [StringLength(50)]
     [Required]
+    [StringLength(50)]
     public string? AccountName { get; private set; }
 
     public ChartOfAccounts(int accountCode, string accountName)
@@ -44,7 +44,7 @@ public class ChartOfAccounts : AuditableEntity
 
     private static void Validate(int accountCode, string accountName)
     {
-        if (accountCode <= 0)
+        if (accountCode < 0)
             throw new ArgumentException("The chart of account code must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(accountName) || accountName.Length > 50)

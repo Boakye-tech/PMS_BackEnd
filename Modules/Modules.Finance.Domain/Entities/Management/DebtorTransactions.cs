@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using Modules.Finance.Domain.Enums;
+
 namespace Modules.Finance.Domain.Entities.Management
 {
 	public class DebtorTransactions
@@ -18,7 +20,7 @@ namespace Modules.Finance.Domain.Entities.Management
         public int DebtorTransactionId { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(75)]
         public string PropertyNumber { get; set; }
 
         [Required]
@@ -29,7 +31,7 @@ namespace Modules.Finance.Domain.Entities.Management
 
         [Required]
         [StringLength(25)]
-        public string VoucherNumber { get; set; }
+        public string TransactionNumber { get; set; }
 
         [Required]
         [StringLength(25)]
@@ -50,12 +52,11 @@ namespace Modules.Finance.Domain.Entities.Management
         public int AccountCode { get; set; }
 
         [Required]
-        [StringLength(2)]
-        public required string TransactionType { get; set; }
+        public required EntryTypeEnum EntryType { get; set; }
 
         [Required]
         [StringLength(3)]
-        public required string VoucherType { get; set; }
+        public required string TransactionType { get; set; }
 
 
         public DebtorTransactions()

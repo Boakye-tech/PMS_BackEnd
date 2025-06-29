@@ -20,7 +20,10 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 
 
         [Required]
-        public ApartmentCategoryEnum ApartmentCategory { get; set; }
+        public int ApartmentCategoryId { get; set; }
+
+        // Navigation property for ApartmentCategory
+        public virtual ApartmentCategory? ApartmentCategory { get; private set; }
 
         [Required]
         public int ApartmentTypeId { get; private set; }
@@ -41,9 +44,9 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         {
         }
 
-        public ApartmentFeatures(ApartmentCategoryEnum apartmentCategory, int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)
+        public ApartmentFeatures(int apartmentCategoryId, int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)
         {
-            ApartmentCategory = apartmentCategory;
+            ApartmentCategoryId = apartmentCategoryId;
             ApartmentFeaturesId = apartmentFeaturesId;
             ApartmentTypeId = apartmentTypeId;
             FeaturesId = featureId;
@@ -51,15 +54,15 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             Features = Features;
         }
 
-        public static ApartmentFeatures Create(ApartmentCategoryEnum apartmentCategory, int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)
+        public static ApartmentFeatures Create(int apartmentCategoryId, int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)
         {
-            Validate(apartmentFeaturesId, apartmentTypeId, featureId, floorArea);
-            return new ApartmentFeatures(apartmentCategory, apartmentFeaturesId, apartmentTypeId, featureId, floorArea);
+            Validate(apartmentFeaturesId, apartmentCategoryId, apartmentTypeId, featureId, floorArea);
+            return new ApartmentFeatures(apartmentCategoryId, apartmentFeaturesId, apartmentTypeId, featureId, floorArea);
         }
 
-        public void Update(int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)
+        public void Update(int apartmentFeaturesId, int apartmentCategoryId, int apartmentTypeId, int featureId, decimal floorArea)
         {
-            Validate(apartmentFeaturesId, apartmentTypeId, featureId, floorArea);
+            Validate(apartmentFeaturesId, apartmentCategoryId, apartmentTypeId, featureId, floorArea);
 
             ApartmentFeaturesId = apartmentFeaturesId;
             ApartmentTypeId = apartmentTypeId;
@@ -67,10 +70,13 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             FloorArea = floorArea;
         }
 
-        private static void Validate(int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)
+        private static void Validate(int apartmentFeaturesId, int apartmentCategoryId, int apartmentTypeId, int featureId, decimal floorArea)
         {
             if (apartmentFeaturesId < 0)
                 throw new ArgumentException("Apartment Feature Id must be greater than zero.");
+
+            if (apartmentCategoryId < 0)
+                throw new ArgumentException("Apartment Category Id must be greater than zero.");
 
             if (apartmentTypeId <= 0)
                 throw new ArgumentException("Apartment Type Id must be greater than zero.");

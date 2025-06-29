@@ -16,7 +16,9 @@ public class ApartmentTypesConfiguration : IEntityTypeConfiguration<ApartmentTyp
 {
     public void Configure(EntityTypeBuilder<ApartmentTypes> builder)
     {
-        builder.HasIndex(a => a.ApartmentType).IsUnique(true);
+        builder.HasIndex(a => new { a.ApartmentCategoryId, a.ApartmentType })
+            .IsUnique(true);
+
 
         // Configure the Images array to be stored as JSON
         builder.Property(x => x.Images)

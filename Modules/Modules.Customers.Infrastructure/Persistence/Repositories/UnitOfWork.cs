@@ -34,6 +34,7 @@ namespace Modules.Customers.Infrastructure.Persistence.Repositories
             NatureOfComplaint = new NatureOfComplaintRepository(_dbContext);
             ComplaintHistory = new ComplaintHistoryRepository(_dbContext);
             ComplaintStatuses = new ComplaintStatusesRepository(_dbContext);
+            CustomerOpeningBalances = new CustomerOpeningBalancesRepository(_dbContext);
         }
 
         public ICustomerDetailsRepository CustomerDetails { get; private set; }
@@ -57,6 +58,8 @@ namespace Modules.Customers.Infrastructure.Persistence.Repositories
         public IComplaintHistoryRepository ComplaintHistory { get; private set; }
 
         public IComplaintStatusesRepository ComplaintStatuses { get; private set; }
+
+        public ICustomerOpeningBalancesRepository CustomerOpeningBalances { get; private set; }
 
         public Task<int> Complete()
         {
