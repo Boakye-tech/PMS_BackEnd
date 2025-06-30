@@ -67,6 +67,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         public Task<ReturnResponsesDto> DeleteApartmentFeatures(int ApartmentFeaturesId)
         {
             throw new NotImplementedException();
+
         }
 
         public async Task<IEnumerable<ApartmentFeaturesReadDto>> GetApartmentFeaturesAsync()
@@ -159,7 +160,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             //    _unitOfWork.ApartmentFeatures.Update(apartmentTypeFeature);
             //}
 
-            await _unitOfWork.Complete();
+            //await _unitOfWork.Complete();
 
             return new ReturnResponsesDto
             {

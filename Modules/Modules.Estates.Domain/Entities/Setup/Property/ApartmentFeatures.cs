@@ -51,7 +51,7 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             ApartmentTypeId = apartmentTypeId;
             FeaturesId = featureId;
             FloorArea = floorArea;
-            Features = Features;
+            //Features = Features;
         }
 
         public static ApartmentFeatures Create(int apartmentCategoryId, int apartmentFeaturesId, int apartmentTypeId, int featureId, decimal floorArea)

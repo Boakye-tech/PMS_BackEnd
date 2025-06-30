@@ -4282,6 +4282,48 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.ToTable("PlotDimension", "est");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PlotFeatures", b =>
+                {
+                    b.Property<int>("PlotFeaturesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlotFeaturesId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FeaturesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PlotTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlotFeaturesId");
+
+                    b.HasIndex("FeaturesId");
+
+                    b.HasIndex("PlotTypeId", "FeaturesId")
+                        .IsUnique();
+
+                    b.ToTable("PlotFeatures", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PlotType", b =>
                 {
                     b.Property<int>("PlotTypeId")
@@ -5389,6 +5431,25 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("LandUse");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PlotFeatures", b =>
+                {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Features", "Features")
+                        .WithMany()
+                        .HasForeignKey("FeaturesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PlotType", "PlotType")
+                        .WithMany()
+                        .HasForeignKey("PlotTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Features");
+
+                    b.Navigation("PlotType");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.RentalType", b =>

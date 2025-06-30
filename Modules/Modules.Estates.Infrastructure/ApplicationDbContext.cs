@@ -91,6 +91,9 @@ public class ApplicationDbContext : ModuleDbContext
     //16 JUne, 2025
     public DbSet<ApartmentCategory> ApartmentCategory { get; set; }
 
+    //30 June, 2025
+    public DbSet<PlotFeatures> PlotFeatures { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

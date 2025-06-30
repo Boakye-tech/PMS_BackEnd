@@ -110,10 +110,12 @@ public class UnitOfWork: IUnitOfWork
 
         ApartmentCategory = new ApartmentCategoryRepository(_dbContext);
 
-}
+        PlotFeatures = new PlotFeaturesRepository(_dbContext);
+    }
 
 
-public IAllocationTypeRepository AllocationType { get; private set; }
+
+    public IAllocationTypeRepository AllocationType { get; private set; }
 
     public ILandUseRepository LandUse { get; private set; }
 
@@ -205,8 +207,13 @@ public IAllocationTypeRepository AllocationType { get; private set; }
     public ITypesRepository Types { get; private set; }
     public ISchemeTypeRepository SchemeTypes { get; private set; }
 
-    //June 16 25
+    //June 16 '25
     public IApartmentCategoryRepository ApartmentCategory { get; private set; }
+
+    //June 30 '25
+    public IPlotFeatures PlotFeatures { get; private set; }
+
+
 
     public Task<int> Complete()
     {

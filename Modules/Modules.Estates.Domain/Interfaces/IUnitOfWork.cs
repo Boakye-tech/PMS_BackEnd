@@ -88,6 +88,12 @@ public interface IUnitOfWork : IDisposable
     //16 June, 2025
     IApartmentCategoryRepository ApartmentCategory { get; }
 
+    //30 June, 2025
+    IPlotFeatures PlotFeatures { get; }
+
+
+
+
     Task<int> Complete();
 }
 
