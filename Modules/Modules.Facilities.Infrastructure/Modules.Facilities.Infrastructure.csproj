@@ -31,6 +31,8 @@
     <None Remove="Repositories\" />
     <None Remove="UnitOfWork\" />
     <None Remove="Data\" />
+    <None Remove="Repositories\Entities\" />
+    <None Remove="Repositories\Entities\Setup\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
@@ -38,5 +40,7 @@
     <Folder Include="Repositories\" />
     <Folder Include="UnitOfWork\" />
     <Folder Include="Data\" />
+    <Folder Include="Repositories\Entities\" />
+    <Folder Include="Repositories\Entities\Setup\" />
   </ItemGroup>
 </Project>

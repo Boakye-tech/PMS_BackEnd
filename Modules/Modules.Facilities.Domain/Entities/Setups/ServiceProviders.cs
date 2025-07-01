@@ -72,6 +72,10 @@ public class ServiceProviders : AuditableEntity
 	[EmailAddress]
 	public string? ContactPerson_EmailAddress { get; private set; }
 
+	public ServiceProviders()
+	{
+	}
+
 	public ServiceProviders(int companyID, string? companyName, string? phoneNumber, string? emailAddress,
 						  string? companyRegistrationNumber, string? tinNumber, string? companyAddress,
 						  string? digitalAddress, string? images, string? listOfServices,

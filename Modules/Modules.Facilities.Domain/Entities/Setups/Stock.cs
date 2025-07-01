@@ -64,6 +64,11 @@ public class Stock : AuditableEntity
     public virtual Items? Items { get; private set; }
     public virtual Suppliers? Suppliers { get; private set; }
 
+
+    public Stock()
+    {
+    }
+
     public Stock(int stockId, string? stockNumber, string? itemCode, int quantity, decimal unitPrice,
                 int supplierId, DateTime transactionDate, string? transactionType, string? receiptNoteNumber,
                 int? quantityReceived, string? issueNoteNumber, int? quantityIssues, string? remarks,

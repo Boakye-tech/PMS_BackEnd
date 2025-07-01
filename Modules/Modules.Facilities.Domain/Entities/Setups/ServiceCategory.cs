@@ -30,6 +30,10 @@ public class ServiceCategory : AuditableEntity
 	// Navigation property for Services
 	public virtual Services? Services { get; private set; }
 
+	public ServiceCategory()
+	{
+	}
+
 	public ServiceCategory(int serviceCategoryId, int categoryId, int serviceId)
 	{
 		ServiceCategoryId = serviceCategoryId;

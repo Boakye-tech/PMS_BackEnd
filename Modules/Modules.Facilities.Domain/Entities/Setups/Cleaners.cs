@@ -16,7 +16,8 @@ public class Cleaners : AuditableEntity
 {
 	[Key]
 	[Required]
-	public int StaffID { get; private set; }
+	[StringLength(10)]
+	public string? StaffID { get; private set; }
 
 	[StringLength(255)]
 	public string? ProfilePhoto { get; private set; }
@@ -58,7 +59,11 @@ public class Cleaners : AuditableEntity
 	[StringLength(1000)]
 	public string? Images { get; private set; }
 
-	public Cleaners(int staffID, string? profilePhoto, string? firstName, string? middleName, string? lastName,
+	public Cleaners()
+	{
+	}
+
+	public Cleaners(string staffID, string? profilePhoto, string? firstName, string? middleName, string? lastName,
 				   string? phoneNumber, string? emailAddress, string? jobTitle, string? employmentStatus,
 				   DateTime hireDate, string? assignedProperties, string? images)
 	{
@@ -76,7 +81,7 @@ public class Cleaners : AuditableEntity
 		Images = images;
 	}
 
-	public static Cleaners Create(int staffID, string? profilePhoto, string? firstName, string? middleName,
+	public static Cleaners Create(string staffID, string? profilePhoto, string? firstName, string? middleName,
 								 string? lastName, string? phoneNumber, string? emailAddress, string? jobTitle,
 								 string? employmentStatus, DateTime hireDate, string? assignedProperties, string? images)
 	{
@@ -85,7 +90,7 @@ public class Cleaners : AuditableEntity
 						   jobTitle, employmentStatus, hireDate, assignedProperties, images);
 	}
 
-	public void Update(int staffID, string? profilePhoto, string? firstName, string? middleName,
+	public void Update(string staffID, string? profilePhoto, string? firstName, string? middleName,
 					  string? lastName, string? phoneNumber, string? emailAddress, string? jobTitle,
 					  string? employmentStatus, DateTime hireDate, string? assignedProperties, string? images)
 	{
@@ -105,18 +110,18 @@ public class Cleaners : AuditableEntity
 		Images = images;
 	}
 
-	private static void Validate(int staffID, string? firstName, string? middleName, string? lastName, string? phoneNumber,
+	private static void Validate(string staffID, string? firstName, string? middleName, string? lastName, string? phoneNumber,
 								string? emailAddress, string? jobTitle, string? employmentStatus, DateTime hireDate)
 	{
-		if (staffID < 0 || string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) ||
+		if (string.IsNullOrWhiteSpace(staffID) || string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) ||
 			string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(emailAddress) ||
 			string.IsNullOrWhiteSpace(jobTitle) || string.IsNullOrWhiteSpace(employmentStatus))
 		{
 			throw new ArgumentException("Cleaner data is invalid.");
 		}
 
-		if (staffID < 0)
-			throw new ArgumentException("Staff ID must be greater than zero.");
+		if (string.IsNullOrWhiteSpace(staffID))
+			throw new ArgumentException("Staff ID cannot be empty or exceed 10 characters.");
 
 		if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > 50)
 			throw new ArgumentException("First name cannot be empty or exceed 50 characters.");

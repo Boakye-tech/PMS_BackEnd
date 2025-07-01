@@ -22,6 +22,10 @@ public class Services : AuditableEntity
 	[StringLength(100)]
 	public string? ServiceName { get; private set; }
 
+	public Services()
+	{
+	}
+
 	public Services(int serviceId, string? serviceName)
 	{
 		ServiceId = serviceId;

@@ -22,6 +22,10 @@ public class ItemsCategory : AuditableEntity
 	[StringLength(100)]
 	public string? ItemCategoryName { get; private set; }
 
+	public ItemsCategory()
+	{
+	}
+
 	public ItemsCategory(int itemCategoryId, string? itemCategoryName)
 	{
 		ItemCategoryId = itemCategoryId;

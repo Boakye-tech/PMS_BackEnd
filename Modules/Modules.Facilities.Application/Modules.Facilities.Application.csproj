@@ -7,4 +7,39 @@
     <ReleaseVersion>1.0.1</ReleaseVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules.Facilities.Domain\Modules.Facilities.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="DomainServices\" />
+    <None Remove="Dto\" />
+    <None Remove="Interfaces\" />
+    <None Remove="Profiles\" />
+    <None Remove="UseCases\" />
+    <None Remove="Validations\" />
+    <None Remove="Dto\Setup\" />
+    <None Remove="Interfaces\Setup\" />
+    <None Remove="Profiles\Setup\" />
+    <None Remove="UseCases\Setup\" />
+    <None Remove="Validations\Setup\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DomainServices\" />
+    <Folder Include="Dto\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="UseCases\" />
+    <Folder Include="Validations\" />
+    <Folder Include="Dto\Setup\" />
+    <Folder Include="Interfaces\Setup\" />
+    <Folder Include="Profiles\Setup\" />
+    <Folder Include="UseCases\Setup\" />
+    <Folder Include="Validations\Setup\" />
+  </ItemGroup>
 </Project>

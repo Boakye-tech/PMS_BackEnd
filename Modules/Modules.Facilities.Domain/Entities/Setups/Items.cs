@@ -29,6 +29,11 @@ public class Items : AuditableEntity
 	// Navigation property for ItemsCategory
 	public virtual ItemsCategory? ItemsCategory { get; private set; }
 
+
+	public Items()
+	{
+	}
+
 	public Items(int itemCategoryId, string? itemCode, string? itemName)
 	{
 		ItemCategoryId = itemCategoryId;

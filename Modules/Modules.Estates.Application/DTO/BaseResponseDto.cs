@@ -17,5 +17,7 @@ namespace Modules.Estates.Application.DTO
 
         public required string StatusMessage { get; set; }
     }
+
+
 }
 

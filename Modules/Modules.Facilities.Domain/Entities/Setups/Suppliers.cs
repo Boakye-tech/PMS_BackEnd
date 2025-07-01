@@ -71,6 +71,11 @@ public class Suppliers : AuditableEntity
 	[EmailAddress]
 	public string? ContactPerson_EmailAddress { get; private set; }
 
+
+	public Suppliers()
+	{
+	}
+
 	public Suppliers(int supplierID, string? supplierName, string? phoneNumber, string? emailAddress,
 					string? companyRegistrationNumber, string? tinNumber, string? companyAddress,
 					string? digitalAddress, string? images, string? contactPerson_FirstName,
