@@ -22,7 +22,10 @@ public class ItemsCategory : AuditableEntity
 	[StringLength(100)]
 	public string? ItemCategoryName { get; private set; }
 
-	public ItemsCategory()
+    // Navigation property for Items
+    public virtual ICollection<Items>? Items { get; private set; }
+
+    public ItemsCategory()
 	{
 	}
 
@@ -30,7 +33,8 @@ public class ItemsCategory : AuditableEntity
 	{
 		ItemCategoryId = itemCategoryId;
 		ItemCategoryName = itemCategoryName;
-	}
+        Items = new List<Items>();
+    }
 
 	public static ItemsCategory Create(int itemCategoryId, string itemCategoryName)
 	{

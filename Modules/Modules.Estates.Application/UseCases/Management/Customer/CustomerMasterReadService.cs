@@ -16,9 +16,17 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerMasterDto> GetCustomer(string customerCode)
         {
-            var result = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
-            var response = _mapper.Map<CustomerMasterDto>(result);
-            return response;
+            try
+            {
+                var result = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
+                var response = _mapper.Map<CustomerMasterDto>(result);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return null!;
+            }
+
         }
 
         public async Task<ProspectiveCustomerResponseDto> GetProspectiveCustomerDetails(string customerCode)

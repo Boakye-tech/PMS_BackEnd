@@ -34,7 +34,7 @@ namespace Modules.Facilities.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-           
+
         }
 
     }

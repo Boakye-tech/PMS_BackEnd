@@ -73,7 +73,7 @@ namespace Modules.Estates.Application.DTO.Management
         public string? IdentificationTypeImageOne { get; set; }
         [StringLength(255)]
         public string? IdentificationTypeImageTwo { get; set; }
-        [StringLength(255)]
+        //[StringLength(255)]
         public string? Comments { get; set; }
         [StringLength(255)]
         public string? InterestExpressed { get; set; }

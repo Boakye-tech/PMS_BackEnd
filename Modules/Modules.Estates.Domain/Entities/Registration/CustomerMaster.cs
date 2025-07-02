@@ -117,7 +117,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         [StringLength(255)]
         public string? IdentificationTypeImageFive { get; set; }
 
-        [StringLength(255)]
+        //[StringLength(255)]
         public string? Comments { get; set; }
 
         [StringLength(255)]

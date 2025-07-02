@@ -135,7 +135,7 @@ namespace Modules.Facilities.Application.UseCases.Setup
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Category exchange rates updated successfully." }
+                    SuccessResponse = new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = "Category updated successfully." }
                 };
             }
             catch (Exception ex)

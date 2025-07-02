@@ -99,7 +99,7 @@ namespace Modules.Facilities.Application.UseCases.Setup
 
         public async Task<IEnumerable<ItemsReadDto>> GetItemsAsync()
         {
-            var items = await _unitOfWork.Items.GetAll();
+            var items = await _unitOfWork.Items.GetAll(includes: new List<string> { "ItemCategory" });
             return _mapper.Map<IEnumerable<ItemsReadDto>>(items);
         }
 

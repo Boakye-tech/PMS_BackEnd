@@ -13,10 +13,10 @@
 namespace Modules.Facilities.Application.Dto.Setup
 {
     public record ItemsReadDto(
-        int itemCategoryId,
-        string? itemCategoryName,
-        string? itemCode,
-        string? itemName
+        int ItemCategoryId,
+        string? ItemCategory,
+        string? ItemCode,
+        string? ItemName
     );
 
     public record ItemsCreateDto(

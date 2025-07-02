@@ -238,7 +238,8 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetCustomerDetails/{customerCode}")]
-        [Authorize(Policy = "Permission:Customers.READ")]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         public async Task<ActionResult> GetCustomer(string customerCode)
         {
             try

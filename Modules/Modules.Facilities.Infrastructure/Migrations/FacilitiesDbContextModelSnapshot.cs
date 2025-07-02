@@ -163,9 +163,6 @@ namespace Modules.Facilities.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("ItemsCategoryItemCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -174,7 +171,7 @@ namespace Modules.Facilities.Infrastructure.Migrations
 
                     b.HasKey("ItemCode");
 
-                    b.HasIndex("ItemsCategoryItemCategoryId");
+                    b.HasIndex("ItemCategoryId");
 
                     b.ToTable("Items", "fac");
                 });
@@ -212,7 +209,36 @@ namespace Modules.Facilities.Infrastructure.Migrations
 
                     b.HasKey("ItemCategoryId");
 
+                    b.HasIndex("ItemCategoryName")
+                        .IsUnique();
+
                     b.ToTable("ItemsCategory", "fac");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemCategoryId = 1,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ItemCategoryName = "WASHROOM CONSUMABLES",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ItemCategoryId = 2,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ItemCategoryName = "CLEANING SUPPLIES",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ItemCategoryId = 3,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ItemCategoryName = "CLEANING TOOLS",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Modules.Facilities.Domain.Entities.Setups.ServiceCategory", b =>
@@ -582,8 +608,10 @@ namespace Modules.Facilities.Infrastructure.Migrations
             modelBuilder.Entity("Modules.Facilities.Domain.Entities.Setups.Items", b =>
                 {
                     b.HasOne("Modules.Facilities.Domain.Entities.Setups.ItemsCategory", "ItemsCategory")
-                        .WithMany()
-                        .HasForeignKey("ItemsCategoryItemCategoryId");
+                        .WithMany("Items")
+                        .HasForeignKey("ItemCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("ItemsCategory");
                 });
@@ -618,6 +646,11 @@ namespace Modules.Facilities.Infrastructure.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("Suppliers");
+                });
+
+            modelBuilder.Entity("Modules.Facilities.Domain.Entities.Setups.ItemsCategory", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
