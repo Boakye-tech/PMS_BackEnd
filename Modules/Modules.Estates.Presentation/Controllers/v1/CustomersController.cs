@@ -898,7 +898,10 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.COMPLAINT")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BaseResponseDto))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(BaseResponseDto))]
-        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BaseResponseDto))]
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(BaseResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BaseResponseDto))]
         public async Task<ActionResult> SubmitComplaint([FromBody] ComplaintCreateDto values)
         {
@@ -920,7 +923,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 return result.StatusCode switch
                 {
                     200 => Ok(result),
+                    400 => BadRequest(result),
                     404 => NotFound(result),
+                    409 => Conflict(result),
                     _ => StatusCode(500, result),
                 };
             }

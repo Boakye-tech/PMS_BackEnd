@@ -46,7 +46,7 @@ namespace Modules.Customers.Application.Dtos.Complaints
         [StringLength(15)]
         public string? PhoneNumber { get; set; }
 
-        //[Required]
+        [Required]
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 

@@ -45,6 +45,7 @@
     <None Remove="DTO\Registration\Property\" />
     <None Remove="UseCases\Registration\" />
     <None Remove="UseCases\Registration\Property\" />
+    <None Remove="Validations\Complaints\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -82,6 +83,7 @@
     <Folder Include="DTO\Registration\Property\" />
     <Folder Include="UseCases\Registration\" />
     <Folder Include="UseCases\Registration\Property\" />
+    <Folder Include="Validations\Complaints\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

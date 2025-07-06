@@ -169,6 +169,41 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
             natureofComplaint = string.Join(',', values.NatureOfComplaintId!);
 
+            // Duplicate complaint check (excluding complaint number)
+            var allComplaints = await _unitOfWork.Complaint.GetAll();
+            var incomingDocs = values.DocumentImages ?? new string[0];
+
+            bool isDuplicate = allComplaints.Any(c =>
+                c.ComplaintTypeId == values.ComplaintTypeId &&
+                c.NatureOfComplaintId == natureofComplaint &&
+                c.PropertyNumber == values.PropertyNumber &&
+                c.PropertyLocation == values.PropertyLocation &&
+                c.CustomerCode == values.CustomerCode &&
+                c.CustomerName == values.CustomerName &&
+                c.PhoneNumber == values.PhoneNumber &&
+                c.EmailAddress == values.EmailAddress &&
+                c.IsTheMatterInCourt == values.IsTheMatterInCourt &&
+                c.DetailsOfComplaint == values.DetailsOfComplaint &&
+                c.AvailabilityDate == values.AvailabilityDate &&
+                c.SubmittedBy == values.SubmittedBy &&
+                c.SubmittedBy_PhoneNumber == values.SubmittedBy_PhoneNumber &&
+                c.Source == values.Source &&
+                ((c.DocumentList == null && incomingDocs.Length == 0) ||
+                 (c.DocumentList != null && c.DocumentList.Length == incomingDocs.Length &&
+                    !c.DocumentList.Except(incomingDocs).Any() && !incomingDocs.Except(c.DocumentList).Any()))
+            );
+
+            if (isDuplicate)
+            {
+                _logger.LogWarning("Duplicate complaint submission detected.");
+                return new BaseResponseDto
+                {
+                    StatusCode = StatusCodes.Status409Conflict,
+                    StatusMessage = "Duplicate complaint submission detected. This complaint has already been submitted."
+                };
+            }
+            //-end of duplicate complaint check
+
             try
             {
                 Complaint complaint = Complaint.CreateNewComplaint(
@@ -211,6 +246,10 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                 }
 
                 return new BaseResponseDto { StatusCode = StatusCodes.Status200OK, StatusMessage = $"Complaint submitted successfully with complaint number - {complaint.ComplaintNumber}." };
+            }
+            catch(ArgumentException ex)
+            {
+                return new BaseResponseDto { StatusCode = StatusCodes.Status400BadRequest, StatusMessage = ex.Message };
             }
             catch (Exception ex)
             {

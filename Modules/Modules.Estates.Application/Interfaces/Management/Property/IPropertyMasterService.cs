@@ -11,12 +11,15 @@
 //  **************************************************/
 
 
+using Modules.Estates.Application.DTO.Management.Property;
 using Modules.Estates.Application.DTO.Registration.Property;
 
 namespace Modules.Estates.Application.Interfaces.Management.Property
 {
     public interface IPropertyMasterService
     {
+        Task<IEnumerable<PropertyListSummaryViewDto>> GetListOfProperties();
+
         Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);
         //Task<AllocationTypeReadDto> UpdateAllocationTypeAsync(AllocationTypeUpdateDto values);
         Task<IEnumerable<PropertyMasterDto>> GetProperties(int localityId);

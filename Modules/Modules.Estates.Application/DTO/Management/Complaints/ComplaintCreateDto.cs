@@ -13,8 +13,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Estates.Application.DTO.Management.Complaints
 {
-	public record ComplaintCreateDto
-	{
+    public record ComplaintCreateDto
+    {
         [StringLength(10)]
         public string? ComplaintNumber { get; set; }
 
@@ -44,7 +44,7 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
         [StringLength(15)]
         public string? PhoneNumber { get; set; }
 
-        //[Required]
+        [Required]
         [StringLength(75)]
         public string? EmailAddress { get; set; }
 

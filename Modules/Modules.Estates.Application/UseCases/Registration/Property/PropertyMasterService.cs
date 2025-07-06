@@ -10,6 +10,7 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Modules.Estates.Application.DTO.Management.Property;
 using Modules.Estates.Application.DTO.Registration.Property;
 using Modules.Estates.Domain.ValueObjects.Property;
 
@@ -66,7 +67,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     values.AcreageOne,
                     PropertyCoordinates.Create("", "", "", "", "", "").Value,
                     false,
-                    null,
+                    null!,
                     false
                     );
 
@@ -93,7 +94,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 var response = new PropertyMasterCreatePlotResponseDto
                 {
                     PropertyNumber = property.PropertyNumber.Value,
-                    PropertyType = _unitOfWork.PlotType.Get(pt => pt.PlotTypeId == property.PropertyTypeId).Result!.PlotTypes, //remember to check this line
+                    PropertyType = _unitOfWork.PlotType.Get(pt => pt.PlotTypeId == property.PlotTypeId).Result!.PlotTypes, //remember to check this line
                     Locality = _unitOfWork.Locality.Get(l => l.LocalityId == property.LocalityId).Result!.LocalityName,
                     LandUse = "",
                     LandUseType = "",
@@ -138,6 +139,11 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
         }
 
         public Task<ReturnResponsesDto> CreateRentalHouse(RentalHouseCreateDto values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<PropertyListSummaryViewDto>> GetListOfProperties()
         {
             throw new NotImplementedException();
         }

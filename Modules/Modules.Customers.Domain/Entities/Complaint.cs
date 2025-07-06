@@ -161,6 +161,10 @@ namespace Modules.Customers.Domain.Entities
                 throw new ArgumentException("Customer name must not be null or empty");
             }
 
+            if (string.IsNullOrWhiteSpace(emailAddress))
+            {
+                throw new ArgumentException("Email Address must not be null or empty");
+            }
             if (string.IsNullOrWhiteSpace(phoneNumber))
             {
                 throw new ArgumentException("Phone number must not be null or empty");

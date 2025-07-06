@@ -62,7 +62,7 @@ namespace Modules.Customers.Application.UseCases
             {
                 //check of complaint type exist
                 var complaintType = await _unitOfWork.ComplaintType.Get(values.ComplaintTypeId);
-                if(complaintType is null)
+                if (complaintType is null)
                 {
                     _logger.LogWarning($"Complaint Type Id {values.ComplaintTypeId} provided does not exist.");
                     return new GenericResponseDto
@@ -98,9 +98,45 @@ namespace Modules.Customers.Application.UseCases
                         };
                     }
                 }
-
-
+                
                 string natureofComplaint = string.Join(',', values.NatureOfComplaintId!);
+
+                // Duplicate complaint check (excluding complaint number)
+                var allComplaints = await _unitOfWork.Complaint.GetAll();
+                var incomingDocs = values.DocumentImages ?? new string[0];
+
+                bool isDuplicate = allComplaints.Any(c =>
+                    c.ComplaintTypeId == values.ComplaintTypeId &&
+                    c.NatureOfComplaintId == natureofComplaint &&
+                    c.PropertyNumber == values.PropertyNumber &&
+                    c.PropertyLocation == values.PropertyLocation &&
+                    c.CustomerCode == values.CustomerCode &&
+                    c.CustomerName == values.CustomerName &&
+                    c.PhoneNumber == values.PhoneNumber &&
+                    c.EmailAddress == values.EmailAddress &&
+                    c.IsTheMatterInCourt == values.IsTheMatterInCourt &&
+                    c.DetailsOfComplaint == values.DetailsOfComplaint &&
+                    c.AvailabilityDate == values.AvailabilityDate &&
+                    c.SubmittedBy == values.SubmittedBy &&
+                    c.SubmittedBy_PhoneNumber == values.SubmittedBy_PhoneNumber &&
+                    c.Source == values.Source &&
+                    ((c.DocumentList == null && incomingDocs.Length == 0) ||
+                     (c.DocumentList != null && c.DocumentList.Length == incomingDocs.Length &&
+                        !c.DocumentList.Except(incomingDocs).Any() && !incomingDocs.Except(c.DocumentList).Any()))
+                );
+
+                if (isDuplicate)
+                {
+                    _logger.LogWarning("Duplicate complaint submission detected.");
+                    return new GenericResponseDto
+                    {
+                        responseCode = StatusCodes.Status409Conflict,
+                        response = "Duplicate complaint submission detected. This complaint has already been submitted."
+                    };
+                }
+                //-end of duplicate complaint check
+
+                //string natureofComplaint = string.Join(',', values.NatureOfComplaintId!);
 
                 var complaint = Complaint.CreateNewComplaint(
                     complaintId: 0,

@@ -22,13 +22,14 @@ namespace Modules.Estates.Domain.Entities.Registration
     {
         [Key]
         public int PropertyMasterId { get; private set; }
-        public int PropertyTypeId { get; private set; }
+        
         public PropertyNumber PropertyNumber { get; private set; }
         public int LocalityId { get; private set; }
         public int SiteId { get; private set; }
         public int LandUseId { get; private set; }
         public int LandUseTypeId { get; private set; }
         public int AllocationTypeId { get; private set; }
+        public int PlotTypeId { get; private set; }
         public PlotSize PlotSize { get; private set; }
         public int SchemeTypeId { get; private set; }
         public int ApartmentTypeId { get; private set; }
@@ -55,16 +56,15 @@ namespace Modules.Estates.Domain.Entities.Registration
         public double SellingPrice { get; set; }
         public int CurrencyId { get; set; }
 
-        [StringLength(50)]
-        public string? RentalType { get; set; }
+        public int TypeId { get; set; }
         public int TotalNumberOfRooms { get; set; }
         public int RoomsOccupied { get; set; }
 
         public int ApartmentBlockNumberId { get; set; }
         public int FloorNumberId { get; set; }
 
-        [StringLength(10)]
-        public string? FloorArea { get; set; }
+        //[StringLength(10)]
+        //public string? FloorArea { get; set; }
 
         public DateTime RightOfEntry { get; set; }
 
@@ -126,7 +126,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             // Create the entity
             var property = new PropertyMaster
             {
-                PropertyTypeId = propertyTypeId,
+                //PropertyTypeId = propertyTypeId,
                 LocalityId = localityId,
                 LandUseId = landUseId,
                 LandUseTypeId = landUseTypeId,
