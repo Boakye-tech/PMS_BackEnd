@@ -48,7 +48,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         public LeasePeriod Lease { get; private set; }
         public int PropertyStatusId { get; private set; }
         public List<string> Images { get; private set; }
-        public bool IsLargeScale { get; private set; }
+        //public bool IsLargeScale { get; private set; }
         public string CustomerCode { get; set; }
         public bool IsDeleted { get; private set; }
 
@@ -135,7 +135,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 PlotSize = plotSizeResult.Value,
                 Coordinates = coordinates,
                 //Lease = leaseResult.Value,
-                IsLargeScale = isLargeScale,
+                //IsLargeScale = isLargeScale,
                 IsDeleted = false
             };
 

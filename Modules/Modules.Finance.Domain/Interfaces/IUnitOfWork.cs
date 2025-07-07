@@ -26,6 +26,9 @@ namespace Modules.Finance.Domain.Interfaces
         IPaypointsRespository Paypoints { get; }
         IInvoiceTypesRepository InvoiceTypes { get; }
 
+        //7th July 2025
+        IDepartmentRepository Department { get; }
+        IDepartmentUnitRepository DepartmentUnit { get; }
 
         Task<int> Complete();
     }

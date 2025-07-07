@@ -35,6 +35,10 @@ public class FinanceDbContext : ModuleDbContext
     public DbSet<Services> Services { get; set; }
     public DbSet<InvoiceTypes> InvoiceTypes { get; set; }
 
+    //7-07-25
+    public DbSet<Department> Department { get; set; }
+    public DbSet<DepartmentUnit> DepartmentUnit { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
