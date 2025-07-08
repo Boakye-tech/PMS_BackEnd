@@ -37,7 +37,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserAccounts
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<ValidationService> _mockValidationService;
         private readonly Mock<ILogger<AdministrationService>> _mockLogger;
-        private readonly Mock<INotificationServices> _mockNotificationService;
+        private readonly Mock<IModulesService> _mockNotificationService;
         private readonly AdministrationService _service;
 
         public AdministrationServiceTests()
@@ -54,7 +54,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserAccounts
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockValidationService = new Mock<ValidationService>();
             _mockLogger = new Mock<ILogger<AdministrationService>>();
-            _mockNotificationService = new Mock<INotificationServices>();
+            _mockNotificationService = new Mock<IModulesService>();
 
             _service = new AdministrationService(
                 _mockRoleManager.Object,

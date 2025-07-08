@@ -65,13 +65,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.ChartOfAccounts.Insert(account);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<ChartOfAccountsReadDto>(account);
+                //var result = _mapper.Map<ChartOfAccountsReadDto>(account);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Chart of account created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Chart of account created successfully." }
                 };
             }
             catch (Exception ex)
@@ -118,13 +118,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.ChartOfAccounts.Update(account);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<ChartOfAccountsReadDto>(account);
+                //var result = _mapper.Map<ChartOfAccountsReadDto>(account);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Chart of account updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Chart of account updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -160,7 +160,7 @@ namespace Modules.Finance.Application.UseCases
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Chart of account deleted successfully.", Data = null }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Chart of account deleted successfully." }
                 };
             }
             catch (Exception ex)

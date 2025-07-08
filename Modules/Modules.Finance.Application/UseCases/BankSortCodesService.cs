@@ -65,13 +65,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.BankSortCodes.Insert(code);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<BankSortCodesReadDto>(code);
+                //var result = _mapper.Map<BankSortCodesReadDto>(code);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank sort code created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank sort code created successfully." }
                 };
             }
             catch (Exception ex)
@@ -118,13 +118,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.BankSortCodes.Update(code);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<BankSortCodesReadDto>(code);
+                //var result = _mapper.Map<BankSortCodesReadDto>(code);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank sort code updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank sort code updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -160,7 +160,7 @@ namespace Modules.Finance.Application.UseCases
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank sort code deleted successfully.", Data = null }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank sort code deleted successfully." }
                 };
             }
             catch (Exception ex)

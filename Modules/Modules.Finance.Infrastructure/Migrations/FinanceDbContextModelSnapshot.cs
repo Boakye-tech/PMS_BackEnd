@@ -93,6 +93,8 @@ namespace Modules.Finance.Infrastructure.Migrations
 
                     b.HasKey("BranchId");
 
+                    b.HasIndex("BankId");
+
                     b.ToTable("BankBranch", "fin");
                 });
 
@@ -193,7 +195,7 @@ namespace Modules.Finance.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("BuyingRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -224,7 +226,7 @@ namespace Modules.Finance.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("SellingRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("CurrencyId");
 
@@ -243,7 +245,7 @@ namespace Modules.Finance.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("BuyingRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -275,11 +277,88 @@ namespace Modules.Finance.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("SellingRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("HistoryId");
 
                     b.ToTable("CurrencyExchangeRateHistory", "fin");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.Department", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("Department", "fin");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.DepartmentUnit", b =>
+                {
+                    b.Property<int>("UnitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UnitId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UnitName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("UnitId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("DepartmentUnit", "fin");
                 });
 
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.Forms", b =>
@@ -494,6 +573,38 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.HasKey("ServiceCode");
 
                     b.ToTable("Services", "fin");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.BankBranch", b =>
+                {
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.Bank", "Bank")
+                        .WithMany("BankBranch")
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bank");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.DepartmentUnit", b =>
+                {
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.Department", "Department")
+                        .WithMany("DepartmentUnits")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.Bank", b =>
+                {
+                    b.Navigation("BankBranch");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.Department", b =>
+                {
+                    b.Navigation("DepartmentUnits");
                 });
 #pragma warning restore 612, 618
         }

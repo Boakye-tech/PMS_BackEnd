@@ -96,7 +96,7 @@ namespace Modules.Users.Presentation
             services.AddScoped<ITokenStoreRepository, TokenStoreRepository>();
 
             services.AddScoped<IIdentificationTypeService, IdentificationTypeService>();
-            services.AddScoped<INotificationServices, NotificationServices>();
+            services.AddScoped<IModulesService, ModulesService>();
 
 
 

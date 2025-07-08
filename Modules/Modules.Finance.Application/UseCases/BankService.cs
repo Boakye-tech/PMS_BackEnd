@@ -59,13 +59,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.Bank.Insert(bank);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<BankReadDto>(bank);
+                //var result = _mapper.Map<BankReadDto>(bank);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank created successfully." }
                 };
             }
             catch (Exception ex)
@@ -112,13 +112,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.Bank.Update(bank);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<BankReadDto>(bank);
+                //var result = _mapper.Map<BankReadDto>(bank);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -154,7 +154,7 @@ namespace Modules.Finance.Application.UseCases
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank deleted successfully.", Data = null }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank deleted successfully." }
                 };
             }
             catch (Exception ex)

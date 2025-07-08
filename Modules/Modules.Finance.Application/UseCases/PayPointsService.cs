@@ -65,13 +65,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.Paypoints.Insert(paypoint);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<PaypointsReadDto>(paypoint);
+                //var result = _mapper.Map<PaypointsReadDto>(paypoint);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Paypoint created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Paypoint created successfully." }
                 };
             }
             catch (Exception ex)
@@ -107,13 +107,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.Paypoints.Update(paypoint);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<PaypointsReadDto>(paypoint);
+                //var result = _mapper.Map<PaypointsReadDto>(paypoint);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Paypoint updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Paypoint updated successfully." }
                 };
             }
             catch (Exception ex)

@@ -31,7 +31,12 @@ namespace Modules.Finance.Presentation
             services.AddScoped<IPayPointsService, PayPointsService>();
             services.AddScoped<IInvoiceTypesService, InvoiceTypesService>();
 
+            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IDepartmentUnitService, DepartmentUnitService>();
+
             services.AddScoped<IModuleCommunicationServices, ModuleCommunicationServices>();
+
+            //services.AddHttpClient<IModuleCommunicationServices, ModuleCommunicationServices>();
 
             //// Dependency Injection - Register AutoMapper 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

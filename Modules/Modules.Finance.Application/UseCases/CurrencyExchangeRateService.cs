@@ -94,13 +94,13 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
                 //_logger.LogWarning($"Failed to send customer details to online customer module {customer_payload.CustomerCode}", customer_payload.CustomerCode);
             }
 
-            var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
+            //var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
 
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Currency exchange rate created successfully.", Data = result }
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Currency exchange rate created successfully." }
             };
         }
         catch (Exception ex)
@@ -142,7 +142,7 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
             _unitOfWork.CurrencyExchangeRate.Update(currency);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
+            //var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
 
             //send to estates module
             var payload = new CurrencyUpdateDto(currency.CurrencyId, currency.CurrencyInitial!, currency.CurrencyName!, currency.BaseCurrency, currency.BuyingRate, currency.SellingRate, currency.ApplicableDate, currency.ModifiedBy);
@@ -157,7 +157,7 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Currency exchange rates updated successfully.", Data = result }
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Currency exchange rates updated successfully." }
             };
         }
         catch (Exception ex)
@@ -199,13 +199,13 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
             _unitOfWork.CurrencyExchangeRate.Update(currency);
             await _unitOfWork.Complete();
 
-            var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
+            //var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
 
             return new ReturnResponsesDto
             {
                 IsSuccess = true,
                 ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Currency details updated successfully.", Data = result }
+                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Currency details updated successfully." }
             };
         }
         catch (Exception ex)

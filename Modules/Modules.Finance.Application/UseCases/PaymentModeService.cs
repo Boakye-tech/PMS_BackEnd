@@ -65,13 +65,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.PaymentMode.Insert(mode);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<PaymentModeReadDto>(mode);
+                //var result = _mapper.Map<PaymentModeReadDto>(mode);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Payment mode created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Payment mode created successfully." }
                 };
             }
             catch (Exception ex)
@@ -118,13 +118,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.PaymentMode.Update(mode);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<PaymentModeReadDto>(mode);
+                //var result = _mapper.Map<PaymentModeReadDto>(mode);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment mode updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment mode updated successfully."}
                 };
             }
             catch (Exception ex)
@@ -160,7 +160,7 @@ namespace Modules.Finance.Application.UseCases
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment mode deleted successfully.", Data = null }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment mode deleted successfully." }
                 };
             }
             catch (Exception ex)

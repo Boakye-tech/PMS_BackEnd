@@ -15,11 +15,13 @@ namespace Modules.Users.Application.UseCases
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IModulesService _moduleCommunication;
 
-        public DepartmentService(IUnitOfWork unitOfWork, IMapper mapper)
+        public DepartmentService(IUnitOfWork unitOfWork, IMapper mapper, IModulesService moduleCommunication)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _moduleCommunication = moduleCommunication;
         }
 
         public async Task<DepartmentReadDto> AddDepartmentAsync(DepartmentCreateDto values)
@@ -31,6 +33,13 @@ namespace Modules.Users.Application.UseCases
 
             _unitOfWork.Department.Insert(department);
             await _unitOfWork.Complete();
+
+            //send to finance module
+            var response = await _moduleCommunication.SendDepartmentDetailsAsync(values);
+            if (!response)
+            {
+                //_logger.LogWarning($"Failed to send department details to finance module {values.DepartmentName}", values.DepartmentName);
+            }
 
             return new DepartmentReadDto(department.DepartmentId, department.DepartmentName!);
         }
@@ -75,6 +84,14 @@ namespace Modules.Users.Application.UseCases
 
             _unitOfWork.Department.Update(department);
             await _unitOfWork.Complete();
+
+            //send to finance module
+            var response = await _moduleCommunication.SendModifiedDepartmentDetailsAsync(values);
+            if (!response)
+            {
+                //_logger.LogWarning($"Failed to send department details to finance module {values.DepartmentName}", values.DepartmentName);
+            }
+
 
             return new DepartmentReadDto(department.DepartmentId, department.DepartmentName!);
         }

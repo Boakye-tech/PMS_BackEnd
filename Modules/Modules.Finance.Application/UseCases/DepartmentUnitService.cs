@@ -59,13 +59,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.DepartmentUnit.Insert(departmentUnit);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<DepartmentUnitReadDto>(departmentUnit);
+                //var result = _mapper.Map<DepartmentUnitReadDto>(departmentUnit);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Department unit created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Department unit created successfully." }
                 };
             }
             catch (Exception ex)
@@ -112,13 +112,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.DepartmentUnit.Update(departmentUnit);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<DepartmentUnitReadDto>(departmentUnit);
+                //var result = _mapper.Map<DepartmentUnitReadDto>(departmentUnit);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Department unit updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Department unit updated successfully." }
                 };
             }
             catch (Exception ex)

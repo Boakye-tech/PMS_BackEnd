@@ -12,6 +12,7 @@
 using System.Linq.Expressions;
 using AutoMapper;
 using Modules.Users.Application.Dtos.Entities;
+using Modules.Users.Application.Interfaces;
 using Modules.Users.Application.UseCases;
 using Modules.Users.Domain.Entities;
 using Modules.Users.Domain.Interfaces;
@@ -24,13 +25,16 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<IModulesService> _mockModuleComms;
         private readonly DepartmentUnitService _service;
 
         public DepartmentUnitServiceTests()
         {
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockMapper = new Mock<IMapper>();
-            _service = new DepartmentUnitService(_mockUnitOfWork.Object, _mockMapper.Object);
+            _mockModuleComms = new Mock<IModulesService>();
+
+            _service = new DepartmentUnitService(_mockUnitOfWork.Object, _mockMapper.Object, _mockModuleComms.Object);
         }
 
         [Fact]

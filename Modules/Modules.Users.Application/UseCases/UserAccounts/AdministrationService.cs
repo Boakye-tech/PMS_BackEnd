@@ -25,9 +25,9 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
         private readonly ValidationService _validationService;
         private readonly ILogger<AdministrationService> _logger;
-        private readonly INotificationServices _notifyService;
+        private readonly IModulesService _notifyService;
 
-        public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,ValidationService validationService, ILogger<AdministrationService> logger, INotificationServices notifyService) 
+        public AdministrationService(RoleManager<ApplicationIdentityRole> roleManager, UserManager<ApplicationIdentityUser> userManager, IUnitOfWork unitOfWork,ValidationService validationService, ILogger<AdministrationService> logger, IModulesService notifyService) 
         {
             _roleManager = roleManager;
             _userManager = userManager;

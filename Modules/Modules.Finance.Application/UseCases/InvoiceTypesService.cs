@@ -65,13 +65,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.InvoiceTypes.Insert(type);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<InvoiceTypesReadDto>(type);
+                //var result = _mapper.Map<InvoiceTypesReadDto>(type);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Invoice type created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Invoice type created successfully." }
                 };
             }
             catch (Exception ex)
@@ -118,13 +118,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.InvoiceTypes.Update(type);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<InvoiceTypesReadDto>(type);
+                //var result = _mapper.Map<InvoiceTypesReadDto>(type);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Invoice type updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Invoice type updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -160,7 +160,7 @@ namespace Modules.Finance.Application.UseCases
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Invoice type deleted successfully.", Data = null }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Invoice type deleted successfully." }
                 };
             }
             catch (Exception ex)

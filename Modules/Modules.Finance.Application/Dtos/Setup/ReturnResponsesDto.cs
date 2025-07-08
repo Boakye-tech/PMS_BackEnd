@@ -29,7 +29,6 @@ namespace Modules.Finance.Application.Dtos.Setup
     {
         public int Code { get; init; }
         public string? Message { get; init; }
-        public object? Data { get; init; }
     }
 }
 

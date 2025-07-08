@@ -65,13 +65,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.PaymentType.Insert(type);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<PaymentTypeReadDto>(type);
+                //var result = _mapper.Map<PaymentTypeReadDto>(type);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Payment type created successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Payment type created successfully." }
                 };
             }
             catch (Exception ex)
@@ -107,13 +107,13 @@ namespace Modules.Finance.Application.UseCases
                 _unitOfWork.PaymentType.Update(type);
                 await _unitOfWork.Complete();
 
-                var result = _mapper.Map<PaymentTypeReadDto>(type);
+                //var result = _mapper.Map<PaymentTypeReadDto>(type);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment type updated successfully.", Data = result }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment type updated successfully." }
                 };
             }
             catch (Exception ex)
