@@ -51,6 +51,15 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
         {
             try
             {
+                //check if land use exist and get land use initials
+
+                //check if land use type exist and get land use type initials
+
+                //check if locality exist and get locality initials
+
+                //check if allocation type exist and allocation type initials
+
+
                 var propertyResult = PropertyMaster.Create(
                     values.PropertyTypeId,
                     values.LandUseId,
@@ -66,8 +75,6 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     values.NumberTo,
                     values.AcreageOne,
                     PropertyCoordinates.Create("", "", "", "", "", "").Value,
-                    false,
-                    null!,
                     false
                     );
 
@@ -91,29 +98,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 _unitOfWork.PropertyMaster.Insert(property);
                 await _unitOfWork.Complete();
 
-                var response = new PropertyMasterCreatePlotResponseDto
-                {
-                    PropertyNumber = property.PropertyNumber.Value,
-                    PropertyType = _unitOfWork.PlotType.Get(pt => pt.PlotTypeId == property.PlotTypeId).Result!.PlotTypes, //remember to check this line
-                    Locality = _unitOfWork.Locality.Get(l => l.LocalityId == property.LocalityId).Result!.LocalityName,
-                    LandUse = "",
-                    LandUseType = "",
-                    AllocationType = "",
-                    BlockNumber = "",
-                    PlotNumber = "",
-                    AcreageOne = 0,
-                    AcreageTwo = 0,
-                    PropertyHeight = "",
-                    PlotSize = "",
-                    SitePlanNumber = "",
-                    CoordinateOne = "",
-                    CoordinateTwo = "",
-                    CoordinateThree = "",
-                    CoordinateFour = "",
-                    CoordinateFive = "",
-                    CoordinateSix = ""
-                };
-
+                
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,

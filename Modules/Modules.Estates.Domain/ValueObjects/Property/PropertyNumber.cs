@@ -17,7 +17,7 @@ namespace Modules.Estates.Domain.ValueObjects.Property
     [Owned]
     public record PropertyNumber : ValueObject
 	{
-		public string Value { get; init; }
+		public string? Value { get; init; }
 
 		// For EF Core
 		public PropertyNumber() { }

@@ -21,6 +21,11 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
         Task<IEnumerable<PropertyListSummaryViewDto>> GetListOfProperties();
 
         Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);
+
+
+
+
+
         //Task<AllocationTypeReadDto> UpdateAllocationTypeAsync(AllocationTypeUpdateDto values);
         Task<IEnumerable<PropertyMasterDto>> GetProperties(int localityId);
         //Task<AllocationTypeReadDto> GetAllocationTypeAsync(int value);

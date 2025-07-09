@@ -23,14 +23,14 @@ namespace Modules.Estates.Domain.Entities.Registration
         [Key]
         public int PropertyMasterId { get; private set; }
         
-        public PropertyNumber PropertyNumber { get; private set; }
+        public PropertyNumber? PropertyNumber { get; private set; }
         public int LocalityId { get; private set; }
         public int SiteId { get; private set; }
         public int LandUseId { get; private set; }
         public int LandUseTypeId { get; private set; }
         public int AllocationTypeId { get; private set; }
         public int PlotTypeId { get; private set; }
-        public PlotSize PlotSize { get; private set; }
+        public PlotSize? PlotSize { get; private set; }
         public int SchemeTypeId { get; private set; }
         public int ApartmentTypeId { get; private set; }
         public int BlockTypeId { get; private set; }
@@ -38,18 +38,17 @@ namespace Modules.Estates.Domain.Entities.Registration
         public int BlockUnitId { get; private set; }
 
         [StringLength(5)]
-        public string BlockNumber { get; private set; }
+        public string? BlockNumber { get; private set; }
 
         [StringLength(5)]
-        public string PlotNumber { get; set; }
+        public string? PlotNumber { get; set; }
 
         public int RoomNumber { get; private set; }
-        public PropertyCoordinates Coordinates { get; private set; }
-        public LeasePeriod Lease { get; private set; }
+        public PropertyCoordinates? Coordinates { get; private set; }
+        public LeasePeriod? Lease { get; private set; }
         public int PropertyStatusId { get; private set; }
-        public List<string> Images { get; private set; }
-        //public bool IsLargeScale { get; private set; }
-        public string CustomerCode { get; set; }
+        public string[]? Images { get; private set; }
+        public string? CustomerCode { get; set; }
         public bool IsDeleted { get; private set; }
 
         public double CostPrice { get; set; }
@@ -63,19 +62,15 @@ namespace Modules.Estates.Domain.Entities.Registration
         public int ApartmentBlockNumberId { get; set; }
         public int FloorNumberId { get; set; }
 
-        //[StringLength(10)]
-        //public string? FloorArea { get; set; }
-
         public DateTime RightOfEntry { get; set; }
 
         public int DebtorType { get; set; }
 
         public int GroupNumber { get; set; }
 
-        [StringLength(25)]
+        [StringLength(75)]
         public string? MotherPropertyNumber { get; set; }
 
-        [StringLength(255)]
         public string? Comments { get; set; }
 
         [StringLength(30)]
@@ -84,7 +79,8 @@ namespace Modules.Estates.Domain.Entities.Registration
         [StringLength(30)]
         public string? CadastralPlanNumber { get; set; }
 
-
+        [StringLength(75)]
+        public string? OldPropertyNumber { get; set; }
 
 
 
@@ -98,7 +94,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             int NumberFrom,
             int NumberTo,
             double plotDimension,
-            PropertyCoordinates coordinates, bool isApartment = false, string blockUnit = null, bool isLargeScale = false)
+            PropertyCoordinates coordinates, bool isApartment = false, string blockUnit = null!)
         {
             // Create value objects
             var propertyNumberResult = PropertyNumber.Create(
