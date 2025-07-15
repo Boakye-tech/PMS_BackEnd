@@ -819,7 +819,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
         {
             var allCustomers = await _unitOfWork.CustomerMaster.GetAll();
             var allTitles = await _unitOfWork.Title.GetAll();
-            var allProperties = await _unitOfWork.PropertyMaster.GetAll();
+            var allProperties = _unitOfWork.PropertyMaster.GetQueryable();
             var allLocalities = await _unitOfWork.Locality.GetAll();
 
             var result = from a in allCustomers
@@ -829,7 +829,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                          from property in propertyGroup.DefaultIfEmpty()
                          join c in allLocalities on property?.LocalityId equals c.LocalityId into localityGroup
                          from locality in localityGroup.DefaultIfEmpty()
-                         where a.CustomerCode == customerCode
+                         where a.CustomerCode == customerCode.ToUpper()
                          select new ComplainantDetailsDto
                          {
                              CustomerCode = a.CustomerCode,
@@ -841,7 +841,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                              ).Trim(),
                              PhoneNumber = a.PrimaryMobileNumber,
                              EmailAddress = a.EmailAddress,
-                             PropertyNumber = property?.PropertyNumber.Value,
+                             PropertyNumber = property?.PropertyNumber!.Value,
                              PropertyLocation = locality?.LocalityName
                          };
 
@@ -853,7 +853,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
         {
             var allCustomers = await _unitOfWork.CustomerMaster.GetAll();
             var allTitles = await _unitOfWork.Title.GetAll();
-            var allProperties = await _unitOfWork.PropertyMaster.GetAll();
+            var allProperties = _unitOfWork.PropertyMaster.GetQueryable();
             var allLocalities = await _unitOfWork.Locality.GetAll();
 
             var result = from a in allCustomers
@@ -863,7 +863,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                          from property in propertyGroup.DefaultIfEmpty()
                          join c in allLocalities on property?.LocalityId equals c.LocalityId into localityGroup
                          from locality in localityGroup.DefaultIfEmpty()
-                         where property != null && property.PropertyNumber.Value == propertyNumber
+                         where property != null && property.PropertyNumber!.Value == propertyNumber.ToUpper()
                          select new ComplainantDetailsDto
                          {
                              CustomerCode = a.CustomerCode,
@@ -875,7 +875,7 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
                              ).Trim(),
                              PhoneNumber = a.PrimaryMobileNumber,
                              EmailAddress = a.EmailAddress,
-                             PropertyNumber = property?.PropertyNumber.Value,
+                             PropertyNumber = property?.PropertyNumber!.Value,
                              PropertyLocation = locality?.LocalityName
                          };
 
@@ -898,8 +898,8 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
             var filtered = data
                 .Where(a =>
-                    (!string.IsNullOrEmpty(a.CustomerCode) && a.CustomerCode.Contains(customerCode_OR_propertyNumber)) ||
-                    (!string.IsNullOrEmpty(a.PropertyNumber) && a.PropertyNumber.Contains(customerCode_OR_propertyNumber)))
+                    (!string.IsNullOrEmpty(a.CustomerCode) && a.CustomerCode.Contains(customerCode_OR_propertyNumber.ToUpper())) ||
+                    (!string.IsNullOrEmpty(a.PropertyNumber) && a.PropertyNumber.Contains(customerCode_OR_propertyNumber.ToUpper())))
                 .Select(a => new ComplainantSearchDto
                 {
                     CustomerCode = a.CustomerCode,

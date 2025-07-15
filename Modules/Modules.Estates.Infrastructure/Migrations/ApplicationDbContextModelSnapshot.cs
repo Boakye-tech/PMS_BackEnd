@@ -219,8 +219,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Comments")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CompanyName")
                         .HasMaxLength(100)
@@ -449,7 +448,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("BlockNumber")
-                        .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
@@ -467,8 +465,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Comments")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("CostPrice")
                         .HasColumnType("float");
@@ -483,7 +480,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CustomerCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DebtorType")
@@ -495,10 +491,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FloorArea")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<int>("FloorNumberId")
                         .HasColumnType("int");
 
@@ -506,13 +498,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Images")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsLargeScale")
                         .HasColumnType("bit");
 
                     b.Property<int>("LandUseId")
@@ -531,23 +519,22 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MotherPropertyNumber")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.Property<string>("OldPropertyNumber")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("PlotNumber")
-                        .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
+                    b.Property<int>("PlotTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PropertyStatusId")
                         .HasColumnType("int");
-
-                    b.Property<int>("PropertyTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RentalType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("RightOfEntry")
                         .HasColumnType("datetime2");
@@ -572,6 +559,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("TotalNumberOfRooms")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeId")
                         .HasColumnType("int");
 
                     b.HasKey("PropertyMasterId");
@@ -5344,17 +5334,13 @@ namespace Modules.Estates.Infrastructure.Migrations
                                 .HasForeignKey("PropertyMasterId");
                         });
 
-                    b.Navigation("Coordinates")
-                        .IsRequired();
+                    b.Navigation("Coordinates");
 
-                    b.Navigation("Lease")
-                        .IsRequired();
+                    b.Navigation("Lease");
 
-                    b.Navigation("PlotSize")
-                        .IsRequired();
+                    b.Navigation("PlotSize");
 
-                    b.Navigation("PropertyNumber")
-                        .IsRequired();
+                    b.Navigation("PropertyNumber");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ActivityType", b =>
