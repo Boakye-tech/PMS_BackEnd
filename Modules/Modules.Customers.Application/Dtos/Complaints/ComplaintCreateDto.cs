@@ -22,7 +22,6 @@ namespace Modules.Customers.Application.Dtos.Complaints
         [Required]
         public int[]? NatureOfComplaintId { get; set; }
 
-        //[Required]
         [StringLength(10)]
         public string? ComplaintNumber { get; set; }
 
@@ -34,7 +33,6 @@ namespace Modules.Customers.Application.Dtos.Complaints
         [StringLength(75)]
         public string? PropertyLocation { get; set; }
 
-        //[Required]
         [StringLength(10)]
         public string? CustomerCode { get; set; }
 
@@ -72,8 +70,8 @@ namespace Modules.Customers.Application.Dtos.Complaints
 
         public ComplaintSource Source { get; set; }
 
-        //[StringLength(36)]
-        //public string? CreatedBy { get; set; }
+        [StringLength(36)]
+        public string? CreatedBy { get; set; }
 
     }
 }

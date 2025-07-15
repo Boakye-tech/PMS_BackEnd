@@ -7,22 +7,23 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-
-
 using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Estates.Application.DTO.Management.Complaints
 {
     public record ComplaintCreateDto
     {
-        [StringLength(10)]
-        public string? ComplaintNumber { get; set; }
+        //[Required]
+        //public int ComplaintId { get; set; }
 
         [Required]
         public int ComplaintTypeId { get; set; }
 
         [Required]
         public int[]? NatureOfComplaintId { get; set; }
+
+        [StringLength(10)]
+        public string? ComplaintNumber { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -32,7 +33,6 @@ namespace Modules.Estates.Application.DTO.Management.Complaints
         [StringLength(75)]
         public string? PropertyLocation { get; set; }
 
-        //[Required]
         [StringLength(10)]
         public string? CustomerCode { get; set; }
 

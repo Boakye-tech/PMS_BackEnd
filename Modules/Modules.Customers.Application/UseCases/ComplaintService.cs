@@ -166,7 +166,7 @@ namespace Modules.Customers.Application.UseCases
                     0,
                     complaint.ComplaintNumber,
                     ComplaintStatus.SUBMITTED,
-                    values.SubmittedBy!,
+                    values.CreatedBy!,
                     DateTime.UtcNow
                 );
 

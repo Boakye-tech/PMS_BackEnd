@@ -22,8 +22,8 @@ namespace Modules.Estates.Domain.Entities.Registration
     {
         [Key]
         public int PropertyMasterId { get; private set; }
-        
-        public PropertyNumber? PropertyNumber { get; private set; }
+
+        public PropertyNumber? PropertyNumber { get; private set; } = default;
         public int LocalityId { get; private set; }
         public int SiteId { get; private set; }
         public int LandUseId { get; private set; }
@@ -81,7 +81,6 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         [StringLength(75)]
         public string? OldPropertyNumber { get; set; }
-
 
 
         // For EF Core

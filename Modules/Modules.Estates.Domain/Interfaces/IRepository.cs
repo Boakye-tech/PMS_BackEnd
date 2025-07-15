@@ -42,6 +42,8 @@ public interface IRepository<TEntity> where TEntity : class
     void Update(TEntity entity);
 
     void UpdateRange(IEnumerable<TEntity> entities);
+
+    IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>>? expression = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, List<string>? includes = null);
 }
 
 

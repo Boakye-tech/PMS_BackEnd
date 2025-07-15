@@ -97,6 +97,28 @@ namespace Modules.Estates.Infrastrcuture.Repositories
         }
 
         public void UpdateRange(IEnumerable<TEntity> entities) => _dbContext.Set<TEntity>().UpdateRange(entities);
+
+
+        public IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>>? expression = null,Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,List<string>? includes = null)
+        {
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+            if (expression != null)
+                query = query.Where(expression);
+
+            if (includes != null)
+            {
+                foreach (var includeProperty in includes)
+                    query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+                query = orderBy(query);
+
+            return query.AsNoTracking();
+        }
+
+
     }
 }
 

@@ -883,17 +883,34 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         }
 
+
         public async Task<List<ComplainantSearchDto>> GetComplainantSearch(string customerCode_OR_propertyNumber)
         {
-            var result = from a in await _unitOfWork.PropertyMaster.GetAll(c => c.CustomerCode!.Contains(customerCode_OR_propertyNumber) || c.PropertyNumber.Value.Contains(customerCode_OR_propertyNumber))
-                         select new ComplainantSearchDto
-                         {
-                             CustomerCode = a.CustomerCode,
-                             PropertyNumber = a.PropertyNumber.Value
-                         };
+            var query = _unitOfWork.PropertyMaster.GetQueryable();
 
-            return result.ToList();
+            var data = await query
+                .Select(a => new
+                {
+                    a.CustomerCode,
+                    PropertyNumber = a.PropertyNumber != null ? a.PropertyNumber.Value : string.Empty
+                })
+                .ToListAsync();
+
+            var filtered = data
+                .Where(a =>
+                    (!string.IsNullOrEmpty(a.CustomerCode) && a.CustomerCode.Contains(customerCode_OR_propertyNumber)) ||
+                    (!string.IsNullOrEmpty(a.PropertyNumber) && a.PropertyNumber.Contains(customerCode_OR_propertyNumber)))
+                .Select(a => new ComplainantSearchDto
+                {
+                    CustomerCode = a.CustomerCode,
+                    PropertyNumber = a.PropertyNumber
+                })
+                .ToList();
+
+            return filtered;
         }
+
+
 
         public async Task<BaseResponseDto> InProgressComplaint(ComplaintInProgressDto values)
         {

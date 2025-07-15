@@ -799,7 +799,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(500, ex.InnerException!.Message ?? ex.Message);
             }
 
         }
