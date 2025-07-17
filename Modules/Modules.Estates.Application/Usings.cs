@@ -8,6 +8,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Logging;
 
 global using AutoMapper;
 global using Modules.Estates.Domain;

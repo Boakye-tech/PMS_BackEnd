@@ -89,7 +89,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(255)]
         public string? InterestExpressed { get; set; }
 
-        [StringLength(255)]
+        //[StringLength(255)]
         public string? Comments { get; set; }
 
     }

@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Domain.ValueObjects.Property;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -51,6 +52,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     204 => NoContent(),
                     400 => BadRequest(result.ErrorResponse),
                     404 => NotFound(result.ErrorResponse),
+                    409 => Conflict(result.ErrorResponse),
                     _ => StatusCode(500, result.ErrorResponse),
                 };
             }
@@ -88,6 +90,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     204 => NoContent(),
                     400 => BadRequest(result.ErrorResponse),
                     404 => NotFound(result.ErrorResponse),
+                    409 => Conflict(result.ErrorResponse),
                     _ => StatusCode(500, result.ErrorResponse),
                 };
 
@@ -119,8 +122,22 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return BadRequest(validationError);
                 }
 
+                var result = await _customerMasterService.CreateCustomer(values);
 
-                return Ok(await _customerMasterService.CreateCustomer(values));
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.StatusCode;
+                return status switch
+                {
+                    204 => NoContent(),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    409 => Conflict(result.ErrorResponse),
+                    _ => StatusCode(500, result.ErrorResponse),
+                };
             }
             catch (Exception ex)
             {
@@ -156,7 +173,23 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 }
 
 
-                return Ok(await _customerMasterService.CreateCustomer(values));
+                var result = await _customerMasterService.CreateCustomer(values);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.StatusCode;
+                return status switch
+                {
+                    204 => NoContent(),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    409 => Conflict(result.ErrorResponse),
+                    _ => StatusCode(500, result.ErrorResponse),
+                };
+
             }
             catch (Exception ex)
             {
@@ -192,7 +225,23 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 }
 
 
-                return Ok(await _customerMasterService.CreateCustomer(values));
+                var result = await _customerMasterService.CreateCustomer(values);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.StatusCode;
+                return status switch
+                {
+                    204 => NoContent(),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    409 => Conflict(result.ErrorResponse),
+                    _ => StatusCode(500, result.ErrorResponse),
+                };
+
             }
             catch (Exception ex)
             {

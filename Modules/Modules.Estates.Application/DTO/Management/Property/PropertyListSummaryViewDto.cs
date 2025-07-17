@@ -15,8 +15,9 @@ namespace Modules.Estates.Application.DTO.Management.Property
 	public record PropertyListSummaryViewDto
     {
         public string? Image { get; set; }
-        public string? LandUse { get; set; }
+        public string? LandUseName { get; set; }
         public string? PropertyNumber { get; set; }
+        public string? CustomerCode { get; set; }
         public string? CustomerName { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Address { get; set; }

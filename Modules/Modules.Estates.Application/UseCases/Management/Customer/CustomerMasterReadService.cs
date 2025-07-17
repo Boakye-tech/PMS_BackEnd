@@ -24,7 +24,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             }
             catch (Exception ex)
             {
-                return null!;
+                throw new Exception(ex.ToString());
             }
 
         }
@@ -98,7 +98,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
         {
             var customer = await _unitOfWork.CustomerMaster.Get(cm => cm.CustomerCode == customerCode);
 
-            string _residentType = string.Empty; string _socialMediaPlatform = string.Empty;
+             string _socialMediaPlatform = string.Empty; //string _residentType = string.Empty;
 
             //get dynamic variables
             var _customerType = (await _unitOfWork.CustomerType.Get(c => c.CustomerTypeId == customer!.CustomerTypeId))!.CustomerTypes;
@@ -106,12 +106,12 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             var _nationality = (await _unitOfWork.Nationality.Get(n => n.NationalityId == customer!.NationalityId))!.Nationalities;
             var _identificationType = (await _unitOfWork.IdentificationType.Get(i => i.IdentificationTypeId == customer!.ContactPerson_IdentificationTypeId))!.IdentificationTypes;
 
-            if (customer!.ResidentTypeId > 0)
-            {
-                _residentType = (await _unitOfWork.ResidentType.Get(r => r.ResidentTypeId == customer!.ResidentTypeId))!.ResidentTypes;
-            }
+            //if (customer!.ResidentTypeId > 0)
+            //{
+            //    _residentType = (await _unitOfWork.ResidentType.Get(r => r.ResidentTypeId == customer!.ResidentTypeId))!.ResidentTypes;
+            //}
 
-            if (customer.SocialMediaTypeId > 0)
+            if (customer!.SocialMediaTypeId > 0)
             {
                 _socialMediaPlatform = (await _unitOfWork.SocialMedia.Get(s => s.SocialMediaId == customer!.SocialMediaTypeId))!.SocialMediaPlatform;
             }
@@ -121,8 +121,8 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 CustomerMasterId = customer.CustomerMasterId,
                 CustomerTypeId = customer.CustomerTypeId,
                 CustomerType = _customerType,
-                ResidentTypeId = customer.ResidentTypeId,
-                ResidentType = _residentType,
+                //ResidentTypeId = customer.ResidentTypeId,
+                //ResidentType = _residentType,
                 LocalityId = customer.LocalityId,
                 Locality = _localityName,
                 CustomerCode = customer.CustomerCode,

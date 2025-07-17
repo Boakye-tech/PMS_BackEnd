@@ -11,7 +11,9 @@
 //  **************************************************/
 
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Application.DTO.Management.Property;
 using Modules.Estates.Application.DTO.Setup;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -56,6 +58,25 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
 
+        /// <summary>
+        /// Returns a summary list of exisitng properties and the respective customer
+        /// </summary>
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [Route("GetListOfProperties")]
+        public async Task<ActionResult<List<PropertyListSummaryViewDto>>> GetListOfProperties([FromQuery] string? search = null, [FromQuery] int? landUseId = null, [FromQuery] int? landUseTypeId = null, [FromQuery] int? localityId = null, [FromQuery] int? allocationTypeId = null)
+        {
+
+            try
+            {
+                return Ok(await _propertyMasterService.GetListOfProperties(search, landUseId, landUseTypeId , localityId, allocationTypeId));
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+            }
+        }
 
 
 

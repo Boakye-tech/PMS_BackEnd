@@ -18,16 +18,16 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 {
     public interface IPropertyMasterService
     {
-        Task<IEnumerable<PropertyListSummaryViewDto>> GetListOfProperties();
+        Task<List<PropertyListSummaryViewDto>> GetListOfProperties(string? search = null, int? landUseId = null, int? landUseTypeId = null, int? localityId = null, int? allocationTypeId = null);
+
+
+
+
 
         Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);
 
-
-
-
-
         //Task<AllocationTypeReadDto> UpdateAllocationTypeAsync(AllocationTypeUpdateDto values);
-        Task<IEnumerable<PropertyMasterDto>> GetProperties(int localityId);
+        Task<List<PropertyMasterDto>> GetProperties(int localityId);
         //Task<AllocationTypeReadDto> GetAllocationTypeAsync(int value);
         //Task<AllocationTypeReadDto> GetAllocationTypeAsync(string value);
 

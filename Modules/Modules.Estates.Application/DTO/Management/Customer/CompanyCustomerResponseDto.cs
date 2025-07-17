@@ -22,9 +22,9 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public string? CustomerType { get; set; }
 
-        public int ResidentTypeId { get; set; }
+        //public int ResidentTypeId { get; set; }
 
-        public string? ResidentType { get; set; }
+        //public string? ResidentType { get; set; }
 
         public int LocalityId { get; set; }
 
@@ -81,7 +81,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public string? DebtorStatus { get; set; }
 
-        [StringLength(255)]
+        //[StringLength(255)]
         public string? Comments { get; set; }
 
         public CompanyContactPersonResponseDto? ContactPerson { get; set; }

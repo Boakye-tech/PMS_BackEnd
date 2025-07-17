@@ -8,10 +8,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-using Microsoft.Extensions.Logging;
-
-
 namespace Modules.Estates.Application.UseCases.Management.Customer
 {
     public partial class CustomerMasterService : ICustomerMasterService
@@ -36,6 +32,44 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerRegistrationResponseDto> CreateCustomer(ProspectiveCustomerCreateDto values)
         {
+            // Optimized duplicate customer check (excluding CustomerCode and IDs)
+            bool isDuplicate = await _unitOfWork.CustomerMaster
+                .GetQueryable(c =>
+                    c.CustomerTypeId == values.CustomerTypeId &&
+                    c.ResidentTypeId == values.ResidentTypeId &&
+                    c.LocalityId == values.LocalityId &&
+                    c.TitleId == values.TitleId &&
+                    c.SurName == values.SurName &&
+                    c.OtherNames == values.OtherNames &&
+                    c.CompanyName == values.CompanyName &&
+                    c.GenderId == values.GenderId &&
+                    c.NationalityId == values.NationalityId &&
+                    c.PostalAddress == values.PostalAddress &&
+                    c.ResidentialAddress == values.ResidentialAddress &&
+                    c.DigitalAddress == values.DigitalAddress &&
+                    c.PrimaryMobileNumber == values.PrimaryMobileNumber &&
+                    c.SecondaryMobileNumber == values.SecondaryMobileNumber &&
+                    c.OfficeNumber == values.OfficeNumber &&
+                    c.WhatsAppNumber == values.WhatsAppNumber &&
+                    c.EmailAddress == values.EmailAddress &&
+                    c.SocialMediaTypeId == values.SocialMediaTypeId &&
+                    c.SocialMediaAccount == values.SocialMediaAccount &&
+                    c.Comments == values.Comments
+                ).AnyAsync();
+            if (isDuplicate)
+            {
+                _logger.LogWarning("Duplicate customer registration detected.");
+                return new CustomerRegistrationResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new BaseResponseDto
+                    {
+                        StatusCode = 409,
+                        StatusMessage = "Duplicate customer registration detected. This customer has already been registered."
+                    }
+                };
+            }
+
             string _title = string.Empty;
             string _socialMediaPlatform = string.Empty;
             string _identificationType = string.Empty;
@@ -113,6 +147,42 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerRegistrationResponseDto> CreateCustomer(CreateCompanyCustomerDto values)
         {
+            // Optimized duplicate company customer check (excluding CustomerCode and IDs)
+            bool isDuplicate = await _unitOfWork.CustomerMaster
+                .GetQueryable(c =>
+                    c.CustomerTypeId == values.CustomerTypeId &&
+                    c.ResidentTypeId == values.ResidentTypeId &&
+                    c.LocalityId == values.LocalityId &&
+                    c.CompanyName == values.CompanyName &&
+                    c.NationalityId == values.NationalityId &&
+                    c.CompanyName == values.CompanyAddress &&
+                    c.DigitalAddress == values.DigitalAddress &&
+                    c.PrimaryMobileNumber == values.PrimaryMobileNumber &&
+                    c.SecondaryMobileNumber == values.SecondaryMobileNumber &&
+                    c.OfficeNumber == values.OfficeNumber &&
+                    c.WhatsAppNumber == values.WhatsAppNumber &&
+                    c.EmailAddress == values.EmailAddress &&
+                    //c.BusinessRegistrationNumber == values.BusinessRegistrationNumber &&
+                    c.TinNumber == values.TinNumber &&
+                    c.SocialMediaTypeId == values.SocialMediaTypeId &&
+                    c.SocialMediaAccount == values.SocialMediaAccount &&
+                    c.Comments == values.Comments
+                )
+                .AnyAsync();
+            if (isDuplicate)
+            {
+                _logger.LogWarning("Duplicate company customer registration detected.");
+                return new CustomerRegistrationResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new BaseResponseDto
+                    {
+                        StatusCode = 409,
+                        StatusMessage = "Duplicate company customer registration detected. This customer has already been registered."
+                    }
+                };
+            }
+
             string _socialMediaPlatform = string.Empty; string _residentType = string.Empty;
             string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty; string _imageFour = string.Empty; string _imageFive = string.Empty;
             string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
@@ -240,6 +310,45 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerRegistrationResponseDto> CreateCustomer(IndividualResidentCustomerDto values)
         {
+            // Optimized duplicate individual resident customer check (excluding CustomerCode and IDs)
+            bool isDuplicate = await _unitOfWork.CustomerMaster
+                .GetQueryable(c =>
+                    c.CustomerTypeId == values.CustomerTypeId &&
+                    c.ResidentTypeId == values.ResidentTypeId &&
+                    c.LocalityId == values.LocalityId &&
+                    c.TitleId == values.TitleId &&
+                    c.SurName == values.SurName &&
+                    c.OtherNames == values.OtherNames &&
+                    c.DateOfBirth == values.DateOfBirth &&
+                    c.TinNumber == values.TinNumber &&
+                    c.GenderId == values.GenderId &&
+                    c.NationalityId == values.NationalityId &&
+                    c.PostalAddress == values.PostalAddress &&
+                    c.ResidentialAddress == values.ResidentialAddress &&
+                    c.DigitalAddress == values.DigitalAddress &&
+                    c.PrimaryMobileNumber == values.PrimaryMobileNumber &&
+                    c.SecondaryMobileNumber == values.SecondaryMobileNumber &&
+                    c.OfficeNumber == values.OfficeNumber &&
+                    c.WhatsAppNumber == values.WhatsAppNumber &&
+                    c.EmailAddress == values.EmailAddress &&
+                    c.SocialMediaTypeId == values.SocialMediaTypeId &&
+                    c.SocialMediaAccount == values.SocialMediaAccount &&
+                    c.Comments == values.Comments
+                ).AnyAsync();
+            if (isDuplicate)
+            {
+                _logger.LogWarning("Duplicate individual resident customer registration detected.");
+                return new CustomerRegistrationResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new BaseResponseDto
+                    {
+                        StatusCode = 409,
+                        StatusMessage = "Duplicate individual resident customer registration detected. This customer has already been registered."
+                    }
+                };
+            }
+
             string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty; string _imageFour = string.Empty; string _imageFive = string.Empty;
             string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
             int imageCount;
@@ -383,6 +492,47 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerRegistrationResponseDto> CreateCustomer(JointOwnershipCustomerDto values)
         {
+            // Optimized duplicate joint ownership customer check (excluding CustomerCode and IDs)
+            bool isDuplicate = await _unitOfWork.CustomerMaster
+                .GetQueryable(c =>
+                    c.CustomerTypeId == values.CustomerTypeId &&
+                    c.ResidentTypeId == values.ResidentTypeId &&
+                    c.LocalityId == values.LocalityId &&
+                    c.TitleId == values.TitleId &&
+                    c.SurName == values.SurName &&
+                    c.OtherNames == values.OtherNames &&
+                    c.DateOfBirth == values.DateOfBirth &&
+                    c.TinNumber == values.TinNumber &&
+                    c.GenderId == values.GenderId &&
+                    c.NationalityId == values.NationalityId &&
+                    c.PostalAddress == values.PostalAddress &&
+                    c.ResidentialAddress == values.ResidentialAddress &&
+                    c.DigitalAddress == values.DigitalAddress &&
+                    c.PrimaryMobileNumber == values.PrimaryMobileNumber &&
+                    c.SecondaryMobileNumber == values.SecondaryMobileNumber &&
+                    c.OfficeNumber == values.OfficeNumber &&
+                    c.WhatsAppNumber == values.WhatsAppNumber &&
+                    c.EmailAddress == values.EmailAddress &&
+                    c.SocialMediaTypeId == values.SocialMediaTypeId &&
+                    c.SocialMediaAccount == values.SocialMediaAccount &&
+                    c.MaritalStatus == values.MaritalStatus &&
+                    c.DateOfMarriage == values.DateOfMarriage
+                )
+                .AnyAsync();
+            if (isDuplicate)
+            {
+                _logger.LogWarning("Duplicate joint ownership customer registration detected.");
+                return new CustomerRegistrationResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new BaseResponseDto
+                    {
+                        StatusCode = 409,
+                        StatusMessage = "Duplicate joint ownership customer registration detected. This customer has already been registered."
+                    }
+                };
+            }
+
             //throw new NotImplementedException();
             string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty; string _imageFour = string.Empty; string _imageFive = string.Empty;
             string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
@@ -623,6 +773,47 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 
         public async Task<CustomerRegistrationResponseDto> CreateCustomer(MultiOwnershipCustomerDto values)
         {
+            // Optimized duplicate multi ownership customer check (excluding CustomerCode and IDs)
+            bool isDuplicate = await _unitOfWork.CustomerMaster
+                .GetQueryable(c =>
+                    c.CustomerTypeId == values.CustomerTypeId &&
+                    c.ResidentTypeId == values.ResidentTypeId &&
+                    c.LocalityId == values.LocalityId &&
+                    c.TitleId == values.TitleId &&
+                    c.SurName == values.SurName &&
+                    c.OtherNames == values.OtherNames &&
+                    c.DateOfBirth == values.DateOfBirth &&
+                    c.TinNumber == values.TinNumber &&
+                    c.GenderId == values.GenderId &&
+                    c.NationalityId == values.NationalityId &&
+                    c.PostalAddress == values.PostalAddress &&
+                    c.ResidentialAddress == values.ResidentialAddress &&
+                    c.DigitalAddress == values.DigitalAddress &&
+                    c.PrimaryMobileNumber == values.PrimaryMobileNumber &&
+                    c.SecondaryMobileNumber == values.SecondaryMobileNumber &&
+                    c.OfficeNumber == values.OfficeNumber &&
+                    c.WhatsAppNumber == values.WhatsAppNumber &&
+                    c.EmailAddress == values.EmailAddress &&
+                    c.SocialMediaTypeId == values.SocialMediaTypeId &&
+                    c.SocialMediaAccount == values.SocialMediaAccount &&
+                    c.MaritalStatus == values.MaritalStatus &&
+                    c.DateOfMarriage == values.DateOfMarriage
+                )
+                .AnyAsync();
+            if (isDuplicate)
+            {
+                _logger.LogWarning("Duplicate multi ownership customer registration detected.");
+                return new CustomerRegistrationResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new BaseResponseDto
+                    {
+                        StatusCode = 409,
+                        StatusMessage = "Duplicate multi ownership customer registration detected. This customer has already been registered."
+                    }
+                };
+            }
+
             string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty; string _imageFour = string.Empty; string _imageFive = string.Empty;
             string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
             int imageCount;

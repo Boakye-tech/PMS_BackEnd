@@ -100,7 +100,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public string[]? IdentificationImages { get; set; }
 
-        [StringLength(255)]
+        //[StringLength(255)]
         public string? Comments { get; set; }
 
         public string? DebtorStatus { get; set; }

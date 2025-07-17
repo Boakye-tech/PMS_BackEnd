@@ -69,7 +69,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         //public int DebtorStatus { get; set; }
 
-        [StringLength(255)]
+        //[StringLength(255)]
         public string? Comments { get; set; }
 
         public string[]? IdentificationImages { get; set; }
