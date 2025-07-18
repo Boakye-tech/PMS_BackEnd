@@ -23,7 +23,7 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 		private PlotSize(double dimension)
 		{
 			Dimension = dimension;
-			Acreage = dimension * 43560; // Convert to acres
+			Acreage = Math.Truncate((dimension / 43560) * 100) / 100; // Convert to acres
 		}
 
 		public static Result<PlotSize> Create(double dimension)

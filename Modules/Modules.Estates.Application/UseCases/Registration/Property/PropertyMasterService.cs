@@ -10,11 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using Microsoft.EntityFrameworkCore;
-using Modules.Estates.Application.DTO.Management.Property;
-using Modules.Estates.Application.DTO.Registration.Property;
-using Modules.Estates.Domain.ValueObjects.Property;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Modules.Estates.Application.UseCases.Registration.Property
 {
@@ -53,32 +48,109 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
         {
             try
             {
+                
                 //check if land use exist and get land use initials
-
+                var _landUse = await _unitOfWork.LandUse.Get(values.LandUseId);
+                if(_landUse is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = "Land Use Id provided does not exist"
+                        }
+                    };
+                }
+                
                 //check if land use type exist and get land use type initials
+                var _landUseType = await _unitOfWork.LandUseType.Get(values.LandUseTypeId);
+                if (_landUseType is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = "Land Use Type Id provided does not exist"
+                        }
+                    };
+                }
 
                 //check if locality exist and get locality initials
+                var _locality = await _unitOfWork.Locality.Get(values.LocalityId);
+                if (_locality is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = "Locality Id provided does not exist"
+                        }
+                    };
+                }
 
                 //check if allocation type exist and allocation type initials
+                var _allocationype = await _unitOfWork.AllocationType.Get(values.AllocationTypeId);
+                if (_allocationype is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = "Allocation Type Id provided does not exist"
+                        }
+                    };
+                }
+
+                //check for plot size (dimensions)
+
+                double _dimensions = 0;
+                if (values.PlotDimensionId > 0)
+                {
+                    var _plotDimension = await _unitOfWork.PlotDimension.Get(values.PlotDimensionId);
+                    if (_plotDimension is null)
+                    {
+                        return new ReturnResponsesDto
+                        {
+                            IsSuccess = false,
+                            ErrorResponse = new ErrorResponseDto
+                            {
+                                Code = StatusCodes.Status400BadRequest,
+                                Message = "Plot Dimension Id provided does not exist"
+                            }
+                        };
+                    }
+
+                    var _result = _plotDimension.PlotDimensions.ToLower().Split('x');
+                    _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
+                }
 
 
                 var propertyResult = PropertyMaster.Create(
                     values.PropertyTypeId,
                     values.LandUseId,
-                    string.Empty, //values.LandUseInitial,
+                    _landUse.LandUseInitial!,
                     values.LandUseTypeId,
-                     string.Empty, //values.LandUseTypeInitial,
+                    _landUseType.LandUseTypeInitial!,
                     values.LocalityId,
-                     string.Empty, //values.LocalityInitial,
+                     _locality.LocalityInitial,
                     values.AllocationTypeId,
-                     string.Empty, //values.AllocationTypeInitial,
+                    _allocationype.AllocationTypeInitial,
                     values.BlockNumber!,
                     values.NumberFrom,
                     values.NumberTo,
-                    values.AcreageOne,
+                    _dimensions,
                     PropertyCoordinates.Create("", "", "", "", "", "").Value,
-                    false
-                    );
+                    false,
+                    values.BlockUnit!
+                    ); 
 
                 if (!propertyResult.IsSuccess)
                 {
@@ -118,7 +190,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     IsSuccess = false,
                     ErrorResponse = new ErrorResponseDto
                     {
-                        Code = 500,
+                        Code = StatusCodes.Status500InternalServerError,
                         Message = ex.InnerException?.Message ?? ex.Message
                     }
                 };

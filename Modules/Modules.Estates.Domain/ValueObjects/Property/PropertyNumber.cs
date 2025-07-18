@@ -32,7 +32,11 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 			if (string.IsNullOrWhiteSpace(landUseInitial) || landUseInitial.Length > 3)
 				return Result<PropertyNumber>.Failure("Land use initial must not be null or exceed 3 characters.");
 
-			if (string.IsNullOrWhiteSpace(localityInitial) || localityInitial.Length > 3)
+            if (string.IsNullOrWhiteSpace(landUseTypeInitial) || landUseTypeInitial.Length > 3)
+                return Result<PropertyNumber>.Failure("Land use type initial must not be null or exceed 3 characters.");
+
+
+            if (string.IsNullOrWhiteSpace(localityInitial) || localityInitial.Length > 3)
 				return Result<PropertyNumber>.Failure("Locality initial must not be null or exceed 3 characters.");
 
 			if (string.IsNullOrWhiteSpace(allocationTypeInitial) || allocationTypeInitial.Length > 3)
@@ -47,25 +51,28 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 			string delimiter = "/";
 			string propertyNumber;
 
-			if (landUseInitial == "SHP")
+			if (isApartment)
+			{
+				propertyNumber = $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{blockUnit}{delimiter}{NumberFrom}";
+			}
+			else
 			{
 				propertyNumber = string.IsNullOrWhiteSpace(blockNumber)
 					? $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{NumberFrom}"
 					: $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{NumberFrom}";
 			}
-			else if (isApartment)
-			{
-				propertyNumber = $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{blockUnit}{delimiter}{NumberFrom}";
-			}
-			else
-			{
-				propertyNumber = string.IsNullOrWhiteSpace(blockNumber)
-					? $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{NumberFrom}"
-					: $"{landUseInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{NumberFrom}";
-			}
 
 			return Result<PropertyNumber>.Success(new PropertyNumber(propertyNumber));
-		}
+
+            //if (landUseInitial == "SHP")
+            //{
+            //    propertyNumber = string.IsNullOrWhiteSpace(blockNumber)
+            //        ? $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{NumberFrom}"
+            //        : $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{NumberFrom}";
+            //}
+            //else
+
+        }
 	}
 }
 
