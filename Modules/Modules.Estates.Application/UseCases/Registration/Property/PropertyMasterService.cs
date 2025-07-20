@@ -11,6 +11,8 @@
 //  **************************************************/
 
 
+using Modules.Estates.Domain.Entities.Setup.Property;
+
 namespace Modules.Estates.Application.UseCases.Registration.Property
 {
     public class PropertyMasterService : IPropertyMasterService
@@ -24,25 +26,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
             _mapper = mapper;
         }
 
-        public Task<ReturnResponsesDto> CreateApartment(ApartmentTypeCreateDto values)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public Task<ReturnResponsesDto> CreateApartment(ApartmentTypeCreateDto values)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<ReturnResponsesDto> CreateHouse(HouseCreateDto values)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<ReturnResponsesDto> CreatePlot(PlotCreateDto values)
-        //{
-        //    throw new NotImplementedException();
-        //}
+       
 
         public async Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values)
         {
@@ -110,7 +94,6 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 }
 
                 //check for plot size (dimensions)
-
                 double _dimensions = 0;
                 if (values.PlotDimensionId > 0)
                 {
@@ -197,15 +180,102 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
             }
         }
 
-        public Task<ReturnResponsesDto> CreateRentalHouse(RentalHouseCreateDto values)
+        public ReturnResponsesDto GetAcreage(string plotDimension)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            if (!plotDimension.ToLower().Contains('x'))
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Message = "Plot Dimension might not be in the expected format."
+                    }
+                };
+            }
+
+            var _result = plotDimension.ToLower().Split('x');
+            if(_result.Length > 2)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Message = "Plot Dimension might not be in the expected format."
+                    }
+                };
+
+            }
+
+            double _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
+
+            var _acreage = PlotSize.Create(_dimensions);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                SuccessResponse = new SuccessResponseDto
+                {
+                    Code = StatusCodes.Status200OK,
+                    Message = _acreage.Value.Acreage.ToString("F2")
+                }
+            };
+
         }
 
-        //public Task<ReturnResponsesDto> CreateShopsOffice(ShopsOfficesDto values)
-        //{
-        //    throw new NotImplementedException();
-        //}
+
+        public async Task<ReturnResponsesDto> GetAcreage(int plotDimensionId)
+        {
+            //throw new NotImplementedException();
+
+            if(plotDimensionId <= 0)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Message = "Plot Dimension Id cannot be zero"
+                    }
+                };
+            }
+
+
+            var _plotDimension = await _unitOfWork.PlotDimension.Get(plotDimensionId);
+            if (_plotDimension is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Message = "Plot Dimension Id provided does not exist"
+                    }
+                };
+            }
+
+            var _result = _plotDimension.PlotDimensions.ToLower().Split('x');
+            double _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
+
+            var _acreage = PlotSize.Create(_dimensions);
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                SuccessResponse = new SuccessResponseDto
+                {
+                    Code = StatusCodes.Status200OK,
+                    Message = _acreage.Value.Acreage.ToString("F2")
+                }
+            };
+        }
+
 
         //public async Task<List<PropertyListSummaryViewDto>> GetListOfProperties()
         //{

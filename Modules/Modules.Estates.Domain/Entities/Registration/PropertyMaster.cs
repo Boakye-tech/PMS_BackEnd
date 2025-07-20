@@ -14,12 +14,18 @@
 //This pattern is used because we want to use our domain entity directly to encapsulate the
 //necessary logic. E.g. the logic for 1. Generating property numbers and 2. Creating and updating property details
 
+using System.ComponentModel.DataAnnotations.Schema;
 using Modules.Estates.Domain.ValueObjects.Property;
 
 namespace Modules.Estates.Domain.Entities.Registration
 {
     public class PropertyMaster : BaseEntity
     {
+        private readonly List<DomainEvent> _domainEvents = new();
+
+        [NotMapped]
+        public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
         [Key]
         public int PropertyMasterId { get; private set; }
 
@@ -49,6 +55,10 @@ namespace Modules.Estates.Domain.Entities.Registration
         public int PropertyStatusId { get; private set; }
         public string[]? Images { get; private set; }
         public string? CustomerCode { get; set; }
+
+        // Navigation property for CustomerMaster
+        //public virtual CustomerMaster? CustomerMaster { get; private set; }
+
         public bool IsDeleted { get; private set; }
 
         public double CostPrice { get; set; }

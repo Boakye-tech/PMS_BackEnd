@@ -11,9 +11,6 @@
 //  **************************************************/
 
 
-using Modules.Estates.Application.DTO.Management.Property;
-using Modules.Estates.Application.DTO.Registration.Property;
-
 namespace Modules.Estates.Application.Interfaces.Management.Property
 {
     public interface IPropertyMasterService
@@ -21,7 +18,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
         Task<List<PropertyListSummaryViewDto>> GetListOfProperties(string? search = null, int? landUseId = null, int? landUseTypeId = null, int? localityId = null, int? allocationTypeId = null);
 
 
-
+        ReturnResponsesDto GetAcreage(string plotDimension);
+        Task<ReturnResponsesDto> GetAcreage(int plotDimensionId);
 
 
         Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);
@@ -33,7 +31,7 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 
 
 
-        Task<ReturnResponsesDto> CreateApartment(ApartmentTypeCreateDto values);
+        //Task<ReturnResponsesDto> CreateApartment(ApartmentTypeCreateDto values);
 
         //Task<ReturnResponsesDto> CreatePlot(PlotCreateDto values);
 

@@ -23,9 +23,9 @@ namespace Modules.Estates.Application.DTO.Registration.Property
 
         public required int LandUseTypeId { get; set; }
 
-        public required int PropertyTypeId { get; set; }
+        //public required int PropertyTypeId { get; set; }
 
-        public int LocalityId { get; set; }
+        public required int LocalityId { get; set; }
 
         public int SiteId { get; set; }
 
@@ -49,14 +49,10 @@ namespace Modules.Estates.Application.DTO.Registration.Property
 
         public int PropertyHeightId { get; set; }
 
-        public int ShopOfficeNumberFrom { get; set; }
-
-        public int ShopOfficeNumberTo { get; set; }
-
         [StringLength(30)]
         public string? SitePlanNumber { get; set; }
 
-        public bool IsLargScale { get; set; }
+        //public bool IsLargScale { get; set; }
 
         [StringLength(50)]
         public string? CoordinateOne { get; set; }
