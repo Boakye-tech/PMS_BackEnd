@@ -11,6 +11,7 @@
 using System.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Modules.Users.Application.Dtos.Entities.Permissions;
 
 
 namespace Modules.Users.Application.UseCases
@@ -752,6 +753,45 @@ namespace Modules.Users.Application.UseCases
 
 
             return _mapper.Map<IEnumerable<RoleModulesPermissionsDto>>(modulePermissions);
+
+        }
+
+        public async Task<GenericResponseDto> UpdateModulePermission(ApplicationModulesPermissionsUpdateDto permissions)
+        {
+            //throw new NotImplementedException();
+
+            var modulePermission = await _unitOfWork.ApplicationModulesPermissions.Get(permissions.ModulePermissionId);
+            if (modulePermission is null)
+            {
+                return new GenericResponseDto("Permissions id supplied does not exisit.");
+            }
+
+            modulePermission.ModuleId = permissions.ModuleId;
+            modulePermission.RoleId = permissions.RoleId;
+            modulePermission.ModulePermission = permissions.ModulePermission;
+
+
+            _unitOfWork.ApplicationModulesPermissions.Update(modulePermission);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto("Permission updated successfully.");
+
+        }
+
+        public async Task<GenericResponseDto> DeleteModulePermission(int modulePermissionId)
+        {
+            //throw new NotImplementedException();
+
+            var modulePermission = await _unitOfWork.ApplicationModulesPermissions.Get(modulePermissionId);
+            if(modulePermission is null)
+            {
+                return new GenericResponseDto("Permissions id supplied does not exisit.");
+            }
+
+            _unitOfWork.ApplicationModulesPermissions.Delete(modulePermission!);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto("Permission removed successfully.");
 
         }
     }

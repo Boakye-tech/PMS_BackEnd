@@ -117,7 +117,8 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
 
                 var propertyResult = PropertyMaster.Create(
-                    values.PropertyTypeId,
+                    //values.PropertyTypeId,
+                    0,
                     values.LandUseId,
                     _landUse.LandUseInitial!,
                     values.LandUseTypeId,

@@ -340,6 +340,28 @@ namespace Modules.Users.Presentation.Controllers.v1
             return await _menuService.GetModulesPermissions(roleId);
         }
 
+        /// <summary>
+        /// Update specific assigned module permission
+        /// </summary>
+        [HttpPut]
+        [Route("UpdateAssignedModulePermission")]
+        [AllowAnonymous]
+        public async Task<ActionResult> UpdateAssignedModulePermission([FromBody] ApplicationModulesPermissionsUpdateDto values)
+        {
+            return Ok(await _menuService.UpdateModulePermission(values));
+        }
+
+        /// <summary>
+        /// Delete a specific assigned module permissions 
+        /// </summary>
+        [HttpDelete]
+        [Route("DeleteAssignedModulePermission/{modulePermissionId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> DeleteAssignedModulePermission(int modulePermissionId)
+        {
+            return Ok(await _menuService.DeleteModulePermission(modulePermissionId));
+        }
+
 
         /// <summary>
         /// Returns all approved system user roles

@@ -54,6 +54,8 @@ namespace Modules.Users.Application.Interfaces
         Task<ApplicationModulesDto> UpdateModules(ApplicationModulesDto appModules);
 
         Task<GenericResponseDto> AssignModulePermission(ApplicationModulesPermissionsDto permissions);
+        Task<GenericResponseDto> UpdateModulePermission(ApplicationModulesPermissionsUpdateDto permissions);
+        Task<GenericResponseDto> DeleteModulePermission(int modulePermissionId);
 
         Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId);
 

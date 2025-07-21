@@ -41,8 +41,8 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
 
         [StringLength(12)]
         public string? ModuleName { get; set; }
-
-        [StringLength(10)]
+         
+        [StringLength(50)]
         public IEnumerable<string>? ModulePermission { get; set; }
     }
 
@@ -63,6 +63,23 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
         [StringLength(50)]
         public string? ModuleName { get; set; }
 
+        [StringLength(50)]
+        public string? ModulePermission { get; set; }
+
+    }
+
+
+    public record ApplicationModulesPermissionsUpdateDto
+    {
+        public int ModulePermissionId { get; set; }
+
+        [StringLength(50)]
+        public string? RoleId { get; set; }
+
+        [StringLength(12)]
+        public string? ModuleId { get; set; }
+
+        [StringLength(50)]
         public string? ModulePermission { get; set; }
 
     }
