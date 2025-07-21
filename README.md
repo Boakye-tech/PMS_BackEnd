@@ -73,9 +73,6 @@ Presentation Layer: Handles user input (e.g., via APIs).
 ✅ Example: Application Service (Use Case)
 File: Modules/Modules.Estates.Application/UseCases/Registration/Property/PropertyMasterService.cs
 
-csharp
-Copy
-Edit
 public class PropertyMasterService : IPropertyMasterService
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -115,9 +112,6 @@ Modules/
 ✅ Example: Module-Specific Controller
 File: Modules.Estates.Presentation/Controllers/PropertyController.cs
 
-csharp
-Copy
-Edit
 [ApiController]
 [Route("api/property")]
 public class PropertyController : ControllerBase
@@ -139,18 +133,15 @@ src/
 │       ├── Infrastructure/
 │       └── Presentation/
 └── Api/                  # Entry-point Web API layer (aggregates all modules)
+
 📖 References
 Eric Evans, Domain-Driven Design: Tackling Complexity in the Heart of Software
-
 Robert C. Martin, Clean Architecture
-
 Microsoft Docs: Modular Monoliths
 
 🎓 Target Audience
 Master's students studying software architecture
-
 Academics exploring enterprise application patterns
-
 Engineers interested in advanced system design
 
 📄 License
