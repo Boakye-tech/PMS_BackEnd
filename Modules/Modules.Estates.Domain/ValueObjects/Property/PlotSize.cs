@@ -9,7 +9,7 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-using System;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Modules.Estates.Domain.ValueObjects.Property
@@ -17,21 +17,41 @@ namespace Modules.Estates.Domain.ValueObjects.Property
     [Owned]
     public record PlotSize : ValueObject
 	{
-		public double Dimension { get; init; }
-		public double Acreage { get; init; }
+		public string? Dimension { get; init; }
+		public decimal Acreage { get; init; }
 
-		private PlotSize(double dimension)
+		private PlotSize(){}
+
+        private PlotSize(string dimensions, double areaInSquareFeet)
 		{
-			Dimension = dimension;
-			Acreage = Math.Truncate((dimension / 43560) * 100) / 100; // Convert to acres
+			Dimension = dimensions;
+            double acres = areaInSquareFeet / 43560; // Convert to acres
+            Acreage = decimal.Parse(acres.ToString("F2")); 
 		}
 
-		public static Result<PlotSize> Create(double dimension)
+		public static Result<PlotSize> Create(string dimension)
 		{
-			if (dimension <= 0)
-				return Result<PlotSize>.Failure("Plot dimension must be greater than zero.");
+			if (string.IsNullOrWhiteSpace(dimension))
+				return Result<PlotSize>.Failure("Plot dimension cannot be null or empty.");
 
-			return Result<PlotSize>.Success(new PlotSize(dimension));
+            if (dimension.Length < 5)
+                return Result<PlotSize>.Failure("Plot dimension cannot be less than five(5) characters.");
+
+            if (!dimension.ToLower().Contains('x'))
+                return Result<PlotSize>.Failure("Invalid format: expected format 'number x number'.");
+
+			//split based on 'x' and check if 1st and last values are numbers
+            var _parts = dimension.ToLower().Split('x');
+
+			if(!int.TryParse(_parts.FirstOrDefault(),out int _lenght))
+                return Result<PlotSize>.Failure($"Invalid dimension: '{_parts.FirstOrDefault()}' is not a valid integer.");
+
+            if(!int.TryParse(_parts.LastOrDefault(),out int _width))
+                return Result<PlotSize>.Failure($"Invalid dimension: '{_parts.LastOrDefault()}' is not a valid integer.");
+
+			double _areaInSquareFeet = _lenght * _width;
+
+            return Result<PlotSize>.Success(new PlotSize(dimension, _areaInSquareFeet));
 		}
 	}
 }

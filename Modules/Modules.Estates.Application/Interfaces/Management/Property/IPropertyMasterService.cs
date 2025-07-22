@@ -31,9 +31,9 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 
 
 
-        //Task<ReturnResponsesDto> CreateApartment(ApartmentTypeCreateDto values);
+        Task<ReturnResponsesDto> CreateApartment(ApartmentCreateDto values);
 
-        //Task<ReturnResponsesDto> CreatePlot(PlotCreateDto values);
+        Task<ReturnResponsesDto> CreatePlot(PlotCreateDto values);
 
         //Task<ReturnResponsesDto> CreateShopsOffice(ShopsOfficesDto values);
 

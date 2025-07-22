@@ -102,7 +102,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             string blockNumber,
             int NumberFrom,
             int NumberTo,
-            double plotDimension,
+            string plotDimension,
             PropertyCoordinates coordinates, bool isApartment = false, string blockUnit = null!)
         {
             // Create value objects
@@ -167,7 +167,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(this);
         }
 
-        public Result<PropertyMaster> UpdatePlotSize(double newDimension)
+        public Result<PropertyMaster> UpdatePlotSize(string newDimension)
         {
             var plotSizeResult = PlotSize.Create(newDimension);
             if (!plotSizeResult.IsSuccess)

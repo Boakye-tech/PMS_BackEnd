@@ -26,7 +26,276 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
             _mapper = mapper;
         }
 
-       
+        private async Task<(TEntity? entity, ReturnResponsesDto? error)> ValidateEntity<TEntity>(Func<Task<TEntity?>> fetchFunc, string errorMessage, int errorCode = StatusCodes.Status400BadRequest) where TEntity : class
+        {
+            var entity = await fetchFunc();
+            if (entity == null)
+            {
+                return (null, new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = errorCode,
+                        Message = errorMessage
+                    }
+                });
+            }
+            return (entity, null);
+        }
+
+        public async Task<ReturnResponsesDto> CreateApartment(ApartmentCreateDto values)
+        {
+            try
+            {
+                var (schemeType, schemeTypeError) = await ValidateEntity(
+                    () => _unitOfWork.SchemeTypes.Get(values.SchemeTypeId),
+                    "Scheme Id provided does not exist"
+                );
+                if (schemeTypeError != null) return schemeTypeError;
+
+                var (landUse, landUseError) = await ValidateEntity(
+                    () => _unitOfWork.LandUse.Get(values.LandUseId),
+                    "Land Use Id provided does not exist"
+                );
+                if (landUseError != null) return landUseError;
+
+                //check if land use type exist and get land use type initials
+                var (landUseType, landUseTypeError) = await ValidateEntity(
+                    () => _unitOfWork.LandUseType.Get(values.LandUseTypeId),
+                    "Land Use Type Id provided does not exist"
+                );
+                if (landUseTypeError != null) return landUseTypeError;
+
+                //check if locality exist and get locality initials
+                var (locality, localityError) = await ValidateEntity(
+                    () => _unitOfWork.Locality.Get(values.LocalityId),
+                    "Locality Id provided does not exist"
+                );
+                if (localityError != null) return localityError;
+
+                //check for site
+                if(values.SiteId > 0)
+                {
+                    var (site, siteError) = await ValidateEntity(
+                        () => _unitOfWork.Sites.Get(values.SiteId),
+                        "Site Id provided does not exist"
+                    );
+                    if (siteError != null) return siteError;
+                }
+
+
+                //check if allocation type exist and allocation type initials
+                var (allocationype, allocationypeError) = await ValidateEntity(
+                    () => _unitOfWork.AllocationType.Get(values.AllocationTypeId),
+                    "Allocation Type Id provided does not exist"
+                );
+                if (allocationypeError != null) return allocationypeError;
+
+                //check block number
+                var (blockNumber, blockNumberError) = await ValidateEntity(
+                    () => _unitOfWork.BlockNumber.Get(values.BlockNumberId),
+                    "Block Number Id provided does not exist"
+                );
+                if (blockNumberError != null) return blockNumberError;
+
+
+                //check floor number
+                var (floorNumber, floorNumberError) = await ValidateEntity(
+                    () => _unitOfWork.FloorNumbering.Get(values.FloorNumberId),
+                    "Floor Number Id provided does not exist"
+                );
+                if (floorNumberError != null) return floorNumberError;
+
+
+                // check if apartment category exist and get apartment category
+                var (apartmentCategory, apartmentCategoryError) = await ValidateEntity(
+                    () => _unitOfWork.ApartmentCategory.Get(values.ApartmentCategoryId),
+                    "Apartment Category Id provided does not exist"
+                );
+                if (apartmentCategoryError != null) return apartmentCategoryError;
+
+
+                //check if apartment type exist and get apartment type
+                var (apartmentType, apartmentTypeError) = await ValidateEntity(
+                    () => _unitOfWork.ApartmentTypes.Get(values.ApartmentTypeId),
+                    "Apartment Type Id provided does not exist"
+                );
+                if (apartmentTypeError != null) return apartmentTypeError;
+
+                //check BlockTypeId
+                var (blockType, blockTypeError) = await ValidateEntity(
+                    () => _unitOfWork.BlockType.Get(values.BlockTypeId),
+                    "Block Type Id provided does not exist"
+                );
+                if (blockTypeError != null) return blockTypeError;
+
+                //check BlockSideId
+                var (blockSide, blockSideError) = await ValidateEntity(
+                    () => _unitOfWork.BlockSides.Get(values.BlockSideId),
+                    "Block Side Id provided does not exist"
+                );
+                if (blockSideError != null) return blockSideError;
+
+                //check BlockUnitId
+                var (blockUnit, blockUnitError) = await ValidateEntity(
+                    () => _unitOfWork.ApartmentTypes.Get(values.ApartmentTypeId),
+                    "Block Unit Id provided does not exist"
+                );
+                if (blockUnitError != null) return blockUnitError;
+
+                return null!;
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status500InternalServerError,
+                        Message = ex.InnerException?.Message ?? ex.Message
+                    }
+                };
+            }
+        }
+
+        public async Task<ReturnResponsesDto> CreatePlot(PlotCreateDto values)
+        {
+            try
+            {
+                var (landUse, landUseError) = await ValidateEntity(() => _unitOfWork.LandUse.Get(values.LandUseId), "Land Use Id provided does not exist");
+                if (landUseError != null) return landUseError;
+
+                //check if land use type exist and get land use type initials
+                var (landUseType, landUseTypeError) = await ValidateEntity(() => _unitOfWork.LandUseType.Get(values.LandUseTypeId), "Land Use Type Id provided does not exist" );
+                if (landUseTypeError != null) return landUseTypeError;
+
+                //check if locality exist and get locality initials
+                var (locality, localityError) = await ValidateEntity(
+                    () => _unitOfWork.Locality.Get(values.LocalityId),
+                    "Locality Id provided does not exist"
+                );
+                if (localityError != null) return localityError;
+
+                //check for site
+                if (values.SiteId > 0)
+                {
+                    var (site, siteError) = await ValidateEntity(
+                        () => _unitOfWork.Sites.Get(values.SiteId),
+                        "Site Id provided does not exist"
+                    );
+                    if (siteError != null) return siteError;
+                }
+
+                //check if allocation type exist and allocation type initials
+                var (allocationtype, allocationtypeError) = await ValidateEntity(
+                    () => _unitOfWork.AllocationType.Get(values.AllocationTypeId),
+                    "Allocation Type Id provided does not exist"
+                );
+                if (allocationtypeError != null) return allocationtypeError;
+
+                //check for plot size (dimensions)
+                string _dimensions = string.Empty;
+                if (values.PlotDimensionId > 0)
+                {
+                    var (plotDimension, plotDimensionError) = await ValidateEntity(
+                        () => _unitOfWork.PlotDimension.Get(values.PlotDimensionId),
+                        "Plot Dimension Id provided does not exist"
+                    );
+                    if (plotDimensionError != null) return plotDimensionError;
+
+                    _dimensions = plotDimension!.PlotDimensions;
+                }
+
+                //check block number
+                var (blockNumber, blockNumberError) = await ValidateEntity(
+                    () => _unitOfWork.BlockNumber.Get(values.BlockNumberId),
+                    "Block Number Id provided does not exist"
+                );
+                if (blockNumberError != null) return blockNumberError;
+
+                //check plot type
+                var (plotType, plotTypeError) = await ValidateEntity(
+                    () => _unitOfWork.PlotType.Get(values.PlotTypeId),
+                    "Plot Type Id provided does not exist"
+                );
+                if (plotTypeError != null) return plotTypeError;
+
+                //check property height
+                var (propertyHeight, propertyHeightError) = await ValidateEntity(
+                    () => _unitOfWork.PropertyHeight.Get(values.PropertyHeightId),
+                    "Property Height Id provided does not exist"
+                );
+                if (propertyHeightError != null) return propertyHeightError;
+
+
+
+                var propertyResult = PropertyMaster.Create(
+                    //values.PropertyTypeId,
+                    0,
+                    values.LandUseId,
+                    landUse!.LandUseInitial!,
+                    values.LandUseTypeId,
+                    landUseType!.LandUseTypeInitial!,
+                    values.LocalityId,
+                    locality!.LocalityInitial,
+                    values.AllocationTypeId,
+                    allocationtype!.AllocationTypeInitial,
+                    values.BlockNumberId.ToString()!,
+                    values.PlotNumberFrom,
+                    values.PlotNumberTo,
+                    _dimensions,
+                    PropertyCoordinates.Create("", "", "", "", "", "").Value,
+                    false,
+                    //values.BlockUnit!
+                    string.Empty
+                    );
+
+                if (!propertyResult.IsSuccess)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = 400,
+                            Message = propertyResult.Error
+                        }
+                    };
+                }
+
+                var property = propertyResult.Value;
+                property.CreatedBy = values.CreatedBy;
+                property.CreatedOn = DateTime.UtcNow;
+
+                _unitOfWork.PropertyMaster.Insert(property);
+                await _unitOfWork.Complete();
+
+
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    SuccessResponse = new SuccessResponseDto
+                    {
+                        Code = 201,
+                        Message = "Property created successfully.",
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status500InternalServerError,
+                        Message = ex.InnerException?.Message ?? ex.Message
+                    }
+                };
+            }
+        }
 
         public async Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values)
         {
@@ -94,7 +363,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 }
 
                 //check for plot size (dimensions)
-                double _dimensions = 0;
+                string _dimensions = string.Empty;
                 if (values.PlotDimensionId > 0)
                 {
                     var _plotDimension = await _unitOfWork.PlotDimension.Get(values.PlotDimensionId);
@@ -111,8 +380,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                         };
                     }
 
-                    var _result = _plotDimension.PlotDimensions.ToLower().Split('x');
-                    _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
+                    _dimensions = _plotDimension.PlotDimensions;
+                    //var _result = _plotDimension.PlotDimensions.ToLower().Split('x');
+                    //_dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
                 }
 
 
@@ -212,9 +482,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
             }
 
-            double _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
+            //double _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
 
-            var _acreage = PlotSize.Create(_dimensions);
+            var _acreage = PlotSize.Create(plotDimension);
 
             return new ReturnResponsesDto
             {
@@ -222,7 +492,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 SuccessResponse = new SuccessResponseDto
                 {
                     Code = StatusCodes.Status200OK,
-                    Message = _acreage.Value.Acreage.ToString("F2")
+                    Message = _acreage.Value.Acreage.ToString()
                 }
             };
 
@@ -233,48 +503,66 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
         {
             //throw new NotImplementedException();
 
-            if(plotDimensionId <= 0)
+
+            try
             {
-                return new ReturnResponsesDto
+                if (plotDimensionId <= 0)
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto
+                    return new ReturnResponsesDto
                     {
-                        Code = StatusCodes.Status400BadRequest,
-                        Message = "Plot Dimension Id cannot be zero"
-                    }
-                };
-            }
-
-
-            var _plotDimension = await _unitOfWork.PlotDimension.Get(plotDimensionId);
-            if (_plotDimension is null)
-            {
-                return new ReturnResponsesDto
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto
-                    {
-                        Code = StatusCodes.Status400BadRequest,
-                        Message = "Plot Dimension Id provided does not exist"
-                    }
-                };
-            }
-
-            var _result = _plotDimension.PlotDimensions.ToLower().Split('x');
-            double _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
-
-            var _acreage = PlotSize.Create(_dimensions);
-
-            return new ReturnResponsesDto
-            {
-                IsSuccess = true,
-                SuccessResponse = new SuccessResponseDto
-                {
-                    Code = StatusCodes.Status200OK,
-                    Message = _acreage.Value.Acreage.ToString("F2")
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = "Plot Dimension Id cannot be zero"
+                        }
+                    };
                 }
-            };
+
+                var _plotDimension = await _unitOfWork.PlotDimension.Get(plotDimensionId);
+                if (_plotDimension is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = "Plot Dimension Id provided does not exist"
+                        }
+                    };
+                }
+
+                //var _result = _plotDimension.PlotDimensions.ToLower().Split('x');
+                //double _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
+
+                var _acreage = PlotSize.Create(_plotDimension.PlotDimensions);
+
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    SuccessResponse = new SuccessResponseDto
+                    {
+                        Code = StatusCodes.Status200OK,
+                        Message = _acreage.Value.Acreage.ToString("F2")
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status500InternalServerError,
+                        Message = ex.Message ?? ex.InnerException!.Message
+                    }
+                };
+
+            }
+
+
         }
 
 
