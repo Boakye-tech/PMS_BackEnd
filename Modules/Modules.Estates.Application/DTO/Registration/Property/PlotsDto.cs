@@ -41,15 +41,15 @@ namespace Modules.Estates.Application.DTO.Registration.Property
     );
 
     public record PlotCreateDto(
-        string PropertyNumber,
+        //string PropertyNumber,
         int LandUseId,
         int LandUseTypeId,
         int LocalityId,
         int SiteId,
         int AllocationTypeId,
         int BlockNumberId,
-        int PlotNumberFrom,
-        int PlotNumberTo,
+        string PlotNumberFrom,
+        string PlotNumberTo,
         int PlotDimensionId,
         int PlotTypeId,
         int PropertyHeightId,
@@ -63,7 +63,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
         string Coordinate6,
         string SitePlan,
         string Cadastal,
-        string PropertyStatus,
+        int PropertyStatusId,
         List<string> Images,
         string CreatedBy
     );

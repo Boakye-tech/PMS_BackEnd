@@ -41,7 +41,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
     );
 
     public record ApartmentCreateDto(
-        string PropertyNumber,
+        //string PropertyNumber,
         int SchemeTypeId,
         int LandUseId,
         int LandUseTypeId,
@@ -55,13 +55,13 @@ namespace Modules.Estates.Application.DTO.Registration.Property
         int BlockUnitId,
         int BlockNumberId,
         int FloorNumberId,
-        string RoomNoFrom,
-        string RoomNoTo,
+        string RoomNumberFrom,
+        string RoomNumberTo,
         string Coordinate1,
         string Coordinate2,
         string Coordinate3,
         string Coordinate4,
-        string PropertyStatus,
+        int PropertyStatusId,
         List<string> Images,
         string CreatedBy
     );

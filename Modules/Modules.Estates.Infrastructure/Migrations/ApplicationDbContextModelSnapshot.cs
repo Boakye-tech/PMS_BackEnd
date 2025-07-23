@@ -435,7 +435,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("AllocationTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ApartmentBlockNumberId")
+                    b.Property<int>("ApartmentCategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("ApartmentTypeId")
@@ -447,9 +447,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("ApprovedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("BlockNumber")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                    b.Property<int>("BlockNumberId")
+                        .HasColumnType("int");
 
                     b.Property<int>("BlockSideId")
                         .HasColumnType("int");
@@ -522,25 +521,31 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
 
+                    b.Property<string>("Number")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
                     b.Property<string>("OldPropertyNumber")
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
 
-                    b.Property<string>("PlotNumber")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
                     b.Property<int>("PlotTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PropertyHeightId")
                         .HasColumnType("int");
 
                     b.Property<int>("PropertyStatusId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RentalCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RentalTypeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("RightOfEntry")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
 
                     b.Property<int>("RoomsOccupied")
                         .HasColumnType("int");
@@ -5251,12 +5256,13 @@ namespace Modules.Estates.Infrastructure.Migrations
                             b1.Property<int>("PropertyMasterId")
                                 .HasColumnType("int");
 
-                            b1.Property<double>("Acreage")
-                                .HasColumnType("float")
+                            b1.Property<decimal>("Acreage")
+                                .HasColumnType("decimal(18,2)")
                                 .HasColumnName("PlotAcreage");
 
-                            b1.Property<double>("Dimension")
-                                .HasColumnType("float")
+                            b1.Property<string>("Dimension")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
                                 .HasColumnName("PlotDimension");
 
                             b1.HasKey("PropertyMasterId");

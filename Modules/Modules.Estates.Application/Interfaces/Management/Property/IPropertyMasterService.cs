@@ -35,11 +35,14 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 
         Task<ReturnResponsesDto> CreatePlot(PlotCreateDto values);
 
-        //Task<ReturnResponsesDto> CreateShopsOffice(ShopsOfficesDto values);
+        Task<ReturnResponsesDto> CreateShopsOffice(ShopOfficeCreateDto values);
 
-        //Task<ReturnResponsesDto> CreateHouse(HouseCreateDto values);
+        Task<ReturnResponsesDto> CreateHouse(HouseCreateDto values);
 
-        //Task<ReturnResponsesDto> CreateRentalHouse(RentalHouseCreateDto values);
+        Task<ReturnResponsesDto> CreateRentalHouse(RentalHouseCreateDto values);
+
+        Task<ReturnResponsesDto> CreateLargeScale(largeScaleCreateDto values);
+
     }
 }
 

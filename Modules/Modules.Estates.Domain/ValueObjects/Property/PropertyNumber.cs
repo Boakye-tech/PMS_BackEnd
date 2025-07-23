@@ -27,7 +27,7 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 			Value = value;
 		}
 
-		public static Result<PropertyNumber> Create(string landUseInitial,string landUseTypeInitial,string localityInitial,string allocationTypeInitial,string blockNumber,int NumberFrom, int NumberTo,bool isApartment = false,string blockUnit = null!)
+		public static Result<PropertyNumber> Create(string landUseInitial,string landUseTypeInitial,string localityInitial,string allocationTypeInitial,string blockNumber,string Number,bool isApartment = false,string blockUnit = null!)
 		{
 			if (string.IsNullOrWhiteSpace(landUseInitial) || landUseInitial.Length > 3)
 				return Result<PropertyNumber>.Failure("Land use initial must not be null or exceed 3 characters.");
@@ -42,8 +42,8 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 			if (string.IsNullOrWhiteSpace(allocationTypeInitial) || allocationTypeInitial.Length > 3)
 				return Result<PropertyNumber>.Failure("Allocation Type Initial must not be null or exceed 3 characters.");
 
-			if (NumberFrom == 0)
-				return Result<PropertyNumber>.Failure("Plot number cannot be null or zero.");
+			if (string.IsNullOrWhiteSpace(Number) )
+				return Result<PropertyNumber>.Failure("Plot number cannot be null, empty or zero.");
 
 			if (isApartment && string.IsNullOrWhiteSpace(blockUnit))
 				return Result<PropertyNumber>.Failure("Block unit is required for apartments.");
@@ -53,13 +53,13 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 
 			if (isApartment)
 			{
-				propertyNumber = $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{blockUnit}{delimiter}{NumberFrom}";
+				propertyNumber = $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{Number}{delimiter}{blockUnit}";
 			}
 			else
 			{
 				propertyNumber = string.IsNullOrWhiteSpace(blockNumber)
-					? $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{NumberFrom}"
-					: $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{NumberFrom}";
+					? $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{Number}"
+					: $"{landUseTypeInitial}{delimiter}{localityInitial}{delimiter}{allocationTypeInitial}{delimiter}{blockNumber}{delimiter}{Number}";
 			}
 
 			return Result<PropertyNumber>.Success(new PropertyNumber(propertyNumber));

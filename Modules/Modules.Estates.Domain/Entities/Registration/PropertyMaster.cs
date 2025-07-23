@@ -38,59 +38,66 @@ namespace Modules.Estates.Domain.Entities.Registration
         public int PlotTypeId { get; private set; }
         public PlotSize? PlotSize { get; private set; }
         public int SchemeTypeId { get; private set; }
+        public int ApartmentCategoryId { get; private set; }
         public int ApartmentTypeId { get; private set; }
         public int BlockTypeId { get; private set; }
         public int BlockSideId { get; private set; }
         public int BlockUnitId { get; private set; }
 
-        [StringLength(5)]
-        public string? BlockNumber { get; private set; }
+        //[StringLength(5)]
+        //public string? BlockNumber { get; private set; }
+        public int BlockNumberId { get; private set; }
 
         [StringLength(5)]
-        public string? PlotNumber { get; set; }
+        public string? Number { get; private set; }
 
-        public int RoomNumber { get; private set; }
+        //public string? PlotNumber { get; private set; }
+        //public string RoomNumber { get; private set; }
+
         public PropertyCoordinates? Coordinates { get; private set; }
         public LeasePeriod? Lease { get; private set; }
         public int PropertyStatusId { get; private set; }
         public string[]? Images { get; private set; }
-        public string? CustomerCode { get; set; }
+        public string? CustomerCode { get; private set; }
 
         // Navigation property for CustomerMaster
         //public virtual CustomerMaster? CustomerMaster { get; private set; }
 
         public bool IsDeleted { get; private set; }
 
-        public double CostPrice { get; set; }
-        public double SellingPrice { get; set; }
-        public int CurrencyId { get; set; }
+        public double CostPrice { get; private set; }
+        public double SellingPrice { get; private set; }
+        public int CurrencyId { get; private set; }
 
-        public int TypeId { get; set; }
-        public int TotalNumberOfRooms { get; set; }
-        public int RoomsOccupied { get; set; }
+        public int RentalCategoryId { get; private set; }
+        public int RentalTypeId { get; private set; }
+        public int TypeId { get; private set; }
+        public int TotalNumberOfRooms { get; private set; }
+        public int RoomsOccupied { get; private set; }
 
-        public int ApartmentBlockNumberId { get; set; }
-        public int FloorNumberId { get; set; }
+        public int PropertyHeightId { get; private set; }
 
-        public DateTime RightOfEntry { get; set; }
+        public int FloorNumberId { get; private set; }
 
-        public int DebtorType { get; set; }
+        public DateTime RightOfEntry { get; private set; }
 
-        public int GroupNumber { get; set; }
+        public int DebtorType { get; private set; }
 
-        [StringLength(75)]
-        public string? MotherPropertyNumber { get; set; }
-
-        public string? Comments { get; set; }
-
-        [StringLength(30)]
-        public string? SitePlanNumber { get; set; }
-
-        [StringLength(30)]
-        public string? CadastralPlanNumber { get; set; }
+        public int GroupNumber { get; private set; }
 
         [StringLength(75)]
-        public string? OldPropertyNumber { get; set; }
+        public string? MotherPropertyNumber { get; private set; }
+
+        public string? Comments { get; private set; }
+
+        [StringLength(30)]
+        public string? SitePlanNumber { get; private set; }
+
+        [StringLength(30)]
+        public string? CadastralPlanNumber { get; private set; }
+
+        [StringLength(75)]
+        public string? OldPropertyNumber { get; private set; }
 
 
         // For EF Core
@@ -112,8 +119,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 localityInitial,
                 allocationTypeInitial,
                 blockNumber,
-                NumberFrom,
-                NumberTo,
+                NumberFrom.ToString(),
                 isApartment,
                 blockUnit);
 
@@ -141,6 +147,151 @@ namespace Modules.Estates.Domain.Entities.Registration
                 Coordinates = coordinates,
                 //Lease = leaseResult.Value,
                 //IsLargeScale = isLargeScale,
+                IsDeleted = false
+            };
+
+            return Result<PropertyMaster>.Success(property);
+        }
+
+
+        public static Result<PropertyMaster> CreateApartment(int schemeTypeId, string schemeType, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,
+                                                             int siteId,int allocationTypeId,string allocationTypeInitial,int apartmentCategoryId,int apartmentTypeId,int blockTypeId,int blockSideId,int blockUnitId,
+                                                             string blockUnit,int blockNumberId,string blockNumber,int floorNumberId,string roomNumber, PropertyCoordinates coordinates,
+                                                             int propertyStatusId,List<string> images, bool isApartment = true)
+        {
+            // Create value objects
+            var propertyNumberResult = PropertyNumber.Create(
+                landUseInitial,
+                landUseTypeInitial,
+                localityInitial,
+                allocationTypeInitial,
+                blockNumber,
+                roomNumber,
+                isApartment,
+                blockUnit);
+
+            if (!propertyNumberResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
+
+
+            if (schemeType != landUseTypeInitial)
+                return Result<PropertyMaster>.Failure("The scheme type does not correspond to the land use type.");
+
+            // Create the entity
+            var property = new PropertyMaster
+            {
+                PropertyNumber = propertyNumberResult.Value,
+
+                SchemeTypeId = schemeTypeId,
+                LandUseId = landUseId,
+                LandUseTypeId = landUseTypeId,
+                LocalityId = localityId,
+                SiteId = siteId,
+                AllocationTypeId = allocationTypeId,
+                ApartmentCategoryId = apartmentCategoryId,
+                ApartmentTypeId = apartmentTypeId,
+                BlockNumberId = blockNumberId,
+                Number = roomNumber,
+                BlockTypeId = blockTypeId,
+                BlockSideId = blockSideId,
+                BlockUnitId = blockUnitId,
+                FloorNumberId = floorNumberId,
+                Coordinates = coordinates,
+                PropertyStatusId = propertyStatusId,
+                Images = images.ToArray(),
+                IsDeleted = false
+            };
+
+            return Result<PropertyMaster>.Success(property);
+        }
+
+
+        public static Result<PropertyMaster> CreatePlot(int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,int siteId,
+                                                        int allocationTypeId,string allocationTypeInitial,int blockNumberId, string blockNumber,string plotNumber,
+                                                        string plotDimension,int plotTypeId,int propertyHeightId,PropertyCoordinates coordinates,
+                                                        string sitePlanNumber,string cadastalPlanNumber,int propertyStatusId,List<string> images,bool isApartment = false)
+        {
+            // Create value objects
+            var propertyNumberResult = PropertyNumber.Create(
+                landUseInitial,
+                landUseTypeInitial,
+                localityInitial,
+                allocationTypeInitial,
+                blockNumber,
+                plotNumber,
+                isApartment,
+                null!);
+
+            if (!propertyNumberResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
+
+            var plotSizeResult = PlotSize.Create(plotDimension);
+            if (!plotSizeResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(plotSizeResult.Error);
+
+            // Create the entity
+            var property = new PropertyMaster
+            {
+                PropertyNumber = propertyNumberResult.Value,
+                LandUseId = landUseId,
+                LandUseTypeId = landUseTypeId,
+                LocalityId = localityId,
+                SiteId = siteId,
+                AllocationTypeId = allocationTypeId,
+                BlockNumberId = blockNumberId,
+                Number = plotNumber,
+                PlotSize = plotSizeResult.Value,
+                PlotTypeId = plotTypeId,
+                PropertyHeightId = propertyHeightId,
+                Coordinates = coordinates,
+                SitePlanNumber = sitePlanNumber,
+                CadastralPlanNumber = cadastalPlanNumber,
+                Images = images.ToArray(),
+                PropertyStatusId = propertyStatusId,
+                IsDeleted = false
+            };
+
+            return Result<PropertyMaster>.Success(property);
+        }
+
+        public static Result<PropertyMaster> CreateShopsOffices(int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+                                                int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string shopofficeNumber,
+                                                int rentalCategoryId, int rentalTypeId,int shopOfficeTypeId, PropertyCoordinates coordinates,
+                                                int propertyStatusId, List<string> images, bool isApartment = false)
+        {
+            // Create value objects
+            var propertyNumberResult = PropertyNumber.Create(
+                landUseInitial,
+                landUseTypeInitial,
+                localityInitial,
+                allocationTypeInitial,
+                blockNumber,
+                shopofficeNumber,
+                isApartment,
+                null!);
+
+            if (!propertyNumberResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
+
+           
+
+            // Create the entity
+            var property = new PropertyMaster
+            {
+                PropertyNumber = propertyNumberResult.Value,
+                LandUseId = landUseId,
+                LandUseTypeId = landUseTypeId,
+                LocalityId = localityId,
+                SiteId = siteId,
+                AllocationTypeId = allocationTypeId,
+                BlockNumberId = blockNumberId,
+                Number = shopofficeNumber,
+                RentalCategoryId = rentalCategoryId,
+                RentalTypeId = rentalTypeId,
+                TypeId = shopOfficeTypeId,
+                Coordinates = coordinates,
+                Images = images.ToArray(),
+                PropertyStatusId = propertyStatusId,
                 IsDeleted = false
             };
 
