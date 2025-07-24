@@ -15,6 +15,7 @@
 //necessary logic. E.g. the logic for 1. Generating property numbers and 2. Creating and updating property details
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Modules.Estates.Domain.Entities.Setup.Property;
 using Modules.Estates.Domain.ValueObjects.Property;
 
 namespace Modules.Estates.Domain.Entities.Registration
@@ -297,6 +298,100 @@ namespace Modules.Estates.Domain.Entities.Registration
 
             return Result<PropertyMaster>.Success(property);
         }
+
+        public static Result<PropertyMaster> CreateHouses(int SchemeTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+                                                          int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string houseNumber, int houseCategoryId, int houseCategoryTypeId,
+                                                          int houseTypeId, string plotDimension, int plotTypeId, PropertyCoordinates coordinates,int propertyStatusId, List<string> images, bool isApartment = false)
+        {
+            // Create value objects
+            var propertyNumberResult = PropertyNumber.Create(
+                landUseInitial,
+                landUseTypeInitial,
+                localityInitial,
+                allocationTypeInitial,
+                blockNumber,
+                houseNumber,
+                isApartment,
+                null!);
+
+            if (!propertyNumberResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
+
+            var plotSizeResult = PlotSize.Create(plotDimension);
+            if (!plotSizeResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(plotSizeResult.Error);
+
+
+            // Create the entity
+            var property = new PropertyMaster
+            {
+                PropertyNumber = propertyNumberResult.Value,
+                SchemeTypeId = SchemeTypeId,
+                LandUseId = landUseId,
+                LandUseTypeId = landUseTypeId,
+                LocalityId = localityId,
+                SiteId = siteId,
+                AllocationTypeId = allocationTypeId,
+                BlockNumberId = blockNumberId,
+                Number = houseNumber,
+                RentalCategoryId = houseCategoryId,
+                RentalTypeId = houseCategoryTypeId,
+                TypeId = houseTypeId,
+                PlotSize = plotSizeResult.Value,
+                PlotTypeId = plotTypeId,
+                Coordinates = coordinates,
+                Images = images.ToArray(),
+                PropertyStatusId = propertyStatusId,
+                IsDeleted = false
+            };
+
+            return Result<PropertyMaster>.Success(property);
+        }
+
+
+        public static Result<PropertyMaster> CreateRentalHouses(int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+                                                                int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string houseNumber, int houseCategoryId,
+                                                                int houseCategoryTypeId, int houseTypeId,  PropertyCoordinates coordinates, int propertyStatusId, List<string> images, bool isApartment = false)
+        {
+            // Create value objects
+            var propertyNumberResult = PropertyNumber.Create(
+                landUseInitial,
+                landUseTypeInitial,
+                localityInitial,
+                allocationTypeInitial,
+                blockNumber,
+                houseNumber,
+                isApartment,
+                null!);
+
+            if (!propertyNumberResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
+
+
+            // Create the entity
+            var property = new PropertyMaster
+            {
+                PropertyNumber = propertyNumberResult.Value,
+                LandUseId = landUseId,
+                LandUseTypeId = landUseTypeId,
+                LocalityId = localityId,
+                SiteId = siteId,
+                AllocationTypeId = allocationTypeId,
+                BlockNumberId = blockNumberId,
+                Number = houseNumber,
+                RentalCategoryId = houseCategoryId,
+                RentalTypeId = houseCategoryTypeId,
+                TypeId = houseTypeId,
+                Coordinates = coordinates,
+                Images = images.ToArray(),
+                PropertyStatusId = propertyStatusId,
+                IsDeleted = false
+            };
+
+            return Result<PropertyMaster>.Success(property);
+        }
+
+
 
         // Domain methods
         public Result<PropertyMaster> UpdateLease(DateTime newCommencementDate, int newTerm)

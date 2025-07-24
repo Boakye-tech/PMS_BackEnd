@@ -41,7 +41,6 @@ namespace Modules.Estates.Application.DTO.Registration.Property
     );
 
     public record ApartmentCreateDto(
-        //string PropertyNumber,
         int SchemeTypeId,
         int LandUseId,
         int LandUseTypeId,

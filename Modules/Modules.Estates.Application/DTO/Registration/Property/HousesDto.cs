@@ -39,6 +39,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
     );
 
     public record HouseCreateDto(
+        int SchemeTypeId,
         int LandUseId,
         int LandUseTypeId,
         int LocalityId,
@@ -48,10 +49,10 @@ namespace Modules.Estates.Application.DTO.Registration.Property
         int HouseCategoryId,
         int HouseCategoryTypeId,
         int HouseTypeId,
-        int plotDimensionId,
-        int plotTypeId,
         string HouseNumberFrom,
         string HouseNumberTo,
+        int PlotDimensionId,
+        int PlotTypeId,
         DateTime DateOfTenancy,
         decimal CostPrice,
         decimal SellingPrice,
@@ -60,7 +61,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
         string Coordinate2,
         string Coordinate3,
         string Coordinate4,
-        string PropertyStatus,
+        int PropertyStatusId,
         List<string> Images,
         string CreatedBy
     );

@@ -67,7 +67,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
         string Coordinate2,
         string Coordinate3,
         string Coordinate4,
-        string PropertyStatus,
+        int PropertyStatusId,
         List<string> Images,
         string CreatedBy
     );
