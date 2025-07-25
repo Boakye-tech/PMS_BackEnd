@@ -111,6 +111,8 @@ public class UnitOfWork: IUnitOfWork
         ApartmentCategory = new ApartmentCategoryRepository(_dbContext);
 
         PlotFeatures = new PlotFeaturesRepository(_dbContext);
+
+        PropertyType = new PropertyTypeRepository(_dbContext);
     }
 
 
@@ -213,7 +215,8 @@ public class UnitOfWork: IUnitOfWork
     //June 30 '25
     public IPlotFeatures PlotFeatures { get; private set; }
 
-
+    //Jly 24 '25
+    public IPropertyTypeRepository PropertyType { get; private set; }
 
     public Task<int> Complete()
     {

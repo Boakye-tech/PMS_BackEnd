@@ -94,6 +94,9 @@ public class ApplicationDbContext : ModuleDbContext
     //30 June, 2025
     public DbSet<PlotFeatures> PlotFeatures { get; set; }
 
+    //24 July, 2025
+    public DbSet<PropertyType> PropertyType { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

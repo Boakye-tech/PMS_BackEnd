@@ -11,6 +11,8 @@
 //  **************************************************/
 
 
+using Modules.Estates.Application.DTO.Setup.Property;
+
 namespace Modules.Estates.Application.Interfaces.ControllerServices
 {
 	public interface IRentalsServices
@@ -50,8 +52,12 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
         Task<ReturnResponsesDto> CreateTypesAsync(TypesCreateDto values);
         Task<ReturnResponsesDto> UpdateTypesAsync(TypesUpdateDto values);
         Task<ReturnResponsesDto> DeleteTypes(int typesId);
-        
 
+        // PropertyTypes methods
+        Task<List<PropertyTypeReadDto>> GetPropertyTypesAsync();
+        Task<ReturnResponsesDto> CreatePropertyTypeAsync(PropertyTypeCreateDto values);
+        Task<ReturnResponsesDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values);
+        Task<ReturnResponsesDto> DeletePropertyType(int propertyTypeId);
 
     }
 }

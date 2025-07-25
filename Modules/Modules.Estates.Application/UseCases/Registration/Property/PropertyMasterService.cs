@@ -310,7 +310,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                         values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId, blockNumber!.BlockNumbers, plotNumber, _dimensions, values.PlotTypeId,
                         values.PropertyHeightId, coordinates.Value, values.SitePlan, values.Cadastal, values.PropertyStatusId, values.Images,
                         false
-                        );
+                    );
 
                     if (!propertyResult.IsSuccess)
                     {
@@ -1025,10 +1025,10 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     ErrorResponse = new ErrorResponseDto
                     {
                         Code = StatusCodes.Status400BadRequest,
-                        Message= "Sorry the property number provided is not a large scale property."
+                        Message = "Sorry the property number provided is not a large scale property."
                     }
                 };
-                
+
 
                 //check if mother plot number(large scale plot) exist
                 var (plot, plotError) = await ValidateEntity(() => _unitOfWork.PropertyMaster.Get(p => p.PropertyNumber!.Value == values.MotherPropertyNumber), "Large scale property number provided does not exist");

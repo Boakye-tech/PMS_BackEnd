@@ -1,0 +1,26 @@
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/Profiles/Property/PropertyTypeProfile.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 24/07/2025 7:58 PM
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+using System;
+namespace Modules.Estates.Application.Profiles.Property
+{
+	public class PropertyTypeProfile : Profile
+	{
+		public PropertyTypeProfile()
+		{
+            CreateMap<PropertyType, PropertyTypeReadDto>();
+            CreateMap<PropertyTypeCreateDto, PropertyType>();
+            CreateMap<PropertyTypeUpdateDto, PropertyType>();
+
+        }
+    }
+}
+
