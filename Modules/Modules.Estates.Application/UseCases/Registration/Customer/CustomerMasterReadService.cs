@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/UseCases/Registration/Customer/CustomerMasterReadService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -9,7 +11,7 @@
 //  **************************************************/
 
 
-namespace Modules.Estates.Application.UseCases.Management.Customer
+namespace Modules.Estates.Application.UseCases.Registration.Customer
 {
     public partial class CustomerMasterService : ICustomerMasterService
     {

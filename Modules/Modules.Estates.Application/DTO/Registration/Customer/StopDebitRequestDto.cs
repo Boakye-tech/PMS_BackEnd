@@ -11,7 +11,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Management.Customer
+namespace Modules.Estates.Application.DTO.Registration.Customer
 {
 	public record StopDebitRequestDto
 	{

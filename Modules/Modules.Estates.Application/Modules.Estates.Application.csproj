@@ -24,7 +24,6 @@
     <None Remove="DTO\Management\" />
     <None Remove="Profiles\Management\" />
     <None Remove="DTO\Management\Property\" />
-    <None Remove="DTO\Management\Customer\" />
     <None Remove="Validations\" />
     <None Remove="Validations\Setup\" />
     <None Remove="Validations\Setup\Customer\" />
@@ -46,6 +45,12 @@
     <None Remove="UseCases\Registration\" />
     <None Remove="UseCases\Registration\Property\" />
     <None Remove="Validations\Complaints\" />
+    <None Remove="UseCases\Registration\Customer\" />
+    <None Remove="Interfaces\Registration\" />
+    <None Remove="Interfaces\Registration\Customer\" />
+    <None Remove="Interfaces\Registration\Property\" />
+    <None Remove="DTO\Registration\Customer\" />
+    <None Remove="DTO\Management\Customer\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
@@ -62,7 +67,6 @@
     <Folder Include="DTO\Management\" />
     <Folder Include="Profiles\Management\" />
     <Folder Include="DTO\Management\Property\" />
-    <Folder Include="DTO\Management\Customer\" />
     <Folder Include="Validations\" />
     <Folder Include="Validations\Setup\" />
     <Folder Include="Validations\Setup\Customer\" />
@@ -84,6 +88,12 @@
     <Folder Include="UseCases\Registration\" />
     <Folder Include="UseCases\Registration\Property\" />
     <Folder Include="Validations\Complaints\" />
+    <Folder Include="UseCases\Registration\Customer\" />
+    <Folder Include="Interfaces\Registration\" />
+    <Folder Include="Interfaces\Registration\Customer\" />
+    <Folder Include="Interfaces\Registration\Property\" />
+    <Folder Include="DTO\Registration\Customer\" />
+    <Folder Include="DTO\Management\Customer\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

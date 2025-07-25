@@ -321,7 +321,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        private IActionResult CreatePropertyType([FromBody] PropertyTypeCreateDto values)
+        public IActionResult CreatePropertyType([FromBody] PropertyTypeCreateDto values)
         {
             var result = _rentalsService.CreatePropertyTypeAsync(values).Result;
             if (result.IsSuccess)
@@ -344,7 +344,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        private IActionResult UpdatePropertyType([FromBody] PropertyTypeUpdateDto values)
+        public IActionResult UpdatePropertyType([FromBody] PropertyTypeUpdateDto values)
         {
             var result = _rentalsService.UpdatePropertyTypeAsync(values).Result;
             if (result.IsSuccess)
@@ -367,7 +367,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        private IActionResult DeletePropertyType(int propertyTypeId)
+        public IActionResult DeletePropertyType(int propertyTypeId)
         {
             var result = _rentalsService.DeletePropertyType(propertyTypeId).Result;
             if (result.IsSuccess)

@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Registration/Customer/MultiOwnershipCustomerResponseDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -11,41 +13,35 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Management.Customer
+namespace Modules.Estates.Application.DTO.Registration.Customer
 {
-	public record JointOwnershipCustomerDto : IndividualCustomerDto
+	public record MultiOwnershipCustomerResponseDto : IndividualCustomerResponseDto
     {
-        public string? CreatedBy { get; set; }
         public string? MaritalStatus { get; set; }
         public DateTime? DateOfMarriage { get; set; }
 
-        public IndividualNonResidentCustomerDto? NonResident { get; set; }
-        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
-
-        public IEnumerable<CoLesseCustomerDto>? CoLesse { get; set; }
+        public IndividualNonResidentCustomerResponseDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerResponseDto? Expatriate { get; set; }
 
     }
 
-    public record UpdateJointOwnershipCustomerDto : IndividualCustomerDto
+    public record DependantCustomerResponseDto : MultiCustomerResponseDto
     {
-        public string? ModifiedBy { get; set; }
-        public string? MaritalStatus { get; set; }
-        public DateTime? DateOfMarriage { get; set; }
-
-        public IndividualNonResidentCustomerDto? NonResident { get; set; }
-        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
-    }
-
-    public record CoLesseCustomerDto : JointCustomerDto 
-    {
-        public IndividualNonResidentCustomerDto? NonResident { get; set; }
-        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
+        public IndividualNonResidentCustomerResponseDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerResponseDto? Expatriate { get; set; }
     }
 
 
-    public record JointCustomerDto
+    public record MultiCustomerResponseDto
     {
-        public required int TitleId { get; set; }
+        public int CustomerMasterId { get; set; }
+
+        [StringLength(10)]
+        public string? CustomerCode { get; set; }
+
+        public int TitleId { get; set; }
+
+        public required string Title { get; set; }
 
         [StringLength(150)]
         public required string SurName { get; set; }
@@ -63,7 +59,11 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public int GenderId { get; set; }
 
+        public string? Gender { get; set; }
+
         public int NationalityId { get; set; }
+
+        public string? Nationality { get; set; }
 
         [StringLength(255)]
         public string? PostalAddress { get; set; }
@@ -92,10 +92,14 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public int SocialMediaTypeId { get; set; }
 
+        public string? SocialMediaPlatform { get; set; }
+
         [StringLength(50)]
         public string? SocialMediaAccount { get; set; }
 
         public int IdentificationTypeId { get; set; }
+
+        public string? IdentificationType { get; set; }
 
         [StringLength(20)]
         public string? IdentificationTypeNumber { get; set; }

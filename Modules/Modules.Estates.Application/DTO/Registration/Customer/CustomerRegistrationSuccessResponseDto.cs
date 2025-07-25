@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Registration/Customer/CustomerRegistrationSuccessResponseDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -11,7 +13,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Management.Customer
+namespace Modules.Estates.Application.DTO.Registration.Customer
 {
     public class CustomerRegistrationSuccessResponseDto
     {

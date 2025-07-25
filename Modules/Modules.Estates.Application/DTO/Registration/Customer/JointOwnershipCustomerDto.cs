@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Registration/Customer/JointOwnershipCustomerDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -11,9 +13,9 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Management.Customer
+namespace Modules.Estates.Application.DTO.Registration.Customer
 {
-    public record MultiOwnershipCustomerDto : IndividualCustomerDto
+	public record JointOwnershipCustomerDto : IndividualCustomerDto
     {
         public string? CreatedBy { get; set; }
         public string? MaritalStatus { get; set; }
@@ -22,11 +24,11 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public IndividualNonResidentCustomerDto? NonResident { get; set; }
         public IndividualExpatriateCustomerDto? Expatriate { get; set; }
 
-        public IEnumerable<MultiCustomerDto>? Dependent { get; set; }
+        public IEnumerable<CoLesseCustomerDto>? CoLesse { get; set; }
 
     }
 
-    public record UpdateMultiOwnershipCustomerDto : IndividualCustomerDto
+    public record UpdateJointOwnershipCustomerDto : IndividualCustomerDto
     {
         public string? ModifiedBy { get; set; }
         public string? MaritalStatus { get; set; }
@@ -36,7 +38,14 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public IndividualExpatriateCustomerDto? Expatriate { get; set; }
     }
 
-    public record MultiCustomerDto
+    public record CoLesseCustomerDto : JointCustomerDto 
+    {
+        public IndividualNonResidentCustomerDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
+    }
+
+
+    public record JointCustomerDto
     {
         public required int TitleId { get; set; }
 
@@ -96,5 +105,6 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public string[]? IdentificationImages { get; set; }
 
     }
+
 }
 

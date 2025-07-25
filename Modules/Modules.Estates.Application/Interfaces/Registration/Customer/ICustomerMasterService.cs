@@ -1,18 +1,20 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/Interfaces/Registration/Customer/ICustomerMasterService.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/01/2025 
+// * Create Date: 25/07/2025 10:54 PM
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
 
 
-namespace Modules.Estates.Application.Interfaces.Management.Customer
+namespace Modules.Estates.Application.Interfaces.Registration.Customer
 {
-	public interface ICustomerMasterService
-	{
+    public interface ICustomerMasterService
+    {
         Task<CustomerRegistrationResponseDto> CreateCustomer(ProspectiveCustomerCreateDto values);
         Task<CustomerRegistrationResponseDto> CreateCustomer(CreateCompanyCustomerDto values);
         Task<CustomerRegistrationResponseDto> CreateCustomer(IndividualResidentCustomerDto values);

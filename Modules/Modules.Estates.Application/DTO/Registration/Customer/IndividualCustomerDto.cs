@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Registration/Customer/IndividualCustomerDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -11,31 +13,23 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Management.Customer
+namespace Modules.Estates.Application.DTO.Registration.Customer
 {
-    public record IndividualCustomerResponseDto
-    {
+	public record IndividualCustomerDto
+	{
         [Key]
         public int CustomerMasterId { get; set; }
 
-        public int CustomerTypeId { get; set; }
+        public required int CustomerTypeId { get; set; }
 
-        public string? CustomerType { get; set; }
+        public required int ResidentTypeId { get; set; }
 
-        public int ResidentTypeId { get; set; }
-
-        public string? ResidentType { get; set; }
-
-        public int LocalityId { get; set; }
-
-        public string? Locality { get; set; }
+        public required int LocalityId { get; set; }
 
         [StringLength(10)]
-        public required string? CustomerCode { get; set; }
+        public string? CustomerCode { get; set; }
 
-        public int TitleId { get; set; }
-
-        public string? Title { get; set; }
+        public required int TitleId { get; set; }
 
         [StringLength(150)]
         public required string SurName { get; set; }
@@ -53,11 +47,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public int GenderId { get; set; }
 
-        public string? Gender { get; set; }
-
         public int NationalityId { get; set; }
-
-        public string? Nationality { get; set; }
 
         [StringLength(255)]
         public string? PostalAddress { get; set; }
@@ -67,7 +57,7 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         [StringLength(50)]
         public string? DigitalAddress { get; set; }
-
+        
         [Required]
         [StringLength(12)]
         public string? PrimaryMobileNumber { get; set; }
@@ -86,14 +76,10 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public int SocialMediaTypeId { get; set; }
 
-        public string? SocialMediaPlatform { get; set; }
-
         [StringLength(50)]
         public string? SocialMediaAccount { get; set; }
 
         public int IdentificationTypeId { get; set; }
-
-        public string? IdentificationType { get; set; }
 
         [StringLength(20)]
         public string? IdentificationTypeNumber { get; set; }
@@ -103,18 +89,28 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         //[StringLength(255)]
         public string? Comments { get; set; }
 
-        public string? DebtorStatus { get; set; }
+        //public int DebtorStatus { get; set; }
 
     }
 
-    public record IndividualResidentCustomerResponseDto : IndividualCustomerResponseDto
+    public record IndividualResidentCustomerDto : IndividualCustomerDto
     {
-        public IndividualNonResidentCustomerResponseDto? NonResident { get; set; }
-        public IndividualExpatriateCustomerResponseDto? Expatriate { get; set; }
+        public string? CreatedBy { get; set; }
 
+        public IndividualNonResidentCustomerDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
     }
 
-    public record IndividualNonResidentCustomerResponseDto 
+
+    public record UpdateIndividualResidentCustomerDto : IndividualCustomerDto
+    {
+        public string? ModifiedBy { get; set; }
+
+        public IndividualNonResidentCustomerDto? NonResident { get; set; }
+        public IndividualExpatriateCustomerDto? Expatriate { get; set; }
+    }
+
+    public record IndividualNonResidentCustomerDto
     {
         [StringLength(255)]
         public string? ContactPerson_FullName { get; set; }
@@ -123,23 +119,21 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public string? ContactPerson_PhoneNumber { get; set; }
 
         [StringLength(255)]
-        [EmailAddress]
+        //[EmailAddress]
         public string? ContactPerson_EmailAddress { get; set; }
 
-        [StringLength(255)]
+        [StringLength(12)]
         public string? ContactPerson_Address { get; set; }
 
         public int ContactPerson_IdentificationTypeId { get; set; }
 
-        public string? ContactPerson_IdentificationType { get; set; }
-
-        [StringLength(20)]
         public string? ContactPerson_IdentificationTypeNumber { get; set; }
 
         public string[]? ContactPerson_IdentificationImages { get; set; }
     }
 
-    public record IndividualExpatriateCustomerResponseDto 
+
+    public record IndividualExpatriateCustomerDto
     {
         [StringLength(30)]
         public string? ResidentPermitNumber { get; set; }
@@ -148,7 +142,6 @@ namespace Modules.Estates.Application.DTO.Management.Customer
 
         public DateTime? ResidentPermitExpiryDate { get; set; }
     }
-
 
 }
 

@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Application
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Registration/Customer/ProspectiveCustomerResponseDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -11,49 +13,40 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Management.Customer
+namespace Modules.Estates.Application.DTO.Registration.Customer
 {
-	public record MultiOwnershipCustomerResponseDto : IndividualCustomerResponseDto
+    public record ProspectiveCustomerResponseDto
     {
-        public string? MaritalStatus { get; set; }
-        public DateTime? DateOfMarriage { get; set; }
-
-        public IndividualNonResidentCustomerResponseDto? NonResident { get; set; }
-        public IndividualExpatriateCustomerResponseDto? Expatriate { get; set; }
-
-    }
-
-    public record DependantCustomerResponseDto : MultiCustomerResponseDto
-    {
-        public IndividualNonResidentCustomerResponseDto? NonResident { get; set; }
-        public IndividualExpatriateCustomerResponseDto? Expatriate { get; set; }
-    }
-
-
-    public record MultiCustomerResponseDto
-    {
+        [Key]
         public int CustomerMasterId { get; set; }
+
+        public int CustomerTypeId { get; set; }
+
+        public string? CustomerType { get; set; }
+
+        public int ResidentTypeId { get; set; }
+
+        public string? ResidentType { get; set; }
+
+        public int LocalityId { get; set; }
+
+        public string? Locality { get; set; }
 
         [StringLength(10)]
         public string? CustomerCode { get; set; }
 
         public int TitleId { get; set; }
 
-        public required string Title { get; set; }
+        public string? Title { get; set; }
 
         [StringLength(150)]
-        public required string SurName { get; set; }
+        public string? SurName { get; set; }
 
         [StringLength(75)]
-        public required string OtherNames { get; set; }
+        public string? OtherNames { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-
-        [StringLength(20)]
-        public string? TinNumber { get; set; }
-
-        [StringLength(255)]
-        public string? Picture { get; set; }
+        [StringLength(100)]
+        public string? CompanyName { get; set; }
 
         public int GenderId { get; set; }
 
@@ -72,7 +65,6 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         [StringLength(50)]
         public string? DigitalAddress { get; set; }
 
-        [Required]
         [StringLength(12)]
         public string? PrimaryMobileNumber { get; set; }
 
@@ -86,25 +78,22 @@ namespace Modules.Estates.Application.DTO.Management.Customer
         public string? WhatsAppNumber { get; set; }
 
         [EmailAddress]
-        public required string EmailAddress { get; set; }
+        public string? EmailAddress { get; set; }
 
         public int SocialMediaTypeId { get; set; }
 
-        public string? SocialMediaPlatform { get; set; }
+        [StringLength(20)]
+        public string? SocialMediaType { get; set; }
 
         [StringLength(50)]
         public string? SocialMediaAccount { get; set; }
 
-        public int IdentificationTypeId { get; set; }
+        [StringLength(255)]
+        public string? InterestExpressed { get; set; }
 
-        public string? IdentificationType { get; set; }
-
-        [StringLength(20)]
-        public string? IdentificationTypeNumber { get; set; }
-
-        public string[]? IdentificationImages { get; set; }
+        //[StringLength(255)]
+        public string? Comments { get; set; }
 
     }
-
 }
 

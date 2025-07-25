@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Presentation
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/Interfaces/Management/Customer/ICustomerServices.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -9,8 +11,10 @@
 //  **************************************************/
 
 
-namespace Modules.Estates.Application.DTO.Management.Customer
+namespace Modules.Estates.Application.Interfaces.Management.Customer
 {
-	public record DeleteCustomerRequestDto(string customerCode, string deletedBy);
+	public interface ICustomerServices
+	{
+	}
 }
 
