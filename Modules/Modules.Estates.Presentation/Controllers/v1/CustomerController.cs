@@ -46,12 +46,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         readonly IComplaintStatusesService _complaintStatusesService;
         readonly IComplaintMasterService _complaintMasterServices;
 
+        readonly ICustomerServices _customerServices;
+
         /// <summary>
         /// Presentation controller constructor to handledependency injection
         /// </summary>
         public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService, ISocialMediaService socialMediaService,
                                   ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService, IInterestExpressedService interestExpressedService, IComplaintTypeService complaintTypeService,
-                                  INatureOfComplaintService natureOfComplaintService, IComplaintStatusesService complaintStatusesService, IComplaintMasterService complaintMasterServices)
+                                  INatureOfComplaintService natureOfComplaintService, IComplaintStatusesService complaintStatusesService, IComplaintMasterService complaintMasterServices, ICustomerServices customerServices)
         {
             _customerTypeService = customerTypeService;
             _genderService = genderService;
@@ -68,6 +70,8 @@ namespace Modules.Estates.Presentation.Controllers.v1
             _natureOfComplaintService = natureOfComplaintService;
             _complaintStatusesService = complaintStatusesService;
             _complaintMasterServices = complaintMasterServices;
+
+            _customerServices = customerServices;
         }
 
         //----------------------CUSTOMER TYPES------------

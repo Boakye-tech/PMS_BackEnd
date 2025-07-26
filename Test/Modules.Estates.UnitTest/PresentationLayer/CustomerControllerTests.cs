@@ -12,17 +12,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using FluentAssertions;
-using Xunit;
 using Modules.Common.Infrastructure.Authentication;
-using Modules.Estates.Application.DTO.Management.Customer;
 using Modules.Estates.Application.DTO.Setup.Customer;
 using Modules.Estates.Application.Interfaces.Entities.Setup.Customer;
-using Modules.Estates.Application.Interfaces.Management.Customer;
 using Modules.Estates.Presentation.Controllers.v1;
 using Modules.Estates.Application.DTO.Management;
-using Modules.Estates.Presentation.Constants;
-using Modules.Estates.Application.Enums;
 using Modules.Estates.Application.Interfaces.Management.Complaints;
+using Modules.Estates.Application.Interfaces.Registration.Customer;
+using Modules.Estates.Application.DTO.Registration.Customer;
+using Modules.Estates.Application.Interfaces.Management.Customer;
 
 namespace Modules.Estates.UnitTest.PresentationLayer
 {
@@ -47,6 +45,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
         private readonly Mock<IComplaintMasterService> _complaintMasterMock;
 
         private readonly Mock<IComplaintStatusesService> _complaintStatusesMock;
+        private readonly Mock<ICustomerServices> _customerServicesMock;
 
         public CustomerControllerTests()
         {
@@ -67,6 +66,8 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             _complaintMasterMock = new Mock<IComplaintMasterService>();
             _complaintStatusesMock = new Mock<IComplaintStatusesService>();
 
+            _customerServicesMock = new Mock<ICustomerServices>();
+
             _controller = new CustomerController(
                 _customerTypeServiceMock.Object,
                 _genderServiceMock.Object,
@@ -82,7 +83,8 @@ namespace Modules.Estates.UnitTest.PresentationLayer
                 _complaintTypeServiceMock.Object,
                 _natureOfComplaintMock.Object,
                 _complaintStatusesMock.Object,
-                _complaintMasterMock.Object
+                _complaintMasterMock.Object,
+                _customerServicesMock.Object
             );
         }
 

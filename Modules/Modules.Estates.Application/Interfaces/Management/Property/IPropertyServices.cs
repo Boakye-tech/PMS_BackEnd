@@ -15,7 +15,7 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 {
     public interface IPropertyServices
     {
-
+        Task<int> StopCustomerDebitAsync(StopDebitRequestDto values);
 
     }
 }

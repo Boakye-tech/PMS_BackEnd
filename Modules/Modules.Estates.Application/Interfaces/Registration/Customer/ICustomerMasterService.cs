@@ -43,8 +43,6 @@ namespace Modules.Estates.Application.Interfaces.Registration.Customer
 
         Task<int> DeleteCustomerAsync(DeleteCustomerRequestDto values);
 
-        Task<int> StopCustomerDebitAsync(StopDebitRequestDto values);
-
         Task<int> ApproveCustomerAsync(ApproveCustomerDto values);
 
     }

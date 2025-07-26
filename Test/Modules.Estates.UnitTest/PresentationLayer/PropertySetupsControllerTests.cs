@@ -17,10 +17,9 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Modules.Estates.Application.DTO.Setup;
 using Modules.Estates.Application.DTO.Setup.Property;
-using Modules.Estates.Application.Interfaces.Management.Property;
-using Modules.Estates.Domain.Exceptions; // For SuccessResponseDto, ErrorResponseDto
 using Modules.Estates.Presentation.Controllers.v1;
 using Modules.Estates.Application.Interfaces.ControllerServices;
+using Modules.Estates.Application.Interfaces.Registration.Property;
 
 namespace Modules.Estates.UnitTest.PresentationLayer
 {

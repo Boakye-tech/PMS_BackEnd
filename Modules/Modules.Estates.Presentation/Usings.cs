@@ -54,3 +54,7 @@ global using Modules.Estates.Application.ControllerServices;
 global using Modules.Common.Infrastructure.Authentication;
 
 global using Modules.Estates.Presentation.Constants;
+
+
+global using Modules.Estates.Application.DTO.Management;
+global using Modules.Estates.Domain.ValueObjects.Property;

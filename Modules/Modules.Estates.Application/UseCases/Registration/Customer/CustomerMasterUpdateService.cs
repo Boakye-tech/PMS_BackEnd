@@ -595,53 +595,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Customer
             return new CustomerRegistrationResponseDto { IsSuccess = true, SuccessResponse = registeredCustomer };
         }
 
-        public async Task<int> StopCustomerDebitAsync(StopDebitRequestDto values)
-        {
-            try
-            {
-                if (values is null)
-                {
-                    return 400;
-                }
 
-                //check if customer exist
-                var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values!.CustomerCode);
-                if (customer is null)
-                {
-                    return 404;
-                }
-
-                var debitDetails = new StopDebit
-                {
-                    StopDebitId = 0,
-                    CustomerCode = values!.CustomerCode,
-                    PropertyNumber = values.PropertyNumber,
-                    DebtorStatus = values.DebtorStatus,
-                    Reasons = values.Reasons,
-                    ActionBy = values.ActionBy,
-                    ActionOn = DateTime.UtcNow
-                };
-
-                //update customer master
-                customer!.DebtorStatus = 90; //values.DebtorStatus;
-                customer.ModifiedBy = values.ActionBy;
-                customer.ModifiedOn = DateTime.UtcNow;
-
-                _unitOfWork.CustomerMaster.Update(customer);
-                _unitOfWork.StopDebit.Insert(debitDetails);
-
-                await _unitOfWork.Complete();
-
-                return 200;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                return 500;
-            }
-
-
-        }
 
 
 

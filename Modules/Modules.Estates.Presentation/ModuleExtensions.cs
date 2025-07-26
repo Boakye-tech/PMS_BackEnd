@@ -95,6 +95,10 @@ public static class ModuleExtensions
         services.AddScoped<IPlotFeaturesService, PlotFeaturesService>();
         services.AddScoped<IPropertyTypeService, PropertyTypeService>();
 
+
+        services.AddScoped<ICustomerServices, ICustomerServices>();
+        services.AddScoped<IPropertyServices, IPropertyServices>();
+
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<IdentificationTypeDtoValidator>();

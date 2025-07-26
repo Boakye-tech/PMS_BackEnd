@@ -14,7 +14,6 @@ using System.Reflection;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Domain.ValueObjects.Property;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -590,7 +589,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                var status = await _customerMasterService.StopCustomerDebitAsync(values);
+                var status = await _customerServices.StopCustomerDebitAsync(values);
 
                 return status switch
                 {
@@ -623,7 +622,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                var status = await _customerMasterService.StopCustomerDebitAsync(values);
+                var status = await _customerServices.StopCustomerDebitAsync(values);
 
                 return status switch
                 {

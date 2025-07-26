@@ -34,17 +34,20 @@ global using Modules.Estates.Application.DTO.Management.Complaints;
 global using Modules.Estates.Application.DTO.Registration.Property;
 global using Modules.Estates.Application.Enums;
 
+global using Modules.Estates.Application.Interfaces.Management.Customer;
+global using Modules.Estates.Application.Interfaces.Management.Property;
 global using Modules.Estates.Application.Interfaces.Management.Complaints;
 global using Modules.Estates.Application.Interfaces.Registration.Customer;
 global using Modules.Estates.Application.Interfaces.Registration.Property;
-global using Modules.Estates.Application.Interfaces.ModuleServices;
 global using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
 global using Modules.Estates.Application.Interfaces.Entities.Setup.Customer;
-
 global using Modules.Estates.Application.Interfaces.Entities.Setup;
+global using Modules.Estates.Application.Interfaces.ModuleServices;
 global using Modules.Estates.Application.Interfaces.ControllerServices;
 
 global using Modules.Common.Infrastructure.Authentication;
 
 global using Modules.Estates.Domain.ValueObjects.Property;
 
+
+global using Modules.Estates.Application.UseCases.Registration.Customer;
