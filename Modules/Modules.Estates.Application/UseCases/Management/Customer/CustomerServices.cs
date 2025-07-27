@@ -15,9 +15,9 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
 	public class CustomerServices: ICustomerServices
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<CustomerMasterService> _logger;
+        private readonly ILogger<CustomerServices> _logger;
 
-        public CustomerServices(IUnitOfWork unitOfWork, ILogger<CustomerMasterService> logger)
+        public CustomerServices(IUnitOfWork unitOfWork, ILogger<CustomerServices> logger)
 		{
             _unitOfWork = unitOfWork;
             _logger = logger;

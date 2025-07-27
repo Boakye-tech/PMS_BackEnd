@@ -1,7 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Estates.Application
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Management/Property/ActivityAndActivityTypes.cs
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Management/Property/ActivityAndActivityTypesDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -12,8 +12,8 @@
 using System;
 namespace Modules.Estates.Application.DTO.Management.Property
 {
-	public class ActivityAndActivityTypes
-	{
+	public class ActivityAndActivityTypesDto
+    {
 		public string PropertyNumber { get; set; }
 		public DateTime ActivityDate { get; set; }
 		public int ActivityId { get; set; }
@@ -21,7 +21,7 @@ namespace Modules.Estates.Application.DTO.Management.Property
 		public string Notes { get; set; }
 		public string CustomerCode { get; set; }
 
-		public ActivityAndActivityTypes()
+		public ActivityAndActivityTypesDto()
 		{
 		}
 	}

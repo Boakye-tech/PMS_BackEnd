@@ -1,7 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Estates.Application
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Management/Property/SwapAllocationType.cs
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Management/Property/SwapAllocationTypeDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -12,7 +12,7 @@
 using System;
 namespace Modules.Estates.Application.DTO.Management.Property
 {
-	public class SwapAllocationType
+	public class SwapAllocationTypeDto
 	{
         public string PropertyNumber { get; set; }
         public int CurrentAllocationTypeId { get; set; }
@@ -20,7 +20,7 @@ namespace Modules.Estates.Application.DTO.Management.Property
         public string Reasons { get; set; }
         public string ActionBy { get; set; }
 
-        public SwapAllocationType()
+        public SwapAllocationTypeDto()
 		{
 		}
 	}

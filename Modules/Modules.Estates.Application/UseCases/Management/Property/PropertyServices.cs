@@ -23,52 +23,79 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             _logger = logger;
         }
 
-        public async Task<int> StopCustomerDebitAsync(StopDebitRequestDto values)
+        public Task<ReturnResponsesDto> AddLeaseDetailsAsync(PropertyLeaseDetailsDto values)
         {
-            try
-            {
-                if (values is null)
-                {
-                    return 400;
-                }
+            throw new NotImplementedException();
+        }
 
-                //check if customer exist
-                var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values!.CustomerCode);
-                if (customer is null)
-                {
-                    return 404;
-                }
+        public Task<ReturnResponsesDto> AssignPropertyToCustomerAsync(AssignPropertytoCustomerDto values)
+        {
+            throw new NotImplementedException();
+        }
 
-                var debitDetails = new StopDebit
-                {
-                    StopDebitId = 0,
-                    CustomerCode = values!.CustomerCode,
-                    PropertyNumber = values.PropertyNumber,
-                    DebtorStatus = values.DebtorStatus,
-                    Reasons = values.Reasons,
-                    ActionBy = values.ActionBy,
-                    ActionOn = DateTime.UtcNow
-                };
+        public Task<ReturnResponsesDto> StopDebitAsync(StopDebitRequestDto values)
+        {
+            throw new NotImplementedException();
 
-                //update customer master
-                customer!.DebtorStatus = 90; //values.DebtorStatus;
-                customer.ModifiedBy = values.ActionBy;
-                customer.ModifiedOn = DateTime.UtcNow;
+            //try
+            //{
+            //    if (values is null)
+            //    {
+            //        return 400;
+            //    }
 
-                _unitOfWork.CustomerMaster.Update(customer);
-                _unitOfWork.StopDebit.Insert(debitDetails);
+            //    //check if customer exist
+            //    var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values!.CustomerCode);
+            //    if (customer is null)
+            //    {
+            //        return 404;
+            //    }
 
-                await _unitOfWork.Complete();
+            //    var debitDetails = new StopDebit
+            //    {
+            //        StopDebitId = 0,
+            //        CustomerCode = values!.CustomerCode,
+            //        PropertyNumber = values.PropertyNumber,
+            //        DebtorStatus = values.DebtorStatus,
+            //        Reasons = values.Reasons,
+            //        ActionBy = values.ActionBy,
+            //        ActionOn = DateTime.UtcNow
+            //    };
 
-                return 200;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                return 500;
-            }
+            //    //update customer master
+            //    customer!.DebtorStatus = 90; //values.DebtorStatus;
+            //    customer.ModifiedBy = values.ActionBy;
+            //    customer.ModifiedOn = DateTime.UtcNow;
+
+            //    _unitOfWork.CustomerMaster.Update(customer);
+            //    _unitOfWork.StopDebit.Insert(debitDetails);
+
+            //    await _unitOfWork.Complete();
+
+            //    return 200;
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex.ToString());
+            //    return 500;
+            //}
 
 
+        }
+
+        public Task<ReturnResponsesDto> SwapAllocationTypeAsync(SwapAllocationTypeDto values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ReturnResponsesDto> SwapLanUseAndLandUseTypeAsync(SwapLandUseAndLandUseTypeDto values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ReturnResponsesDto> SwapLocalityAsync(SwapLocalityDto values)
+        {
+            throw new NotImplementedException();
         }
     }
 }

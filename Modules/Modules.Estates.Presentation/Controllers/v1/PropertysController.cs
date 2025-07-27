@@ -13,9 +13,8 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.DTO.Management.Property;
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Domain.ValueObjects.Property;
+
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -345,6 +344,163 @@ namespace Modules.Estates.Presentation.Controllers.v1
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
             }
+        }
+
+        [HttpPut]
+        [Route("AssignPropertyToCustomer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> AssignPropertyToCustomer([FromBody] AssignPropertytoCustomerDto values, [FromServices] IPropertyServices _propertyServices)
+        {
+            var result = await _propertyServices.AssignPropertyToCustomerAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("LeaseDetails")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> LeaseDetails([FromBody] PropertyLeaseDetailsDto values, [FromServices] IPropertyServices _propertyServices)
+        {
+            var result = await _propertyServices.AddLeaseDetailsAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("StopDebit")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> StopDebit([FromBody] StopDebitRequestDto values, [FromServices] IPropertyServices _propertyServices)
+        {
+            var result = await _propertyServices.StopDebitAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+
+        [HttpPut]
+        [Route("SwapLocality")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> SwapLocality([FromBody] SwapLocalityDto values, [FromServices] IPropertyServices _propertyServices)
+        {
+            var result = await _propertyServices.SwapLocalityAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("SwapAllocationType")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> SwapAllocationType([FromBody] SwapAllocationTypeDto values, [FromServices] IPropertyServices _propertyServices)
+        {
+            var result = await _propertyServices.SwapAllocationTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("SwapLanUseAndLandUseType")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> SwapLanUseAndLandUseType([FromBody] SwapLandUseAndLandUseTypeDto values, [FromServices] IPropertyServices _propertyServices)
+        {
+            var result = await _propertyServices.SwapLanUseAndLandUseTypeAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
         }
 
 

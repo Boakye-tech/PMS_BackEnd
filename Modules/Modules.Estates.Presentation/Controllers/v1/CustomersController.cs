@@ -40,6 +40,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 }
 
                 var result = await _customerMasterService.CreateCustomer(values);
+
                 if (result.IsSuccess)
                 {
                     return Ok(result.SuccessResponse);

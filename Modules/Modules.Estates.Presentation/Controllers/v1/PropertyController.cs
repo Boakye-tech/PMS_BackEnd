@@ -36,10 +36,11 @@ public partial class PropertyController : ControllerBase
     private readonly IRentalsServices _rentalsService;
 
     private readonly IPropertyMasterService _propertyMasterService;
+    //private readonly IPropertyServices _propertyServices;
     
 
     public PropertyController(IActivityServices activityServices, IPropertySetupServices propertySetupServices, IBlockServices blockServices, IPropertyFeatureServices propertyFeatureServices,
-                             IPropertyMasterService propertyMasterService, IRentalsServices rentalsService) 
+                             IPropertyMasterService propertyMasterService, IRentalsServices rentalsService) //, IPropertyServices propertyServices
     {
         _activityServices = activityServices;
         _propertySetupServices = propertySetupServices;
@@ -47,6 +48,7 @@ public partial class PropertyController : ControllerBase
         _propertyFeatureServices = propertyFeatureServices;
         _propertyMasterService = propertyMasterService;
         _rentalsService = rentalsService;
+        //_propertyServices = propertyServices;
     }
 
 

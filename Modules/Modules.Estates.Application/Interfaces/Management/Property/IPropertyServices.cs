@@ -15,7 +15,17 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 {
     public interface IPropertyServices
     {
-        Task<int> StopCustomerDebitAsync(StopDebitRequestDto values);
+        Task<ReturnResponsesDto> StopDebitAsync(StopDebitRequestDto values);
+
+        Task<ReturnResponsesDto> SwapLocalityAsync(SwapLocalityDto values);
+
+        Task<ReturnResponsesDto> SwapAllocationTypeAsync(SwapAllocationTypeDto values);
+
+        Task<ReturnResponsesDto> SwapLanUseAndLandUseTypeAsync(SwapLandUseAndLandUseTypeDto values);
+
+        Task<ReturnResponsesDto> AssignPropertyToCustomerAsync(AssignPropertytoCustomerDto values);
+
+        Task<ReturnResponsesDto> AddLeaseDetailsAsync(PropertyLeaseDetailsDto values);
 
     }
 }

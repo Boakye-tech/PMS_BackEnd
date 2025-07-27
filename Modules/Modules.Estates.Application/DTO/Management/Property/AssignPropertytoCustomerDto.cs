@@ -1,7 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Estates.Application
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Management/Property/AssignPropertytoCustomer.cs
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Application/DTO/Management/Property/AssignPropertytoCustomerDto.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -12,13 +12,13 @@
 using System;
 namespace Modules.Estates.Application.DTO.Management.Property
 {
-	public class AssignPropertytoCustomer
+	public class AssignPropertytoCustomerDto
 	{
         public string PropertyNumber { get; set; }
 		public string CustomerCode { get; set; }
 		public string ActionBy { get; set; }
 
-        public AssignPropertytoCustomer()
+        public AssignPropertytoCustomerDto()
 		{
 		}
 	}

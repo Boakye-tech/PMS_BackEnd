@@ -33,6 +33,8 @@ global using Modules.Estates.Application.UseCases.Setup;
 global using Modules.Estates.Application.UseCases.Setup.Property;
 global using Modules.Estates.Application.UseCases.Setup.Customer;
 global using Modules.Estates.Application.UseCases.Registration.Property;
+global using Modules.Estates.Application.UseCases.Management.Customer;
+global using Modules.Estates.Application.UseCases.Management.Property;
 global using Modules.Estates.Application.UseCases.Management.Complaints;
 global using Modules.Estates.Application.UseCases.ModuleServices;
 global using Modules.Estates.Application.UseCases.Registration.Customer;
@@ -44,6 +46,8 @@ global using Modules.Estates.Application.DTO.Setup;
 global using Modules.Estates.Application.DTO.Setup.Customer;
 global using Modules.Estates.Application.DTO.Setup.Property;
 global using Modules.Estates.Application.DTO.Registration.Property;
+global using Modules.Estates.Application.DTO.Management;
+global using Modules.Estates.Application.DTO.Management.Property;
 
 global using Modules.Estates.Application.DomainServices;
 global using Modules.Estates.Application.Validations.Setup.Customer;
@@ -55,6 +59,3 @@ global using Modules.Common.Infrastructure.Authentication;
 
 global using Modules.Estates.Presentation.Constants;
 
-
-global using Modules.Estates.Application.DTO.Management;
-global using Modules.Estates.Domain.ValueObjects.Property;

@@ -12,7 +12,7 @@
 using System;
 namespace Modules.Estates.Application.DTO.Management.Property
 {
-	public class SwapLocality
+	public class SwapLocalityDto
 	{
 		public string PropertyNumber { get; set; }
 		public int CurrentLocalityId { get; set; }
