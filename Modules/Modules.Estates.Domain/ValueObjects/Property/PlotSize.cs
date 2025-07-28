@@ -17,19 +17,20 @@ namespace Modules.Estates.Domain.ValueObjects.Property
     [Owned]
     public record PlotSize : ValueObject
 	{
-		public string? Dimension { get; init; }
+		public int DimensionId { get; init; }
 		public decimal Acreage { get; init; }
+		public decimal Acreage2 { get; init; }
 
 		private PlotSize(){}
 
-        private PlotSize(string dimensions, double areaInSquareFeet)
+        private PlotSize(int dimensionId, string dimensions, double areaInSquareFeet)
 		{
-			Dimension = dimensions;
+			DimensionId = dimensionId;
             double acres = areaInSquareFeet / 43560; // Convert to acres
             Acreage = decimal.Parse(acres.ToString("F2")); 
 		}
 
-		public static Result<PlotSize> Create(string dimension)
+		public static Result<PlotSize> Create(int dimensionId, string dimension)
 		{
 			if (string.IsNullOrWhiteSpace(dimension))
 				return Result<PlotSize>.Failure("Plot dimension cannot be null or empty.");
@@ -51,7 +52,7 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 
 			double _areaInSquareFeet = _lenght * _width;
 
-            return Result<PlotSize>.Success(new PlotSize(dimension, _areaInSquareFeet));
+            return Result<PlotSize>.Success(new PlotSize(dimensionId, dimension, _areaInSquareFeet));
 		}
 	}
 }

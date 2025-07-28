@@ -31,56 +31,80 @@ namespace Modules.Estates.Domain.Entities.Registration
         public int PropertyMasterId { get; private set; }
 
         public PropertyNumber? PropertyNumber { get; private set; } = default;
+
         public int LocalityId { get; private set; }
+
         public int SiteId { get; private set; }
+
         public int LandUseId { get; private set; }
+
         public int LandUseTypeId { get; private set; }
+
         public int AllocationTypeId { get; private set; }
+
         public int PlotTypeId { get; private set; }
+
         public PlotSize? PlotSize { get; private set; }
+
         public int SchemeTypeId { get; private set; }
+
         public int ApartmentCategoryId { get; private set; }
+
         public int ApartmentTypeId { get; private set; }
+
         public int BlockTypeId { get; private set; }
+
         public int BlockSideId { get; private set; }
+
         public int BlockUnitId { get; private set; }
 
-        //[StringLength(5)]
-        //public string? BlockNumber { get; private set; }
         public int BlockNumberId { get; private set; }
 
         [StringLength(5)]
-        public string? Number { get; private set; }
-
-        //public string? PlotNumber { get; private set; }
-        //public string RoomNumber { get; private set; }
+        public string? Number { get; private set; } //(string? PlotNumber and or string RoomNumber)
 
         public PropertyCoordinates? Coordinates { get; private set; }
+
         public LeasePeriod? Lease { get; private set; }
+
         public int PropertyStatusId { get; private set; }
+
         public string[]? Images { get; private set; }
+
         public string? CustomerCode { get; private set; }
 
         // Navigation property for CustomerMaster
         //public virtual CustomerMaster? CustomerMaster { get; private set; }
 
-        public bool IsDeleted { get; private set; }
-
         public double CostPrice { get; private set; }
+
         public double SellingPrice { get; private set; }
+
         public int CurrencyId { get; private set; }
 
         public int RentalCategoryId { get; private set; }
+
         public int RentalTypeId { get; private set; }
+
         public int TypeId { get; private set; }
+
         public int TotalNumberOfRooms { get; private set; }
+
         public int RoomsOccupied { get; private set; }
+
+        public string? RoomSize { get; private set; }
 
         public int PropertyHeightId { get; private set; }
 
         public int FloorNumberId { get; private set; }
 
         public DateTime RightOfEntry { get; private set; }
+
+        public DateTime DateOfTenancy { get; private set; }
+
+        public DateTime DateOfConstruction { get; private set; }
+
+        public DateTime DateTransferedToHos { get; private set; }
 
         public int DebtorType { get; private set; }
 
@@ -100,6 +124,8 @@ namespace Modules.Estates.Domain.Entities.Registration
         [StringLength(75)]
         public string? OldPropertyNumber { get; private set; }
 
+        public bool IsDeleted { get; private set; }
+
 
         // For EF Core
         private PropertyMaster() { }
@@ -110,6 +136,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             string blockNumber,
             int NumberFrom,
             int NumberTo,
+            int plotDimensionId,
             string plotDimension,
             PropertyCoordinates coordinates, bool isApartment = false, string blockUnit = null!)
         {
@@ -127,7 +154,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             if (!propertyNumberResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
 
-            var plotSizeResult = PlotSize.Create(plotDimension);
+            var plotSizeResult = PlotSize.Create(plotDimensionId,plotDimension);
             if (!plotSizeResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(plotSizeResult.Error);
 
@@ -209,7 +236,7 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public static Result<PropertyMaster> CreatePlot(int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,int siteId,
                                                         int allocationTypeId,string allocationTypeInitial,int blockNumberId, string blockNumber,string plotNumber,
-                                                        string plotDimension,int plotTypeId,int propertyHeightId,PropertyCoordinates coordinates,
+                                                        int plotDimensionId,string plotDimension,int plotTypeId,int propertyHeightId,PropertyCoordinates coordinates,
                                                         string sitePlanNumber,string cadastalPlanNumber,int propertyStatusId,List<string> images,bool isApartment = false)
         {
             // Create value objects
@@ -226,7 +253,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             if (!propertyNumberResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
 
-            var plotSizeResult = PlotSize.Create(plotDimension);
+            var plotSizeResult = PlotSize.Create(plotDimensionId,plotDimension);
             if (!plotSizeResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(plotSizeResult.Error);
 
@@ -301,7 +328,7 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public static Result<PropertyMaster> CreateHouses(int SchemeTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
                                                           int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string houseNumber, int houseCategoryId, int houseCategoryTypeId,
-                                                          int houseTypeId, string plotDimension, int plotTypeId, PropertyCoordinates coordinates,int propertyStatusId, List<string> images, bool isApartment = false)
+                                                          int houseTypeId, int plotDimensionId, string plotDimension, int plotTypeId, PropertyCoordinates coordinates,int propertyStatusId, List<string> images, bool isApartment = false)
         {
             // Create value objects
             var propertyNumberResult = PropertyNumber.Create(
@@ -317,7 +344,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             if (!propertyNumberResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
 
-            var plotSizeResult = PlotSize.Create(plotDimension);
+            var plotSizeResult = PlotSize.Create(plotDimensionId, plotDimension);
             if (!plotSizeResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(plotSizeResult.Error);
 
@@ -404,6 +431,25 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(this);
         }
 
+
+        public Result<PropertyMaster> StopDebit(int debtorStatus)
+        {
+            if (DebtorType == 90)
+                return Result<PropertyMaster>.Failure("Property already has a stop debit.");
+
+            DebtorType = debtorStatus;
+            return Result<PropertyMaster>.Success(this);
+        }
+
+        public Result<PropertyMaster> UnstopDebit(int debtorStatus)
+        {
+            if (DebtorType != 90)
+                return Result<PropertyMaster>.Failure("Property doesnt have a stop debit.");
+
+            DebtorType = debtorStatus;
+            return Result<PropertyMaster>.Success(this);
+        }
+
         public Result<PropertyMaster> MarkAsDeleted()
         {
             if (IsDeleted)
@@ -413,9 +459,9 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(this);
         }
 
-        public Result<PropertyMaster> UpdatePlotSize(string newDimension)
+        public Result<PropertyMaster> UpdatePlotSize(int plotDimensionId, string newDimension)
         {
-            var plotSizeResult = PlotSize.Create(newDimension);
+            var plotSizeResult = PlotSize.Create(plotDimensionId,newDimension);
             if (!plotSizeResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(plotSizeResult.Error);
 

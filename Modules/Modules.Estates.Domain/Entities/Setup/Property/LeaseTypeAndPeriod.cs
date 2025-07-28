@@ -1,4 +1,4 @@
-﻿// /**************************************************
+﻿ // /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Estates.Domain
 // * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Domain/Entities/Setup/Property/LeaseTypeAndPeriod.cs
@@ -9,8 +9,6 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-
-using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Estates.Domain.Entities.Setup.Property
 {
@@ -27,25 +25,30 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 		[Required]
 		public int LeasePeriod { get; private set; }
 
-		public LeaseTypeAndPeriod(int leaseTypePeriodId, string leaseType, int leasePeriod)
+        public int RenewablePeriod { get; private set; }
+
+        public LeaseTypeAndPeriod(int leaseTypePeriodId, string leaseType, int leasePeriod, int renewablePeriod)
 		{
 			LeaseTypePeriodId = leaseTypePeriodId;
 			LeaseType = leaseType;
 			LeasePeriod = leasePeriod;
-		}
+			RenewablePeriod = renewablePeriod;
 
-		public static LeaseTypeAndPeriod Create(int leaseTypePeriodId, string leaseType, int leasePeriod)
+        }
+
+		public static LeaseTypeAndPeriod Create(int leaseTypePeriodId, string leaseType, int leasePeriod, int renewablePeriod)
 		{
 			Validate(leaseTypePeriodId, leaseType, leasePeriod);
-			return new LeaseTypeAndPeriod(leaseTypePeriodId, leaseType, leasePeriod);
+			return new LeaseTypeAndPeriod(leaseTypePeriodId, leaseType, leasePeriod, renewablePeriod);
 		}
 
-		public void Update(int leaseTypePeriodId, string leaseType, int leasePeriod)
+		public void Update(int leaseTypePeriodId, string leaseType, int leasePeriod, int renewablePeriod)
 		{
 			Validate(leaseTypePeriodId, leaseType, leasePeriod);
 			LeaseType = leaseType;
 			LeasePeriod = leasePeriod;
-		}
+            RenewablePeriod = renewablePeriod;
+        }
 
 		private static void Validate(int leaseTypePeriodId, string leaseType, int leasePeriod)
 		{

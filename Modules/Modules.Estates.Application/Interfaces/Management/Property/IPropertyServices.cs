@@ -16,6 +16,7 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
     public interface IPropertyServices
     {
         Task<ReturnResponsesDto> StopDebitAsync(StopDebitRequestDto values);
+        Task<ReturnResponsesDto> StartDebitAsync(StopDebitRequestDto values);
 
         Task<ReturnResponsesDto> SwapLocalityAsync(SwapLocalityDto values);
 

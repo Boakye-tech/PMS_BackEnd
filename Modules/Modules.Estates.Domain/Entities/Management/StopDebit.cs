@@ -9,9 +9,11 @@
 //  **************************************************/
 
 
+using Modules.Estates.Domain.ValueObjects.Property;
+
 namespace Modules.Estates.Domain.Entities.Management
 {
-	public class StopDebit
+	public class StopDebit : AuditableEntity
 	{
         [Key]
         public int StopDebitId { get; set; }
@@ -19,18 +21,86 @@ namespace Modules.Estates.Domain.Entities.Management
         [StringLength(10)]
         public string? CustomerCode { get; set; }
 
-        [StringLength(50)]
+        [StringLength(75)]
         public string? PropertyNumber { get; set; }
 
-        [StringLength(255)]
-        public string? Reasons { get; set; }
+        public int PreviousStatus { get; set; }
 
         public int DebtorStatus { get; set; }
 
-        public DateTime ActionOn { get; set; }
+        public string? Reasons { get; set; }
 
-        [StringLength(36)]
-        public string? ActionBy { get; set; }
+
+        public StopDebit()
+        {
+        }
+
+        public StopDebit(int stopDebitId, string propertyNumber, string customerCode, int previousStatus, int debtorStatus, string reasons)
+        {
+            StopDebitId = stopDebitId;
+            PropertyNumber = propertyNumber;
+            CustomerCode = customerCode;
+            PreviousStatus = previousStatus;
+            DebtorStatus = debtorStatus;
+            Reasons = reasons;
+        }
+
+
+        public static Result<StopDebit> CreateStopDebit(string propertyNumber, string customerCode, int previousStatus, int debtorStatus, string reasons)
+        {
+            Validate( propertyNumber,  customerCode,  previousStatus,  debtorStatus,  reasons);
+
+            var stopdebit = new StopDebit
+            {
+                StopDebitId = 0,
+                PropertyNumber = propertyNumber,
+                CustomerCode = customerCode,
+                PreviousStatus = previousStatus,
+                DebtorStatus = debtorStatus,
+                Reasons = reasons
+            };
+
+            return Result<StopDebit>.Success(stopdebit);
+        }
+
+        public Result<StopDebit> UpdateStopDebit(string propertyNumber, string customerCode, int previousStatus, int debtorStatus, string reasons)
+        {
+            Validate(propertyNumber, customerCode, previousStatus, debtorStatus, reasons);
+
+            PropertyNumber = propertyNumber;
+            CustomerCode = customerCode;
+            PreviousStatus = previousStatus;
+            DebtorStatus = debtorStatus;
+            Reasons = reasons;
+
+            return Result<StopDebit>.Success(this);
+        }
+
+        private static Result<StopDebit> Validate(string propertyNumber, string customerCode, int previousStatus, int debtorStatus, string reasons)
+        {
+            string errMsg = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(propertyNumber) || propertyNumber.Length > 75)
+                errMsg = "Property number cannot be empty or exceed 75 characters.";
+
+            if (string.IsNullOrWhiteSpace(customerCode) || customerCode.Length > 10)
+                errMsg = "Customer code cannot be empty or exceed 10 characters.";
+
+            if (previousStatus < 0)
+                errMsg = "Previous status cannot be less than zero.";
+
+            if (debtorStatus <= 0)
+                errMsg = "Debit status cannot be zero.";
+
+            if (string.IsNullOrWhiteSpace(reasons))
+                errMsg = "Reasons cannot be empty, kindly provide reasons for starting and stopping debit.";
+
+            return Result<StopDebit>.Failure(errMsg);
+        }
+
+
+
     }
+
 }
 

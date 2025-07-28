@@ -23,9 +23,41 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             _logger = logger;
         }
 
-        public Task<ReturnResponsesDto> AddLeaseDetailsAsync(PropertyLeaseDetailsDto values)
+        public async Task<ReturnResponsesDto> AddLeaseDetailsAsync(PropertyLeaseDetailsDto values)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            try
+            {
+                //check if property exist
+                var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values!.PropertyNumber && c.CustomerCode == values.CustomerCode);
+                if (property is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status404NotFound,
+                            Message = $"Property number '{values.PropertyNumber}' and customer code '{values.CustomerCode}' provided does not exist."
+                        }
+                    };
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status200OK,
+                        Message = ex.Message ?? ex.InnerException!.Message
+                    }
+                };
+            }
         }
 
         public Task<ReturnResponsesDto> AssignPropertyToCustomerAsync(AssignPropertytoCustomerDto values)
@@ -33,52 +65,89 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             throw new NotImplementedException();
         }
 
-        public Task<ReturnResponsesDto> StopDebitAsync(StopDebitRequestDto values)
+        public Task<ReturnResponsesDto> StartDebitAsync(StopDebitRequestDto values)
         {
             throw new NotImplementedException();
+        }
 
-            //try
-            //{
-            //    if (values is null)
-            //    {
-            //        return 400;
-            //    }
+        public async Task<ReturnResponsesDto> StopDebitAsync(StopDebitRequestDto values)
+        {
+            try
+            {
+                if (values is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = "Land Use Type Id provided does not exist"
+                        }
+                    };
+                }
 
-            //    //check if customer exist
-            //    var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values!.CustomerCode);
-            //    if (customer is null)
-            //    {
-            //        return 404;
-            //    }
+                //check if property exist
+                var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values!.PropertyNumber);
+                if (property is null)
+                {  
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status404NotFound,
+                            Message = $"Property number '{values.PropertyNumber}' provided does not exist."
+                        }
+                    };
+                }
 
-            //    var debitDetails = new StopDebit
-            //    {
-            //        StopDebitId = 0,
-            //        CustomerCode = values!.CustomerCode,
-            //        PropertyNumber = values.PropertyNumber,
-            //        DebtorStatus = values.DebtorStatus,
-            //        Reasons = values.Reasons,
-            //        ActionBy = values.ActionBy,
-            //        ActionOn = DateTime.UtcNow
-            //    };
+                var debitDetails = new StopDebit
+                {
+                    StopDebitId = 0,
+                    CustomerCode = values!.CustomerCode,
+                    PropertyNumber = values.PropertyNumber,
+                    DebtorStatus = 90, //values.DebtorStatus,
+                    Reasons = values.Reasons
+                };
+                debitDetails.CreatedBy = values.ActionBy;
+                debitDetails.CreatedOn = DateTime.UtcNow;
 
-            //    //update customer master
-            //    customer!.DebtorStatus = 90; //values.DebtorStatus;
-            //    customer.ModifiedBy = values.ActionBy;
-            //    customer.ModifiedOn = DateTime.UtcNow;
+                property.StopDebit(values.DebtorStatus);
+                
+                property.ModifiedBy = values.ActionBy;
+                property.ModifiedOn = DateTime.UtcNow;
 
-            //    _unitOfWork.CustomerMaster.Update(customer);
-            //    _unitOfWork.StopDebit.Insert(debitDetails);
+                _unitOfWork.PropertyMaster.Update(property);
+                _unitOfWork.StopDebit.Insert(debitDetails);
 
-            //    await _unitOfWork.Complete();
+                await _unitOfWork.Complete();
 
-            //    return 200;
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError(ex.ToString());
-            //    return 500;
-            //}
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status200OK,
+                        Message = $"Stop debit applied to property number '{values.PropertyNumber}' successfully."
+                    }
+                };
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status200OK,
+                        Message = ex.Message ?? ex.InnerException!.Message
+                    }
+                };
+
+            }
 
 
         }
@@ -94,6 +163,11 @@ namespace Modules.Estates.Application.UseCases.Management.Property
         }
 
         public Task<ReturnResponsesDto> SwapLocalityAsync(SwapLocalityDto values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ReturnResponsesDto> UnstopDebitAsync(StopDebitRequestDto values)
         {
             throw new NotImplementedException();
         }

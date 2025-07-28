@@ -12,9 +12,9 @@
 using System;
 namespace Modules.Estates.Application.DTO.Setup.Property
 {
-	public record LeaseTypeAndPeriodReadDto(int LeaseTypePeriodId, string LeaseType, int LeasePeriod);
-    public record LeaseTypeAndPeriodCreateDto(string LeaseType, int LeasePeriod, string CreatedBy);
-    public record LeaseTypeAndPeriodUpdateDto(int LeaseTypePeriodId, string LeaseType, int LeasePeriod, string ModifiedBy);
+	public record LeaseTypeAndPeriodReadDto(int LeaseTypePeriodId, string LeaseType, int LeasePeriod, int RenewablePeriod);
+    public record LeaseTypeAndPeriodCreateDto(string LeaseType, int LeasePeriod, int RenewablePeriod, string CreatedBy);
+    public record LeaseTypeAndPeriodUpdateDto(int LeaseTypePeriodId, string LeaseType, int LeasePeriod, int RenewablePeriod, string ModifiedBy);
     public record LeaseTypeAndPeriodDeleteDto(int LeaseTypePeriodId, string DeletedBy);
 
 }

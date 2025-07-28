@@ -307,7 +307,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     var propertyResult = PropertyMaster.CreatePlot
                         (
                         values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
-                        values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId, blockNumber!.BlockNumbers, plotNumber, _dimensions, values.PlotTypeId,
+                        values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId, blockNumber!.BlockNumbers, plotNumber,values.PlotDimensionId, _dimensions, values.PlotTypeId,
                         values.PropertyHeightId, coordinates.Value, values.SitePlan, values.Cadastal, values.PropertyStatusId, values.Images,
                         false
                     );
@@ -464,6 +464,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     values.BlockNumber!,
                     values.NumberFrom,
                     values.NumberTo,
+                    values.PlotDimensionId,
                     _dimensions,
                     PropertyCoordinates.Create("", "", "", "", "", "").Value,
                     false,
@@ -548,7 +549,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
             //double _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
 
-            var _acreage = PlotSize.Create(plotDimension);
+            var _acreage = PlotSize.Create(0, plotDimension);
 
             return new ReturnResponsesDto
             {
@@ -600,7 +601,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 //var _result = _plotDimension.PlotDimensions.ToLower().Split('x');
                 //double _dimensions = Convert.ToDouble(_result.First()) * Convert.ToDouble(_result.Last());
 
-                var _acreage = PlotSize.Create(_plotDimension.PlotDimensions);
+                var _acreage = PlotSize.Create(plotDimensionId, _plotDimension.PlotDimensions);
 
                 return new ReturnResponsesDto
                 {
@@ -884,8 +885,8 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                  (
                  values.SchemeTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId,
                  locality!.LocalityInitial, values.SiteId, values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId,
-                 blockNumber!.BlockNumbers, houseNumber, values.HouseCategoryId, values.HouseCategoryTypeId, values.HouseTypeId, _dimensions, values.PlotTypeId,
-                 coordinates.Value, values.PropertyStatusId, values.Images, false
+                 blockNumber!.BlockNumbers, houseNumber, values.HouseCategoryId, values.HouseCategoryTypeId, values.HouseTypeId, values.PlotDimensionId, _dimensions,
+                  values.PlotTypeId, coordinates.Value, values.PropertyStatusId, values.Images, false
                  );
 
                 if (!propertyResult.IsSuccess)
@@ -1109,8 +1110,8 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     var propertyResult = PropertyMaster.CreatePlot
                         (
                         values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
-                        values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId, blockNumber!.BlockNumbers, plotNumber, _dimensions, values.PlotTypeId,
-                        values.PropertyHeightId, coordinates.Value, values.SitePlan, values.Cadastal, values.PropertyStatusId, values.Images,
+                        values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId, blockNumber!.BlockNumbers, plotNumber, values.PlotDimensionId, _dimensions,
+                        values.PlotTypeId, values.PropertyHeightId, coordinates.Value, values.SitePlan, values.Cadastal, values.PropertyStatusId, values.Images,
                         false
                         );
 

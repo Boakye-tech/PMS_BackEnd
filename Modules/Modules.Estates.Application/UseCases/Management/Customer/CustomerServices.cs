@@ -23,6 +23,11 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
             _logger = logger;
         }
 
+        public Task<int> StartCustomerDebitAsync(StopDebitRequestDto values)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<int> StopCustomerDebitAsync(StopDebitRequestDto values)
         {
             try
@@ -46,8 +51,8 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     PropertyNumber = values.PropertyNumber,
                     DebtorStatus = values.DebtorStatus,
                     Reasons = values.Reasons,
-                    ActionBy = values.ActionBy,
-                    ActionOn = DateTime.UtcNow
+                    //ActionBy = values.ActionBy,
+                    //ActionOn = DateTime.UtcNow
                 };
 
                 //update customer master

@@ -381,6 +381,10 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult> LeaseDetails([FromBody] PropertyLeaseDetailsDto values, [FromServices] IPropertyServices _propertyServices)
         {
+            if (!ModelState.IsValid)
+            {
+            }
+
             var result = await _propertyServices.AddLeaseDetailsAsync(values);
 
             if (result.IsSuccess)
@@ -461,7 +465,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         public async Task<ActionResult> SwapAllocationType([FromBody] SwapAllocationTypeDto values, [FromServices] IPropertyServices _propertyServices)
         {
             var result = await _propertyServices.SwapAllocationTypeAsync(values);
-
+ 
             if (result.IsSuccess)
             {
                 return Ok(result.SuccessResponse);

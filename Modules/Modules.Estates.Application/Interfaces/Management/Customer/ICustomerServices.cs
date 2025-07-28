@@ -16,6 +16,7 @@ namespace Modules.Estates.Application.Interfaces.Management.Customer
 	public interface ICustomerServices
 	{
         Task<int> StopCustomerDebitAsync(StopDebitRequestDto values);
+        Task<int> StartCustomerDebitAsync(StopDebitRequestDto values);
     }
 }
 

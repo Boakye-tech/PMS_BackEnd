@@ -40,8 +40,8 @@ namespace Modules.Estates.Domain.ValueObjects.Property
             Value = value;
         }
 
-        public static Result<T> Success(T value) => new Result<T>(true, null, value);
-        public static Result<T> Failure(string error) => new Result<T>(false, error, default);
+        public static Result<T> Success(T value) => new Result<T>(true, null!, value);
+        public static Result<T> Failure(string error) => new Result<T>(false, error, default!);
     }
 }
 

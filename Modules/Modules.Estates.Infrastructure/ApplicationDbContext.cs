@@ -116,12 +116,16 @@ public class ApplicationDbContext : ModuleDbContext
 
             builder.OwnsOne(e => e.PlotSize, owned =>
             {
-                owned.Property(p => p.Dimension)
-                     .HasColumnName("PlotDimension")
+                owned.Property(p => p.DimensionId)
+                     .HasColumnName("PlotDimensionId")
                      .IsRequired();
 
                 owned.Property(p => p.Acreage)
                      .HasColumnName("PlotAcreage")
+                     .IsRequired();
+
+                owned.Property(p => p.Acreage2)
+                     .HasColumnName("PlotAcreage2")
                      .IsRequired();
             });
 

@@ -60,7 +60,7 @@ public class LeaseTypeAndPeriodService : ILeaseTypeAndPeriodService
 				};
 			}
 
-			var leaseType = LeaseTypeAndPeriod.Create(leaseTypePeriodId, values.LeaseType!, values.LeasePeriod);
+			var leaseType = LeaseTypeAndPeriod.Create(leaseTypePeriodId, values.LeaseType!, values.LeasePeriod, values.RenewablePeriod);
 			leaseType.CreatedBy = values.CreatedBy;
 			leaseType.CreatedOn = DateTime.Now;
 
@@ -95,7 +95,7 @@ public class LeaseTypeAndPeriodService : ILeaseTypeAndPeriodService
 				};
 			}
 
-			leaseType.Update(values.LeaseTypePeriodId, values.LeaseType!, values.LeasePeriod);
+			leaseType.Update(values.LeaseTypePeriodId, values.LeaseType!, values.LeasePeriod, values.RenewablePeriod);
 			leaseType.ModifiedBy = values.ModifiedBy;
 			leaseType.ModifiedOn = DateTime.Now;
 
