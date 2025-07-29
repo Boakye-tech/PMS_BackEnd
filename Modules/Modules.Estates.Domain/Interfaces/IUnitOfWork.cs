@@ -94,6 +94,9 @@ public interface IUnitOfWork : IDisposable
     //24 July, 2025
     IPropertyTypeRepository PropertyType { get; }
 
+    //29 July, 2025
+    IPropertyLeaseDetailsRepository PropertyLeaseDetails { get; }
+    IActivityTransactionsRepository ActivityTransactions { get; }
 
     Task<int> Complete();
 }

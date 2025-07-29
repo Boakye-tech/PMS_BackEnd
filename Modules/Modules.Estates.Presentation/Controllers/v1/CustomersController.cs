@@ -585,7 +585,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             try
             {
                 var userId = _userContextService.GetUserId();
-                if (!string.Equals(userId, values.ActionBy))
+                if (!string.Equals(userId, values.CreatedBy))
                 {
                     return Unauthorized();
                 }
@@ -611,14 +611,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Deactivate customer stop debit
         /// </summary>
         [HttpPut]
-        [Route("UnstopCustomerDebit")]
+        [Route("StartCustomerDebit")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
         public async Task<ActionResult> UnstopCustomerDebit([FromBody] StopDebitRequestDto values)
         {
             try
             {
                 var userId = _userContextService.GetUserId();
-                if (!string.Equals(userId, values.ActionBy))
+                if (!string.Equals(userId, values.CreatedBy))
                 {
                     return Unauthorized();
                 }

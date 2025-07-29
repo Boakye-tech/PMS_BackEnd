@@ -28,12 +28,10 @@ namespace Modules.Estates.Application.DTO.Management
         [StringLength(255)]
         public string? Reasons { get; set; }
 
-        public int DebtorStatus { get; set; }
-
-        //public DateTime ActionOn { get; set; }
+        //public int DebtorStatus { get; set; }
 
         [StringLength(36)]
-        public string? ActionBy { get; set; }
+        public string? CreatedBy { get; set; }
     }
 }
 

@@ -23,6 +23,62 @@ namespace Modules.Estates.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Management.ActivityTransactions", b =>
+                {
+                    b.Property<int>("ActivityTransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActivityTransactionId"));
+
+                    b.Property<DateTime>("ActivityDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActivityTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PropertyNumber")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.HasKey("ActivityTransactionId");
+
+                    b.HasIndex("PropertyNumber", "CustomerCode", "ActivityId", "ActivityTypeId", "ActivityDate")
+                        .IsUnique();
+
+                    b.ToTable("ActivityTransactions", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Management.Complaint", b =>
                 {
                     b.Property<int>("ComplaintId")
@@ -169,6 +225,77 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.ToTable("ComplaintHistory", "est");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Management.PropertyLeaseDetails", b =>
+                {
+                    b.Property<int>("PropertyLeaseDetailsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyLeaseDetailsId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CurrentRenewalCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CustomerCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastRenewalStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LeaseStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LeaseStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeaseTerm")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeaseTypePeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxRenewalCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PropertyNumber")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.Property<int>("RenewableTerm")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RenewalStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PropertyLeaseDetailsId");
+
+                    b.HasIndex("PropertyNumber", "CustomerCode", "LeaseTypePeriodId", "LeaseStartDate")
+                        .IsUnique();
+
+                    b.ToTable("PropertyLeaseDetails", "est");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Management.StopDebit", b =>
                 {
                     b.Property<int>("StopDebitId")
@@ -177,27 +304,40 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StopDebitId"));
 
-                    b.Property<string>("ActionBy")
-                        .HasMaxLength(36)
-                        .HasColumnType("nvarchar(36)");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ActionOn")
+                    b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerCode")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int>("DebtorStatus")
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GroupNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PreviousGroupNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("PropertyNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("Reasons")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StopDebitId");
 
@@ -481,6 +621,15 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<string>("CustomerCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateOfConstruction")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfTenancy")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTransferedToHos")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DebtorType")
                         .HasColumnType("int");
 
@@ -546,6 +695,9 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<DateTime>("RightOfEntry")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("RoomSize")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoomsOccupied")
                         .HasColumnType("int");
@@ -3632,6 +3784,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("RenewablePeriod")
+                        .HasColumnType("int");
+
                     b.HasKey("LeaseTypePeriodId");
 
                     b.ToTable("LeaseTypeAndPeriod", "est");
@@ -5360,10 +5515,13 @@ namespace Modules.Estates.Infrastructure.Migrations
                                 .HasColumnType("decimal(18,2)")
                                 .HasColumnName("PlotAcreage");
 
-                            b1.Property<string>("Dimension")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("PlotDimension");
+                            b1.Property<decimal>("Acreage2")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("PlotAcreage2");
+
+                            b1.Property<int>("DimensionId")
+                                .HasColumnType("int")
+                                .HasColumnName("PlotDimensionId");
 
                             b1.HasKey("PropertyMasterId");
 

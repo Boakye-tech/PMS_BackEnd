@@ -432,21 +432,21 @@ namespace Modules.Estates.Domain.Entities.Registration
         }
 
 
-        public Result<PropertyMaster> StopDebit(int debtorStatus)
+        public Result<PropertyMaster> StopDebit()
         {
-            if (DebtorType == 90)
+            if (GroupNumber == 90)
                 return Result<PropertyMaster>.Failure("Property already has a stop debit.");
 
-            DebtorType = debtorStatus;
+            GroupNumber = 90;
             return Result<PropertyMaster>.Success(this);
         }
 
-        public Result<PropertyMaster> UnstopDebit(int debtorStatus)
+        public Result<PropertyMaster> StartDebit(int groupNumber)
         {
-            if (DebtorType != 90)
+            if (GroupNumber != 90)
                 return Result<PropertyMaster>.Failure("Property doesnt have a stop debit.");
 
-            DebtorType = debtorStatus;
+            GroupNumber = groupNumber;
             return Result<PropertyMaster>.Success(this);
         }
 
@@ -459,6 +459,15 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(this);
         }
 
+        public Result<PropertyMaster> AssignToCustomer(string customerCode)
+        {
+            if (CustomerCode is not null || CustomerCode != string.Empty)
+                return Result<PropertyMaster>.Failure("Property number already assigned to customer code");
+
+            CustomerCode = customerCode;
+            return Result<PropertyMaster>.Success(this);
+        }
+
         public Result<PropertyMaster> UpdatePlotSize(int plotDimensionId, string newDimension)
         {
             var plotSizeResult = PlotSize.Create(plotDimensionId,newDimension);
@@ -468,6 +477,23 @@ namespace Modules.Estates.Domain.Entities.Registration
             PlotSize = plotSizeResult.Value;
             return Result<PropertyMaster>.Success(this);
         }
+
+        public Result<PropertyMaster> UpdateDebtorTypeAndGroupNumber(int debtorType, int groupNumber)
+        {
+            if (debtorType <= 0)
+                return Result<PropertyMaster>.Failure("");
+
+            if (debtorType <= 0)
+                return Result<PropertyMaster>.Failure("");
+
+            DebtorType = debtorType;
+            GroupNumber = groupNumber;
+
+            return Result<PropertyMaster>.Success(this);
+        }
+
+
+
     }
 }
 

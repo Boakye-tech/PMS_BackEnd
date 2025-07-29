@@ -24,9 +24,9 @@ namespace Modules.Estates.Domain.Entities.Management
         [StringLength(75)]
         public string? PropertyNumber { get; set; }
 
-        public int PreviousStatus { get; set; }
+        public int PreviousGroupNumber { get; set; }
 
-        public int DebtorStatus { get; set; }
+        public int GroupNumber { get; set; }
 
         public string? Reasons { get; set; }
 
@@ -40,8 +40,8 @@ namespace Modules.Estates.Domain.Entities.Management
             StopDebitId = stopDebitId;
             PropertyNumber = propertyNumber;
             CustomerCode = customerCode;
-            PreviousStatus = previousStatus;
-            DebtorStatus = debtorStatus;
+            PreviousGroupNumber = previousStatus;
+            GroupNumber = debtorStatus;
             Reasons = reasons;
         }
 
@@ -55,8 +55,8 @@ namespace Modules.Estates.Domain.Entities.Management
                 StopDebitId = 0,
                 PropertyNumber = propertyNumber,
                 CustomerCode = customerCode,
-                PreviousStatus = previousStatus,
-                DebtorStatus = debtorStatus,
+                PreviousGroupNumber = previousStatus,
+                GroupNumber = debtorStatus,
                 Reasons = reasons
             };
 
@@ -69,8 +69,8 @@ namespace Modules.Estates.Domain.Entities.Management
 
             PropertyNumber = propertyNumber;
             CustomerCode = customerCode;
-            PreviousStatus = previousStatus;
-            DebtorStatus = debtorStatus;
+            PreviousGroupNumber = previousStatus;
+            GroupNumber = debtorStatus;
             Reasons = reasons;
 
             return Result<StopDebit>.Success(this);

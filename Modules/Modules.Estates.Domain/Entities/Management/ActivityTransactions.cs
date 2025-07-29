@@ -11,14 +11,18 @@
 
 namespace Modules.Estates.Domain.Entities.Management
 {
-	public class ActivityTransactions
+	public class ActivityTransactions : AuditableEntity
 	{
 		[Key]
 		public int ActivityTransactionId { get; set; }
 
+		[Required]
+		[StringLength(10)]
 		public string? CustomerCode { get; set; }
 
-		public string? PropertyNumber { get; set; }
+        [Required]
+        [StringLength(75)]
+        public string? PropertyNumber { get; set; }
 
 		public DateTime ActivityDate { get; set; }
 

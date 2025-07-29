@@ -49,15 +49,12 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     StopDebitId = 0,
                     CustomerCode = values!.CustomerCode,
                     PropertyNumber = values.PropertyNumber,
-                    DebtorStatus = values.DebtorStatus,
                     Reasons = values.Reasons,
-                    //ActionBy = values.ActionBy,
-                    //ActionOn = DateTime.UtcNow
                 };
 
                 //update customer master
-                customer!.DebtorStatus = 90; //values.DebtorStatus;
-                customer.ModifiedBy = values.ActionBy;
+                customer!.DebtorStatus = 90; 
+                customer.ModifiedBy = values.CreatedBy;
                 customer.ModifiedOn = DateTime.UtcNow;
 
                 _unitOfWork.CustomerMaster.Update(customer);

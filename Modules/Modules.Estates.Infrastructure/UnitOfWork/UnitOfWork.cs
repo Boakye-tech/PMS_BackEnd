@@ -215,8 +215,14 @@ public class UnitOfWork: IUnitOfWork
     //June 30 '25
     public IPlotFeatures PlotFeatures { get; private set; }
 
-    //Jly 24 '25
+    //July 24 '25
     public IPropertyTypeRepository PropertyType { get; private set; }
+
+    //July 29 '25
+    public IPropertyLeaseDetailsRepository PropertyLeaseDetails { get; private set; }
+    public IActivityTransactionsRepository ActivityTransactions { get; private set; }
+
+
 
     public Task<int> Complete()
     {

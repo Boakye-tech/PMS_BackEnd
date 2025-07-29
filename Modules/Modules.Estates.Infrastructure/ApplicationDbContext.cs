@@ -97,6 +97,10 @@ public class ApplicationDbContext : ModuleDbContext
     //24 July, 2025
     public DbSet<PropertyType> PropertyType { get; set; }
 
+    //29 July, 2025
+    public DbSet<PropertyLeaseDetails> PropertyLeaseDetails { get; set; }
+    public DbSet<ActivityTransactions> ActivityTransactions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -182,6 +186,13 @@ public class ApplicationDbContext : ModuleDbContext
             .Property(c => c.SellingRate)
             .HasColumnType("decimal(18,4)");
 
+        modelBuilder.Entity<PropertyLeaseDetails>()
+            .HasIndex(pld => new { pld.PropertyNumber, pld.CustomerCode, pld.LeaseTypePeriodId, pld.LeaseStartDate })
+            .IsUnique(true);
+
+        modelBuilder.Entity<ActivityTransactions>()
+            .HasIndex(at => new { at.PropertyNumber, at.CustomerCode, at.ActivityId, at.ActivityTypeId, at.ActivityDate })
+            .IsUnique(true);
 
 
         //modelBuilder.Entity<ApartmentTypes>
