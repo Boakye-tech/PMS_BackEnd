@@ -15,10 +15,10 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 	public class PropertyServices: IPropertyServices
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<CustomerMasterService> _logger;
+        private readonly ILogger<PropertyServices> _logger;
         private readonly IMapper _mapper;
 
-        public PropertyServices(IUnitOfWork unitOfWork, ILogger<CustomerMasterService> logger, IMapper mapper)
+        public PropertyServices(IUnitOfWork unitOfWork, ILogger<PropertyServices> logger, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;

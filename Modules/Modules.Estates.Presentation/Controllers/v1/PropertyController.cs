@@ -5,17 +5,13 @@
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 12/05/202 01:0 AM 
+// * Create Date: 12/05/2025 01:09 AM 
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
 
-
-using System.ComponentModel;
-using System.Reflection;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace Modules.Estates.Presentation.Controllers.v1;
 
@@ -29,29 +25,15 @@ namespace Modules.Estates.Presentation.Controllers.v1;
 /// </summary>
 public partial class PropertyController : ControllerBase
 {
-    private readonly IActivityServices _activityServices;
-    private readonly IPropertySetupServices _propertySetupServices;
-    private readonly IBlockServices _blockServices;
-    private readonly IPropertyFeatureServices _propertyFeatureServices;
     private readonly IRentalsServices _rentalsService;
-
     private readonly IPropertyMasterService _propertyMasterService;
-    //private readonly IPropertyServices _propertyServices;
-    
+    //private readonly IPropertyServices 
 
-    public PropertyController(IActivityServices activityServices, IPropertySetupServices propertySetupServices, IBlockServices blockServices, IPropertyFeatureServices propertyFeatureServices,
-                             IPropertyMasterService propertyMasterService, IRentalsServices rentalsService) //, IPropertyServices propertyServices
+    public PropertyController(IRentalsServices rentalsService, IPropertyMasterService propertyMasterService) 
     {
-        _activityServices = activityServices;
-        _propertySetupServices = propertySetupServices;
-        _blockServices = blockServices;
-        _propertyFeatureServices = propertyFeatureServices;
-        _propertyMasterService = propertyMasterService;
         _rentalsService = rentalsService;
-        //_propertyServices = propertyServices;
+        _propertyMasterService = propertyMasterService;
     }
-
-
 
     /// <summary>
     /// Returns a list of plot types and their features

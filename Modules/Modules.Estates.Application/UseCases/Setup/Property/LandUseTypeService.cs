@@ -176,5 +176,11 @@ public class LandUseTypeService : ILandUseTypeService
             return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
         }
     }
+
+    public async Task<IEnumerable<LandUseTypeReadDto>> GetLandUseTypeByLandUseAsync(int landUseId)
+    {
+        var landuseType = await _unitOfWork.LandUseType.GetAll(lt => lt.LandUseId == landUseId);
+        return _mapper.Map<IEnumerable<LandUseTypeReadDto>>(landuseType);
+    }
 }
 

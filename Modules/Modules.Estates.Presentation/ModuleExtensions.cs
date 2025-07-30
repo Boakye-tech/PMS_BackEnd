@@ -86,11 +86,7 @@ public static class ModuleExtensions
 
 
         services.AddScoped<ITypesService, TypesService>();
-        services.AddScoped<IActivityServices, ActivityServices>();
-        services.AddScoped<IBlockServices, BlockServices>();
         services.AddScoped<IRentalsServices, RentalsServices>();
-        services.AddScoped<IPropertyFeatureServices, PropertyFeatureServices>();
-        services.AddScoped<IPropertySetupServices, PropertySetupServices>();
 
         services.AddScoped<IPlotFeaturesService, PlotFeaturesService>();
         services.AddScoped<IPropertyTypeService, PropertyTypeService>();

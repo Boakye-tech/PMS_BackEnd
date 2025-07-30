@@ -1,7 +1,16 @@
+// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Presentation
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Presentation/Controllers/v1/PropertyController.Floor.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 12/05/2025 01:09 AM 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using Microsoft.AspNetCore.Mvc;
-using Asp.Versioning;
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.Services;
 
 namespace Modules.Estates.Presentation.Controllers.v1;
 
@@ -12,9 +21,9 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetFloorArea")]
-    public async Task<ActionResult<IEnumerable<FloorAreaReadDto>>> GetFloorArea()
+    public async Task<ActionResult<IEnumerable<FloorAreaReadDto>>> GetFloorArea([FromServices] IFloorAreaService _floorAreaService)
     {
-        return Ok(await _blockServices.GetFloorAreaAsync());
+        return Ok(await _floorAreaService.GetFloorAreaAsync());
     }
 
     /// <summary>
@@ -55,11 +64,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateFloorArea([FromBody] FloorAreaCreateDto values)
+    public async Task<ActionResult> CreateFloorArea([FromBody] FloorAreaCreateDto values, [FromServices] IFloorAreaService _floorAreaService)
     {
         try
         {
-            var result = await _blockServices.CreateFloorAreaAsync(values);
+            var result = await _floorAreaService.CreateFloorAreaAsync(values);
 
             if (result.IsSuccess)
             {
@@ -119,9 +128,9 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<FloorAreaReadDto>> UpdateFloorArea([FromBody] FloorAreaUpdateDto values)
+    public async Task<ActionResult<FloorAreaReadDto>> UpdateFloorArea([FromBody] FloorAreaUpdateDto values, [FromServices] IFloorAreaService _floorAreaService)
     {
-        var result = await _blockServices.UpdateFloorAreaAsync(values);
+        var result = await _floorAreaService.UpdateFloorAreaAsync(values);
 
         if (result.IsSuccess)
         {
@@ -147,11 +156,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteFloorArea(int floorAreaId)
+    public async Task<ActionResult> DeleteFloorArea(int floorAreaId, [FromServices] IFloorAreaService _floorAreaService)
     {
         try
         {
-            var result = await _blockServices.DeleteFloorArea(floorAreaId);
+            var result = await _floorAreaService.DeleteFloorArea(floorAreaId);
 
             if (result.IsSuccess)
             {
@@ -176,9 +185,9 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetFloorNumbering")]
-    public async Task<ActionResult<IEnumerable<FloorNumberingReadDto>>> GetFloorNumbering()
+    public async Task<ActionResult<IEnumerable<FloorNumberingReadDto>>> GetFloorNumbering([FromServices] IFloorNumberingService _floorNumberingService)
     {
-        return Ok(await _blockServices.GetFloorNumberingAsync());
+        return Ok(await _floorNumberingService.GetFloorNumberingAsync());
     }
 
     /// <summary>
@@ -219,11 +228,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateFloorNumber([FromBody] FloorNumberingCreateDto values)
+    public async Task<ActionResult> CreateFloorNumber([FromBody] FloorNumberingCreateDto values, [FromServices] IFloorNumberingService _floorNumberingService)
     {
         try
         {
-            var result = await _blockServices.CreateFloorNumberAsync(values);
+            var result = await _floorNumberingService.CreateFloorNumberingAsync(values);
 
             if (result.IsSuccess)
             {
@@ -283,9 +292,9 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<FloorNumberingReadDto>> UpdateFloorNumber([FromBody] FloorNumberingUpdateDto values)
+    public async Task<ActionResult<FloorNumberingReadDto>> UpdateFloorNumber([FromBody] FloorNumberingUpdateDto values, [FromServices] IFloorNumberingService _floorNumberingService)
     {
-        var result = await _blockServices.UpdateFloorNumberAsync(values);
+        var result = await _floorNumberingService.UpdateFloorNumberingAsync(values);
 
         if (result.IsSuccess)
         {
@@ -311,11 +320,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteFloorNumber(int floorNumberId)
+    public async Task<ActionResult> DeleteFloorNumber(int floorNumberId, [FromServices] IFloorNumberingService _floorNumberingService)
     {
         try
         {
-            var result = await _blockServices.DeleteFloorNumbering(floorNumberId);
+            var result = await _floorNumberingService.DeleteFloorNumbering(floorNumberId);
 
             if (result.IsSuccess)
             {

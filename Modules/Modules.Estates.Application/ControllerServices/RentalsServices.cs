@@ -10,10 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-
-using Modules.Estates.Application.Interfaces.Entities.Setup.Property;
-
 namespace Modules.Estates.Application.ControllerServices;
 
 public class RentalsServices : IRentalsServices
@@ -24,16 +20,14 @@ public class RentalsServices : IRentalsServices
     public IHouseTypesService HouseTypesService { get; }
 
     public ITypesService AllTypesService { get; }
-    public IPropertyTypeService PropertyTypeService {get;}
 
-    public RentalsServices(IRentalCategoryService rentalCategoryService, IRentalTypeService rentalTypeService,IShopOfficeTypesService shopOfficeTypesService, IHouseTypesService houseTypesService, ITypesService allTypesService, IPropertyTypeService propertyTypeService) 
+    public RentalsServices(IRentalCategoryService rentalCategoryService, IRentalTypeService rentalTypeService,IShopOfficeTypesService shopOfficeTypesService, IHouseTypesService houseTypesService, ITypesService allTypesService) 
     {
         RentalCategoryService = rentalCategoryService;
         RentalTypeService = rentalTypeService;
         ShopOfficeTypesService = shopOfficeTypesService;
         HouseTypesService = houseTypesService;
         AllTypesService = allTypesService;
-        PropertyTypeService = propertyTypeService;
     }
 
     // Rental Category methods
@@ -109,16 +103,6 @@ public class RentalsServices : IRentalsServices
 
     public async Task<ReturnResponsesDto> DeleteTypes(int typesId) =>
         await AllTypesService.DeleteTypes(typesId);
-
-
-    //Property types methods
-    public async Task<List<PropertyTypeReadDto>> GetPropertyTypesAsync() => await PropertyTypeService.GetPropertyTypesAsync();
-
-    public async Task<ReturnResponsesDto> CreatePropertyTypeAsync(PropertyTypeCreateDto values) => await PropertyTypeService.CreatePropertyTypeAsync(values);
-
-    public async Task<ReturnResponsesDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values) => await PropertyTypeService.UpdatePropertyTypeAsync(values);
-
-    public async Task<ReturnResponsesDto> DeletePropertyType(int propertyTypeId) => await PropertyTypeService.DeletePropertyType(propertyTypeId);
 
 
 }

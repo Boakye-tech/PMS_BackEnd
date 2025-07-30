@@ -1,6 +1,17 @@
+// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Presentation
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Presentation/Controllers/v1/PropertyController.Activity.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 12/05/2025 01:09 AM 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.DTO.Setup;
-using Modules.Estates.Application.Services;
+
 
 namespace Modules.Estates.Presentation.Controllers.v1;
 
@@ -12,9 +23,9 @@ public partial class PropertyController
     [HttpGet]
     [Route("GetActivityAndActivityTypes")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ActivityAndActivityTypeReadDto>))]
-    public async Task<ActionResult<List<ActivityAndActivityTypeReadDto>>> GetActivityAndActivityTypes()
+    public async Task<ActionResult<List<ActivityAndActivityTypeReadDto>>> GetActivityAndActivityTypes([FromServices] IActivityService _activityService)
     {
-        return Ok(await _activityServices.GetActivityAndActivityTypeAsync());
+        return Ok(await _activityService.GeActivityAndActivityTypeAsync());
     }
 
     /// <summary>
@@ -22,9 +33,9 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetActivities")]
-    public async Task<ActionResult<IEnumerable<ActivityReadDto>>> GetActivities()
+    public async Task<ActionResult<IEnumerable<ActivityReadDto>>> GetActivities([FromServices] IActivityService _activityService)
     {
-        return Ok(await _activityServices.GetActivitiesAsync());
+        return Ok(await _activityService.GetActivitiesAsync());
     }
 
     /// <summary>
@@ -65,11 +76,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateActivity([FromBody] ActivityCreateDto values)
+    public async Task<ActionResult> CreateActivity([FromBody] ActivityCreateDto values, [FromServices] IActivityService _activityService)
     {
         try
         {
-            var result = await _activityServices.CreateActivityAsync(values);
+            var result = await _activityService.CreateActivityAsync(values);
 
             if (result.IsSuccess)
             {
@@ -129,9 +140,9 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<ActivityReadDto>> UpdateActivity([FromBody] ActivityUpdateDto values)
+    public async Task<ActionResult<ActivityReadDto>> UpdateActivity([FromBody] ActivityUpdateDto values, [FromServices] IActivityService _activityService)
     {
-        var result = await _activityServices.UpdateActivityAsync(values);
+        var result = await _activityService.UpdateActivityAsync(values);
 
         if (result.IsSuccess)
         {
@@ -157,11 +168,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteActivity(int activityId)
+    public async Task<ActionResult> DeleteActivity(int activityId, [FromServices] IActivityService _activityService)
     {
         try
         {
-            var result = await _activityServices.DeleteActivity(activityId);
+            var result = await _activityService.DeleteActivity(activityId);
 
             if (result.IsSuccess)
             {
@@ -186,9 +197,9 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetActivityTypes")]
-    public async Task<ActionResult<IEnumerable<ActivityTypeReadDto>>> GetActivityTypes()
+    public async Task<ActionResult<IEnumerable<ActivityTypeReadDto>>> GetActivityTypes([FromServices] IActivityTypeService _activityTypeService)
     {
-        return Ok(await _activityServices.GetActivityTypeAsync());
+        return Ok(await _activityTypeService.GetActivityTypeAsync());
     }
 
     /// <summary>
@@ -230,11 +241,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateActivityType([FromBody] ActivityTypeCreateDto values)
+    public async Task<ActionResult> CreateActivityType([FromBody] ActivityTypeCreateDto values, [FromServices] IActivityTypeService _activityTypeService)
     {
         try
         {
-            var result = await _activityServices.CreateActivityTypeAsync(values);
+            var result = await _activityTypeService.CreateActivityTypeAsync(values);
 
             if (result.IsSuccess)
             {
@@ -294,9 +305,9 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<ActivityTypeReadDto>> UpdateActivityType([FromBody] ActivityTypeUpdateDto values)
+    public async Task<ActionResult<ActivityTypeReadDto>> UpdateActivityType([FromBody] ActivityTypeUpdateDto values, [FromServices] IActivityTypeService _activityTypeService)
     {
-        var result = await _activityServices.UpdateActivityTypeAsync(values);
+        var result = await _activityTypeService.UpdateActivityTypeAsync(values);
 
         if (result.IsSuccess)
         {
@@ -322,11 +333,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteActivityType(int activityTypeId)
+    public async Task<ActionResult> DeleteActivityType(int activityTypeId, [FromServices] IActivityTypeService _activityTypeService)
     {
         try
         {
-            var result = await _activityServices.DeleteActivityType(activityTypeId);
+            var result = await _activityTypeService.DeleteActivityType(activityTypeId);
 
             if (result.IsSuccess)
             {

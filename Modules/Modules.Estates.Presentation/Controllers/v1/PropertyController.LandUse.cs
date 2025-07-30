@@ -1,4 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Presentation
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Presentation/Controllers/v1/PropertyController.LandUse.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 12/05/2025 01:09 AM 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +24,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpGet]
         [Route("GetLandUsesAndLandUseTypes")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<LandUseAndLandUseTypeReadDto>))]
-        public async Task<ActionResult<List<LandUseAndLandUseTypeReadDto>>> GetLandUseAndLandUseType()
+        public async Task<ActionResult<List<LandUseAndLandUseTypeReadDto>>> GetLandUseAndLandUseType([FromServices] ILandUseService _landUseService)
         {
-            return Ok(await _propertySetupServices.GetLandUseAndLandUseTypeAsync());
+            return Ok(await _landUseService.GetLandUseAndLandUseTypeAsync());
         }
 
         /// <summary>
@@ -22,9 +34,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetLandUses")]
-        public async Task<ActionResult<IEnumerable<LandUseReadDto>>> GetLandUses()
+        public async Task<ActionResult<IEnumerable<LandUseReadDto>>> GetLandUses([FromServices] ILandUseService _landUseService)
         {
-            return Ok(await _propertySetupServices.GetLandUseAsync());
+            return Ok(await _landUseService.GetLandUseAsync());
         }
 
         /// <summary>
@@ -65,11 +77,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> CreateLandUse([FromBody] LandUseCreateDto values)
+        public async Task<ActionResult> CreateLandUse([FromBody] LandUseCreateDto values, [FromServices] ILandUseService _landUseService)
         {
             try
             {
-                var result = await _propertySetupServices.CreateLandUseAsync(values);
+                var result = await _landUseService.CreateLandUseAsync(values);
 
                 if (result.IsSuccess)
                 {
@@ -129,9 +141,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult<LandUseReadDto>> UpdateLandUse([FromBody] LandUseUpdateDto values)
+        public async Task<ActionResult<LandUseReadDto>> UpdateLandUse([FromBody] LandUseUpdateDto values, [FromServices] ILandUseService _landUseService)
         {
-            var result = await _propertySetupServices.UpdateLandUseAsync(values);
+            var result = await _landUseService.UpdateLandUseAsync(values);
 
             if (result.IsSuccess)
             {
@@ -157,11 +169,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> DeleteLandUse(int landUseId)
+        public async Task<ActionResult> DeleteLandUse(int landUseId, [FromServices] ILandUseService _landUseService)
         {
             try
             {
-                var result = await _propertySetupServices.DeleteLandUse(landUseId);
+                var result = await _landUseService.DeleteLandUse(landUseId);
 
                 if (result.IsSuccess)
                 {
@@ -186,10 +198,24 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetLandUseTypes")]
-        public async Task<ActionResult<IEnumerable<LandUseTypeReadDto>>> GetLandUseTypes()
+        public async Task<ActionResult<IEnumerable<LandUseTypeReadDto>>> GetLandUseTypes([FromQuery] int landuseId, [FromServices] ILandUseTypeService _landUseTypeService)
         {
-            return Ok(await _propertySetupServices.GetLandUseTypeAsync());
+            if(landuseId != 0)
+                return Ok(await _landUseTypeService.GetLandUseTypeByLandUseAsync(landuseId));
+
+            return Ok(await _landUseTypeService.GetLandUseTypeAsync());
         }
+
+
+        ///// <summary>
+        ///// Returns a list of land use types based on specific land use
+        ///// </summary>
+        //[HttpGet]
+        //[Route("GetLandUseTypes/{landuseId}")]
+        //public async Task<ActionResult<IEnumerable<LandUseTypeReadDto>>> GetLandUseTypes(int landuseId, [FromServices] ILandUseTypeService _landUseTypeService)
+        //{
+        //    return Ok(await _landUseTypeService.GetLandUseTypeByLandUseAsync(landuseId));
+        //}
 
         /// <summary>
         /// Creates a new land use type
@@ -229,11 +255,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> CreateLandUseType([FromBody] LandUseTypeCreateDto values)
+        public async Task<ActionResult> CreateLandUseType([FromBody] LandUseTypeCreateDto values, [FromServices] ILandUseTypeService _landUseTypeService)
         {
             try
             {
-                var result = await _propertySetupServices.CreateLandUseTypeAsync(values);
+                var result = await _landUseTypeService.CreateLandUseTypeAsync(values);
 
                 if (result.IsSuccess)
                 {
@@ -293,9 +319,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult<LandUseTypeReadDto>> UpdateLandUseType([FromBody] LandUseTypeUpdateDto values)
+        public async Task<ActionResult<LandUseTypeReadDto>> UpdateLandUseType([FromBody] LandUseTypeUpdateDto values, [FromServices] ILandUseTypeService _landUseTypeService)
         {
-            var result = await _propertySetupServices.UpdateLandUseTypeAsync(values);
+            var result = await _landUseTypeService.UpdateLandUseTypeAsync(values);
 
             if (result.IsSuccess)
             {
@@ -321,11 +347,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> DeleteLandUseType(int landUseTypeId)
+        public async Task<ActionResult> DeleteLandUseType(int landUseTypeId, [FromServices] ILandUseTypeService _landUseTypeService)
         {
             try
             {
-                var result = await _propertySetupServices.DeleteLandUseType(landUseTypeId);
+                var result = await _landUseTypeService.DeleteLandUseType(landUseTypeId);
 
                 if (result.IsSuccess)
                 {
@@ -345,174 +371,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
-        // Lease Type and Period endpoints
-        /// <summary>
-        /// Returns a list of lease types and their associated periods
-        /// </summary>
-        [HttpGet]
-        [Route("GetLeaseTypeAndPeriods")]
-        public async Task<ActionResult<IEnumerable<LeaseTypeAndPeriodReadDto>>> GetLeaseTypeAndPeriods()
-        {
-            return Ok(await _propertyFeatureServices.GetLeaseTypeAndPeriodAsync());
-        }
-
-        /// <summary>
-        /// Creates a new lease type and period
-        /// </summary>
-        /// <remarks>
-        /// Creates a new lease type and period in the system
-        ///
-        /// **Sample Request:**
-        ///
-        ///     POST /CreateLeaseTypeAndPeriod
-        ///
-        /// **Sample Request Body:**
-        /// 
-        ///     {
-        ///         "leaseTypeAndPeriodId": 0,
-        ///         "leaseType": "RESIDENTIAL",
-        ///         "leasePeriod": "12",
-        ///         "leaseTypeDescription": "12 months residential lease",
-        ///         "createdBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-        ///     }
-        ///
-        /// **Sample Response 201:**
-        /// 
-        ///     {
-        ///         "code": 201,
-        ///         "message": "Lease type and period created successfully.",
-        ///         "data": {
-        ///             "leaseTypeAndPeriodId": 1,
-        ///             "leaseType": "RESIDENTIAL",
-        ///             "leasePeriod": "12",
-        ///             "leaseTypeDescription": "12 months residential lease"
-        ///         }
-        ///     }
-        /// </remarks>
-        [HttpPost]
-        [Route("CreateLeaseTypeAndPeriod")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
-        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> CreateLeaseTypeAndPeriod([FromBody] LeaseTypeAndPeriodCreateDto values)
-        {
-            try
-            {
-                var result = await _propertyFeatureServices.CreateLeaseTypeAndPeriodAsync(values);
-
-                if (result.IsSuccess)
-                {
-                    return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
-                }
-
-                var status = result.ErrorResponse!.Code;
-                return status switch
-                {
-                    204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
-                    400 => BadRequest(result.ErrorResponse),
-                    404 => NotFound(result.ErrorResponse),
-                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
-                };
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
-            }
-        }
-
-        /// <summary>
-        /// Updates the details of an existing lease type and period
-        /// </summary>
-        /// <remarks>
-        /// Modifies/updates an existing lease type and period based on the lease type and period id 
-        ///
-        /// **Sample Request:**
-        ///
-        ///     PUT /UpdateLeaseTypeAndPeriod
-        ///
-        /// **Sample Request Body:**
-        /// 
-        ///     {
-        ///         "leaseTypeAndPeriodId": 1,
-        ///         "leaseType": "RESIDENTIAL",
-        ///         "leasePeriod": "12",
-        ///         "leaseTypeDescription": "Updated 12 months residential lease",
-        ///         "modifiedBy": "32ea339b-75f2-4f57-8153-915f127a9612"
-        ///     }
-        ///
-        /// **Sample Response 200:**
-        /// 
-        ///     {
-        ///         "code": 200,
-        ///         "message": "Lease type and period details modified successfully.",
-        ///         "data": {
-        ///             "leaseTypeAndPeriodId": 1,
-        ///             "leaseType": "RESIDENTIAL",
-        ///             "leasePeriod": "12",
-        ///             "leaseTypeDescription": "Updated 12 months residential lease"
-        ///         }
-        ///     }
-        /// </remarks>
-        [HttpPut]
-        [Route("UpdateLeaseTypeAndPeriod")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
-        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult<LeaseTypeAndPeriodReadDto>> UpdateLeaseTypeAndPeriod([FromBody] LeaseTypeAndPeriodUpdateDto values)
-        {
-            var result = await _propertyFeatureServices.UpdateLeaseTypeAndPeriodAsync(values);
-
-            if (result.IsSuccess)
-            {
-                return Ok(result.SuccessResponse);
-            }
-
-            var status = result.ErrorResponse!.Code;
-            return status switch
-            {
-                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
-                400 => BadRequest(result.ErrorResponse),
-                404 => NotFound(result.ErrorResponse),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
-            };
-        }
-
-        /// <summary>
-        /// Deletes a lease type and period by its ID
-        /// </summary>
-        /// <param name="leaseTypeAndPeriodId">The ID of the lease type and period to delete</param>
-        /// <returns>Success or error response</returns>
-        [HttpDelete("DeleteLeaseTypeAndPeriod/{leaseTypeAndPeriodId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> DeleteLeaseTypeAndPeriod(int leaseTypeAndPeriodId)
-        {
-            try
-            {
-                var result = await _propertyFeatureServices.DeleteLeaseTypeAndPeriod(leaseTypeAndPeriodId);
-
-                if (result.IsSuccess)
-                {
-                    return Ok(result.SuccessResponse);
-                }
-
-                var status = result.ErrorResponse!.Code;
-                return status switch
-                {
-                    404 => NotFound(result.ErrorResponse),
-                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
-                };
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
-            }
-        }
+      
     }
 }
 

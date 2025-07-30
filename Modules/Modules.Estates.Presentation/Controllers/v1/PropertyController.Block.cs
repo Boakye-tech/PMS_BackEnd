@@ -1,5 +1,16 @@
+// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Presentation
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Presentation/Controllers/v1/PropertyController.Block.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 12/05/2025 01:09 AM 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
 using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.DTO.Setup;
 
 namespace Modules.Estates.Presentation.Controllers.v1;
 
@@ -10,9 +21,9 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetBlockNumber")]
-    public async Task<ActionResult<IEnumerable<BlockNumberReadDto>>> GetBlockNumber()
+    public async Task<ActionResult<IEnumerable<BlockNumberReadDto>>> GetBlockNumber([FromServices] IBlockNumberService _blockNumberService)
     {
-        return Ok(await _blockServices.GetBlockNumberAsync());
+        return Ok(await _blockNumberService.GetBlockNumberAsync());
     }
 
     /// <summary>
@@ -53,11 +64,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateBlockNumber([FromBody] BlockNumberCreateDto values)
+    public async Task<ActionResult> CreateBlockNumber([FromBody] BlockNumberCreateDto values, [FromServices] IBlockNumberService _blockNumberService)
     {
         try
         {
-            var result = await _blockServices.CreateBlockNumberAsync(values);
+            var result = await _blockNumberService.CreateBlockNumberAsync(values);
 
             if (result.IsSuccess)
             {
@@ -117,9 +128,9 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<BlockNumberReadDto>> UpdateBlockNumber([FromBody] BlockNumberUpdateDto values)
+    public async Task<ActionResult<BlockNumberReadDto>> UpdateBlockNumber([FromBody] BlockNumberUpdateDto values, [FromServices] IBlockNumberService _blockNumberService)
     {
-        var result = await _blockServices.UpdateBlockNumberAsync(values);
+        var result = await _blockNumberService.UpdateBlockNumberAsync(values);
 
         if (result.IsSuccess)
         {
@@ -145,11 +156,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteBlockNumber(int blockNumberId)
+    public async Task<ActionResult> DeleteBlockNumber(int blockNumberId, [FromServices] IBlockNumberService _blockNumberService)
     {
         try
         {
-            var result = await _blockServices.DeleteBlockNumber(blockNumberId);
+            var result = await _blockNumberService.DeleteBlockNumber(blockNumberId);
 
             if (result.IsSuccess)
             {
@@ -174,9 +185,9 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetBlockSides")]
-    public async Task<ActionResult<IEnumerable<BlockSideReadDto>>> GetBlockSides()
+    public async Task<ActionResult<IEnumerable<BlockSideReadDto>>> GetBlockSides([FromServices] IBlockSideService _blockSideService)
     {
-        return Ok(await _blockServices.GetBlockSidesAsync());
+        return Ok(await _blockSideService.GetBlockSideAsync());
     }
 
     /// <summary>
@@ -217,11 +228,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateBlockSide([FromBody] BlockSideCreateDto values)
+    public async Task<ActionResult> CreateBlockSide([FromBody] BlockSideCreateDto values, [FromServices] IBlockSideService _blockSideService)
     {
         try
         {
-            var result = await _blockServices.CreateBlockSideAsync(values);
+            var result = await _blockSideService.CreateBlockSideAsync(values);
 
             if (result.IsSuccess)
             {
@@ -281,9 +292,9 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<BlockSideReadDto>> UpdateBlockSide([FromBody] BlockSideUpdateDto values)
+    public async Task<ActionResult<BlockSideReadDto>> UpdateBlockSide([FromBody] BlockSideUpdateDto values, [FromServices] IBlockSideService _blockSideService)
     {
-        var result = await _blockServices.UpdateBlockSideAsync(values);
+        var result = await _blockSideService.UpdateBlockSideAsync(values);
 
         if (result.IsSuccess)
         {
@@ -309,11 +320,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteBlockSide(int blockSideId)
+    public async Task<ActionResult> DeleteBlockSide(int blockSideId, [FromServices] IBlockSideService _blockSideService)
     {
         try
         {
-            var result = await _blockServices.DeleteBlockSide(blockSideId);
+            var result = await _blockSideService.DeleteBlockSide(blockSideId);
 
             if (result.IsSuccess)
             {
@@ -338,9 +349,9 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetBlockTypes")]
-    public async Task<ActionResult<IEnumerable<BlockTypeReadDto>>> GetBlockTypes()
+    public async Task<ActionResult<IEnumerable<BlockTypeReadDto>>> GetBlockTypes([FromServices] IBlockTypeService _blockTypeService)
     {
-        return Ok(await _blockServices.GetBlockTypesAsync());
+        return Ok(await _blockTypeService.GetBlockTypeAsync());
     }
 
     /// <summary>
@@ -381,11 +392,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateBlockType([FromBody] BlockTypeCreateDto values)
+    public async Task<ActionResult> CreateBlockType([FromBody] BlockTypeCreateDto values, [FromServices] IBlockTypeService _blockTypeService)
     {
         try
         {
-            var result = await _blockServices.CreateBlockTypeAsync(values);
+            var result = await _blockTypeService.CreateBlockTypeAsync(values);
 
             if (result.IsSuccess)
             {
@@ -445,9 +456,9 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<BlockTypeReadDto>> UpdateBlockType([FromBody] BlockTypeUpdateDto values)
+    public async Task<ActionResult<BlockTypeReadDto>> UpdateBlockType([FromBody] BlockTypeUpdateDto values, [FromServices] IBlockTypeService _blockTypeService)
     {
-        var result = await _blockServices.UpdateBlockTypeAsync(values);
+        var result = await _blockTypeService.UpdateBlockTypeAsync(values);
 
         if (result.IsSuccess)
         {
@@ -473,11 +484,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteBlockType(int blockTypeId)
+    public async Task<ActionResult> DeleteBlockType(int blockTypeId, [FromServices] IBlockTypeService _blockTypeService)
     {
         try
         {
-            var result = await _blockServices.DeleteBlockType(blockTypeId);
+            var result = await _blockTypeService.DeleteBlockType(blockTypeId);
 
             if (result.IsSuccess)
             {
@@ -502,9 +513,9 @@ public partial class PropertyController
     /// </summary>
     [HttpGet]
     [Route("GetBlockUnits")]
-    public async Task<ActionResult<IEnumerable<BlockUnitReadDto>>> GetBlockUnits()
+    public async Task<ActionResult<IEnumerable<BlockUnitReadDto>>> GetBlockUnits([FromServices] IBlockUnitService _blockUnitService)
     {
-        return Ok(await _blockServices.GetBlockUnitsAsync());
+        return Ok(await _blockUnitService.GetBlockUnitAsync());
     }
 
     /// <summary>
@@ -545,11 +556,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> CreateBlockUnit([FromBody] BlockUnitCreateDto values)
+    public async Task<ActionResult> CreateBlockUnit([FromBody] BlockUnitCreateDto values, [FromServices] IBlockUnitService _blockUnitService)
     {
         try
         {
-            var result = await _blockServices.CreateBlockUnitAsync(values);
+            var result = await _blockUnitService.CreateBlockUnitAsync(values);
 
             if (result.IsSuccess)
             {
@@ -609,9 +620,9 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult<BlockUnitReadDto>> UpdateBlockUnit([FromBody] BlockUnitUpdateDto values)
+    public async Task<ActionResult<BlockUnitReadDto>> UpdateBlockUnit([FromBody] BlockUnitUpdateDto values, [FromServices] IBlockUnitService _blockUnitService)
     {
-        var result = await _blockServices.UpdateBlockUnitAsync(values);
+        var result = await _blockUnitService.UpdateBlockUnitAsync(values);
 
         if (result.IsSuccess)
         {
@@ -637,11 +648,11 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-    public async Task<ActionResult> DeleteBlockUnit(int blockUnitId)
+    public async Task<ActionResult> DeleteBlockUnit(int blockUnitId, [FromServices] IBlockUnitService _blockUnitService)
     {
         try
         {
-            var result = await _blockServices.DeleteBlockUnit(blockUnitId);
+            var result = await _blockUnitService.DeleteBlockUnit(blockUnitId);
 
             if (result.IsSuccess)
             {

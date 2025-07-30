@@ -22,5 +22,7 @@ public interface ILandUseTypeService
     Task<IEnumerable<LandUseTypeReadDto>> GetLandUseTypeAsync();
     Task<LandUseTypeReadDto> GetLandUseTypeAsync(int value);
     Task<LandUseTypeReadDto> GetLandUseTypeAsync(string value);
+
+    Task<IEnumerable<LandUseTypeReadDto>> GetLandUseTypeByLandUseAsync(int landUseId);
 }
 

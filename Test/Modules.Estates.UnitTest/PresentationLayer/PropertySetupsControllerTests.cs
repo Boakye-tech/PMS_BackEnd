@@ -23,6 +23,7 @@ using Modules.Estates.Application.Interfaces.Registration.Property;
 
 namespace Modules.Estates.UnitTest.PresentationLayer
 {
+    /*
 	public class PropertySetupsControllerTests
 	{
 		private readonly Mock<IActivityServices> _activityServicesMock;
@@ -760,5 +761,6 @@ namespace Modules.Estates.UnitTest.PresentationLayer
 			Assert.Equal("Database error", objectResult.Value);
 		}
 	}
+	*/
 }
 

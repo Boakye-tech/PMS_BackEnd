@@ -1,5 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Modules.Estates.Application.DTO.Setup.Property;
+﻿// /**************************************************
+// * Company: MindSprings Company Limited
+// * Project Name: Modules.Estates.Presentation
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Estates.Presentation/Controllers/v1/PropertyController.Types.cs
+// * Author: Boakye Ofori-Atta
+// * Email Address: boakye.ofori-atta@mindsprings-gh.com
+// * Copyright: © 2024 MindSprings Company Limited
+// * Create Date: 12/05/2025 01:09 AM 
+// * Version: 1.0.1
+// * Description: Property Management System
+//  **************************************************/
+
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -299,88 +310,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             };
         }
 
-        //-------------------PROPERTY TYPES-----------------
-        /// <summary>
-        /// Returns a list of property types
-        /// </summary>
-        [HttpGet]
-        [Route("GetPropertyTypes")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PropertyTypeReadDto>))]
-        public IActionResult GetPropertyTypes()
-        {
-            var result = _rentalsService.GetPropertyTypesAsync().Result;
-            return Ok(result);
-        }
 
-
-        /// <summary>
-        /// Creates a new property type
-        /// </summary>
-        [HttpPost]
-        [Route("CreatePropertyType")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public IActionResult CreatePropertyType([FromBody] PropertyTypeCreateDto values)
-        {
-            var result = _rentalsService.CreatePropertyTypeAsync(values).Result;
-            if (result.IsSuccess)
-            {
-                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
-            }
-            var status = result.ErrorResponse!.Code;
-            return status switch
-            {
-                400 => BadRequest(result.ErrorResponse),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
-            };
-        }
-
-        /// <summary>
-        /// Updates an existing property type
-        /// </summary>
-        [HttpPut]
-        [Route("UpdatePropertyType")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public IActionResult UpdatePropertyType([FromBody] PropertyTypeUpdateDto values)
-        {
-            var result = _rentalsService.UpdatePropertyTypeAsync(values).Result;
-            if (result.IsSuccess)
-            {
-                return Ok(result.SuccessResponse);
-            }
-            var status = result.ErrorResponse!.Code;
-            return status switch
-            {
-                404 => NotFound(result.ErrorResponse),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
-            };
-        }
-
-        /// <summary>
-        /// Deletes a property type
-        /// </summary>
-        [HttpDelete]
-        [Route("DeletePropertyType/{propertyTypeId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public IActionResult DeletePropertyType(int propertyTypeId)
-        {
-            var result = _rentalsService.DeletePropertyType(propertyTypeId).Result;
-            if (result.IsSuccess)
-            {
-                return Ok(result.SuccessResponse);
-            }
-            var status = result.ErrorResponse!.Code;
-            return status switch
-            {
-                404 => NotFound(result.ErrorResponse),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
-            };
-        }
 
         #region Obsolete Enpoints
 

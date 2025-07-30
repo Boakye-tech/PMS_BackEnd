@@ -53,11 +53,7 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
         Task<ReturnResponsesDto> UpdateTypesAsync(TypesUpdateDto values);
         Task<ReturnResponsesDto> DeleteTypes(int typesId);
 
-        // PropertyTypes methods
-        Task<List<PropertyTypeReadDto>> GetPropertyTypesAsync();
-        Task<ReturnResponsesDto> CreatePropertyTypeAsync(PropertyTypeCreateDto values);
-        Task<ReturnResponsesDto> UpdatePropertyTypeAsync(PropertyTypeUpdateDto values);
-        Task<ReturnResponsesDto> DeletePropertyType(int propertyTypeId);
+
 
     }
 }
