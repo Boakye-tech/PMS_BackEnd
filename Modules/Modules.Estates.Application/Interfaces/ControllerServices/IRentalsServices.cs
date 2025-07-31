@@ -49,6 +49,7 @@ namespace Modules.Estates.Application.Interfaces.ControllerServices
 
         // Types methods
         Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync();
+		Task<List<AllTypesReadDto>> GetAllTypesAsync(int rentalTypeId);
         Task<ReturnResponsesDto> CreateTypesAsync(TypesCreateDto values);
         Task<ReturnResponsesDto> UpdateTypesAsync(TypesUpdateDto values);
         Task<ReturnResponsesDto> DeleteTypes(int typesId);

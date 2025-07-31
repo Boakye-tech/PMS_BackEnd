@@ -126,7 +126,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
             //check if customer exist
             var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values.CustomerCode);
-            if (property is null)
+            if (customer is null)
             {
                 return new ReturnResponsesDto
                 {
@@ -154,7 +154,6 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                 }
             };
 
-
         }
 
         public async Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values)
@@ -162,7 +161,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             //throw new NotImplementedException();
 
             //check if lease details exist
-            var lease = await _unitOfWork.PropertyLeaseDetails.Get(c => c.PropertyNumber == values!.PropertyNumber);
+            var lease = await _unitOfWork.PropertyLeaseDetails.Get(c => c.PropertyNumber == values!.PropertyNumber && c.CustomerCode == values.CustomerCode);
             if (lease is null)
             {
                 return new ReturnResponsesDto
@@ -176,6 +175,16 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                 };
             }
 
+            //check if initial(main) lease has expired
+
+            lease.RenewableTerm = values.RenewableTerm;
+            lease.LastRenewalStartDate = values.LastRenewalStartDate;
+            lease.LeaseStatusId = values.LeaseStatusId;
+            lease.RenewalStatusId = values.RenewalStatusId;
+            lease.ModifiedBy = values.ModifiedBy;
+            lease.ModifiedOn = DateTime.UtcNow;
+
+            _unitOfWork.PropertyLeaseDetails.Update(lease);
 
             return null!;
         }

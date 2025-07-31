@@ -227,6 +227,19 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
+        /// Returns a list of types(e.g. Houses, ShopsAndOffices, Apartments etc)
+        /// </summary>
+        [HttpGet]
+        [Route("GetTypes/{rentalTypeId}")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AllTypesReadDto>))]
+        public IActionResult AllTypes(int rentalTypeId)
+        {
+            var result = _rentalsService.GetAllTypesAsync(rentalTypeId).Result;
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Creates a new type (e.g. Houses, ShopsAndOffices, Apartments etc)
         /// </summary>
         [HttpPost]

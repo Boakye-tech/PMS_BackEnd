@@ -28,9 +28,6 @@ namespace Modules.Estates.Application.DTO.Management.Property
         [StringLength(36)]
         public required string ActionBy { get; set; }
 
-  //      public AssignPropertytoCustomerDto()
-		//{
-		//}
 	}
 }
 

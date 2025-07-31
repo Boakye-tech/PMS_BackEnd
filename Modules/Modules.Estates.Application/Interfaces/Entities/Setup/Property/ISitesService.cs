@@ -18,6 +18,7 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
         Task<ReturnResponsesDto> UpdateSitesAsync(SitesUpdateDto values);
         Task<ReturnResponsesDto> DeleteSites(int siteId);
         Task<IEnumerable<SitesReadDto>> GetSitesAsync();
+        Task<IEnumerable<SitesReadDto>> GetSitesAsync(int localityId);
 
     }
 }

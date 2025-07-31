@@ -590,16 +590,21 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                var status = await _customerServices.StopCustomerDebitAsync(values);
+                var result = await _customerServices.StopCustomerDebitAsync(values);
 
+                if (result.IsSuccess)
+                {
+                    return Ok(new { Acreage = result.SuccessResponse!.Message });
+                }
+
+                var status = result.ErrorResponse!.Code;
                 return status switch
                 {
-                    200 => Ok( new{ response = "success" }),
-                    400 => BadRequest(),
-                    404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
-                    _ => StatusCode(500, new { response = "Internal Server Error" }),
+                    204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
                 };
-
             }
             catch (Exception ex)
             {
@@ -623,15 +628,22 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                var status = await _customerServices.StopCustomerDebitAsync(values);
+                var result = await _customerServices.StopCustomerDebitAsync(values);
 
+                if (result.IsSuccess)
+                {
+                    return Ok(new { Acreage = result.SuccessResponse!.Message });
+                }
+
+                var status = result.ErrorResponse!.Code;
                 return status switch
                 {
-                    200 => Ok(new { response = "success" }),
-                    400 => BadRequest(),
-                    404 => NotFound(new { response = $"Customer code {values.CustomerCode} not found" }),
-                    _ => StatusCode(500, new { response = "Internal Server Error" }),
+                    204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                    400 => BadRequest(result.ErrorResponse),
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
                 };
+
 
             }
             catch (Exception ex)

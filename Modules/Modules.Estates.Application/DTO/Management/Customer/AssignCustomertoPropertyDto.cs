@@ -10,17 +10,25 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Modules.Estates.Application.DTO.Management.Customer
 {
-	public class AssignCustomertoProperty
+	public record AssignCustomertoPropertyDto
 	{
-        public string CustomerCode { get; set; }
-        public string PropertyNumber { get; set; }
-        public string ActionBy { get; set; }
+		[Required]
+		[StringLength(10)]
+        public required string CustomerCode { get; set; }
 
-        public AssignCustomertoProperty()
-		{
-		}
+        [Required]
+        [StringLength(75)]
+        public required string PropertyNumber { get; set; }
+
+        [Required]
+        [StringLength(36)]
+        public required string ActionBy { get; set; }
+
 	}
+
 }
 

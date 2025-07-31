@@ -9,9 +9,6 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-using System;
-using Microsoft.AspNetCore.Http;
-using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
 {
@@ -97,6 +94,13 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         public async Task<IEnumerable<SitesReadDto>> GetSitesAsync()
         {
             var localities = await _unitOfWork.Sites.GetAll();
+            return _mapper.Map<IEnumerable<SitesReadDto>>(localities);
+
+        }
+
+        public async Task<IEnumerable<SitesReadDto>> GetSitesAsync(int localityId)
+        {
+            var localities = await _unitOfWork.Sites.GetAll(s => s.LocalityId == localityId);
             return _mapper.Map<IEnumerable<SitesReadDto>>(localities);
 
         }

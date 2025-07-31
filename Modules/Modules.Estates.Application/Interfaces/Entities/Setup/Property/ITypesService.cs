@@ -18,7 +18,7 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
         Task<ReturnResponsesDto> UpdateTypesAsync(TypesUpdateDto values);
         Task<ReturnResponsesDto> DeleteTypes(int typesId);
         Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync();
-
+        Task<List<AllTypesReadDto>> GetAllTypesAsync(int rentalTypeId);
     }
 }
 

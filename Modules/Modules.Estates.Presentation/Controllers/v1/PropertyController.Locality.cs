@@ -46,6 +46,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <param name="value">The value of the locality to retrieve</param>
         [HttpGet]
         [Route("GetLocality/{value}")]
+        [Obsolete]
         public async Task<ActionResult<LocalityReadDto>> GetLocality(string value, [FromServices] ILocalityService _localityService)
         {
             return Ok(await _localityService.GetLocalityAsync(value));
@@ -57,6 +58,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <param name="localityId">The ID of the locality to retrieve</param>
         [HttpGet]
         [Route("GetLocalityById/{localityId}")]
+        [Obsolete]
         public async Task<ActionResult<LocalityReadDto>> GetLocalityById(int localityId, [FromServices] ILocalityService _localityService)
         {
             return Ok(await _localityService.GetLocalityAsync(localityId));
@@ -221,8 +223,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetSites")]
-        public async Task<ActionResult<IEnumerable<SitesReadDto>>> GetSites([FromServices] ISitesService _siteService)
+        public async Task<ActionResult<IEnumerable<SitesReadDto>>> GetSites([FromQuery] int localityId, [FromServices] ISitesService _siteService)
         {
+            if(localityId != 0)
+                return Ok(await _siteService.GetSitesAsync(localityId));
+
+
             return Ok(await _siteService.GetSitesAsync());
         }
 

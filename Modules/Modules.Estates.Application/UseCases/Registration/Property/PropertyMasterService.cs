@@ -1107,9 +1107,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
                 foreach (var plotNumber in plotNumberList)
                 {
-                    var propertyResult = PropertyMaster.CreatePlot
+                    var propertyResult = PropertyMaster.CreateLargeScale
                         (
-                        values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
+                        values.MotherPropertyNumber,values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
                         values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId, blockNumber!.BlockNumbers, plotNumber, values.PlotDimensionId, _dimensions,
                         values.PlotTypeId, values.PropertyHeightId, coordinates.Value, values.SitePlan, values.Cadastal, values.PropertyStatusId, values.Images,
                         false

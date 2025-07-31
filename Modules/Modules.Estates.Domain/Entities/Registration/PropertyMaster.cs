@@ -418,6 +418,54 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(property);
         }
 
+        public static Result<PropertyMaster> CreateLargeScale(string motherPropertyNumber, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+                                                int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string plotNumber,
+                                                int plotDimensionId, string plotDimension, int plotTypeId, int propertyHeightId, PropertyCoordinates coordinates,
+                                                string sitePlanNumber, string cadastalPlanNumber, int propertyStatusId, List<string> images, bool isApartment = false)
+        {
+            // Create value objects
+            var propertyNumberResult = PropertyNumber.Create(
+                landUseInitial,
+                landUseTypeInitial,
+                localityInitial,
+                allocationTypeInitial,
+                blockNumber,
+                plotNumber,
+                isApartment,
+                null!);
+
+            if (!propertyNumberResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
+
+            var plotSizeResult = PlotSize.Create(plotDimensionId, plotDimension);
+            if (!plotSizeResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(plotSizeResult.Error);
+
+            // Create the entity
+            var property = new PropertyMaster
+            {
+                PropertyNumber = propertyNumberResult.Value,
+                LandUseId = landUseId,
+                LandUseTypeId = landUseTypeId,
+                LocalityId = localityId,
+                SiteId = siteId,
+                AllocationTypeId = allocationTypeId,
+                BlockNumberId = blockNumberId,
+                Number = plotNumber,
+                PlotSize = plotSizeResult.Value,
+                PlotTypeId = plotTypeId,
+                PropertyHeightId = propertyHeightId,
+                Coordinates = coordinates,
+                SitePlanNumber = sitePlanNumber,
+                CadastralPlanNumber = cadastalPlanNumber,
+                Images = images.ToArray(),
+                PropertyStatusId = propertyStatusId,
+                IsDeleted = false,
+                MotherPropertyNumber = motherPropertyNumber
+            };
+
+            return Result<PropertyMaster>.Success(property);
+        }
 
 
         // Domain methods

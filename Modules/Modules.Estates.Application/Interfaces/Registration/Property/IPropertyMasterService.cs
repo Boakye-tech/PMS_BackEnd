@@ -15,20 +15,12 @@ namespace Modules.Estates.Application.Interfaces.Registration.Property
 	public interface IPropertyMasterService
 	{
         Task<List<PropertyListSummaryViewDto>> GetListOfProperties(string? search = null, int? landUseId = null, int? landUseTypeId = null, int? localityId = null, int? allocationTypeId = null);
-
+        Task<List<PropertyMasterDto>> GetProperties(int localityId);
 
         ReturnResponsesDto GetAcreage(string plotDimension);
         Task<ReturnResponsesDto> GetAcreage(int plotDimensionId);
 
-
-        Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);
-
-        //Task<AllocationTypeReadDto> UpdateAllocationTypeAsync(AllocationTypeUpdateDto values);
-        Task<List<PropertyMasterDto>> GetProperties(int localityId);
-        //Task<AllocationTypeReadDto> GetAllocationTypeAsync(int value);
-        //Task<AllocationTypeReadDto> GetAllocationTypeAsync(string value);
-
-
+        Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);//
 
         Task<ReturnResponsesDto> CreateApartment(ApartmentCreateDto values);
 

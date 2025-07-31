@@ -222,6 +222,58 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
 
         }
 
+        public async Task<List<AllTypesReadDto>> GetAllTypesAsync(int rentalTypeId)
+        {
+            try
+            {
+                // Step 1: Fetch all Types only (no includes for RentalCategory or RentalType)
+                var types = await _unitOfWork.Types.GetAll(t => t.RentalTypeId == rentalTypeId);
+
+                // Step 2: Project directly into AllTypesReadDto
+                var result = types.Select(t =>
+                {
+                    var featureDtos = new List<AllTypesFeaturesReadDto>();
+
+                    if (t.Features != null)
+                    {
+                        foreach (var f in t.Features)
+                        {
+                            if (string.IsNullOrWhiteSpace(f))
+                                continue;
+
+                            var parts = f.Split(" - ", 2, StringSplitOptions.TrimEntries);
+
+                            if (parts.Length == 2 && int.TryParse(parts[0], out int featureId))
+                            {
+                                // Format: "9 - BEDROOM 1"
+                                featureDtos.Add(new AllTypesFeaturesReadDto(featureId, parts[1]));
+                            }
+                            else
+                            {
+                                // Format: "BEDROOM 1" — no ID
+                                featureDtos.Add(new AllTypesFeaturesReadDto(0, f.Trim()));
+                            }
+                        }
+                    }
+
+                    return new AllTypesReadDto(
+                        t.TypeId,
+                        t.Code,
+                        t.TypeName,
+                        featureDtos,
+                        t.Notes
+                    );
+                }).ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null!;
+            }
+
+        }
+
         public async Task<ReturnResponsesDto> UpdateTypesAsync(TypesUpdateDto values)
         {
             try
