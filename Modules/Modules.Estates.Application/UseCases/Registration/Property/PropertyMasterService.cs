@@ -705,7 +705,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
             }
 
             // Final projection
-            var result = await query.Select(x => new PropertyListSummaryViewDto
+            var result = await query.OrderByDescending(x => x.property.CreatedOn).Select(x => new PropertyListSummaryViewDto
             {
                 PropertyNumber = x.property.PropertyNumber!.Value,
                 LandUseName = x.landUse != null ? x.landUse.LandUseName : null,

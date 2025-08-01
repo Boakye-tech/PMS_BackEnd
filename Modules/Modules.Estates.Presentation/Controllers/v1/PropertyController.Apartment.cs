@@ -525,6 +525,16 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         /// <summary>
+        /// Returns a list of apartment types based on a specific apartment category
+        /// </summary>
+        [HttpGet]
+        [Route("GetApartmentTypes/{apartmentCategoryId}")]
+        public async Task<ActionResult<IEnumerable<ApartmentTypesReadDto>>> GetApartmentTypes(int apartmentCategoryId, [FromServices] IApartmentTypeService _apartmentTypeService)
+        {
+            return Ok(await _apartmentTypeService.GetApartmentTypesAsync(apartmentCategoryId));
+        }
+
+        /// <summary>
         /// Creates a new apartment type
         /// </summary>
         /// <remarks>

@@ -96,64 +96,94 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
         public async Task<ReturnResponsesDto> AssignPropertyToCustomerAsync(AssignPropertytoCustomerDto values)
         {
-            //check if property exist
-            var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values.PropertyNumber);
-            if (property is null)
+            try
             {
-                return new ReturnResponsesDto
+                //check if property exist
+                var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values.PropertyNumber);
+                if (property is null)
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto
+                    return new ReturnResponsesDto
                     {
-                        Code = StatusCodes.Status404NotFound,
-                        Message = $"Property number '{values.PropertyNumber}' provided does not exist."
-                    }
-                };
-            }
-
-            if(property.CustomerCode is not null || property.CustomerCode != string.Empty)
-            {
-                return new ReturnResponsesDto
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto
-                    {
-                        Code = StatusCodes.Status409Conflict,
-                        Message = $"Property number '{values.PropertyNumber}' provided has already been assigned to customer code '{property.CustomerCode}'."
-                    }
-                };
-            }
-
-            //check if customer exist
-            var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values.CustomerCode);
-            if (customer is null)
-            {
-                return new ReturnResponsesDto
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto
-                    {
-                        Code = StatusCodes.Status404NotFound,
-                        Message = $"Customer code '{values.CustomerCode}' provided does not exist."
-                    }
-                };
-            }
-
-            property.AssignToCustomer(values.CustomerCode);
-
-            _unitOfWork.PropertyMaster.Update(property);
-            await _unitOfWork.Complete();
-
-            return new ReturnResponsesDto
-            {
-                IsSuccess = true,
-                SuccessResponse = new SuccessResponseDto
-                {
-                    Code = StatusCodes.Status200OK,
-                    Message = $"Property number '{values.PropertyNumber}' assigned to customer code '{property.CustomerCode}' successfully."
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status404NotFound,
+                            Message = "Property number provided does not exist."
+                        }
+                    };
                 }
-            };
 
+                if (!string.IsNullOrWhiteSpace(property.CustomerCode))
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status409Conflict,
+                            Message = "Property provided has already been assigned to a customer."
+                        }
+                    };
+                }
+
+
+                //check if customer exist
+                var customer = await _unitOfWork.CustomerMaster.Get(c => c.CustomerCode == values.CustomerCode);
+                if (customer is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status404NotFound,
+                            Message = "Customer code provided does not exist."
+                        }
+                    };
+                }
+
+                var result = property.AssignToCustomer(values.CustomerCode);
+                if(result.IsSuccess == false)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status204NoContent,
+                            Message = result.Error
+                        }
+                    };
+                }
+
+                _unitOfWork.PropertyMaster.Update(property);
+                await _unitOfWork.Complete();
+
+
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    SuccessResponse = new SuccessResponseDto
+                    {
+                        Code = StatusCodes.Status200OK,
+                        //Message = $"Property number '{values.PropertyNumber}' assigned to customer code '{values.CustomerCode}' successfully."
+                        Message = "Property assigned to customer successfully."
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status500InternalServerError,
+                        Message = ex.Message ?? ex.InnerException!.Message
+                    }
+                };
+
+            }
         }
 
         public async Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values)

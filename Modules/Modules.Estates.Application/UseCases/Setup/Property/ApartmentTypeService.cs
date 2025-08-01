@@ -51,9 +51,13 @@ public class ApartmentTypeService : IApartmentTypeService
             images: apartment.Images
         ));
 
-
         return apartmentFeatureDetails;
+    }
 
+    public async Task<IEnumerable<ApartmentTypesDto>> GetApartmentTypesAsync(int apartmentCategoryId)
+    {
+        var response = await _unitOfWork.ApartmentTypes.GetAll(at => at.ApartmentCategoryId == apartmentCategoryId);
+        return _mapper.Map<IEnumerable<ApartmentTypesDto>>(response);
     }
 
     public async Task<ApartmentTypeReadDto> GetApartmentTypeAsync(int value)

@@ -19,5 +19,7 @@ public interface IApartmentTypeService
     Task<IEnumerable<ApartmentTypesReadDto>> GetApartmentTypeAsync();
     Task<ApartmentTypeReadDto> GetApartmentTypeAsync(int value);
     Task<ApartmentTypeReadDto> GetApartmentTypeAsync(string value);
+
+    Task<IEnumerable<ApartmentTypesDto>> GetApartmentTypesAsync(int apartmentCategoryId);
 }
 

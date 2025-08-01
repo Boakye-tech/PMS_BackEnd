@@ -509,8 +509,8 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public Result<PropertyMaster> AssignToCustomer(string customerCode)
         {
-            if (CustomerCode is not null || CustomerCode != string.Empty)
-                return Result<PropertyMaster>.Failure("Property number already assigned to customer code");
+            if (string.IsNullOrWhiteSpace(customerCode))
+                return Result<PropertyMaster>.Failure("Customer code cannot be null or empty.");
 
             CustomerCode = customerCode;
             return Result<PropertyMaster>.Success(this);

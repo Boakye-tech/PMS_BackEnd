@@ -22,6 +22,8 @@ public class ApartmentTypeProfile : Profile
 
         CreateMap<ApartmentTypes, ApartmentTypesReadDto>();
 
+        CreateMap<ApartmentTypes, ApartmentTypesDto>();
+
         CreateMap<ApartmentTypeCreateDto, ApartmentTypes>();
         CreateMap<ApartmentTypeUpdateDto, ApartmentTypes>();
         CreateMap<ApartmentTypeDeleteDto, ApartmentTypes>();

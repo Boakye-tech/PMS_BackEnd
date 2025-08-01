@@ -20,7 +20,8 @@ public record ApartmentCategoryUpdateDto(int ApartmentCategoryId, string? Apartm
 public record ApartmentCategoryDeleteDto(int ApartmentCategoryId);
 
 
-public record ApartmentTypesReadDto(int apartmentTypeId, string apartmentType, List<ApartmentFeatureReadDto> apartmentfeatures, float sellingPrice, int currencyId, string currencyInitial, string currency, int floorAreaId, decimal? floorArea, string[]? images);
+public record ApartmentTypesReadDto(int apartmentTypeId = 0, string apartmentType = "", List<ApartmentFeatureReadDto> apartmentfeatures = null!, float sellingPrice =0f, int currencyId = 0, string currencyInitial="", string currency="", int floorAreaId=0,
+    decimal? floorArea=null!, string[]? images= null!);
 
 public record ApartmentCategoriesReadDto(int ApartmentCategoryId, string ApartmentCategoryName, bool IsOpen);
 public record ApartmentCategoryAndTypesReadDto(ApartmentCategoriesReadDto ApartmentCategories, IEnumerable<ApartmentTypesReadDto> ApartmentTypes);
