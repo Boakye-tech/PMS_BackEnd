@@ -39,5 +39,8 @@ namespace Modules.Estates.Application.DTO.Registration.Property
         List<string> Images,
         string CreatedBy
     );
+
+
+    public record largeScaleListDto(string PropertyNumber, string CustomerCode, string CustomerName, decimal Acreage);
 }
 

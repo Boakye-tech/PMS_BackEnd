@@ -563,7 +563,6 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
         }
 
-
         public async Task<ReturnResponsesDto> GetAcreage(int plotDimensionId)
         {
             //throw new NotImplementedException();
@@ -1105,6 +1104,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     plotNumberList = GenerateRangeStrings(values.PlotNumberFrom, values.PlotNumberTo);
                 }
 
+                decimal _parentAcreage = plot!.PlotSize!.Acreage;
+                decimal _childAcreage = 0M;
+
                 foreach (var plotNumber in plotNumberList)
                 {
                     var propertyResult = PropertyMaster.CreateLargeScale
@@ -1133,10 +1135,15 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     property.CreatedOn = DateTime.UtcNow;
 
                     _propertyMasterList.Add(property);
+
+                    _childAcreage += property.PlotSize?.Acreage ?? 0;
                 }
 
+                decimal _newAcreage = _parentAcreage - _childAcreage;
+                //plot.PlotSize.Acreage = _newAcreage;
+                //plot.UpdatePlotSize()
+
                 _unitOfWork.PropertyMaster.InsertRange(_propertyMasterList);
-                //_unitOfWork.PropertyMaster.Insert(property);
                 await _unitOfWork.Complete();
 
 
@@ -1166,10 +1173,31 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
         }
 
+        public async Task<List<largeScaleListDto>> GetLargeScaleListForRegistration()
+        {
+            var rawResult = await (
+                from property in _unitOfWork.PropertyMaster.GetQueryable()
+                join customer in _unitOfWork.CustomerMaster.GetQueryable()
+                    on property.CustomerCode equals customer.CustomerCode
+                where property.PropertyNumber!.Value.Substring(0, 3) == "LSD"
+                select new
+                {
+                    PropertyNumber = property.PropertyNumber!.Value,
+                    property.CustomerCode,
+                    CustomerName = customer.CompanyName + " " + customer.OtherNames + " " + customer.SurName,
+                    Acreage = property.PlotSize!.Acreage
+                }).ToListAsync();
 
+            // Project into DTO and apply Trim in memory
+            var result = rawResult.Select(ls => new largeScaleListDto(
+                ls.PropertyNumber,
+                ls.CustomerCode,
+                ls.CustomerName.Trim(),
+                ls.Acreage
+            )).ToList();
 
-
-
+            return result;
+        }
 
     }
 }

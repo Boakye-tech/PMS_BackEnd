@@ -10,10 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-using Microsoft.AspNetCore.Http;
-
-
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
 public class ApartmentTypeService : IApartmentTypeService

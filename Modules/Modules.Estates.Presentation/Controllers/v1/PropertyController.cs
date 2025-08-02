@@ -27,12 +27,13 @@ public partial class PropertyController : ControllerBase
 {
     private readonly IRentalsServices _rentalsService;
     private readonly IPropertyMasterService _propertyMasterService;
-    //private readonly IPropertyServices 
+    private readonly IPropertyServices _propertyServices;
 
-    public PropertyController(IRentalsServices rentalsService, IPropertyMasterService propertyMasterService) 
+    public PropertyController(IRentalsServices rentalsService, IPropertyMasterService propertyMasterService, IPropertyServices propertyServices) 
     {
         _rentalsService = rentalsService;
         _propertyMasterService = propertyMasterService;
+        _propertyServices = propertyServices;
     }
 
     /// <summary>

@@ -108,7 +108,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                         ErrorResponse = new ErrorResponseDto
                         {
                             Code = StatusCodes.Status404NotFound,
-                            Message = "Property number provided does not exist."
+                            Message = $"Property number '{values.PropertyNumber}' provided does not exist."
                         }
                     };
                 }
@@ -121,7 +121,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                         ErrorResponse = new ErrorResponseDto
                         {
                             Code = StatusCodes.Status409Conflict,
-                            Message = "Property provided has already been assigned to a customer."
+                            Message = "Property number '" + values.PropertyNumber + "' provided has already been assigned to customer code '" + property.CustomerCode + "'."
                         }
                     };
                 }
@@ -137,7 +137,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                         ErrorResponse = new ErrorResponseDto
                         {
                             Code = StatusCodes.Status404NotFound,
-                            Message = "Customer code provided does not exist."
+                            Message = $"Customer code '{values.CustomerCode}' provided does not exist."
                         }
                     };
                 }
@@ -166,8 +166,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                     SuccessResponse = new SuccessResponseDto
                     {
                         Code = StatusCodes.Status200OK,
-                        //Message = $"Property number '{values.PropertyNumber}' assigned to customer code '{values.CustomerCode}' successfully."
-                        Message = "Property assigned to customer successfully."
+                        Message = "Property number '" + values.PropertyNumber + "' assigned to customer code '" + values.CustomerCode + "' successfully."
                     }
                 };
             }
@@ -188,8 +187,6 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
         public async Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values)
         {
-            //throw new NotImplementedException();
-
             //check if lease details exist
             var lease = await _unitOfWork.PropertyLeaseDetails.Get(c => c.PropertyNumber == values!.PropertyNumber && c.CustomerCode == values.CustomerCode);
             if (lease is null)
@@ -221,7 +218,6 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
         public async Task<ReturnResponsesDto> StartDebitAsync(StopDebitRequestDto values)
         {
-            //throw new NotImplementedException();
             try
             {
                 //check if property exist

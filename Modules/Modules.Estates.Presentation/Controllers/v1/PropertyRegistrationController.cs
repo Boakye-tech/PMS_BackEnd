@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Modules.Estates.Presentation.Controllers.v1
 {
-    //[Route("api/[controller]")]
     public partial class PropertyController : ControllerBase
     {
         /// <summary>
@@ -276,6 +275,27 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Returns a summary list of exisitng registered large scale development properties and the respective customer. This is to enable the registration of child/sub properties under the large scale developer.
+        /// </summary>
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [Route("GetLargeScaleDevelopers")]
+        public async Task<ActionResult> GetLargeScaleDevelopers()
+        {
+
+            try
+            {
+                return Ok(await _propertyMasterService.GetLargeScaleListForRegistration());
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+            }
+        }
+
+
         //----------------------------------
         [HttpPost]
         [Route("CreateLargeScale")]
@@ -384,7 +404,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> AssignPropertyToCustomer([FromBody] AssignPropertytoCustomerDto values, [FromServices] IPropertyServices _propertyServices)
+        public async Task<ActionResult> AssignPropertyToCustomer([FromBody] AssignPropertytoCustomerDto values)
         {
             if (!ModelState.IsValid)
             {
@@ -416,7 +436,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> LeaseDetails([FromBody] PropertyLeaseDetailsCreateDto values, [FromServices] IPropertyServices _propertyServices)
+        public async Task<ActionResult> LeaseDetails([FromBody] PropertyLeaseDetailsCreateDto values)
         {
             if (!ModelState.IsValid)
             {
@@ -447,7 +467,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> RenewLease([FromBody] PropertyLeaseDetailsRenewDto values, [FromServices] IPropertyServices _propertyServices)
+        public async Task<ActionResult> RenewLease([FromBody] PropertyLeaseDetailsRenewDto values)
         {
             if (!ModelState.IsValid)
             {
@@ -478,7 +498,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> StopDebit([FromBody] StopDebitRequestDto values, [FromServices] IPropertyServices _propertyServices)
+        public async Task<ActionResult> StopDebit([FromBody] StopDebitRequestDto values)
         {
             if (!ModelState.IsValid)
             {
@@ -486,6 +506,37 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
 
             var result = await _propertyServices.StopDebitAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("StartDebit")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> StartDebit([FromBody] StopDebitRequestDto values)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _propertyServices.StartDebitAsync(values);
 
             if (result.IsSuccess)
             {
@@ -510,7 +561,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> SwapLocality([FromBody] SwapLocalityDto values, [FromServices] IPropertyServices _propertyServices)
+        public async Task<ActionResult> SwapLocality([FromBody] SwapLocalityDto values)
         {
             if (!ModelState.IsValid)
             {
@@ -541,7 +592,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> SwapAllocationType([FromBody] SwapAllocationTypeDto values, [FromServices] IPropertyServices _propertyServices)
+        public async Task<ActionResult> SwapAllocationType([FromBody] SwapAllocationTypeDto values)
         {
             if (!ModelState.IsValid)
             {
@@ -572,7 +623,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> SwapLanUseAndLandUseType([FromBody] SwapLandUseAndLandUseTypeDto values, [FromServices] IPropertyServices _propertyServices)
+        public async Task<ActionResult> SwapLanUseAndLandUseType([FromBody] SwapLandUseAndLandUseTypeDto values)
         {
             if (!ModelState.IsValid)
             {

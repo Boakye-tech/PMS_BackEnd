@@ -55,7 +55,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 };
             }
 
-            if (property.CustomerCode is not null || property.CustomerCode != string.Empty)
+            if (!string.IsNullOrWhiteSpace(property.CustomerCode))
             {
                 return new ReturnResponsesDto
                 {
@@ -63,7 +63,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                     ErrorResponse = new ErrorResponseDto
                     {
                         Code = StatusCodes.Status409Conflict,
-                        Message = $"Property number '{values.PropertyNumber}' provided has already been assigned to customer code '{property.CustomerCode}'."
+                        Message = $"Property number '" + values.PropertyNumber + "' provided has already been assigned to customer code '" + property.CustomerCode + "'."
                     }
                 };
             }
@@ -79,7 +79,7 @@ namespace Modules.Estates.Application.UseCases.Management.Customer
                 SuccessResponse = new SuccessResponseDto
                 {
                     Code = StatusCodes.Status200OK,
-                    Message = $"Customer code '{property.CustomerCode}' assigned to property number '{values.PropertyNumber}' successfully."
+                    Message = $"Customer code '" + property.CustomerCode + "' assigned to property number '" + values.PropertyNumber + "' successfully."
                 }
             };
         }

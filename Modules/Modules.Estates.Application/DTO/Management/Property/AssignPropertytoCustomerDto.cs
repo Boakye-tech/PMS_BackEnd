@@ -9,25 +9,9 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace Modules.Estates.Application.DTO.Management.Property
-{
-	public class AssignPropertytoCustomerDto
-	{
-		[Required]
-		[StringLength(75)]
-        public required string PropertyNumber { get; set; }
+namespace Modules.Estates.Application.DTO.Management.Property;
 
-        [Required]
-        [StringLength(10)]
-        public required string CustomerCode { get; set; }
 
-        [Required]
-        [StringLength(36)]
-        public required string ActionBy { get; set; }
-
-	}
-}
+public record AssignPropertytoCustomerDto(string PropertyNumber, string CustomerCode, string ActionBy);
 

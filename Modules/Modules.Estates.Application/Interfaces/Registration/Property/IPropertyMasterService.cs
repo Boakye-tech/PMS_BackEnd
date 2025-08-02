@@ -20,6 +20,8 @@ namespace Modules.Estates.Application.Interfaces.Registration.Property
         ReturnResponsesDto GetAcreage(string plotDimension);
         Task<ReturnResponsesDto> GetAcreage(int plotDimensionId);
 
+        Task<List<largeScaleListDto>> GetLargeScaleListForRegistration();
+
         Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);//
 
         Task<ReturnResponsesDto> CreateApartment(ApartmentCreateDto values);
