@@ -57,6 +57,8 @@ namespace Modules.Users.Infrastructure.Repositories
             IdentificationType = new IdentificationTypeRepository(dbContext);
 
             //ActionsRepository = new MenuActionsRepository(dbContext);
+
+            ModulesPermissions = new ModulesPermissionsRepository(dbContext);
         }
 
 
@@ -83,6 +85,8 @@ namespace Modules.Users.Infrastructure.Repositories
         public IApplicationModulesPermissionsRepository ApplicationModulesPermissions { get; private set; }
 
         public IIdentificationTypeRepository IdentificationType { get; private set; }
+
+        public IModulesPermissionsRepository ModulesPermissions { get; private set; }
 
         //public IMenuActionsRepository ActionsRepository { get; private set; }
 

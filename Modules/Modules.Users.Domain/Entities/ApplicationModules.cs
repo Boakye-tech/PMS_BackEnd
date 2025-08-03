@@ -1,5 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
+// * Project Name: Modules.Users.Domain
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Users.Domain/Entities/ApplicationModules.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -22,10 +24,14 @@ namespace Modules.Users.Domain.Entities
         [StringLength(20)]
         public string? ModuleName { get; set; }
 
+        // Navigation property for LandUseTypes
+        public virtual ICollection<ModulesPermissions> ModulesPermissions { get; private set; }
+
         public ApplicationModules(string moduleId, string moduleName)
         {
             ModuleId = moduleId;
             ModuleName = moduleName;
+            ModulesPermissions = new List<ModulesPermissions>();
         }
 
         public static ApplicationModules CreateUpdate(string moduleId, string moduleName)

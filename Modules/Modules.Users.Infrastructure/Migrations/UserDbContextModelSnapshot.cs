@@ -645,6 +645,8 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasKey("UnitId");
 
+                    b.HasIndex("DepartmentId");
+
                     b.HasIndex("UnitName")
                         .IsUnique();
 
@@ -902,7 +904,6 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -1017,6 +1018,37 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.HasKey("SubPermissionsItemsId");
 
                     b.ToTable("SubPermissionsItems");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.ModulesPermissions", b =>
+                {
+                    b.Property<int>("ModulesPermissionsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModulesPermissionsId"));
+
+                    b.Property<string>("ApplicationModulesModuleId")
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("ModuleId")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("PermissionName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ModulesPermissionsId");
+
+                    b.HasIndex("ApplicationModulesModuleId");
+
+                    b.HasIndex("ModuleId", "PermissionName")
+                        .IsUnique();
+
+                    b.ToTable("ModulesPermissions");
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.StaffAccounts", b =>
@@ -1150,6 +1182,36 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.DepartmentUnit", b =>
+                {
+                    b.HasOne("Modules.Users.Domain.Entities.Department", "Department")
+                        .WithMany("DepartmentUnits")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.ModulesPermissions", b =>
+                {
+                    b.HasOne("Modules.Users.Domain.Entities.ApplicationModules", "ApplicationModules")
+                        .WithMany("ModulesPermissions")
+                        .HasForeignKey("ApplicationModulesModuleId");
+
+                    b.Navigation("ApplicationModules");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.ApplicationModules", b =>
+                {
+                    b.Navigation("ModulesPermissions");
+                });
+
+            modelBuilder.Entity("Modules.Users.Domain.Entities.Department", b =>
+                {
+                    b.Navigation("DepartmentUnits");
                 });
 #pragma warning restore 612, 618
         }

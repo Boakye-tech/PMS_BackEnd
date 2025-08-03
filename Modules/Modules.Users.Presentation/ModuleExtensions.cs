@@ -86,6 +86,10 @@ namespace Modules.Users.Presentation
             services.AddHttpClient<TokenStoreRepository>();
             services.AddScoped<ValidationService>();
 
+            services.AddScoped<IUserContextService, UserContextService>();
+
+            services.AddScoped<IModulesService, ModulesService>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IChannelService, ChannelService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
@@ -96,7 +100,7 @@ namespace Modules.Users.Presentation
             services.AddScoped<ITokenStoreRepository, TokenStoreRepository>();
 
             services.AddScoped<IIdentificationTypeService, IdentificationTypeService>();
-            services.AddScoped<IModulesService, ModulesService>();
+           
 
 
 

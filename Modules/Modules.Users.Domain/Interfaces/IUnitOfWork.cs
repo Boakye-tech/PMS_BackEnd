@@ -40,6 +40,8 @@ namespace Modules.Users.Domain.Interfaces
 
         //IMenuActionsRepository ActionsRepository { get; }
 
+        IModulesPermissionsRepository ModulesPermissions { get; }
+
         Task<int> Complete();
     }
 }

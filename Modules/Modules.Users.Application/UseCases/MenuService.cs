@@ -11,7 +11,6 @@
 using System.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Modules.Users.Application.Dtos.Entities.Permissions;
 
 
 namespace Modules.Users.Application.UseCases
@@ -794,6 +793,35 @@ namespace Modules.Users.Application.UseCases
             return new GenericResponseDto("Permission removed successfully.");
 
         }
+
+        public async Task<GenericResponseDto> AddModulesPermissions(ModulesPermissionsDto values)
+        {
+            //throw new NotImplementedException();
+            if(!values.PermissionName.Any())
+                return new GenericResponseDto("Module permissions cannot be empty.");
+
+            foreach (var permission in values.PermissionName)
+            {
+                ModulesPermissions modulesPermissions = new ModulesPermissions(values.ModuleId, permission);
+                _unitOfWork.ModulesPermissions.Insert(modulesPermissions);
+            }
+
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto("Module Permissions added successfully.");
+
+        }
+
+        public async Task<IEnumerable<ModulesPermissionsDto>> GetModulesPermissions()
+        {
+            //throw new NotImplementedException();
+
+            var response = await _unitOfWork.ApplicationModules.GetAll(includes: new List<string> { "ModulesPermissions" });
+            return _mapper.Map<IEnumerable<ModulesPermissionsDto>>(response);
+
+        }
+
+
     }
 }
 

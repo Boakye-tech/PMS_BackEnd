@@ -297,6 +297,17 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
         /// <summary>
+        /// Returns a list of application modules
+        /// </summary>
+        [HttpGet]
+        [Route("GetModulesPermission")]
+        [AllowAnonymous]
+        public async Task<IEnumerable<ModulesPermissionsDto>> GetModulesPermission()
+        {
+            return await _menuService.GetModulesPermissions();
+        }
+
+        /// <summary>
         /// Create a new application module
         /// </summary>
         [HttpPost]
@@ -305,6 +316,17 @@ namespace Modules.Users.Presentation.Controllers.v1
         public async Task<ActionResult> AddApplicationModules([FromBody] ApplicationModulesCreateDto values)
         {
             return Ok(await _menuService.AddModules(values));
+        }
+
+        /// <summary>
+        /// Create a new permission for an application module
+        /// </summary>
+        [HttpPost]
+        [Route("AddModulesPermissions")]
+        [AllowAnonymous]
+        public async Task<ActionResult> AddModulesPermissions([FromBody] ModulesPermissionsDto values)
+        {
+            return Ok(await _menuService.AddModulesPermissions(values));
         }
 
         /// <summary>

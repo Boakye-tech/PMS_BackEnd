@@ -43,6 +43,8 @@ namespace Modules.Users.Infrastructure
 
         public DbSet<ApplicationModules> ApplicationModules { get; set; }
         public DbSet<ApplicationModulesPermissions> ApplicationModulesPermissions { get; set; }
+        public DbSet<ModulesPermissions> ModulesPermissions { get; set; }
+
 
         public DbSet<IdentificationType> IdentificationType { get; set; }
 
@@ -99,6 +101,10 @@ namespace Modules.Users.Infrastructure
 
             builder.Entity<IdentificationType>()
                 .HasIndex(e => new { e.IdentificationTypeId, e.IdentificationTypes })
+                .IsUnique(true);
+
+            builder.Entity<ModulesPermissions>()
+                .HasIndex(m => new { m.ModuleId, m.PermissionName })
                 .IsUnique(true);
 
             //builder.Entity<Actions>()
