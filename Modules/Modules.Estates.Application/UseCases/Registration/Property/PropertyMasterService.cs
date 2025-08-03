@@ -1029,7 +1029,6 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     }
                 };
 
-
                 //check if mother plot number(large scale plot) exist
                 var (plot, plotError) = await ValidateEntity(() => _unitOfWork.PropertyMaster.Get(p => p.PropertyNumber!.Value == values.MotherPropertyNumber), "Large scale property number provided does not exist");
                 if (plotError != null) return plotError;
@@ -1140,10 +1139,11 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 }
 
                 decimal _newAcreage = _parentAcreage - _childAcreage;
-                //plot.PlotSize.Acreage = _newAcreage;
-                //plot.UpdatePlotSize()
+                plot.UpdateAcreage(plot.PlotSize.DimensionId, _newAcreage);
 
                 _unitOfWork.PropertyMaster.InsertRange(_propertyMasterList);
+                _unitOfWork.PropertyMaster.Update(plot);
+
                 await _unitOfWork.Complete();
 
 

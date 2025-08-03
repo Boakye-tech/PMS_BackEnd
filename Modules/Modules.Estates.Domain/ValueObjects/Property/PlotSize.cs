@@ -30,7 +30,20 @@ namespace Modules.Estates.Domain.ValueObjects.Property
             Acreage = decimal.Parse(acres.ToString("F2")); 
 		}
 
-		public static Result<PlotSize> Create(int dimensionId, string dimension)
+        private PlotSize(int dimensionId, decimal newAcreage)
+        {
+            DimensionId = dimensionId;
+            Acreage = newAcreage;
+        }
+
+        private PlotSize(int dimensionId, decimal acreage1, decimal acreage2)
+        {
+            DimensionId = dimensionId;
+            Acreage = acreage1;
+            Acreage2 = acreage2;
+        }
+
+        public static Result<PlotSize> Create(int dimensionId, string dimension)
 		{
 			if (string.IsNullOrWhiteSpace(dimension))
 				return Result<PlotSize>.Failure("Plot dimension cannot be null or empty.");
@@ -54,6 +67,34 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 
             return Result<PlotSize>.Success(new PlotSize(dimensionId, dimension, _areaInSquareFeet));
 		}
-	}
+
+		public static Result<PlotSize> UpdateAcreage(int dimensionId, decimal newAcreage)
+		{
+            if (dimensionId <= 0)
+                return Result<PlotSize>.Failure("Plot dimension id cannot be zero");
+
+            if (newAcreage <= 0)
+                return Result<PlotSize>.Failure("acreage cannot be zero");
+
+            return Result<PlotSize>.Success(new PlotSize(dimensionId, newAcreage));
+
+        }
+
+        public static Result<PlotSize> AddSecondAcreage(int dimensionId, decimal acreage1, decimal acreage2)
+        {
+            if (dimensionId <= 0)
+                return Result<PlotSize>.Failure("Plot dimension id cannot be zero");
+
+            if (acreage1 <= 0)
+                return Result<PlotSize>.Failure("acreage cannot be zero");
+
+            if (acreage2 <= 0)
+                return Result<PlotSize>.Failure("acreage2 cannot be zero");
+
+            return Result<PlotSize>.Success(new PlotSize(dimensionId, acreage1, acreage2));
+
+        }
+
+    }
 }
 

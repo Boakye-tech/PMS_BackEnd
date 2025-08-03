@@ -526,15 +526,25 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(this);
         }
 
-        //public Result<PropertyMaster> UpdateAcreage(decimal acreage)
-        //{
-        //    var plotSizeResult = PlotSize.Create(plotDimensionId, newDimension);
-        //    if (!plotSizeResult.IsSuccess)
-        //        return Result<PropertyMaster>.Failure(plotSizeResult.Error);
+        public Result<PropertyMaster> UpdateAcreage(int plotDimensionId, decimal acreage)
+        {
+            var plotSizeResult = PlotSize.UpdateAcreage(plotDimensionId, acreage);
+            if (!plotSizeResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(plotSizeResult.Error);
 
-        //    PlotSize = plotSizeResult.Value;
-        //    return Result<PropertyMaster>.Success(this);
-        //}
+            PlotSize = plotSizeResult.Value;
+            return Result<PropertyMaster>.Success(this);
+        }
+
+        public Result<PropertyMaster> AddAcreageTwo(int plotDimensionId, decimal acreage1, decimal acreage2)
+        {
+            var plotSizeResult = PlotSize.AddSecondAcreage(plotDimensionId, acreage1, acreage2);
+            if (!plotSizeResult.IsSuccess)
+                return Result<PropertyMaster>.Failure(plotSizeResult.Error);
+
+            PlotSize = plotSizeResult.Value;
+            return Result<PropertyMaster>.Success(this);
+        }
 
         public Result<PropertyMaster> UpdateDebtorTypeAndGroupNumber(int debtorType, int groupNumber)
         {
