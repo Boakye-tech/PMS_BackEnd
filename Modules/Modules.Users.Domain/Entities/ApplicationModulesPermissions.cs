@@ -25,7 +25,7 @@ namespace Modules.Users.Domain.Entities
         [StringLength(12)]
         public string? ModuleId { get; set; }
 
-        [StringLength(10)]
+        [StringLength(50)]
         public string? ModulePermission { get; set; }
 
 
@@ -49,8 +49,8 @@ namespace Modules.Users.Domain.Entities
             if (string.IsNullOrWhiteSpace(moduleId) || moduleId.Length > 12)
                 throw new ArgumentException("The modules id must not be null or exceed 12 characters.");
 
-            if (string.IsNullOrWhiteSpace(modulePermission) || modulePermission.Length > 10)
-                throw new ArgumentException("The module permission must not be null or exceed 10 characters.");
+            if (string.IsNullOrWhiteSpace(modulePermission) || modulePermission.Length > 50)
+                throw new ArgumentException("The module permission must not be null or exceed 50 characters.");
 
             return new ApplicationModulesPermissions(roleId, moduleId, modulePermission);
         }

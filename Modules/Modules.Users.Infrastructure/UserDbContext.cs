@@ -107,6 +107,13 @@ namespace Modules.Users.Infrastructure
                 .HasIndex(m => new { m.ModuleId, m.PermissionName })
                 .IsUnique(true);
 
+            // Configure the one-to-many relationship with module permissions
+            builder.Entity<ApplicationModules>()
+                   .HasMany(mp => mp.ModulesPermissions)
+                   .WithOne(am => am.ApplicationModules)
+                   .HasForeignKey(mp => mp.ModuleId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
             //builder.Entity<Actions>()
             //    .HasIndex(a => a.ActionName)
             //    .IsUnique(true);

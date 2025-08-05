@@ -483,8 +483,8 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("ModulePermission")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("RoleId")
                         .HasMaxLength(50)
@@ -1043,6 +1043,7 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasKey("ModulesPermissionsId");
 
+
                     b.HasIndex("ApplicationModulesModuleId");
 
                     b.HasIndex("ModuleId", "PermissionName")
@@ -1199,6 +1200,11 @@ namespace Modules.Users.Infrastructure.Migrations
                 {
                     b.HasOne("Modules.Users.Domain.Entities.ApplicationModules", "ApplicationModules")
                         .WithMany("ModulesPermissions")
+
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                         .HasForeignKey("ApplicationModulesModuleId");
 
                     b.Navigation("ApplicationModules");

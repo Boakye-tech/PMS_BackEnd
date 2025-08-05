@@ -342,36 +342,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<PermissionsAccessModulesReadDto> GetRolesPermissions(string roleId)
         {
-            /*
-            var _permissions = await _unitOfWork.AcccessPermissions.GetAll(p => p.RoleId == roleId);
-            var accessModules = new List<PermissionAccessMenusWithActionsReadDto>();
-
-            foreach (var permission in _permissions)
-            {
-                string role = permission.RoleId;
-
-                var _subPermissions = await _unitOfWork.SubPermissions.GetAll(sp => sp.PermissionsId == permission.PermissionsId);
-                var sections = new List<PermissionAccessSubMenusWithActionsReadDto>();
-
-                foreach (var _section in _subPermissions)
-                {
-                    var _subPermissionItems = await _unitOfWork.SubPermissionsItems.GetAll(spi => spi.SubPermissionsId == _section.SubPermissionsId);
-                    var items = new List<PermissionAccessSubMenuItemsWithActionsReadDto>();
-
-                    foreach (var item in _subPermissionItems)
-                    {
-                         items.Add(new PermissionAccessSubMenuItemsWithActionsReadDto(item.PermissionsId,item.SubPermissionsId, item.SubPermissionsItemsId, item.ItemName, new PermissionsActionsDto(item.NoAccess, item.Create, item.Read, item.Update, item.Delete, item.Approve)));
-                    }
-
-                    sections.Add(new PermissionAccessSubMenusWithActionsReadDto(_section.PermissionsId, _section.SubPermissionsId, _section.SectionName,new PermissionsActionsDto(_section.NoAccess, _section.Create, _section.Read, _section.Update, _section.Delete, _section.Approve), items));
-                }
-
-                accessModules.Add(new PermissionAccessMenusWithActionsReadDto(permission.PermissionsId, permission.ModuleName, new PermissionsActionsDto(permission.NoAccess, permission.Create, permission.Read, permission.Update, permission.Delete, permission.Approve), sections));
-            }
-
-            return new PermissionsAccessModulesReadDto(roleId, accessModules);
-            */
-
 
             var defaultPermissions = new PermissionsActionsDto(NoAccess: false, Create: false, Read: false, Update: false, Delete: false, Approve: false);
 
@@ -461,11 +431,9 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<PermissionsAccessModulesReadDto> GetUserRolePermissions(string userId)
         {
-            //throw new NotImplementedException();
             var user = await _userManager.FindByIdAsync(userId);
             if (user is null)
             {
-                //throw new Exception("User not found");
                 return null!;
             }
 
@@ -516,7 +484,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<SubMenusUpdateResponseDto> UpdateSubMenu(SubMenusUpdateDto updateSubMenus)
         {
-            //throw new NotImplementedException();
             var subMenu = await _unitOfWork.SubMenus.Get(sm => sm.SubMenuId == updateSubMenus.subMenuId);
             if (subMenu is null)
             {
@@ -596,8 +563,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<GenericResponseDto> UpdatePermissionsAssignedToRole(PermissionsAccessModulesReadDto rolesPermissions)
         {
-            //throw new NotImplementedException();
-
             if (rolesPermissions is null || rolesPermissions.permissionsAccessModules == null)
             {
                 return new GenericResponseDto("Invalid input data.");
@@ -677,7 +642,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<ApplicationModulesDto> AddModules(ApplicationModulesCreateDto appModules)
         {
-            //throw new NotImplementedException();
             var moduleId = Guid.NewGuid().ToString().Substring(0,12);
             ApplicationModules applicationModules = new ApplicationModules(moduleId, appModules.ModuleName!);
             _unitOfWork.ApplicationModules.Insert(applicationModules);
@@ -693,7 +657,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<ApplicationModulesDto> UpdateModules(ApplicationModulesDto appModules)
         {
-            //throw new NotImplementedException();
             ApplicationModules applicationModules = new ApplicationModules(appModules.ModuleId!, appModules.ModuleName!);
             _unitOfWork.ApplicationModules.Update(applicationModules);
             await _unitOfWork.Complete();
@@ -707,12 +670,14 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<GenericResponseDto> AssignModulePermission(ApplicationModulesPermissionsDto permissions)
         {
-            //throw new NotImplementedException();
 
-            foreach (var item in permissions.ModulePermission!)
+            foreach (var module in permissions.ModulePermission!)
             {
-                ApplicationModulesPermissions modulesPermissions = new ApplicationModulesPermissions(permissions.RoleId!, permissions.ModuleId!, item.ModulePermission!);
-                _unitOfWork.ApplicationModulesPermissions.Insert(modulesPermissions);
+                foreach (var permission in module.Permissions!)
+                {
+                    ApplicationModulesPermissions modulesPermissions = new ApplicationModulesPermissions(permissions.RoleId!, module.ModuleId!, permission);
+                    _unitOfWork.ApplicationModulesPermissions.Insert(modulesPermissions);
+                }
             }
 
             await _unitOfWork.Complete();
@@ -722,7 +687,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<IEnumerable<ApplicationModulesDto>> GetModules()
         {
-            //throw new NotImplementedException();
             var response = await _unitOfWork.ApplicationModules.GetAll();
             return _mapper.Map<IEnumerable<ApplicationModulesDto>>(response);
 
@@ -757,8 +721,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<GenericResponseDto> UpdateModulePermission(ApplicationModulesPermissionsUpdateDto permissions)
         {
-            //throw new NotImplementedException();
-
             var modulePermission = await _unitOfWork.ApplicationModulesPermissions.Get(permissions.ModulePermissionId);
             if (modulePermission is null)
             {
@@ -779,8 +741,6 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<GenericResponseDto> DeleteModulePermission(int modulePermissionId)
         {
-            //throw new NotImplementedException();
-
             var modulePermission = await _unitOfWork.ApplicationModulesPermissions.Get(modulePermissionId);
             if(modulePermission is null)
             {
@@ -796,7 +756,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<GenericResponseDto> AddModulesPermissions(ModulesPermissionsDto values)
         {
-            //throw new NotImplementedException();
+
             if(!values.PermissionName.Any())
                 return new GenericResponseDto("Module permissions cannot be empty.");
 
@@ -812,6 +772,28 @@ namespace Modules.Users.Application.UseCases
 
         }
 
+
+        public async Task<List<ModulesPermissionsReadDto>> GetModulesPermissions()
+        {
+            var response = await _unitOfWork.ApplicationModules.GetAll(includes: new List<string> { "ModulesPermissions" });
+
+            var modulePermissions = response.Select(permission => new ModulesPermissionsReadDto
+            {
+                ModuleId = permission.ModuleId,
+                ModuleName = permission.ModuleName,
+                PermissionName = permission.ModulesPermissions?.Select(p => p.PermissionName).Where(p => p != null).Select(p => p!) .ToList()
+            }).ToList();
+
+            return modulePermissions;
+
+
+        }
+
+        public Task<GenericResponseDto> UpdateModulesPermissions(ModulesPermissionsDto values)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<ModulesPermissionsDto>> GetModulesPermissions()
         {
             //throw new NotImplementedException();
@@ -820,7 +802,6 @@ namespace Modules.Users.Application.UseCases
             return _mapper.Map<IEnumerable<ModulesPermissionsDto>>(response);
 
         }
-
 
     }
 }

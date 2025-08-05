@@ -18,6 +18,8 @@ namespace Modules.Users.Application.Profiles
 			CreateMap<ApplicationModules, ApplicationModulesDto>();
             CreateMap<ApplicationModulesDto, ApplicationModules>();
 
+            CreateMap<ApplicationModules, ModulesPermissionsReadDto>();
+
         }
     }
 }
