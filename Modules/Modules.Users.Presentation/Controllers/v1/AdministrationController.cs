@@ -303,13 +303,6 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("GetApplicationModulesPermission")]
         [AllowAnonymous]
         public async Task<List<ModulesPermissionsReadDto>> GetModulesPermission()
-         {
-            return await _menuService.GetModulesPermissions();
-        }
-
-        [Route("GetModulesPermission")]
-        [AllowAnonymous]
-        public async Task<IEnumerable<ModulesPermissionsDto>> GetModulesPermission()
         {
             return await _menuService.GetModulesPermissions();
         }

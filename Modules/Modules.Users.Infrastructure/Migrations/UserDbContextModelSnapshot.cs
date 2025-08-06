@@ -1203,12 +1203,6 @@ namespace Modules.Users.Infrastructure.Migrations
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-
-
 
                     b.Navigation("ApplicationModules");
                 });
