@@ -794,14 +794,38 @@ namespace Modules.Users.Application.UseCases
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ModulesPermissionsDto>> GetModulesPermissions()
-        {
-            //throw new NotImplementedException();
 
+        public async Task<List<ModulesPermissionsReadDto>> GetModulesPermissions()
+        {
             var response = await _unitOfWork.ApplicationModules.GetAll(includes: new List<string> { "ModulesPermissions" });
-            return _mapper.Map<IEnumerable<ModulesPermissionsDto>>(response);
+
+            var modulePermissions = response.Select(permission => new ModulesPermissionsReadDto
+            {
+                ModuleId = permission.ModuleId,
+                ModuleName = permission.ModuleName,
+                PermissionName = permission.ModulesPermissions?.Select(p => p.PermissionName).Where(p => p != null).Select(p => p!) .ToList()
+            }).ToList();
+
+            return modulePermissions;
+
 
         }
+
+
+        public Task<GenericResponseDto> UpdateModulesPermissions(ModulesPermissionsDto values)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public async Task<IEnumerable<ModulesPermissionsDto>> GetModulesPermissions()
+        //{
+        //    //throw new NotImplementedException();
+
+        //    var response = await _unitOfWork.ApplicationModules.GetAll(includes: new List<string> { "ModulesPermissions" });
+        //    return _mapper.Map<IEnumerable<ModulesPermissionsDto>>(response);
+
+        //}
+
 
     }
 }

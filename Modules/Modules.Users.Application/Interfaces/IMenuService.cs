@@ -53,7 +53,11 @@ namespace Modules.Users.Application.Interfaces
 
         Task<List<ModulesPermissionsReadDto>> GetModulesPermissions();
 
+
+        //Task<IEnumerable<ModulesPermissionsDto>> GetModulesPermissions();
+
         Task<IEnumerable<ModulesPermissionsDto>> GetModulesPermissions();
+
 
         Task<ApplicationModulesDto> AddModules(ApplicationModulesCreateDto appModules);
         Task<ApplicationModulesDto> UpdateModules(ApplicationModulesDto appModules);

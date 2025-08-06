@@ -54,9 +54,44 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
         [StringLength(12)]
         public required string ModuleId { get; set; }
 
-        [StringLength(50)]
         public required List<string> PermissionName { get; set; }
 
     }
+
+    public record ModulesPermissionsReadDto
+	{
+        [StringLength(12)]
+        public string? ModuleId { get; set; }
+
+        [StringLength(50)]
+        public string? ModuleName { get; set; }
+
+        public List<string>? PermissionName { get; set; }
+
+    }
+
+    public record ModulesPermissionsDtoRead
+    {
+        [StringLength(12)]
+        public string? ModuleId { get; set; }
+
+        [StringLength(50)]
+        public string? ModuleName { get; set; }
+
+    }
+
+ //   public record ModulesWithPermissionsDto
+ //   {
+ //   }
+
+	//public record ModulesPermissionsDto
+	//{
+ //       [StringLength(12)]
+ //       public required string ModuleId { get; set; }
+
+ //       [StringLength(50)]
+ //       public required List<string> PermissionName { get; set; }
+
+ //   }
 }
 

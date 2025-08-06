@@ -1200,12 +1200,15 @@ namespace Modules.Users.Infrastructure.Migrations
                 {
                     b.HasOne("Modules.Users.Domain.Entities.ApplicationModules", "ApplicationModules")
                         .WithMany("ModulesPermissions")
-
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                        .HasForeignKey("ApplicationModulesModuleId");
+
+
 
                     b.Navigation("ApplicationModules");
                 });

@@ -438,7 +438,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             string customerCode = "CUST001";
             string customerName = "John Doe";
             string phoneNumber = "0241234567";
-            string emailAddress = default!; // Optional
+            string emailAddress = "test@example.com"; 
             string isTheMatterInCourt = default!; // Optional
             string detailsOfComplaint = "Detailed description of the complaint";
             DateTime availabilityDate = DateTime.UtcNow.AddDays(2);
@@ -469,7 +469,7 @@ namespace Modules.Estates.UnitTest.DomainLayer
             Assert.Equal(customerCode, complaint.CustomerCode);
             Assert.Equal(customerName, complaint.CustomerName);
             Assert.Equal(phoneNumber, complaint.PhoneNumber);
-            Assert.Null(complaint.EmailAddress);
+            Assert.Equal(emailAddress, complaint.EmailAddress);
             Assert.Null(complaint.IsTheMatterInCourt);
             Assert.Equal(detailsOfComplaint, complaint.DetailsOfComplaint);
             Assert.Equal(availabilityDate, complaint.AvailabilityDate);

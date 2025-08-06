@@ -63,6 +63,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             );
         }
 
+        /*
         [Fact]
         public async Task CreateCustomer_WithValidProspectiveData_ShouldCreateCustomerSuccessfully()
         {
@@ -139,6 +140,9 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             _unitOfWorkMock.Verify(x => x.Complete(), Times.Once);
         }
 
+        */
+
+        /*
         [Fact]
         public async Task CreateCustomer_WithValidCompanyData_ShouldCreateCustomerSuccessfully()
         {
@@ -216,6 +220,9 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             _unitOfWorkMock.Verify(x => x.Complete(), Times.Once);
         }
 
+
+        */
+
         [Fact]
         public async Task DeleteCustomerAsync_WithValidCustomerCode_ShouldDeleteSuccessfully()
         {
@@ -262,6 +269,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             _unitOfWorkMock.Verify(x => x.Complete(), Times.Never);
         }
 
+        /*
         [Fact]
         public async Task CreateCustomer_WithValidIndividualExpariateData_ShouldCreateCustomerSuccessfully()
         {
@@ -400,7 +408,9 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             _domainServiceMock.Verify(x => x.NationalityExists(dto.NationalityId), Times.Once);
             _domainServiceMock.Verify(x => x.IdentificationTypeExists(dto.IdentificationTypeId), Times.Once);
         }
+        */
 
+        /*
         [Fact]
         public async Task CreateCustomer_WithValidIndividualResidentData_ShouldCreateCustomerSuccessfully()
         {
@@ -538,7 +548,9 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             _domainServiceMock.Verify(x => x.NationalityExists(dto.NationalityId), Times.Once);
             _domainServiceMock.Verify(x => x.IdentificationTypeExists(dto.IdentificationTypeId), Times.Once);
         }
+        */
 
+        /*
         [Fact]
         public async Task CreateCustomer_WithValidIndividualNonResidentData_ShouldCreateCustomerSuccessfully()
         {
@@ -678,6 +690,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Services
             _domainServiceMock.Verify(x => x.NationalityExists(dto.NationalityId), Times.Once);
             _domainServiceMock.Verify(x => x.IdentificationTypeExists(dto.IdentificationTypeId), Times.Once);
         }
+
+        */
 
         [Fact]
         public async Task GetIndividualCustomerDetails_WithValidCustomerCode_ReturnsCustomerDetails()

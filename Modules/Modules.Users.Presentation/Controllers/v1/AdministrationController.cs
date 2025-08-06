@@ -303,6 +303,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         [Route("GetApplicationModulesPermission")]
         [AllowAnonymous]
         public async Task<List<ModulesPermissionsReadDto>> GetModulesPermission()
+         {
+            return await _menuService.GetModulesPermissions();
+        }
 
         [Route("GetModulesPermission")]
         [AllowAnonymous]
@@ -327,13 +330,10 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("AddApplicationModulesPermissions")]
-
-        [Route("AddModulesPermissions")]
-
         [AllowAnonymous]
         public async Task<ActionResult> AddModulesPermissions([FromBody] ModulesPermissionsDto values)
         {
-            return Ok(await _menuService.AddModulesPermissions(values));
+            return Ok(await _menuService.AddModulesPermissions (values));
         }
 
         /// <summary>
