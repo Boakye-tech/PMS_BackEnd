@@ -482,18 +482,19 @@ namespace Modules.Estates.Application.UseCases.Registration.Customer
             // Apply filters only if parameters are provided
             if (!string.IsNullOrWhiteSpace(locality))
             {
-                customersQuery = customersQuery.Where(c => c.Locality!.Contains(locality));
+                //customersQuery = customersQuery.Where(c => c.Locality!.Contains(locality));
+                customersQuery = customersQuery.Where(c => c.Locality == locality);
             }
 
             // Apply search only if a query is provided
             if (!string.IsNullOrWhiteSpace(searchParam))
             {
                 customersQuery = customersQuery.Where(c =>
-                    c.CustomerCode!.Contains(searchParam) ||
-                    c.FullName!.Contains(searchParam) ||
-                    c.Locality!.Contains(searchParam) ||
-                    c.EmailAddress!.Contains(searchParam) ||
-                    c.PrimaryMobileNumber!.Contains(searchParam)
+                    c.CustomerCode!.ToLower().Contains(searchParam.ToLower()) ||
+                    c.FullName!.ToLower().Contains(searchParam.ToLower()) ||
+                    c.Locality!.ToLower().Contains(searchParam.ToLower()) ||
+                    c.EmailAddress!.ToLower().Contains(searchParam.ToLower()) ||
+                    c.PrimaryMobileNumber!.ToLower().Contains(searchParam.ToLower())
                 );
             }
 

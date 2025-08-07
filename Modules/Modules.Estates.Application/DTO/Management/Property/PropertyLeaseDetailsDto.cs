@@ -14,8 +14,8 @@ namespace Modules.Estates.Application.DTO.Management.Property
 {
 	public record PropertyLeaseDetailsCreateDto
 	{
-        public string PropertyNumber { get; set; }
-        public string CustomerCode { get; set; }
+        public string? PropertyNumber { get; set; }
+        public string? CustomerCode { get; set; }
         public int LeaseTypePeriodId { get; set; }
         public DateTime LeaseStartDate { get; set; }
         public int LeaseTerm { get; set; }
@@ -25,15 +25,15 @@ namespace Modules.Estates.Application.DTO.Management.Property
         public DateTime LastRenewalStartDate { get; set; }
         public LeaseStatusEnum LeaseStatusId { get; set; }
         public RenewalStatusEnum RenewalStatusId { get; set; }
-        public string CreatedBy { get; set; }
+        public string? CreatedBy { get; set; }
 
     }
 
     public record PropertyLeaseDetailsUpdateDto
     {
         public int PropertyLeaseDetailsId { get; set; }
-        public string PropertyNumber { get; set; }
-        public string CustomerCode { get; set; }
+        //public string? PropertyNumber { get; set; }
+        //public string? CustomerCode { get; set; }
         public int LeaseTypePeriodId { get; set; }
         public DateTime LeaseStartDate { get; set; }
         public int LeaseTerm { get; set; }
@@ -43,37 +43,37 @@ namespace Modules.Estates.Application.DTO.Management.Property
         public DateTime LastRenewalStartDate { get; set; }
         public LeaseStatusEnum LeaseStatusId { get; set; }
         public RenewalStatusEnum RenewalStatusId { get; set; }
-        public string ModifiedBy { get; set; }
+        public string? ModifiedBy { get; set; }
 
     }
 
     public record PropertyLeaseDetailsRenewDto
     {
         public int PropertyLeaseDetailsId { get; set; }
-        public string PropertyNumber { get; set; }
-        public string CustomerCode { get; set; }
+        //public string? PropertyNumber { get; set; }
+        //public string? CustomerCode { get; set; }
         public int RenewableTerm { get; set; }
         public DateTime LastRenewalStartDate { get; set; }
         public LeaseStatusEnum LeaseStatusId { get; set; }
         public RenewalStatusEnum RenewalStatusId { get; set; }
-        public string ModifiedBy { get; set; }
+        public string? ModifiedBy { get; set; }
     }
 
 
     public class PropertyLeaseDetailsReadDto
     {
         public int PropertyLeaseDetailsId { get; set; }
-        public string PropertyNumber { get; set; }
-        public string CustomerCode { get; set; }
-        public string LeaseTypePeriod { get; set; }
+        public string? PropertyNumber { get; set; }
+        public string? CustomerCode { get; set; }
+        public string? LeaseTypePeriod { get; set; }
         public DateTime LeaseStartDate { get; set; }
         public int LeaseTermMonths { get; set; }
         public int RenewableTermMonths { get; set; }
         public int MaxRenewalCount { get; set; }
         public int CurrentRenewalCount { get; set; }
         public DateTime LastRenewalStartDate { get; set; }
-        public string LeaseStatus { get; set; }
-        public string RenewalStatus { get; set; }
+        public LeaseStatusEnum LeaseStatus { get; set; }
+        public LeaseStatusEnum RenewalStatus { get; set; }
     }
 
 

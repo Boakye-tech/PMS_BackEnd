@@ -430,13 +430,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpPost]
-        [Route("AddLeaseDetails")]
+        [Route("NewLeaseDetails")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> LeaseDetails([FromBody] PropertyLeaseDetailsCreateDto values)
+        public async Task<ActionResult> AddNewLeaseDetails([FromBody] PropertyLeaseDetailsCreateDto values)
         {
             if (!ModelState.IsValid)
             {
@@ -444,6 +444,37 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
 
             var result = await _propertyServices.AddLeaseDetailsAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("UpdateLeaseDetails")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> UpdateLeaseDetails([FromBody] PropertyLeaseDetailsUpdateDto values)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _propertyServices.UpdateLeaseDetailsAsync(values);
 
             if (result.IsSuccess)
             {

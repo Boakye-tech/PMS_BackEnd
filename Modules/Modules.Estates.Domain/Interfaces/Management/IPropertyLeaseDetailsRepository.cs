@@ -9,7 +9,8 @@
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
-using System;
+
+
 namespace Modules.Estates.Domain.Interfaces.Management
 {
 	public interface IPropertyLeaseDetailsRepository : IRepository<PropertyLeaseDetails>

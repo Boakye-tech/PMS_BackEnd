@@ -113,6 +113,10 @@ public class UnitOfWork: IUnitOfWork
         PlotFeatures = new PlotFeaturesRepository(_dbContext);
 
         PropertyType = new PropertyTypeRepository(_dbContext);
+
+        PropertyLeaseDetails = new PropertyLeaseDetailsRepository(_dbContext);
+
+        ActivityTransactions = new ActivityTransactionsRepository(_dbContext);
     }
 
 

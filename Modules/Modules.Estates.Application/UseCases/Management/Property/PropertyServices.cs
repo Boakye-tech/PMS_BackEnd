@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Modules.Estates.Domain.ValueObjects.Property;
+
 namespace Modules.Estates.Application.UseCases.Management.Property
 {
 	public class PropertyServices: IPropertyServices
@@ -30,8 +32,8 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             try
             {
                 //check if property exist
-                var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values!.PropertyNumber && c.CustomerCode == values.CustomerCode);
-                if (property is null)
+                var result = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values!.PropertyNumber && c.CustomerCode == values.CustomerCode);
+                if (result is null)
                 {
                     return new ReturnResponsesDto
                     {
@@ -43,6 +45,8 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                         }
                     };
                 }
+
+                var property = await _unitOfWork.PropertyMaster.Get(result.PropertyMasterId);
 
                 //check if lease type exist
                 var leasetype = await _unitOfWork.LeaseTypeAndPeriod.Get(values.LeaseTypePeriodId);
@@ -59,13 +63,47 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                     };
                 }
 
-                //update property master table
-                property.UpdateLease(values.LeaseStartDate, values.LeaseTerm);
+
+                //update property master table with lease details
+                var leaseResult = property!.UpdateLease(values.LeaseStartDate, values.LeaseTerm);
+                if (!leaseResult.IsSuccess)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = leaseResult.Error
+                        }
+                    };
+                }
+
                 _unitOfWork.PropertyMaster.Update(property);
 
                 //insert into lease details table
-                var leasedetails = _mapper.Map<PropertyLeaseDetails>(values);
-                _unitOfWork.PropertyLeaseDetails.Insert(leasedetails);
+                //var leasedetails = _mapper.Map<PropertyLeaseDetails>(values);
+                var leasedetails = PropertyLeaseDetails.CreateLeaseDetails(values.PropertyNumber!, values.CustomerCode!, values.LeaseTypePeriodId, values.LeaseStartDate, values.LeaseTerm,
+                                                                           values.RenewableTerm, values.MaximumRenewalCount, values.LastRenewalStartDate, values.LeaseStatusId, values.RenewalStatusId);
+
+                if (!leasedetails.IsSuccess)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = leasedetails.Error
+                        }
+                    };
+
+                }
+
+                leasedetails.Value.CreatedBy = values.CreatedBy;
+                leasedetails.Value.CreatedOn = DateTime.UtcNow;
+
+                _unitOfWork.PropertyLeaseDetails.Insert(leasedetails.Value);
 
                 await _unitOfWork.Complete();
 
@@ -87,7 +125,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                     IsSuccess = false,
                     ErrorResponse = new ErrorResponseDto
                     {
-                        Code = StatusCodes.Status200OK,
+                        Code = StatusCodes.Status500InternalServerError,
                         Message = ex.Message ?? ex.InnerException!.Message
                     }
                 };
@@ -188,7 +226,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
         public async Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values)
         {
             //check if lease details exist
-            var lease = await _unitOfWork.PropertyLeaseDetails.Get(c => c.PropertyNumber == values!.PropertyNumber && c.CustomerCode == values.CustomerCode);
+            var lease = await _unitOfWork.PropertyLeaseDetails.Get(values.PropertyLeaseDetailsId);
             if (lease is null)
             {
                 return new ReturnResponsesDto
@@ -197,17 +235,17 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                     ErrorResponse = new ErrorResponseDto
                     {
                         Code = StatusCodes.Status404NotFound,
-                        Message = $"There are no lease details for property number '{values.PropertyNumber}' provided does not exist."
+                        Message = $"There are no lease details for the lease id provided."
                     }
                 };
             }
 
             //check if initial(main) lease has expired
 
-            lease.RenewableTerm = values.RenewableTerm;
-            lease.LastRenewalStartDate = values.LastRenewalStartDate;
-            lease.LeaseStatusId = values.LeaseStatusId;
-            lease.RenewalStatusId = values.RenewalStatusId;
+
+
+            //update lease detals
+            lease.RenewLease(values.RenewableTerm, values.LastRenewalStartDate, values.LeaseStatusId, values.RenewalStatusId);
             lease.ModifiedBy = values.ModifiedBy;
             lease.ModifiedOn = DateTime.UtcNow;
 
@@ -384,7 +422,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
         public async Task<ReturnResponsesDto> UpdateLeaseDetailsAsync(PropertyLeaseDetailsUpdateDto values)
         {
             //check if lease details exist
-            var lease = await _unitOfWork.PropertyLeaseDetails.Get(c => c.PropertyNumber == values!.PropertyNumber);
+            var lease = await _unitOfWork.PropertyLeaseDetails.Get(values!.PropertyLeaseDetailsId);
             if (lease is null)
             {
                 return new ReturnResponsesDto
@@ -393,16 +431,85 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                     ErrorResponse = new ErrorResponseDto
                     {
                         Code = StatusCodes.Status404NotFound,
-                        Message = $"There are no lease details for property number '{values.PropertyNumber}' provided does not exist."
+                        Message = $"No lease details found."
                     }
                 };
             }
 
 
-            lease.UpdateLeaseDetails(values.PropertyNumber, values.CustomerCode, values.LeaseTypePeriodId, values.LeaseStartDate, values.LeaseTerm, values.RenewableTerm, values.MaximumRenewalCount, values.LastRenewalStartDate, values.LeaseStatusId, values.RenewalStatusId);
+            //check if property exist
+            var result = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == lease!.PropertyNumber && c.CustomerCode == lease.CustomerCode);
+            if (result is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Message = "Property number and customer code does not exist."
+                    }
+                };
+            }
 
-            return null!;
+
+            var property = await _unitOfWork.PropertyMaster.Get(result.PropertyMasterId);
+
+            //check if lease type exist
+            var leasetype = await _unitOfWork.LeaseTypeAndPeriod.Get(values.LeaseTypePeriodId);
+            if (leasetype is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Message = $"Lease type and period id '{values.LeaseTypePeriodId}' provided does not exist."
+                    }
+                };
+            }
+
+
+            //update property master table with lease details
+            var leaseResult = property!.UpdateLease(values.LeaseStartDate, values.LeaseTerm);
+            if (!leaseResult.IsSuccess)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Message = leaseResult.Error
+                    }
+                };
+            }
+
+            property.ModifiedBy = values.ModifiedBy;
+            property.ModifiedOn = DateTime.UtcNow;
+            _unitOfWork.PropertyMaster.Update(property);
+
+
+            lease.UpdateLeaseDetails(values.LeaseTypePeriodId, values.LeaseStartDate, values.LeaseTerm, values.RenewableTerm, values.MaximumRenewalCount, values.LastRenewalStartDate, values.LeaseStatusId, values.RenewalStatusId);
+            lease.ModifiedBy = values.ModifiedBy;
+            lease.ModifiedOn = DateTime.UtcNow;
+
+            _unitOfWork.PropertyLeaseDetails.Update(lease);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                ErrorResponse = new ErrorResponseDto
+                {
+                    Code = StatusCodes.Status200OK,
+                    Message = "Lease details updated successfully."
+                }
+            };
         }
+
+
     }
 }
 

@@ -17,36 +17,42 @@ namespace Modules.Estates.Domain.Entities.Management
 	public class PropertyLeaseDetails : AuditableEntity
 	{
         [Key]
-        public int PropertyLeaseDetailsId { get; set; }
+        public int PropertyLeaseDetailsId { get; private set; }
 
         [Required]
         [StringLength(75)]
-        public string? PropertyNumber { get; set; }
+        public string? PropertyNumber { get; private set; }
 
         [Required]
         [StringLength(10)]
-        public string? CustomerCode { get; set; }
+        public string? CustomerCode { get; private set; }
 
         [Required]
-        public int LeaseTypePeriodId { get; set; }
+        public int LeaseTypePeriodId { get; private set; }
 
         [Required]
-        public DateTime LeaseStartDate { get; set; }
+        public DateTime LeaseStartDate { get; private set; }
 
         [Required]
-        public int LeaseTerm { get; set; }
+        public int LeaseTerm { get; private set; }
 
-        public int RenewableTerm { get; set; }
+        [Required]
+        public DateTime LeaseExpiryDate { get; private set; }
 
-        public int MaxRenewalCount { get; set; }
+        public int RenewableTerm { get; private set; }
 
-        public int CurrentRenewalCount { get; set; }
+        public int MaxRenewalCount { get; private set; }
 
-        public DateTime LastRenewalStartDate { get; set; }
+        public int CurrentRenewalCount { get; private set; }
 
-        public LeaseStatusEnum LeaseStatusId { get; set; }
+        public DateTime? LastRenewalStartDate { get; private set; }
 
-        public RenewalStatusEnum RenewalStatusId { get; set; }
+        public DateTime? LastRenewalExpiryDate { get; private set; }
+
+        public LeaseStatusEnum LeaseStatusId { get; private set; }
+
+        public RenewalStatusEnum RenewalStatusId { get; private set; }
+
 
         public PropertyLeaseDetails()
 		{
@@ -57,8 +63,8 @@ namespace Modules.Estates.Domain.Entities.Management
         {
         }
 
-        public static Result<PropertyLeaseDetails> CreateLeaseDetails(string propertyNumber, string customerCode, int leaseTypePeriodId, DateTime leaseStartDate, int leaseTerm,
-                                                           int renewableTerm, int maxRenewalCount, DateTime lastRenewalStartDate, LeaseStatusEnum leaseStatusId, RenewalStatusEnum renewalStatusId)
+        public static Result<PropertyLeaseDetails> CreateLeaseDetails(string propertyNumber, string customerCode, int leaseTypePeriodId, DateTime leaseStartDate, int leaseTerm, int renewableTerm, int maxRenewalCount,
+                                                                      DateTime lastRenewalStartDate, LeaseStatusEnum leaseStatusId, RenewalStatusEnum renewalStatusId)
         {
             Validate(propertyNumber, customerCode, leaseTypePeriodId, leaseStartDate, leaseTerm,renewableTerm, maxRenewalCount, lastRenewalStartDate, leaseStatusId, renewalStatusId);
 
@@ -69,6 +75,7 @@ namespace Modules.Estates.Domain.Entities.Management
                 LeaseTypePeriodId = leaseTypePeriodId,
                 LeaseStartDate = leaseStartDate,
                 LeaseTerm = leaseTerm,
+                LeaseExpiryDate = leaseStartDate.AddYears(leaseTerm),
                 RenewableTerm = renewableTerm,
                 MaxRenewalCount = maxRenewalCount,
                 LastRenewalStartDate = lastRenewalStartDate,
@@ -80,16 +87,15 @@ namespace Modules.Estates.Domain.Entities.Management
 
         }
 
-        public Result<PropertyLeaseDetails> UpdateLeaseDetails(string propertyNumber, string customerCode, int leaseTypePeriodId, DateTime leaseStartDate, int leaseTerm,
+        public Result<PropertyLeaseDetails> UpdateLeaseDetails(int leaseTypePeriodId, DateTime leaseStartDate, int leaseTerm,
                                                    int renewableTerm, int maxRenewalCount, DateTime lastRenewalStartDate, LeaseStatusEnum leaseStatusId, RenewalStatusEnum renewalStatusId)
         {
-            Validate(propertyNumber, customerCode, leaseTypePeriodId, leaseStartDate, leaseTerm, renewableTerm, maxRenewalCount, lastRenewalStartDate, leaseStatusId, renewalStatusId);
+            Validate("","",leaseTypePeriodId, leaseStartDate, leaseTerm, renewableTerm, maxRenewalCount, lastRenewalStartDate, leaseStatusId, renewalStatusId);
 
-            PropertyNumber = propertyNumber;
-            CustomerCode = customerCode;
             LeaseTypePeriodId = leaseTypePeriodId;
             LeaseStartDate = leaseStartDate;
             LeaseTerm = leaseTerm;
+            LeaseExpiryDate = leaseStartDate.AddYears(leaseTerm);
             RenewableTerm = renewableTerm;
             MaxRenewalCount = maxRenewalCount;
             LastRenewalStartDate = lastRenewalStartDate;
@@ -100,12 +106,12 @@ namespace Modules.Estates.Domain.Entities.Management
         }
 
 
-        public Result<PropertyLeaseDetails> RenewLease(string propertyNumber, string customerCode,int renewableTerm, DateTime lastRenewalStartDate, LeaseStatusEnum leaseStatusId, RenewalStatusEnum renewalStatusId)
+        public Result<PropertyLeaseDetails> RenewLease(int renewableTerm, DateTime lastRenewalStartDate, LeaseStatusEnum leaseStatusId, RenewalStatusEnum renewalStatusId)
         {
             //Validate(propertyNumber, customerCode, leaseTypePeriodId, leaseStartDate, leaseTerm, renewableTerm, maxRenewalCount, lastRenewalStartDate, leaseStatusId, renewalStatusId);
 
-            PropertyNumber = propertyNumber;
-            CustomerCode = customerCode;
+            //PropertyNumber = propertyNumber;
+            //CustomerCode = customerCode;
             RenewableTerm = renewableTerm;
             LastRenewalStartDate = lastRenewalStartDate;
             LeaseStatusId = leaseStatusId;
