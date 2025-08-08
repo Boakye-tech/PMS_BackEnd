@@ -68,6 +68,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _featuresService.CreateFeaturesAsync(values);
 
                 if (result.IsSuccess)
@@ -130,6 +137,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<FeaturesReadDto>> UpdateFeature([FromBody] FeaturesUpdateDto values, [FromServices] IFeaturesService _featuresService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _featuresService.UpdateFeaturesAsync(values);
 
             if (result.IsSuccess)
@@ -232,6 +246,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _apartmentFeaturesService.CreateApartmentFeaturesAsync(values);
 
                 if (result.IsSuccess)
@@ -294,6 +315,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<ApartmentFeaturesReadDto>> UpdateApartmentFeature([FromBody] ApartmentFeaturesUpdateDto values, [FromServices] IApartmentFeaturesService _apartmentFeaturesService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _apartmentFeaturesService.UpdateApartmentFeaturesAsync(values);
 
             if (result.IsSuccess)
@@ -404,6 +432,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _apartmentCategoryService.CreateApartmentCategoryAsync(values);
 
                 if (result.IsSuccess)
@@ -464,6 +499,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<ApartmentCategoryReadDto>> UpdateApartmentCategory([FromBody] ApartmentCategoryUpdateDto values, [FromServices] IApartmentCategoryService _apartmentCategoryService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _apartmentCategoryService.UpdateApartmentCategoryAsync(values);
 
             if (result.IsSuccess)
@@ -576,6 +618,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.createdBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _apartmentTypeService.CreateApartmentTypeAsync(values);
 
                 if (result.IsSuccess)
@@ -638,6 +687,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<ApartmentTypeReadDto>> UpdateApartmentType([FromBody] ApartmentTypeUpdateDto values, [FromServices] IApartmentTypeService _apartmentTypeService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.modifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _apartmentTypeService.UpdateApartmentTypeAsync(values);
 
             if (result.IsSuccess)

@@ -10,6 +10,9 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -187,6 +190,56 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
             }
         }
+
+
+        /// <summary>
+        /// Returns a list of lease status
+        /// </summary>
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [Route("LeaseStatusEnum")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public IActionResult LeaseStatus()
+        {
+            var statuses = Enum.GetValues(typeof(LeaseStatusEnum))
+                                   .Cast<LeaseStatusEnum>()
+                                   .Select(e => new
+                                   {
+                                       Id = (int)e,
+                                       Name = e.ToString(),
+                                       DisplayName = e.GetType()
+                                                     .GetField(e.ToString())!
+                                                      .GetCustomAttribute<DescriptionAttribute>()?
+                                                      .Description
+
+                                   });
+            return Ok(statuses);
+        }
+
+        /// <summary>
+        /// Returns a list of marital status
+        /// </summary>
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [Route("LeaseRenewalStatus")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public IActionResult RenewalStatus()
+        {
+            var statuses = Enum.GetValues(typeof(RenewalStatusEnum))
+                                   .Cast<RenewalStatusEnum>()
+                                   .Select(e => new
+                                   {
+                                       Id = (int)e,
+                                       Name = e.ToString(),
+                                       DisplayName = e.GetType()
+                                                     .GetField(e.ToString())!
+                                                      .GetCustomAttribute<DescriptionAttribute>()?
+                                                      .Description
+
+                                   });
+            return Ok(statuses);
+        }
+
     }
 }
 

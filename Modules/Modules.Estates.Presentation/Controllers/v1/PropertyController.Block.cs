@@ -68,6 +68,13 @@ public partial class PropertyController
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.createdby))
+            {
+                return Unauthorized();
+            }
+
             var result = await _blockNumberService.CreateBlockNumberAsync(values);
 
             if (result.IsSuccess)
@@ -130,6 +137,13 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<BlockNumberReadDto>> UpdateBlockNumber([FromBody] BlockNumberUpdateDto values, [FromServices] IBlockNumberService _blockNumberService)
     {
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.modifiedby))
+        {
+            return Unauthorized();
+        }
+
         var result = await _blockNumberService.UpdateBlockNumberAsync(values);
 
         if (result.IsSuccess)
@@ -232,6 +246,13 @@ public partial class PropertyController
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.createdby))
+            {
+                return Unauthorized();
+            }
+
             var result = await _blockSideService.CreateBlockSideAsync(values);
 
             if (result.IsSuccess)
@@ -294,6 +315,14 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<BlockSideReadDto>> UpdateBlockSide([FromBody] BlockSideUpdateDto values, [FromServices] IBlockSideService _blockSideService)
     {
+
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.modifiedby))
+        {
+            return Unauthorized();
+        }
+
         var result = await _blockSideService.UpdateBlockSideAsync(values);
 
         if (result.IsSuccess)
@@ -396,6 +425,13 @@ public partial class PropertyController
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.createdby))
+            {
+                return Unauthorized();
+            }
+
             var result = await _blockTypeService.CreateBlockTypeAsync(values);
 
             if (result.IsSuccess)
@@ -458,6 +494,13 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<BlockTypeReadDto>> UpdateBlockType([FromBody] BlockTypeUpdateDto values, [FromServices] IBlockTypeService _blockTypeService)
     {
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.modifiedby))
+        {
+            return Unauthorized();
+        }
+
         var result = await _blockTypeService.UpdateBlockTypeAsync(values);
 
         if (result.IsSuccess)
@@ -560,6 +603,13 @@ public partial class PropertyController
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.createdby))
+            {
+                return Unauthorized();
+            }
+
             var result = await _blockUnitService.CreateBlockUnitAsync(values);
 
             if (result.IsSuccess)
@@ -622,6 +672,13 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<BlockUnitReadDto>> UpdateBlockUnit([FromBody] BlockUnitUpdateDto values, [FromServices] IBlockUnitService _blockUnitService)
     {
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.modifiedby))
+        {
+            return Unauthorized();
+        }
+
         var result = await _blockUnitService.UpdateBlockUnitAsync(values);
 
         if (result.IsSuccess)

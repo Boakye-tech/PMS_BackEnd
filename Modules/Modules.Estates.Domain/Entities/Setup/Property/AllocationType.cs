@@ -53,10 +53,10 @@ public class AllocationType : AuditableEntity
         if (allocationTypeId < 0)
             throw new ArgumentException("Allocation Type Id must be greater than zero.");
 
-        if (string.IsNullOrWhiteSpace(allocationTypeInitial))
+        if (string.IsNullOrWhiteSpace(allocationTypeInitial) || allocationTypeInitial.Length > 5)
             throw new ArgumentException("Allocation Type Initial cannot be empty or exceed 5 characters.");
 
-        if (string.IsNullOrWhiteSpace(allocationTypes))
+        if (string.IsNullOrWhiteSpace(allocationTypes) || allocationTypes.Length > 30)
             throw new ArgumentException("Allocation Type cannot be empty or exceed 30 characters.");
     }
 }

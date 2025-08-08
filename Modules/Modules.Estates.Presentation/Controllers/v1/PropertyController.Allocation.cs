@@ -94,6 +94,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _allocationTypeService.CreateAllocationTypeAsync(values);
 
                 if (result.IsSuccess)
@@ -156,6 +163,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<AllocationTypeReadDto>> UpdateAllocationType([FromBody] AllocationTypeUpdateDto values, [FromServices] IAllocationTypeService _allocationTypeService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _allocationTypeService.UpdateAllocationTypeAsync(values);
 
             if (result.IsSuccess)

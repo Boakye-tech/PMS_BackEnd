@@ -11,6 +11,8 @@
 //  **************************************************/
 
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Modules.Estates.Presentation.Controllers.v1;
@@ -19,18 +21,22 @@ namespace Modules.Estates.Presentation.Controllers.v1;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
 /// <summary>
 /// Controller for managing property-related operations
 /// </summary>
 public partial class PropertyController : ControllerBase
 {
+    private readonly IUserContextService _userContextService;
+
     private readonly IRentalsServices _rentalsService;
     private readonly IPropertyMasterService _propertyMasterService;
     private readonly IPropertyServices _propertyServices;
 
-    public PropertyController(IRentalsServices rentalsService, IPropertyMasterService propertyMasterService, IPropertyServices propertyServices) 
+    public PropertyController(IUserContextService userContextService, IRentalsServices rentalsService, IPropertyMasterService propertyMasterService, IPropertyServices propertyServices) 
     {
+        _userContextService = userContextService;
         _rentalsService = rentalsService;
         _propertyMasterService = propertyMasterService;
         _propertyServices = propertyServices;
@@ -62,6 +68,7 @@ public partial class PropertyController : ControllerBase
     /// </remarks>
     [HttpGet]
     [Route("GetPlotFeatures")]
+    //[Authorize(Policy = "Permission:PropertySetup.READ")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PlotFeaturesReadDto>))]
     public async Task<ActionResult<IEnumerable<PlotFeaturesReadDto>>> GetPlotFeatures([FromServices] IPlotFeaturesService _plotFeaturesService)
     {
@@ -98,6 +105,7 @@ public partial class PropertyController : ControllerBase
     /// </remarks>
     [HttpPost]
     [Route("CreatePlotFeature")]
+    //[Authorize(Policy = "Permission:PropertySetup.CREATE")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
@@ -107,6 +115,13 @@ public partial class PropertyController : ControllerBase
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.createdBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _plotFeaturesService.CreatePlotFeaturesAsync(values);
 
             if (result.IsSuccess)
@@ -132,6 +147,7 @@ public partial class PropertyController : ControllerBase
 
     [HttpPut]
     [Route("UpdatePlotFeature")]
+    //[Authorize(Policy = "Permission:PropertySetup.UPDATE")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
@@ -139,6 +155,13 @@ public partial class PropertyController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<PlotFeaturesReadDto>> UpdatePlotFeature([FromBody] PlotFeaturesUpdateDto values, [FromServices] IPlotFeaturesService _plotFeaturesService)
     {
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.modifiedBy))
+        {
+            return Unauthorized();
+        }
+
         var result = await _plotFeaturesService.UpdatePlotFeaturesAsync(values);
 
         if (result.IsSuccess)
@@ -163,6 +186,7 @@ public partial class PropertyController : ControllerBase
     /// <param name="featureId">The ID of the plot type feature to be deleted</param>
     /// <returns>Success or error response</returns>
     [HttpDelete("DeletePlotFeature/{plotTypeId}/{featureId}")]
+    //[Authorize(Policy = "Permission:PropertySetup.DELETE")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]

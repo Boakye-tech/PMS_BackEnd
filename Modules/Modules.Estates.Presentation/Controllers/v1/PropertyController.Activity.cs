@@ -80,6 +80,13 @@ public partial class PropertyController
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.CreatedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _activityService.CreateActivityAsync(values);
 
             if (result.IsSuccess)
@@ -142,6 +149,13 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<ActivityReadDto>> UpdateActivity([FromBody] ActivityUpdateDto values, [FromServices] IActivityService _activityService)
     {
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.ModifiedBy))
+        {
+            return Unauthorized();
+        }
+
         var result = await _activityService.UpdateActivityAsync(values);
 
         if (result.IsSuccess)
@@ -245,6 +259,13 @@ public partial class PropertyController
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.CreatedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _activityTypeService.CreateActivityTypeAsync(values);
 
             if (result.IsSuccess)
@@ -307,6 +328,13 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<ActivityTypeReadDto>> UpdateActivityType([FromBody] ActivityTypeUpdateDto values, [FromServices] IActivityTypeService _activityTypeService)
     {
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.ModifiedBy))
+        {
+            return Unauthorized();
+        }
+
         var result = await _activityTypeService.UpdateActivityTypeAsync(values);
 
         if (result.IsSuccess)
