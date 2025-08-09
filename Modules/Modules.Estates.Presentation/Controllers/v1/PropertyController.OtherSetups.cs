@@ -70,6 +70,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _currencyService.CreateCurrencyExchangeRateAsync(values);
 
                 if (result.IsSuccess)
@@ -132,6 +139,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<CurrencyExchangeRateReadDto>> UpdateCurrencyExchangeRate([FromBody] CurrencyExchangeRateUpdateDto values, [FromServices] ICurrencyExchangeRateService _currencyService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _currencyService.UpdateCurrencyExchangeRateAsync(values);
 
             if (result.IsSuccess)
@@ -231,6 +245,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _schemeTypeService.CreateSchemeTypeAsync(values);
 
                 if (result.IsSuccess)
@@ -287,6 +308,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<LocalityReadDto>> UpdateSchemeType([FromBody] SchemeTypeUpdateDto values, [FromServices] ISchemeTypeService _schemeTypeService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _schemeTypeService.UpdateSchemeTypeAsync(values);
 
             if (result.IsSuccess)

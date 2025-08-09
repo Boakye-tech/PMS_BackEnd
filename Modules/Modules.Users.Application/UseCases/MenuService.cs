@@ -122,7 +122,6 @@ namespace Modules.Users.Application.UseCases
             return new GenericResponseDto("Permissions applied successfully.");
         }
 
-
         public async Task<IdentityResult> AssignUserRole(AssignUserRoleDto assignUserRole)
         {
             //throw new NotImplementedException();
@@ -692,31 +691,94 @@ namespace Modules.Users.Application.UseCases
 
         }
 
-        public async Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId)
+        //public async Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId)
+        //{
+        //    var modulePermissions = (await _unitOfWork.ApplicationModulesPermissions.GetAll())
+        //       .Where(a => a.RoleId == roleId) // Filter where based on RoleId 
+        //       .GroupJoin(await _unitOfWork.ApplicationModules.GetAll(),
+        //           a => a.ModuleId,
+        //           b => b.ModuleId,
+        //           (a, moduleGroup) => new { a, module = moduleGroup.FirstOrDefault() }) // Left Join on ApplicationModules
+        //       .GroupJoin(await _unitOfWork.Roles.GetAll(),
+        //           ab => ab.a.RoleId,
+        //           c => c.Id,
+        //           (ab, roleGroup) => new RoleModulesPermissionsDto
+        //           {
+        //               ModulePermissionId = ab.a.ModulePermissionId,
+        //               RoleId = ab.a.RoleId,
+        //               RoleName = roleGroup.FirstOrDefault()?.Name, // Left Join on Roles
+        //               ModuleId = ab.a.ModuleId,
+        //               ModuleName = ab.module?.ModuleName,
+        //               ModulePermission = ab.a.ModulePermission
+        //           })
+        //       .ToList();
+
+
+        //    return _mapper.Map<IEnumerable<RoleModulesPermissionsDto>>(modulePermissions);
+
+        //}
+
+
+        public async Task<IEnumerable<ModulesByRolesPermissionsDto>> GetModulesPermissions(string roleId)
         {
-            var modulePermissions = (await _unitOfWork.ApplicationModulesPermissions.GetAll())
-               .Where(a => a.RoleId == roleId) // Filter where based on RoleId 
-               .GroupJoin(await _unitOfWork.ApplicationModules.GetAll(),
-                   a => a.ModuleId,
-                   b => b.ModuleId,
-                   (a, moduleGroup) => new { a, module = moduleGroup.FirstOrDefault() }) // Left Join on ApplicationModules
-               .GroupJoin(await _unitOfWork.Roles.GetAll(),
-                   ab => ab.a.RoleId,
-                   c => c.Id,
-                   (ab, roleGroup) => new RoleModulesPermissionsDto
-                   {
-                       ModulePermissionId = ab.a.ModulePermissionId,
-                       RoleId = ab.a.RoleId,
-                       RoleName = roleGroup.FirstOrDefault()?.Name, // Left Join on Roles
-                       ModuleId = ab.a.ModuleId,
-                       ModuleName = ab.module?.ModuleName,
-                       ModulePermission = ab.a.ModulePermission
-                   })
-               .ToList();
+            // Get all data in parallel to minimize round trips
+            var modulesPermissions = await _unitOfWork.ApplicationModulesPermissions.GetAll();
+            var modules = await _unitOfWork.ApplicationModules.GetAll();
+            var roles = await _unitOfWork.Roles.GetAll();
 
+            //await Task.WhenAll(modulesPermissionsTask, modulesTask, rolesTask);
 
-            return _mapper.Map<IEnumerable<RoleModulesPermissionsDto>>(modulePermissions);
+            //var modulesPermissions = await modulesPermissionsTask;
+            //var modules = await modulesTask;
+            //var roles = await rolesTask;
 
+            // Perform inner joins as in the SQL query
+            var query = from mp in modulesPermissions
+                        where mp.RoleId == roleId
+                        join m in modules on mp.ModuleId equals m.ModuleId
+                        join r in roles on mp.RoleId equals r.Id
+                        orderby m.ModuleName
+                        select new
+                        {
+                            mp.RoleId,
+                            RoleName = r.Name,
+                            mp.ModuleId,
+                            ModuleName = m.ModuleName,
+                            mp.ModulePermission
+                        };
+
+            // Group by module to create the nested structure
+            var groupedData = query
+                .AsEnumerable()
+                .GroupBy(x => new { x.RoleId, x.RoleName, x.ModuleId, x.ModuleName })
+                .Select(g => new ModulesByRolesPermissionsDto
+                {
+                    RoleId = g.Key.RoleId,
+                    RoleName = g.Key.RoleName,
+                    ModulesPermission = new List<RoleModulePermissions>
+                    {
+                        new RoleModulePermissions
+                        {
+                            ModuleId = g.Key.ModuleId,
+                            ModuleName = g.Key.ModuleName,
+                            Permissions = g.Select(x => x.ModulePermission).ToList()
+                        }
+                    }
+                })
+                .ToList();
+
+            // Group modules for the same role together
+            var finalResult = groupedData
+                .GroupBy(x => new { x.RoleId, x.RoleName })
+                .Select(g => new ModulesByRolesPermissionsDto
+                {
+                    RoleId = g.Key.RoleId,
+                    RoleName = g.Key.RoleName,
+                    ModulesPermission = g.SelectMany(x => x.ModulesPermission!).ToList()
+                })
+                .ToList();
+
+            return finalResult;
         }
 
         public async Task<GenericResponseDto> UpdateModulePermission(ApplicationModulesPermissionsUpdateDto permissions)
@@ -793,8 +855,7 @@ namespace Modules.Users.Application.UseCases
             throw new NotImplementedException();
         }
 
-
-
+   
     }
 }
 

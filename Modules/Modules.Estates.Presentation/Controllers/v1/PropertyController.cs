@@ -33,13 +33,15 @@ public partial class PropertyController : ControllerBase
     private readonly IRentalsServices _rentalsService;
     private readonly IPropertyMasterService _propertyMasterService;
     private readonly IPropertyServices _propertyServices;
+    private readonly ILeaseService _leaseService;
 
-    public PropertyController(IUserContextService userContextService, IRentalsServices rentalsService, IPropertyMasterService propertyMasterService, IPropertyServices propertyServices) 
+    public PropertyController(IUserContextService userContextService, IRentalsServices rentalsService, IPropertyMasterService propertyMasterService, IPropertyServices propertyServices, ILeaseService leaseService) 
     {
         _userContextService = userContextService;
         _rentalsService = rentalsService;
         _propertyMasterService = propertyMasterService;
         _propertyServices = propertyServices;
+        _leaseService = leaseService;
     }
 
     /// <summary>

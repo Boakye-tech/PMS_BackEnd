@@ -443,7 +443,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 return BadRequest(ModelState);
             }
 
-            var result = await _propertyServices.AddLeaseDetailsAsync(values);
+            var result = await _leaseService.AddLeaseDetailsAsync(values);
 
             if (result.IsSuccess)
             {
@@ -474,7 +474,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 return BadRequest(ModelState);
             }
 
-            var result = await _propertyServices.UpdateLeaseDetailsAsync(values);
+            var result = await _leaseService.UpdateLeaseDetailsAsync(values);
 
             if (result.IsSuccess)
             {
@@ -505,7 +505,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 return BadRequest(ModelState);
             }
 
-            var result = await _propertyServices.RenewLeaseAsync(values);
+            var result = await _leaseService.RenewLeaseAsync(values);
 
             if (result.IsSuccess)
             {

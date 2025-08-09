@@ -81,6 +81,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _landUseService.CreateLandUseAsync(values);
 
                 if (result.IsSuccess)
@@ -143,6 +150,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<LandUseReadDto>> UpdateLandUse([FromBody] LandUseUpdateDto values, [FromServices] ILandUseService _landUseService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _landUseService.UpdateLandUseAsync(values);
 
             if (result.IsSuccess)

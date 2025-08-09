@@ -55,6 +55,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult CreateRentalCategory([FromBody] RentalCategoryCreateDto values)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.CreatedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = _rentalsService.CreateRentalCategoryAsync(values).Result;
 
             if (result.IsSuccess)
@@ -83,6 +90,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult UpdateRentalCategory([FromBody] RentalCategoryUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = _rentalsService.UpdateRentalCategoryAsync(values).Result;
             if (result.IsSuccess)
             {
@@ -147,6 +161,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult CreateRentalType([FromBody] RentalTypeCreateDto values)
         {
+
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.CreatedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = _rentalsService.CreateRentalTypeAsync(values).Result;
             if (result.IsSuccess)
             {
@@ -174,6 +196,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult UpdateRentalType([FromBody] RentalTypeUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = _rentalsService.UpdateRentalTypeAsync(values).Result;
             if (result.IsSuccess)
             {
@@ -251,6 +280,11 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult CreateType([FromBody] TypesCreateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.CreatedBy))
+            {
+                return Unauthorized();
+            }
 
             var result = _rentalsService.CreateTypesAsync(values).Result;
             if (result.IsSuccess)
@@ -281,6 +315,12 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public IActionResult UpdateType([FromBody] TypesUpdateDto values)
         {
+            var userId = _userContextService.GetUserId();
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = _rentalsService.UpdateTypesAsync(values).Result;
 
             if (result.IsSuccess)

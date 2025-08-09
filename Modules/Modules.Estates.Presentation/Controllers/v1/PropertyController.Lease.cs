@@ -77,6 +77,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _leaseService.CreateLeaseTypeAndPeriodAsync(values);
 
                 if (result.IsSuccess)
@@ -141,6 +148,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<LeaseTypeAndPeriodReadDto>> UpdateLeaseTypeAndPeriod([FromBody] LeaseTypeAndPeriodUpdateDto values, [FromServices] ILeaseTypeAndPeriodService _leaseService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _leaseService.UpdateLeaseTypeAndPeriodAsync(values);
 
             if (result.IsSuccess)
@@ -196,7 +210,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of lease status
         /// </summary>
         [HttpGet]
-        //[Authorize(Policy = "Permission:Customers.READ")]
         [Route("LeaseStatusEnum")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public IActionResult LeaseStatus()
@@ -220,7 +233,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// Returns a list of marital status
         /// </summary>
         [HttpGet]
-        //[Authorize(Policy = "Permission:Customers.READ")]
         [Route("LeaseRenewalStatus")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public IActionResult RenewalStatus()

@@ -19,10 +19,11 @@ namespace Modules.Estates.Application.DTO.Management.Property
         public int LeaseTypePeriodId { get; set; }
         public DateTime LeaseStartDate { get; set; }
         public int LeaseTerm { get; set; }
+        //public DateTime LeaseExpiryDate { get; set; }
         public int RenewableTerm { get; set; }
         public int MaximumRenewalCount { get; set; }
-        public int CurrentRenewalCount { get; set; }
-        public DateTime LastRenewalStartDate { get; set; }
+        //public int CurrentRenewalCount { get; set; }
+        //public DateTime LastRenewalStartDate { get; set; }
         public LeaseStatusEnum LeaseStatusId { get; set; }
         public RenewalStatusEnum RenewalStatusId { get; set; }
         public string? CreatedBy { get; set; }
@@ -39,8 +40,8 @@ namespace Modules.Estates.Application.DTO.Management.Property
         public int LeaseTerm { get; set; }
         public int RenewableTerm { get; set; }
         public int MaximumRenewalCount { get; set; }
-        public int CurrentRenewalCount { get; set; }
-        public DateTime LastRenewalStartDate { get; set; }
+        //public int CurrentRenewalCount { get; set; }
+        //public DateTime LastRenewalStartDate { get; set; }
         public LeaseStatusEnum LeaseStatusId { get; set; }
         public RenewalStatusEnum RenewalStatusId { get; set; }
         public string? ModifiedBy { get; set; }
@@ -67,11 +68,13 @@ namespace Modules.Estates.Application.DTO.Management.Property
         public string? CustomerCode { get; set; }
         public string? LeaseTypePeriod { get; set; }
         public DateTime LeaseStartDate { get; set; }
-        public int LeaseTermMonths { get; set; }
-        public int RenewableTermMonths { get; set; }
+        public int LeaseTerm { get; set; }
+        public DateTime LeaseExpiryDate { get; set; }
+        public int RenewableTerm { get; set; }
         public int MaxRenewalCount { get; set; }
         public int CurrentRenewalCount { get; set; }
         public DateTime LastRenewalStartDate { get; set; }
+        public DateTime LastRenewalExpiryDate { get; set; }
         public LeaseStatusEnum LeaseStatus { get; set; }
         public LeaseStatusEnum RenewalStatus { get; set; }
     }

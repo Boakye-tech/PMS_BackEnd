@@ -90,6 +90,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _plotDimensionService.CreatePlotDimensionAsync(values);
 
                 if (result.IsSuccess)
@@ -152,6 +159,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<PlotDimensionReadDto>> UpdatePlotDimension([FromBody] PlotDimensionUpdateDto values, [FromServices] IPlotDimensionService _plotDimensionService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _plotDimensionService.UpdatePlotDimensionAsync(values);
 
             if (result.IsSuccess)
@@ -250,6 +264,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
+                var userId = _userContextService.GetUserId();
+
+                if (!string.Equals(userId, values.CreatedBy))
+                {
+                    return Unauthorized();
+                }
+
                 var result = await _plotTypeService.CreatePlotTypeAsync(values);
 
                 if (result.IsSuccess)
@@ -306,6 +327,13 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<PlotTypeReadDto>> UpdatePlotType([FromBody] PlotTypeUpdateDto values, [FromServices] IPlotTypeService _plotTypeService)
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.ModifiedBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _plotTypeService.UpdatePlotTypeAsync(values);
 
             if (result.IsSuccess)

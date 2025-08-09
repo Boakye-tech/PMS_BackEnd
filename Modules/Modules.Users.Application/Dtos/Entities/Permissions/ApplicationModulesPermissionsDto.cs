@@ -89,6 +89,31 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
 
     }
 
+    public record ModulesByRolesPermissionsDto
+    {
+
+        [StringLength(50)]
+        public string? RoleId { get; set; }
+
+        [StringLength(50)]
+        public string? RoleName { get; set; }
+
+        public List<RoleModulePermissions>? ModulesPermission { get; set; }
+    }
+
+    public record RoleModulePermissions
+    {
+
+        [StringLength(12)]
+        public string? ModuleId { get; set; }
+
+        [StringLength(50)]
+        public string? ModuleName { get; set; }
+
+        public List<string>? Permissions { get; set; }
+
+    }
+
 
     public record ApplicationModulesPermissionsUpdateDto
     {

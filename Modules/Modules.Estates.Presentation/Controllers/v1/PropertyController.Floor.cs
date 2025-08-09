@@ -68,6 +68,13 @@ public partial class PropertyController
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.createdBy))
+            {
+                return Unauthorized();
+            }
+
             var result = await _floorAreaService.CreateFloorAreaAsync(values);
 
             if (result.IsSuccess)
@@ -130,6 +137,13 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<FloorAreaReadDto>> UpdateFloorArea([FromBody] FloorAreaUpdateDto values, [FromServices] IFloorAreaService _floorAreaService)
     {
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.modifiedBy))
+        {
+            return Unauthorized();
+        }
+
         var result = await _floorAreaService.UpdateFloorAreaAsync(values);
 
         if (result.IsSuccess)
@@ -232,6 +246,13 @@ public partial class PropertyController
     {
         try
         {
+            var userId = _userContextService.GetUserId();
+
+            if (!string.Equals(userId, values.createdby))
+            {
+                return Unauthorized();
+            }
+
             var result = await _floorNumberingService.CreateFloorNumberingAsync(values);
 
             if (result.IsSuccess)
@@ -294,6 +315,13 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
     public async Task<ActionResult<FloorNumberingReadDto>> UpdateFloorNumber([FromBody] FloorNumberingUpdateDto values, [FromServices] IFloorNumberingService _floorNumberingService)
     {
+        var userId = _userContextService.GetUserId();
+
+        if (!string.Equals(userId, values.modifiedby))
+        {
+            return Unauthorized();
+        }
+
         var result = await _floorNumberingService.UpdateFloorNumberingAsync(values);
 
         if (result.IsSuccess)

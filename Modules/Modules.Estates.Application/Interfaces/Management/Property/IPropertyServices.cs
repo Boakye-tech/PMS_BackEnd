@@ -27,11 +27,11 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 
         Task<ReturnResponsesDto> AssignPropertyToCustomerAsync(AssignPropertytoCustomerDto values);
 
-        Task<ReturnResponsesDto> AddLeaseDetailsAsync(PropertyLeaseDetailsCreateDto values);
+        //Task<ReturnResponsesDto> AddLeaseDetailsAsync(PropertyLeaseDetailsCreateDto values);
 
-        Task<ReturnResponsesDto> UpdateLeaseDetailsAsync(PropertyLeaseDetailsUpdateDto values);
+        //Task<ReturnResponsesDto> UpdateLeaseDetailsAsync(PropertyLeaseDetailsUpdateDto values);
 
-        Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values);
+        //Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values);
 
 
     }
