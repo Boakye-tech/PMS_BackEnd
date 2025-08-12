@@ -161,26 +161,93 @@ public class LandUseService : ILandUseService
         }
     }
 
-    public async Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync()
+    //public async Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync()
+    //{
+    //    // Get all land uses and land use types in a single query using Include
+    //    var landuses = await _unitOfWork.LandUse.GetAll(includes: new List<string> { "LandUseTypes" });
+
+    //    // Create a dictionary for quick lookup of land use types by land use ID
+    //    var landUseAndLandUseType = landuses.Select(landUse =>
+    //    {
+    //        var landUseTypes = _mapper.Map<List<LandUseTypeReadDto>>(landUse.LandUseTypes);
+    //        return new LandUseAndLandUseTypeReadDto(
+    //            new LandUsesReadDto(
+    //            landUse.LandUseId,
+    //            landUse.LandUseInitial!,
+    //            landUse.LandUseName!,
+    //            false),
+    //            landUseTypes
+    //        );
+    //    }).ToList();
+
+    //    return landUseAndLandUseType;
+    //}
+
+    public async Task<List<LandUseAndLandUseTypeReadDto>> GetLandUseAndLandUseTypeAsync(string? searchTerm)
     {
-        // Get all land uses and land use types in a single query using Include
+        // Load everything in one go (Get all land uses and land use types in a single query using Include)
         var landuses = await _unitOfWork.LandUse.GetAll(includes: new List<string> { "LandUseTypes" });
 
-        // Create a dictionary for quick lookup of land use types by land use ID
-        var landUseAndLandUseType = landuses.Select(landUse =>
+        if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            var landUseTypes = _mapper.Map<List<LandUseTypeReadDto>>(landUse.LandUseTypes);
-            return new LandUseAndLandUseTypeReadDto(
-                new LandUsesReadDto(
-                landUse.LandUseId,
-                landUse.LandUseInitial!,
-                landUse.LandUseName!,
-                false),
-                landUseTypes
-            );
-        }).ToList();
+            return landuses
+                .Select(lu => new LandUseAndLandUseTypeReadDto(
+                    new LandUsesReadDto(
+                        lu.LandUseId,
+                        lu.LandUseInitial ?? string.Empty,
+                        lu.LandUseName ?? string.Empty,
+                        false),
+                    _mapper.Map<List<LandUseTypeReadDto>>(lu.LandUseTypes)))
+                .ToList();
+        }
 
-        return landUseAndLandUseType;
+        var term = searchTerm!.Trim();
+
+        var results = landuses
+            .Select(lu =>
+            {
+                bool parentMatch =
+                    (lu.LandUseInitial?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0 ||
+                    (lu.LandUseName?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0;
+
+                if (parentMatch)
+                {
+                    // Parent matched → return full parent with all children
+                    return new LandUseAndLandUseTypeReadDto(
+                        new LandUsesReadDto(
+                            lu.LandUseId,
+                            lu.LandUseInitial ?? string.Empty,
+                            lu.LandUseName ?? string.Empty,
+                            false),
+                        _mapper.Map<List<LandUseTypeReadDto>>(lu.LandUseTypes));
+                }
+
+                // Only keep the matching children (no mutation of the entity)
+                var matchingTypes = lu.LandUseTypes
+                    .Where(t =>
+                        (t.LandUseTypeName?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0 ||
+                        (t.LandUseTypeDescription?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0)
+                    .ToList();
+
+                if (matchingTypes.Any())
+                {
+                    return new LandUseAndLandUseTypeReadDto(
+                        new LandUsesReadDto(
+                            lu.LandUseId,
+                            lu.LandUseInitial ?? string.Empty,
+                            lu.LandUseName ?? string.Empty,
+                            false),
+                        _mapper.Map<List<LandUseTypeReadDto>>(matchingTypes));
+                }
+
+                return null;
+            })
+            .Where(x => x != null)
+            .ToList()!;
+
+        return results!;
     }
+
+
 }
 

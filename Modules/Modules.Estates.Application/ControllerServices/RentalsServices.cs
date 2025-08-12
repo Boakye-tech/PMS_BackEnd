@@ -92,8 +92,8 @@ public class RentalsServices : IRentalsServices
 
 
     //All types methods
-    public async Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync() =>
-    await AllTypesService.GetAllTypesAsync();
+    public async Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync(string? searchTerm) =>
+    await AllTypesService.GetAllTypesAsync(searchTerm);
 
     public async Task<List<AllTypesReadDto>> GetAllTypesAsync(int rentalTypeId) =>
         await AllTypesService.GetAllTypesAsync(rentalTypeId);

@@ -143,42 +143,42 @@ public class ActivityService : IActivityService
         }
     }
 
-    public async Task<List<ActivityAndActivityTypeReadDto>> GeActivityAndActivityTypeAsync()
-    {
-        // Get all activities and activity types in a single query using Include
-        var activities = await _unitOfWork.Activity.GetAll(includes: new List<string> { "ActivityTypes" });
+    //public async Task<List<ActivityAndActivityTypeReadDto>> GeActivityAndActivityTypeAsync()
+    //{
+    //    // Get all activities and activity types in a single query using Include
+    //    var activities = await _unitOfWork.Activity.GetAll(includes: new List<string> { "ActivityTypes" });
 
-        // Create a dictionary for quick lookup of activity types by activity ID
-        var activityAndactivitiesType = activities.Select(activity =>
-        {
-            var activityTypes = _mapper.Map<List<ActivityTypeReadDto>>(activity.ActivityTypes);
-            return new ActivityAndActivityTypeReadDto(
-                new ActivityReadsDto(
-                activity.ActivityId,
-                activity.ActivityName,
-                activity.ActivityDescription!,
-                false),
-                activityTypes
-            );
-        }).ToList();
+    //    // Create a dictionary for quick lookup of activity types by activity ID
+    //    var activityAndactivitiesType = activities.Select(activity =>
+    //    {
+    //        var activityTypes = _mapper.Map<List<ActivityTypeReadDto>>(activity.ActivityTypes);
+    //        return new ActivityAndActivityTypeReadDto(
+    //            new ActivityReadsDto(
+    //            activity.ActivityId,
+    //            activity.ActivityName,
+    //            activity.ActivityDescription!,
+    //            false),
+    //            activityTypes
+    //        );
+    //    }).ToList();
 
-        return activityAndactivitiesType;
-    }
+    //    return activityAndactivitiesType;
+    //}
 
 
     public async Task<List<ActivityAndActivityTypeReadDto>> GeActivityAndActivityTypeAsync(string? searchTerm)
     {
-        // Load everything in one go (your current approach)
+        // Load everything in one go ( Get all activities and activity types in a single query using Include)
         var activities = await _unitOfWork.Activity.GetAll(includes: new List<string> { "ActivityTypes" });
 
-        //if (string.IsNullOrWhiteSpace(searchTerm))
-        //{
-        //    return activities
-        //        .Select(a => new ActivityAndActivityTypeReadDto(
-        //            new ActivityReadsDto(a.ActivityId, a.ActivityName, a.ActivityDescription ?? string.Empty, false),
-        //            _mapper.Map<List<ActivityTypeReadDto>>(a.ActivityTypes)))
-        //        .ToList();
-        //}
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            return activities
+                .Select(a => new ActivityAndActivityTypeReadDto(
+                    new ActivityReadsDto(a.ActivityId, a.ActivityName, a.ActivityDescription ?? string.Empty, false),
+                    _mapper.Map<List<ActivityTypeReadDto>>(a.ActivityTypes)))
+                .ToList();
+        }
 
         var term = searchTerm!.Trim();
 

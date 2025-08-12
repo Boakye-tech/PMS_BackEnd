@@ -249,9 +249,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Route("GetAllTypes")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AllTypesRentalCategoryDto>))]
-        public IActionResult AllTypes()
+        public IActionResult AllTypes([FromQuery] string? searchTerm)
         {
-            var result = _rentalsService.GetAllTypesAsync().Result;
+            var result = _rentalsService.GetAllTypesAsync(searchTerm).Result;
             return Ok(result);
         }
 

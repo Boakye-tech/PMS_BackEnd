@@ -22,6 +22,7 @@ public interface IApartmentCategoryService
 
 	Task<ReturnResponsesDto> DeleteApartmentCategory(int apartmentCategoryId);
 
-	Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync();
+    //Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync();
+    Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync(string? searchTerm);
 }
 

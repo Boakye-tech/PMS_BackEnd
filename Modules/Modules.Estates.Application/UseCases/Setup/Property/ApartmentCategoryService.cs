@@ -10,10 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-
-
 namespace Modules.Estates.Application.UseCases.Setup.Property;
 
 public class ApartmentCategoryService : IApartmentCategoryService
@@ -136,40 +132,159 @@ public class ApartmentCategoryService : IApartmentCategoryService
 		}
 	}
 
-	public async Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync()
-	{
-        var apartmentCategories = await _unitOfWork.ApartmentCategory.GetAll(includes: new List<string>{ "ApartmentTypes.FloorArea", "ApartmentTypes.Currency", "ApartmentTypes.ApartmentFeatures.Features" });
+    //public async Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync()
+    //{
+    //       var apartmentCategories = await _unitOfWork.ApartmentCategory.GetAll(includes: new List<string>{ "ApartmentTypes.FloorArea", "ApartmentTypes.Currency", "ApartmentTypes.ApartmentFeatures.Features" });
 
-        var apartmentCategoryAndTypes = apartmentCategories.Select(category =>
+    //       var apartmentCategoryAndTypes = apartmentCategories.Select(category =>
+    //       {
+    //           var apartmentTypes = category.ApartmentTypes.Select(type => new ApartmentTypesReadDto(
+    //               apartmentTypeId: type.ApartmentTypeId,
+    //               apartmentType: type.ApartmentType ?? "",
+    //               apartmentfeatures: type.ApartmentFeatures.Select(f => new ApartmentFeatureReadDto(
+    //                   FeatureId: f.FeaturesId,
+    //                   Feature: f.Features!.Feature ?? ""
+    //               )).ToList(),
+    //               sellingPrice: type.SellingPrice,
+    //               currencyId: type.CurrencyId,
+    //               currencyInitial: type.Currency?.CurrencyInitial ?? "",
+    //               currency: type.Currency?.CurrencyName ?? "",
+    //			floorAreaId: type.FloorAreaId,
+    //               floorArea: type.FloorArea?.Area ?? 0,
+    //               images: type.Images
+    //           )).ToList();
+
+    //           return new ApartmentCategoryAndTypesReadDto(
+    //               new ApartmentCategoriesReadDto(
+    //                   category.ApartmentCategoryId,
+    //                   category.ApartmentCategoryName!,
+    //                   false
+    //               ),
+    //               apartmentTypes
+    //           );
+    //       }).ToList();
+
+    //       return apartmentCategoryAndTypes;
+
+    //   }
+
+
+    public async Task<List<ApartmentCategoryAndTypesReadDto>> GetApartmentCategoryAndTypesAsync(string? searchTerm)
+    {
+        var apartmentCategories = await _unitOfWork.ApartmentCategory.GetAll(
+            includes: new List<string>
+            {
+            "ApartmentTypes.FloorArea",
+            "ApartmentTypes.Currency",
+            "ApartmentTypes.ApartmentFeatures.Features"
+            });
+
+        if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            var apartmentTypes = category.ApartmentTypes.Select(type => new ApartmentTypesReadDto(
-                apartmentTypeId: type.ApartmentTypeId,
-                apartmentType: type.ApartmentType ?? "",
-                apartmentfeatures: type.ApartmentFeatures.Select(f => new ApartmentFeatureReadDto(
-                    FeatureId: f.FeaturesId,
-                    Feature: f.Features!.Feature ?? ""
-                )).ToList(),
-                sellingPrice: type.SellingPrice,
-                currencyId: type.CurrencyId,
-                currencyInitial: type.Currency?.CurrencyInitial ?? "",
-                currency: type.Currency?.CurrencyName ?? "",
-				floorAreaId: type.FloorAreaId,
-                floorArea: type.FloorArea?.Area ?? 0,
-                images: type.Images
-            )).ToList();
+            return apartmentCategories
+                .Select(category => new ApartmentCategoryAndTypesReadDto(
+                    new ApartmentCategoriesReadDto(
+                        category.ApartmentCategoryId,
+                        category.ApartmentCategoryName ?? string.Empty,
+                        false
+                    ),
+                    category.ApartmentTypes.Select(type => new ApartmentTypesReadDto(
+                        apartmentTypeId: type.ApartmentTypeId,
+                        apartmentType: type.ApartmentType ?? string.Empty,
+                        apartmentfeatures: type.ApartmentFeatures.Select(f => new ApartmentFeatureReadDto(
+                            FeatureId: f.FeaturesId,
+                            Feature: f.Features!.Feature ?? string.Empty
+                        )).ToList(),
+                        sellingPrice: type.SellingPrice,
+                        currencyId: type.CurrencyId,
+                        currencyInitial: type.Currency?.CurrencyInitial ?? string.Empty,
+                        currency: type.Currency?.CurrencyName ?? string.Empty,
+                        floorAreaId: type.FloorAreaId,
+                        floorArea: type.FloorArea?.Area ?? 0,
+                        images: type.Images
+                    )).ToList()
+                ))
+                .ToList();
+        }
 
-            return new ApartmentCategoryAndTypesReadDto(
-                new ApartmentCategoriesReadDto(
-                    category.ApartmentCategoryId,
-                    category.ApartmentCategoryName!,
-                    false
-                ),
-                apartmentTypes
-            );
-        }).ToList();
+        var term = searchTerm!.Trim();
 
-        return apartmentCategoryAndTypes;
+        var results = apartmentCategories
+            .Select(category =>
+            {
+                bool parentMatch =
+                    (category.ApartmentCategoryName?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0;
 
+                if (parentMatch)
+                {
+                    // Parent matched → return with all apartment types
+                    return new ApartmentCategoryAndTypesReadDto(
+                        new ApartmentCategoriesReadDto(
+                            category.ApartmentCategoryId,
+                            category.ApartmentCategoryName ?? string.Empty,
+                            false
+                        ),
+                        category.ApartmentTypes.Select(type => new ApartmentTypesReadDto(
+                            apartmentTypeId: type.ApartmentTypeId,
+                            apartmentType: type.ApartmentType ?? string.Empty,
+                            apartmentfeatures: type.ApartmentFeatures.Select(f => new ApartmentFeatureReadDto(
+                                FeatureId: f.FeaturesId,
+                                Feature: f.Features!.Feature ?? string.Empty
+                            )).ToList(),
+                            sellingPrice: type.SellingPrice,
+                            currencyId: type.CurrencyId,
+                            currencyInitial: type.Currency?.CurrencyInitial ?? string.Empty,
+                            currency: type.Currency?.CurrencyName ?? string.Empty,
+                            floorAreaId: type.FloorAreaId,
+                            floorArea: type.FloorArea?.Area ?? 0,
+                            images: type.Images
+                        )).ToList()
+                    );
+                }
+
+                // Match apartment types under this category
+                var matchingTypes = category.ApartmentTypes
+                    .Where(type =>
+                        (type.ApartmentType?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0 ||
+                        type.ApartmentFeatures.Any(f =>
+                            (f.Features?.Feature?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0) ||
+                        (type.Currency?.CurrencyName?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0 ||
+                        (type.Currency?.CurrencyInitial?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0)
+                    .ToList();
+
+                if (matchingTypes.Any())
+                {
+                    return new ApartmentCategoryAndTypesReadDto(
+                        new ApartmentCategoriesReadDto(
+                            category.ApartmentCategoryId,
+                            category.ApartmentCategoryName ?? string.Empty,
+                            false
+                        ),
+                        matchingTypes.Select(type => new ApartmentTypesReadDto(
+                            apartmentTypeId: type.ApartmentTypeId,
+                            apartmentType: type.ApartmentType ?? string.Empty,
+                            apartmentfeatures: type.ApartmentFeatures.Select(f => new ApartmentFeatureReadDto(
+                                FeatureId: f.FeaturesId,
+                                Feature: f.Features!.Feature ?? string.Empty
+                            )).ToList(),
+                            sellingPrice: type.SellingPrice,
+                            currencyId: type.CurrencyId,
+                            currencyInitial: type.Currency?.CurrencyInitial ?? string.Empty,
+                            currency: type.Currency?.CurrencyName ?? string.Empty,
+                            floorAreaId: type.FloorAreaId,
+                            floorArea: type.FloorArea?.Area ?? 0,
+                            images: type.Images
+                        )).ToList()
+                    );
+                }
+
+                return null;
+            })
+            .Where(x => x != null)
+            .ToList()!;
+
+        return results!;
     }
+
 }
 

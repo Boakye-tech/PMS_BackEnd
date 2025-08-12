@@ -22,6 +22,7 @@ public interface ILocalityService
     Task<LocalityReadDto> GetLocalityAsync(int value);
     Task<LocalityReadDto> GetLocalityAsync(string value);
 
-    Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync();
+    //Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync();
+    Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync(string? searchTerm);
 }
 

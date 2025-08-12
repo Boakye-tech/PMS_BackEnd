@@ -144,28 +144,100 @@ public class LocalityService : ILocalityService
         }
     }
 
-    public async Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync()
+    //public async Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync()
+    //{
+    //    // Get all localities and sites in a single query using Include
+    //    var localities = await _unitOfWork.Locality.GetAll(includes: new List<string> { "Sites" });
+
+    //    // Create a dictionary for quick lookup of land use types by land use ID
+    //    var localitiesAndSites = localities.Select(locality =>
+    //    {
+    //        var sites = _mapper.Map<List<SitesReadDto>>(locality.Sites);
+    //        return new LocalityAndSitesReadDto(
+    //            new LocalityReadsDto(
+    //            locality.LocalityId,
+    //            locality.LocalityInitial!,
+    //            locality.LocalityName!,
+    //            locality.CustomerCode,
+    //            locality.CustomerCodeCounter,
+    //            false),
+    //            sites
+    //        );
+    //    }).ToList();
+
+    //    return localitiesAndSites;
+    //}
+
+    public async Task<List<LocalityAndSitesReadDto>> GetLocalityAndSitesAsync(string? searchTerm)
     {
-        // Get all localities and sites in a single query using Include
+        // Load all localities and sites in one go
         var localities = await _unitOfWork.Locality.GetAll(includes: new List<string> { "Sites" });
 
-        // Create a dictionary for quick lookup of land use types by land use ID
-        var localitiesAndSites = localities.Select(locality =>
+        if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            var sites = _mapper.Map<List<SitesReadDto>>(locality.Sites);
-            return new LocalityAndSitesReadDto(
-                new LocalityReadsDto(
-                locality.LocalityId,
-                locality.LocalityInitial!,
-                locality.LocalityName!,
-                locality.CustomerCode,
-                locality.CustomerCodeCounter,
-                false),
-                sites
-            );
-        }).ToList();
+            return localities
+                .Select(l => new LocalityAndSitesReadDto(
+                    new LocalityReadsDto(
+                        l.LocalityId,
+                        l.LocalityInitial ?? string.Empty,
+                        l.LocalityName ?? string.Empty,
+                        l.CustomerCode,
+                        l.CustomerCodeCounter,
+                        false),
+                    _mapper.Map<List<SitesReadDto>>(l.Sites)))
+                .ToList();
+        }
 
-        return localitiesAndSites;
+        var term = searchTerm!.Trim();
+
+        var results = localities
+            .Select(l =>
+            {
+                bool parentMatch =
+                    (l.LocalityInitial?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0 ||
+                    (l.LocalityName?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0 ||
+                    (l.CustomerCode?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0;
+
+                if (parentMatch)
+                {
+                    // Parent match → include all sites
+                    return new LocalityAndSitesReadDto(
+                        new LocalityReadsDto(
+                            l.LocalityId,
+                            l.LocalityInitial ?? string.Empty,
+                            l.LocalityName ?? string.Empty,
+                            l.CustomerCode!,
+                            l.CustomerCodeCounter,
+                            false),
+                        _mapper.Map<List<SitesReadDto>>(l.Sites));
+                }
+
+                // Only keep matching sites
+                var matchingSites = l.Sites
+                    .Where(s =>
+                        (s.SiteName?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0)
+                    .ToList();
+
+                if (matchingSites.Any())
+                {
+                    return new LocalityAndSitesReadDto(
+                        new LocalityReadsDto(
+                            l.LocalityId,
+                            l.LocalityInitial ?? string.Empty,
+                            l.LocalityName ?? string.Empty,
+                            l.CustomerCode!,
+                            l.CustomerCodeCounter,
+                            false),
+                        _mapper.Map<List<SitesReadDto>>(matchingSites));
+                }
+
+                return null;
+            })
+            .Where(x => x != null)
+            .ToList()!;
+
+        return results!;
     }
+
 }
 

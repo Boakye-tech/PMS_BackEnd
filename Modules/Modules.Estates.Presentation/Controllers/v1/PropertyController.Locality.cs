@@ -24,9 +24,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpGet]
         [Route("GetLocalityAndSites")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<LocalityAndSitesReadDto>))]
-        public async Task<ActionResult<List<LocalityAndSitesReadDto>>> LocalityAndSites([FromServices] ILocalityService _localityService)
+        public async Task<ActionResult<List<LocalityAndSitesReadDto>>> LocalityAndSites([FromQuery]string? searchTerm,[FromServices] ILocalityService _localityService)
         {
-            return Ok(await _localityService.GetLocalityAndSitesAsync());
+            return Ok(await _localityService.GetLocalityAndSitesAsync(searchTerm));
         }
 
 

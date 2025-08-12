@@ -24,9 +24,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpGet]
         [Route("GetLandUsesAndLandUseTypes")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<LandUseAndLandUseTypeReadDto>))]
-        public async Task<ActionResult<List<LandUseAndLandUseTypeReadDto>>> GetLandUseAndLandUseType([FromServices] ILandUseService _landUseService)
+        public async Task<ActionResult<List<LandUseAndLandUseTypeReadDto>>> GetLandUseAndLandUseType([FromQuery] string? searchTerm,[FromServices] ILandUseService _landUseService)
         {
-            return Ok(await _landUseService.GetLandUseAndLandUseTypeAsync());
+            return Ok(await _landUseService.GetLandUseAndLandUseTypeAsync(searchTerm));
         }
 
         /// <summary>

@@ -378,9 +378,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpGet]
         [Route("GetApartmentCategoriesAndTypes")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ApartmentCategoryAndTypesReadDto>))]
-        public async Task<ActionResult<List<ApartmentCategoryAndTypesReadDto>>> GetApartmentCategoryAndTypes([FromServices] IApartmentCategoryService _apartmentCategoryService)
+        public async Task<ActionResult<List<ApartmentCategoryAndTypesReadDto>>> GetApartmentCategoryAndTypes([FromQuery]string? searchTerm,[FromServices] IApartmentCategoryService _apartmentCategoryService)
         {
-            return Ok(await _apartmentCategoryService.GetApartmentCategoryAndTypesAsync());
+            return Ok(await _apartmentCategoryService.GetApartmentCategoryAndTypesAsync(searchTerm));
         }
 
         /// <summary>

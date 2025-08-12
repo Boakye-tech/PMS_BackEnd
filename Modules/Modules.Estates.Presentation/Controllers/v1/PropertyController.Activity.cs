@@ -25,10 +25,10 @@ public partial class PropertyController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ActivityAndActivityTypeReadDto>))]
     public async Task<ActionResult<List<ActivityAndActivityTypeReadDto>>> GetActivityAndActivityTypes([FromQuery] string? searchTerm,[FromServices] IActivityService _activityService)
     {
-        if (!string.IsNullOrWhiteSpace(searchTerm))
-            return Ok(await _activityService.GeActivityAndActivityTypeAsync(searchTerm));
+        //if (!string.IsNullOrWhiteSpace(searchTerm))
+        //    return Ok(await _activityService.GeActivityAndActivityTypeAsync(searchTerm));
 
-        return Ok(await _activityService.GeActivityAndActivityTypeAsync());
+        return Ok(await _activityService.GeActivityAndActivityTypeAsync(searchTerm));
     }
 
     /// <summary>
