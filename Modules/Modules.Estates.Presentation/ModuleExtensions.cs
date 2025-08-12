@@ -90,6 +90,7 @@ public static class ModuleExtensions
 
         services.AddScoped<IPlotFeaturesService, PlotFeaturesService>();
         services.AddScoped<IPropertyTypeService, PropertyTypeService>();
+        services.AddScoped<ILeaseService, LeaseService>();
 
 
         services.AddScoped<ICustomerServices, CustomerServices>();

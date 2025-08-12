@@ -21,6 +21,7 @@ namespace Modules.Estates.Application.Interfaces.Entities.Setup.Property
         Task<ReturnResponsesDto> DeleteActivity(int activityId);
 
         Task<List<ActivityAndActivityTypeReadDto>> GeActivityAndActivityTypeAsync();
+        Task<List<ActivityAndActivityTypeReadDto>> GeActivityAndActivityTypeAsync(string? searchTerm);
     }
 }
 

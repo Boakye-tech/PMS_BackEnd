@@ -285,6 +285,9 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _menuService.CreateSubMenuItems(values));
         }
 
+
+        #region Backend
+
         /// <summary>
         /// Returns a list of application modules
         /// </summary>
@@ -326,7 +329,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         [AllowAnonymous]
         public async Task<ActionResult> AddModulesPermissions([FromBody] ModulesPermissionsDto values)
         {
-            return Ok(await _menuService.AddModulesPermissions (values));
+            return Ok(await _menuService.AddModulesPermissions(values));
         }
 
         /// <summary>
@@ -383,6 +386,10 @@ namespace Modules.Users.Presentation.Controllers.v1
         {
             return Ok(await _menuService.UpdateModulesPermissions(values));
         }
+
+        #endregion
+
+
 
         /// <summary>
         /// Delete a specific assigned module permissions 

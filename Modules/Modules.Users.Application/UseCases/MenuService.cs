@@ -691,33 +691,6 @@ namespace Modules.Users.Application.UseCases
 
         }
 
-        //public async Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId)
-        //{
-        //    var modulePermissions = (await _unitOfWork.ApplicationModulesPermissions.GetAll())
-        //       .Where(a => a.RoleId == roleId) // Filter where based on RoleId 
-        //       .GroupJoin(await _unitOfWork.ApplicationModules.GetAll(),
-        //           a => a.ModuleId,
-        //           b => b.ModuleId,
-        //           (a, moduleGroup) => new { a, module = moduleGroup.FirstOrDefault() }) // Left Join on ApplicationModules
-        //       .GroupJoin(await _unitOfWork.Roles.GetAll(),
-        //           ab => ab.a.RoleId,
-        //           c => c.Id,
-        //           (ab, roleGroup) => new RoleModulesPermissionsDto
-        //           {
-        //               ModulePermissionId = ab.a.ModulePermissionId,
-        //               RoleId = ab.a.RoleId,
-        //               RoleName = roleGroup.FirstOrDefault()?.Name, // Left Join on Roles
-        //               ModuleId = ab.a.ModuleId,
-        //               ModuleName = ab.module?.ModuleName,
-        //               ModulePermission = ab.a.ModulePermission
-        //           })
-        //       .ToList();
-
-
-        //    return _mapper.Map<IEnumerable<RoleModulesPermissionsDto>>(modulePermissions);
-
-        //}
-
 
         public async Task<IEnumerable<ModulesByRolesPermissionsDto>> GetModulesPermissions(string roleId)
         {

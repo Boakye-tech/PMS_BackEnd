@@ -164,5 +164,61 @@ public class ActivityService : IActivityService
 
         return activityAndactivitiesType;
     }
+
+
+    public async Task<List<ActivityAndActivityTypeReadDto>> GeActivityAndActivityTypeAsync(string? searchTerm)
+    {
+        // Load everything in one go (your current approach)
+        var activities = await _unitOfWork.Activity.GetAll(includes: new List<string> { "ActivityTypes" });
+
+        //if (string.IsNullOrWhiteSpace(searchTerm))
+        //{
+        //    return activities
+        //        .Select(a => new ActivityAndActivityTypeReadDto(
+        //            new ActivityReadsDto(a.ActivityId, a.ActivityName, a.ActivityDescription ?? string.Empty, false),
+        //            _mapper.Map<List<ActivityTypeReadDto>>(a.ActivityTypes)))
+        //        .ToList();
+        //}
+
+        var term = searchTerm!.Trim();
+
+        var results = activities
+            .Select(a =>
+            {
+                bool parentMatch =
+                    (a.ActivityName?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0 ||
+                    (a.ActivityDescription?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0;
+
+                if (parentMatch)
+                {
+                    // parent matched → return full parent with all children
+                    return new ActivityAndActivityTypeReadDto(
+                        new ActivityReadsDto(a.ActivityId, a.ActivityName!, a.ActivityDescription ?? string.Empty, false),
+                        _mapper.Map<List<ActivityTypeReadDto>>(a.ActivityTypes));
+                }
+
+                // only keep the matching children (no mutation of the entity)
+                var matchingTypes = a.ActivityTypes
+                    .Where(t =>
+                        (t.ActivityTypeName?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0 ||
+                        (t.ActivityTypeDescription?.IndexOf(term, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0)
+                    .ToList();
+
+                if (matchingTypes.Any())
+                {
+                    return new ActivityAndActivityTypeReadDto(
+                        new ActivityReadsDto(a.ActivityId, a.ActivityName!, a.ActivityDescription ?? string.Empty, false),
+                        _mapper.Map<List<ActivityTypeReadDto>>(matchingTypes));
+                }
+
+                return null;
+            })
+            .Where(x => x != null)
+            .ToList()!;
+
+        return results!;
+    }
+
+
 }
 

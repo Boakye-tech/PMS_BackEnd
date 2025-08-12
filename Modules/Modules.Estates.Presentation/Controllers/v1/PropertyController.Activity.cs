@@ -23,8 +23,11 @@ public partial class PropertyController
     [HttpGet]
     [Route("GetActivityAndActivityTypes")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ActivityAndActivityTypeReadDto>))]
-    public async Task<ActionResult<List<ActivityAndActivityTypeReadDto>>> GetActivityAndActivityTypes([FromServices] IActivityService _activityService)
+    public async Task<ActionResult<List<ActivityAndActivityTypeReadDto>>> GetActivityAndActivityTypes([FromQuery] string? searchTerm,[FromServices] IActivityService _activityService)
     {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+            return Ok(await _activityService.GeActivityAndActivityTypeAsync(searchTerm));
+
         return Ok(await _activityService.GeActivityAndActivityTypeAsync());
     }
 
