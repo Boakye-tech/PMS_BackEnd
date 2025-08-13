@@ -10,7 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using Modules.Estates.Domain.ValueObjects.Property;
 
 namespace Modules.Estates.Application.UseCases.Management.Property
 {
@@ -119,6 +118,50 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             }
         }
 
+        public async Task<List<CustomerToAssignListDto>> GetCustomersToAssign(string? searchTerm, string? locality, int pageNumber = 1,int pageSize = 50)
+        {
+            // Normalize search term for case-insensitive matching
+            searchTerm = searchTerm?.ToLower().Trim();
+
+            // Base query with LEFT JOINs
+            var query =
+                from a in _unitOfWork.CustomerMaster.GetQueryable()
+                join b in _unitOfWork.Title.GetQueryable()
+                    on a.TitleId equals b.TitleId into titleGroup
+                from b in titleGroup.DefaultIfEmpty()
+                join c in _unitOfWork.Locality.GetQueryable()
+                    on a.LocalityId equals c.LocalityId into localityGroup
+                from c in localityGroup.DefaultIfEmpty()
+                let fullName = ((b.Titles ?? "") + " " +
+                                (a.OtherNames ?? "") + " " +
+                                (a.SurName ?? "") + " " +
+                                (a.CompanyName ?? "")).Trim()
+                select new
+                {
+                    fullName,
+                    a.CustomerCode,
+                    LocalityName = c.LocalityName ?? ""
+                };
+
+            // Apply search filter only if needed
+            if (!string.IsNullOrWhiteSpace(searchTerm) || !string.IsNullOrWhiteSpace(locality))
+            {
+                query = query.Where(c =>
+                    c.fullName.ToLower().Contains(searchTerm!) ||
+                    c.CustomerCode.ToLower().Contains(searchTerm!) ||
+                    c.LocalityName.ToLower().Equals(locality));
+            }
+
+            // Apply ordering & paging
+            var result = await query
+                .OrderBy(c => c.CustomerCode)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => new CustomerToAssignListDto(c.fullName, c.CustomerCode))
+                .ToListAsync();
+
+            return result;
+        }
 
 
         public async Task<ReturnResponsesDto> StartDebitAsync(StopDebitRequestDto values)

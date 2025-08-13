@@ -35,6 +35,8 @@ namespace Modules.Estates.Application.Interfaces.Registration.Property
         Task<ReturnResponsesDto> CreateRentalHouse(RentalHouseCreateDto values);
 
         Task<ReturnResponsesDto> CreateLargeScale(largeScaleCreateDto values);
+
+        Task<ReturnResponsesDto> DeletePropertyDetails(string propertyNumber);
     }
 }
 

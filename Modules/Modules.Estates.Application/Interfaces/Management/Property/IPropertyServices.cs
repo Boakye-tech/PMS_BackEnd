@@ -33,6 +33,7 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 
         //Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values);
 
+        Task<List<CustomerToAssignListDto>> GetCustomersToAssign(string? search, string? locality, int pageNumber, int pageSize);
 
     }
 }

@@ -11,6 +11,8 @@
 //  **************************************************/
 
 
+using System.Web;
+
 namespace Modules.Estates.Application.UseCases.Registration.Property
 {
     public class PropertyMasterService : IPropertyMasterService
@@ -1198,6 +1200,42 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
             return result;
         }
+
+        public async Task<ReturnResponsesDto> DeletePropertyDetails(string propertyNumber)
+        {
+            //throw new NotImplementedException();
+            string _propertyNumber = HttpUtility.UrlDecode(propertyNumber);
+
+            var result = await _unitOfWork.PropertyMaster.Get(p => p.PropertyNumber!.Value == _propertyNumber);
+            if(result is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = 404,
+                        Message = $"Property Number {_propertyNumber} provided does not exist. Kindly cross-check and provide a valid property number."
+                    }
+                };
+            }
+
+            _unitOfWork.PropertyMaster.Delete(result);
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = false,
+                ErrorResponse = new ErrorResponseDto
+                {
+                    Code = 200,
+                    Message = $"Detail for property Number {_propertyNumber} deleted successfully."
+                }
+            };
+        }
+
+
+
 
     }
 }

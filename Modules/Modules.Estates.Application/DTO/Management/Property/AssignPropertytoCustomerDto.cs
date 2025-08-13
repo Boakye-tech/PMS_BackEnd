@@ -15,3 +15,4 @@ namespace Modules.Estates.Application.DTO.Management.Property;
 
 public record AssignPropertytoCustomerDto(string PropertyNumber, string CustomerCode, string ActionBy);
 
+public record CustomerToAssignListDto(string CustomerName, string CustomerCode);

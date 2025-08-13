@@ -335,6 +335,38 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// Deletes an exisiting property details based on the property number
+        /// </summary>
+        /// <param name="blockNumberId">The property number to delete</param>
+        /// <returns>Success or error response</returns>
+        [HttpDelete("DeleteProperty/{propertyNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> DeleteProperty(string propertyNumber)
+        {
+            try
+            {
+                var result = await _propertyMasterService.DeletePropertyDetails(propertyNumber);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result.SuccessResponse);
+                }
+
+                var status = result.ErrorResponse!.Code;
+                return status switch
+                {
+                    404 => NotFound(result.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+            }
+        }
 
         //----------------------------------
         [HttpPost]
@@ -388,6 +420,26 @@ namespace Modules.Estates.Presentation.Controllers.v1
             try
             {
                 return Ok(await _propertyMasterService.GetListOfProperties(search, landUseId, landUseTypeId , localityId, allocationTypeId));
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+            }
+        }
+
+        /// <summary>
+        /// Returns a summary list of exisitng properties and the respective customer
+        /// </summary>
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [Route("GetCustomersToAssign")]
+        public async Task<ActionResult<List<PropertyListSummaryViewDto>>> GetCustomersToAssign([FromQuery] string? search = null, [FromQuery] string? locality = null, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 50)
+        {
+
+            try
+            {
+                return Ok(await _propertyServices.GetCustomersToAssign(search, locality, pageNumber, pageSize));
 
             }
             catch (Exception ex)
