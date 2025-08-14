@@ -338,13 +338,14 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Deletes an exisiting property details based on the property number
         /// </summary>
-        /// <param name="blockNumberId">The property number to delete</param>
+
         /// <returns>Success or error response</returns>
-        [HttpDelete("DeleteProperty/{propertyNumber}")]
+        [HttpDelete("DeleteProperty")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
-        public async Task<ActionResult> DeleteProperty(string propertyNumber)
+        public async Task<ActionResult> DeleteProperty([FromQuery] string propertyNumber)
         {
             try
             {
@@ -358,6 +359,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                 var status = result.ErrorResponse!.Code;
                 return status switch
                 {
+                    400 => NotFound(result.ErrorResponse),
                     404 => NotFound(result.ErrorResponse),
                     _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
                 };

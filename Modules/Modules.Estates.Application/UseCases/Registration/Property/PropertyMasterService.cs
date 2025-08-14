@@ -1215,7 +1215,21 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     ErrorResponse = new ErrorResponseDto
                     {
                         Code = 404,
-                        Message = $"Property Number {_propertyNumber} provided does not exist. Kindly cross-check and provide a valid property number."
+                        Message = $"Property Number '{_propertyNumber}' provided does not exist. Kindly cross-check and provide a valid property number."
+                    }
+                };
+            }
+
+            if(result.CustomerCode is not null)
+            {
+                var _customercode = result.CustomerCode;
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = 400,
+                        Message = $"Property Number '{_propertyNumber}' provided cannot be deleted as it has already been assigned to a customer."
                     }
                 };
             }
@@ -1225,11 +1239,11 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
             return new ReturnResponsesDto
             {
-                IsSuccess = false,
-                ErrorResponse = new ErrorResponseDto
+                IsSuccess = true,
+                SuccessResponse = new SuccessResponseDto
                 {
                     Code = 200,
-                    Message = $"Detail for property Number {_propertyNumber} deleted successfully."
+                    Message = $"Detail for property Number '{_propertyNumber}' deleted successfully."
                 }
             };
         }
