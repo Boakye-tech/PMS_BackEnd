@@ -10,8 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-using Microsoft.AspNetCore.Http;
-using Modules.Estates.Domain.Entities.Setup.Property;
 
 namespace Modules.Estates.Application.UseCases.Setup.Property
 {
@@ -139,7 +137,29 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
 					};
 				}
 
-				shopOfficeType.Update(
+                var existingShopOfficeCode = await _unitOfWork.ShopOfficeTypes.Get(s => s.Code == values.Code);
+                if (existingShopOfficeCode != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Shop/Office Type Code already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+                var existingShopOfficeType = await _unitOfWork.ShopOfficeTypes.Get(s => s.TypeName == values.TypeName);
+                if (existingShopOfficeType != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Shop/Office Type Name already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+                shopOfficeType.Update(
 					values.Code!,
 					values.TypeName!,
 					values.RentalCategoryId,

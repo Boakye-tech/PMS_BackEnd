@@ -83,6 +83,17 @@ public class PlotTypeService : IPlotTypeService
                 };
             }
 
+            var existingType = await _unitOfWork.PlotType.Get(p => p.PlotTypes == values.PlotTypes);
+            if (existingType != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Property Type already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             PlotType.Update(values.PlotTypeId, values.PlotTypes!);
             PlotType.ModifiedBy = values.ModifiedBy;
             PlotType.ModifiedOn = DateTime.Now;

@@ -53,7 +53,7 @@ public class BlockUnitService : IBlockUnitService
                 return new ReturnResponsesDto
                 {
                     IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Block Unit name cannot be empty." },
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Block Unit cannot be empty." },
                     SuccessResponse = null
                 };
             }
@@ -100,6 +100,17 @@ public class BlockUnitService : IBlockUnitService
                 {
                     IsSuccess = false,
                     ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Block Unit with ID {values.unitId} not found." },
+                    SuccessResponse = null
+                };
+            }
+
+            var existingUnit = await _unitOfWork.BlockUnit.Get(bu => bu.Unit == values.unit);
+            if (existingUnit != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Block Unit already exists." },
                     SuccessResponse = null
                 };
             }

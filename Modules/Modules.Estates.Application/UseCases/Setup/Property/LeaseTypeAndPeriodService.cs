@@ -95,7 +95,18 @@ public class LeaseTypeAndPeriodService : ILeaseTypeAndPeriodService
 				};
 			}
 
-			leaseType.Update(values.LeaseTypePeriodId, values.LeaseType!, values.LeasePeriod, values.RenewablePeriod);
+            var existingLeaseType = await _unitOfWork.LeaseTypeAndPeriod.Get(l => l.LeaseType == values.LeaseType);
+            if (existingLeaseType != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Lease Type already exists." },
+                    SuccessResponse = null
+                };
+            }
+
+            leaseType.Update(values.LeaseTypePeriodId, values.LeaseType!, values.LeasePeriod, values.RenewablePeriod);
 			leaseType.ModifiedBy = values.ModifiedBy;
 			leaseType.ModifiedOn = DateTime.Now;
 

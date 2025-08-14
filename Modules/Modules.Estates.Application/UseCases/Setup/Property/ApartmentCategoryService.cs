@@ -81,7 +81,18 @@ public class ApartmentCategoryService : IApartmentCategoryService
 				};
 			}
 
-			apartmentCategory.Update(values.ApartmentCategoryId, values.ApartmentCategoryName!);
+            var apartmentCategoryName = await _unitOfWork.ApartmentCategory.Get(a => a.ApartmentCategoryName == values.ApartmentCategoryName);
+            if (apartmentCategoryName != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Apartment Category Name already exists." },
+                    SuccessResponse = null
+                };
+            }
+
+            apartmentCategory.Update(values.ApartmentCategoryId, values.ApartmentCategoryName!);
 			apartmentCategory.ModifiedBy = values.ModifiedBy;
 			apartmentCategory.ModifiedOn = DateTime.Now;
 

@@ -109,6 +109,28 @@ public class LandUseService : ILandUseService
                 };
             }
 
+            var landUseInitial = await _unitOfWork.LandUse.Get(l => l.LandUseInitial == values.LandUseInitial);
+            if (landUseInitial != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Land Use Initial already exists." },
+                    SuccessResponse = null
+                };
+            }
+
+            var landuseName = await _unitOfWork.LandUse.Get(l => l.LandUseName == values.LandUseName);
+            if (landuseName != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Land Use Name already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             landUse.Update(values.LandUseId, values.LandUseInitial!, values.LandUseName!);
             landUse.ModifiedBy = values.ModifiedBy;
             landUse.ModifiedOn = DateTime.Now;

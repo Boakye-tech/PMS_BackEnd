@@ -83,6 +83,17 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         {
             try
             {
+                var existingRentalType = await _unitOfWork.RentalType.Get(r => r.RentalTypes == values.RentalTypes);
+                if (existingRentalType != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Rental Type already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
                 var rentalType = await _unitOfWork.RentalType.Get(values.RentalTypeId);
                 if (rentalType == null)
                 {

@@ -120,6 +120,18 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
+                var existingSite = await _unitOfWork.Sites.Get(l => l.SiteName == values.SiteName);
+                if (existingSite != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Site name already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+
                 site.Update(values.LocalityId, values.SiteId!, values.SiteName!);
                 site.ModifiedBy = values.ModifiedBy;
                 site.ModifiedOn = DateTime.Now;

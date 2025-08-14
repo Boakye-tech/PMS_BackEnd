@@ -84,6 +84,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
         {
             try
             {
+
                 var rentalCategory = await _unitOfWork.RentalCategory.Get(values.RentalCategoryId);
                 if (rentalCategory == null)
                 {
@@ -91,6 +92,17 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     {
                         IsSuccess = false,
                         ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Rental Category with ID {values.RentalCategoryId} not found." },
+                        SuccessResponse = null
+                    };
+                }
+
+                var existingRentalCategory = await _unitOfWork.RentalCategory.Get(r => r.RentalCategories == values.RentalCategories);
+                if (existingRentalCategory != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Rental Category already exists." },
                         SuccessResponse = null
                     };
                 }

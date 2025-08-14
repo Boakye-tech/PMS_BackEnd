@@ -107,6 +107,28 @@ public class AllocationTypeService : IAllocationTypeService
                 };
             }
 
+            var allocationTypeInitial = await _unitOfWork.AllocationType.Get(at => at.AllocationTypeInitial == values.AllocationTypeInitial);
+            if (allocationTypeInitial != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Allocation Type Initial already exists." },
+                    SuccessResponse = null
+                };
+            }
+
+            var allocationTypeName = await _unitOfWork.AllocationType.Get(at => at.AllocationTypes == values.AllocationTypes);
+            if (allocationTypeName != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Allocation Type Name already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             allocationType.Update(values.AllocationTypeId, values.AllocationTypeInitial!, values.AllocationTypes!);
             allocationType.ModifiedBy = values.ModifiedBy;
             allocationType.ModifiedOn = DateTime.Now;

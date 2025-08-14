@@ -96,6 +96,17 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
+                var activityTypeName = await _unitOfWork.ActivityType.Get(at => at.ActivityTypeName == values.ActivityTypeName);
+                if (activityTypeName != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Activity Type Name already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
                 activityType.Update(values.ActivityId, values.ActivityTypeId, values.ActivityTypeName!, values.ActivityTypeDescription);
                 activityType.ModifiedBy = values.ModifiedBy;
                 activityType.ModifiedOn = DateTime.Now;

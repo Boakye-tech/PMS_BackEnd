@@ -93,6 +93,17 @@ public class LocalityService : ILocalityService
                 };
             }
 
+            var existingLocality = await _unitOfWork.Locality.Get(l => l.LocalityInitial == values.LocalityInitial || l.LocalityName == values.LocalityName);
+            if (existingLocality != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Locality already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             locality.Update(values.LocalityId, values.LocalityInitial!, values.LocalityName!, values.CustomerCode, values.CustomerCodeCounter);
             locality.ModifiedBy = values.ModifiedBy;
             locality.ModifiedOn = DateTime.Now;

@@ -125,6 +125,17 @@ public class ApartmentTypeService : IApartmentTypeService
                 };
             }
 
+            var apartment = await _unitOfWork.ApartmentTypes.Get(at => at.ApartmentType == values.apartmentType && at.ApartmentCategoryId == values.apartmentCategoryId);
+            if (apartment != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Apartment Type already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             apartmentType.Update(values.apartmentTypeId, values.apartmentCategoryId, values.apartmentType!, values.sellingPrice, values.currencyId, values.floorAreaId, values.images!);
             apartmentType.ModifiedBy = values.modifiedBy;
             apartmentType.ModifiedOn = DateTime.Now;

@@ -93,6 +93,17 @@ public class BlockSideService : IBlockSideService
                 };
             }
 
+            var existingSide = await _unitOfWork.BlockSides.Get(bs => bs.Side == values.side);
+            if (existingSide != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Block Side already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             blockSide.Update(values.sideId, values.side);
             blockSide.ModifiedBy = values.modifiedby;
             blockSide.ModifiedOn = DateTime.Now;

@@ -93,6 +93,17 @@ public class BlockNumberService : IBlockNumberService
                 };
             }
 
+            var existingBlockNumber = await _unitOfWork.BlockNumber.Get(bn => bn.BlockNumbers == values.blockNumbers);
+            if (existingBlockNumber != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Block Number already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             blockNumber.Update(values.blockNumberId, values.blockNumbers!);
             blockNumber.ModifiedBy = values.modifiedby;
             blockNumber.ModifiedOn = DateTime.Now;

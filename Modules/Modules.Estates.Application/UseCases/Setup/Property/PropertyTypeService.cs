@@ -96,7 +96,29 @@ public class PropertyTypeService : IPropertyTypeService
 				};
 			}
 
-			propertyType.Update(values.PropertyTypeId, values.PropertyTypeInitial!, values.PropertyTypeName!);
+            var propertyTypeInitial = await _unitOfWork.PropertyType.Get(pt => pt.PropertyTypeInitial == values.PropertyTypeInitial);
+            if (propertyTypeInitial != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Property Type Initial already exists." },
+                    SuccessResponse = null
+                };
+            }
+
+            var propertyTypeName = await _unitOfWork.PropertyType.Get(pt => pt.PropertyTypeName == values.PropertyTypeName);
+            if (propertyTypeName != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Property Type Name already exists." },
+                    SuccessResponse = null
+                };
+            }
+
+            propertyType.Update(values.PropertyTypeId, values.PropertyTypeInitial!, values.PropertyTypeName!);
 			propertyType.ModifiedBy = values.ModifiedBy;
 			propertyType.ModifiedOn = DateTime.Now;
 

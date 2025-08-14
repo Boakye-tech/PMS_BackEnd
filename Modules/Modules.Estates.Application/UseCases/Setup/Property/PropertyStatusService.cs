@@ -95,7 +95,18 @@ public class PropertyStatusService : IPropertyStatusService
 				};
 			}
 
-			propertyStatus.Update(values.PropertyStatusId, values.PropertyStatusName!);
+            var existingPropertyStatus = await _unitOfWork.PropertyStatus.Get(l => l.PropertyStatusName == values.PropertyStatusName);
+            if (existingPropertyStatus != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Property Status already exists." },
+                    SuccessResponse = null
+                };
+            }
+
+            propertyStatus.Update(values.PropertyStatusId, values.PropertyStatusName!);
 			propertyStatus.ModifiedBy = values.ModifiedBy;
 			propertyStatus.ModifiedOn = DateTime.Now;
 

@@ -94,6 +94,17 @@ public class PlotDimensionService : IPlotDimensionService
                 };
             }
 
+            var existingPlotDimension = await _unitOfWork.PlotDimension.Get(p => p.PlotDimensions == values.PlotDimensions);
+            if (existingPlotDimension != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Plot Dimension already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             plotDimension.Update(values.PlotDimensionId, values.PlotDimensions!);
             plotDimension.ModifiedBy = values.ModifiedBy;
             plotDimension.ModifiedOn = DateTime.Now;

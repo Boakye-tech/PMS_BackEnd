@@ -81,6 +81,17 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
+                var existingType = await _unitOfWork.SchemeTypes.Get(p => p.SchemeTypeName == values.SchemeTypeName);
+                if (existingType != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Scheme Type already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
                 schemeType.Update(values.SchemeTypeId, values.SchemeTypeName!);
                 schemeType.ModifiedBy = values.ModifiedBy;
                 schemeType.ModifiedOn = DateTime.Now;

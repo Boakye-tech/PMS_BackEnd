@@ -126,6 +126,28 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
+                var existingHouseCode = await _unitOfWork.HouseTypes.Get(h => h.Code == values.Code);
+                if (existingHouseCode != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "House Type Code already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+                var existingHouseType = await _unitOfWork.HouseTypes.Get(h => h.TypeName == values.TypeName);
+                if (existingHouseType != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "House Type Name already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
                 houseType.Update(
                     values.Code!,
                     values.TypeName!,

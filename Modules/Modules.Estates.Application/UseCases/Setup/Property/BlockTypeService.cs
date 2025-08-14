@@ -93,6 +93,17 @@ public class BlockTypeService : IBlockTypeService
                 };
             }
 
+            var existingType = await _unitOfWork.BlockType.Get(bt => bt.BlockType == values.blockType);
+            if (existingType != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Block Type already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             blockType.Update(values.blockTypeId, values.blockType);
             blockType.ModifiedBy = values.modifiedby;
             blockType.ModifiedOn = DateTime.Now;

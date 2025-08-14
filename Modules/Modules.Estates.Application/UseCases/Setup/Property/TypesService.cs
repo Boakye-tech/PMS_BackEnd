@@ -463,6 +463,28 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     };
                 }
 
+                var existingCode = await _unitOfWork.Types.Get(h => h.Code == values.Code);
+                if (existingCode != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Type Code already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+                var existingType = await _unitOfWork.Types.Get(h => h.TypeName == values.TypeName);
+                if (existingType != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Type Name already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
                 List<string> featureNames = new List<string>();
 
                 foreach (var featureId in values.Features)

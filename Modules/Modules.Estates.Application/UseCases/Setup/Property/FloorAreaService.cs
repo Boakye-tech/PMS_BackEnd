@@ -99,6 +99,17 @@ public class FloorAreaService : IFloorAreaService
                 };
             }
 
+            var existingFloorArea = await _unitOfWork.FloorArea.Get(f => f.Area == values.area);
+            if (existingFloorArea != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Floor Area already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             floorArea.Update(values.floorAreaId, values.area);
             floorArea.ModifiedBy = values.modifiedBy;
             floorArea.ModifiedOn = DateTime.Now;

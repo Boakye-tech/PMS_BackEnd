@@ -91,6 +91,17 @@ public class ActivityService : IActivityService
                 throw new Exception($"Activity with ID {values.ActivityId} not found.");
             }
 
+            var activityName = await _unitOfWork.Activity.Get(a => a.ActivityName == values.ActivityName);
+            if (activityName != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Activity Name already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             activity.Update(values.ActivityId, values.ActivityName!, values.ActivityDescription);
             activity.ModifiedBy = values.ModifiedBy;
             activity.ModifiedOn = DateTime.Now;

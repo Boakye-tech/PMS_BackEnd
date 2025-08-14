@@ -93,6 +93,17 @@ public class PropertyHeightService : IPropertyHeightService
                 };
             }
 
+            var existingHeight = await _unitOfWork.PropertyHeight.Get(ph => ph.PropertyHeights == values.propertyHeights);
+            if (existingHeight != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Property Height already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             propertyHeight.Update(values.propertyHeightId, values.propertyHeights);
             propertyHeight.ModifiedBy = values.modifiedBy;
             propertyHeight.ModifiedOn = DateTime.Now;

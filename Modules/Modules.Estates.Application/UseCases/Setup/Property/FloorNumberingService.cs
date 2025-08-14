@@ -99,6 +99,17 @@ public class FloorNumberingService : IFloorNumberingService
                 };
             }
 
+            var existingFloorNumber = await _unitOfWork.FloorNumbering.Get(fn => fn.FloorNumber == values.floorNumber);
+            if (existingFloorNumber != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Floor Number already exists." },
+                    SuccessResponse = null
+                };
+            }
+
             floorNumber.Update(values.floorNumberId, values.floorNumber);
             floorNumber.ModifiedBy = values.modifiedby;
             floorNumber.ModifiedOn = DateTime.Now;
