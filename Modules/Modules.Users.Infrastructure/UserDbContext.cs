@@ -122,7 +122,8 @@ namespace Modules.Users.Infrastructure
             builder.ApplyConfiguration(new ChannelConfiguration());
             builder.ApplyConfiguration(new DepartmentsConfiguration());
             builder.ApplyConfiguration(new DepartmentsUnitsConfiguration());
-
+            builder.ApplyConfiguration(new ModulesPermissionsConfiguration());
+            builder.ApplyConfiguration(new ApplicationModulesConfiguration());
 
         }
     }

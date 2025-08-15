@@ -30,9 +30,13 @@ namespace Modules.Users.Domain.Entities
         [StringLength(50)]
         public string? PermissionName { get; set; }
 
-
-        public ModulesPermissions(string moduleId, string permissionName)
+        public ModulesPermissions()
         {
+        }
+
+        public ModulesPermissions(int modulespermissionsId, string moduleId, string permissionName)
+        {
+            ModulesPermissionsId = modulespermissionsId;
             ModuleId = moduleId;
             PermissionName = permissionName;
         }
@@ -51,7 +55,7 @@ namespace Modules.Users.Domain.Entities
             if (string.IsNullOrWhiteSpace(permissionName) || permissionName.Length > 50)
                 throw new ArgumentException("The module permission must not be null or exceed 10 characters.");
 
-            return new ModulesPermissions(moduleId, permissionName);
+            return new ModulesPermissions(0, moduleId, permissionName);
         }
     }
 }

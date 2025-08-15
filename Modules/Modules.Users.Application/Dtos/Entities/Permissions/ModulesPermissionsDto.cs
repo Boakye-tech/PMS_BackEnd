@@ -45,6 +45,19 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
 
     }
 
+
+    public record ModulesPermissionsUpdateDto
+    {
+        public int ModulesPermissionsId { get; set; }
+
+        [StringLength(12)]
+        public string? ModuleId { get; set; }
+
+        [StringLength(50)]
+        public string? PermissionName { get; set; }
+
+    }
+
     public record ModulesWithPermissionsDto
     {
     }

@@ -655,7 +655,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     {
                         await _signInManager.SignInAsync(new_user, isPersistent: false);
 
-                        var successResponse = new RegistrationSuccessResponse { StatusCode = StatusCodes.Status201Created, StatusMessage = results.ToString(), UserId = new_user.Id, UserEmailAddress = new_user.Email! };
+                        var successResponse = new RegistrationSuccessResponse { StatusCode = StatusCodes.Status201Created, StatusMessage = results.ToString() };
                         var response = new RegistrationResponse { IsSuccess = true, SuccessResponse = successResponse };
 
                         return response;
@@ -712,7 +712,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     {
                         await _signInManager.SignInAsync(new_user, isPersistent: false);
 
-                        var successResponse = new RegistrationSuccessResponse { StatusCode = StatusCodes.Status201Created, StatusMessage = results.ToString(), UserId = new_user.Id, UserEmailAddress = new_user.Email! };
+                        var successResponse = new RegistrationSuccessResponse { StatusCode = StatusCodes.Status201Created, StatusMessage = results.ToString() };
                         return new RegistrationResponse { IsSuccess = true, SuccessResponse = successResponse }; ;
 
                     }
@@ -789,7 +789,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                     {
                         await _signInManager.SignInAsync(new_user, isPersistent: false);
 
-                        var successResponse = new RegistrationSuccessResponse { StatusCode = StatusCodes.Status201Created, StatusMessage = results.ToString(), UserId = new_user.Id, UserEmailAddress = new_user.Email! };
+                        var successResponse = new RegistrationSuccessResponse { StatusCode = StatusCodes.Status201Created, StatusMessage = results.ToString() };
                         return new RegistrationResponse { IsSuccess = true, SuccessResponse = successResponse }; ;
                     }
 

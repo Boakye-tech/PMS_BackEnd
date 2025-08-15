@@ -13,19 +13,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Users.Application.Dtos.Entities.Permissions
 {
-    //public record ApplicationModulesPermissionsDto
-    //{
-
-    //       [StringLength(50)]
-    //       public string? RoleId { get; set; }
-
-    //       [StringLength(12)]
-    //       public string? ModuleId { get; set; }
-
-    //       public IEnumerable<ModulePermissions>? ModulePermission { get; set; }
-
-    //   }
-
 
     public record ApplicationModulesPermissionsDto
     {
@@ -33,10 +20,10 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
         [StringLength(50)]
         public string? RoleId { get; set; }
 
-        public List<ModulePermissions>? ModulePermission { get; set; }
+        public List<ModulePermissionsDto>? ModulePermission { get; set; }
     }
 
-    public record ModulePermissions
+    public record ModulePermissionsDto
     {
 
         [StringLength(12)]
@@ -46,12 +33,6 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
 
     }
 
-
-    //public record ModulePermissions
-    //{
-    //    [StringLength(10)]
-    //    public string? ModulePermission { get; set; }
-    //}
 
 
     public record ApplicationModulesPermissionsReadDto
@@ -110,24 +91,19 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
         [StringLength(50)]
         public string? ModuleName { get; set; }
 
-        public List<string>? Permissions { get; set; }
-
+        public Dictionary<string, bool>? Permissions { get; set; }
     }
+
 
 
     public record ApplicationModulesPermissionsUpdateDto
     {
-        public int ModulePermissionId { get; set; }
-
         [StringLength(50)]
         public string? RoleId { get; set; }
 
-        [StringLength(12)]
-        public string? ModuleId { get; set; }
-
-        [StringLength(50)]
-        public string? ModulePermission { get; set; }
+        public List<ModulePermissionsDto>? ModulePermission { get; set; }
 
     }
+
 }
 

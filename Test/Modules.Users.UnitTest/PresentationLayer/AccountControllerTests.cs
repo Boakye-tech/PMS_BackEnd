@@ -110,9 +110,7 @@ namespace Modules.Users.UnitTest.PresentationLayer
                 SuccessResponse = new RegistrationSuccessResponse
                 {
                     StatusCode = StatusCodes.Status201Created,
-                    StatusMessage = "Success",
-                    UserId = "CUST001",
-                    UserEmailAddress = "meth@example.com"
+                    StatusMessage = "Success"
                 }
             };
 

@@ -11,6 +11,7 @@
 using System.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Modules.Users.Application.UseCases
@@ -641,6 +642,18 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<ApplicationModulesDto> AddModules(ApplicationModulesCreateDto appModules)
         {
+
+            var result = _unitOfWork.ApplicationModules.Get(am => am.ModuleName == appModules.ModuleName);
+            if(result is not null)
+            {
+                return new ApplicationModulesDto
+                {
+                    ModuleId = "400",
+                    ModuleName = "Module name already exist"
+                };
+            }
+
+
             var moduleId = Guid.NewGuid().ToString().Substring(0,12);
             ApplicationModules applicationModules = new ApplicationModules(moduleId, appModules.ModuleName!);
             _unitOfWork.ApplicationModules.Insert(applicationModules);
@@ -656,6 +669,16 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<ApplicationModulesDto> UpdateModules(ApplicationModulesDto appModules)
         {
+            var result = _unitOfWork.ApplicationModules.Get(am => am.ModuleName == appModules.ModuleName);
+            if (result is not null)
+            {
+                return new ApplicationModulesDto
+                {
+                    ModuleId = "400",
+                    ModuleName = "Module name already exist"
+                };
+            }
+
             ApplicationModules applicationModules = new ApplicationModules(appModules.ModuleId!, appModules.ModuleName!);
             _unitOfWork.ApplicationModules.Update(applicationModules);
             await _unitOfWork.Complete();
@@ -669,6 +692,16 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<GenericResponseDto> AssignModulePermission(ApplicationModulesPermissionsDto permissions)
         {
+            var modulePermission = await _unitOfWork.ApplicationModulesPermissions.GetAll(amp => amp.RoleId == permissions.RoleId);
+            if (modulePermission.Any())
+            {
+                return new GenericResponseDto("Role supplied already has permissions assigned.");
+            }
+
+            if (permissions.ModulePermission == null || !permissions.ModulePermission.Any(mp => !string.IsNullOrWhiteSpace(mp.ModuleId) && mp.Permissions != null && mp.Permissions.Any(p => !string.IsNullOrWhiteSpace(p) && p != "string")))
+            {
+                return new GenericResponseDto("Module permissions cannot be empty.");
+            }
 
             foreach (var module in permissions.ModulePermission!)
             {
@@ -691,86 +724,146 @@ namespace Modules.Users.Application.UseCases
 
         }
 
-
         public async Task<IEnumerable<ModulesByRolesPermissionsDto>> GetModulesPermissions(string roleId)
         {
-            // Get all data in parallel to minimize round trips
-            var modulesPermissions = await _unitOfWork.ApplicationModulesPermissions.GetAll();
+
+            // First, load the data asynchronously outside the query
+            var modulesPermissions = await _unitOfWork.ModulesPermissions.GetAll();
             var modules = await _unitOfWork.ApplicationModules.GetAll();
             var roles = await _unitOfWork.Roles.GetAll();
+            var appModulesPermissions = await _unitOfWork.ApplicationModulesPermissions.GetAll();
 
-            //await Task.WhenAll(modulesPermissionsTask, modulesTask, rolesTask);
 
-            //var modulesPermissions = await modulesPermissionsTask;
-            //var modules = await modulesTask;
-            //var roles = await rolesTask;
-
-            // Perform inner joins as in the SQL query
-            var query = from mp in modulesPermissions
-                        where mp.RoleId == roleId
+            return (
+                        from mp in modulesPermissions
                         join m in modules on mp.ModuleId equals m.ModuleId
-                        join r in roles on mp.RoleId equals r.Id
-                        orderby m.ModuleName
+                        join r in roles.Where(x => x.Id == roleId) on 1 equals 1
+                        join amp in appModulesPermissions
+                            .Where(x => x.RoleId == roleId)
+                            on new { mp.ModuleId, ModulePermission = mp.PermissionName }
+                            equals new { amp.ModuleId, ModulePermission = amp.ModulePermission }
+                            into ampJoin
+                        from amp in ampJoin.DefaultIfEmpty()
+                        group new { mp, m, amp, r } by new { r.Id, r.Name, mp.ModuleId, m.ModuleName } into g
                         select new
                         {
-                            mp.RoleId,
-                            RoleName = r.Name,
-                            mp.ModuleId,
-                            ModuleName = m.ModuleName,
-                            mp.ModulePermission
-                        };
-
-            // Group by module to create the nested structure
-            var groupedData = query
-                .AsEnumerable()
-                .GroupBy(x => new { x.RoleId, x.RoleName, x.ModuleId, x.ModuleName })
-                .Select(g => new ModulesByRolesPermissionsDto
-                {
-                    RoleId = g.Key.RoleId,
-                    RoleName = g.Key.RoleName,
-                    ModulesPermission = new List<RoleModulePermissions>
-                    {
-                        new RoleModulePermissions
-                        {
-                            ModuleId = g.Key.ModuleId,
-                            ModuleName = g.Key.ModuleName,
-                            Permissions = g.Select(x => x.ModulePermission).ToList()
+                            g.Key.Id,
+                            g.Key.Name,
+                            g.Key.ModuleId,
+                            g.Key.ModuleName,
+                            Permissions = g
+                            .GroupBy(x => x.mp.PermissionName!)
+                            .ToDictionary(
+                                permGroup => permGroup.Key,
+                                permGroup => permGroup.Any(x => x.amp != null)
+                            )
                         }
-                    }
-                })
-                .ToList();
+                    )
+                    .GroupBy(x => new { x.Id, x.Name })
+                    .Select(g => new ModulesByRolesPermissionsDto
+                    {
+                        RoleId = g.Key.Id,
+                        RoleName = g.Key.Name,
+                        ModulesPermission = g.Select(m => new RoleModulePermissions
+                        {
+                            ModuleId = m.ModuleId,
+                            ModuleName = m.ModuleName,
+                            Permissions = m.Permissions
+                        }).ToList()
+                    });
 
-            // Group modules for the same role together
-            var finalResult = groupedData
-                .GroupBy(x => new { x.RoleId, x.RoleName })
-                .Select(g => new ModulesByRolesPermissionsDto
-                {
-                    RoleId = g.Key.RoleId,
-                    RoleName = g.Key.RoleName,
-                    ModulesPermission = g.SelectMany(x => x.ModulesPermission!).ToList()
-                })
-                .ToList();
-
-            return finalResult;
         }
 
-        public async Task<GenericResponseDto> UpdateModulePermission(ApplicationModulesPermissionsUpdateDto permissions)
+
+        //public async Task<IEnumerable<ModulesByRolesPermissionsDto>> GetModulesPermissions_OLD(string roleId)
+        //{
+        //    // Get all data in parallel to minimize round trips
+        //    var modulesPermissions = await _unitOfWork.ApplicationModulesPermissions.GetAll();
+        //    var modules = await _unitOfWork.ApplicationModules.GetAll();
+        //    var roles = await _unitOfWork.Roles.GetAll();
+
+        //    //await Task.WhenAll(modulesPermissionsTask, modulesTask, rolesTask);
+
+        //    //var modulesPermissions = await modulesPermissionsTask;
+        //    //var modules = await modulesTask;
+        //    //var roles = await rolesTask;
+
+        //    // Perform inner joins as in the SQL query
+        //    var query = from mp in modulesPermissions
+        //                where mp.RoleId == roleId
+        //                join m in modules on mp.ModuleId equals m.ModuleId
+        //                join r in roles on mp.RoleId equals r.Id
+        //                orderby m.ModuleName
+        //                select new
+        //                {
+        //                    mp.RoleId,
+        //                    RoleName = r.Name,
+        //                    mp.ModuleId,
+        //                    ModuleName = m.ModuleName,
+        //                    mp.ModulePermission
+        //                };
+
+        //    // Group by module to create the nested structure
+        //    var groupedData = query
+        //        .AsEnumerable()
+        //        .GroupBy(x => new { x.RoleId, x.RoleName, x.ModuleId, x.ModuleName })
+        //        .Select(g => new ModulesByRolesPermissionsDto
+        //        {
+        //            RoleId = g.Key.RoleId,
+        //            RoleName = g.Key.RoleName,
+        //            ModulesPermission = new List<RoleModulePermissions>
+        //            {
+        //                new RoleModulePermissions
+        //                {
+        //                    ModuleId = g.Key.ModuleId,
+        //                    ModuleName = g.Key.ModuleName,
+        //                    Permissions = g.Select(x => x.ModulePermission).ToList()
+        //                }
+        //            }
+        //        })
+        //        .ToList();
+
+        //    // Group modules for the same role together
+        //    var finalResult = groupedData
+        //        .GroupBy(x => new { x.RoleId, x.RoleName })
+        //        .Select(g => new ModulesByRolesPermissionsDto
+        //        {
+        //            RoleId = g.Key.RoleId,
+        //            RoleName = g.Key.RoleName,
+        //            ModulesPermission = g.SelectMany(x => x.ModulesPermission!).ToList()
+        //        })
+        //        .ToList();
+
+        //    return finalResult;
+        //}
+
+        public async Task<GenericResponseDto> UpdateAssignModulePermission(ApplicationModulesPermissionsUpdateDto permissions)
         {
-            var modulePermission = await _unitOfWork.ApplicationModulesPermissions.Get(permissions.ModulePermissionId);
-            if (modulePermission is null)
+            var modulePermission = await _unitOfWork.ApplicationModulesPermissions.GetAll(amp => amp.RoleId == permissions.RoleId);
+            if (!modulePermission.Any())
             {
-                return new GenericResponseDto("Permissions id supplied does not exisit.");
+                return new GenericResponseDto("Role supplied does not have any permissions assigned.");
             }
 
-            modulePermission.ModuleId = permissions.ModuleId;
-            modulePermission.RoleId = permissions.RoleId;
-            modulePermission.ModulePermission = permissions.ModulePermission;
+            if (permissions.ModulePermission == null || !permissions.ModulePermission.Any(mp =>!string.IsNullOrWhiteSpace(mp.ModuleId) && mp.Permissions != null && mp.Permissions.Any(p => !string.IsNullOrWhiteSpace(p) && p != "string")))
+            {
+                return new GenericResponseDto("Module permissions cannot be empty.");
+            }
 
+            _unitOfWork.ApplicationModulesPermissions.DeleteRange(modulePermission);
 
-            _unitOfWork.ApplicationModulesPermissions.Update(modulePermission);
+            foreach (var module in permissions.ModulePermission!)
+            {
+                foreach (var _permission in module.Permissions!)
+                {
+                    ApplicationModulesPermissions modulesPermissions = new ApplicationModulesPermissions(permissions.RoleId!, module.ModuleId!, _permission);
+                    _unitOfWork.ApplicationModulesPermissions.Insert(modulesPermissions);
+                }
+            }
+
             await _unitOfWork.Complete();
 
-            return new GenericResponseDto("Permission updated successfully.");
+            return new GenericResponseDto("Assigned Permissions updated successfully.");
 
         }
 
@@ -797,7 +890,7 @@ namespace Modules.Users.Application.UseCases
 
             foreach (var permission in values.PermissionName)
             {
-                ModulesPermissions modulesPermissions = new ModulesPermissions(values.ModuleId, permission);
+                ModulesPermissions modulesPermissions = ModulesPermissions.CreateUpdate(values.ModuleId, permission);
                 _unitOfWork.ModulesPermissions.Insert(modulesPermissions);
             }
 
@@ -823,9 +916,22 @@ namespace Modules.Users.Application.UseCases
         }
 
 
-        public Task<GenericResponseDto> UpdateModulesPermissions(ModulesPermissionsDto values)
+        public async Task<GenericResponseDto> UpdateModulesPermissions(ModulesPermissionsUpdateDto values)
         {
-            throw new NotImplementedException();
+            var modulePermission = await _unitOfWork.ModulesPermissions.Get(values.ModulesPermissionsId);
+            if (modulePermission is null)
+            {
+                return new GenericResponseDto("Modules Permissions id supplied does not exisit.");
+            }
+
+            modulePermission.ModuleId = values.ModuleId;
+            modulePermission.PermissionName = values.PermissionName;
+
+
+            _unitOfWork.ModulesPermissions.Update(modulePermission);
+            await _unitOfWork.Complete();
+
+            return new GenericResponseDto("Modules Permission updated successfully.");
         }
 
    

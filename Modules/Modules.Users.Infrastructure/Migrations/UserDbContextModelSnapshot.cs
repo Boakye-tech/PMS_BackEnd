@@ -463,11 +463,60 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasKey("ModuleId");
 
+                    b.HasIndex("ModuleName");
+
                     b.HasIndex("ModuleId", "ModuleName")
                         .IsUnique()
                         .HasFilter("[ModuleName] IS NOT NULL");
 
                     b.ToTable("ApplicationModules");
+
+                    b.HasData(
+                        new
+                        {
+                            ModuleId = "0983f651-ea9",
+                            ModuleName = "Cashier"
+                        },
+                        new
+                        {
+                            ModuleId = "1e5b4b1c-b5d",
+                            ModuleName = "Complaints"
+                        },
+                        new
+                        {
+                            ModuleId = "23e7ffbf-762",
+                            ModuleName = "Billing"
+                        },
+                        new
+                        {
+                            ModuleId = "421070d5-37b",
+                            ModuleName = "Users"
+                        },
+                        new
+                        {
+                            ModuleId = "53a24ec6-b42",
+                            ModuleName = "Property"
+                        },
+                        new
+                        {
+                            ModuleId = "9a421337-c47",
+                            ModuleName = "Facilities"
+                        },
+                        new
+                        {
+                            ModuleId = "a4a39f7a-bd6",
+                            ModuleName = "Legal"
+                        },
+                        new
+                        {
+                            ModuleId = "e63107bf-457",
+                            ModuleName = "Customers"
+                        },
+                        new
+                        {
+                            ModuleId = "e6f9be9e-a28",
+                            ModuleName = "Notification"
+                        });
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.ApplicationModulesPermissions", b =>
@@ -1028,9 +1077,6 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModulesPermissionsId"));
 
-                    b.Property<string>("ApplicationModulesModuleId")
-                        .HasColumnType("nvarchar(12)");
-
                     b.Property<string>("ModuleId")
                         .IsRequired()
                         .HasMaxLength(12)
@@ -1043,13 +1089,432 @@ namespace Modules.Users.Infrastructure.Migrations
 
                     b.HasKey("ModulesPermissionsId");
 
-
-                    b.HasIndex("ApplicationModulesModuleId");
-
                     b.HasIndex("ModuleId", "PermissionName")
                         .IsUnique();
 
                     b.ToTable("ModulesPermissions");
+
+                    b.HasData(
+                        new
+                        {
+                            ModulesPermissionsId = 1,
+                            ModuleId = "0983f651-ea9",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 2,
+                            ModuleId = "0983f651-ea9",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 3,
+                            ModuleId = "0983f651-ea9",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 4,
+                            ModuleId = "0983f651-ea9",
+                            PermissionName = "DELETE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 5,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 6,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 7,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 8,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "DELETE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 9,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "ACKNOWLEDGE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 10,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "DISPATCH"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 11,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "REVIEW"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 12,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "ASSIGN"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 13,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "RESOLVE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 14,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "REOPEN"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 15,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "CLOSE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 16,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "CANCEL"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 17,
+                            ModuleId = "1e5b4b1c-b5d",
+                            PermissionName = "INPROGRESS"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 18,
+                            ModuleId = "23e7ffbf-762",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 19,
+                            ModuleId = "23e7ffbf-762",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 20,
+                            ModuleId = "23e7ffbf-762",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 21,
+                            ModuleId = "23e7ffbf-762",
+                            PermissionName = "DELETE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 22,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 23,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 24,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 25,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "DELETE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 26,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "VERIFY"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 27,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "REJECT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 28,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "APPROVE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 29,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "DISAPPROVE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 30,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "ACTIVATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 31,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "DEACTIVATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 32,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "ASSIGNUSER"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 33,
+                            ModuleId = "421070d5-37b",
+                            PermissionName = "ASSIGNPERMISSION"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 34,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 35,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 36,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 37,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "DELETE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 38,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "STOPDEBIT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 39,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "STARTDEBIT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 40,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "ASSIGN"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 41,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "NEWLEASE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 42,
+                            ModuleId = "53a24ec6-b42",
+                            PermissionName = "RENEWLEASE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 43,
+                            ModuleId = "9a421337-c47",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 44,
+                            ModuleId = "9a421337-c47",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 45,
+                            ModuleId = "9a421337-c47",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 46,
+                            ModuleId = "9a421337-c47",
+                            PermissionName = "DELETE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 47,
+                            ModuleId = "a4a39f7a-bd6",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 48,
+                            ModuleId = "a4a39f7a-bd6",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 49,
+                            ModuleId = "a4a39f7a-bd6",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 50,
+                            ModuleId = "a4a39f7a-bd6",
+                            PermissionName = "DELETE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 51,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 52,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 53,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 54,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "DELETE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 55,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "STOPDEBIT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 56,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "STARTDEBIT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 57,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "SUBMITCOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 58,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "ACKNOWLEDGECOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 59,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "DISPATCHCOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 60,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "REVIEWCOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 61,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "ASSIGNCOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 62,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "RESOLVECOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 63,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "REOPENCOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 64,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "CLOSECOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 65,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "CANCELCOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 66,
+                            ModuleId = "e63107bf-457",
+                            PermissionName = "INPROGRESSCOMPLAINT"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 67,
+                            ModuleId = "e6f9be9e-a28",
+                            PermissionName = "CREATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 68,
+                            ModuleId = "e6f9be9e-a28",
+                            PermissionName = "READ"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 69,
+                            ModuleId = "e6f9be9e-a28",
+                            PermissionName = "UPDATE"
+                        },
+                        new
+                        {
+                            ModulesPermissionsId = 70,
+                            ModuleId = "e6f9be9e-a28",
+                            PermissionName = "DELETE"
+                        });
                 });
 
             modelBuilder.Entity("Modules.Users.Domain.Entities.StaffAccounts", b =>

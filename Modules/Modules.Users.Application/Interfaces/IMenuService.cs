@@ -49,6 +49,9 @@ namespace Modules.Users.Application.Interfaces
 
         Task<IEnumerable<UsersAndRolesReadDto>> GetListOfUsersAndRoles();
 
+
+
+        //back-end
         Task<IEnumerable<ApplicationModulesDto>> GetModules();
 
         Task<List<ModulesPermissionsReadDto>> GetModulesPermissions();
@@ -57,11 +60,10 @@ namespace Modules.Users.Application.Interfaces
         Task<ApplicationModulesDto> UpdateModules(ApplicationModulesDto appModules);
 
         Task<GenericResponseDto> AddModulesPermissions(ModulesPermissionsDto values);
-
-        Task<GenericResponseDto> UpdateModulesPermissions(ModulesPermissionsDto values);
+        Task<GenericResponseDto> UpdateModulesPermissions(ModulesPermissionsUpdateDto values);
 
         Task<GenericResponseDto> AssignModulePermission(ApplicationModulesPermissionsDto permissions);
-        Task<GenericResponseDto> UpdateModulePermission(ApplicationModulesPermissionsUpdateDto permissions);
+        Task<GenericResponseDto> UpdateAssignModulePermission(ApplicationModulesPermissionsUpdateDto permissions);
         Task<GenericResponseDto> DeleteModulePermission(int modulePermissionId);
 
         //Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId);

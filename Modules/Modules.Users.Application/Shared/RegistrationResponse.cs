@@ -14,9 +14,9 @@ namespace Modules.Users.Application.Shared
 
 	public record RegistrationSuccessResponse : BaseResponse
 	{
-        public required string UserId { get; set; }
+        //public required string UserId { get; set; }
 
-        public required string UserEmailAddress { get; set; }
+        //public required string UserEmailAddress { get; set; }
     }
 
     public record RegistrationErrorResponse : BaseResponse

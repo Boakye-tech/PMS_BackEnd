@@ -300,17 +300,6 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Returns a list of application modules
-        /// </summary>
-        [HttpGet]
-        [Route("GetApplicationModulesPermission")]
-        [AllowAnonymous]
-        public async Task<List<ModulesPermissionsReadDto>> GetModulesPermission()
-        {
-            return await _menuService.GetModulesPermissions();
-        }
-
-        /// <summary>
         /// Create a new application module
         /// </summary>
         [HttpPost]
@@ -319,17 +308,6 @@ namespace Modules.Users.Presentation.Controllers.v1
         public async Task<ActionResult> AddApplicationModules([FromBody] ApplicationModulesCreateDto values)
         {
             return Ok(await _menuService.AddModules(values));
-        }
-
-        /// <summary>
-        /// Create a new permission for an application module
-        /// </summary>
-        [HttpPost]
-        [Route("AddApplicationModulesPermissions")]
-        [AllowAnonymous]
-        public async Task<ActionResult> AddModulesPermissions([FromBody] ModulesPermissionsDto values)
-        {
-            return Ok(await _menuService.AddModulesPermissions(values));
         }
 
         /// <summary>
@@ -344,7 +322,40 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Assign list of permissions to a specific application module
+        /// Returns a list of application modules
+        /// </summary>
+        [HttpGet]
+        [Route("GetApplicationModulesPermission")]
+        [AllowAnonymous]
+        public async Task<List<ModulesPermissionsReadDto>> GetModulesPermission()
+        {
+            return await _menuService.GetModulesPermissions();
+        }
+
+        /// <summary>
+        /// Create a new permission for an application module
+        /// </summary>
+        [HttpPost]
+        [Route("AddApplicationModulesPermissions")]
+        [AllowAnonymous]
+        public async Task<ActionResult> AddModulesPermissions([FromBody] ModulesPermissionsDto values)
+        {
+            return Ok(await _menuService.AddModulesPermissions(values));
+        }
+
+        /// <summary>
+        /// Modifies an existing permission for an application module
+        /// </summary>
+        [HttpPut]
+        [Route("UpdateApplicationModulesPermissions")]
+        [AllowAnonymous]
+        public async Task<ActionResult> UpdateApplicationModulesPermissions([FromBody] ModulesPermissionsUpdateDto values)
+        {
+            return Ok(await _menuService.UpdateModulesPermissions(values));
+        }
+
+        /// <summary>
+        /// Assign list of modules permissions to a specific role
         /// </summary>
         [HttpPost]
         [Route("AssignModulePermission")]
@@ -358,9 +369,9 @@ namespace Modules.Users.Presentation.Controllers.v1
         /// Returns a list of assigned permissions to various modules for a specific user role
         /// </summary>
         [HttpGet]
-        [Route("GetAssignedModulesPermissions/{roleId}")]
+        [Route("GetAssignedModulesPermissions")]
         [AllowAnonymous]
-        public async Task<IEnumerable<ModulesByRolesPermissionsDto>> GetApplicationModulesPermissions(string roleId)
+        public async Task<IEnumerable<ModulesByRolesPermissionsDto>> GetApplicationModulesPermissions([FromQuery] string roleId)
         {
             return await _menuService.GetModulesPermissions(roleId);
         }
@@ -373,22 +384,8 @@ namespace Modules.Users.Presentation.Controllers.v1
         [AllowAnonymous]
         public async Task<ActionResult> UpdateAssignedModulePermission([FromBody] ApplicationModulesPermissionsUpdateDto values)
         {
-            return Ok(await _menuService.UpdateModulePermission(values));
+            return Ok(await _menuService.UpdateAssignModulePermission(values));
         }
-
-        /// <summary>
-        /// Updates existing permissions for an application module
-        /// </summary>
-        [HttpPost]
-        [Route("UpdateApplicationModulesPermissions")]
-        [AllowAnonymous]
-        public async Task<ActionResult> UpdateApplicationModulesPermissions([FromBody] ModulesPermissionsDto values)
-        {
-            return Ok(await _menuService.UpdateModulesPermissions(values));
-        }
-
-        #endregion
-
 
 
         /// <summary>
@@ -401,6 +398,8 @@ namespace Modules.Users.Presentation.Controllers.v1
         {
             return Ok(await _menuService.DeleteModulePermission(modulePermissionId));
         }
+
+        #endregion
 
 
         /// <summary>
