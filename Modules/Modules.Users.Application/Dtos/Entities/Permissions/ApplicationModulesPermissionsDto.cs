@@ -21,6 +21,9 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
         public string? RoleId { get; set; }
 
         public List<ModulePermissionsDto>? ModulePermission { get; set; }
+
+        [StringLength(50)]
+        public string? CreatedBy { get; set; }
     }
 
     public record ModulePermissionsDto
@@ -91,7 +94,7 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
         [StringLength(50)]
         public string? ModuleName { get; set; }
 
-        public Dictionary<string, bool>? Permissions { get; set; }
+        public Dictionary<string, bool>? PermissionName { get; set; }
     }
 
 
@@ -102,6 +105,9 @@ namespace Modules.Users.Application.Dtos.Entities.Permissions
         public string? RoleId { get; set; }
 
         public List<ModulePermissionsDto>? ModulePermission { get; set; }
+
+        [StringLength(50)]
+        public string? ModifiedBy { get; set; }
 
     }
 

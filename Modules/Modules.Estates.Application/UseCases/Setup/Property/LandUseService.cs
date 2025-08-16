@@ -109,26 +109,32 @@ public class LandUseService : ILandUseService
                 };
             }
 
-            var landUseInitial = await _unitOfWork.LandUse.Get(l => l.LandUseInitial == values.LandUseInitial);
-            if (landUseInitial != null)
+            if(!string.Equals(landUse.LandUseName, values.LandUseName, StringComparison.OrdinalIgnoreCase))
             {
-                return new ReturnResponsesDto
+                var landuseName = await _unitOfWork.LandUse.Get(l => l.LandUseName == values.LandUseName);
+                if (landuseName != null)
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Land Use Initial already exists." },
-                    SuccessResponse = null
-                };
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Land Use Name already exists." },
+                        SuccessResponse = null
+                    };
+                }
             }
 
-            var landuseName = await _unitOfWork.LandUse.Get(l => l.LandUseName == values.LandUseName);
-            if (landuseName != null)
+            if (!string.Equals(landUse.LandUseInitial, values.LandUseInitial, StringComparison.OrdinalIgnoreCase))
             {
-                return new ReturnResponsesDto
+                var landUseInitial = await _unitOfWork.LandUse.Get(l => l.LandUseInitial == values.LandUseInitial);
+                if (landUseInitial != null)
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Land Use Name already exists." },
-                    SuccessResponse = null
-                };
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Land Use Initial already exists." },
+                        SuccessResponse = null
+                    };
+                }
             }
 
             landUse.Update(values.LandUseId, values.LandUseInitial!, values.LandUseName!);

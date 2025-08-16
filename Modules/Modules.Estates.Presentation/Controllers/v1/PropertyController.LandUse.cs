@@ -152,10 +152,10 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             var userId = _userContextService.GetUserId();
 
-            if (!string.Equals(userId, values.ModifiedBy))
-            {
-                return Unauthorized();
-            }
+            //if (!string.Equals(userId, values.ModifiedBy))
+            //{
+            //    return Unauthorized();
+            //}
 
             var result = await _landUseService.UpdateLandUseAsync(values);
 

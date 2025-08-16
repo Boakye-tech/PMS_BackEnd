@@ -67,7 +67,8 @@ namespace Modules.Users.Application.Interfaces
         Task<GenericResponseDto> DeleteModulePermission(int modulePermissionId);
 
         //Task<IEnumerable<RoleModulesPermissionsDto>> GetModulesPermissions(string roleId);
-        Task<IEnumerable<ModulesByRolesPermissionsDto>> GetModulesPermissions(string roleId);
+        //Task<IEnumerable<ModulesByRolesPermissionsDto>> GetModulesPermissions(string roleId);
+        Task<IEnumerable<RoleModulePermissions>> GetModulesPermissions(string roleId);
 
     }
 }

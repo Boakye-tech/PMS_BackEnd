@@ -101,6 +101,18 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 };
             }
 
+            var Type = await _unitOfWork.Features.Get(at => at.Feature == values.Feature);
+            if (Type != null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = $"Feature name '{values.Feature}' already exists." },
+                    SuccessResponse = null
+                };
+            }
+
+
             TypeFeature.Update(values.FeaturesId, values.Feature);
             TypeFeature.ModifiedBy = values.ModifiedBy;
             TypeFeature.ModifiedOn = DateTime.Now;

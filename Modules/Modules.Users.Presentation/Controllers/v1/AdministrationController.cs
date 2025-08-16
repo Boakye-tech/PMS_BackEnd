@@ -371,7 +371,7 @@ namespace Modules.Users.Presentation.Controllers.v1
         [HttpGet]
         [Route("GetAssignedModulesPermissions")]
         [AllowAnonymous]
-        public async Task<IEnumerable<ModulesByRolesPermissionsDto>> GetApplicationModulesPermissions([FromQuery] string roleId)
+        public async Task<IEnumerable<RoleModulePermissions>> GetApplicationModulesPermissions([FromQuery] string roleId) //ModulesByRolesPermissionsDto
         {
             return await _menuService.GetModulesPermissions(roleId);
         }
