@@ -40,6 +40,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
 
     public record HouseCreateDto(
         int SchemeTypeId,
+        int PropertyTypeId,
         int LandUseId,
         int LandUseTypeId,
         int LocalityId,

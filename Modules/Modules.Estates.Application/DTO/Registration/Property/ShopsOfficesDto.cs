@@ -41,7 +41,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
     public record ShopOfficeCreateDto(
         //string PropertyNumber,
         //string PropertyType,
-
+        int PropertyTypeId,
         int LandUseId,
         int LandUseTypeId,
         int LocalityId,

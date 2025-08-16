@@ -104,6 +104,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 var (schemeType, schemeTypeError) = await ValidateEntity(() => _unitOfWork.SchemeTypes.Get(values.SchemeTypeId), "Scheme Id provided does not exist");
                 if (schemeTypeError != null) return schemeTypeError;
 
+                var (propertyType, propertyTypeError) = await ValidateEntity(() => _unitOfWork.PropertyType.Get(values.PropertyTypeId), "Property Type Id provided does nto exist");
+                if (propertyTypeError != null) return propertyTypeError;
+
                 var (landUse, landUseError) = await ValidateEntity(() => _unitOfWork.LandUse.Get(values.LandUseId), "Land Use Id provided does not exist");
                 if (landUseError != null) return landUseError;
 
@@ -174,7 +177,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
                     var propertyResult = PropertyMaster.CreateApartment
                        (
-                       values.SchemeTypeId, schemeType!.SchemeTypeName, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId,
+                       values.SchemeTypeId, schemeType!.SchemeTypeName, values.PropertyTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId,
                        landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
                        values.AllocationTypeId, allocationype!.AllocationTypeInitial, values.ApartmentCategoryId, values.ApartmentTypeId,
                        values.BlockTypeId, values.BlockSideId, values.BlockUnitId, blockUnit!.Unit, values.BlockNumberId, blockNumber!.BlockNumbers,
@@ -236,6 +239,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
         {
             try
             {
+                var (propertyType, propertyTypeError) = await ValidateEntity(() => _unitOfWork.PropertyType.Get(values.PropertyTypeId), "Property Type Id provided does nto exist");
+                if (propertyTypeError != null) return propertyTypeError;
+
                 var (landUse, landUseError) = await ValidateEntity(() => _unitOfWork.LandUse.Get(values.LandUseId), "Land Use Id provided does not exist");
                 if (landUseError != null) return landUseError;
 
@@ -308,7 +314,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 {
                     var propertyResult = PropertyMaster.CreatePlot
                         (
-                        values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
+                        values.PropertyTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
                         values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId, blockNumber!.BlockNumbers, plotNumber,values.PlotDimensionId, _dimensions, values.PlotTypeId,
                         values.PropertyHeightId, coordinates.Value, values.SitePlan, values.Cadastal, values.PropertyStatusId, values.Images,
                         false
@@ -367,6 +373,21 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
         {
             try
             {
+
+                //check if property type exist 
+                var _propertyType = await _unitOfWork.PropertyType.Get(values.PropertyTypeId);
+                if (_propertyType is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status400BadRequest,
+                            Message = "Property Type Id provided does not exist"
+                        }
+                    };
+                }
 
                 //check if land use exist and get land use initials
                 var _landUse = await _unitOfWork.LandUse.Get(values.LandUseId);
@@ -453,8 +474,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
 
                 var propertyResult = PropertyMaster.Create(
-                    //values.PropertyTypeId,
-                    0,
+                    values.PropertyTypeId,
                     values.LandUseId,
                     _landUse.LandUseInitial!,
                     values.LandUseTypeId,
@@ -730,6 +750,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
         public async Task<ReturnResponsesDto> CreateShopsOffice(ShopOfficeCreateDto values)
         {
+            var (propertyType, propertyTypeError) = await ValidateEntity(() => _unitOfWork.PropertyType.Get(values.PropertyTypeId), "Property Type Id provided does nto exist");
+            if (propertyTypeError != null) return propertyTypeError;
+
             var (landUse, landUseError) = await ValidateEntity(() => _unitOfWork.LandUse.Get(values.LandUseId), "Land Use Id provided does not exist");
             if (landUseError != null) return landUseError;
 
@@ -783,7 +806,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
             {
                 var propertyResult = PropertyMaster.CreateShopsOffices
                  (
-                 values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId,
+                 values.PropertyTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId,
                  locality!.LocalityInitial, values.SiteId, values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId,
                  blockNumber!.BlockNumbers, shopofficeNumber, values.RentalCategoryId, values.RentalTypeId, values.ShopOfficeTypeId,
                  coordinates.Value, values.PropertyStatusId, values.Images, false
@@ -828,6 +851,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
         public async Task<ReturnResponsesDto> CreateHouse(HouseCreateDto values)
         {
+            var (propertyType, propertyTypeError) = await ValidateEntity(() => _unitOfWork.PropertyType.Get(values.PropertyTypeId), "Property Type Id provided does nto exist");
+            if (propertyTypeError != null) return propertyTypeError;
+
             //check if land use exist and get land use initials
             var (landUse, landUseError) = await ValidateEntity(() => _unitOfWork.LandUse.Get(values.LandUseId), "Land Use Id provided does not exist");
             if (landUseError != null) return landUseError;
@@ -884,7 +910,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
             {
                 var propertyResult = PropertyMaster.CreateHouses
                  (
-                 values.SchemeTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId,
+                 values.PropertyTypeId, values.SchemeTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId,
                  locality!.LocalityInitial, values.SiteId, values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId,
                  blockNumber!.BlockNumbers, houseNumber, values.HouseCategoryId, values.HouseCategoryTypeId, values.HouseTypeId, values.PlotDimensionId, _dimensions,
                   values.PlotTypeId, coordinates.Value, values.PropertyStatusId, values.Images, false
@@ -928,6 +954,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
         public async Task<ReturnResponsesDto> CreateRentalHouse(RentalHouseCreateDto values)
         {
+            var (propertyType, propertyTypeError) = await ValidateEntity(() => _unitOfWork.PropertyType.Get(values.PropertyTypeId), "Property Type Id provided does nto exist");
+            if (propertyTypeError != null) return propertyTypeError;
+
             //check if land use exist and get land use initials
             var (landUse, landUseError) = await ValidateEntity(() => _unitOfWork.LandUse.Get(values.LandUseId), "Land Use Id provided does not exist");
             if (landUseError != null) return landUseError;
@@ -974,7 +1003,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
             {
                 var propertyResult = PropertyMaster.CreateRentalHouses
                  (
-                 values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId,
+                 values.PropertyTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId,
                  locality!.LocalityInitial, values.SiteId, values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId,
                  blockNumber!.BlockNumbers, rentalHouseNumber, values.HouseCategoryId, values.HouseCategoryTypeId, values.HouseTypeId,
                  coordinates.Value, values.PropertyStatusId, values.Images, false
@@ -1030,6 +1059,9 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                         Message = "Sorry the property number provided is not a large scale property."
                     }
                 };
+
+                var (propertyType, propertyTypeError) = await ValidateEntity(() => _unitOfWork.PropertyType.Get(values.PropertyTypeId), "Property Type Id provided does nto exist");
+                if (propertyTypeError != null) return propertyTypeError;
 
                 //check if mother plot number(large scale plot) exist
                 var (plot, plotError) = await ValidateEntity(() => _unitOfWork.PropertyMaster.Get(p => p.PropertyNumber!.Value == values.MotherPropertyNumber), "Large scale property number provided does not exist");
@@ -1112,7 +1144,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 {
                     var propertyResult = PropertyMaster.CreateLargeScale
                         (
-                        values.MotherPropertyNumber,values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
+                        values.MotherPropertyNumber, values.PropertyTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId, landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
                         values.AllocationTypeId, allocationtype!.AllocationTypeInitial, values.BlockNumberId, blockNumber!.BlockNumbers, plotNumber, values.PlotDimensionId, _dimensions,
                         values.PlotTypeId, values.PropertyHeightId, coordinates.Value, values.SitePlan, values.Cadastal, values.PropertyStatusId, values.Images,
                         false

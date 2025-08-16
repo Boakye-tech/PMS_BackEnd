@@ -42,6 +42,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
 
     public record PlotCreateDto(
         //string PropertyNumber,
+        int PropertyTypeId,
         int LandUseId,
         int LandUseTypeId,
         int LocalityId,

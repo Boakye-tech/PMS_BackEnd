@@ -253,7 +253,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LastRenewalStartDate")
+                    b.Property<DateTime>("LastRenewalExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastRenewalStartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LeaseExpiryDate")
@@ -688,6 +691,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PropertyStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("RentalCategoryId")

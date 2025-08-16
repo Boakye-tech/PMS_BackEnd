@@ -23,7 +23,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
 
         public required int LandUseTypeId { get; set; }
 
-        //public required int PropertyTypeId { get; set; }
+        public required int PropertyTypeId { get; set; }
 
         public required int LocalityId { get; set; }
 

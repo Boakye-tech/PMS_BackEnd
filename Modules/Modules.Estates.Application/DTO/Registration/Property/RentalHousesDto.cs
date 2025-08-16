@@ -44,6 +44,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
     );
 
     public record RentalHouseCreateDto(
+        int PropertyTypeId,
         int LandUseId,
         int LandUseTypeId,
         int LocalityId,

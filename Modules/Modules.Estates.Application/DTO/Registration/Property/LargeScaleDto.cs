@@ -14,6 +14,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
 {
     public record largeScaleCreateDto(
         string MotherPropertyNumber,
+        int PropertyTypeId,
         int LandUseId,
         int LandUseTypeId,
         int LocalityId,

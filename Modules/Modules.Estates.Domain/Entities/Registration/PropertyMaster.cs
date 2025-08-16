@@ -32,6 +32,8 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public PropertyNumber? PropertyNumber { get; private set; } = default;
 
+        public int PropertyTypeId { get; private set; }
+
         public int LocalityId { get; private set; }
 
         public int SiteId { get; private set; }
@@ -165,7 +167,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             // Create the entity
             var property = new PropertyMaster
             {
-                //PropertyTypeId = propertyTypeId,
+                PropertyTypeId = propertyTypeId,
                 LocalityId = localityId,
                 LandUseId = landUseId,
                 LandUseTypeId = landUseTypeId,
@@ -182,7 +184,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         }
 
 
-        public static Result<PropertyMaster> CreateApartment(int schemeTypeId, string schemeType, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,
+        public static Result<PropertyMaster> CreateApartment(int schemeTypeId, string schemeType, int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,
                                                              int siteId,int allocationTypeId,string allocationTypeInitial,int apartmentCategoryId,int apartmentTypeId,int blockTypeId,int blockSideId,int blockUnitId,
                                                              string blockUnit,int blockNumberId,string blockNumber,int floorNumberId,string roomNumber, PropertyCoordinates coordinates,
                                                              int propertyStatusId,List<string> images, bool isApartment = true)
@@ -211,6 +213,7 @@ namespace Modules.Estates.Domain.Entities.Registration
                 PropertyNumber = propertyNumberResult.Value,
 
                 SchemeTypeId = schemeTypeId,
+                PropertyTypeId = propertyTypeId,
                 LandUseId = landUseId,
                 LandUseTypeId = landUseTypeId,
                 LocalityId = localityId,
@@ -234,7 +237,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         }
 
 
-        public static Result<PropertyMaster> CreatePlot(int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,int siteId,
+        public static Result<PropertyMaster> CreatePlot(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,int siteId,
                                                         int allocationTypeId,string allocationTypeInitial,int blockNumberId, string blockNumber,string plotNumber,
                                                         int plotDimensionId,string plotDimension,int plotTypeId,int propertyHeightId,PropertyCoordinates coordinates,
                                                         string sitePlanNumber,string cadastalPlanNumber,int propertyStatusId,List<string> images,bool isApartment = false)
@@ -261,6 +264,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             var property = new PropertyMaster
             {
                 PropertyNumber = propertyNumberResult.Value,
+                PropertyTypeId = propertyTypeId,
                 LandUseId = landUseId,
                 LandUseTypeId = landUseTypeId,
                 LocalityId = localityId,
@@ -282,7 +286,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(property);
         }
 
-        public static Result<PropertyMaster> CreateShopsOffices(int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+        public static Result<PropertyMaster> CreateShopsOffices(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
                                                 int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string shopofficeNumber,
                                                 int rentalCategoryId, int rentalTypeId,int shopOfficeTypeId, PropertyCoordinates coordinates,
                                                 int propertyStatusId, List<string> images, bool isApartment = false)
@@ -307,6 +311,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             var property = new PropertyMaster
             {
                 PropertyNumber = propertyNumberResult.Value,
+                PropertyTypeId = propertyTypeId,
                 LandUseId = landUseId,
                 LandUseTypeId = landUseTypeId,
                 LocalityId = localityId,
@@ -326,7 +331,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(property);
         }
 
-        public static Result<PropertyMaster> CreateHouses(int SchemeTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+        public static Result<PropertyMaster> CreateHouses(int propertyTypeId, int SchemeTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
                                                           int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string houseNumber, int houseCategoryId, int houseCategoryTypeId,
                                                           int houseTypeId, int plotDimensionId, string plotDimension, int plotTypeId, PropertyCoordinates coordinates,int propertyStatusId, List<string> images, bool isApartment = false)
         {
@@ -353,6 +358,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             var property = new PropertyMaster
             {
                 PropertyNumber = propertyNumberResult.Value,
+                PropertyTypeId = propertyTypeId,
                 SchemeTypeId = SchemeTypeId,
                 LandUseId = landUseId,
                 LandUseTypeId = landUseTypeId,
@@ -376,7 +382,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         }
 
 
-        public static Result<PropertyMaster> CreateRentalHouses(int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+        public static Result<PropertyMaster> CreateRentalHouses(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
                                                                 int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string houseNumber, int houseCategoryId,
                                                                 int houseCategoryTypeId, int houseTypeId,  PropertyCoordinates coordinates, int propertyStatusId, List<string> images, bool isApartment = false)
         {
@@ -399,6 +405,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             var property = new PropertyMaster
             {
                 PropertyNumber = propertyNumberResult.Value,
+                PropertyTypeId = propertyTypeId,
                 LandUseId = landUseId,
                 LandUseTypeId = landUseTypeId,
                 LocalityId = localityId,
@@ -418,7 +425,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(property);
         }
 
-        public static Result<PropertyMaster> CreateLargeScale(string motherPropertyNumber, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+        public static Result<PropertyMaster> CreateLargeScale(string motherPropertyNumber, int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
                                                 int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string plotNumber,
                                                 int plotDimensionId, string plotDimension, int plotTypeId, int propertyHeightId, PropertyCoordinates coordinates,
                                                 string sitePlanNumber, string cadastalPlanNumber, int propertyStatusId, List<string> images, bool isApartment = false)
@@ -445,6 +452,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             var property = new PropertyMaster
             {
                 PropertyNumber = propertyNumberResult.Value,
+                PropertyTypeId = propertyTypeId,
                 LandUseId = landUseId,
                 LandUseTypeId = landUseTypeId,
                 LocalityId = localityId,
