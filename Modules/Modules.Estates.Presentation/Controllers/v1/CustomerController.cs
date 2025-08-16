@@ -30,14 +30,6 @@ namespace Modules.Estates.Presentation.Controllers.v1
     /// </summary>
     public partial class CustomerController : ControllerBase
     {
-        readonly ICustomerTypeService _customerTypeService;
-        readonly IGenderService _genderService;
-        readonly IIdentificationTypeService _identificationTypeService;
-        readonly INationalityService _nationalityService;
-        readonly IResidentTypeService _residentTypeService;
-        readonly ISocialMediaService _socialMediaService;
-        readonly ITitleService _titleService;
-        readonly IOwnershipTypeService _ownershipTypeService;
         readonly ICustomerMasterService _customerMasterService;
         readonly IUserContextService _userContextService;
         readonly IInterestExpressedService _interestExpressedService;
@@ -51,19 +43,10 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Presentation controller constructor to handledependency injection
         /// </summary>
-        public CustomerController(ICustomerTypeService customerTypeService, IGenderService genderService, IIdentificationTypeService identificationTypeService, INationalityService nationalityService, IResidentTypeService residentTypeService, ISocialMediaService socialMediaService,
-                                  ITitleService titleService, ICustomerMasterService customerMasterService, IOwnershipTypeService ownershipTypeService, IUserContextService userContextService, IInterestExpressedService interestExpressedService, IComplaintTypeService complaintTypeService,
+        public CustomerController(ICustomerMasterService customerMasterService, IUserContextService userContextService, IInterestExpressedService interestExpressedService, IComplaintTypeService complaintTypeService,
                                   INatureOfComplaintService natureOfComplaintService, IComplaintStatusesService complaintStatusesService, IComplaintMasterService complaintMasterServices, ICustomerServices customerServices)
         {
-            _customerTypeService = customerTypeService;
-            _genderService = genderService;
-            _identificationTypeService = identificationTypeService;
-            _nationalityService = nationalityService;
-            _residentTypeService = residentTypeService;
-            _socialMediaService = socialMediaService;
-            _titleService = titleService;
             _customerMasterService = customerMasterService;
-            _ownershipTypeService = ownershipTypeService;
             _userContextService = userContextService;
             _interestExpressedService = interestExpressedService;
             _complaintTypeService = complaintTypeService;
@@ -80,7 +63,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetCustomerTypes")]
-        public async Task<ActionResult<IEnumerable<CustomerTypeReadDto>>> GetCustomerTypes()
+        public async Task<ActionResult<IEnumerable<CustomerTypeReadDto>>> GetCustomerTypes([FromServices] ICustomerTypeService _customerTypeService)
         {
             return Ok(await _customerTypeService.GetCustomerTypeAsync());
         }
@@ -107,7 +90,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [Authorize(Policy = "Permission:Customers.CREATE")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CustomerTypeReadDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<CustomerTypeReadDto>> CreateCustomerType([FromBody] CustomerTypeCreateDto values)
+        public async Task<ActionResult<CustomerTypeReadDto>> CreateCustomerType([FromServices] ICustomerTypeService _customerTypeService, [FromBody] CustomerTypeCreateDto values)
         {
             try
             {
@@ -156,7 +139,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateCustomerType")]
         [Authorize(Policy = "Permission:Customers.UPDATE")] 
-        public async Task<ActionResult<CustomerTypeReadDto>> UpdateCustomerType([FromBody] CustomerTypeUpdateDto values)
+        public async Task<ActionResult<CustomerTypeReadDto>> UpdateCustomerType([FromServices] ICustomerTypeService _customerTypeService, [FromBody] CustomerTypeUpdateDto values)
         {
             try
             {
@@ -192,7 +175,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete("DeleteCustomerType/{customerTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteCustomerType(int customerTypeId)
+        public async Task<ActionResult> DeleteCustomerType([FromServices] ICustomerTypeService _customerTypeService, int customerTypeId)
         {
             try
             {
@@ -223,7 +206,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetGenders")]
-        public async Task<ActionResult<IEnumerable<GenderReadDto>>> GetGender()
+        public async Task<ActionResult<IEnumerable<GenderReadDto>>> GetGender([FromServices] IGenderService _genderService)
         {
             return Ok(await _genderService.GetGenderAsync());
         }
@@ -233,7 +216,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetGender/{value}")]
-        private async Task<ActionResult<GenderReadDto>> GetGender(string value)
+        private async Task<ActionResult<GenderReadDto>> GetGender([FromServices] IGenderService _genderService, string value)
         {
             return Ok(await _genderService.GetGenderAsync(value));
         }
@@ -243,7 +226,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetGender/{genderId}")]
-        public async Task<ActionResult<GenderReadDto>> GetGender(int genderId)
+        private async Task<ActionResult<GenderReadDto>> GetGender([FromServices] IGenderService _genderService, int genderId)
         {
             return Ok(await _genderService.GetGenderAsync(genderId));
         }
@@ -266,7 +249,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateGender")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult<GenderReadDto>> CreateGender([FromBody] GenderCreateDto values)
+        public async Task<ActionResult<GenderReadDto>> CreateGender([FromServices] IGenderService _genderService, [FromBody] GenderCreateDto values)
         {
             try
             {
@@ -303,7 +286,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateGender")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        public async Task<ActionResult<GenderReadDto>> UpdateGender([FromBody] GenderUpdateDto values)
+        public async Task<ActionResult<GenderReadDto>> UpdateGender([FromServices] IGenderService _genderService, [FromBody] GenderUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.modifiedBy))
@@ -319,7 +302,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete("DeleteGender/{genderId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteGender(int genderId)
+        public async Task<ActionResult> DeleteGender([FromServices] IGenderService _genderService, int genderId)
         {
             return Ok(await _genderService.DeleteGenderAsync(genderId));
         }
@@ -330,7 +313,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetIdentificationTypes")]
-        public async Task<ActionResult<IEnumerable<IdentificationTypeReadDto>>> GetIdentificationTypes()
+        public async Task<ActionResult<IEnumerable<IdentificationTypeReadDto>>> GetIdentificationTypes([FromServices] IIdentificationTypeService _identificationTypeService)
         {
             return Ok(await _identificationTypeService.GetIdentificationTypeAsync());
         }
@@ -354,7 +337,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateIdentificationType")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult<IdentificationTypeReadDto>> CreateIdentificationType([FromBody] IdentificationTypeCreateDto values)
+        public async Task<ActionResult<IdentificationTypeReadDto>> CreateIdentificationType([FromServices] IIdentificationTypeService _identificationTypeService, [FromBody] IdentificationTypeCreateDto values)
         {
             try
             {
@@ -390,7 +373,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateIdentificationType")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        public async Task<ActionResult<IdentificationTypeReadDto>> UpdateCustomerType([FromBody] IdentificationTypeUpdateDto values)
+        public async Task<ActionResult<IdentificationTypeReadDto>> UpdateCustomerType([FromServices] IIdentificationTypeService _identificationTypeService, [FromBody] IdentificationTypeUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.modifiedBy))
@@ -405,7 +388,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete("DeleteIdentificationType/{identificationTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteIdentificationType(int identificationTypeId)
+        public async Task<ActionResult> DeleteIdentificationType([FromServices] IIdentificationTypeService _identificationTypeService, int identificationTypeId)
         {
             return Ok(await _identificationTypeService.DeleteIdentificationTypeAsync(identificationTypeId));
         }
@@ -416,7 +399,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetNationality")]
-        public async Task<ActionResult<IEnumerable<NationalityReadDto>>> GetNationality()
+        public async Task<ActionResult<IEnumerable<NationalityReadDto>>> GetNationality([FromServices] INationalityService _nationalityService)
         {
             return Ok(await _nationalityService.GetNationalityAsync());
         }
@@ -439,7 +422,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateNationality")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult<NationalityReadDto>> CreateNationality([FromBody] NationalityCreateDto values)
+        public async Task<ActionResult<NationalityReadDto>> CreateNationality([FromServices] INationalityService _nationalityService, [FromBody] NationalityCreateDto values)
         {
             try
             {
@@ -474,7 +457,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateNationality")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        public async Task<ActionResult<NationalityReadDto>> UpdateNationality([FromBody] NationalityUpdateDto values)
+        public async Task<ActionResult<NationalityReadDto>> UpdateNationality([FromServices] INationalityService _nationalityService, [FromBody] NationalityUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.modifiedby))
@@ -489,7 +472,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete("DeleteNationality/{nationalityId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteNationality(int nationalityId)
+        public async Task<ActionResult> DeleteNationality([FromServices] INationalityService _nationalityService, int nationalityId)
         {
             return Ok(await _nationalityService.DeleteNationalityAsync(nationalityId));
         }
@@ -500,7 +483,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetResidentTypes")]
-        public async Task<ActionResult<IEnumerable<ResidentTypeReadDto>>> GetResidentTypes()
+        public async Task<ActionResult<IEnumerable<ResidentTypeReadDto>>> GetResidentTypes([FromServices] IResidentTypeService _residentTypeService)
         {
             return Ok(await _residentTypeService.GetResidentTypeAsync());
         }
@@ -523,7 +506,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateResidentType")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult<ResidentTypeReadDto>> CreateResidentType([FromBody] ResidentTypeCreateDto values)
+        public async Task<ActionResult<ResidentTypeReadDto>> CreateResidentType([FromServices] IResidentTypeService _residentTypeService, [FromBody] ResidentTypeCreateDto values)
         {
             try
             {
@@ -558,7 +541,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateResidentType")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        public async Task<ActionResult<ResidentTypeReadDto>> UpdateResidentType([FromBody] ResidentTypeUpdateDto values)
+        public async Task<ActionResult<ResidentTypeReadDto>> UpdateResidentType([FromServices] IResidentTypeService _residentTypeService, [FromBody] ResidentTypeUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.modifiedBy))
@@ -573,7 +556,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete("DeleteResidentType/{residentTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteResidentType(int residentTypeId)
+        public async Task<ActionResult> DeleteResidentType([FromServices] IResidentTypeService _residentTypeService, int residentTypeId)
         {
             return Ok(await _residentTypeService.DeleteResidentTypeAsync(residentTypeId));
         }
@@ -584,7 +567,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetSocialMedia")]
-        public async Task<ActionResult<IEnumerable<SocialMediaReadDto>>> GetSocialMedia()
+        public async Task<ActionResult<IEnumerable<SocialMediaReadDto>>> GetSocialMedia([FromServices] ISocialMediaService _socialMediaService)
         {
             return Ok(await _socialMediaService.GetSocialMediaAsync());
         }
@@ -595,7 +578,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("AddSocialMedia")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult<SocialMediaReadDto>> AddSocialMedia([FromBody] SocialMediaCreateDto values)
+        public async Task<ActionResult<SocialMediaReadDto>> AddSocialMedia([FromServices] ISocialMediaService _socialMediaService, [FromBody] SocialMediaCreateDto values)
         {
             try
             {
@@ -620,7 +603,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateSocialMedia")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        public async Task<ActionResult<SocialMediaReadDto>> UpdateSocialMedia([FromBody] SocialMediaUpdateDto values)
+        public async Task<ActionResult<SocialMediaReadDto>> UpdateSocialMedia([FromServices] ISocialMediaService _socialMediaService, [FromBody] SocialMediaUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.ModifiedBy))
@@ -635,7 +618,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete("DeleteSocialMedia/{socialMediaId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteSocialMedia(int socialMediaId)
+        public async Task<ActionResult> DeleteSocialMedia([FromServices] ISocialMediaService _socialMediaService, int socialMediaId)
         {
             return Ok(await _socialMediaService.DeleteSocialMediaAsync(socialMediaId));
         }
@@ -646,7 +629,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitles")]
-        public async Task<ActionResult<IEnumerable<TitleReadDto>>> GetTitles()
+        public async Task<ActionResult<IEnumerable<TitleReadDto>>> GetTitles([FromServices] ITitleService _titleService)
         {
             return Ok(await _titleService.GetTitleAsync());
         }
@@ -656,7 +639,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitle/{value}")]
-        private async Task<ActionResult<TitleReadDto>> GetTitle(string value)
+        private async Task<ActionResult<TitleReadDto>> GetTitle([FromServices] ITitleService _titleService, string value)
         {
             return Ok(await _titleService.GetTitleAsync(value));
         }
@@ -666,7 +649,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetTitles/{titleId}")]
-        public async Task<ActionResult<TitleReadDto>> GetTitleById(int titleId)
+        public async Task<ActionResult<TitleReadDto>> GetTitleById([FromServices] ITitleService _titleService, int titleId)
         {
             return Ok(await _titleService.GetTitleAsync(titleId));
         }
@@ -689,7 +672,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateTitle")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult<TitleReadDto>> CreateTitle([FromBody] TitleCreateDto values)
+        public async Task<ActionResult<TitleReadDto>> CreateTitle([FromServices] ITitleService _titleService, [FromBody] TitleCreateDto values)
         {
             try
             {
@@ -725,7 +708,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateTitle")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        public async Task<ActionResult<TitleReadDto>> UpdateTitle([FromBody] TitleUpdateDto values)
+        public async Task<ActionResult<TitleReadDto>> UpdateTitle([FromServices] ITitleService _titleService, [FromBody] TitleUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.modifiedby))
@@ -740,7 +723,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete("DeleteTitle/{titleId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteTitle(int titleId)
+        public async Task<ActionResult> DeleteTitle([FromServices] ITitleService _titleService, int titleId)
         {
             return Ok(await _titleService.DeleteTitleAsync(titleId));
         }
@@ -752,7 +735,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipTypes")]
-        public async Task<ActionResult<IEnumerable<OwnershipTypeReadDto>>> GetOwnershipTypes()
+        public async Task<ActionResult<IEnumerable<OwnershipTypeReadDto>>> GetOwnershipTypes([FromServices] IOwnershipTypeService _ownershipTypeService)
         {
             return Ok(await _ownershipTypeService.GetOwnershipTypeAsync());
         }
@@ -762,7 +745,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipTypes/{value}")]
-        private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipTypes(string value)
+        private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipTypes([FromServices] IOwnershipTypeService _ownershipTypeService, string value)
         {
             return Ok(await _ownershipTypeService.GetOwnershipTypeAsync(value));
         }
@@ -772,7 +755,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetOwnershipType/{ownershipTypeId}")]
-        private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipType(int ownershipTypeId)
+        private async Task<ActionResult<OwnershipTypeReadDto>> GetOwnershipType([FromServices] IOwnershipTypeService _ownershipTypeService, int ownershipTypeId)
         {
             return Ok(await _ownershipTypeService.GetOwnershipTypeAsync(ownershipTypeId));
         }
@@ -795,7 +778,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPost]
         [Route("CreateOwnershipType")]
         [Authorize(Policy = "Permission:Customers.CREATE")]
-        public async Task<ActionResult<OwnershipTypeReadDto>> CreateOwnershipType([FromBody] OwnershipTypeCreateDto values)
+        public async Task<ActionResult<OwnershipTypeReadDto>> CreateOwnershipType([FromServices] IOwnershipTypeService _ownershipTypeService, [FromBody] OwnershipTypeCreateDto values)
         {
             try
             {
@@ -831,7 +814,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpPut]
         [Route("UpdateOwnershipType")]
         [Authorize(Policy = "Permission:Customers.UPDATE")]
-        public async Task<ActionResult<OwnershipTypeReadDto>> UpdateOwnershipType([FromBody] OwnershipTypeUpdateDto values)
+        public async Task<ActionResult<OwnershipTypeReadDto>> UpdateOwnershipType([FromServices] IOwnershipTypeService _ownershipTypeService, [FromBody] OwnershipTypeUpdateDto values)
         {
             var userId = _userContextService.GetUserId();
             if (!string.Equals(userId, values.modifiedby))
@@ -846,7 +829,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpDelete("DeleteOwnershipType/{ownershipTypeId}")]
         [Authorize(Policy = "Permission:Customers.DELETE")]
-        public async Task<ActionResult> DeleteOwnershipType(int ownershipTypeId)
+        public async Task<ActionResult> DeleteOwnershipType([FromServices] IOwnershipTypeService _ownershipTypeService, int ownershipTypeId)
         {
             return Ok(await _ownershipTypeService.DeleteOwnershipTypeAsync(ownershipTypeId));
         }

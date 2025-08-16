@@ -26,14 +26,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
 {
     public class CustomerControllerTests
     {
-        private readonly Mock<ICustomerTypeService> _customerTypeServiceMock;
-        private readonly Mock<IGenderService> _genderServiceMock;
-        private readonly Mock<IIdentificationTypeService> _identificationTypeServiceMock;
-        private readonly Mock<INationalityService> _nationalityServiceMock;
-        private readonly Mock<IResidentTypeService> _residentTypeServiceMock;
-        private readonly Mock<ISocialMediaService> _socialMediaServiceMock;
-        private readonly Mock<ITitleService> _titleServiceMock;
-        private readonly Mock<IOwnershipTypeService> _ownershipTypeServiceMock;
+
         private readonly Mock<ICustomerMasterService> _customerMasterServiceMock;
         private readonly Mock<IUserContextService> _userContextServiceMock;
         private readonly Mock<IInterestExpressedService> _interestContextServiceMock;
@@ -49,14 +42,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
 
         public CustomerControllerTests()
         {
-            _customerTypeServiceMock = new Mock<ICustomerTypeService>();
-            _genderServiceMock = new Mock<IGenderService>();
-            _identificationTypeServiceMock = new Mock<IIdentificationTypeService>();
-            _nationalityServiceMock = new Mock<INationalityService>();
-            _residentTypeServiceMock = new Mock<IResidentTypeService>();
-            _socialMediaServiceMock = new Mock<ISocialMediaService>();
-            _titleServiceMock = new Mock<ITitleService>();
-            _ownershipTypeServiceMock = new Mock<IOwnershipTypeService>();
+
             _customerMasterServiceMock = new Mock<ICustomerMasterService>();
             _userContextServiceMock = new Mock<IUserContextService>();
             _interestContextServiceMock = new Mock<IInterestExpressedService>();
@@ -69,15 +55,7 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             _customerServicesMock = new Mock<ICustomerServices>();
 
             _controller = new CustomerController(
-                _customerTypeServiceMock.Object,
-                _genderServiceMock.Object,
-                _identificationTypeServiceMock.Object,
-                _nationalityServiceMock.Object,
-                _residentTypeServiceMock.Object,
-                _socialMediaServiceMock.Object,
-                _titleServiceMock.Object,
                 _customerMasterServiceMock.Object,
-                _ownershipTypeServiceMock.Object,
                 _userContextServiceMock.Object,
                 _interestContextServiceMock.Object,
                 _complaintTypeServiceMock.Object,
@@ -97,11 +75,14 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             {
                 new CustomerTypeReadDto(customerTypeId: 1, customerTypes: "RESIDENT")
             };
+
+            var _customerTypeServiceMock = new Mock<ICustomerTypeService>();
+
             _customerTypeServiceMock.Setup(x => x.GetCustomerTypeAsync())
                 .ReturnsAsync(expectedTypes);
 
             // Act
-            var result = await _controller.GetCustomerTypes();
+            var result = await _controller.GetCustomerTypes(_customerTypeServiceMock.Object);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -127,12 +108,14 @@ namespace Modules.Estates.UnitTest.PresentationLayer
                 customerTypes: "RESIDENT"
             );
 
+            var _customerTypeServiceMock = new Mock<ICustomerTypeService>();
+
             _userContextServiceMock.Setup(x => x.GetUserId()).Returns(userId);
             _customerTypeServiceMock.Setup(x => x.AddCustomerTypeAsync(createDto))
                 .ReturnsAsync(expectedResponse);
 
             // Act
-            var result = await _controller.CreateCustomerType(createDto);
+            var result = await _controller.CreateCustomerType(_customerTypeServiceMock.Object, createDto);
 
             // Assert
             var okResult = Assert.IsType<ObjectResult>(result.Result);
@@ -149,11 +132,14 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             {
                 new GenderReadDto(genderId: 1, genderType: "MALE" )
             };
+
+            var _genderServiceMock = new Mock<IGenderService>();
+
             _genderServiceMock.Setup(x => x.GetGenderAsync())
                 .ReturnsAsync(expectedGenders);
 
             // Act
-            var result = await _controller.GetGender();
+            var result = await _controller.GetGender(_genderServiceMock.Object);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -174,10 +160,12 @@ namespace Modules.Estates.UnitTest.PresentationLayer
                 createdBy: "differentUser"
             );
 
+            var _identificationTypeServiceMock = new Mock<IIdentificationTypeService>();
+
             _userContextServiceMock.Setup(x => x.GetUserId()).Returns(userId);
 
             // Act
-            var result = await _controller.CreateIdentificationType(createDto);
+            var result = await _controller.CreateIdentificationType(_identificationTypeServiceMock.Object, createDto);
 
             // Assert
             Assert.IsType<UnauthorizedResult>(result.Result);
@@ -202,12 +190,14 @@ namespace Modules.Estates.UnitTest.PresentationLayer
                 nationalities: "GHANAIAN"
             );
 
+            var _nationalityServiceMock = new Mock<INationalityService>();
+
             _userContextServiceMock.Setup(x => x.GetUserId()).Returns(userId);
             _nationalityServiceMock.Setup(x => x.UpdateNationalityAsync(updateDto))
                 .ReturnsAsync(expectedResponse);
 
             // Act
-            var result = await _controller.UpdateNationality(updateDto);
+            var result = await _controller.UpdateNationality(_nationalityServiceMock.Object, updateDto);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -222,11 +212,14 @@ namespace Modules.Estates.UnitTest.PresentationLayer
             // Arrange
             var titleId = 1;
             var expectedResponse = "Deleted successfully";
+
+            var _titleServiceMock = new Mock<ITitleService>();
+
             _titleServiceMock.Setup(x => x.DeleteTitleAsync(titleId))
                 .ReturnsAsync(expectedResponse);
 
             // Act
-            var result = await _controller.DeleteTitle(titleId);
+            var result = await _controller.DeleteTitle(_titleServiceMock.Object, titleId);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);

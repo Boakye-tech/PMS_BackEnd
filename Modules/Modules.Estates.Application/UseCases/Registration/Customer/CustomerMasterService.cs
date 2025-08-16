@@ -229,12 +229,12 @@ namespace Modules.Estates.Application.UseCases.Registration.Customer
             switch (imageCount)
             {
                 case 1:
-                    c_imageOne = values.IdentificationImages![0];
+                    c_imageOne = values.ContactPerson!.ContactPerson_IdentificationImages![0];
                     break;
 
                 case 2:
-                    c_imageOne = values.IdentificationImages![0];
-                    c_imageTwo = values.IdentificationImages![1];
+                    c_imageOne = values.ContactPerson!.ContactPerson_IdentificationImages![0];
+                    c_imageTwo = values.ContactPerson!.ContactPerson_IdentificationImages![1];
                     break;
             }
 
@@ -351,6 +351,21 @@ namespace Modules.Estates.Application.UseCases.Registration.Customer
                 };
             }
 
+
+            if (values.Expatriate!.ResidentPermitExpiryDate!.GetValueOrDefault().Date < values.Expatriate!.ResidentPermitDateIssued!.GetValueOrDefault().Date)
+            {
+                return new CustomerRegistrationResponseDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new BaseResponseDto
+                    {
+                        StatusCode = 400,
+                        StatusMessage = "Date of Expiry cannot be earlier than Date of Issue."
+                    }
+                };
+            }
+
+
             string _imageOne = string.Empty; string _imageTwo = string.Empty; string _imageThree = string.Empty; string _imageFour = string.Empty; string _imageFive = string.Empty;
             string c_imageOne = string.Empty; string c_imageTwo = string.Empty;
             int imageCount;
@@ -393,12 +408,12 @@ namespace Modules.Estates.Application.UseCases.Registration.Customer
             switch (imageCount)
             {
                 case 1:
-                    c_imageOne = values.IdentificationImages![0];
+                    c_imageOne = values.NonResident!.ContactPerson_IdentificationImages![0];
                     break;
 
                 case 2:
-                    c_imageOne = values.IdentificationImages![0];
-                    c_imageTwo = values.IdentificationImages![1];
+                    c_imageOne = values.NonResident!.ContactPerson_IdentificationImages![0];
+                    c_imageTwo = values.NonResident!.ContactPerson_IdentificationImages![1];
                     break;
             }
 
@@ -579,12 +594,12 @@ namespace Modules.Estates.Application.UseCases.Registration.Customer
             switch (imageCount)
             {
                 case 1:
-                    c_imageOne = values.IdentificationImages![0];
+                    c_imageOne = values.NonResident!.ContactPerson_IdentificationImages![0];
                     break;
 
                 case 2:
-                    c_imageOne = values.IdentificationImages![0];
-                    c_imageTwo = values.IdentificationImages![1];
+                    c_imageOne = values.NonResident!.ContactPerson_IdentificationImages![0];
+                    c_imageTwo = values.NonResident!.ContactPerson_IdentificationImages![1];
                     break;
             }
 
@@ -859,12 +874,12 @@ namespace Modules.Estates.Application.UseCases.Registration.Customer
             switch (imageCount)
             {
                 case 1:
-                    c_imageOne = values.IdentificationImages![0];
+                    c_imageOne = values.NonResident!.ContactPerson_IdentificationImages![0];
                     break;
 
                 case 2:
-                    c_imageOne = values.IdentificationImages![0];
-                    c_imageTwo = values.IdentificationImages![1];
+                    c_imageOne = values.NonResident!.ContactPerson_IdentificationImages![0];
+                    c_imageTwo = values.NonResident!.ContactPerson_IdentificationImages![1];
                     break;
             }
 

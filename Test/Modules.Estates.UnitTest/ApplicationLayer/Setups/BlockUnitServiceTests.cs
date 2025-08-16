@@ -285,7 +285,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
 			// Assert
 			Assert.False(result.IsSuccess);
 			Assert.Equal(StatusCodes.Status400BadRequest, result.ErrorResponse!.Code);
-			Assert.Equal("Block Unit name cannot be empty.", result.ErrorResponse.Message);
+			Assert.Equal("Block Unit cannot be empty.", result.ErrorResponse.Message);
 			_unitOfWorkMock.Verify(x => x.BlockUnit.Insert(It.IsAny<BlockUnit>()), Times.Never);
 			_unitOfWorkMock.Verify(x => x.Complete(), Times.Never);
 		}
