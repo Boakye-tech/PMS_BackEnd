@@ -11,6 +11,7 @@
 
 
 using System.Text.Json;
+using Modules.Estates.Domain.Entities.Registration.ViewModels;
 
 namespace Modules.Estates.Infrastructure;
 
@@ -101,6 +102,11 @@ public class ApplicationDbContext : ModuleDbContext
     public DbSet<PropertyLeaseDetails> PropertyLeaseDetails { get; set; }
     public DbSet<ActivityTransactions> ActivityTransactions { get; set; }
 
+    //17 August, 2025 --add property master view
+    public DbSet<PropertyMasterView> PropertyMasterView { get; set; }
+
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -111,6 +117,8 @@ public class ApplicationDbContext : ModuleDbContext
 
         modelBuilder.Entity<PropertyMaster>(builder =>
         {
+            // Owned Types
+
             builder.OwnsOne(p => p.PropertyNumber, owned =>
             {
                 owned.Property(pm => pm.Value)
@@ -131,6 +139,7 @@ public class ApplicationDbContext : ModuleDbContext
                 owned.Property(p => p.Acreage2)
                      .HasColumnName("PlotAcreage2")
                      .IsRequired();
+
             });
 
 
@@ -150,6 +159,41 @@ public class ApplicationDbContext : ModuleDbContext
                 owned.Property(p => p.TermInYears).HasColumnName("LeaseTermInYears");
                 owned.Property(p => p.ExpiryDate).HasColumnName("LeaseExpiryDate");
             });
+
+            // Relationships (FKs + Navs)
+            builder.HasOne(pm => pm.PropertyType)
+                   .WithMany()
+                   .HasForeignKey(pm => pm.PropertyTypeId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(pm => pm.LandUse)
+                   .WithMany()
+                   .HasForeignKey(pm => pm.LandUseId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(pm => pm.LandUseType)
+                   .WithMany()
+                   .HasForeignKey(pm => pm.LandUseTypeId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property<int?>("PlotDimensionId").HasColumnName("PlotDimensionId"); // shadow FK
+
+            builder.HasOne(pm => pm.PlotDimension)
+                   .WithMany()
+                   .HasForeignKey("PlotDimensionId")
+                   .HasPrincipalKey(d => d.PlotDimensionId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(pm => pm.Types)
+                   .WithMany()
+                   .HasForeignKey(pm => pm.TypeId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(pm => pm.Customer)
+                   .WithMany()
+                   .HasForeignKey(pm => pm.CustomerCode)
+                   .HasPrincipalKey(d => d.CustomerCode)
+                   .OnDelete(DeleteBehavior.Restrict);
         });
 
 
@@ -194,6 +238,10 @@ public class ApplicationDbContext : ModuleDbContext
             .HasIndex(at => new { at.PropertyNumber, at.CustomerCode, at.ActivityId, at.ActivityTypeId, at.ActivityDate })
             .IsUnique(true);
 
+
+        modelBuilder.Entity<PropertyMasterView>()
+            .HasIndex(pmv => pmv.PropertyNumber)
+            .IsUnique(true);
 
         //modelBuilder.Entity<ApartmentTypes>
 

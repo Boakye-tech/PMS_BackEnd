@@ -11,6 +11,8 @@
 //  **************************************************/
 
 
+using Modules.Estates.Domain.Entities.Registration.ViewModels;
+
 namespace Modules.Estates.Application.Interfaces.Management.Property
 {
     public interface IPropertyServices
@@ -34,6 +36,8 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
         //Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values);
 
         Task<List<CustomerToAssignListDto>> GetCustomersToAssign(string? search, string? locality, int pageNumber, int pageSize);
+
+        Task<PropertyMasterView> GetPropertyMasterDetails(string propertyNumber);
 
     }
 }

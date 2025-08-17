@@ -8,7 +8,7 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
+//--AGGREGATE ROOT (D.D.D)---//
 
 //Employ Builder or Factory Pattern.
 //This pattern is used because we want to use our domain entity directly to encapsulate the
@@ -33,83 +33,100 @@ namespace Modules.Estates.Domain.Entities.Registration
         public PropertyNumber? PropertyNumber { get; private set; } = default;
 
         public int PropertyTypeId { get; private set; }
+        public virtual PropertyType? PropertyType { get; private set; }
 
         public int LocalityId { get; private set; }
+        public virtual Locality? Locality { get; private set; }
 
         public int SiteId { get; private set; }
+        public virtual Sites? Site { get; private set; }
 
         public int LandUseId { get; private set; }
+        public virtual LandUse? LandUse { get; private set; }
 
         public int LandUseTypeId { get; private set; }
+        public virtual LandUseType? LandUseType { get; private set; }
 
         public int AllocationTypeId { get; private set; }
+        public virtual AllocationType? AllocationType { get; private set; }
 
         public int PlotTypeId { get; private set; }
+        public virtual PlotType? PlotType { get; private set; }
+
+        //public int PlotDimensionId { get; private set; }
+        public virtual PlotDimension? PlotDimension { get; private set; }
 
         public PlotSize? PlotSize { get; private set; }
 
         public int SchemeTypeId { get; private set; }
+        public virtual SchemeType? SchemeType { get; private set; }
 
         public int ApartmentCategoryId { get; private set; }
+        public virtual ApartmentCategory? ApartmentCategory { get; private set; }
 
         public int ApartmentTypeId { get; private set; }
+        public virtual ApartmentTypes? ApartmentType { get; private set; }
 
         public int BlockTypeId { get; private set; }
+        public virtual BlockTypes? BlockType { get; private set; }
 
         public int BlockSideId { get; private set; }
+        public virtual BlockSides? BlockSide { get; private set; }
 
         public int BlockUnitId { get; private set; }
+        public virtual BlockUnit? BlockUnit { get; private set; }
 
         public int BlockNumberId { get; private set; }
+        public virtual BlockNumber? BlockNumber { get; private set; }
 
         [StringLength(5)]
-        public string? Number { get; private set; } //(string? PlotNumber and or string RoomNumber)
+        public string? Number { get; private set; }
 
         public PropertyCoordinates? Coordinates { get; private set; }
 
         public LeasePeriod? Lease { get; private set; }
 
         public int PropertyStatusId { get; private set; }
+        public virtual PropertyStatus? PropertyStatus { get; private set; }
 
         public string[]? Images { get; private set; }
 
         public string? CustomerCode { get; private set; }
-
-        // Navigation property for CustomerMaster
-        //public virtual CustomerMaster? CustomerMaster { get; private set; }
+        public virtual CustomerMaster? Customer { get; private set; }
 
         public double CostPrice { get; private set; }
 
         public double SellingPrice { get; private set; }
 
         public int CurrencyId { get; private set; }
+        public virtual CurrencyExchangeRate? Currency { get; private set; }
 
         public int RentalCategoryId { get; private set; }
+        public virtual RentalCategory? RentalCategory { get; private set; }
 
         public int RentalTypeId { get; private set; }
+        public virtual RentalType? RentalType { get; private set; }
 
         public int TypeId { get; private set; }
+        public virtual Types? Types { get; private set; }
 
         public int TotalNumberOfRooms { get; private set; }
-
         public int RoomsOccupied { get; private set; }
 
         public string? RoomSize { get; private set; }
 
         public int PropertyHeightId { get; private set; }
+        public virtual PropertyHeight? PropertyHeight { get; private set; }
 
         public int FloorNumberId { get; private set; }
+        public virtual FloorNumbering? FloorNumber { get; private set; }
 
         public DateTime RightOfEntry { get; private set; }
-
         public DateTime DateOfTenancy { get; private set; }
-
         public DateTime DateOfConstruction { get; private set; }
-
         public DateTime DateTransferedToHos { get; private set; }
 
         public int DebtorType { get; private set; }
-
         public int GroupNumber { get; private set; }
 
         [StringLength(75)]

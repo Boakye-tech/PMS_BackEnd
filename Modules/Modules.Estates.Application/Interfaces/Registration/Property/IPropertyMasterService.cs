@@ -22,6 +22,8 @@ namespace Modules.Estates.Application.Interfaces.Registration.Property
 
         Task<List<largeScaleListDto>> GetLargeScaleListForRegistration();
 
+        Task<PropertyMasterReadDto> GetPropertyDetails(string propertyNumber);
+
         Task<ReturnResponsesDto> CreateProperty(PropertyMasterCreatePlotDto values);//
 
         Task<ReturnResponsesDto> CreateApartment(ApartmentCreateDto values);

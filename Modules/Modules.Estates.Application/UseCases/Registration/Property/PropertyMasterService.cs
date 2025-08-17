@@ -1280,9 +1280,128 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
             };
         }
 
+        public async Task<PropertyMasterReadDto> GetPropertyDetails(string propertyNumber)
+        {
+            //throw new NotImplementedException();
 
+            string _propertyNumber = HttpUtility.UrlDecode(propertyNumber);
 
+            var properties = await _unitOfWork.PropertyMaster.GetQueryable()
+                .Where(a => a.PropertyNumber!.Value.Contains(_propertyNumber))   
+                .Include(a => a.LandUse)
+                .Include(a => a.LandUseType)
+                .Include(a => a.Locality)
+                .Include(a => a.AllocationType)
+                .Include(a => a.Customer)
+                .Include(a => a.PropertyType)
+                .Include(a => a.Site)
+                .Include(a => a.PropertyStatus)
+                .Include(a => a.ApartmentCategory)
+                .Include(a => a.ApartmentType)
+                .Include(a => a.SchemeType)
+                .Include(a => a.BlockNumber)
+                .Include(a => a.BlockType)
+                .Include(a => a.BlockUnit)
+                .Include(a => a.BlockSide)
+                .Include(a => a.PlotType)
+                .Include(a => a.PropertyHeight)
+                .Include(a => a.PlotDimension)
+                .Include(a => a.RentalCategory)
+                .Include(a => a.RentalType)
+                .Include(a => a.Types)
+                .OrderByDescending(a => a.PropertyMasterId)
+                .Select(a => new PropertyMasterReadDto(
+                    a.PropertyMasterId,
+                    a.PropertyNumber!.Value,
+                    a.PropertyTypeId,
+                    a.PropertyType!.PropertyTypeName,
+                    a.LocalityId,
+                    a.Locality!.LocalityName,
+                    a.SiteId,
+                    a.Site!.SiteName,
+                    a.LandUseId,
+                    a.LandUse!.LandUseName,
+                    a.LandUseTypeId,
+                    a.LandUseType!.LandUseTypeName,
+                    a.AllocationTypeId,
+                    a.AllocationType!.AllocationTypes,
+                    a.BlockNumberId,
+                    a.BlockNumber!.BlockNumbers,
+                    a.PlotSize!.Acreage,
+                    a.Lease!.TermInYears,
+                    a.RoomSize,
+                    a.PropertyStatusId,
+                    a.PropertyStatus!.PropertyStatusName,
+                    a.ApartmentCategoryId,
+                    a.ApartmentCategory!.ApartmentCategoryName,
+                    a.ApartmentTypeId,
+                    a.ApartmentType!.ApartmentType,
+                    a.SchemeTypeId,
+                    a.SchemeType!.SchemeTypeName,
+                    a.BlockTypeId,
+                    a.BlockType!.BlockType,
+                    a.BlockUnitId,
+                    a.BlockUnit!.Unit,
+                    a.BlockSideId,
+                    a.BlockSide!.Side,
+                    a.Lease!.CommencementDate,
+                    a.Lease!.ExpiryDate,
+                    a.CustomerCode,
+                    string.Concat(a.Customer!.OtherNames, a.Customer.SurName, a.Customer.CompanyName),
+                    a.Coordinates!.CoordinateOne,
+                    a.Coordinates!.CoordinateTwo,
+                    a.Coordinates!.CoordinateThree,
+                    a.Coordinates!.CoordinateFour,
+                    a.Coordinates!.CoordinateFive,
+                    a.Coordinates!.CoordinateSix,
+                    a.IsDeleted,
+                    a.CreatedOn,
+                    a.CreatedBy,
+                    a.ModifiedOn,
+                    a.ModifiedBy,
+                    a.DeletedOn,
+                    a.DeletedBy,
+                    a.ApprovedOn,
+                    a.ApprovedBy,
+                    a.Images,
+                    a.Number,
+                    a.RentalCategoryId,
+                    a.RentalCategory!.RentalCategories,
+                    a.RentalTypeId,
+                    a.RentalType!.RentalTypes,
+                    a.TypeId,
+                    a.Types!.Code,
+                    a.Types.TypeName,
+                    a.CadastralPlanNumber,
+                    a.Comments,
+                    a.CostPrice,
+                    a.CurrencyId,
+                    a.DebtorType,
+                    a.FloorNumberId,
+                    a.GroupNumber,
+                    a.MotherPropertyNumber,
+                    a.RightOfEntry,
+                    a.RoomsOccupied,
+                    a.SellingPrice,
+                    a.SitePlanNumber,
+                    a.TotalNumberOfRooms,
+                    a.OldPropertyNumber,
+                    a.PlotTypeId,
+                    a.PlotType!.PlotTypes,
+                    a.PropertyHeightId,
+                    a.PropertyHeight!.PropertyHeights,
+                    a.DateOfConstruction,
+                    a.DateOfTenancy,
+                    a.DateTransferedToHos,
+                    a.PlotSize.Acreage2,
+                    a.PlotSize.DimensionId,
+                    a.PlotDimension!.PlotDimensions
+                ))
+                .FirstOrDefaultAsync();
 
+            return properties!;
+
+        }
     }
 }
 

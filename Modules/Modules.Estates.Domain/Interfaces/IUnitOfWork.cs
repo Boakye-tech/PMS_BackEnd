@@ -98,6 +98,9 @@ public interface IUnitOfWork : IDisposable
     IPropertyLeaseDetailsRepository PropertyLeaseDetails { get; }
     IActivityTransactionsRepository ActivityTransactions { get; }
 
+    //17 August, 2025
+    IPropertyMasterViewRepository PropertyMasterView { get; }
+
     Task<int> Complete();
 }
 

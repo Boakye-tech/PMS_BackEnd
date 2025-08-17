@@ -58,7 +58,7 @@ namespace Modules.Estates.Application.DTO.Registration.Property
         string RoomNumberTo,
         string RoomSize,
         int TotalRooms,
-        DateTime DateOfConstruction,
+        DateTime? DateOfConstruction,
         //int RoomsOccupied,
         //DateTime DateOfTenancy,
         //decimal CostOfConstruction,

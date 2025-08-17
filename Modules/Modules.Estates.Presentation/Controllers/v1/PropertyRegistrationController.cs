@@ -18,6 +18,38 @@ namespace Modules.Estates.Presentation.Controllers.v1
 {
     public partial class PropertyController : ControllerBase
     {
+
+        /// <summary>
+        /// Returns the details of a property based on the property number
+        /// </summary>
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [Route("GetPropertyDetails")]
+        private async Task<ActionResult> GetPropertyDetails([FromQuery] string propertyNumber)
+        {
+            if (string.IsNullOrWhiteSpace(propertyNumber))
+                return BadRequest("Property number is required.");
+
+            var result = await _propertyMasterService.GetPropertyDetails(propertyNumber);
+            return result is null ? NotFound() : Ok(result);
+        }
+
+        /// <summary>
+        /// Returns the details of a property based on the property number
+        /// </summary>
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [Route("GetPropertyMasterDetails")]
+        public async Task<ActionResult> GetPropertyMasterDetails([FromQuery] string propertyNumber)
+        {
+            if (string.IsNullOrWhiteSpace(propertyNumber))
+                return BadRequest("Property number is required.");
+
+            var result = await _propertyServices.GetPropertyMasterDetails(propertyNumber);
+            return result is null ? NotFound() : Ok(result);
+        }
+
+
         /// <summary>
         /// Returns the acreage based one either the plot dimension or plot dimension id
         /// </summary>

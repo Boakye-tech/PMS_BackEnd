@@ -11,6 +11,8 @@
 //  **************************************************/
 
 
+using Modules.Estates.Domain.Entities.Registration.ViewModels;
+
 namespace Modules.Estates.Application.UseCases.Management.Property
 {
 	public class PropertyServices: IPropertyServices
@@ -163,6 +165,13 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             return result;
         }
 
+        public async Task<PropertyMasterView> GetPropertyMasterDetails(string propertyNumber)
+        {
+            //throw new NotImplementedException();
+
+            var results = await _unitOfWork.PropertyMasterView.Get(p => p.PropertyNumber == propertyNumber)!;
+            return results!;
+        }
 
         public async Task<ReturnResponsesDto> StartDebitAsync(StopDebitRequestDto values)
         {

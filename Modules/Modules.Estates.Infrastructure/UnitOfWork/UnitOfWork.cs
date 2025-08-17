@@ -117,6 +117,8 @@ public class UnitOfWork: IUnitOfWork
         PropertyLeaseDetails = new PropertyLeaseDetailsRepository(_dbContext);
 
         ActivityTransactions = new ActivityTransactionsRepository(_dbContext);
+
+        PropertyMasterView = new PropertyMasterViewRepository(dbContext);
     }
 
 
@@ -226,6 +228,8 @@ public class UnitOfWork: IUnitOfWork
     public IPropertyLeaseDetailsRepository PropertyLeaseDetails { get; private set; }
     public IActivityTransactionsRepository ActivityTransactions { get; private set; }
 
+    //August 17 '25
+    public IPropertyMasterViewRepository PropertyMasterView { get; private set; }
 
 
     public Task<int> Complete()
