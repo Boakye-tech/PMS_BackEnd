@@ -10,8 +10,11 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Modules.Estates.Domain.Entities.Registration.ViewModels
 {
+    [NotMapped]
     public class PropertyMasterView
     {
         [Key]
@@ -40,6 +43,10 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
         public string? BlockNumbers { get; set; }
 
         public decimal? PlotAcreage { get; set; }
+        public decimal? PlotAcreage2 { get; set; }
+        public int? PlotDimensionId { get; set; }
+        public string? PlotDimensions { get; set; }
+
         public int? LeaseTermInYears { get; set; }
         public string? RoomSize { get; set; }
 
@@ -69,6 +76,7 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
 
         public string? CustomerCode { get; set; }
         public string? CustomerName { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public string? CoordinateOne { get; set; }
         public string? CoordinateTwo { get; set; }
@@ -76,17 +84,6 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
         public string? CoordinateFour { get; set; }
         public string? CoordinateFive { get; set; }
         public string? CoordinateSix { get; set; }
-
-        public bool? IsDeleted { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? ModifiedOn { get; set; }
-        public string? ModifiedBy { get; set; }
-        public DateTime? DeletedOn { get; set; }
-        public string? DeletedBy { get; set; }
-        public DateTime? ApprovedOn { get; set; }
-        public string? ApprovedBy { get; set; }
 
         public string[]? Images { get; set; }
         public string? Number { get; set; }
@@ -106,6 +103,8 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
 
         public double? CostPrice { get; set; }
         public int? CurrencyId { get; set; }
+        public string? CurrencyInitial { get; set; }
+        public string? CurrencyName { get; set; }
 
         public int? DebtorType { get; set; }
 
@@ -116,6 +115,7 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
         public int? RoomsOccupied { get; set; }
 
         public double? SellingPrice { get; set; }
+        public double? RentalFee { get; set; }
         public string? SitePlanNumber { get; set; }
         public int? TotalNumberOfRooms { get; set; }
         public string? OldPropertyNumber { get; set; }
@@ -130,9 +130,19 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
         public DateTime? DateOfTenancy { get; set; }
         public DateTime? DateTransferedToHos { get; set; }
 
-        public decimal? PlotAcreage2 { get; set; }
-        public int? PlotDimensionId { get; set; }
-        public string? PlotDimensions { get; set; }
+        public bool? StopDebit { get; set; }
+
+        //public bool? IsDeleted { get; set; }
+
+        //public DateTime? CreatedOn { get; set; }
+        public string? CreatedBy { get; set; }
+        //public DateTime? ModifiedOn { get; set; }
+        //public string? ModifiedBy { get; set; }
+        //public DateTime? DeletedOn { get; set; }
+        //public string? DeletedBy { get; set; }
+        //public DateTime? ApprovedOn { get; set; }
+        public string? ApprovedBy { get; set; }
+
     }
 
 }

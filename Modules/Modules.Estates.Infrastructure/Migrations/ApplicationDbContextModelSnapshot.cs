@@ -625,7 +625,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CustomerCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("DateOfConstruction")
                         .HasColumnType("datetime2");
@@ -684,6 +684,11 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
 
+                    b.Property<int?>("PlotDimensionId")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("int")
+                        .HasColumnName("PlotDimensionId");
+
                     b.Property<int>("PlotTypeId")
                         .HasColumnType("int");
 
@@ -698,6 +703,9 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<int>("RentalCategoryId")
                         .HasColumnType("int");
+
+                    b.Property<double>("RentalFee")
+                        .HasColumnType("float");
 
                     b.Property<int>("RentalTypeId")
                         .HasColumnType("int");
@@ -732,7 +740,331 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasKey("PropertyMasterId");
 
+                    b.HasIndex("AllocationTypeId");
+
+                    b.HasIndex("ApartmentCategoryId");
+
+                    b.HasIndex("ApartmentTypeId");
+
+                    b.HasIndex("BlockNumberId");
+
+                    b.HasIndex("BlockSideId");
+
+                    b.HasIndex("BlockTypeId");
+
+                    b.HasIndex("BlockUnitId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("CustomerCode");
+
+                    b.HasIndex("FloorNumberId");
+
+                    b.HasIndex("LandUseId");
+
+                    b.HasIndex("LandUseTypeId");
+
+                    b.HasIndex("LocalityId");
+
+                    b.HasIndex("PlotDimensionId");
+
+                    b.HasIndex("PlotTypeId");
+
+                    b.HasIndex("PropertyHeightId");
+
+                    b.HasIndex("PropertyStatusId");
+
+                    b.HasIndex("PropertyTypeId");
+
+                    b.HasIndex("RentalCategoryId");
+
+                    b.HasIndex("RentalTypeId");
+
+                    b.HasIndex("SchemeTypeId");
+
+                    b.HasIndex("SiteId");
+
+                    b.HasIndex("TypeId");
+
                     b.ToTable("PropertyMaster", "est");
+                });
+
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Registration.ViewModels.PropertyMasterView", b =>
+                {
+                    b.Property<int>("PropertyMasterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyMasterId"));
+
+                    b.Property<int?>("AllocationTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AllocationTypes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ApartmentCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApartmentCategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApartmentType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ApartmentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ApprovedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("BlockNumberId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BlockNumbers")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("BlockSideId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BlockType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("BlockTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BlockUnitId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CadastralPlanNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CommencementDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoordinateFive")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoordinateFour")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoordinateOne")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoordinateSix")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoordinateThree")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoordinateTwo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("CostPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CurrencyInitial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrencyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateOfConstruction")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateOfTenancy")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateTransferedToHos")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DebtorType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("FloorNumberId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("GroupNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Images")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("LandUseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LandUseName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("LandUseTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LandUseTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LeaseExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LeaseTermInYears")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LocalityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LocalityName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MotherPropertyNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldPropertyNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("PlotAcreage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("PlotAcreage2")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("PlotDimensionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlotDimensions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PlotTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlotTypes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PropertyHeightId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyHeights")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PropertyNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("PropertyStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyStatusName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PropertyTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RentalCategories")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RentalCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RentalTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RentalTypes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RightOfEntry")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RoomSize")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RoomsOccupied")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SchemeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SchemeTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("SellingPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Side")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SiteName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SitePlanNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("StopDebit")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("TotalNumberOfRooms")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PropertyMasterId");
+
+                    b.HasIndex("PropertyNumber")
+                        .IsUnique()
+                        .HasFilter("[PropertyNumber] IS NOT NULL");
+
+                    b.ToTable("PropertyMasterView", "est");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.CurrencyExchangeRate", b =>
@@ -5490,6 +5822,143 @@ namespace Modules.Estates.Infrastructure.Migrations
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Registration.PropertyMaster", b =>
                 {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.AllocationType", "AllocationType")
+                        .WithMany()
+                        .HasForeignKey("AllocationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentCategory", "ApartmentCategory")
+                        .WithMany()
+                        .HasForeignKey("ApartmentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentTypes", "ApartmentType")
+                        .WithMany()
+                        .HasForeignKey("ApartmentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.BlockNumber", "BlockNumber")
+                        .WithMany()
+                        .HasForeignKey("BlockNumberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.BlockSides", "BlockSide")
+                        .WithMany()
+                        .HasForeignKey("BlockSideId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.BlockTypes", "BlockType")
+                        .WithMany()
+                        .HasForeignKey("BlockTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.BlockUnit", "BlockUnit")
+                        .WithMany()
+                        .HasForeignKey("BlockUnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.CurrencyExchangeRate", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Registration.CustomerMaster", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerCode")
+                        .HasPrincipalKey("CustomerCode")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.FloorNumbering", "FloorNumber")
+                        .WithMany()
+                        .HasForeignKey("FloorNumberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.LandUse", "LandUse")
+                        .WithMany()
+                        .HasForeignKey("LandUseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.LandUseType", "LandUseType")
+                        .WithMany()
+                        .HasForeignKey("LandUseTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Locality", "Locality")
+                        .WithMany()
+                        .HasForeignKey("LocalityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PlotDimension", "PlotDimension")
+                        .WithMany()
+                        .HasForeignKey("PlotDimensionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PlotType", "PlotType")
+                        .WithMany()
+                        .HasForeignKey("PlotTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PropertyHeight", "PropertyHeight")
+                        .WithMany()
+                        .HasForeignKey("PropertyHeightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PropertyStatus", "PropertyStatus")
+                        .WithMany()
+                        .HasForeignKey("PropertyStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PropertyType", "PropertyType")
+                        .WithMany()
+                        .HasForeignKey("PropertyTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.RentalCategory", "RentalCategory")
+                        .WithMany()
+                        .HasForeignKey("RentalCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.RentalType", "RentalType")
+                        .WithMany()
+                        .HasForeignKey("RentalTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.SchemeType", "SchemeType")
+                        .WithMany()
+                        .HasForeignKey("SchemeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Sites", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Types", "Types")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.OwnsOne("Modules.Estates.Domain.ValueObjects.Property.LeasePeriod", "Lease", b1 =>
                         {
                             b1.Property<int>("PropertyMasterId")
@@ -5529,6 +5998,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                                 .HasColumnName("PlotAcreage2");
 
                             b1.Property<int>("DimensionId")
+                                .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("int")
                                 .HasColumnName("PlotDimensionId");
 
@@ -5607,13 +6077,59 @@ namespace Modules.Estates.Infrastructure.Migrations
                                 .HasForeignKey("PropertyMasterId");
                         });
 
+                    b.Navigation("AllocationType");
+
+                    b.Navigation("ApartmentCategory");
+
+                    b.Navigation("ApartmentType");
+
+                    b.Navigation("BlockNumber");
+
+                    b.Navigation("BlockSide");
+
+                    b.Navigation("BlockType");
+
+                    b.Navigation("BlockUnit");
+
                     b.Navigation("Coordinates");
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("FloorNumber");
+
+                    b.Navigation("LandUse");
+
+                    b.Navigation("LandUseType");
 
                     b.Navigation("Lease");
 
+                    b.Navigation("Locality");
+
+                    b.Navigation("PlotDimension");
+
                     b.Navigation("PlotSize");
 
+                    b.Navigation("PlotType");
+
+                    b.Navigation("PropertyHeight");
+
                     b.Navigation("PropertyNumber");
+
+                    b.Navigation("PropertyStatus");
+
+                    b.Navigation("PropertyType");
+
+                    b.Navigation("RentalCategory");
+
+                    b.Navigation("RentalType");
+
+                    b.Navigation("SchemeType");
+
+                    b.Navigation("Site");
+
+                    b.Navigation("Types");
                 });
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.ActivityType", b =>

@@ -217,8 +217,8 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
                 return new ReturnResponsesDto
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto
+                    IsSuccess = true,
+                    SuccessResponse = new SuccessResponseDto
                     {
                         Code = StatusCodes.Status200OK,
                         Message = $"Start debit applied to property number '{values.PropertyNumber}' successfully."
@@ -233,7 +233,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                     IsSuccess = false,
                     ErrorResponse = new ErrorResponseDto
                     {
-                        Code = StatusCodes.Status200OK,
+                        Code = StatusCodes.Status500InternalServerError,
                         Message = ex.Message ?? ex.InnerException!.Message
                     }
                 };
@@ -296,8 +296,8 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
                 return new ReturnResponsesDto
                 {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto
+                    IsSuccess = true,
+                    SuccessResponse = new SuccessResponseDto
                     {
                         Code = StatusCodes.Status200OK,
                         Message = $"Stop debit applied to property number '{values.PropertyNumber}' successfully."
@@ -313,7 +313,7 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                     IsSuccess = false,
                     ErrorResponse = new ErrorResponseDto
                     {
-                        Code = StatusCodes.Status200OK,
+                        Code = StatusCodes.Status500InternalServerError,
                         Message = ex.Message ?? ex.InnerException!.Message
                     }
                 };

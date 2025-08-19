@@ -172,12 +172,13 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                     roomNumberList = GenerateRangeStrings(values.RoomNumberFrom, values.RoomNumberTo);
                 }
 
+                string _schemetype = "HOS";
                 foreach (var roomNumber in roomNumberList)
                 {
 
                     var propertyResult = PropertyMaster.CreateApartment
                        (
-                       values.SchemeTypeId, schemeType!.SchemeTypeName, values.PropertyTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId,
+                       values.SchemeTypeId, _schemetype, values.PropertyTypeId, values.LandUseId, landUse!.LandUseInitial!, values.LandUseTypeId,
                        landUseType!.LandUseTypeInitial!, values.LocalityId, locality!.LocalityInitial, values.SiteId,
                        values.AllocationTypeId, allocationype!.AllocationTypeInitial, values.ApartmentCategoryId, values.ApartmentTypeId,
                        values.BlockTypeId, values.BlockSideId, values.BlockUnitId, blockUnit!.Unit, values.BlockNumberId, blockNumber!.BlockNumbers,

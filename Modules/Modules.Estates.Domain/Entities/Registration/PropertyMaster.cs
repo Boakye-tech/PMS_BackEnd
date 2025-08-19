@@ -98,6 +98,8 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public double SellingPrice { get; private set; }
 
+        public double RentalFee { get; private set; }
+
         public int CurrencyId { get; private set; }
         public virtual CurrencyExchangeRate? Currency { get; private set; }
 
@@ -304,9 +306,9 @@ namespace Modules.Estates.Domain.Entities.Registration
         }
 
         public static Result<PropertyMaster> CreateShopsOffices(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
-                                                int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string shopofficeNumber,
-                                                int rentalCategoryId, int rentalTypeId,int shopOfficeTypeId, PropertyCoordinates coordinates,
-                                                int propertyStatusId, List<string> images, bool isApartment = false)
+                                                                int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string shopofficeNumber,
+                                                                int rentalCategoryId, int rentalTypeId,int shopOfficeTypeId, PropertyCoordinates coordinates,
+                                                                int propertyStatusId, List<string> images, bool isApartment = false)
         {
             // Create value objects
             var propertyNumberResult = PropertyNumber.Create(
