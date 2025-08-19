@@ -581,10 +581,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("AllocationTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ApartmentCategoryId")
+                    b.Property<int?>("ApartmentCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ApartmentTypeId")
+                    b.Property<int?>("ApartmentTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("ApprovedBy")
@@ -593,16 +593,16 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("ApprovedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("BlockNumberId")
+                    b.Property<int?>("BlockNumberId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BlockSideId")
+                    b.Property<int?>("BlockSideId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BlockTypeId")
+                    b.Property<int?>("BlockTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BlockUnitId")
+                    b.Property<int?>("BlockUnitId")
                         .HasColumnType("int");
 
                     b.Property<string>("CadastralPlanNumber")
@@ -621,7 +621,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CurrencyId")
+                    b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<string>("CustomerCode")
@@ -645,7 +645,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FloorNumberId")
+                    b.Property<int?>("FloorNumberId")
                         .HasColumnType("int");
 
                     b.Property<int>("GroupNumber")
@@ -689,25 +689,25 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("PlotDimensionId");
 
-                    b.Property<int>("PlotTypeId")
+                    b.Property<int?>("PlotTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PropertyHeightId")
+                    b.Property<int?>("PropertyHeightId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PropertyStatusId")
+                    b.Property<int?>("PropertyStatusId")
                         .HasColumnType("int");
 
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RentalCategoryId")
+                    b.Property<int?>("RentalCategoryId")
                         .HasColumnType("int");
 
                     b.Property<double>("RentalFee")
                         .HasColumnType("float");
 
-                    b.Property<int>("RentalTypeId")
+                    b.Property<int?>("RentalTypeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RightOfEntry")
@@ -719,13 +719,13 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("RoomsOccupied")
                         .HasColumnType("int");
 
-                    b.Property<int>("SchemeTypeId")
+                    b.Property<int?>("SchemeTypeId")
                         .HasColumnType("int");
 
                     b.Property<double>("SellingPrice")
                         .HasColumnType("float");
 
-                    b.Property<int>("SiteId")
+                    b.Property<int?>("SiteId")
                         .HasColumnType("int");
 
                     b.Property<string>("SitePlanNumber")
@@ -735,7 +735,7 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int>("TotalNumberOfRooms")
                         .HasColumnType("int");
 
-                    b.Property<int>("TypeId")
+                    b.Property<int?>("TypeId")
                         .HasColumnType("int");
 
                     b.HasKey("PropertyMasterId");
@@ -818,9 +818,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<string>("ApprovedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ApprovedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("BlockNumberId")
                         .HasColumnType("int");
 
@@ -875,9 +872,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("CurrencyId")
                         .HasColumnType("int");
 
@@ -905,12 +899,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int?>("DebtorType")
                         .HasColumnType("int");
 
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("FloorNumberId")
                         .HasColumnType("int");
 
@@ -919,9 +907,6 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<string>("Images")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int?>("LandUseId")
                         .HasColumnType("int");
@@ -947,12 +932,6 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<string>("LocalityName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("MotherPropertyNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -960,6 +939,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OldPropertyNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PlotAcreage")
@@ -1006,6 +988,9 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<int?>("RentalCategoryId")
                         .HasColumnType("int");
+
+                    b.Property<double?>("RentalFee")
+                        .HasColumnType("float");
 
                     b.Property<int?>("RentalTypeId")
                         .HasColumnType("int");
@@ -5831,44 +5816,31 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentCategory", "ApartmentCategory")
                         .WithMany()
                         .HasForeignKey("ApartmentCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.ApartmentTypes", "ApartmentType")
                         .WithMany()
-                        .HasForeignKey("ApartmentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApartmentTypeId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.BlockNumber", "BlockNumber")
                         .WithMany()
-                        .HasForeignKey("BlockNumberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BlockNumberId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.BlockSides", "BlockSide")
                         .WithMany()
-                        .HasForeignKey("BlockSideId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BlockSideId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.BlockTypes", "BlockType")
                         .WithMany()
-                        .HasForeignKey("BlockTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BlockTypeId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.BlockUnit", "BlockUnit")
                         .WithMany()
-                        .HasForeignKey("BlockUnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BlockUnitId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.CurrencyExchangeRate", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CurrencyId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Registration.CustomerMaster", "Customer")
                         .WithMany()
@@ -5878,9 +5850,7 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.FloorNumbering", "FloorNumber")
                         .WithMany()
-                        .HasForeignKey("FloorNumberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FloorNumberId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.LandUse", "LandUse")
                         .WithMany()
@@ -5907,21 +5877,15 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PlotType", "PlotType")
                         .WithMany()
-                        .HasForeignKey("PlotTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlotTypeId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PropertyHeight", "PropertyHeight")
                         .WithMany()
-                        .HasForeignKey("PropertyHeightId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PropertyHeightId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PropertyStatus", "PropertyStatus")
                         .WithMany()
-                        .HasForeignKey("PropertyStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PropertyStatusId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.PropertyType", "PropertyType")
                         .WithMany()
@@ -5931,33 +5895,24 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.RentalCategory", "RentalCategory")
                         .WithMany()
-                        .HasForeignKey("RentalCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RentalCategoryId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.RentalType", "RentalType")
                         .WithMany()
-                        .HasForeignKey("RentalTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RentalTypeId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.SchemeType", "SchemeType")
                         .WithMany()
-                        .HasForeignKey("SchemeTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SchemeTypeId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Sites", "Site")
                         .WithMany()
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SiteId");
 
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.Types", "Types")
                         .WithMany()
                         .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("Modules.Estates.Domain.ValueObjects.Property.LeasePeriod", "Lease", b1 =>
                         {

@@ -194,6 +194,14 @@ public class ApplicationDbContext : ModuleDbContext
                    .HasForeignKey(pm => pm.CustomerCode)
                    .HasPrincipalKey(d => d.CustomerCode)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PropertyMaster>()
+                   .HasOne(p => p.ApartmentCategory)
+                   .WithMany()
+                   .HasForeignKey(p => p.ApartmentCategoryId)
+                   .OnDelete(DeleteBehavior.Restrict)   // avoid cascades
+                   .IsRequired(false);                  // allow NULLs
+
         });
 
 

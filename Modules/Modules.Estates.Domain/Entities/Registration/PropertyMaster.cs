@@ -38,7 +38,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         public int LocalityId { get; private set; }
         public virtual Locality? Locality { get; private set; }
 
-        public int SiteId { get; private set; }
+        public int? SiteId { get; private set; }
         public virtual Sites? Site { get; private set; }
 
         public int LandUseId { get; private set; }
@@ -50,7 +50,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         public int AllocationTypeId { get; private set; }
         public virtual AllocationType? AllocationType { get; private set; }
 
-        public int PlotTypeId { get; private set; }
+        public int? PlotTypeId { get; private set; }
         public virtual PlotType? PlotType { get; private set; }
 
         //public int PlotDimensionId { get; private set; }
@@ -58,25 +58,25 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public PlotSize? PlotSize { get; private set; }
 
-        public int SchemeTypeId { get; private set; }
+        public int? SchemeTypeId { get; private set; }
         public virtual SchemeType? SchemeType { get; private set; }
 
-        public int ApartmentCategoryId { get; private set; }
+        public int? ApartmentCategoryId { get; private set; }
         public virtual ApartmentCategory? ApartmentCategory { get; private set; }
 
-        public int ApartmentTypeId { get; private set; }
+        public int? ApartmentTypeId { get; private set; }
         public virtual ApartmentTypes? ApartmentType { get; private set; }
 
-        public int BlockTypeId { get; private set; }
+        public int? BlockTypeId { get; private set; }
         public virtual BlockTypes? BlockType { get; private set; }
 
-        public int BlockSideId { get; private set; }
+        public int? BlockSideId { get; private set; }
         public virtual BlockSides? BlockSide { get; private set; }
 
-        public int BlockUnitId { get; private set; }
+        public int? BlockUnitId { get; private set; }
         public virtual BlockUnit? BlockUnit { get; private set; }
 
-        public int BlockNumberId { get; private set; }
+        public int? BlockNumberId { get; private set; }
         public virtual BlockNumber? BlockNumber { get; private set; }
 
         [StringLength(5)]
@@ -86,7 +86,7 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public LeasePeriod? Lease { get; private set; }
 
-        public int PropertyStatusId { get; private set; }
+        public int? PropertyStatusId { get; private set; }
         public virtual PropertyStatus? PropertyStatus { get; private set; }
 
         public string[]? Images { get; private set; }
@@ -100,16 +100,16 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public double RentalFee { get; private set; }
 
-        public int CurrencyId { get; private set; }
+        public int? CurrencyId { get; private set; }
         public virtual CurrencyExchangeRate? Currency { get; private set; }
 
-        public int RentalCategoryId { get; private set; }
+        public int? RentalCategoryId { get; private set; }
         public virtual RentalCategory? RentalCategory { get; private set; }
 
-        public int RentalTypeId { get; private set; }
+        public int? RentalTypeId { get; private set; }
         public virtual RentalType? RentalType { get; private set; }
 
-        public int TypeId { get; private set; }
+        public int? TypeId { get; private set; }
         public virtual Types? Types { get; private set; }
 
         public int TotalNumberOfRooms { get; private set; }
@@ -117,10 +117,10 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public string? RoomSize { get; private set; }
 
-        public int PropertyHeightId { get; private set; }
+        public int? PropertyHeightId { get; private set; }
         public virtual PropertyHeight? PropertyHeight { get; private set; }
 
-        public int FloorNumberId { get; private set; }
+        public int? FloorNumberId { get; private set; }
         public virtual FloorNumbering? FloorNumber { get; private set; }
 
         public DateTime RightOfEntry { get; private set; }
@@ -204,7 +204,7 @@ namespace Modules.Estates.Domain.Entities.Registration
 
 
         public static Result<PropertyMaster> CreateApartment(int schemeTypeId, string schemeType, int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,
-                                                             int siteId,int allocationTypeId,string allocationTypeInitial,int apartmentCategoryId,int apartmentTypeId,int blockTypeId,int blockSideId,int blockUnitId,
+                                                             int? siteId,int allocationTypeId,string allocationTypeInitial,int apartmentCategoryId,int apartmentTypeId,int blockTypeId,int blockSideId,int blockUnitId,
                                                              string blockUnit,int blockNumberId,string blockNumber,int floorNumberId,string roomNumber, PropertyCoordinates coordinates,
                                                              int propertyStatusId,List<string> images, bool isApartment = true)
         {
@@ -225,6 +225,8 @@ namespace Modules.Estates.Domain.Entities.Registration
 
             if (schemeType != landUseTypeInitial)
                 return Result<PropertyMaster>.Failure("The scheme type does not correspond to the land use type.");
+
+            if (siteId == 0) { siteId = null!; }
 
             // Create the entity
             var property = new PropertyMaster
@@ -256,7 +258,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         }
 
 
-        public static Result<PropertyMaster> CreatePlot(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,int siteId,
+        public static Result<PropertyMaster> CreatePlot(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial,int? siteId,
                                                         int allocationTypeId,string allocationTypeInitial,int blockNumberId, string blockNumber,string plotNumber,
                                                         int plotDimensionId,string plotDimension,int plotTypeId,int propertyHeightId,PropertyCoordinates coordinates,
                                                         string sitePlanNumber,string cadastalPlanNumber,int propertyStatusId,List<string> images,bool isApartment = false)
@@ -279,6 +281,8 @@ namespace Modules.Estates.Domain.Entities.Registration
             if (!plotSizeResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(plotSizeResult.Error);
 
+            if (siteId == 0) { siteId = null!; }
+
             // Create the entity
             var property = new PropertyMaster
             {
@@ -299,13 +303,14 @@ namespace Modules.Estates.Domain.Entities.Registration
                 CadastralPlanNumber = cadastalPlanNumber,
                 Images = images.ToArray(),
                 PropertyStatusId = propertyStatusId,
+                //ApartmentCategoryId = 0,
                 IsDeleted = false
             };
 
             return Result<PropertyMaster>.Success(property);
         }
 
-        public static Result<PropertyMaster> CreateShopsOffices(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+        public static Result<PropertyMaster> CreateShopsOffices(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int? siteId,
                                                                 int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string shopofficeNumber,
                                                                 int rentalCategoryId, int rentalTypeId,int shopOfficeTypeId, PropertyCoordinates coordinates,
                                                                 int propertyStatusId, List<string> images, bool isApartment = false)
@@ -324,7 +329,8 @@ namespace Modules.Estates.Domain.Entities.Registration
             if (!propertyNumberResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
 
-           
+            if (siteId == 0) { siteId = null!; }
+                
 
             // Create the entity
             var property = new PropertyMaster
@@ -350,7 +356,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(property);
         }
 
-        public static Result<PropertyMaster> CreateHouses(int propertyTypeId, int SchemeTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+        public static Result<PropertyMaster> CreateHouses(int propertyTypeId, int SchemeTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int? siteId,
                                                           int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string houseNumber, int houseCategoryId, int houseCategoryTypeId,
                                                           int houseTypeId, int plotDimensionId, string plotDimension, int plotTypeId, PropertyCoordinates coordinates,int propertyStatusId, List<string> images, bool isApartment = false)
         {
@@ -372,6 +378,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             if (!plotSizeResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(plotSizeResult.Error);
 
+            if (siteId == 0) { siteId = null!; }
 
             // Create the entity
             var property = new PropertyMaster
@@ -401,7 +408,7 @@ namespace Modules.Estates.Domain.Entities.Registration
         }
 
 
-        public static Result<PropertyMaster> CreateRentalHouses(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+        public static Result<PropertyMaster> CreateRentalHouses(int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int? siteId,
                                                                 int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string houseNumber, int houseCategoryId,
                                                                 int houseCategoryTypeId, int houseTypeId,  PropertyCoordinates coordinates, int propertyStatusId, List<string> images, bool isApartment = false)
         {
@@ -419,6 +426,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             if (!propertyNumberResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(propertyNumberResult.Error);
 
+            if (siteId == 0) { siteId = null!; }
 
             // Create the entity
             var property = new PropertyMaster
@@ -444,7 +452,7 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(property);
         }
 
-        public static Result<PropertyMaster> CreateLargeScale(string motherPropertyNumber, int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int siteId,
+        public static Result<PropertyMaster> CreateLargeScale(string motherPropertyNumber, int propertyTypeId, int landUseId, string landUseInitial, int landUseTypeId, string landUseTypeInitial, int localityId, string localityInitial, int? siteId,
                                                 int allocationTypeId, string allocationTypeInitial, int blockNumberId, string blockNumber, string plotNumber,
                                                 int plotDimensionId, string plotDimension, int plotTypeId, int propertyHeightId, PropertyCoordinates coordinates,
                                                 string sitePlanNumber, string cadastalPlanNumber, int propertyStatusId, List<string> images, bool isApartment = false)
@@ -466,6 +474,9 @@ namespace Modules.Estates.Domain.Entities.Registration
             var plotSizeResult = PlotSize.Create(plotDimensionId, plotDimension);
             if (!plotSizeResult.IsSuccess)
                 return Result<PropertyMaster>.Failure(plotSizeResult.Error);
+
+            if (siteId == 0) { siteId = null!; }
+
 
             // Create the entity
             var property = new PropertyMaster
