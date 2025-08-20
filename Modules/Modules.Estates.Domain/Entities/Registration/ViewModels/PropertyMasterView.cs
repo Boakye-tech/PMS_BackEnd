@@ -59,6 +59,10 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
         public int? ApartmentTypeId { get; set; }
         public string? ApartmentType { get; set; }
 
+        public int? FloorAreaId { get; set; }
+        public string? FloorArea { get; set; }
+
+
         public int? SchemeTypeId { get; set; }
         public string? SchemeTypeName { get; set; }
 
@@ -106,10 +110,12 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
         public string? CurrencyInitial { get; set; }
         public string? CurrencyName { get; set; }
 
-        public int? DebtorType { get; set; }
-
         public int? FloorNumberId { get; set; }
+        public string? FloorNumber { get; set; }
+        
+        public int? DebtorType { get; set; }
         public int? GroupNumber { get; set; }
+
         public string? MotherPropertyNumber { get; set; }
         public DateTime? RightOfEntry { get; set; }
         public int? RoomsOccupied { get; set; }

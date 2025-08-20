@@ -586,11 +586,11 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public Result<PropertyMaster> UpdateDebtorTypeAndGroupNumber(int debtorType, int groupNumber)
         {
-            if (debtorType <= 0)
-                return Result<PropertyMaster>.Failure("");
+            if (debtorType < 0)
+                return Result<PropertyMaster>.Failure("Debtor type cannot be less than zero");
 
-            if (debtorType <= 0)
-                return Result<PropertyMaster>.Failure("");
+            if (groupNumber < 0)
+                return Result<PropertyMaster>.Failure("Group number cannot be less than zero");
 
             DebtorType = debtorType;
             GroupNumber = groupNumber;

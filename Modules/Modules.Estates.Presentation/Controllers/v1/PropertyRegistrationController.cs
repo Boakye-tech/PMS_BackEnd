@@ -11,6 +11,7 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Mvc;
+using Modules.Estates.Domain.Entities.Registration.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,7 +25,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpGet]
         //[Authorize(Policy = "Permission:Customers.READ")]
-        [Route("GetPropertyDetails")]
+        [Route("GetPropertyDetails")] 
         private async Task<ActionResult> GetPropertyDetails([FromQuery] string propertyNumber)
         {
             if (string.IsNullOrWhiteSpace(propertyNumber))
@@ -40,6 +41,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpGet]
         //[Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetPropertyMasterDetails")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PropertyMasterView))]
         public async Task<ActionResult> GetPropertyMasterDetails([FromQuery] string propertyNumber)
         {
             if (string.IsNullOrWhiteSpace(propertyNumber))
