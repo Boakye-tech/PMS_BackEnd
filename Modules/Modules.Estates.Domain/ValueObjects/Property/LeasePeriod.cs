@@ -30,7 +30,7 @@ namespace Modules.Estates.Domain.ValueObjects.Property
 
 		public static Result<LeasePeriod> Create(DateTime commencementDate, int termInYears)
 		{
-			if (commencementDate < DateTime.UtcNow)
+			if (commencementDate.Date < DateTime.UtcNow.Date)
 				return Result<LeasePeriod>.Failure("Lease commencement date cannot be in the past.");
 
 			if (termInYears <= 0)

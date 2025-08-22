@@ -11,6 +11,7 @@
 //  **************************************************/
 
 
+using Modules.Estates.Domain.Entities.Management;
 using Modules.Estates.Domain.Entities.Registration.ViewModels;
 
 namespace Modules.Estates.Application.UseCases.Management.Property
@@ -167,8 +168,6 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
         public async Task<PropertyMasterView> GetPropertyMasterDetails(string propertyNumber)
         {
-            //throw new NotImplementedException();
-
             var results = await _unitOfWork.PropertyMasterView.Get(p => p.PropertyNumber == propertyNumber)!;
             return results!;
         }
@@ -338,9 +337,175 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             throw new NotImplementedException();
         }
 
- 
+        public async Task<ReturnResponsesDto> UnAssignPropertyToCustomerAsync(UnassignPropertyFromCustomerDto values)
+        {
+            //throw new NotImplementedException();
+            try
+            {
+                //check if property with assigned customer exist
+                var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values.PropertyNumber && c.CustomerCode == values.CustomerCode);
+                if (property is null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status404NotFound,
+                            Message = $"Property number '{values.PropertyNumber}' and Customer code '{values.CustomerCode}' provided does not exist."
+                        }
+                    };
+                }
+
+                var result = property.UnAssignToCustomer(values.CustomerCode);
+
+                if (result.IsSuccess == false)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto
+                        {
+                            Code = StatusCodes.Status204NoContent,
+                            Message = result.Error
+                        }
+                    };
+                }
+
+                _unitOfWork.PropertyMaster.Update(property);
+                await _unitOfWork.Complete();
 
 
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = true,
+                    SuccessResponse = new SuccessResponseDto
+                    {
+                        Code = StatusCodes.Status200OK,
+                        Message = "Property number '" + values.PropertyNumber + "' unassigned from customer code '" + values.CustomerCode + "' successfully."
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status500InternalServerError,
+                        Message = ex.Message ?? ex.InnerException!.Message
+                    }
+                };
+
+            }
+        }
+
+        public async Task<ReturnResponsesDto> UpdateCadastralAndSitePlan(UpdateCadastralAndSitePlanDto values)
+        {
+            //throw new NotImplementedException();
+
+            //check if property exist
+            var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values.PropertyNumber);
+            if (property is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Message = $"Property number '{values.PropertyNumber}' provided does not exist."
+                    }
+                };
+            }
+
+            property.UpdateCadastralAndSitePlan(values.CadastralPlanNumber!, values.SitePlanNumber!, values.Coordinates);
+            _unitOfWork.PropertyMaster.Update(property);
+
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                SuccessResponse = new SuccessResponseDto
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Message = $"Cadastral and site plan numbers updated successfully for property number '{values.PropertyNumber}'."
+                }
+            };
+
+        }
+
+        public async Task<ReturnResponsesDto> UpdateDebtorTypeAndGroupNumber(UpdateDebtorTypeAndGroupNumberDto values)
+        {
+            //throw new NotImplementedException();
+            //check if property exist
+            var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values.PropertyNumber);
+            if (property is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Message = $"Property number '{values.PropertyNumber}' provided does not exist."
+                    }
+                };
+            }
+
+            property.UpdateDebtorTypeAndGroupNumber(values.DebtorType, values.GroupNumber);
+            _unitOfWork.PropertyMaster.Update(property);
+
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                SuccessResponse = new SuccessResponseDto
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Message = $"Debtor type and group number updated successfully for property number '{values.PropertyNumber}'."
+                }
+            };
+
+
+        }
+
+        public async Task<ReturnResponsesDto> UpdatePricesFeesAndDates(UpdatePriceFeeAndDatesDto values)
+        {
+            //throw new NotImplementedException();
+            //check if property exist
+            var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values.PropertyNumber);
+            if (property is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Message = $"Property number '{values.PropertyNumber}' provided does not exist."
+                    }
+                };
+            }
+
+            property.UpdatePriceFeeAndDates(values.CostPrice, values.SellingPrice, values.RentalFee, values.CurrencyId, values.RightOfEntry, values.DateOfConstruction, values.DateOfTenancy, values.DateTransferedToHos);
+            _unitOfWork.PropertyMaster.Update(property);
+
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                SuccessResponse = new SuccessResponseDto
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Message = $"Cadastral and site plan numbers updated successfully for property number '{values.PropertyNumber}'."
+                }
+            };
+        }
     }
 }
 

@@ -1176,9 +1176,11 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 decimal _newAcreage = _parentAcreage - _childAcreage;
                 plot.UpdateAcreage(plot.PlotSize.DimensionId, _newAcreage);
 
-                _unitOfWork.PropertyMaster.InsertRange(_propertyMasterList);
+                
                 _unitOfWork.PropertyMaster.Update(plot);
+                await _unitOfWork.Complete();
 
+                _unitOfWork.PropertyMaster.InsertRange(_propertyMasterList);
                 await _unitOfWork.Complete();
 
 

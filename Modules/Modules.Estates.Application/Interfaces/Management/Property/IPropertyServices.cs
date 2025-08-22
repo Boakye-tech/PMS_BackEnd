@@ -29,15 +29,18 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 
         Task<ReturnResponsesDto> AssignPropertyToCustomerAsync(AssignPropertytoCustomerDto values);
 
-        //Task<ReturnResponsesDto> AddLeaseDetailsAsync(PropertyLeaseDetailsCreateDto values);
-
-        //Task<ReturnResponsesDto> UpdateLeaseDetailsAsync(PropertyLeaseDetailsUpdateDto values);
-
-        //Task<ReturnResponsesDto> RenewLeaseAsync(PropertyLeaseDetailsRenewDto values);
+        Task<ReturnResponsesDto> UnAssignPropertyToCustomerAsync(UnassignPropertyFromCustomerDto values);
 
         Task<List<CustomerToAssignListDto>> GetCustomersToAssign(string? search, string? locality, int pageNumber, int pageSize);
 
         Task<PropertyMasterView> GetPropertyMasterDetails(string propertyNumber);
+
+        Task<ReturnResponsesDto> UpdateCadastralAndSitePlan(UpdateCadastralAndSitePlanDto values);
+
+        Task<ReturnResponsesDto> UpdateDebtorTypeAndGroupNumber(UpdateDebtorTypeAndGroupNumberDto values);
+
+        Task<ReturnResponsesDto> UpdatePricesFeesAndDates(UpdatePriceFeeAndDatesDto values);
+
 
     }
 }

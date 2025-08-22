@@ -554,6 +554,15 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(this);
         }
 
+        public Result<PropertyMaster> UnAssignToCustomer(string customerCode)
+        {
+            if (string.IsNullOrWhiteSpace(customerCode))
+                return Result<PropertyMaster>.Failure("Customer code cannot be null or empty.");
+
+            CustomerCode = string.Empty;
+            return Result<PropertyMaster>.Success(this);
+        }
+
         public Result<PropertyMaster> UpdatePlotSize(int plotDimensionId, string newDimension)
         {
             var plotSizeResult = PlotSize.Create(plotDimensionId,newDimension);
@@ -598,6 +607,48 @@ namespace Modules.Estates.Domain.Entities.Registration
             return Result<PropertyMaster>.Success(this);
         }
 
+        public Result<PropertyMaster> UpdateCadastralAndSitePlan(string cadastralplanNumber, string siteplanNumber, PropertyCoordinates? coordinates)
+        {
+            if(string.IsNullOrWhiteSpace(cadastralplanNumber))
+                return Result<PropertyMaster>.Failure("Cadastral plan number cannot be null or empty.");
+
+            if (string.IsNullOrWhiteSpace(siteplanNumber))
+                return Result<PropertyMaster>.Failure("Site plan number cannot be null or empty.");
+
+            if(string.IsNullOrWhiteSpace(coordinates!.CoordinateOne))
+                return Result<PropertyMaster>.Failure("Coordinate one cannot be null or empty.");
+
+            if (string.IsNullOrWhiteSpace(coordinates!.CoordinateTwo))
+                return Result<PropertyMaster>.Failure("Coordinate two cannot be null or empty.");
+
+            if (string.IsNullOrWhiteSpace(coordinates!.CoordinateThree))
+                return Result<PropertyMaster>.Failure("Coordinate three cannot be null or empty.");
+
+            CadastralPlanNumber = cadastralplanNumber;
+            SitePlanNumber = siteplanNumber;
+            Coordinates = coordinates;
+
+            return Result<PropertyMaster>.Success(this);
+        }
+
+
+        public Result<PropertyMaster> UpdatePriceFeeAndDates(double? costPrice, double? sellingPrice, double? rentalFee, int? currencyId, DateTime? rightOfEntry, DateTime? dateOfConstruction, DateTime? dateOfTenancy, DateTime? dateTransferedToHos)
+        {
+            if (costPrice <= 0 || sellingPrice <= 0 || rentalFee <= 0 || currencyId <= 0)
+                return Result<PropertyMaster>.Failure("Prices and fees cannot be less than or equal to zero");
+
+
+            CostPrice = (double)costPrice!;
+            SellingPrice = (double)sellingPrice!;
+            RentalFee = (double)rentalFee!;
+
+            RightOfEntry = (DateTime)rightOfEntry!;
+            DateOfConstruction = (DateTime)dateOfConstruction!;
+            DateOfTenancy = (DateTime)dateOfTenancy!;
+            DateTransferedToHos = (DateTime)dateTransferedToHos!;
+
+            return Result<PropertyMaster>.Success(this);
+        }
 
 
     }
