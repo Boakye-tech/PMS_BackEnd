@@ -27,10 +27,10 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             //_mapper = mapper;
         }
 
-        private bool IsEligibleForRenewal(PropertyLeaseDetailsReadDto lease)
-        {
-            return lease.CurrentRenewalCount < lease.MaxRenewalCount;
-        }
+        //private bool IsEligibleForRenewal(PropertyLeaseDetailsReadDto lease)
+        //{
+        //    return lease.CurrentRenewalCount < lease.MaxRenewalCount;
+        //}
 
         //private DateTime GetLastLeaseEndDate(PropertyLeaseDetailsReadDto lease)
         //{
@@ -111,8 +111,8 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
                 //insert into lease details table
                 //var leasedetails = _mapper.Map<PropertyLeaseDetails>(values);
-                var leasedetails = PropertyLeaseDetails.CreateLeaseDetails(values.PropertyNumber!, values.CustomerCode!, values.LeaseTypePeriodId, values.LeaseStartDate, values.LeaseTerm,
-                                                                           values.RenewableTerm, values.MaximumRenewalCount, values.LeaseStatusId, values.RenewalStatusId);
+                var leasedetails = PropertyLeaseDetails.CreateLeaseDetails(values.PropertyNumber!, values.CustomerCode!, values.LeaseTypePeriodId, values.LeaseStartDate, values.LeaseTerm, values.RenewableTerm, values.MaximumRenewalCount, LeaseStatusEnum.Draft,
+                                                                          (values.RenewableTerm == 0 || values.MaximumRenewalCount == 0) ? RenewalStatusEnum.NotApplicable : RenewalStatusEnum.NotDue);
 
                 if (!leasedetails.IsSuccess)
                 {

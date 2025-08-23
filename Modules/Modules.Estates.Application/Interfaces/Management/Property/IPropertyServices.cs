@@ -33,7 +33,7 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 
         Task<List<CustomerToAssignListDto>> GetCustomersToAssign(string? search, string? locality, int pageNumber, int pageSize);
 
-        Task<PropertyMasterView> GetPropertyMasterDetails(string propertyNumber);
+        Task<PropertyMasterViewDto> GetPropertyMasterDetails(string propertyNumber);
 
         Task<ReturnResponsesDto> UpdateCadastralAndSitePlan(UpdateCadastralAndSitePlanDto values);
 

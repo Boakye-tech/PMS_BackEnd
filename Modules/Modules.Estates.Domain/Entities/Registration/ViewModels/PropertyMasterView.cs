@@ -81,6 +81,9 @@ namespace Modules.Estates.Domain.Entities.Registration.ViewModels
         public string? CustomerCode { get; set; }
         public string? CustomerName { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? SecondaryMobileNumber { get; set; }
+        public string? EmailAddress { get; set; }
+        public string? Picture { get; set; }
 
         public string? CoordinateOne { get; set; }
         public string? CoordinateTwo { get; set; }

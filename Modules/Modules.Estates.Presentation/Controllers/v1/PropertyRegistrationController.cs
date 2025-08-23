@@ -41,7 +41,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         [HttpGet]
         //[Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetPropertyMasterDetails")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PropertyMasterView))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PropertyMasterViewDto))]
         public async Task<ActionResult> GetPropertyMasterDetails([FromQuery] string propertyNumber)
         {
             if (string.IsNullOrWhiteSpace(propertyNumber))
@@ -675,7 +675,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         }
 
         [HttpPut]
-        [Route("StartDebit")]
+        [Route("RenewDebit")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]

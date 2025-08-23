@@ -11,8 +11,11 @@
 //  **************************************************/
 
 
+using Azure;
+using Microsoft.EntityFrameworkCore;
 using Modules.Estates.Domain.Entities.Management;
 using Modules.Estates.Domain.Entities.Registration.ViewModels;
+using Modules.Estates.Domain.ValueObjects.Property;
 
 namespace Modules.Estates.Application.UseCases.Management.Property
 {
@@ -166,9 +169,39 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             return result;
         }
 
-        public async Task<PropertyMasterView> GetPropertyMasterDetails(string propertyNumber)
+        public async Task<PropertyMasterViewDto> GetPropertyMasterDetails(string propertyNumber)
         {
-            var results = await _unitOfWork.PropertyMasterView.Get(p => p.PropertyNumber == propertyNumber)!;
+            //check for lease details
+            var lease =
+                from a in _unitOfWork.PropertyLeaseDetails.GetQueryable()
+                join b in _unitOfWork.LeaseTypeAndPeriod.GetQueryable()
+                    on a.LeaseTypePeriodId equals b.LeaseTypePeriodId
+                where a.PropertyNumber == propertyNumber  
+                orderby a.PropertyNumber
+                select new PropertyLeaseDetailsReadDto { 
+                    PropertyLeaseDetailsId = a.PropertyLeaseDetailsId,
+                    PropertyNumber= a.PropertyNumber,
+                    CustomerCode = a.CustomerCode,
+                    LeaseTypePeriodId = a.LeaseTypePeriodId,
+                    LeaseType = b.LeaseType,
+                    LeaseStartDate = a.LeaseStartDate,
+                    LeaseTerm = a.LeaseTerm,
+                    LeaseExpiryDate= a.LeaseExpiryDate,
+                    MaxRenewalCount = a.MaxRenewalCount,
+                    CurrentRenewalCount = a.CurrentRenewalCount,
+                    LastRenewalStartDate = a.LastRenewalStartDate,
+                    RenewableTerm = a.RenewableTerm,
+                    LastRenewalExpiryDate = a.LastRenewalExpiryDate,
+                    LeaseStatus = a.LeaseStatusId.GetEnumDescription(),
+                    RenewalStatus = a.RenewalStatusId.GetEnumDescription(),
+                };
+
+            var _leaasedetails = await lease.FirstOrDefaultAsync();
+            var proertydetails = await _unitOfWork.PropertyMasterView.Get(p => p.PropertyNumber == propertyNumber)!;
+
+            var results = _mapper.Map<PropertyMasterViewDto>(proertydetails);
+            results.LeaseDetails = _leaasedetails;
+
             return results!;
         }
 

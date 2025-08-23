@@ -20,6 +20,7 @@ namespace Modules.Estates.Application.Profiles.Management
             CreateMap<PropertyLeaseDetailsCreateDto, PropertyLeaseDetails>();
             CreateMap<PropertyLeaseDetailsUpdateDto, PropertyLeaseDetails>();
         }
+
 	}
 }
 
