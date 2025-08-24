@@ -30,20 +30,24 @@ namespace Modules.Estates.Application.DTO.Registration.Customer
         public string? CustomerCode { get; set; }
        
         [StringLength(150)]
+        [Required]
         public string? CompanyName { get; set; }
 
         public int NationalityId { get; set; }
 
         [EmailAddress]
+        [Required]
         public string? EmailAddress { get; set; }
 
         [StringLength(255)]
+        [Required]
         public string? CompanyAddress { get; set; } //map to residential address field
 
         [StringLength(50)]
         public string? DigitalAddress { get; set; }
 
         [StringLength(12)]
+        [Required]
         public string? PrimaryMobileNumber { get; set; }
 
         [StringLength(12)]
@@ -56,9 +60,11 @@ namespace Modules.Estates.Application.DTO.Registration.Customer
         public string? WhatsAppNumber { get; set; }
 
         [StringLength(20)]
+        [Required]
         public string? BusinessRegistrationNumber { get; set; }
 
         [StringLength(20)]
+        [Required]
         public string? TinNumber { get; set; }
 
         [StringLength(255)]
@@ -74,6 +80,7 @@ namespace Modules.Estates.Application.DTO.Registration.Customer
         //[StringLength(255)]
         public string? Comments { get; set; }
 
+        [Required]
         public string[]? IdentificationImages { get; set; }
 
         public CompanyContactPerson? ContactPerson { get; set; }
@@ -95,13 +102,16 @@ namespace Modules.Estates.Application.DTO.Registration.Customer
     public record CompanyContactPerson
     {
         [StringLength(255)]
+        [Required]
         public string? ContactPerson_FullName { get; set; }
 
         [StringLength(12)]
+        [Required]
         public string? ContactPerson_PhoneNumber { get; set; }
 
         [StringLength(255)]
         [EmailAddress]
+        [Required]
         public string? ContactPerson_EmailAddress { get; set; }
 
         [StringLength(255)]
@@ -110,8 +120,10 @@ namespace Modules.Estates.Application.DTO.Registration.Customer
         public int ContactPerson_IdentificationTypeId { get; set; }
 
         [StringLength(20)]
+        [Required]
         public string? ContactPerson_IdentificationTypeNumber { get; set; }
 
+        [Required]
         public string[]? ContactPerson_IdentificationImages { get; set; }
     }
     

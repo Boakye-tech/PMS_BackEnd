@@ -383,16 +383,20 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// </summary>
         [HttpPut]
         [Route("UpdateCompanyCustomer")]
-        [Authorize(Policy = "Permission:Customers.UPDATE")]
+        //[Authorize(Policy = "Permission:Customers.UPDATE")]
+        [AllowAnonymous]
         public async Task<ActionResult> UpdateCompanyCustomer([FromBody] UpdateCompanyCustomerDto values)
         {
             try
             {
-                var userId = _userContextService.GetUserId();
-                if (!string.Equals(userId, values.ModifiedBy))
-                {
-                    return Unauthorized();
-                }
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                //var userId = _userContextService.GetUserId();
+                //if (!string.Equals(userId, values.ModifiedBy))
+                //{
+                //    return Unauthorized();
+                //}
 
                 var validationError = ValidateCustomerDetails(values);
                 if (validationError is not null)

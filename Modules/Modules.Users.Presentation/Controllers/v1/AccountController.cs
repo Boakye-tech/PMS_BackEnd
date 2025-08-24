@@ -29,7 +29,6 @@ namespace Modules.Users.Presentation.Controllers.v1;
 [Produces("application/json")]
 [EnableRateLimiting("UsersModulePolicy")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[AllowAnonymous]
 
 public class AccountController : ControllerBase
 {
@@ -53,6 +52,7 @@ public class AccountController : ControllerBase
     /// Returns a list of available identification types
     /// </summary>
     [HttpGet]
+    [AllowAnonymous]
     [Route("GetIdentificationTypes")]
     public async Task<ActionResult<IEnumerable<IdentificationType>>> GetIdentificationTypes()
     {
@@ -63,6 +63,7 @@ public class AccountController : ControllerBase
     /// Returns a list of available channels
     /// </summary>
     [HttpGet]
+    [AllowAnonymous]
     [Route("GetChannels")]
     public async Task<ActionResult<IEnumerable<ChannelReadDto>>> GetChannels()
     {
@@ -76,6 +77,7 @@ public class AccountController : ControllerBase
     /// <remarks>Returns the registration status and user id. The email/phone and password used in a successful registration will be required to access and generated a json web token and a refresh token that will be used for authoriation and authentication purposes</remarks>
     /// <response code="201">Returns the uniquely created user id for a newly registered application user</response>
     [HttpPost]
+    [AllowAnonymous]
     [Route("Register/Customer")]
     [ProducesResponseType(201, Type = typeof(RegistrationSuccessResponse))]
     [ProducesResponseType(400, Type = typeof(RegistrationErrorResponse))]

@@ -73,26 +73,25 @@ namespace Modules.Estates.Infrastrcuture.Repositories
 
         public void Update(TEntity entity)
         {
-            _dbContext.Set<TEntity>().Update(entity);
+            //_dbContext.Set<TEntity>().Update(entity);
 
-            //var key = _dbContext.Model.FindEntityType(typeof(TEntity))!
-            //     .FindPrimaryKey()!
-            //     .Properties
-            //     .Select(p => p.PropertyInfo!.GetValue(entity))
-            //     .ToArray();
+            var key = _dbContext.Model.FindEntityType(typeof(TEntity))!
+                 .FindPrimaryKey()!
+                 .Properties
+                 .Select(p => p.PropertyInfo!.GetValue(entity))
+                 .ToArray();
 
-            //var existingEntity = _dbContext.Set<TEntity>().Find(key);
+            var existingEntity = _dbContext.Set<TEntity>().Find(key);
 
-            //if (existingEntity != null)
-            //{
-            //    _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
-            //}
-            //else
-            //{
-            //    _dbContext.Attach(entity);
-            //    _dbContext.Entry(entity).State = EntityState.Modified;
-            //}
-
+            if (existingEntity != null)
+            {
+                _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
+            }
+            else
+            {
+                _dbContext.Attach(entity);
+                _dbContext.Entry(entity).State = EntityState.Modified;
+            }
 
         }
 

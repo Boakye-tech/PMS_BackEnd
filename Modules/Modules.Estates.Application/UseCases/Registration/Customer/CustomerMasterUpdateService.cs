@@ -199,7 +199,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Customer
             }
             catch (Exception ex)
             {
-                var err = new BaseResponseDto { StatusCode = 500, StatusMessage = ex.InnerException!.Message };
+                var err = new BaseResponseDto { StatusCode = StatusCodes.Status500InternalServerError, StatusMessage = ex.Message };
                 return new CustomerRegistrationResponseDto { IsSuccess = false, ErrorResponse = err };
             }
         }
