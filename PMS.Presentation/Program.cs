@@ -21,6 +21,7 @@ using Microsoft.OpenApi.Models;
 using Modules.Common.Infrastructure.Authentication;
 using Modules.Customers.Presentation;
 using Modules.Estates.Presentation;
+using Modules.Facilities.Presentation;
 using Modules.Finance.Presentation;
 using Modules.Notification.Presentation;
 using Modules.Users.Infrastructure;
@@ -70,11 +71,15 @@ builder.Services.AddNotificationModule(builder.Configuration, builder.Environmen
 
 builder.Services.AddCustomerModule(builder.Configuration, builder.Environment);
 
+builder.Services.AddFacilitiesModule(builder.Configuration, builder.Environment);
+
+
 var module = "Modules.Estates.Presentation";
 var user_module = "Modules.Users.Presentation";
 var customers_module = "Modules.Customers.Presentation";
 var finance_module = "Modules.Finance.Presentation";
 var notification_module = "Modules.Notification.Presentation";
+var facilities_module = "Modules.Facilities.Presentation";
 
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
@@ -179,7 +184,8 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{customers_module}.xml"));
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{finance_module}.xml"));
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{notification_module}.xml"));
-    
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{facilities_module}.xml"));
+
 });
 
 builder.Services.AddHttpContextAccessor();

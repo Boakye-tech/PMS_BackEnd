@@ -18,6 +18,7 @@ namespace Modules.Facilities.Application.Interfaces.Setup
         Task<ReturnResponsesDto> CreateItemsCategoryAsync(ItemsCategoryCreateDto values);
         Task<ReturnResponsesDto> UpdateItemsCategoryAsync(ItemsCategoryUpdateDto values);
         Task<IEnumerable<ItemsCategoryReadDto>> GetItemsCategoryAsync();
+        Task<IEnumerable<ItemCategoryAndItemsReadDto>> GetItemCategoryAndItemsAsync();
         Task<ReturnResponsesDto> DeleteItemsCategoryAsync(int itemCategoryId);
     }
 }

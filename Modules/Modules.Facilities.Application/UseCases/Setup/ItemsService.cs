@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Modules.Facilities.Application.UseCases.Setup
 {
     public class ItemsService : IItemsService
@@ -99,9 +101,24 @@ namespace Modules.Facilities.Application.UseCases.Setup
 
         public async Task<IEnumerable<ItemsReadDto>> GetItemsAsync()
         {
-            var items = await _unitOfWork.Items.GetAll(includes: new List<string> { "ItemCategory" });
-            return _mapper.Map<IEnumerable<ItemsReadDto>>(items);
+            var items = await _unitOfWork.Items.GetAll();
+            var categories = await _unitOfWork.ItemsCategory.GetAll();
+
+            var query =
+                from a in items
+                join b in categories
+                    on a.ItemCategoryId equals b.ItemCategoryId into g
+                from b in g.DefaultIfEmpty()
+                select new ItemsReadDto(
+                    a.ItemCategoryId,
+                    b?.ItemCategoryName,
+                    a.ItemCode,
+                    a.ItemName
+                );
+
+            return query.ToList();
         }
+
 
         public async Task<ReturnResponsesDto> DeleteItemsAsync(string itemCode)
         {

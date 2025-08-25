@@ -103,6 +103,20 @@ namespace Modules.Facilities.Application.UseCases.Setup
             return _mapper.Map<IEnumerable<ItemsCategoryReadDto>>(categories);
         }
 
+        public async Task<IEnumerable<ItemCategoryAndItemsReadDto>> GetItemCategoryAndItemsAsync()
+        {
+            var categories = await _unitOfWork.ItemsCategory.GetAll(includes: new List<string> { "Items" });
+
+            var result = categories.Select(c => new ItemCategoryAndItemsReadDto(
+                new ItemsCategoryReadDto(c.ItemCategoryId, c.ItemCategoryName),
+                c.Items!.Select(i => new ItemReadDto(i.ItemCode, i.ItemName)).ToList()
+            ));
+
+            return result;
+
+        }
+
+
         public async Task<ReturnResponsesDto> DeleteItemsCategoryAsync(int itemCategoryId)
         {
             try

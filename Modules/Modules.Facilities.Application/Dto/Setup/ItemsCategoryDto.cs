@@ -29,4 +29,15 @@ namespace Modules.Facilities.Application.Dto.Setup
     );
 
     public record ItemsCategoryDeleteDto(int itemCategoryId);
+
+
+    public record ItemReadDto(string? ItemCode,string? ItemName);
+
+    public record ItemCategoryAndItemsReadDto(ItemsCategoryReadDto itemCategory, List<ItemReadDto> items);
+
+    //public record ItemCategoryAndItemsReadDto
+    //{
+    //    public ItemsCategoryReadDto? itemCategory { get; init; }
+    //    public List<ItemReadDto>? items { get; init; }
+    //}
 }

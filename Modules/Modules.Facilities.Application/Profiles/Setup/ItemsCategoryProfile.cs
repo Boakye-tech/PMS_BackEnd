@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Modules.Facilities.Domain.Entities.Setups;
+
 namespace Modules.Facilities.Application.Profiles.Setup
 {
     public class ItemsCategoryProfile : Profile
@@ -20,6 +22,9 @@ namespace Modules.Facilities.Application.Profiles.Setup
             CreateMap<ItemsCategoryCreateDto, ItemsCategory>();
             CreateMap<ItemsCategoryUpdateDto, ItemsCategory>();
             CreateMap<ItemsCategoryDeleteDto, ItemsCategory>();
+
+            //CreateMap<Items, ItemsReadDto>();
+            CreateMap<ItemsCategory, ItemCategoryAndItemsReadDto>();
         }
     }
 }

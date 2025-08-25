@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Modules.Facilities.Infrastructure.Configuration;
+
 namespace Modules.Facilities.Infrastructure.Data
 {
 	public class FacilitiesDbContext : ModuleDbContext
@@ -34,7 +36,7 @@ namespace Modules.Facilities.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-
+            modelBuilder.ApplyConfiguration(new ItemsCategoryConfiguration());
         }
 
     }

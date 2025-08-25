@@ -20,6 +20,8 @@ namespace Modules.Facilities.Application.Profiles.Setup
             CreateMap<ItemsCreateDto, Items>();
             CreateMap<ItemsUpdateDto, Items>();
             CreateMap<ItemsDeleteDto, Items>();
+
+
         }
     }
 }

@@ -17,7 +17,10 @@ public class Items : AuditableEntity
 	[Required]
 	public int ItemCategoryId { get; private set; }
 
-	[Key]
+    // Navigation property for ItemsCategory
+    public virtual ItemsCategory? ItemCategory { get; private set; }
+
+    [Key]
 	[Required]
 	[StringLength(20)]
 	public string? ItemCode { get; private set; }
@@ -25,9 +28,6 @@ public class Items : AuditableEntity
 	[Required]
 	[StringLength(100)]
 	public string? ItemName { get; private set; }
-
-	// Navigation property for ItemsCategory
-	public virtual ItemsCategory? ItemCategory { get; private set; }
 
 
 	public Items()

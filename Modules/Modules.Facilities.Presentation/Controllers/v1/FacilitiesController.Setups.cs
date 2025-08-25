@@ -284,7 +284,7 @@ namespace Modules.Facilities.Presentation.Controllers.v1
         /// </remarks>
         [HttpGet("GetItems")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ItemsReadDto>))]
-        public async Task<ActionResult<IEnumerable<ItemsReadDto>>> GetItems([FromServices] IItemsService _itemsService)
+        public async Task<ActionResult> GetItems([FromServices] IItemsService _itemsService)
         {
             return Ok(await _itemsService.GetItemsAsync());
         }
@@ -403,6 +403,13 @@ namespace Modules.Facilities.Presentation.Controllers.v1
         public async Task<ActionResult<IEnumerable<ItemsCategoryReadDto>>> GetItemsCategories([FromServices] IItemsCategoryService _itemsCategoryService)
         {
             return Ok(await _itemsCategoryService.GetItemsCategoryAsync());
+        }
+
+        [HttpGet("GetItemCategoryAndItems")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ItemCategoryAndItemsReadDto>))]
+        public async Task<ActionResult<IEnumerable<ItemCategoryAndItemsReadDto>>> GetItemCategoryAndItems([FromServices] IItemsCategoryService _itemsCategoryService)
+        {
+            return Ok(await _itemsCategoryService.GetItemCategoryAndItemsAsync());
         }
 
         /// <summary>

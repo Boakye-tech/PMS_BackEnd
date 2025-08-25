@@ -30,11 +30,11 @@ namespace Modules.Facilities.Infrastructure.Configuration
                    .OnDelete(DeleteBehavior.Restrict);
 
 
-            builder.HasData(
-                new ItemsCategory(1, "WASHROOM CONSUMABLES"),
-                new ItemsCategory(2, "CLEANING SUPPLIES"),
-                new ItemsCategory(3, "CLEANING TOOLS")
-            );
+            //builder.HasData(
+            //    new ItemsCategory(1, "WASHROOM CONSUMABLES"),
+            //    new ItemsCategory(2, "CLEANING SUPPLIES"),
+            //    new ItemsCategory(3, "CLEANING TOOLS")
+            //);
         }
     }
 }
