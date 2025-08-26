@@ -111,8 +111,8 @@ namespace Modules.Estates.Application.UseCases.Management.Property
 
                 //insert into lease details table
                 //var leasedetails = _mapper.Map<PropertyLeaseDetails>(values);
-                var leasedetails = PropertyLeaseDetails.CreateLeaseDetails(values.PropertyNumber!, values.CustomerCode!, values.LeaseTypePeriodId, values.LeaseStartDate, values.LeaseTerm, values.RenewableTerm, values.MaximumRenewalCount, LeaseStatusEnum.Draft,
-                                                                          (values.RenewableTerm == 0 || values.MaximumRenewalCount == 0) ? RenewalStatusEnum.NotApplicable : RenewalStatusEnum.NotDue);
+                var leasedetails = PropertyLeaseDetails.CreateLeaseDetails(values.PropertyNumber!, values.CustomerCode!, values.LeaseTypePeriodId, values.LeaseStartDate, values.LeaseTerm, values.RenewableTerm, 0, LeaseStatusEnum.Draft,
+                                                                          (values.RenewableTerm == 0) ? RenewalStatusEnum.NotApplicable : RenewalStatusEnum.NotDue);
 
                 if (!leasedetails.IsSuccess)
                 {

@@ -147,6 +147,15 @@ namespace Modules.Estates.Domain.Entities.Registration
 
         public bool IsDeleted { get; private set; }
 
+        public bool IsRegistered { get; private set; }
+
+        [StringLength(30)]
+        public string? RegistrationNumber { get; private set; }
+
+        [StringLength(30)]
+        public string? BuildingPermitNumber { get; private set; }
+
+
 
         // For EF Core
         private PropertyMaster() { }
@@ -646,6 +655,28 @@ namespace Modules.Estates.Domain.Entities.Registration
             DateOfConstruction = (DateTime)dateOfConstruction!;
             DateOfTenancy = (DateTime)dateOfTenancy!;
             DateTransferedToHos = (DateTime)dateTransferedToHos!;
+
+            return Result<PropertyMaster>.Success(this);
+        }
+
+        public Result<PropertyMaster> UpdateRegistrationNumber(string registrationNumber)
+        {
+            if (string.IsNullOrWhiteSpace(registrationNumber))
+                return Result<PropertyMaster>.Failure("The deed or lease registration number cannot be null or emppty");
+
+            IsRegistered = true;
+            RegistrationNumber = registrationNumber;
+
+            return Result<PropertyMaster>.Success(this);
+        }
+
+        public Result<PropertyMaster> UpdateBuildingPermitNumber(string buildingPermitNumber)
+        {
+            if (string.IsNullOrWhiteSpace(buildingPermitNumber))
+                return Result<PropertyMaster>.Failure("The building permit number cannot be null or emppty");
+
+
+            BuildingPermitNumber = buildingPermitNumber;
 
             return Result<PropertyMaster>.Success(this);
         }

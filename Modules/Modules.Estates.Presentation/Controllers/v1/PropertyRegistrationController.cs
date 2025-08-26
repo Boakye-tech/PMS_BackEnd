@@ -31,7 +31,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
             if (string.IsNullOrWhiteSpace(propertyNumber))
                 return BadRequest("Property number is required.");
 
-            var result = await _propertyMasterService.GetPropertyDetails(propertyNumber);
+            var result = await _propertyMasterQueryService.GetPropertyDetails(propertyNumber);
             return result is null ? NotFound() : Ok(result);
         }
 
@@ -74,7 +74,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
                 if (plotDimensionId == 0 && plotDimension is not null)
                 {
-                    var _result = _propertyMasterService.GetAcreage(plotDimension);
+                    var _result = _propertyMasterQueryService.GetAcreage(plotDimension);
                     if (_result.IsSuccess)
                     {
                         return Ok(new {Acreage = _result.SuccessResponse!.Message });
@@ -90,7 +90,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
                     };
                 }
 
-                var result = await _propertyMasterService.GetAcreage(plotDimensionId);
+                var result = await _propertyMasterQueryService.GetAcreage(plotDimensionId);
 
                 if (result.IsSuccess)
                 {
@@ -129,7 +129,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                var result = await _propertyMasterService.CreateApartment(values);
+                var result = await _propertyMasterCommandService.CreateApartment(values);
 
                 if (result.IsSuccess)
                 {
@@ -169,7 +169,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                var result = await _propertyMasterService.CreatePlot(values);
+                var result = await _propertyMasterCommandService.CreatePlot(values);
 
                 if (result.IsSuccess)
                 {
@@ -209,7 +209,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                var result = await _propertyMasterService.CreateShopsOffice(values);
+                var result = await _propertyMasterCommandService.CreateShopsOffice(values);
 
                 if (result.IsSuccess)
                 {
@@ -248,7 +248,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                var result = await _propertyMasterService.CreateHouse(values);
+                var result = await _propertyMasterCommandService.CreateHouse(values);
 
                 if (result.IsSuccess)
                 {
@@ -287,7 +287,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                var result = await _propertyMasterService.CreateRentalHouse(values);
+                var result = await _propertyMasterCommandService.CreateRentalHouse(values);
 
                 if (result.IsSuccess)
                 {
@@ -320,7 +320,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                return Ok(await _propertyMasterService.GetLargeScaleListForRegistration());
+                return Ok(await _propertyMasterQueryService.GetLargeScaleListForRegistration());
 
             }
             catch (Exception ex)
@@ -347,7 +347,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                var result = await _propertyMasterService.CreateLargeScale(values);
+                var result = await _propertyMasterCommandService.CreateLargeScale(values);
 
                 if (result.IsSuccess)
                 {
@@ -383,7 +383,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
         {
             try
             {
-                var result = await _propertyMasterService.DeletePropertyDetails(propertyNumber);
+                var result = await _propertyMasterCommandService.DeletePropertyDetails(propertyNumber);
 
                 if (result.IsSuccess)
                 {
@@ -421,7 +421,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                var result = await _propertyMasterService.CreateProperty(values);
+                var result = await _propertyMasterCommandService.CreateProperty(values);
 
                 if (result.IsSuccess)
                 {
@@ -455,7 +455,7 @@ namespace Modules.Estates.Presentation.Controllers.v1
 
             try
             {
-                return Ok(await _propertyMasterService.GetListOfProperties(search, landUseId, landUseTypeId , localityId, allocationTypeId));
+                return Ok(await _propertyMasterQueryService.GetListOfProperties(search, landUseId, landUseTypeId , localityId, allocationTypeId));
 
             }
             catch (Exception ex)
@@ -883,6 +883,72 @@ namespace Modules.Estates.Presentation.Controllers.v1
             }
 
             var result = await _propertyServices.UpdatePricesFeesAndDates(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                409 => Conflict(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("UpdateRegistrationNumber")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> UpdateRegistrationNumber([FromBody] UpdateRegistrationNumberDto values)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _propertyServices.UpdateRegistrationNumber(values);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                409 => Conflict(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+
+        [HttpPut]
+        [Route("UpdateBuildingPermitNumber")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SuccessResponseDto))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ErrorResponseDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        public async Task<ActionResult> UpdateBuildingPermitNumber([FromBody] UpdateBuildingPermitNumberDto values)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _propertyServices.UpdateBuildingPermitNumber(values);
 
             if (result.IsSuccess)
             {

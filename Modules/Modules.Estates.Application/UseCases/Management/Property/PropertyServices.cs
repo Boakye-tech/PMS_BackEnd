@@ -434,6 +434,41 @@ namespace Modules.Estates.Application.UseCases.Management.Property
             }
         }
 
+        public async Task<ReturnResponsesDto> UpdateBuildingPermitNumber(UpdateBuildingPermitNumberDto values)
+        {
+            //throw new NotImplementedException();
+            //check if property exist
+            var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values.PropertyNumber);
+            if (property is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Message = $"Property number '{values.PropertyNumber}' provided does not exist."
+                    }
+                };
+            }
+
+            property.UpdateBuildingPermitNumber(values.BuildingPermitNumber);
+            _unitOfWork.PropertyMaster.Update(property);
+
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                SuccessResponse = new SuccessResponseDto
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Message = $"Building permit number updated successfully for property number '{values.PropertyNumber}'."
+                }
+            };
+
+        }
+
         public async Task<ReturnResponsesDto> UpdateCadastralAndSitePlan(UpdateCadastralAndSitePlanDto values)
         {
             //throw new NotImplementedException();
@@ -536,6 +571,40 @@ namespace Modules.Estates.Application.UseCases.Management.Property
                 {
                     Code = StatusCodes.Status404NotFound,
                     Message = $"Cadastral and site plan numbers updated successfully for property number '{values.PropertyNumber}'."
+                }
+            };
+        }
+
+        public async Task<ReturnResponsesDto> UpdateRegistrationNumber(UpdateRegistrationNumberDto values)
+        {
+            //throw new NotImplementedException();
+            //check if property exist
+            var property = await _unitOfWork.PropertyMaster.Get(c => c.PropertyNumber!.Value == values.PropertyNumber);
+            if (property is null)
+            {
+                return new ReturnResponsesDto
+                {
+                    IsSuccess = false,
+                    ErrorResponse = new ErrorResponseDto
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Message = $"Property number '{values.PropertyNumber}' provided does not exist."
+                    }
+                };
+            }
+
+            property.UpdateRegistrationNumber(values.RegistrationNumber);
+            _unitOfWork.PropertyMaster.Update(property);
+
+            await _unitOfWork.Complete();
+
+            return new ReturnResponsesDto
+            {
+                IsSuccess = true,
+                SuccessResponse = new SuccessResponseDto
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Message = $"Deed/Lease number updated successfully for property number '{values.PropertyNumber}'."
                 }
             };
         }

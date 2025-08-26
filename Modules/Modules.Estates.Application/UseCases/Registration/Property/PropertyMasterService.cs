@@ -18,12 +18,10 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
     public class PropertyMasterService : IPropertyMasterService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public PropertyMasterService(IUnitOfWork unitOfWork, IMapper mapper)
+        public PropertyMasterService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         private async Task<(TEntity? entity, ReturnResponsesDto? error)> ValidateEntity<TEntity>(Func<Task<TEntity?>> fetchFunc, string errorMessage, int errorCode = StatusCodes.Status400BadRequest) where TEntity : class
@@ -538,6 +536,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
                 };
             }
         }
+
 
         public ReturnResponsesDto GetAcreage(string plotDimension)
         {
@@ -1209,6 +1208,7 @@ namespace Modules.Estates.Application.UseCases.Registration.Property
 
 
         }
+
 
         public async Task<List<largeScaleListDto>> GetLargeScaleListForRegistration()
         {

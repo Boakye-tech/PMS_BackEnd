@@ -21,7 +21,7 @@ namespace Modules.Estates.Application.DTO.Management.Property
         public int LeaseTerm { get; set; }
         //public DateTime LeaseExpiryDate { get; set; }
         public int RenewableTerm { get; set; }
-        public int MaximumRenewalCount { get; set; }
+        //public int MaximumRenewalCount { get; set; }
         //public int CurrentRenewalCount { get; set; }
         //public DateTime LastRenewalStartDate { get; set; }
         //public LeaseStatusEnum LeaseStatusId { get; set; }

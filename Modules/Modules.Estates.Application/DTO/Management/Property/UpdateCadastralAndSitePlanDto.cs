@@ -19,12 +19,12 @@ namespace Modules.Estates.Application.DTO.Management.Property
         public string? PropertyNumber { get; set; }
 
         [StringLength(30)]
-        public string? SitePlanNumber { get; private set; }
+        public string? SitePlanNumber { get; set; }
 
         [StringLength(30)]
-        public string? CadastralPlanNumber { get; private set; }
+        public string? CadastralPlanNumber { get; set; }
 
-        public PropertyCoordinates? Coordinates { get; private set; }
+        public PropertyCoordinates? Coordinates { get; set; }
     }
 }
 

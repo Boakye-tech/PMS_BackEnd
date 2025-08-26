@@ -605,6 +605,10 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int?>("BlockUnitId")
                         .HasColumnType("int");
 
+                    b.Property<string>("BuildingPermitNumber")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.Property<string>("CadastralPlanNumber")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -657,6 +661,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsRegistered")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LandUseId")
                         .HasColumnType("int");
 
@@ -700,6 +707,10 @@ namespace Modules.Estates.Infrastructure.Migrations
 
                     b.Property<int>("PropertyTypeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("RegistrationNumber")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int?>("RentalCategoryId")
                         .HasColumnType("int");
@@ -899,6 +910,18 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<int?>("DebtorType")
                         .HasColumnType("int");
 
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FloorArea")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FloorAreaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FloorNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("FloorNumberId")
                         .HasColumnType("int");
 
@@ -942,6 +965,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PlotAcreage")
@@ -1011,6 +1037,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SchemeTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecondaryMobileNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("SellingPrice")

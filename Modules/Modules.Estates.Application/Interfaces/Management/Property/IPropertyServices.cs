@@ -41,6 +41,10 @@ namespace Modules.Estates.Application.Interfaces.Management.Property
 
         Task<ReturnResponsesDto> UpdatePricesFeesAndDates(UpdatePriceFeeAndDatesDto values);
 
+        Task<ReturnResponsesDto> UpdateRegistrationNumber(UpdateRegistrationNumberDto values);
+
+        Task<ReturnResponsesDto> UpdateBuildingPermitNumber(UpdateBuildingPermitNumberDto values);
+
 
     }
 }

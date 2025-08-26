@@ -425,6 +425,7 @@ public class AccountController : ControllerBase
     /// Returns current users details  
     /// </summary>
     [HttpGet]
+    [AllowAnonymous]
     [Route("Users/{userId}")]
     [ProducesResponseType(200, Type = typeof(UserInformationDto))]
     public async Task<ActionResult> UserDetails(string userId)

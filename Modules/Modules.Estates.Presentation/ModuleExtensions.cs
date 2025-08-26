@@ -44,8 +44,10 @@ public static class ModuleExtensions
         services.AddScoped<IActivityService, ActivityService>();
         services.AddScoped<IActivityTypeService, ActivityTypeService>();
 
-        services.AddScoped<IPropertyMasterService, PropertyMasterService>();
+        //services.AddScoped<IPropertyMasterService, PropertyMasterService>();
         services.AddScoped<ICustomerDomainService, CustomerDomainService>();
+        services.AddScoped<IPropertyMasterQueryService, PropertyMasterQueryService>();
+        services.AddScoped<IPropertyMasterCommandService, PropertyMasterCommandService>();
 
         services.AddScoped<ICustomerTypeService, CustomerTypeService>();
         services.AddScoped<IGenderService, GenderService>();
