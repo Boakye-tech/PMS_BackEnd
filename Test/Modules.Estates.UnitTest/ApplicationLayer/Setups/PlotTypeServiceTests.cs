@@ -47,11 +47,13 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             var createDto = new PlotTypeCreateDto
             (
                 PlotTypes: "Test Type",
+                SellingPrice: 5000,
+                CurrencyId: 2,
                 CreatedBy: "testuser"
             );
 
-            var plotType = PlotType.Create(0, createDto.PlotTypes!);
-            var plotTypeDto = new PlotTypeReadDto(0, createDto.PlotTypes!);
+            var plotType = PlotType.Create(0, createDto.PlotTypes!,createDto.SellingPrice,createDto.CurrencyId);
+            var plotTypeDto = new PlotTypeReadDto(0, createDto.PlotTypes!,5000,2,"USD","US DOLLAR");
 
             _unitOfWorkMock.Setup(x => x.PlotType.Get(It.IsAny<Expression<Func<PlotType, bool>>>(), null)).ReturnsAsync((PlotType)null!);
             _mapperMock.Setup(x => x.Map<PlotTypeReadDto>(It.IsAny<PlotType>())).Returns(plotTypeDto);
@@ -73,10 +75,12 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             var createDto = new PlotTypeCreateDto
             (
                 PlotTypes: "Test Type",
+                SellingPrice: 5000,
+                CurrencyId: 1,
                 CreatedBy: "testuser"
             );
 
-            var existingPlotType = PlotType.Create(2, "Test Type");
+            var existingPlotType = PlotType.Create(2, "Test Type", 5000, 2);
             _unitOfWorkMock.Setup(x => x.PlotType.Get(It.IsAny<Expression<Func<PlotType, bool>>>(), null)).ReturnsAsync(existingPlotType);
 
             // Act
@@ -96,11 +100,13 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             (
                 PlotTypeId: 1,
                 PlotTypes: "Updated Type",
+                SellingPrice: 5000,
+                CurrencyId: 1,
                 ModifiedBy: "testuser"
             );
 
-            var existingPlotType = PlotType.Create(1, "Old Type");
-            var PlotTypeDto = new PlotTypeReadDto(1, "Old Type");
+            var existingPlotType = PlotType.Create(1, "Old Type",4000,1);
+            var PlotTypeDto = new PlotTypeReadDto(1, "Old Type",4000,1,"GHC","GHANA CEDIS");
 
             _unitOfWorkMock.Setup(x => x.PlotType.Get(updateDto.PlotTypeId)).ReturnsAsync(existingPlotType);
             _mapperMock.Setup(x => x.Map<PlotTypeReadDto>(It.IsAny<PlotType>())).Returns(PlotTypeDto);
@@ -123,6 +129,8 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
             (
                 PlotTypeId: 999,
                 PlotTypes: "Test Type",
+                SellingPrice: 5000,
+                CurrencyId: 1,
                 ModifiedBy: "testuser"
             );
 
@@ -141,7 +149,7 @@ namespace Modules.Estates.UnitTest.ApplicationLayer.Setups
         {
             // Arrange
             int PlotTypeId = 1;
-            var existingPlotType = PlotType.Create(PlotTypeId, "Test Type");
+            var existingPlotType = PlotType.Create(PlotTypeId, "Test Type",0,0);
             _unitOfWorkMock.Setup(x => x.PlotType.Get(PlotTypeId)).ReturnsAsync(existingPlotType);
 
             // Act

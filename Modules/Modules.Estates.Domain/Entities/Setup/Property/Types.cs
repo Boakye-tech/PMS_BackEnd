@@ -45,11 +45,19 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
         public string[] Features { get; private set; }
 
         [Required]
+        public float Price { get; private set; }
+
+        [Required]
+        public int CurrencyId { get; private set; }
+
+        public virtual CurrencyExchangeRate? Currency { get; private set; }
+
+        [Required]
         [StringLength(100)]
         public string Notes { get; private set; }
 
 
-        public Types(int typeId, string code, string typeName, int rentalCategoryId, int rentalTypeId, string[] features, string notes)
+        public Types(int typeId, string code, string typeName, int rentalCategoryId, int rentalTypeId, string[] features, float price, int currencyId, string notes)
         {
             TypeId = typeId;
             Code = code;
@@ -60,11 +68,11 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
             Notes = notes;
         }
 
-        public static Types Create(int typeId, string code, string typeName, int rentalCategoryId, int rentalTypeId, string[] features, string notes)
+        public static Types Create(int typeId, string code, string typeName, int rentalCategoryId, int rentalTypeId, string[] features, float price, int currencyId, string notes)
         {
-            Validate(typeId, code, typeName, rentalCategoryId, rentalTypeId, features, notes);
+            Validate(typeId, code, typeName, rentalCategoryId, rentalTypeId, features, price, currencyId, notes);
 
-            return new Types(typeId, code, typeName, rentalCategoryId, rentalTypeId, features, notes)
+            return new Types(typeId, code, typeName, rentalCategoryId, rentalTypeId, features, price, currencyId, notes)
             {
                 TypeId = typeId,
                 Code = code,
@@ -72,23 +80,27 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
                 RentalCategoryId = rentalCategoryId,
                 RentalTypeId = rentalTypeId,
                 Features = features,
+                Price = price,
+                CurrencyId = currencyId,
                 Notes = notes
             };
         }
 
-        public void Update(int typeId, string code, string typeName, int rentalCategoryId, int rentalTypeId, string[] features, string notes)
+        public void Update(int typeId, string code, string typeName, int rentalCategoryId, int rentalTypeId, string[] features, float price, int currencyId, string notes)
         {
-            Validate(typeId, code, typeName, rentalCategoryId, rentalTypeId, features, notes);
+            Validate(typeId, code, typeName, rentalCategoryId, rentalTypeId, features, price, currencyId, notes);
 
             Code = code;
             TypeName = typeName;
             RentalCategoryId = rentalCategoryId;
             RentalTypeId = rentalTypeId;
             Features = features;
+            Price = price;
+            CurrencyId = currencyId;
             Notes = notes;
         }
 
-        private static void Validate(int typeId, string code, string typeName, int rentalCategoryId, int rentalTypeId, string[] features, string notes)
+        private static void Validate(int typeId, string code, string typeName, int rentalCategoryId, int rentalTypeId, string[] features, float Price, int CurrencyId, string notes)
         {
             if (typeId < 0)
                 throw new ArgumentException("Type Id must be greater than zero.");
@@ -107,6 +119,12 @@ namespace Modules.Estates.Domain.Entities.Setup.Property
 
             if (features == null || features.Length == 0)
                 throw new ArgumentException("Features cannot be empty.");
+
+            if (Price < 0)
+                throw new ArgumentException("Selling price or rental fee must be greater than zero.");
+
+            if (CurrencyId <= 0)
+                throw new ArgumentException("Currency Id must be greater than zero.");
 
             if (string.IsNullOrWhiteSpace(notes) || notes.Length > 100)
                 throw new ArgumentException("Notes cannot be empty or exceed 100 characters.");

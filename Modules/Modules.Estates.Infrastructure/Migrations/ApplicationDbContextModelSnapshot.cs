@@ -4843,6 +4843,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -4860,7 +4863,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<float>("SellingPrice")
+                        .HasColumnType("real");
+
                     b.HasKey("PlotTypeId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("PlotTypes")
                         .IsUnique();
@@ -4872,25 +4880,31 @@ namespace Modules.Estates.Infrastructure.Migrations
                         {
                             PlotTypeId = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PlotTypes = "SERVICED PLOT"
+                            PlotTypes = "SERVICED PLOT",
+                            SellingPrice = 24000f
                         },
                         new
                         {
                             PlotTypeId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 2,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PlotTypes = "PARTIALLY SERVICED PLOT"
+                            PlotTypes = "PARTIALLY SERVICED PLOT",
+                            SellingPrice = 12000f
                         },
                         new
                         {
                             PlotTypeId = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 1,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PlotTypes = "UNSERVICED PLOT"
+                            PlotTypes = "UNSERVICED PLOT",
+                            SellingPrice = 15000f
                         });
                 });
 
@@ -5668,6 +5682,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -5689,6 +5706,9 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
                     b.Property<int>("RentalCategoryId")
                         .HasColumnType("int");
 
@@ -5705,6 +5725,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
+                    b.HasIndex("CurrencyId");
+
                     b.HasIndex("RentalCategoryId");
 
                     b.HasIndex("RentalTypeId");
@@ -5720,10 +5742,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 1,
                             Code = "BB50",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"2 bedrooms\",\"1 livingRoom\",\"private kitchen\",\"private toilet\",\"private bath\",\"1 garage\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Spacious layout with attached garage and private kitchen.",
+                            Price = 0f,
                             RentalCategoryId = 1,
                             RentalTypeId = 3,
                             TypeName = "BB50 - 2 Bedroom House with Garage"
@@ -5733,10 +5757,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 2,
                             Code = "IRO8",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"1 bedrooms\",\"shared toilet\",\"shared bath\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Affordable housing for low-income earners, shared facilities.",
+                            Price = 0f,
                             RentalCategoryId = 1,
                             RentalTypeId = 1,
                             TypeName = "IRO8 - Single Room Low-Income Unit"
@@ -5746,10 +5772,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 3,
                             Code = "RRT87",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"3 bedrooms\",\"1 livingRoom\",\"kitchen\",\"private toilet\",\"private bath\",\"0 garage\",\"storeRoom\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Typical 3-bedroom family house with kitchen and living area.",
+                            Price = 0f,
                             RentalCategoryId = 1,
                             RentalTypeId = 3,
                             TypeName = "RRT87 - 3 Bedroom Standard House"
@@ -5759,10 +5787,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 4,
                             Code = "YYU9",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"3 bedrooms\",\"1 livingRoom\",\"kitchen\",\"private toilet\",\"private bath\",\"2 garage\",\"storeRoom\",\"lobby\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Premium family house with dual garages and ample storage space.",
+                            Price = 0f,
                             RentalCategoryId = 1,
                             RentalTypeId = 4,
                             TypeName = "YYU9 - 3 Bedroom House with 2 Garages"
@@ -5772,10 +5802,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 5,
                             Code = "FLAT",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"1 bedrooms\",\"1 livingRoom\",\"private kitchen\",\"private toilet\",\"private bath\",\"0 garage\",\"storeRoom\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Ideal for singles or couples. Compact but complete flat unit.",
+                            Price = 0f,
                             RentalCategoryId = 3,
                             RentalTypeId = 13,
                             TypeName = "1-Bedroom Self-Contained Flat"
@@ -5785,10 +5817,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 6,
                             Code = "A1",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"30 usableAreaSqm\",\"shared toilet\",\"shared bath\",\"PaidInternet\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Shared washroom, tiled floor, suitable for shop or office.",
+                            Price = 0f,
                             RentalCategoryId = 2,
                             RentalTypeId = 9,
                             TypeName = "A1 - Community Commercial Unit"
@@ -5798,10 +5832,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 7,
                             Code = "B2",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"45 usableAreaSqm\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Tenant to install internal partitions, ceiling, toilet. Power available.",
+                            Price = 0f,
                             RentalCategoryId = 2,
                             RentalTypeId = 7,
                             TypeName = "B2 - Shell Commercial Unit"
@@ -5811,10 +5847,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 8,
                             Code = "C3",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"25 usableAreaSqm\",\"shared toilet\",\"shared bath\",\"airConditioned\",\"internetReady\",\"furnished\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Includes reception, conference room, cleaning, utilities, WiFi. Ideal for professionals/startups.",
+                            Price = 0f,
                             RentalCategoryId = 2,
                             RentalTypeId = 10,
                             TypeName = "C3 - Serviced Office Suite"
@@ -5824,10 +5862,12 @@ namespace Modules.Estates.Infrastructure.Migrations
                             TypeId = 9,
                             Code = "D4",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CurrencyId = 0,
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Features = "[\"35 usableAreaSqm\",\"private toilet\",\"private bath\",\"airConditioned\",\"internetReady\",\"furnished\"]",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Notes = "Tiled floor, private toilet, retail shelving, ceiling fan, lockable shutters.",
+                            Price = 0f,
                             RentalCategoryId = 2,
                             RentalTypeId = 11,
                             TypeName = "D4 - Retail Shop Unit"
@@ -6211,6 +6251,17 @@ namespace Modules.Estates.Infrastructure.Migrations
                     b.Navigation("PlotType");
                 });
 
+            modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.PlotType", b =>
+                {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.CurrencyExchangeRate", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Currency");
+                });
+
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.RentalType", b =>
                 {
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.RentalCategory", "RentalCategory")
@@ -6235,6 +6286,12 @@ namespace Modules.Estates.Infrastructure.Migrations
 
             modelBuilder.Entity("Modules.Estates.Domain.Entities.Setup.Property.Types", b =>
                 {
+                    b.HasOne("Modules.Estates.Domain.Entities.Setup.CurrencyExchangeRate", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Modules.Estates.Domain.Entities.Setup.Property.RentalCategory", "RentalCategory")
                         .WithMany()
                         .HasForeignKey("RentalCategoryId")
@@ -6246,6 +6303,8 @@ namespace Modules.Estates.Infrastructure.Migrations
                         .HasForeignKey("RentalTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Currency");
 
                     b.Navigation("RentalCategory");
 

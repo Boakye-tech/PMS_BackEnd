@@ -17,7 +17,7 @@ public interface IPlotTypeService
     Task<ReturnResponsesDto> CreatePlotTypeAsync(PlotTypeCreateDto values);
     Task<ReturnResponsesDto> UpdatePlotTypeAsync(PlotTypeUpdateDto values);
     Task<ReturnResponsesDto> DeletePlotType(int PlotTypeId);
-    Task<IEnumerable<PlotTypeReadDto>> GetPlotTypeAsync();
+    Task<List<PlotTypeReadDto>> GetPlotTypeAsync();
     
 }
 

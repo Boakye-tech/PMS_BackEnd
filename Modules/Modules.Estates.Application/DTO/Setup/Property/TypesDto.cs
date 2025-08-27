@@ -12,16 +12,16 @@
 using System;
 namespace Modules.Estates.Application.DTO.Setup.Property
 {
-    public record TypesReadDto(int TypeId, string Code, string TypeName, int RentalCategoryId, string RentalCategory, int RentalTypeId, string RentalType, string[] Features, string Notes);
-    public record TypesCreateDto(int RentalCategoryId, int RentalTypeId, string Code, string TypeName, int[] Features, string Notes, string CreatedBy);
-    public record TypesUpdateDto(int TypeId, string Code, string TypeName, int[] Features, string Notes, string ModifiedBy);
+    public record TypesReadDto(int TypeId, string Code, string TypeName, int RentalCategoryId, string RentalCategory, int RentalTypeId, string RentalType, string[] Features, float sellingPrice, int currencyId, string currencyInitial , string currency, string Notes);
+    public record TypesCreateDto(int RentalCategoryId, int RentalTypeId, string Code, string TypeName, int[] Features, float Price, int CurrencyId, string Notes, string CreatedBy);
+    public record TypesUpdateDto(int TypeId, string Code, string TypeName, int[] Features, float Price, int CurrencyId, string Notes, string ModifiedBy);
     public record TypesDeleteDto(int TypeId, string DeletedBy);
 
 
 
     public record AllTypesFeaturesReadDto(int featureId, string feature);
 
-    public record AllTypesReadDto(int TypeId, string Code, string TypeName, List<AllTypesFeaturesReadDto> Features, string Notes);
+    public record AllTypesReadDto(int TypeId, string Code, string TypeName, List<AllTypesFeaturesReadDto> Features, float sellingPrice, int currencyId, string currencyInitial, string currency, string Notes);
     public record AllRentalTypesReadDto(int RentalTypeId, string RentalType, List<AllTypesReadDto> TypesPerRentalType);
     public record AllTypesRentalCategoryDto(int RentalCategoryId, string RentalCategory, List<AllRentalTypesReadDto> RentalTypesPerCategory);
 

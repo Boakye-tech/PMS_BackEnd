@@ -13,7 +13,7 @@
 
 namespace Modules.Estates.Application.DTO.Setup.Property;
 
-public record PlotTypeReadDto(int PlotTypeId, string PlotTypes);
-public record PlotTypeCreateDto(string PlotTypes, string CreatedBy);
-public record PlotTypeUpdateDto(int PlotTypeId, string PlotTypes, string ModifiedBy);
+public record PlotTypeReadDto(int PlotTypeId, string PlotTypes, float SellingPrice, int CurrencyId, string CurrencyInitial, string CurrencyName);
+public record PlotTypeCreateDto(string PlotTypes, float SellingPrice, int CurrencyId, string CreatedBy);
+public record PlotTypeUpdateDto(int PlotTypeId, string PlotTypes, float SellingPrice, int CurrencyId, string ModifiedBy);
 public record PlotTypeDeleteDto(int PlotTypeId);

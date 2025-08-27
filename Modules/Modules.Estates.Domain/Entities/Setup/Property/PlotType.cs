@@ -22,33 +22,53 @@ public class PlotType : AuditableEntity
     [StringLength(50)]
     public string PlotTypes { get; private set; }
 
-    public PlotType(int plotTypeId, string plotTypes)
+    [Required]
+    public float SellingPrice { get; private set; }
+
+    [Required]
+    public int CurrencyId { get; private set; }
+
+    public virtual CurrencyExchangeRate? Currency { get; private set; }
+
+
+    public PlotType(int plotTypeId, string plotTypes, float sellingPrice, int currencyId)
     {
         PlotTypeId = plotTypeId;
         PlotTypes = plotTypes;
+        SellingPrice = sellingPrice;
+        CurrencyId = currencyId;
     }
 
-    public static PlotType Create(int plotTypeId, string plotTypes)
+    public static PlotType Create(int plotTypeId, string plotTypes, float sellingPrice, int currencyId)
     {
-        Validate(plotTypeId, plotTypes);
-        return new PlotType(plotTypeId, plotTypes);
+        Validate(plotTypeId, plotTypes, sellingPrice, currencyId);
+        return new PlotType(plotTypeId, plotTypes, sellingPrice, currencyId);
     }
 
-    public void Update(int plotTypeId, string plotTypes)
+    public void Update(int plotTypeId, string plotTypes, float sellingPrice, int currencyId)
     {
-        Validate(plotTypeId, plotTypes);
+        Validate(plotTypeId, plotTypes, sellingPrice, currencyId);
 
         PlotTypeId = plotTypeId;
         PlotTypes = plotTypes;
+        SellingPrice = sellingPrice;
+        CurrencyId = currencyId;
     }
 
-    private static void Validate(int plotTypeId, string plotTypes)
+    private static void Validate(int plotTypeId, string plotTypes, float sellingPrice, int currencyId)
     {
         if (plotTypeId < 0)
             throw new ArgumentException("Plot Type Id must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(plotTypes))
             throw new ArgumentException("Plot Type cannot be empty or exceed 50 characters.");
+
+        if (sellingPrice <= 0)
+            throw new ArgumentException("Selling price must be greater than zero.");
+
+        if (currencyId <= 0)
+            throw new ArgumentException("Currency Id must be greater than zero.");
+
     }
 }
 

@@ -26,10 +26,22 @@ public class PlotTypeService : IPlotTypeService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<PlotTypeReadDto>> GetPlotTypeAsync()
+    public async Task<List<PlotTypeReadDto>> GetPlotTypeAsync()
     {
-        var PlotType = await _unitOfWork.PlotType.GetAll();
-        return _mapper.Map<IEnumerable<PlotTypeReadDto>>(PlotType);
+        //var PlotType = await _unitOfWork.PlotType.GetAll(includes: new List<string> { "Currency" });
+        //return _mapper.Map<List<PlotTypeReadDto>>(PlotType);
+
+        return await _unitOfWork.PlotType
+       .GetQueryable() 
+       .Select(pt => new PlotTypeReadDto(
+           pt.PlotTypeId,
+           pt.PlotTypes,
+           pt.SellingPrice,
+           pt.CurrencyId,
+           pt.Currency!.CurrencyInitial!,
+           pt.Currency!.CurrencyName!
+       ))
+       .ToListAsync();
     }
 
 
@@ -48,7 +60,7 @@ public class PlotTypeService : IPlotTypeService
                 };
             }
 
-            var plotType = PlotType.Create(0, values.PlotTypes!);
+            var plotType = PlotType.Create(0, values.PlotTypes!, values.SellingPrice, values.CurrencyId);
             plotType.CreatedBy = values.CreatedBy;
             plotType.CreatedOn = DateTime.Now;
 
@@ -94,7 +106,7 @@ public class PlotTypeService : IPlotTypeService
                 };
             }
 
-            PlotType.Update(values.PlotTypeId, values.PlotTypes!);
+            PlotType.Update(values.PlotTypeId, values.PlotTypes!, values.SellingPrice,values.CurrencyId);
             PlotType.ModifiedBy = values.ModifiedBy;
             PlotType.ModifiedOn = DateTime.Now;
 

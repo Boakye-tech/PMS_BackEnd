@@ -41,16 +41,22 @@ namespace Modules.Estates.Infrastructure.Configuration
                    .HasForeignKey(t => t.RentalTypeId)
                    .OnDelete(DeleteBehavior.Restrict);
 
+            // Configure the one-to-many relationship with currency
+            builder.HasOne(t => t.Currency)
+                   .WithMany()
+                   .HasForeignKey(t => t.CurrencyId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasData(
-                new Types(1, "BB50", "BB50 - 2 Bedroom House with Garage", 1, 3, new[] { "2 bedrooms", "1 livingRoom", "private kitchen", "private toilet", "private bath", "1 garage" }, "Spacious layout with attached garage and private kitchen."),
-                new Types(2, "IRO8", "IRO8 - Single Room Low-Income Unit", 1, 1, new[] { "1 bedrooms", "shared toilet", "shared bath" }, "Affordable housing for low-income earners, shared facilities."),
-                new Types(3, "RRT87", "RRT87 - 3 Bedroom Standard House", 1, 3, new[] { "3 bedrooms", "1 livingRoom", "kitchen", "private toilet", "private bath", "0 garage", "storeRoom" }, "Typical 3-bedroom family house with kitchen and living area."),
-                new Types(4, "YYU9", "YYU9 - 3 Bedroom House with 2 Garages", 1, 4, new[] { "3 bedrooms", "1 livingRoom", "kitchen", "private toilet", "private bath", "2 garage", "storeRoom", "lobby" }, "Premium family house with dual garages and ample storage space."),
-                new Types(5, "FLAT", "1-Bedroom Self-Contained Flat", 3, 13, new[] { "1 bedrooms", "1 livingRoom", "private kitchen", "private toilet", "private bath", "0 garage", "storeRoom" }, "Ideal for singles or couples. Compact but complete flat unit."),
-                new Types(6, "A1", "A1 - Community Commercial Unit", 2, 9, new[] { "30 usableAreaSqm", "shared toilet", "shared bath", "PaidInternet" }, "Shared washroom, tiled floor, suitable for shop or office."),
-                new Types(7, "B2", "B2 - Shell Commercial Unit", 2, 7, new[] { "45 usableAreaSqm" }, "Tenant to install internal partitions, ceiling, toilet. Power available."),
-                new Types(8, "C3", "C3 - Serviced Office Suite", 2, 10, new[] { "25 usableAreaSqm", "shared toilet", "shared bath", "airConditioned", "internetReady", "furnished" }, "Includes reception, conference room, cleaning, utilities, WiFi. Ideal for professionals/startups."),
-                new Types(9, "D4", "D4 - Retail Shop Unit", 2, 11, new[] { "35 usableAreaSqm", "private toilet", "private bath", "airConditioned", "internetReady", "furnished" }, "Tiled floor, private toilet, retail shelving, ceiling fan, lockable shutters.")
+                new Types(1, "BB50", "BB50 - 2 Bedroom House with Garage", 1, 3, new[] { "2 bedrooms", "1 livingRoom", "private kitchen", "private toilet", "private bath", "1 garage" }, 17500, 2, "Spacious layout with attached garage and private kitchen."),
+                new Types(2, "IRO8", "IRO8 - Single Room Low-Income Unit", 1, 1, new[] { "1 bedrooms", "shared toilet", "shared bath" }, 8000, 2, "Affordable housing for low-income earners, shared facilities."),
+                new Types(3, "RRT87", "RRT87 - 3 Bedroom Standard House", 1, 3, new[] { "3 bedrooms", "1 livingRoom", "kitchen", "private toilet", "private bath", "0 garage", "storeRoom" }, 22000, 2, "Typical 3-bedroom family house with kitchen and living area."),
+                new Types(4, "YYU9", "YYU9 - 3 Bedroom House with 2 Garages", 1, 4, new[] { "3 bedrooms", "1 livingRoom", "kitchen", "private toilet", "private bath", "2 garage", "storeRoom", "lobby" }, 24000, 2, "Premium family house with dual garages and ample storage space."),
+                new Types(5, "FLAT", "1-Bedroom Self-Contained Flat", 3, 13, new[] { "1 bedrooms", "1 livingRoom", "private kitchen", "private toilet", "private bath", "0 garage", "storeRoom" }, 8000, 1, "Ideal for singles or couples. Compact but complete flat unit."),
+                new Types(6, "A1", "A1 - Community Commercial Unit", 2, 9, new[] { "30 usableAreaSqm", "shared toilet", "shared bath", "PaidInternet" }, 10000, 1, "Shared washroom, tiled floor, suitable for shop or office."),
+                new Types(7, "B2", "B2 - Shell Commercial Unit", 2, 7, new[] { "45 usableAreaSqm" }, 12000, 1, "Tenant to install internal partitions, ceiling, toilet. Power available."),
+                new Types(8, "C3", "C3 - Serviced Office Suite", 2, 10, new[] { "25 usableAreaSqm", "shared toilet", "shared bath", "airConditioned", "internetReady", "furnished" }, 2140, 2, "Includes reception, conference room, cleaning, utilities, WiFi. Ideal for professionals/startups."),
+                new Types(9, "D4", "D4 - Retail Shop Unit", 2, 11, new[] { "35 usableAreaSqm", "private toilet", "private bath", "airConditioned", "internetReady", "furnished" }, 865, 2,"Tiled floor, private toilet, retail shelving, ceiling fan, lockable shutters.")
 
                 );
         }

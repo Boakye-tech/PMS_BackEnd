@@ -71,6 +71,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     values.RentalCategoryId,
                     values.RentalTypeId,
                     features!,
+                    values.Price,
+                    values.CurrencyId,
                     values.Notes!
                 );
 
@@ -134,97 +136,10 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
             }
         }
 
-        //public async Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync()
-        //{
-        //    try
-        //    {
-        //        // Step 1: Fetch all Types with RentalCategory and RentalType included
-        //        var types = await _unitOfWork.Types.GetAll(includes: new List<string> { "RentalCategory", "RentalType" });
-
-        //        // Step 2: Group and project into nested DTOs
-        //        var result = types
-        //            .GroupBy(t => new { t.RentalCategoryId, t.RentalCategory!.RentalCategories })
-        //            .Select(categoryGroup =>
-        //            {
-        //                var rentalTypesPerCategory = categoryGroup
-        //                    .GroupBy(t => new { t.RentalTypeId, t.RentalType!.RentalTypes })
-        //                    .Select(typeGroup =>
-        //                    {
-        //                        /*
-        //                        var typesPerRentalType = typeGroup.Select(t => new AllTypesReadDto(
-        //                            t.TypeId,
-        //                            t.Code,
-        //                            t.TypeName,
-        //                            t.Features,
-        //                            t.Notes
-        //                        )).ToList();
-        //                        */
-
-        //                        var typesPerRentalType = typeGroup.Select(t =>
-        //                        {
-        //                            var featureDtos = new List<AllTypesFeaturesReadDto>();
-
-        //                            if (t.Features != null)
-        //                            {
-        //                                foreach (var f in t.Features)
-        //                                {
-        //                                    if (string.IsNullOrWhiteSpace(f))
-        //                                        continue;
-
-        //                                    var parts = f.Split(" - ", 2, StringSplitOptions.TrimEntries);
-
-        //                                    if (parts.Length == 2 && int.TryParse(parts[0], out int featureId))
-        //                                    {
-        //                                        // Format: "9 - BEDROOM 1"
-        //                                        featureDtos.Add(new AllTypesFeaturesReadDto(featureId, parts[1]));
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        // Format: "BEDROOM 1" — no ID
-        //                                        featureDtos.Add(new AllTypesFeaturesReadDto(0, f.Trim()));
-        //                                    }
-        //                                }
-        //                            }
-
-        //                            return new AllTypesReadDto(
-        //                                t.TypeId,
-        //                                t.Code,
-        //                                t.TypeName,
-        //                                featureDtos,
-        //                                t.Notes
-        //                            );
-        //                        }).ToList();
-
-
-
-        //                        return new AllRentalTypesReadDto(
-        //                            typeGroup.Key.RentalTypeId,
-        //                            typeGroup.Key.RentalTypes,
-        //                            typesPerRentalType
-        //                        );
-        //                    }).ToList();
-
-        //                return new AllTypesRentalCategoryDto(
-        //                    categoryGroup.Key.RentalCategoryId,
-        //                    categoryGroup.Key.RentalCategories,
-        //                    rentalTypesPerCategory
-        //                );
-        //            }).ToList();
-
-        //        // Step 3: Return the nested DTO result
-        //        return result;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return null!;
-        //    }
-
-        //}
 
         public async Task<List<AllTypesRentalCategoryDto>> GetAllTypesAsync(string? searchTerm)
         {
-            var types = await _unitOfWork.Types.GetAll(includes: new List<string> { "RentalCategory", "RentalType" });
+            var types = await _unitOfWork.Types.GetAll(includes: new List<string> { "RentalCategory", "RentalType", "Currency" });
 
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -243,6 +158,10 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                         t.Code,
                                         t.TypeName,
                                         ParseFeatures(t.Features),
+                                        t.Price,
+                                        t.CurrencyId,
+                                        t.Currency!.CurrencyInitial!,
+                                        t.Currency!.CurrencyName!,
                                         t.Notes
                                     )).ToList();
 
@@ -283,13 +202,17 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                     t.Code,
                                     t.TypeName,
                                     ParseFeatures(t.Features),
+                                    t.Price,
+                                    t.CurrencyId,
+                                    t.Currency!.CurrencyInitial!,
+                                    t.Currency!.CurrencyName!,
                                     t.Notes
                                 )).ToList()
                             )).ToList();
 
                         return new AllTypesRentalCategoryDto(
                             categoryGroup.Key.RentalCategoryId,
-                            categoryGroup.Key.RentalCategories,
+                            categoryGroup.Key.RentalCategories!,
                             allRentalTypes
                         );
                     }
@@ -307,12 +230,16 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                 // Rental type matched → return all types
                                 return new AllRentalTypesReadDto(
                                     typeGroup.Key.RentalTypeId,
-                                    typeGroup.Key.RentalTypes,
+                                    typeGroup.Key.RentalTypes!,
                                     typeGroup.Select(t => new AllTypesReadDto(
                                         t.TypeId,
                                         t.Code,
                                         t.TypeName,
                                         ParseFeatures(t.Features),
+                                        t.Price,
+                                        t.CurrencyId,
+                                        t.Currency!.CurrencyInitial!,
+                                        t.Currency!.CurrencyName!,
                                         t.Notes
                                     )).ToList()
                                 );
@@ -332,6 +259,10 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                                     t.Code,
                                     t.TypeName,
                                     ParseFeatures(t.Features),
+                                    t.Price,
+                                    t.CurrencyId,
+                                    t.Currency!.CurrencyInitial!,
+                                    t.Currency!.CurrencyName!,
                                     t.Notes
                                 ))
                                 .ToList();
@@ -340,7 +271,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                             {
                                 return new AllRentalTypesReadDto(
                                     typeGroup.Key.RentalTypeId,
-                                    typeGroup.Key.RentalTypes,
+                                    typeGroup.Key.RentalTypes!,
                                     matchingTypes
                                 );
                             }
@@ -354,8 +285,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     {
                         return new AllTypesRentalCategoryDto(
                             categoryGroup.Key.RentalCategoryId,
-                            categoryGroup.Key.RentalCategories,
-                            filteredRentalTypes
+                            categoryGroup.Key.RentalCategories!,
+                            filteredRentalTypes!
                         );
                     }
 
@@ -435,6 +366,10 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                         t.Code,
                         t.TypeName,
                         featureDtos,
+                        t.Price,
+                        t.CurrencyId,
+                        t.Currency!.CurrencyInitial!,
+                        t.Currency.CurrencyName!,
                         t.Notes
                     );
                 }).ToList();
@@ -505,6 +440,8 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                     types.RentalCategoryId,
                     types.RentalTypeId,
                     features!,
+                    values.Price,
+                    values.CurrencyId,
                     values.Notes!
                 );
 
