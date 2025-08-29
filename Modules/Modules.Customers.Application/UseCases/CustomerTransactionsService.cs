@@ -23,7 +23,8 @@ namespace Modules.Customers.Application.UseCases
         public async Task<GenericResponseDto> AddNewCustomerTransactionDetails(CustomerTransactionsDto values)
         {
             //throw new NotImplementedException();
-            CustomerTransactions transactions = CustomerTransactions.AddCustomerTransaction(0, values.TransactionNumber, values.PropertyNumber, values.CustomerCode, values.TransactionDate, values.ReferenceNumber, values.ChequeNumber, values.Narration ,values.Amount, values.AccountCode, values.EntryType,values.TransactionType);
+            CustomerTransactions transactions = CustomerTransactions.AddCustomerTransaction(0, values.TransactionNumber, values.PropertyNumber, values.CustomerCode, values.TransactionDate,
+                values.ReferenceNumber, values.ChequeNumber,values.Narration ,values.Amount, values.AccountCode, values.EntryType,values.TransactionType);
 
             _unitOfWork.CustomerTransaction.Insert(transactions);
             await _unitOfWork.Complete();

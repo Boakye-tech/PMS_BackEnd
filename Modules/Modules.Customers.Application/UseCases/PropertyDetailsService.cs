@@ -9,6 +9,8 @@
 //  **************************************************/
 
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Modules.Customers.Application.UseCases
 {
 	public class PropertyDetailsService : IPropertyDetailsService
@@ -76,6 +78,7 @@ namespace Modules.Customers.Application.UseCases
 
         public  async Task<IEnumerable<PropertySummaryMobileViewDto>> GetPropertySummaryMobile(string customerCode)
         {
+            /*
             var summary = (await _unitOfWork.CustomerTransaction.GetAll(ct => ct.CustomerCode == customerCode))
                       .Join(await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode),
                                 transaction => transaction.PropertyNumber,
@@ -100,6 +103,43 @@ namespace Modules.Customers.Application.UseCases
                             .ToList();
 
             return summary;
+            */
+
+
+            var transactions = await _unitOfWork.CustomerTransaction.GetAll(ct => ct.CustomerCode == customerCode);
+            var properties = await _unitOfWork.PropertyDetails.GetAll(pd => pd.CustomerCode == customerCode);
+
+            var summary = properties
+                .GroupJoin(
+                    transactions,
+                    property => property.PropertyNumber,
+                    transaction => transaction.PropertyNumber,
+                    (property, transactionGroup) => new { property, transactionGroup }
+                )
+                .SelectMany(
+                    x => x.transactionGroup.DefaultIfEmpty(), // ensures LEFT JOIN
+                    (x, transaction) => new PropertySummaryMobileViewDto
+                    {
+                        PropertyNumber = x.property.PropertyNumber,
+                        Address = x.property.Locality,
+                        LandUse = x.property.LandUse,
+                        Balance = transaction != null ? transaction.Amount : 0,
+                        Image = x.property.ImageOne
+                    }
+                )
+                .GroupBy(t => new { t.PropertyNumber, t.LandUse, t.Image, t.Address })
+                .Select(g => new PropertySummaryMobileViewDto
+                {
+                    PropertyNumber = g.Key.PropertyNumber,
+                    Address = g.Key.Address,
+                    LandUse = g.Key.LandUse,
+                    Balance = g.Sum(t => t.Balance),
+                    Image = g.Key.Image
+                })
+                .ToList();
+
+            return summary;
+
 
         }
 
@@ -114,10 +154,10 @@ namespace Modules.Customers.Application.UseCases
                 Image = pd.ImageOne
             }).ToList();
 
-            
-            return summary;
 
+            return summary;
         }
+
 
         public async Task<List<PropertySearchDto>> GetCustomerPropertySearch(string customerCode_OR_propertyNumber)
         {

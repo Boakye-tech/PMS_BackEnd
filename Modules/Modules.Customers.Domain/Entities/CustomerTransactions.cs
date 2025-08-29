@@ -68,7 +68,7 @@ namespace Modules.Customers.Domain.Entities
 
         public static CustomerTransactions AddCustomerTransaction(int customerTransactionId, string transactionNumber, string propertyNumber, string customerCode, DateTime transactionDate, string? referenceNumber, string? chequeNumber, string narration, decimal amount, int accountCode, EntryTypeEnum entryType, string transactionType)
         {
-            if (string.IsNullOrWhiteSpace(transactionNumber) || string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(customerCode) || string.IsNullOrWhiteSpace(transactionType) || string.IsNullOrWhiteSpace(transactionType) || string.IsNullOrWhiteSpace(narration) || amount < 0 || accountCode < 0)
+            if (string.IsNullOrWhiteSpace(transactionNumber) || string.IsNullOrWhiteSpace(propertyNumber) || string.IsNullOrWhiteSpace(customerCode) || string.IsNullOrWhiteSpace(transactionType) || string.IsNullOrWhiteSpace(transactionType) || string.IsNullOrWhiteSpace(narration)  || accountCode < 0) //|| amount < 0
             {
                 throw new ArgumentException("Invalid customer transaction details data.");
             }
@@ -99,10 +99,10 @@ namespace Modules.Customers.Domain.Entities
                 throw new ArgumentException("Transaction date must not be an invalid date.");
             }
 
-            if (amount <= 0)
-            {
-                throw new ArgumentException("Transaction amount must be greater than zero.");
-            }
+            //if (amount <= 0)
+            //{
+            //    throw new ArgumentException("Transaction amount must be greater than zero.");
+            //}
 
             if (accountCode <= 0)
             {

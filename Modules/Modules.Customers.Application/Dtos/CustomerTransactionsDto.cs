@@ -40,7 +40,7 @@ namespace Modules.Customers.Application.Dtos
 
         public required int AccountCode { get; set; }
 
-        [StringLength(2)]
+        //[StringLength(2)]
         public required EntryTypeEnum EntryType { get; set; }
 
         [StringLength(3)]

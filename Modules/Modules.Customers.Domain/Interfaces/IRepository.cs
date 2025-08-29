@@ -41,6 +41,9 @@ namespace Modules.Customers.Domain.Interfaces
         void Update(TEntity entity);
 
         void UpdateRange(IEnumerable<TEntity> entities);
+
+        IQueryable<TEntity> GetQuery(Expression<Func<TEntity, bool>>? expression = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, List<string>? includes = null);
+
     }
 }
 

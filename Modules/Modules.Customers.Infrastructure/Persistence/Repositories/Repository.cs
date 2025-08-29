@@ -67,6 +67,25 @@ namespace Modules.Customers.Infrastructure.Persistence.Repositories
 
         public async Task<IList<TEntity>> GetAll() => await _dbContext.Set<TEntity>().ToListAsync();
 
+        public IQueryable<TEntity> GetQuery(Expression<Func<TEntity, bool>>? expression = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, List<string>? includes = null)
+        {
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+            if (expression != null)
+                query = query.Where(expression);
+
+            if (includes != null)
+            {
+                foreach (var includeProperty in includes)
+                    query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+                query = orderBy(query);
+
+            return query.AsNoTracking();
+        }
+
         public async void Insert(TEntity entity) => await _dbContext.Set<TEntity>().AddAsync(entity);
 
         public async void InsertRange(IEnumerable<TEntity> entities) => await _dbContext.Set<TEntity>().AddRangeAsync(entities);
