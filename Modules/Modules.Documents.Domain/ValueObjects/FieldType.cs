@@ -17,7 +17,7 @@ namespace Modules.Documents.Domain.ValueObjects
         public static readonly FieldType Text = new("Text");
         public static readonly FieldType Number = new("Number");
         public static readonly FieldType Email = new("Email");
-        public static readonly FieldType Tel = new("Tel");
+        //public static readonly FieldType Tel = new("Tel");
         public static readonly FieldType Date = new("Date");
         public static readonly FieldType Dropdown = new("Dropdown");
         public static readonly FieldType Checkbox = new("Checkbox");
@@ -34,7 +34,7 @@ namespace Modules.Documents.Domain.ValueObjects
                 "text" => Text,
                 "number" => Number,
                 "email" => Email,
-                "tel" => Tel,
+                //"tel" => Tel,
                 "date" => Date,
                 "dropdown" => Dropdown,
                 "checkbox" => Checkbox,

@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Documents.Application.Dtos;
+using Modules.Documents.Application.Dtos.ApplicationForm;
 using Modules.Documents.Application.Dtos.FormTemplates;
 using Modules.Documents.Application.Interfaces;
 
@@ -16,9 +17,12 @@ public class DocumentsController : ControllerBase
 {
     private readonly IFormTemplateService _formTemplateService;
 
-    public DocumentsController(IFormTemplateService formTemplateService)
+    private readonly IFormSubmissionService _formSubmissionService;
+
+    public DocumentsController(IFormTemplateService formTemplateService, IFormSubmissionService formSubmissionService)
     {
         _formTemplateService = formTemplateService;
+        _formSubmissionService = formSubmissionService;
     }
 
     [HttpGet]
@@ -28,6 +32,7 @@ public class DocumentsController : ControllerBase
     public async Task<ActionResult> GetPlotFeatures()
     {
         return Ok(await _formTemplateService.GetAllFormTemplatesAsync());
+
     }
 
 
@@ -72,7 +77,7 @@ public class DocumentsController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("UpdateFormTemplate")]
     //[Authorize(Policy = "Permission:PropertySetup.CREATE")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
@@ -92,6 +97,206 @@ public class DocumentsController : ControllerBase
             //}
 
             var result = await _formTemplateService.UpdateFormTemplateAsync(values.FormTemplateId, values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPost]
+    [Route("CreateApplicationForm")]
+    //[Authorize(Policy = "Permission:PropertySetup.CREATE")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> CreateApplicationForm([FromBody] CreateFormSubmissionDto values)
+    {
+        try
+        {
+            //var userId = _userContextService.GetUserId();
+
+            //if (!string.Equals(userId, values.createdBy))
+            //{
+            //    return Unauthorized();
+            //}
+
+            var result = await _formSubmissionService.CreateSubmissionAsync(values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdateApplicationForm")]
+    //[Authorize(Policy = "Permission:PropertySetup.CREATE")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> UpdateApplicationForm([FromBody] UpdateFormSubmissionDto values)
+    {
+        try
+        {
+            //var userId = _userContextService.GetUserId();
+
+            //if (!string.Equals(userId, values.createdBy))
+            //{
+            //    return Unauthorized();
+            //}
+
+            var result = await _formSubmissionService.UpdateSubmissionAsync(values.FormSubmissionId , values);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+
+    [HttpGet]
+    [Route("GetApplications")]
+    //[Authorize(Policy = "Permission:PropertySetup.READ")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<FormSubmissionDto>))]
+    public async Task<ActionResult> GetApplications([FromQuery] int? applicationId = null,[FromQuery] string? emailAddress = null,[FromQuery] int? templateId = null)
+    {
+        if (applicationId.HasValue)
+        {
+            return Ok(await _formSubmissionService.GetSubmissionByIdAsync(applicationId.Value));
+        }
+
+        if (!string.IsNullOrWhiteSpace(emailAddress))
+        {
+            return Ok(await _formSubmissionService.GetSubmissionsByApplicantAsync(emailAddress));
+        }
+
+        if (templateId.HasValue)
+        {
+            return Ok(await _formSubmissionService.GetSubmissionsByTemplateAsync(templateId.Value));
+        }
+
+        return Ok(new List<FormSubmissionDto>()); // return empty list instead of Ok() for consistency
+    }
+
+
+    [HttpGet]
+    [Route("GetApplicationsSubmittedSummary")]
+    //[Authorize(Policy = "Permission:PropertySetup.READ")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SubmissionSummaryDto))]
+    public async Task<ActionResult> GetApplicationsSubmittedSummary()
+    {
+        return Ok(await _formSubmissionService.GetSubmissionSummaryAsync());
+    }
+
+
+    [HttpPost]
+    [Route("SubmitApplicationForm")]
+    //[Authorize(Policy = "Permission:PropertySetup.CREATE")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> SubmitApplicationForm([FromBody] int id)
+    {
+        try
+        {
+            //var userId = _userContextService.GetUserId();
+
+            //if (!string.Equals(userId, values.createdBy))
+            //{
+            //    return Unauthorized();
+            //}
+
+            var result = await _formSubmissionService.SubmitSubmissionAsync(id);
+
+            if (result.IsSuccess)
+            {
+                return StatusCode(StatusCodes.Status201Created, result.SuccessResponse);
+            }
+
+            var status = result.ErrorResponse!.Code;
+            return status switch
+            {
+                204 => StatusCode(StatusCodes.Status204NoContent, result.ErrorResponse),
+                400 => BadRequest(result.ErrorResponse),
+                404 => NotFound(result.ErrorResponse),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, result.ErrorResponse),
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.InnerException!.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("UpdateSubmissionStatus")]
+    //[Authorize(Policy = "Permission:PropertySetup.CREATE")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+    public async Task<ActionResult> UpdateSubmissionStatus([FromBody] UpdateFormSubmissionStatusDto values)
+    {
+        try
+        {
+            //var userId = _userContextService.GetUserId();
+
+            //if (!string.Equals(userId, values.createdBy))
+            //{
+            //    return Unauthorized();
+            //}
+
+            var result = await _formSubmissionService.UpdateSubmissionStatusAsync(values);
 
             if (result.IsSuccess)
             {

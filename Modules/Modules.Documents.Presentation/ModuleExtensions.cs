@@ -28,6 +28,7 @@ namespace Modules.Documents.Presentation
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IFormTemplateService, FormTemplateService>();
+            services.AddScoped<IFormSubmissionService, FormSubmissionService>();
 
             return services;
         }

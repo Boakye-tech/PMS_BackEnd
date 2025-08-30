@@ -25,10 +25,9 @@ namespace Modules.Documents.Domain.Entities
         public string Name { get; private set; }
 
         public string? Description { get; private set; }
-        //private readonly List<FormFields> _fields = new();
-        //public IReadOnlyCollection<FormFields> Fields => _fields;
+        
 
-        //Navigation property for LandUseTypes
+        //Navigation property for Form Fields
         public ICollection<FormFields> Fields { get; set; } = new List<FormFields>();
 
         // Private constructor for EF Core

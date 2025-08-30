@@ -12,8 +12,8 @@ using Modules.Documents.Infrastructure.Persistance;
 namespace Modules.Documents.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250830005648_AddRelationship")]
-    partial class AddRelationship
+    [Migration("20250830173156_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,78 @@ namespace Modules.Documents.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.ApplicationFormResponse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FormFieldId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FormSubmissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FormTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ResponseValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FormFieldId");
+
+                    b.HasIndex("FormSubmissionId");
+
+                    b.ToTable("ApplicationFormResponse", "doc");
+                });
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.ApplicationFormSubmission", b =>
+                {
+                    b.Property<int>("FormSubmissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormSubmissionId"), 1000000L);
+
+                    b.Property<string>("ApplicantEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicantName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FormTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("FormSubmissionId");
+
+                    b.HasIndex("FormTemplateId");
+
+                    b.ToTable("ApplicationFormSubmission", "doc");
+                });
 
             modelBuilder.Entity("Modules.Documents.Domain.Entities.FormFields", b =>
                 {
@@ -57,9 +129,6 @@ namespace Modules.Documents.Infrastructure.Migrations
                     b.Property<int>("FormTemplateId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FormTemplatesFormTemplateId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsRequired")
                         .HasColumnType("bit");
 
@@ -81,8 +150,6 @@ namespace Modules.Documents.Infrastructure.Migrations
 
                     b.HasIndex("FormTemplateId");
 
-                    b.HasIndex("FormTemplatesFormTemplateId");
-
                     b.ToTable("FormFields", "doc");
 
                     b.HasData(
@@ -92,7 +159,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "image",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Passport Size Photograph",
@@ -105,7 +172,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "text",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Full Name (Mr./Mrs./Dr/)",
@@ -118,7 +185,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "text",
                             FormTemplateId = 1,
                             IsRequired = false,
                             Label = "Registered Business Address",
@@ -131,7 +198,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "text",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Postal Address",
@@ -144,7 +211,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "tel",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Telephone Number",
@@ -157,7 +224,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "text",
                             FormTemplateId = 1,
                             IsRequired = false,
                             Label = "Residential Address",
@@ -170,10 +237,10 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "tel",
                             FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Telephone Number",
+                            IsRequired = false,
+                            Label = "Office Number",
                             Options = "",
                             Order = 7
                         },
@@ -183,7 +250,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "email",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Email Address",
@@ -196,7 +263,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "dropdown",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Nationality",
@@ -209,7 +276,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "dropdown",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Residential Status",
@@ -222,7 +289,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "Date",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Age(DOB)",
@@ -235,11 +302,11 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "dropdown",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "How did you hear about our product",
-                            Options = "Internet,TV,Radio,Newspapers",
+                            Options = "Internet,TV,Radio,Customer",
                             Order = 12
                         },
                         new
@@ -248,7 +315,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "text",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Type Of House (State Number Of Rooms)",
@@ -261,7 +328,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "text",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Detached",
@@ -274,11 +341,11 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "dropdown",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Community(Locality)",
-                            Options = "Resident,Non-Resident",
+                            Options = "",
                             Order = 15
                         },
                         new
@@ -287,7 +354,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "text",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "House Number",
@@ -300,11 +367,11 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "number",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Selling Price",
-                            Options = "Internet,TV,Radio,Newspapers",
+                            Options = "",
                             Order = 17
                         },
                         new
@@ -313,12 +380,25 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Text",
+                            FieldType = "text",
                             FormTemplateId = 1,
                             IsRequired = true,
                             Label = "Customer Code",
                             Options = "",
                             Order = 18
+                        },
+                        new
+                        {
+                            FormFieldId = 19,
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FieldType = "signature",
+                            FormTemplateId = 1,
+                            IsRequired = true,
+                            Label = "Signature of applicant",
+                            Options = "",
+                            Order = 19
                         });
                 });
 
@@ -367,7 +447,7 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Lands Commission requirement for preparation of cadastral plans.",
+                            Description = "Required form for initiating the house purchase process and fulfilling documentation requirements.",
                             Name = "APPLICATION FOR PURCHASE OF A HOUSE"
                         },
                         new
@@ -378,16 +458,37 @@ namespace Modules.Documents.Infrastructure.Migrations
                             DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "",
                             Name = "APPLICATION FOR SERVICED RESIDENTIAL PLOT"
-                        },
-                        new
-                        {
-                            FormTemplateId = 3,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Name = "APPLICATION FOR RESIDENTIAL PLOT"
                         });
+                });
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.ApplicationFormResponse", b =>
+                {
+                    b.HasOne("Modules.Documents.Domain.Entities.FormFields", "FormField")
+                        .WithMany()
+                        .HasForeignKey("FormFieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Documents.Domain.Entities.ApplicationFormSubmission", "FormSubmission")
+                        .WithMany("Responses")
+                        .HasForeignKey("FormSubmissionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FormField");
+
+                    b.Navigation("FormSubmission");
+                });
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.ApplicationFormSubmission", b =>
+                {
+                    b.HasOne("Modules.Documents.Domain.Entities.FormTemplates", "FormTemplate")
+                        .WithMany()
+                        .HasForeignKey("FormTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FormTemplate");
                 });
 
             modelBuilder.Entity("Modules.Documents.Domain.Entities.FormFields", b =>
@@ -398,18 +499,17 @@ namespace Modules.Documents.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Modules.Documents.Domain.Entities.FormTemplates", null)
-                        .WithMany("FormsFields")
-                        .HasForeignKey("FormTemplatesFormTemplateId");
-
                     b.Navigation("FormTemplate");
+                });
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.ApplicationFormSubmission", b =>
+                {
+                    b.Navigation("Responses");
                 });
 
             modelBuilder.Entity("Modules.Documents.Domain.Entities.FormTemplates", b =>
                 {
                     b.Navigation("Fields");
-
-                    b.Navigation("FormsFields");
                 });
 #pragma warning restore 612, 618
         }

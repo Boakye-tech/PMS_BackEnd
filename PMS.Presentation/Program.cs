@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Modules.Common.Infrastructure.Authentication;
 using Modules.Customers.Presentation;
+using Modules.Documents.Presentation;
 using Modules.Estates.Presentation;
 using Modules.Facilities.Presentation;
 using Modules.Finance.Presentation;
@@ -73,6 +74,8 @@ builder.Services.AddCustomerModule(builder.Configuration, builder.Environment);
 
 builder.Services.AddFacilitiesModule(builder.Configuration, builder.Environment);
 
+builder.Services.AddDocumentsModule(builder.Configuration, builder.Environment);
+
 
 var module = "Modules.Estates.Presentation";
 var user_module = "Modules.Users.Presentation";
@@ -80,6 +83,7 @@ var customers_module = "Modules.Customers.Presentation";
 var finance_module = "Modules.Finance.Presentation";
 var notification_module = "Modules.Notification.Presentation";
 var facilities_module = "Modules.Facilities.Presentation";
+var documents_module = "Modules.Documents.Presentation";
 
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwTokenKey:TokenKey"]!);
@@ -185,6 +189,7 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{finance_module}.xml"));
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{notification_module}.xml"));
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{facilities_module}.xml"));
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{documents_module}.xml"));
 
 });
 

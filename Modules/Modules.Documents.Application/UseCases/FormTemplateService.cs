@@ -23,12 +23,10 @@ namespace Modules.Documents.Application.UseCases
 {
     public class FormTemplateService : IFormTemplateService
     {
-        //private readonly IFormTemplatesRepository _formTemplateRepository;
         private readonly IUnitOfWork _unitofWork;
 
-        public FormTemplateService(IUnitOfWork unitofWork) //IFormTemplatesRepository formTemplateRepository
+        public FormTemplateService(IUnitOfWork unitofWork) 
         {
-            //_formTemplateRepository = formTemplateRepository;
             _unitofWork = unitofWork;
         }
 
@@ -40,6 +38,7 @@ namespace Modules.Documents.Application.UseCases
             {
                 throw new KeyNotFoundException($"Form template with ID {id} not found.");
             }
+
 
             return MapToDto(template);
         }
