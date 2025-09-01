@@ -12,7 +12,7 @@
 using System;
 namespace Modules.Documents.Domain.ValueObjects
 {
-    public record FieldType
+    public sealed record FieldType
     {
         public static readonly FieldType Text = new("Text");
         public static readonly FieldType Number = new("Number");
@@ -43,6 +43,19 @@ namespace Modules.Documents.Domain.ValueObjects
             };
         }
 
+        public static IEnumerable<FieldType> GetAll()
+        {
+            yield return Text;
+            yield return Number;
+            yield return Email;
+            yield return Date;
+            yield return Dropdown;
+            yield return Checkbox;
+            yield return Signature;
+            
+        }
+
+        public static implicit operator string(FieldType status) => status.Value;
         public override string ToString() => Value;
     }
 }

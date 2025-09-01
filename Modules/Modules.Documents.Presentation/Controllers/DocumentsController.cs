@@ -25,13 +25,26 @@ public class DocumentsController : ControllerBase
         _formSubmissionService = formSubmissionService;
     }
 
+
+    [HttpGet]
+    [Route("GetFormFields")]
+    //[Authorize(Policy = "Permission:PropertySetup.READ")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult GetFormFields([FromServices] IFieldTypeService typeService)
+    {
+        return Ok(typeService.GetAllFieldTypes());
+    }
+
     [HttpGet]
     [Route("GetFormTemplates")]
     //[Authorize(Policy = "Permission:PropertySetup.READ")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FormTemplateDto>))]
-    public async Task<ActionResult> GetPlotFeatures()
+    public ActionResult GetPlotFeatures([FromQuery] int id , [FromQuery] int landUseId, [FromQuery] int landUseTypeId, [FromQuery] string? name = null)
     {
-        return Ok(await _formTemplateService.GetAllFormTemplatesAsync());
+        //if (id > 0)
+            return Ok(_formTemplateService.GetAllFormTemplatesAsync(id,landUseId,landUseTypeId, name));
+
+        //return Ok(await _formTemplateService.GetAllFormTemplatesAsync());
 
     }
 

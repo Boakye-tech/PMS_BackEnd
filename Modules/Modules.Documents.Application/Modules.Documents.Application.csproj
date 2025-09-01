@@ -18,8 +18,8 @@
     <None Remove="Validations\" />
     <None Remove="Dtos\FormTemplates\" />
     <None Remove="Dtos\FormFields\" />
-    <None Remove="MapperExtensions\" />
     <None Remove="Dtos\ApplicationForm\" />
+    <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -28,7 +28,7 @@
     <Folder Include="Validations\" />
     <Folder Include="Dtos\FormTemplates\" />
     <Folder Include="Dtos\FormFields\" />
-    <Folder Include="MapperExtensions\" />
     <Folder Include="Dtos\ApplicationForm\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>

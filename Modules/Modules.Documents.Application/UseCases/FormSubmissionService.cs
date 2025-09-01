@@ -17,6 +17,7 @@ using Modules.Documents.Application.Dtos.FormTemplates;
 using Modules.Documents.Domain.Entities;
 using Modules.Documents.Domain.Enums;
 using Modules.Documents.Domain.Interfaces;
+using Modules.Documents.Domain.ValueObjects;
 
 namespace Modules.Documents.Application.UseCases
 {
@@ -97,7 +98,7 @@ namespace Modules.Documents.Application.UseCases
         {
             var submission = await GetSubmissionWithDetails(id);
 
-            if (submission.Status != ApplicationSubmissionStatusEnum.Draft)
+            if (submission.Status != ApplicationStatus.Draft)
             {
                 return new ReturnResponsesDto
                 {
@@ -186,10 +187,10 @@ namespace Modules.Documents.Application.UseCases
             return new SubmissionSummaryDto
             {
                 TotalSubmissions = allSubmissions.Count,
-                DraftSubmissions = allSubmissions.Count(s => s.Status == ApplicationSubmissionStatusEnum.Draft),
-                SubmittedSubmissions = allSubmissions.Count(s => s.Status == ApplicationSubmissionStatusEnum.Submitted),
-                ApprovedSubmissions = allSubmissions.Count(s => s.Status == ApplicationSubmissionStatusEnum.Applied),
-                RejectedSubmissions = allSubmissions.Count(s => s.Status == ApplicationSubmissionStatusEnum.Rejected)
+                DraftSubmissions = allSubmissions.Count(s => s.Status == ApplicationStatus.Draft),
+                SubmittedSubmissions = allSubmissions.Count(s => s.Status == ApplicationStatus.Submitted),
+                ApprovedSubmissions = allSubmissions.Count(s => s.Status == ApplicationStatus.ProposalAccepted),
+                RejectedSubmissions = allSubmissions.Count(s => s.Status == ApplicationStatus.ProposalRejected)
             };
         }
 
@@ -215,6 +216,7 @@ namespace Modules.Documents.Application.UseCases
                 ApplicantEmail = submission.ApplicantEmail,
                 PropertyNumber = submission.PropertyNumber,
                 Status = submission.Status,
+                WorkflowState = submission.WorkflowState,
                 SubmittedDate = submission.SubmittedDate,
                 CreatedDate = submission.CreatedDate,
                 Responses = submission.Responses.Select(r => new FormResponseDto

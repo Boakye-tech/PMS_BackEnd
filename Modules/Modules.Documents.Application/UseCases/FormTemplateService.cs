@@ -14,10 +14,11 @@ using Microsoft.AspNetCore.Http;
 using Modules.Documents.Application.Dtos;
 using Modules.Documents.Application.Dtos.FormTemplates;
 using Modules.Documents.Application.Interfaces;
-using Modules.Documents.Application.MapperExtensions;
+using Modules.Documents.Application.Extensions;
 using Modules.Documents.Domain.Entities;
 using Modules.Documents.Domain.Events;
 using Modules.Documents.Domain.Interfaces;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Modules.Documents.Application.UseCases
 {
@@ -30,18 +31,18 @@ namespace Modules.Documents.Application.UseCases
             _unitofWork = unitofWork;
         }
 
-        public async Task<FormTemplateDto> GetFormTemplateByIdAsync(int id)
-        {
-            var template = await _unitofWork.FormTemplates.Get(id);
+        //public async Task<FormTemplateDto> GetFormTemplateByIdAsync(int id)
+        //{
+        //    var template = await _unitofWork.FormTemplates.Get(id);
 
-            if (template == null)
-            {
-                throw new KeyNotFoundException($"Form template with ID {id} not found.");
-            }
+        //    if (template == null)
+        //    {
+        //        throw new KeyNotFoundException($"Form template with ID {id} not found.");
+        //    }
 
 
-            return MapToDto(template);
-        }
+        //    return MapToDto(template);
+        //}
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync()
         {
@@ -51,6 +52,36 @@ namespace Modules.Documents.Application.UseCases
                 .Select(t => t.ToDto())
                 .ToList();
         }
+
+
+        public List<FormTemplateDto> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name)
+        {
+            var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Fields" });
+
+
+            // Apply filters dynamically
+            if (id > 0)
+                query = query.Where(t => t.FormTemplateId == id);
+
+            //if (landUseId > 0)
+            //    query = query.Where(t => t.LandUseId == landUseId);
+
+            //if (landUseTypeId > 0)
+            //    query = query.Where(t => t.LandUseTypeId == landUseTypeId);
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                var loweredName = name.ToLower();
+                query = query.Where(t => t.Name.ToLower().Contains(loweredName));
+            }
+
+            var templates = query.ToList();
+
+            return templates
+                .Select(t => t.ToDto())
+                .ToList();
+        }
+
 
         public async Task<ReturnResponsesDto> CreateFormTemplateAsync(CreateFormTemplateDto createDto)
         {
@@ -231,9 +262,6 @@ namespace Modules.Documents.Application.UseCases
                 }).ToList()
             };
         }
-
-
-
 
 
     }

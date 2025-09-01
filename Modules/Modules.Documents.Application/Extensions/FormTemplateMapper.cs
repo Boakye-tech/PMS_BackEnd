@@ -1,7 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Documents.Application
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Documents.Application/MapperExtensions/FormTemplateMapper.cs
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Documents.Application/Extensions/FormTemplateMapper.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -13,7 +13,7 @@ using System;
 using Modules.Documents.Application.Dtos.FormTemplates;
 using Modules.Documents.Domain.Entities;
 
-namespace Modules.Documents.Application.MapperExtensions
+namespace Modules.Documents.Application.Extensions
 {
     public static class FormTemplateMapper
     {

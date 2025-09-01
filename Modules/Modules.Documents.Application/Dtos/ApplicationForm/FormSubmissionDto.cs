@@ -11,6 +11,7 @@
 //  **************************************************/
 using System;
 using Modules.Documents.Application.Dtos.FormTemplates;
+using Modules.Documents.Domain.Entities;
 using Modules.Documents.Domain.Enums;
 
 namespace Modules.Documents.Application.Dtos.ApplicationForm
@@ -22,10 +23,14 @@ namespace Modules.Documents.Application.Dtos.ApplicationForm
         public required string ApplicantName { get; init; }
         public required string ApplicantEmail { get; init; }
         public required string PropertyNumber { get; init; }
-        public required ApplicationSubmissionStatusEnum Status { get; init; }
+        public required string Status { get; init; }
+        public required string WorkflowState { get; init; }
         public DateTime SubmittedDate { get; init; }
         public DateTime CreatedDate { get; init; }
+        public DateTime LastStatusChangeDate { get; init; }
+        public string? StatusNotes { get; init; }
         public List<FormResponseDto> Responses { get; init; } = new();
+        public List<StatusHistoryDto> StatusHistory { get; init; } = new ();
         public FormTemplateDto? Template { get; init; }
     }
 }

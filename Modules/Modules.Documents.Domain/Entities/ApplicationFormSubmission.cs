@@ -13,6 +13,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Modules.Documents.Domain.Common;
 using Modules.Documents.Domain.Enums;
+using Modules.Documents.Domain.ValueObjects;
 
 namespace Modules.Documents.Domain.Entities
 {
@@ -33,15 +34,20 @@ namespace Modules.Documents.Domain.Entities
 
         [Required]
         public string PropertyNumber { get; private set; }
-        public ApplicationSubmissionStatusEnum Status { get; private set; } // Draft, Submitted, UnderReview, Approved, Rejected
+        public ApplicationStatus Status { get; private set; }
+        public WorkflowState WorkflowState { get; private set; }
         public DateTime SubmittedDate { get; private set; }
         public DateTime CreatedDate { get; private set; }
-
+        public DateTime LastStatusChangeDate { get; private set; }
+        public string? StatusNotes { get; private set; }
         // Navigation properties
         public FormTemplates FormTemplate { get; private set; } = null!;
 
         //Navigation property for Submission Form responses
         public ICollection<ApplicationFormResponse> Responses { get; set; } = new List<ApplicationFormResponse>();
+
+        public ICollection<StatusHistory> StatusHistory { get; set; } = new List<StatusHistory>();
+
 
         // Private constructor for EF Core
         private ApplicationFormSubmission() { }
@@ -53,13 +59,23 @@ namespace Modules.Documents.Domain.Entities
             ApplicantName = applicantName ?? throw new ArgumentNullException(nameof(applicantName));
             ApplicantEmail = applicantEmail ?? throw new ArgumentNullException(nameof(applicantEmail));
             PropertyNumber = propertyNumber;
-            Status = ApplicationSubmissionStatusEnum.Draft;
+            Status = ApplicationStatus.Draft;
+            WorkflowState = WorkflowState.ApplicationReceived;
             CreatedDate = DateTime.UtcNow;
+            LastStatusChangeDate = DateTime.UtcNow;
+
+            // Record initial status
+            StatusHistory.Add(new StatusHistory(ApplicationStatus.Draft, WorkflowState.ApplicationReceived, "Submission created", Id));
         }
 
         // Domain methods
         public void AddResponse(int formFieldId, string responseValue)
         {
+            if (Status != ApplicationStatus.Draft)
+            {
+                throw new InvalidOperationException("Responses can only be added to draft submissions.");
+            }
+
             var existingResponse = Responses.FirstOrDefault(r => r.FormFieldId == formFieldId);
             if (existingResponse != null)
             {
@@ -74,7 +90,7 @@ namespace Modules.Documents.Domain.Entities
 
         public void Submit()
         {
-            if (Status != ApplicationSubmissionStatusEnum.Draft)
+            if (Status != ApplicationStatus.Draft)
             {
                 throw new InvalidOperationException("Only draft submissions can be submitted.");
             }
@@ -93,11 +109,99 @@ namespace Modules.Documents.Domain.Entities
                 throw new InvalidOperationException($"Missing responses for required fields: {missingFieldNames}");
             }
 
-            Status = ApplicationSubmissionStatusEnum.Submitted;
+            Status = ApplicationStatus.Submitted;
             SubmittedDate = DateTime.UtcNow;
 
             //AddDomainEvent(new FormSubmissionSubmittedEvent(this));
         }
+
+        public void UpdateStatus(ApplicationStatus status, WorkflowState workflowState, string? notes = null)
+        {
+            // Business rules for status transitions
+            ValidateStatusTransition(status, workflowState);
+
+            var previousStatus = Status;
+            var previousWorkflowState = WorkflowState;
+
+            Status = status;
+            WorkflowState = workflowState;
+            StatusNotes = notes;
+            LastStatusChangeDate = DateTime.UtcNow;
+
+            // Record status history
+            StatusHistory.Add(new StatusHistory(status, workflowState, notes, Id));
+
+            //AddDomainEvent(new FormSubmissionStatusChangedEvent(this, previousStatus, previousWorkflowState));
+        }
+
+        public void MarkUnderReview(string? notes = null)
+        {
+            UpdateStatus(ApplicationStatus.UnderReview, WorkflowState.ApplicationReceived, notes ?? "Application is under review");
+        }
+
+        public void SendProposal(string? notes = null)
+        {
+            UpdateStatus(ApplicationStatus.ProposalSent, WorkflowState.AwaitingCustomerResponse, notes ?? "Proposal sent to customer");
+        }
+
+        public void AcceptProposal(string? notes = null)
+        {
+            UpdateStatus(ApplicationStatus.ProposalAccepted, WorkflowState.AcceptanceProcessing, notes ?? "Proposal accepted by customer");
+        }
+
+        public void RejectProposal(string? notes = null)
+        {
+            UpdateStatus(ApplicationStatus.ProposalRejected, WorkflowState.Completed, notes ?? "Proposal rejected by customer");
+        }
+
+        public void GenerateOffer(string? notes = null)
+        {
+            UpdateStatus(ApplicationStatus.OfferGenerated, WorkflowState.DocumentGeneration, notes ?? "Offer document generated");
+        }
+
+        public void Complete(string? notes = null)
+        {
+            UpdateStatus(ApplicationStatus.Completed, WorkflowState.Completed, notes ?? "Application process completed");
+        }
+
+        public void Cancel(string? notes = null)
+        {
+            UpdateStatus(ApplicationStatus.Cancelled, WorkflowState.Completed, notes ?? "Application cancelled");
+        }
+
+        private void ValidateStatusTransition(ApplicationStatus newStatus, WorkflowState newWorkflowState)
+        {
+            // Implement business rules for valid status transitions
+            var validTransitions = new Dictionary<ApplicationStatus, ApplicationStatus[]>
+            {
+                [ApplicationStatus.Draft] = new[] { ApplicationStatus.Submitted },
+                [ApplicationStatus.Submitted] = new[] { ApplicationStatus.UnderReview, ApplicationStatus.Cancelled },
+                [ApplicationStatus.UnderReview] = new[] { ApplicationStatus.ProposalSent, ApplicationStatus.Cancelled },
+                [ApplicationStatus.ProposalSent] = new[] { ApplicationStatus.ProposalAccepted, ApplicationStatus.ProposalRejected, ApplicationStatus.Cancelled },
+                [ApplicationStatus.ProposalAccepted] = new[] { ApplicationStatus.OfferGenerated, ApplicationStatus.Cancelled },
+                [ApplicationStatus.ProposalRejected] = new[] { ApplicationStatus.Completed },
+                [ApplicationStatus.OfferGenerated] = new[] { ApplicationStatus.Completed, ApplicationStatus.Cancelled },
+                [ApplicationStatus.Completed] = new ApplicationStatus[] { },
+                [ApplicationStatus.Cancelled] = new ApplicationStatus[] { }
+            };
+
+            if (validTransitions.ContainsKey(Status) &&
+                !validTransitions[Status].Contains(newStatus))
+            {
+                throw new InvalidOperationException(
+                    $"Invalid status transition from {Status} to {newStatus}");
+            }
+        }
+
+        //public FormResponse? GetResponseForField(int formFieldId)
+        //{
+        //    return _responses.FirstOrDefault(r => r.FormFieldId == formFieldId);
+        //}
+
+        //public StatusHistory? GetLatestStatusHistory()
+        //{
+        //    return _statusHistory.OrderByDescending(sh => sh.ChangeDate).FirstOrDefault();
+        //}
 
 
         public ApplicationFormResponse? GetResponseForField(int formFieldId)

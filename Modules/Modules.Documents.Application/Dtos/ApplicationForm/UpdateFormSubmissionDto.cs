@@ -10,7 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
-using Modules.Documents.Domain.Enums;
 
 namespace Modules.Documents.Application.Dtos.ApplicationForm
 {
@@ -27,11 +26,5 @@ namespace Modules.Documents.Application.Dtos.ApplicationForm
         public List<FormResponseItemDto> Responses { get; init; } = new();
     }
 
-    public record UpdateFormSubmissionStatusDto
-    {
-        public required int FormSubmissionId { get; init; }
-
-        public ApplicationSubmissionStatusEnum Status { get; set; }
-    }
 }
 
