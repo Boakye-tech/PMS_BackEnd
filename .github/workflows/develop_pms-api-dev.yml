@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - pms-api-dev
 on:
   push:
     branches:
-      - develop
+      - client-demo
   workflow_dispatch:
 
 jobs:
@@ -16,8 +16,8 @@ jobs:
       contents: read #This is required for actions/checkout
 
     env:
-      ENV_SUFFIX: ${{ github.ref == 'refs/heads/develop' && 'dev' || 'staging' }}
-      DB_CONNECTION_STRING: ${{ github.ref == 'refs/heads/develop' && secrets.DB_CONNECTION_STRING_DEV || secrets.DB_CONNECTION_STRING_STAGING }}
+      ENV_SUFFIX: ${{ github.ref == 'refs/heads/client-demo' && 'client-demo' || 'staging' }}
+      DB_CONNECTION_STRING: ${{ github.ref == 'refs/heads/client-demo' && secrets.DB_CONNECTION_STRING_CLIENT_DEMO || secrets.DB_CONNECTION_STRING_STAGING }}
       ASPNETCORE_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'Production' || github.ref == 'refs/heads/staging' && 'Staging' || 'Development' }}
 
 
@@ -128,8 +128,8 @@ jobs:
           }
           
           # Update ModuleUrl BaseUrl based on branch
-          $template.ModuleUrl.BaseUrl = if ($env:GITHUB_REF -eq 'refs/heads/develop') {
-            '${{ secrets.BASEURL_DEV }}'
+          $template.ModuleUrl.BaseUrl = if ($env:GITHUB_REF -eq 'refs/heads/client-demo') {
+            '${{ secrets.BASEURL_CLIENT_DEMO }}'
           } elseif ($env:GITHUB_REF -eq 'refs/heads/staging') {
             '${{ secrets.BASEURL_STAGING }}'
           } else {
