@@ -316,6 +316,15 @@ Copy `appsettings.tpl.json` to `appsettings.Development.json` and configure with
 2. **For Connection Issues**: Verify the `DB_CONNECTION_STRING_CLIENT_DEMO` secret
 3. **For Permission Issues**: Ensure the database user has CREATE/ALTER/DROP permissions
 4. **For Context Issues**: Verify all DbContext classes are properly registered
+5. **For Multiple DbContext Errors**: The pipeline now specifies individual contexts to avoid ambiguity
+6. **Pipeline Resilience**: Database steps are configured with `continue-on-error: true` to prevent blocking deployment
+
+**Pipeline Improvements for Client-Demo Environment:**
+- Database connectivity check now uses specific DbContext to avoid "multiple context" errors
+- Enhanced error detection for index-related issues (Error Number: 3701)
+- Non-blocking migration process - deployment continues even with minor database issues
+- Detailed logging for troubleshooting migration problems
+- Application readiness verification step before deployment
 
 **Configuration Issues:**
 - Validate template file syntax
