@@ -12,7 +12,7 @@ The project supports three main deployment environments:
 |------------|---------|------------------|------------------|---------|
 | **Development** | `develop` | SmarterASP.NET | SmarterASP.NET | Development testing and integration |
 | **Staging** | `staging` | SmarterASP.NET | SmarterASP.NET | Pre-production testing |
-| **Client Demo** | `client-demo` | Azure Web App | SmarterASP.NET | Client demonstrations |
+| **Client Demo** | `client-demo` | Azure Web App | Dedicated Client Demo DB | Client demonstrations |
 
 ### 🌐 Environment URLs & Endpoints
 
@@ -143,8 +143,10 @@ Navigate to your GitHub repository → Settings → Secrets and variables → Ac
 ```
 DB_CONNECTION_STRING_DEV          # Development database connection
 DB_CONNECTION_STRING_STAGING      # Staging database connection  
-DB_CONNECTION_STRING_CLIENT_DEMO  # Client demo database connection
+DB_CONNECTION_STRING_CLIENT_DEMO  # Client demo database connection (separate fresh database)
 ```
+
+**Note**: The client-demo environment uses a dedicated database separate from dev/staging. This fresh database setup may require handling migration conflicts during the first deployment.
 
 #### Authentication Secrets
 ```
@@ -301,6 +303,19 @@ Copy `appsettings.tpl.json` to `appsettings.Development.json` and configure with
 - Check connection string format
 - Verify database permissions
 - Review migration history
+
+**Fresh Database Setup (Client-Demo Environment):**
+- When using a new database for client-demo, migration conflicts may occur
+- The pipeline now includes improved error handling for index-related issues
+- Error message `Cannot drop the index 'IX_CustomerTransactions_VoucherNumber', because it does not exist` is common with fresh databases
+- The system will continue deployment even if some index operations fail, as the schema will still be functional
+- Verify database connectivity using the new "Check Database Status" step in the pipeline
+
+**Database Migration Troubleshooting Steps:**
+1. **For Index Errors**: These are typically non-blocking for fresh databases
+2. **For Connection Issues**: Verify the `DB_CONNECTION_STRING_CLIENT_DEMO` secret
+3. **For Permission Issues**: Ensure the database user has CREATE/ALTER/DROP permissions
+4. **For Context Issues**: Verify all DbContext classes are properly registered
 
 **Configuration Issues:**
 - Validate template file syntax
