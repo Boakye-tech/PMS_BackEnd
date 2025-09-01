@@ -129,7 +129,7 @@ jobs:
           
           # Update ModuleUrl BaseUrl based on branch
           $template.ModuleUrl.BaseUrl = if ($env:GITHUB_REF -eq 'refs/heads/client-demo') {
-            '${{ secrets.BASEURL_DEV }}'
+            '${{ secrets.BASEURL_CLIENT_DEMO }}'
           } elseif ($env:GITHUB_REF -eq 'refs/heads/staging') {
             '${{ secrets.BASEURL_STAGING }}'
           } else {
