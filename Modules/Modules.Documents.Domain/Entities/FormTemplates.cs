@@ -20,6 +20,10 @@ namespace Modules.Documents.Domain.Entities
         [Key]
         public int FormTemplateId { get; set; }
 
+        public int LandUseId { get; set; }
+        public int LandUseTypeId { get; set; }
+
+
         [Required]
         [StringLength(200)]
         public string Name { get; private set; }

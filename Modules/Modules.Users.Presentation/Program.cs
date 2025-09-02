@@ -63,7 +63,7 @@ if (builder.Environment.IsDevelopment())
 
 }
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsStaging())
 {
     switch (builder.Configuration.GetSection("Provider").GetSection("DatabaseProvider").Value)
     {
