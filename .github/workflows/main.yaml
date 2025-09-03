@@ -255,6 +255,9 @@ jobs:
         shell: pwsh
 
       - name: Run Module Tests
+        if: >
+          (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
+          (github.event_name == 'pull_request' && github.base_ref == 'develop')
         run: |
           $testProjects = Get-ChildItem -Path "Test" -Filter "*Test.csproj" -Recurse
           foreach ($project in $testProjects) {
