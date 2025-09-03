@@ -12,7 +12,7 @@
 using System;
 namespace Modules.Documents.Domain.ValueObjects
 {
-    public sealed record FieldType
+    public sealed record  FieldType
     {
         public static readonly FieldType Text = new("Text");
         public static readonly FieldType Number = new("Number");
@@ -48,6 +48,7 @@ namespace Modules.Documents.Domain.ValueObjects
             yield return Text;
             yield return Number;
             yield return Email;
+            yield return Image;
             yield return Date;
             yield return Dropdown;
             yield return Checkbox;

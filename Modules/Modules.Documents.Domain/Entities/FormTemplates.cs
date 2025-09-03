@@ -34,6 +34,8 @@ namespace Modules.Documents.Domain.Entities
         //Navigation property for Form Fields
         public ICollection<FormFields> Fields { get; set; } = new List<FormFields>();
 
+        
+
         // Private constructor for EF Core
         private FormTemplates() { }
 
