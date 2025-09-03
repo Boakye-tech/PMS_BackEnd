@@ -10,9 +10,9 @@ The project supports three main deployment environments:
 
 | Environment | Branch | Deployment Target | Database Location | Purpose |
 |------------|---------|------------------|------------------|---------|
-| **Development** | `develop` | SmarterASP.NET | SmarterASP.NET | Development testing and integration |
-| **Staging** | `staging` | SmarterASP.NET | SmarterASP.NET | Pre-production testing |
-| **Client Demo** | `client-demo` | Azure Web App | Dedicated Client Demo DB | Client demonstrations |
+| **Development** | `develop` | SmarterASP.NET | SmarterASP.NET (existing) | Development testing and integration |
+| **Staging** | `staging` | SmarterASP.NET | SmarterASP.NET (fresh/new) | Pre-production testing |
+| **Production (Azure Demo)** | `main` | Azure Web App | Dedicated Production DB (fresh/new) | Production environment for client demonstrations |
 
 ### 🌐 Environment URLs & Endpoints
 
@@ -26,8 +26,8 @@ The project supports three main deployment environments:
 - **Deployment Path**: `/pms-api-staging/` on SmarterASP.NET
 - **API Endpoint**: http://mindsprings-002-site4.ltempurl.com/api/v1
 
-#### Client Demo Environment
-- **Base URL**: Configured via `BASEURL_DEV` secret
+#### Production (Azure Demo) Environment
+- **Base URL**: Configured via `BASEURL_PRODUCTION` secret
 - **Azure Web App**: `pms-api-dev`
 - **API Endpoint**: https://pms-api-dev-huhhgvfdhyaxd4cq.westeurope-01.azurewebsites.net/api/v1
 
@@ -71,6 +71,11 @@ The system includes the following modules, each with their own set of endpoints:
    - Dynamic connection string injection
    
 3. **Database Operations**
+   - **Enhanced Migration Handling**: 
+     - Staging branch: Advanced error handling for fresh databases (similar to Azure pipeline)
+     - Development branch: Standard migration process
+   - **Fresh Database Support**: Graceful handling of index-related migration conflicts
+   - **Database Status Checks**: Pre-migration connectivity verification for staging
    - EF Core migrations for all contexts:
      - `Modules.Estates.Infrastructure.ApplicationDbContext`
      - `Modules.Finance.Infrastructure.Data.FinanceDbContext`
@@ -82,15 +87,16 @@ The system includes the following modules, each with their own set of endpoints:
    - Build and publish .NET application
    - FTP deployment to environment-specific directories
 
-#### 2. Azure Deployment Pipeline (`develop_pms-api-dev.yml`)
+#### 2. Azure Deployment Pipeline (`main_pms-api-azure.yml`)
 
 **Triggers:**
-- Push to `client-demo` branch
+- Push to `main` branch
 - Manual workflow dispatch
 
 **Key Features:**
 - Azure Web App deployment
-- Shared database with SmarterASP.NET
+- Production environment configuration
+- Dedicated database for Azure deployment
 - Environment-specific configuration
 - Artifact-based deployment strategy
 
@@ -143,10 +149,10 @@ Navigate to your GitHub repository → Settings → Secrets and variables → Ac
 ```
 DB_CONNECTION_STRING_DEV          # Development database connection
 DB_CONNECTION_STRING_STAGING      # Staging database connection  
-DB_CONNECTION_STRING_CLIENT_DEMO  # Client demo database connection (separate fresh database)
+DB_CONNECTION_STRING_PRODUCTION  # Production database connection (for main branch Azure deployment)
 ```
 
-**Note**: The client-demo environment uses a dedicated database separate from dev/staging. This fresh database setup may require handling migration conflicts during the first deployment.
+**Note**: The main branch deployment to Azure uses a dedicated production database (DB_CONNECTION_STRING_CLIENT_DEMO). This fresh database setup may require handling migration conflicts during the first deployment.
 
 #### Authentication Secrets
 ```
@@ -157,7 +163,7 @@ TOKEN_KEY                         # JWT token signing key
 ```
 BASEURL_DEV                      # Development environment base URL
 BASEURL_STAGING                  # Staging environment base URL
-BASEURL_PROD                     # Production environment base URL (future use)
+BASEURL_PRODUCTION              # Production environment base URL (for main branch Azure deployment)
 ```
 
 #### Email Service Secrets (O365)
@@ -229,7 +235,7 @@ The system uses Entity Framework Core with multiple database contexts:
 #### Migration Strategy
 
 - **Development/Staging**: Automatic migrations during deployment
-- **Client Demo**: Database migrations run against SmarterASP.NET database
+- **Client Demo (Production)**: Database migrations run against SmarterASP.NET database
 - **Pull Requests**: Dry-run migration script generation for review
 
 ### 📝 Deployment Guidelines
@@ -246,11 +252,12 @@ The system uses Entity Framework Core with multiple database contexts:
 2. Review and merge
 3. Automatic deployment to staging environment
 
-#### For Client Demonstrations
-1. Merge approved changes to `client-demo` branch
+#### For Production (Azure Demo) Deployments
+1. Merge approved changes to `main` branch
 2. Azure deployment pipeline automatically triggers
-3. Application deployed to Azure Web App
-4. Database operations run against SmarterASP.NET database
+3. Application deployed to Azure Web App (pms-api-dev)
+4. Database operations run against dedicated production database
+5. Production environment configured with `ASPNETCORE_ENVIRONMENT=Production`
 
 ### 🛠️ Development Setup
 
@@ -304,8 +311,8 @@ Copy `appsettings.tpl.json` to `appsettings.Development.json` and configure with
 - Verify database permissions
 - Review migration history
 
-**Fresh Database Setup (Client-Demo Environment):**
-- When using a new database for client-demo, migration conflicts may occur
+**Fresh Database Setup (Azure Production Environment):**
+- When using a new database for main branch deployment, migration conflicts may occur
 - The pipeline now includes improved error handling for index-related issues
 - Error message `Cannot drop the index 'IX_CustomerTransactions_VoucherNumber', because it does not exist` is common with fresh databases
 - The system will continue deployment even if some index operations fail, as the schema will still be functional
@@ -313,18 +320,32 @@ Copy `appsettings.tpl.json` to `appsettings.Development.json` and configure with
 
 **Database Migration Troubleshooting Steps:**
 1. **For Index Errors**: These are typically non-blocking for fresh databases
-2. **For Connection Issues**: Verify the `DB_CONNECTION_STRING_CLIENT_DEMO` secret
+2. **For Connection Issues**: Verify the `DB_CONNECTION_STRING_[env]` secret
 3. **For Permission Issues**: Ensure the database user has CREATE/ALTER/DROP permissions
 4. **For Context Issues**: Verify all DbContext classes are properly registered
 5. **For Multiple DbContext Errors**: The pipeline now specifies individual contexts to avoid ambiguity
 6. **Pipeline Resilience**: Database steps are configured with `continue-on-error: true` to prevent blocking deployment
 
-**Pipeline Improvements for Client-Demo Environment:**
+**Pipeline Improvements for Fresh Database Environments:**
+
+**SmarterASP.NET Pipeline (`main.yaml`):**
+- **Staging Branch**: Enhanced database migration with the same robust error handling as Azure pipeline
+- **Development Branch**: Standard migration process for existing databases
+- **Database Status Check**: Pre-migration connectivity verification for staging environment
+- **Adaptive Approach**: Automatically detects fresh vs. existing databases
+
+**Azure Production Pipeline (`main_pms-api-azure.yml`):**
 - Database connectivity check now uses specific DbContext to avoid "multiple context" errors
 - Enhanced error detection for index-related issues (Error Number: 3701)
 - Non-blocking migration process - deployment continues even with minor database issues
 - Detailed logging for troubleshooting migration problems
 - Application readiness verification step before deployment
+
+**Both Pipelines Now Feature:**
+- Graceful handling of index drop errors on non-existent indexes
+- `continue-on-error: true` for database operations
+- Detailed migration status reporting
+- Context-specific error handling
 
 **Configuration Issues:**
 - Validate template file syntax

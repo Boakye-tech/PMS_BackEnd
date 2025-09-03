@@ -1,12 +1,12 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - pms-api-dev
+name: Build and deploy ASP.Net Core app to Azure Web App - pms-api-dev (from main branch)
 
 on:
   push:
     branches:
-      - client-demo
+      - main
   workflow_dispatch:
 
 jobs:
@@ -16,8 +16,8 @@ jobs:
       contents: read #This is required for actions/checkout
 
     env:
-      ENV_SUFFIX: ${{ github.ref == 'refs/heads/client-demo' && 'client-demo' || 'staging' }}
-      DB_CONNECTION_STRING: ${{ github.ref == 'refs/heads/client-demo' && secrets.DB_CONNECTION_STRING_CLIENT_DEMO || secrets.DB_CONNECTION_STRING_STAGING }}
+      ENV_SUFFIX: ${{ github.ref == 'refs/heads/main' && 'main' || 'staging' }}
+      DB_CONNECTION_STRING: ${{ github.ref == 'refs/heads/main' && secrets.DB_CONNECTION_STRING_PRODUCTION || secrets.DB_CONNECTION_STRING_STAGING }}
       ASPNETCORE_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'Production' || github.ref == 'refs/heads/staging' && 'Staging' || 'Development' }}
 
 
@@ -128,12 +128,12 @@ jobs:
           }
           
           # Update ModuleUrl BaseUrl based on branch
-          $template.ModuleUrl.BaseUrl = if ($env:GITHUB_REF -eq 'refs/heads/client-demo') {
-            '${{ secrets.BASEURL_CLIENT_DEMO }}'
+          $template.ModuleUrl.BaseUrl = if ($env:GITHUB_REF -eq 'refs/heads/main') {
+            '${{ secrets.BASEURL_PRODUCTION }}'
           } elseif ($env:GITHUB_REF -eq 'refs/heads/staging') {
             '${{ secrets.BASEURL_STAGING }}'
           } else {
-            '${{ secrets.BASEURL_PROD }}'
+            '${{ secrets.BASEURL_PRODUCTION }}'
           }
           
           # Save as appsettings.json in the same directory as template
@@ -204,7 +204,7 @@ jobs:
       - name: Check Database Status
         continue-on-error: true
         run: |
-          Write-Host "🔍 Checking database connectivity and status for client-demo environment"
+          Write-Host "🔍 Checking database connectivity and status for main branch deployment"
           Write-Host "Connection string prefix: $($env:DB_CONNECTION_STRING.Substring(0, [Math]::Min(50, $env:DB_CONNECTION_STRING.Length)))..."
           
           # Test basic database connectivity using a specific context
