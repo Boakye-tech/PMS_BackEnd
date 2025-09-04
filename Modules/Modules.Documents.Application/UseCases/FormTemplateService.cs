@@ -63,11 +63,11 @@ namespace Modules.Documents.Application.UseCases
             if (id > 0)
                 query = query.Where(t => t.FormTemplateId == id);
 
-            //if (landUseId > 0)
-            //    query = query.Where(t => t.LandUseId == landUseId);
+            if (landUseId > 0)
+                query = query.Where(t => t.LandUseId == landUseId);
 
-            //if (landUseTypeId > 0)
-            //    query = query.Where(t => t.LandUseTypeId == landUseTypeId);
+            if (landUseTypeId > 0)
+                query = query.Where(t => t.LandUseTypeId == landUseTypeId);
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -112,6 +112,9 @@ namespace Modules.Documents.Application.UseCases
 
             //template. AddDomainEvent(new FormTemplateCreatedEvent(template));
 
+            template.CreatedBy = createDto.CreatedBy;
+            template.DateCreated = DateTime.UtcNow;
+            
             _unitofWork.FormTemplates.Insert(template);
             await _unitofWork.Complete();
 
@@ -201,6 +204,9 @@ namespace Modules.Documents.Application.UseCases
                     }
                 }
             }
+
+            existingTemplate.CreatedBy = updateDto.modifiedBy;
+            existingTemplate.DateModified = DateTime.UtcNow;
 
             _unitofWork.FormTemplates.Update(existingTemplate);
             await _unitofWork.Complete();

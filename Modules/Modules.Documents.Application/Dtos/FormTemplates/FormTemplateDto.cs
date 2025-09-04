@@ -19,6 +19,7 @@ namespace Modules.Documents.Application.Dtos.FormTemplates
         public string? Description { get; init; }
         public DateTime DateCreated { get; init; }
         public List<FormFieldDto> Fields { get; init; } = new();
+        public string? CreatedBy { get; init; }
     }
 }
 
