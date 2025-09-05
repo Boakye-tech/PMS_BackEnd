@@ -6,6 +6,8 @@ on:
       - develop
       - staging
   pull_request:
+    branches:
+      - develop  # Only run on PRs targeting develop branch
     types: [opened, synchronize, reopened]
 
 jobs:
