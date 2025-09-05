@@ -817,69 +817,69 @@ namespace Modules.Estates.Application.UseCases.Management.Complaints
 
         public async Task<List<ComplainantDetailsDto>> GetComplainantDetails(string customerCode)
         {
-            var allCustomers = await _unitOfWork.CustomerMaster.GetAll();
-            var allTitles = await _unitOfWork.Title.GetAll();
+            var allCustomers = _unitOfWork.CustomerMaster.GetQueryable();
+            var allTitles = _unitOfWork.Title.GetQueryable();
             var allProperties = _unitOfWork.PropertyMaster.GetQueryable();
-            var allLocalities = await _unitOfWork.Locality.GetAll();
+            var allLocalities = _unitOfWork.Locality.GetQueryable();
 
             var result = from a in allCustomers
                          join d in allTitles on a.TitleId equals d.TitleId into titleGroup
                          from title in titleGroup.DefaultIfEmpty()
                          join b in allProperties on a.CustomerCode equals b.CustomerCode into propertyGroup
                          from property in propertyGroup.DefaultIfEmpty()
-                         join c in allLocalities on property?.LocalityId equals c.LocalityId into localityGroup
+                         join c in allLocalities on property.LocalityId equals c.LocalityId into localityGroup
                          from locality in localityGroup.DefaultIfEmpty()
                          where a.CustomerCode == customerCode.ToUpper()
                          select new ComplainantDetailsDto
                          {
                              CustomerCode = a.CustomerCode,
                              CustomerName = string.Concat(
-                                 (title?.Titles ?? "") + " ",
+                                 (title.Titles ?? "") + " ",
                                  (a.OtherNames ?? "") + " ",
                                  (a.SurName ?? "") + " ",
                                  (a.CompanyName ?? "")
                              ).Trim(),
                              PhoneNumber = a.PrimaryMobileNumber,
                              EmailAddress = a.EmailAddress,
-                             PropertyNumber = property?.PropertyNumber!.Value,
-                             PropertyLocation = locality?.LocalityName
+                             PropertyNumber = property.PropertyNumber!.Value,
+                             PropertyLocation = locality.LocalityName
                          };
 
-            return result.ToList();
+            return await result.ToListAsync();
 
         }
 
         public async Task<ComplainantDetailsDto> GetComplainantDetailsByPropertyNumber(string propertyNumber)
         {
-            var allCustomers = await _unitOfWork.CustomerMaster.GetAll();
-            var allTitles = await _unitOfWork.Title.GetAll();
+            var allCustomers = _unitOfWork.CustomerMaster.GetQueryable();
+            var allTitles = _unitOfWork.Title.GetQueryable();
             var allProperties = _unitOfWork.PropertyMaster.GetQueryable();
-            var allLocalities = await _unitOfWork.Locality.GetAll();
+            var allLocalities = _unitOfWork.Locality.GetQueryable();
 
             var result = from a in allCustomers
                          join d in allTitles on a.TitleId equals d.TitleId into titleGroup
                          from title in titleGroup.DefaultIfEmpty()
                          join b in allProperties on a.CustomerCode equals b.CustomerCode into propertyGroup
                          from property in propertyGroup.DefaultIfEmpty()
-                         join c in allLocalities on property?.LocalityId equals c.LocalityId into localityGroup
+                         join c in allLocalities on property.LocalityId equals c.LocalityId into localityGroup
                          from locality in localityGroup.DefaultIfEmpty()
                          where property != null && property.PropertyNumber!.Value == propertyNumber.ToUpper()
                          select new ComplainantDetailsDto
                          {
                              CustomerCode = a.CustomerCode,
                              CustomerName = string.Concat(
-                                 (title?.Titles ?? "") + " ",
+                                 (title.Titles ?? "") + " ",
                                  (a.OtherNames ?? "") + " ",
                                  (a.SurName ?? "") + " ",
                                  (a.CompanyName ?? "")
                              ).Trim(),
                              PhoneNumber = a.PrimaryMobileNumber,
                              EmailAddress = a.EmailAddress,
-                             PropertyNumber = property?.PropertyNumber!.Value,
-                             PropertyLocation = locality?.LocalityName
+                             PropertyNumber = property.PropertyNumber!.Value,
+                             PropertyLocation = locality.LocalityName
                          };
 
-            return result.FirstOrDefault()!;
+            return await result.FirstOrDefaultAsync()!;
 
         }
 
