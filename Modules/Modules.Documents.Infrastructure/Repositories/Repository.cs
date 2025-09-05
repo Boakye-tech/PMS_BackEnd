@@ -57,6 +57,7 @@ namespace Modules.Documents.Infrastructure.Repositories
                     query = query.Include(includeProperty);
             }
 
+
             if (orderBy != null)
                 query = orderBy(query);
 

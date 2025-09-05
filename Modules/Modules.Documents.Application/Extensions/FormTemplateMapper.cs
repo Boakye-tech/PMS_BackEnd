@@ -25,6 +25,16 @@ namespace Modules.Documents.Application.Extensions
                 Name = entity.Name,
                 Description = entity.Description,
                 DateCreated = DateTime.UtcNow,
+                Sections = entity.Sections.Select(f => f.ToDto()).ToList()
+            };
+        }
+
+        public static FormSectionDto ToDto(this FormSections entity)
+        {
+            return new FormSectionDto
+            {
+                Id = entity.FormTemplateId,
+                Name = entity.Name,
                 Fields = entity.Fields.Select(f => f.ToDto()).ToList()
             };
         }

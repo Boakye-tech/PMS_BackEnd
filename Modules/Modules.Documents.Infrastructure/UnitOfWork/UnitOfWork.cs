@@ -25,17 +25,22 @@ namespace Modules.Documents.Infrastructure.UnitOfWork
             _dbContext = dbContext;
 
             FormTemplates = new FormTemplatesRepository(_dbContext);
+            FormSections = new FormSectionsRepository(_dbContext);
             FormFields = new FormFieldsRepository(_dbContext);
+
 
             ApplicationSubmissionForms = new ApplicationFormSubmissionRepository(_dbContext);
             ApplicationSubmissionFromsResponse = new ApplicationFormResponseRepository(_dbContext);
         }
 
         public IFormTemplatesRepository FormTemplates { get; private set; }
+        public IFormSectionsRepository FormSections { get; private set; }
         public IFormFieldsRepository FormFields { get; private set; }
 
         public IApplicationFormSubmissionRepository ApplicationSubmissionForms { get; private set; }
         public IApplicationFormResponseRepository ApplicationSubmissionFromsResponse { get; private set; }
+
+        
 
         public Task<int> Complete()
         {

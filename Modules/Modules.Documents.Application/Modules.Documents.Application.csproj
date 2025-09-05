@@ -20,6 +20,7 @@
     <None Remove="Dtos\FormFields\" />
     <None Remove="Dtos\ApplicationForm\" />
     <None Remove="Extensions\" />
+    <None Remove="Dtos\FormSections\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -30,5 +31,6 @@
     <Folder Include="Dtos\FormFields\" />
     <Folder Include="Dtos\ApplicationForm\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Dtos\FormSections\" />
   </ItemGroup>
 </Project>

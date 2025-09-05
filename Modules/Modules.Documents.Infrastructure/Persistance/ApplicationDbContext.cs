@@ -36,6 +36,9 @@ namespace Modules.Documents.Infrastructure.Persistance
         public DbSet<ApplicationFormResponse> ApplicationFormResponse { get; set; }
 
 
+        //05 Sept, 2025
+        public DbSet<FormSections> FormSections { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -47,15 +50,18 @@ namespace Modules.Documents.Infrastructure.Persistance
             modelBuilder.HasDefaultSchema("doc");
 
 
-
-            modelBuilder.ApplyConfiguration(new FormFieldsConfiguration());
-            modelBuilder.ApplyConfiguration(new FormSubmissionConfiguration());
-            modelBuilder.ApplyConfiguration(new FormTemplatesConfiguration());
-            modelBuilder.ApplyConfiguration(new StatusHistoryConfiguration());
+            //modelBuilder.ApplyConfiguration(new FormTemplatesConfiguration());
+            //modelBuilder.ApplyConfiguration(new FormSectionsConfiguration());
+            //modelBuilder.ApplyConfiguration(new FormFieldsConfiguration());
+            //modelBuilder.ApplyConfiguration(new FormSubmissionConfiguration());
+            //modelBuilder.ApplyConfiguration(new StatusHistoryConfiguration());
 
         }
 
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
 
     }
 

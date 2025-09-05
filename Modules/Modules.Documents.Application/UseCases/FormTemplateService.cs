@@ -19,6 +19,7 @@ using Modules.Documents.Domain.Entities;
 using Modules.Documents.Domain.Events;
 using Modules.Documents.Domain.Interfaces;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.EntityFrameworkCore;
 
 namespace Modules.Documents.Application.UseCases
 {
@@ -46,7 +47,7 @@ namespace Modules.Documents.Application.UseCases
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync()
         {
-            var templates = await _unitofWork.FormTemplates.GetAll(includes: new List<string> { "Fields" });
+            var templates = await _unitofWork.FormTemplates.GetAll(includes: new List<string> { "Sections" });
 
             return templates
                 .Select(t => t.ToDto())
@@ -56,8 +57,9 @@ namespace Modules.Documents.Application.UseCases
 
         public List<FormTemplateDto> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name)
         {
-            var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Fields" });
+            var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
+            //var query = _unitofWork.FormTemplates.GetQueryable();
 
             // Apply filters dynamically
             if (id > 0)
@@ -80,6 +82,17 @@ namespace Modules.Documents.Application.UseCases
             return templates
                 .Select(t => t.ToDto())
                 .ToList();
+
+
+            //// Force eager load
+            //var templates = query
+            //    .Include(t => t.Sections)
+            //        .ThenInclude(s => s.Fields)
+            //    .ToList();
+
+            //// Map to DTO
+            //return templates.Select(MapToDto).ToList();
+
         }
 
 
@@ -95,19 +108,29 @@ namespace Modules.Documents.Application.UseCases
                 };
             }
 
-            var template = new FormTemplates(0, createDto.Name, createDto.Description);
+            var template = new FormTemplates(0, createDto.LandUseId, createDto.LandUseTypeId.FirstOrDefault(), createDto.Name, createDto.Description);
 
-            // Add fields
-            foreach (var fieldDto in createDto.Fields.OrderBy(f => f.Order))
+
+            // Add sections and their fields
+            foreach (var sectionDto in createDto.Sections.OrderBy(s => s.Order))
             {
-                template.AddField(
-                    0,
-                    fieldDto.Label,
-                    fieldDto.FieldType,
-                    fieldDto.IsRequired,
-                    fieldDto.Options,
-                    fieldDto.Order
-                );
+                template.AddSection(0, sectionDto.Name , sectionDto.Order);
+
+                // Get the newly added section
+                var newSection = template.Sections.OrderByDescending(s => s.FormSectionId).First();
+
+                // Add fields to the section
+                foreach (var fieldDto in sectionDto.Fields.OrderBy(f => f.Order))
+                {
+                    newSection.AddField(
+                        0,
+                        fieldDto.Label,
+                        fieldDto.FieldType,
+                        fieldDto.IsRequired,
+                        fieldDto.Options,
+                        fieldDto.Order
+                    );
+                }
             }
 
             //template. AddDomainEvent(new FormTemplateCreatedEvent(template));
@@ -157,48 +180,55 @@ namespace Modules.Documents.Application.UseCases
             }
 
             // Update template properties
-            existingTemplate.UpdateDetails(updateDto.Name, updateDto.Description);
+            existingTemplate.UpdateTemplateDetails(updateDto.LandUseId, updateDto.LandUseTypeId, updateDto.Name, updateDto.Description);
 
-            // Handle fields update
-            var existingFieldIds = existingTemplate.Fields.Select(f => f.FormFieldId).ToList();
-            var updatedFieldIds = updateDto.Fields.Where(f => f.Id != 0).Select(f => f.Id).ToList();
+            // Handle section update
+            var existingSectionIds = existingTemplate.Sections.Select(f => f.FormSectionId).ToList();
+            var updatedSectionIds = updateDto.Sections.Where(f => f.Id != 0).Select(f => f.Id).ToList();
 
-            // Remove fields that are not in the update
-            var fieldsToRemove = existingTemplate.Fields
-                .Where(f => !updatedFieldIds.Contains(f.FormFieldId))
+
+            //// Handle field update
+            //var existingFieldIds = existingTemplate.Fiel.Select(f => f.FormSectionId).ToList();
+            //var updatedFieldIds = updateDto.Sections.Where(f => f.Id != 0).Select(f => f.Id).ToList();
+
+
+            // Remove sections that are not in the update
+            var fieldsToRemove = existingTemplate.Sections
+                .Where(f => !updatedSectionIds.Contains(f.FormSectionId))
                 .ToList();
 
             foreach (var field in fieldsToRemove)
             {
-                existingTemplate.RemoveField(field.FormFieldId);
+                existingTemplate.RemoveSection(field.FormSectionId);
             }
 
             // Update existing fields and add new ones
-            foreach (var fieldDto in updateDto.Fields)
+            foreach (var fieldDto in updateDto.Sections)
             {
                 if (fieldDto.Id == 0)
                 {
-                    // New field
-                    existingTemplate.AddField(
-                        fieldDto.Id,
-                        fieldDto.Label,
-                        fieldDto.FieldType,
-                        fieldDto.IsRequired,
-                        fieldDto.Options,
-                        fieldDto.Order
-                    );
+                    existingTemplate.AddSection(fieldDto.Id, fieldDto.Name, fieldDto.Order);
+
+
+                    //// New field
+                    //existingTemplate.AddField(
+                    //    fieldDto.Id,
+                    //    fieldDto.Label,
+                    //    fieldDto.FieldType,
+                    //    fieldDto.IsRequired,
+                    //    fieldDto.Options,
+                    //    fieldDto.Order
+                    //);
                 }
                 else
                 {
                     // Existing field
-                    var existingField = existingTemplate.Fields.FirstOrDefault(f => f.FormFieldId == fieldDto.Id);
+                    var existingField = existingTemplate.Sections.FirstOrDefault(f => f.FormSectionId == fieldDto.Id);
                     if (existingField != null)
                     {
                         existingField.UpdateDetails(
-                            fieldDto.Label,
-                            fieldDto.FieldType,
-                            fieldDto.IsRequired,
-                            fieldDto.Options
+                            fieldDto.Name,
+                            fieldDto.Order
                         );
                         existingField.UpdateOrder(fieldDto.Order);
                     }
@@ -256,15 +286,23 @@ namespace Modules.Documents.Application.UseCases
                 Name = template.Name,
                 Description = template.Description,
                 DateCreated = template.DateCreated,
-                Fields = template.Fields.Select(f => new FormFieldDto
+                Sections = template.Sections.OrderBy(s => s.Order).Select(s => new FormSectionDto
                 {
-                    Id = f.FormFieldId,
-                    Label = f.Label,
-                    FieldType = f.FieldType,
-                    IsRequired = f.IsRequired,
-                    Options = f.Options,
-                    Order = f.Order,
-                    FormTemplateId = f.FormTemplateId
+                    Id = s.FormSectionId,
+                    Name = s.Name,
+                    Order = s.Order,
+                    FormTemplateId = s.FormTemplateId,
+                    Fields = s.Fields.OrderBy(f => f.Order).Select(f => new FormFieldDto
+                    {
+                        Id = f.FormFieldId,
+                        Label = f.Label,
+                        FieldType = f.FieldType,
+                        IsRequired = f.IsRequired,
+                        Options = f.Options,
+                        Order = f.Order,
+                        FormSectionId = f.FormSectionId,
+                        FormTemplateId = f.FormTemplateId
+                    }).ToList()
                 }).ToList()
             };
         }
