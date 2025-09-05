@@ -17,9 +17,9 @@ namespace Modules.Documents.Domain.Events
 {
     public class FormTemplateCreatedEvent : BaseEvent
     {
-        public FormTemplates FormTemplate { get; }
+        public FormSections FormTemplate { get; }
 
-        public FormTemplateCreatedEvent(FormTemplates formTemplate)
+        public FormTemplateCreatedEvent(FormSections formTemplate)
         {
             FormTemplate = formTemplate;
         }

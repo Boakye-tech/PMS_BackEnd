@@ -33,17 +33,25 @@ namespace Modules.Documents.Domain.Entities
         [Required]
         public int Order { get; private set; }
 
-        // Foreign key
+        // Foreign keys
+        [Required]
+        public int FormSectionId { get; private set; }
+
         [Required]
         public int FormTemplateId { get; private set; }
 
-        // Navigation property
-        public FormTemplates FormTemplate { get; private set; } = null!;
+        // Navigation properties
+        //public FormSections FormSection { get; private set; } = null!;
+        //public FormTemplates FormTemplate { get; private set; } = null!;
+
+        public virtual FormSections FormSection { get; set; }
+        public virtual FormTemplates FormTemplate { get; set; } 
+
 
         // Private constructor for EF Core
         private FormFields() { }
 
-        public FormFields(int formFieldId, string label, string fieldType, bool isRequired, string? options, int order, int formTemplateId)
+        public FormFields(int formFieldId, string label, string fieldType, bool isRequired, string? options, int order,int formSectionId , int formTemplateId)
         {
             FormFieldId = formFieldId;
             Label = label ?? throw new ArgumentNullException(nameof(label));
@@ -51,6 +59,7 @@ namespace Modules.Documents.Domain.Entities
             IsRequired = isRequired;
             Options = options;
             Order = order;
+            FormSectionId = formSectionId;
             FormTemplateId = formTemplateId;
         }
 

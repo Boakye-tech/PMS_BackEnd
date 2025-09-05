@@ -20,6 +20,7 @@ namespace Modules.Documents.Application.Dtos.FormFields
         public bool IsRequired { get; init; }
         public string? Options { get; init; }
         public int Order { get; init; }
+        public int FormSectionId { get; set; }
         public int FormTemplateId { get; init; }
     }
 }

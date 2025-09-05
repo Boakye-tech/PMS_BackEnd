@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+
+
 namespace Modules.Documents.Application.Dtos.FormTemplates
 {
     public record FormTemplateDto
@@ -18,7 +20,8 @@ namespace Modules.Documents.Application.Dtos.FormTemplates
         public required string Name { get; init; }
         public string? Description { get; init; }
         public DateTime DateCreated { get; init; }
-        public List<FormFieldDto> Fields { get; init; } = new();
+        //public List<FormFieldDto> Fields { get; init; } = new();
+        public List<FormSectionDto> Sections { get; init; } = new();
         public string? CreatedBy { get; init; }
     }
 }

@@ -16,6 +16,7 @@ namespace Modules.Documents.Domain.Interfaces
     {
         IFormTemplatesRepository FormTemplates { get; }
         IFormFieldsRepository FormFields { get; }
+        IFormSectionsRepository FormSections { get; }
 
         IApplicationFormSubmissionRepository ApplicationSubmissionForms { get; }
         IApplicationFormResponseRepository ApplicationSubmissionFromsResponse { get; }

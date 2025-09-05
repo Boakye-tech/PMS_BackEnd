@@ -19,14 +19,14 @@ namespace Modules.Documents.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<FormTemplates> builder)
         {
-            builder.HasMany(t => t.Fields)
+            builder.HasMany(t => t.Sections)
                .WithOne(f => f.FormTemplate)
-               .HasForeignKey(fk => fk.FormTemplateId)
+               .HasForeignKey(fk => fk.FormSectionId)
                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(
-                new FormTemplates(1, "APPLICATION FOR PURCHASE OF A HOUSE", "Required form for initiating the house purchase process and fulfilling documentation requirements."),
-                new FormTemplates(2, "APPLICATION FOR SERVICED RESIDENTIAL PLOT", "")
+                new FormTemplates(1,1,3, "APPLICATION FOR PURCHASE OF A HOUSE", "Required form for initiating the house purchase process and fulfilling documentation requirements."),
+                new FormTemplates(2,1,1, "APPLICATION FOR SERVICED RESIDENTIAL PLOT", "")
             );
 
         }
