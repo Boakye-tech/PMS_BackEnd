@@ -31,8 +31,7 @@ namespace Modules.Documents.Domain.Entities
         public string? Description { get; private set; }
 
         //Navigation property for Form Sections
-        public ICollection<FormSections> Sections { get; set; } = new List<FormSections>();
-        //public ICollection<FormFields> Fields { get; set; } = new List<FormFields>();
+        public ICollection<FormSections> Sections { get; private set; } = new List<FormSections>();
 
         // Private constructor for EF Core
         private FormTemplates() { }

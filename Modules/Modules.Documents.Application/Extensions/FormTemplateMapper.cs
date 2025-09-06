@@ -21,7 +21,7 @@ namespace Modules.Documents.Application.Extensions
         {
             return new FormTemplateDto
             {
-                Id = entity.FormTemplateId,
+                FormTemplateId = entity.FormTemplateId,
                 Name = entity.Name,
                 Description = entity.Description,
                 DateCreated = DateTime.UtcNow,
@@ -33,8 +33,9 @@ namespace Modules.Documents.Application.Extensions
         {
             return new FormSectionDto
             {
-                Id = entity.FormTemplateId,
+                FormSectionId = entity.FormSectionId,
                 Name = entity.Name,
+                Order = entity.Order,
                 Fields = entity.Fields.Select(f => f.ToDto()).ToList()
             };
         }
@@ -43,7 +44,7 @@ namespace Modules.Documents.Application.Extensions
         {
             return new FormFieldDto
             {
-                Id = entity.FormFieldId,
+                FormFieldId = entity.FormFieldId,
                 Label = entity.Label,
                 FieldType = entity.FieldType,
                 IsRequired = entity.IsRequired,

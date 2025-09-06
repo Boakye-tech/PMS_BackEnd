@@ -59,7 +59,6 @@ namespace Modules.Documents.Application.UseCases
         {
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
-            //var query = _unitofWork.FormTemplates.GetQueryable();
 
             // Apply filters dynamically
             if (id > 0)
@@ -83,15 +82,6 @@ namespace Modules.Documents.Application.UseCases
                 .Select(t => t.ToDto())
                 .ToList();
 
-
-            //// Force eager load
-            //var templates = query
-            //    .Include(t => t.Sections)
-            //        .ThenInclude(s => s.Fields)
-            //    .ToList();
-
-            //// Map to DTO
-            //return templates.Select(MapToDto).ToList();
 
         }
 
@@ -184,7 +174,7 @@ namespace Modules.Documents.Application.UseCases
 
             // Handle section update
             var existingSectionIds = existingTemplate.Sections.Select(f => f.FormSectionId).ToList();
-            var updatedSectionIds = updateDto.Sections.Where(f => f.Id != 0).Select(f => f.Id).ToList();
+            var updatedSectionIds = updateDto.Sections.Where(f => f.FormSectionId != 0).Select(f => f.FormSectionId).ToList();
 
 
             //// Handle field update
@@ -205,9 +195,9 @@ namespace Modules.Documents.Application.UseCases
             // Update existing fields and add new ones
             foreach (var fieldDto in updateDto.Sections)
             {
-                if (fieldDto.Id == 0)
+                if (fieldDto.FormSectionId == 0)
                 {
-                    existingTemplate.AddSection(fieldDto.Id, fieldDto.Name, fieldDto.Order);
+                    existingTemplate.AddSection(fieldDto.FormSectionId, fieldDto.Name, fieldDto.Order);
 
 
                     //// New field
@@ -223,7 +213,7 @@ namespace Modules.Documents.Application.UseCases
                 else
                 {
                     // Existing field
-                    var existingField = existingTemplate.Sections.FirstOrDefault(f => f.FormSectionId == fieldDto.Id);
+                    var existingField = existingTemplate.Sections.FirstOrDefault(f => f.FormSectionId == fieldDto.FormSectionId);
                     if (existingField != null)
                     {
                         existingField.UpdateDetails(
@@ -282,26 +272,26 @@ namespace Modules.Documents.Application.UseCases
         {
             return new FormTemplateDto
             {
-                Id = template.FormTemplateId,
+                FormTemplateId = template.FormTemplateId,
                 Name = template.Name,
                 Description = template.Description,
                 DateCreated = template.DateCreated,
                 Sections = template.Sections.OrderBy(s => s.Order).Select(s => new FormSectionDto
                 {
-                    Id = s.FormSectionId,
+                    FormSectionId = s.FormSectionId,
                     Name = s.Name,
                     Order = s.Order,
-                    FormTemplateId = s.FormTemplateId,
+                    //FormTemplateId = s.FormTemplateId,
                     Fields = s.Fields.OrderBy(f => f.Order).Select(f => new FormFieldDto
                     {
-                        Id = f.FormFieldId,
+                        FormFieldId = f.FormFieldId,
                         Label = f.Label,
                         FieldType = f.FieldType,
                         IsRequired = f.IsRequired,
                         Options = f.Options,
                         Order = f.Order,
-                        FormSectionId = f.FormSectionId,
-                        FormTemplateId = f.FormTemplateId
+                        //FormSectionId = f.FormSectionId,
+                        //FormTemplateId = f.FormTemplateId
                     }).ToList()
                 }).ToList()
             };

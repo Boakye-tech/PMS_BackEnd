@@ -32,12 +32,9 @@ namespace Modules.Documents.Domain.Entities
         public int FormTemplateId { get; private set; }
 
         // Navigation properties
-        //public FormTemplates FormTemplate { get; private set; } = null!;
-        public virtual FormTemplates FormTemplate { get; set; }
+        public virtual FormTemplates FormTemplate { get; private set; }
 
-        //private readonly List<FormFields> _fields = new();
-        //public ICollection<FormFields> Fields =>  new List<FormFields>();
-        public ICollection<FormFields> Fields { get; set; } = new List<FormFields>();
+        public ICollection<FormFields> Fields { get; private set; } = new List<FormFields>();
 
         // Private constructor for EF Core
         private FormSections() { }
