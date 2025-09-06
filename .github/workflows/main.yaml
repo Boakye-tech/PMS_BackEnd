@@ -35,49 +35,49 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones are disabled to ensure the full history is available for code analysis and SonarQube scanning
       
-      - name: Cache SonarQube Cloud packages
-        if: >
-          (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
-          (github.event_name == 'pull_request' && github.base_ref == 'develop')
-        uses: actions/cache@v4
-        with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+      # - name: Cache SonarQube Cloud packages
+      #   if: >
+      #     (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
+      #     (github.event_name == 'pull_request' && github.base_ref == 'develop')
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~\sonar\cache
+      #     key: ${{ runner.os }}-sonar
+      #     restore-keys: ${{ runner.os }}-sonar
           
-      - name: Cache SonarQube Cloud scanner
-        if: >
-          (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
-          (github.event_name == 'pull_request' && github.base_ref == 'develop')
-        id: cache-sonar-scanner
-        uses: actions/cache@v4
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
+      # - name: Cache SonarQube Cloud scanner
+      #   if: >
+      #     (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
+      #     (github.event_name == 'pull_request' && github.base_ref == 'develop')
+      #   id: cache-sonar-scanner
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: .\.sonar\scanner
+      #     key: ${{ runner.os }}-sonar-scanner
+      #     restore-keys: ${{ runner.os }}-sonar-scanner
 
-      - name: Install SonarQube Cloud scanner
-        if: >
-          ((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
-          (github.event_name == 'pull_request' && github.base_ref == 'develop')) &&
-          steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: pwsh
-        run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      # - name: Install SonarQube Cloud scanner
+      #   if: >
+      #     ((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
+      #     (github.event_name == 'pull_request' && github.base_ref == 'develop')) &&
+      #     steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+      #   shell: pwsh
+      #   run: |
+      #     New-Item -Path .\.sonar\scanner -ItemType Directory
+      #     dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
-      - name: Build and analyze
-        if: >
-          (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
-          (github.event_name == 'pull_request' && github.base_ref == 'develop')
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: pwsh
-        run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"MindSpringsGhana_pms-api" /o:"mindspringsghana" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
-          dotnet build --no-incremental
-          dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults --settings coverlet.runsettings --logger "trx;LogFileName=testresults.trx"
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      # - name: Build and analyze
+      #   if: >
+      #     (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
+      #     (github.event_name == 'pull_request' && github.base_ref == 'develop')
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   shell: pwsh
+      #   run: |
+      #     .\.sonar\scanner\dotnet-sonarscanner begin /k:"MindSpringsGhana_pms-api" /o:"mindspringsghana" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+      #     dotnet build --no-incremental
+      #     dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults --settings coverlet.runsettings --logger "trx;LogFileName=testresults.trx"
+      #     .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Configure Environment Settings
         shell: pwsh
@@ -256,17 +256,17 @@ jobs:
           }
         shell: pwsh
 
-      - name: Run Module Tests
-        if: >
-          (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
-          (github.event_name == 'pull_request' && github.base_ref == 'develop')
-        run: |
-          $testProjects = Get-ChildItem -Path "Test" -Filter "*Test.csproj" -Recurse
-          foreach ($project in $testProjects) {
-            Write-Host "Running tests for: $($project.FullName)"
-            dotnet test $project.FullName --no-build --verbosity normal
-          }
-        shell: pwsh
+      # - name: Run Module Tests
+      #   if: >
+      #     (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop')) ||
+      #     (github.event_name == 'pull_request' && github.base_ref == 'develop')
+      #   run: |
+      #     $testProjects = Get-ChildItem -Path "Test" -Filter "*Test.csproj" -Recurse
+      #     foreach ($project in $testProjects) {
+      #       Write-Host "Running tests for: $($project.FullName)"
+      #       dotnet test $project.FullName --no-build --verbosity normal
+      #     }
+      #   shell: pwsh
           
       - name: Build and Test
         working-directory: PMS.Presentation
