@@ -41,11 +41,8 @@ namespace Modules.Documents.Domain.Entities
         public int FormTemplateId { get; private set; }
 
         // Navigation properties
-        //public FormSections FormSection { get; private set; } = null!;
-        //public FormTemplates FormTemplate { get; private set; } = null!;
-
-        public virtual FormSections FormSection { get; set; }
-        public virtual FormTemplates FormTemplate { get; set; } 
+        public virtual FormSections FormSection { get; private set; }
+        public virtual FormTemplates FormTemplate { get; private set; } 
 
 
         // Private constructor for EF Core

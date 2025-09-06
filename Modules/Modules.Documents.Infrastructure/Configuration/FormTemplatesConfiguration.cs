@@ -21,7 +21,7 @@ namespace Modules.Documents.Infrastructure.Configuration
         {
             builder.HasMany(t => t.Sections)
                .WithOne(f => f.FormTemplate)
-               .HasForeignKey(fk => fk.FormSectionId)
+               .HasForeignKey(fk => fk.FormTemplateId)
                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(

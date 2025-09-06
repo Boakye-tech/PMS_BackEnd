@@ -16,7 +16,7 @@ namespace Modules.Documents.Application.Dtos.FormTemplates
 {
     public record FormTemplateDto
     {
-        public int Id { get; init; }
+        public int FormTemplateId { get; init; }
         public required string Name { get; init; }
         public string? Description { get; init; }
         public DateTime DateCreated { get; init; }

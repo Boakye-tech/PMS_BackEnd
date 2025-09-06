@@ -227,18 +227,18 @@ namespace Modules.Documents.Application.UseCases
                     FormSubmissionId = r.FormSubmissionId,
                     Field = r.FormField != null ? new FormFieldDto
                     {
-                        Id = r.FormField.FormFieldId,
+                        FormFieldId = r.FormField.FormFieldId,
                         Label = r.FormField.Label,
                         FieldType = r.FormField.FieldType,
                         IsRequired = r.FormField.IsRequired,
                         Options = r.FormField.Options,
-                        Order = r.FormField.Order,
-                        FormTemplateId = r.FormField.FormTemplateId
+                        Order = r.FormField.Order
+                        //FormTemplateId = r.FormField.FormTemplateId
                     } : null
                 }).ToList(),
                 Template = submission.FormTemplate != null ? new FormTemplateDto
                 {
-                    Id = submission.FormTemplate.FormTemplateId,
+                    FormTemplateId = submission.FormTemplate.FormTemplateId,
                     Name = submission.FormTemplate.Name,
                     Description = submission.FormTemplate.Description,
                     DateCreated = submission.FormTemplate.DateCreated
