@@ -345,7 +345,7 @@ namespace Modules.Customers.Application.UseCases
                 ComplaintDate = complaint.ComplaintDate,
                 SubmittedBy = complaint.SubmittedBy,
                 SubmittedBy_PhoneNumber = complaint.SubmittedBy_PhoneNumber,
-                DocumentList = complaint.DocumentList!.ToList(),
+                DocumentList = complaint.DocumentList?.ToList() ?? new List<string>(),
                 ComplaintStatus = await GetComplaintStatus(complaintNumber)
             };
 
