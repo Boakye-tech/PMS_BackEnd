@@ -17,7 +17,7 @@ namespace Modules.Documents.Application.Dtos.FormTemplates
     {
         public int FormTemplateId { get; set; }
         public int LandUseId { get; set; }
-        public int LandUseTypeId { get; set; }
+        public string? LandUseTypeId { get; set; }
         public required string Name { get; init; }
         public string? Description { get; init; }
         //public List<FormFieldDto> Fields { get; init; } = new();

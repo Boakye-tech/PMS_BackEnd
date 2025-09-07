@@ -15,19 +15,28 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Modules.Documents.Infrastructure.Configuration
 {
-	public class FormTemplatesConfiguration : IEntityTypeConfiguration<FormTemplates>
+    public class FormTemplatesConfiguration : IEntityTypeConfiguration<FormTemplates>
     {
         public void Configure(EntityTypeBuilder<FormTemplates> builder)
         {
+            builder.HasKey(t => t.FormTemplateId);
+
+            builder.Property(t => t.FormTemplateId)
+                   .ValueGeneratedOnAdd() // important
+                   .UseIdentityColumn();
+
+            builder.HasIndex(t => t.Name)
+                .IsUnique();
+
             builder.HasMany(t => t.Sections)
                .WithOne(f => f.FormTemplate)
                .HasForeignKey(fk => fk.FormTemplateId)
                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasData(
-                new FormTemplates(1,1,3, "APPLICATION FOR PURCHASE OF A HOUSE", "Required form for initiating the house purchase process and fulfilling documentation requirements."),
-                new FormTemplates(2,1,1, "APPLICATION FOR SERVICED RESIDENTIAL PLOT", "")
-            );
+            //builder.HasData(
+            //    new FormTemplates(1, 3, "APPLICATION FOR PURCHASE OF A HOUSE", "Required form for initiating the house purchase process and fulfilling documentation requirements."),
+            //    new FormTemplates(1, 1, "APPLICATION FOR SERVICED RESIDENTIAL PLOT", "")
+            //);
 
         }
 

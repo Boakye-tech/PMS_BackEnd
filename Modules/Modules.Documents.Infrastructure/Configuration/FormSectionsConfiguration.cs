@@ -14,12 +14,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Modules.Documents.Infrastructure.Configuration
 {
-	public class FormSectionsConfiguration : IEntityTypeConfiguration<FormSections>
+    public class FormSectionsConfiguration : IEntityTypeConfiguration<FormSections>
     {
 
         public void Configure(EntityTypeBuilder<FormSections> builder)
         {
-            //throw new NotImplementedException();
+
+            builder.HasKey(s => s.FormSectionId);
+
+            builder.Property(s => s.FormSectionId)
+                .ValueGeneratedOnAdd() // important
+                .UseIdentityColumn();
+
+
+            builder.HasIndex(s => new { s.Name, s.FormTemplateId })
+                .IsUnique(true);
 
             builder.HasMany(s => s.Fields)
                 .WithOne(f => f.FormSection)
@@ -27,10 +36,10 @@ namespace Modules.Documents.Infrastructure.Configuration
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            builder.HasData(
-                new FormSections(1, "A. PARTICULARS OF APPLICANT", 1, 1),
-                new FormSections(2, "B. PARTICULARS OF PROPERTY REQUIRED", 2, 1)
-            );
+            //builder.HasData(
+            //    new FormSections("A. PARTICULARS OF APPLICANT", 1, 1),
+            //    new FormSections("B. PARTICULARS OF PROPERTY REQUIRED", 2, 1)
+            //);
 
 
         }

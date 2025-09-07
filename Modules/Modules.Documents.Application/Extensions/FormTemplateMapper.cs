@@ -24,6 +24,7 @@ namespace Modules.Documents.Application.Extensions
                 FormTemplateId = entity.FormTemplateId,
                 Name = entity.Name,
                 Description = entity.Description,
+                CreatedBy = entity.CreatedBy,
                 DateCreated = DateTime.UtcNow,
                 Sections = entity.Sections.Select(f => f.ToDto()).ToList()
             };
@@ -34,7 +35,7 @@ namespace Modules.Documents.Application.Extensions
             return new FormSectionDto
             {
                 FormSectionId = entity.FormSectionId,
-                Name = entity.Name,
+                Name = entity.Name!,
                 Order = entity.Order,
                 Fields = entity.Fields.Select(f => f.ToDto()).ToList()
             };
