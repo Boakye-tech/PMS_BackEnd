@@ -19,10 +19,11 @@ namespace Modules.Documents.Domain.Entities
 	public class FormTemplates : AuditableEntity
     {
         [Key]
-        public int FormTemplateId { get; set; }
+        public int FormTemplateId { get; private set; }
 
-        public int LandUseId { get; set; }
-        public int LandUseTypeId { get; set; }
+        public int LandUseId { get; private set; }
+
+        public string LandUseTypeId { get; private set; }
 
         [Required]
         [StringLength(200)]
@@ -36,9 +37,9 @@ namespace Modules.Documents.Domain.Entities
         // Private constructor for EF Core
         private FormTemplates() { }
 
-        public FormTemplates(int id, int landUseId, int landUseTypeId, string name, string? description)
+        public FormTemplates(int landUseId, string landUseTypeId, string name, string? description)//int id, 
         {
-            FormTemplateId = id;
+            //FormTemplateId = id;
             LandUseId = landUseId;
             LandUseTypeId = landUseTypeId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -47,7 +48,7 @@ namespace Modules.Documents.Domain.Entities
         }
 
         // Domain methods
-        public void UpdateTemplateDetails(int landUseId, int landUseTypeId, string name, string? description)
+        public void UpdateTemplateDetails(int landUseId, string landUseTypeId, string name, string? description)
         {
             LandUseId = landUseId;
             LandUseTypeId = landUseTypeId;
@@ -55,10 +56,17 @@ namespace Modules.Documents.Domain.Entities
             Description = description;
         }
 
-        public void AddSection(int formSectionId, string name,int order)
+        //public void AddSection(string name,int order) //int formSectionId, 
+        //{
+        //    var section = new FormSections(name, order, FormTemplateId); //formSectionId,
+        //    Sections.Add(section);
+        //}
+
+        public FormSections AddSection(string name, int order) //int formSectionId, 
         {
-            var section = new FormSections(formSectionId, name, order, FormTemplateId);
+            var section = new FormSections(name, order, FormTemplateId); //formSectionId,
             Sections.Add(section);
+            return section;
         }
 
         public void RemoveSection(int sectionId)

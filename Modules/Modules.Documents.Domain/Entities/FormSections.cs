@@ -25,23 +25,23 @@ namespace Modules.Documents.Domain.Entities
 
         [Required]
         [StringLength(200)]
-        public string Name { get; private set; }
+        public string? Name { get; private set; }
 
         public int Order { get; private set; }
 
         public int FormTemplateId { get; private set; }
 
         // Navigation properties
-        public virtual FormTemplates FormTemplate { get; private set; }
+        public FormTemplates FormTemplate { get; private set; }
 
         public ICollection<FormFields> Fields { get; private set; } = new List<FormFields>();
 
         // Private constructor for EF Core
         private FormSections() { }
 
-        public FormSections(int formSectionId, string name, int order, int formTemplateId)
+        public FormSections(string? name, int order, int formTemplateId) //int formSectionId, 
         {
-            FormSectionId = formSectionId;
+            //FormSectionId = formSectionId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Order = order;
             FormTemplateId = formTemplateId;
@@ -62,10 +62,34 @@ namespace Modules.Documents.Domain.Entities
 
 
 
-        public void AddField(int formFieldId, string label, string fieldType, bool isRequired, string? options, int order)
+        //public void AddField(string label, string fieldType, bool isRequired, string? options, int order) //int formFieldId, 
+        //{
+
+        //    var field = new FormFields(label, fieldType, isRequired, options, order, FormSectionId); //formFieldId, FormTemplateId
+
+        //    // hook relationships
+        //    field.LinkToSection(this);
+        //    field.LinkToTemplate(FormTemplateId);
+
+        //    field.GetType()
+        //        .GetProperty(nameof(FormFields.FormSectionId))!
+        //        .SetValue(field, FormSectionId);
+
+        //    Fields.Add(field);
+        //}
+
+        public FormFields AddField(string label, string fieldType, bool isRequired, string? options, int order) //int formFieldId, 
         {
-            var field = new FormFields(formFieldId, label, fieldType, isRequired, options, order, FormSectionId, FormTemplateId);
+
+            var field = new FormFields(label, fieldType, isRequired, options, order, FormSectionId); //formFieldId, FormTemplateId
+
+            // hook relationships
+            //field.LinkToSection(this);
+            //field.LinkToTemplate(FormTemplateId);
+
+            field.SetTemplateAndSection(FormTemplateId, FormSectionId);
             Fields.Add(field);
+            return field;
         }
 
         public void RemoveField(int fieldId)

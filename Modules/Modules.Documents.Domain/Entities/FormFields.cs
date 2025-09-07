@@ -41,23 +41,23 @@ namespace Modules.Documents.Domain.Entities
         public int FormTemplateId { get; private set; }
 
         // Navigation properties
-        public virtual FormSections FormSection { get; private set; }
-        public virtual FormTemplates FormTemplate { get; private set; } 
+        public FormSections FormSection { get; private set; }
+        public FormTemplates FormTemplate { get; private set; } 
 
 
         // Private constructor for EF Core
         private FormFields() { }
 
-        public FormFields(int formFieldId, string label, string fieldType, bool isRequired, string? options, int order,int formSectionId , int formTemplateId)
+        public FormFields(string label, string fieldType, bool isRequired, string? options, int order,int formSectionId)//int formFieldId, , int formTemplateId
         {
-            FormFieldId = formFieldId;
+            //FormFieldId = formFieldId;
             Label = label ?? throw new ArgumentNullException(nameof(label));
             FieldType = fieldType ?? throw new ArgumentNullException(nameof(fieldType));
             IsRequired = isRequired;
             Options = options;
             Order = order;
             FormSectionId = formSectionId;
-            FormTemplateId = formTemplateId;
+            //FormTemplateId = formTemplateId;
         }
 
         // Domain methods
@@ -73,6 +73,27 @@ namespace Modules.Documents.Domain.Entities
         {
             Order = order;
         }
+
+        // Domain methods
+
+        public void SetTemplateAndSection(int templateId, int sectionId)
+        {
+            FormTemplateId = templateId;
+            FormSectionId = sectionId;
+        }
+
+
+        //public void LinkToSection(FormSections section)
+        //{
+        //    FormSection = section ?? throw new ArgumentNullException(nameof(section));
+        //    FormSectionId = section.FormSectionId; // EF will handle this on SaveChanges
+        //}
+
+        //public void LinkToTemplate(int templateId)
+        //{
+        //    FormTemplateId = templateId;
+        //    //FormTemplate = template ?? throw new ArgumentNullException(nameof(template));
+        //}
 
 
         //public FormFields? GetFieldById(int fieldId)

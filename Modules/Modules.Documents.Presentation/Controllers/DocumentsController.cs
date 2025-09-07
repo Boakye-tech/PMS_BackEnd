@@ -1,8 +1,12 @@
-﻿using Asp.Versioning;
+﻿using System.ComponentModel;
+using System.Reflection;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Documents.Application.Dtos;
 using Modules.Documents.Application.Dtos.ApplicationForm;
 using Modules.Documents.Application.Dtos.FormTemplates;
+using Modules.Documents.Application.Enums;
 using Modules.Documents.Application.Interfaces;
 
 namespace Modules.Documents.Presentation.Controllers;
@@ -27,6 +31,27 @@ public class DocumentsController : ControllerBase
 
 
     [HttpGet]
+    [Route("FieldOptionsDataSource")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    //[Authorize(Policy = "Permission:Customers.READ")]
+    public IActionResult FieldOptionsDataSource()
+    {
+        var options = Enum.GetValues(typeof(FieldOptionsEnum))
+                               .Cast<FieldOptionsEnum>()
+                               .Select(e => new
+                               {
+                                   Id = (int)e,
+                                   Name = e.ToString(),
+                                   DisplayName = e.GetType()
+                                                 .GetField(e.ToString())!
+                                                  .GetCustomAttribute<DescriptionAttribute>()?
+                                                  .Description
+
+                               });
+        return Ok(options);
+    }
+
+    [HttpGet]
     [Route("GetFormFields")]
     //[Authorize(Policy = "Permission:PropertySetup.READ")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -39,12 +64,14 @@ public class DocumentsController : ControllerBase
     [Route("GetFormTemplates")]
     //[Authorize(Policy = "Permission:PropertySetup.READ")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FormTemplateDto>))]
-    public ActionResult GetPlotFeatures([FromQuery] int id , [FromQuery] int landUseId, [FromQuery] int landUseTypeId, [FromQuery] string? name = null)
+    public ActionResult GetFormTemplates([FromQuery] int landUseId, [FromQuery] int landUseTypeId)
     {
         //if (id > 0)
-            return Ok(_formTemplateService.GetAllFormTemplatesAsync(id,landUseId,landUseTypeId, name));
+        //return Ok(_formTemplateService.GetAllFormTemplatesAsync(id,landUseId,landUseTypeId, name));
 
         //return Ok(await _formTemplateService.GetAllFormTemplatesAsync());
+
+        return Ok(_formTemplateService.GetAllFormTemplatesAsync(landUseId, landUseTypeId));
 
     }
 
