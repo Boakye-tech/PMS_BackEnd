@@ -12,79 +12,107 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Modules.Documents.Domain.Entities
 {
 	public class FormTemplates : AuditableEntity
     {
         [Key]
-        public int FormTemplateId { get; set; }
+        public int FormTemplateId { get; private set; }
 
-        public int LandUseId { get; set; }
-        public int LandUseTypeId { get; set; }
+        public int LandUseId { get; private set; }
 
+        public string LandUseTypeId { get; private set; }
 
         [Required]
         [StringLength(200)]
         public string Name { get; private set; }
 
         public string? Description { get; private set; }
-        
 
-        //Navigation property for Form Fields
-        public ICollection<FormFields> Fields { get; set; } = new List<FormFields>();
-
-        
+        //Navigation property for Form Sections
+        public ICollection<FormSections> Sections { get; private set; } = new List<FormSections>();
 
         // Private constructor for EF Core
         private FormTemplates() { }
 
-        public FormTemplates(int id, string name, string? description)
+        public FormTemplates(int landUseId, string landUseTypeId, string name, string? description)//int id, 
         {
-            FormTemplateId = id;
+            //FormTemplateId = id;
+            LandUseId = landUseId;
+            LandUseTypeId = landUseTypeId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
-            //FormsFields = new List<FormFields>();
+            //Sections = new List<FormSections>();
         }
 
         // Domain methods
-        public void UpdateDetails(string name, string? description)
+        public void UpdateTemplateDetails(int landUseId, string landUseTypeId, string name, string? description)
         {
+            LandUseId = landUseId;
+            LandUseTypeId = landUseTypeId;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
         }
 
-        public void AddField(int formFieldId, string label, string fieldType, bool isRequired, string? options, int order)
+        //public void AddSection(string name,int order) //int formSectionId, 
+        //{
+        //    var section = new FormSections(name, order, FormTemplateId); //formSectionId,
+        //    Sections.Add(section);
+        //}
+
+        public FormSections AddSection(string name, int order) //int formSectionId, 
         {
-            var field = new FormFields(formFieldId, label, fieldType, isRequired, options, order, FormTemplateId);
-            Fields.Add(field);
+            var section = new FormSections(name, order, FormTemplateId); //formSectionId,
+            Sections.Add(section);
+            return section;
         }
 
-        public void RemoveField(int fieldId)
+        public void RemoveSection(int sectionId)
         {
-            var field = Fields.FirstOrDefault(f => f.FormFieldId == fieldId);
-            if (field != null)
+            var section = Sections.FirstOrDefault(f => f.FormSectionId == sectionId);
+            if (section != null)
             {
-                Fields.Remove(field);
+                Sections.Remove(section);
             }
         }
 
-        public void ReorderFields(List<int> fieldIdsInOrder)
+        public void ReorderSections(List<int> sectionIdsInOrder)
         {
-            // Validate all field IDs belong to this template
-            var validFieldIds = Fields.Select(f => f.FormFieldId).ToList();
-            if (fieldIdsInOrder.Any(id => !validFieldIds.Contains(id)))
+            // Validate all section IDs belong to this template
+            var validFieldIds = Sections.Select(f => f.FormSectionId).ToList();
+            if (sectionIdsInOrder.Any(id => !validFieldIds.Contains(id)))
             {
-                throw new InvalidOperationException("Invalid field ID provided for reordering");
+                throw new InvalidOperationException("Invalid section ID provided for reordering");
             }
 
             // Update order based on the provided list
-            for (int i = 0; i < fieldIdsInOrder.Count; i++)
+            for (int i = 0; i < sectionIdsInOrder.Count; i++)
             {
-                var field = Fields.First(f => f.FormFieldId == fieldIdsInOrder[i]);
-                field.UpdateOrder(i + 1);
+                var section = Sections.First(f => f.FormSectionId == sectionIdsInOrder[i]);
+                section.UpdateOrder(i + 1);
             }
         }
+
+
+        public FormSections? GetSectionById(int sectionId)
+        {
+            return Sections.FirstOrDefault(s => s.FormSectionId == sectionId);
+        }
+
+        public IEnumerable<FormFields> GetAllFields()
+        {
+            return Sections.SelectMany(s => s.Fields);
+        }
+
+        public FormFields? GetFieldById(int fieldId)
+        {
+            return Sections
+                .SelectMany(s => s.Fields)
+                .FirstOrDefault(f => f.FormSectionId == fieldId);
+        }
+
     }
 
 }

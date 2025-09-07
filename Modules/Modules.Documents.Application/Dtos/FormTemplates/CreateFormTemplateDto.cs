@@ -14,12 +14,11 @@ namespace Modules.Documents.Application.Dtos.FormTemplates
 {
     public record CreateFormTemplateDto
     {
-        public int LandUseId { get; set; }
-        public List<int>? LandUseTypeId { get; set; }
-
         public required string Name { get; init; }
         public string? Description { get; init; }
-        public List<CreateFormFieldDto> Fields { get; init; } = new();
+        public int LandUseId { get; set; }
+        public List<int>? LandUseTypeId { get; set; }
+        public List<CreateFormSectionDto> Sections { get; init; } = new();
         public required string CreatedBy { get; init; }
     }
 }

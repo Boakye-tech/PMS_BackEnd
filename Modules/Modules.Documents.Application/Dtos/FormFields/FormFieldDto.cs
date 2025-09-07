@@ -14,13 +14,14 @@ namespace Modules.Documents.Application.Dtos.FormFields
 {
     public record FormFieldDto
     {
-        public int Id { get; init; }
+        public int FormFieldId { get; init; }
         public required string Label { get; init; }
         public required string FieldType { get; init; }
         public bool IsRequired { get; init; }
         public string? Options { get; init; }
         public int Order { get; init; }
-        public int FormTemplateId { get; init; }
+        //public int FormSectionId { get; set; }
+        //public int FormTemplateId { get; init; }
     }
 }
 

@@ -78,15 +78,28 @@ namespace Modules.Documents.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("LastStatusChangeDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PropertyNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("StatusNotes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("SubmittedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("WorkflowState")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("FormSubmissionId");
 
@@ -123,6 +136,9 @@ namespace Modules.Documents.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("FormSectionId")
+                        .HasColumnType("int");
+
                     b.Property<int>("FormTemplateId")
                         .HasColumnType("int");
 
@@ -145,258 +161,61 @@ namespace Modules.Documents.Infrastructure.Migrations
 
                     b.HasKey("FormFieldId");
 
+                    b.HasIndex("FormSectionId");
+
                     b.HasIndex("FormTemplateId");
 
-                    b.ToTable("FormFields", "doc");
+                    b.HasIndex("Label", "FormSectionId", "FormTemplateId")
+                        .IsUnique();
 
-                    b.HasData(
-                        new
-                        {
-                            FormFieldId = 1,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "image",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Passport Size Photograph",
-                            Options = "",
-                            Order = 1
-                        },
-                        new
-                        {
-                            FormFieldId = 2,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "text",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Full Name (Mr./Mrs./Dr/)",
-                            Options = "",
-                            Order = 2
-                        },
-                        new
-                        {
-                            FormFieldId = 3,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "text",
-                            FormTemplateId = 1,
-                            IsRequired = false,
-                            Label = "Registered Business Address",
-                            Options = "",
-                            Order = 3
-                        },
-                        new
-                        {
-                            FormFieldId = 4,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "text",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Postal Address",
-                            Options = "",
-                            Order = 4
-                        },
-                        new
-                        {
-                            FormFieldId = 5,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "tel",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Telephone Number",
-                            Options = "",
-                            Order = 5
-                        },
-                        new
-                        {
-                            FormFieldId = 6,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "text",
-                            FormTemplateId = 1,
-                            IsRequired = false,
-                            Label = "Residential Address",
-                            Options = "",
-                            Order = 6
-                        },
-                        new
-                        {
-                            FormFieldId = 7,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "tel",
-                            FormTemplateId = 1,
-                            IsRequired = false,
-                            Label = "Office Number",
-                            Options = "",
-                            Order = 7
-                        },
-                        new
-                        {
-                            FormFieldId = 8,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "email",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Email Address",
-                            Options = "",
-                            Order = 8
-                        },
-                        new
-                        {
-                            FormFieldId = 9,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "dropdown",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Nationality",
-                            Options = "",
-                            Order = 9
-                        },
-                        new
-                        {
-                            FormFieldId = 10,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "dropdown",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Residential Status",
-                            Options = "Resident,Non-Resident",
-                            Order = 10
-                        },
-                        new
-                        {
-                            FormFieldId = 11,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "Date",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Age(DOB)",
-                            Options = "",
-                            Order = 11
-                        },
-                        new
-                        {
-                            FormFieldId = 12,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "dropdown",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "How did you hear about our product",
-                            Options = "Internet,TV,Radio,Customer",
-                            Order = 12
-                        },
-                        new
-                        {
-                            FormFieldId = 13,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "text",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Type Of House (State Number Of Rooms)",
-                            Options = "",
-                            Order = 13
-                        },
-                        new
-                        {
-                            FormFieldId = 14,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "text",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Detached",
-                            Options = "",
-                            Order = 14
-                        },
-                        new
-                        {
-                            FormFieldId = 15,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "dropdown",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Community(Locality)",
-                            Options = "",
-                            Order = 15
-                        },
-                        new
-                        {
-                            FormFieldId = 16,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "text",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "House Number",
-                            Options = "",
-                            Order = 16
-                        },
-                        new
-                        {
-                            FormFieldId = 17,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "number",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Selling Price",
-                            Options = "",
-                            Order = 17
-                        },
-                        new
-                        {
-                            FormFieldId = 18,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "text",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Customer Code",
-                            Options = "",
-                            Order = 18
-                        },
-                        new
-                        {
-                            FormFieldId = 19,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FieldType = "signature",
-                            FormTemplateId = 1,
-                            IsRequired = true,
-                            Label = "Signature of applicant",
-                            Options = "",
-                            Order = 19
-                        });
+                    b.ToTable("FormFields", "doc");
+                });
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.FormSections", b =>
+                {
+                    b.Property<int>("FormSectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormSectionId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FormTemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("FormSectionId");
+
+                    b.HasIndex("FormTemplateId");
+
+                    b.HasIndex("Name", "FormTemplateId")
+                        .IsUnique();
+
+                    b.ToTable("FormSections", "doc");
                 });
 
             modelBuilder.Entity("Modules.Documents.Domain.Entities.FormTemplates", b =>
@@ -425,6 +244,13 @@ namespace Modules.Documents.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LandUseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LandUseTypeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -435,27 +261,44 @@ namespace Modules.Documents.Infrastructure.Migrations
 
                     b.HasKey("FormTemplateId");
 
-                    b.ToTable("FormTemplates", "doc");
+                    b.HasIndex("Name")
+                        .IsUnique();
 
-                    b.HasData(
-                        new
-                        {
-                            FormTemplateId = 1,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Required form for initiating the house purchase process and fulfilling documentation requirements.",
-                            Name = "APPLICATION FOR PURCHASE OF A HOUSE"
-                        },
-                        new
-                        {
-                            FormTemplateId = 2,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateDeleted = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Name = "APPLICATION FOR SERVICED RESIDENTIAL PLOT"
-                        });
+                    b.ToTable("FormTemplates", "doc");
+                });
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.StatusHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ChangeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FormSubmissionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("WorkflowState")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FormSubmissionId");
+
+                    b.ToTable("StatusHistory", "doc");
                 });
 
             modelBuilder.Entity("Modules.Documents.Domain.Entities.ApplicationFormResponse", b =>
@@ -490,8 +333,27 @@ namespace Modules.Documents.Infrastructure.Migrations
 
             modelBuilder.Entity("Modules.Documents.Domain.Entities.FormFields", b =>
                 {
-                    b.HasOne("Modules.Documents.Domain.Entities.FormTemplates", "FormTemplate")
+                    b.HasOne("Modules.Documents.Domain.Entities.FormSections", "FormSection")
                         .WithMany("Fields")
+                        .HasForeignKey("FormSectionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Documents.Domain.Entities.FormTemplates", "FormTemplate")
+                        .WithMany()
+                        .HasForeignKey("FormTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FormSection");
+
+                    b.Navigation("FormTemplate");
+                });
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.FormSections", b =>
+                {
+                    b.HasOne("Modules.Documents.Domain.Entities.FormTemplates", "FormTemplate")
+                        .WithMany("Sections")
                         .HasForeignKey("FormTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -499,14 +361,32 @@ namespace Modules.Documents.Infrastructure.Migrations
                     b.Navigation("FormTemplate");
                 });
 
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.StatusHistory", b =>
+                {
+                    b.HasOne("Modules.Documents.Domain.Entities.ApplicationFormSubmission", "FormSubmission")
+                        .WithMany("StatusHistory")
+                        .HasForeignKey("FormSubmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FormSubmission");
+                });
+
             modelBuilder.Entity("Modules.Documents.Domain.Entities.ApplicationFormSubmission", b =>
                 {
                     b.Navigation("Responses");
+
+                    b.Navigation("StatusHistory");
+                });
+
+            modelBuilder.Entity("Modules.Documents.Domain.Entities.FormSections", b =>
+                {
+                    b.Navigation("Fields");
                 });
 
             modelBuilder.Entity("Modules.Documents.Domain.Entities.FormTemplates", b =>
                 {
-                    b.Navigation("Fields");
+                    b.Navigation("Sections");
                 });
 #pragma warning restore 612, 618
         }

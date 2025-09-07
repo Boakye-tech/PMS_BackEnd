@@ -40,6 +40,7 @@ namespace Modules.Documents.Domain.Entities
         public DateTime CreatedDate { get; private set; }
         public DateTime LastStatusChangeDate { get; private set; }
         public string? StatusNotes { get; private set; }
+
         // Navigation properties
         public FormTemplates FormTemplate { get; private set; } = null!;
 
@@ -96,11 +97,15 @@ namespace Modules.Documents.Domain.Entities
             }
 
             // Validate that all required fields have responses
-            var requiredFields = FormTemplate.Fields.Where(f => f.IsRequired).ToList();
+            var requiredFields = FormTemplate.Sections
+                .SelectMany(s => s.Fields) // Flatten all fields from all sections
+                .Where(f => f.IsRequired)
+                .ToList();
+
             var respondedFieldIds = Responses.Select(r => r.FormFieldId).ToList();
 
             var missingRequiredFields = requiredFields
-                .Where(f => !respondedFieldIds.Contains(f.FormFieldId))
+                .Where(f => !respondedFieldIds.Contains(f.FormFieldId)) // Check if field ID has a response
                 .ToList();
 
             if (missingRequiredFields.Any())
@@ -109,8 +114,7 @@ namespace Modules.Documents.Domain.Entities
                 throw new InvalidOperationException($"Missing responses for required fields: {missingFieldNames}");
             }
 
-            Status = ApplicationStatus.Submitted;
-            SubmittedDate = DateTime.UtcNow;
+            UpdateStatus(ApplicationStatus.Submitted, WorkflowState.ApplicationReceived, "Application submitted by applicant");
 
             //AddDomainEvent(new FormSubmissionSubmittedEvent(this));
         }

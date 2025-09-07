@@ -16,9 +16,12 @@ namespace Modules.Documents.Application.Dtos.FormTemplates
     public record UpdateFormTemplateDto
     {
         public int FormTemplateId { get; set; }
+        public int LandUseId { get; set; }
+        public string? LandUseTypeId { get; set; }
         public required string Name { get; init; }
         public string? Description { get; init; }
-        public List<FormFieldDto> Fields { get; init; } = new();
+        //public List<FormFieldDto> Fields { get; init; } = new();
+        public List<FormSectionDto> Sections { get; init; } = new();
         public string? modifiedBy { get; init; }
 
     }
