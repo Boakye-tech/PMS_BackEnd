@@ -79,12 +79,6 @@ namespace Modules.Users.Application.Services
 
             var email_payload = new { recipientContact = user.Email, displayName = "Notifications", subject = "Account Activation", message = sb.ToString(), type = 0, userId = user.Id };
 
-            //string json_emailpayload = JsonSerializer.Serialize(email_payload);
-            //var email_httpContent = new StringContent(json_emailpayload, Encoding.UTF8, "application/json");
-            //HttpResponseMessage response = await _httpClient.PostAsync("https://mindsprings-002-site1.ltempurl.com/api/v1/Notification/SendNotification", email_httpContent);
-
-            //var result = response.IsSuccessStatusCode;
-
             return await SendDataAsync("Notification/SendNotification", email_payload, "POST");
         }
 
