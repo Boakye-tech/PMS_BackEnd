@@ -13,7 +13,6 @@ using System;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Modules.Common.Infrastructure.Authentication;
@@ -54,6 +53,7 @@ namespace Modules.Documents.Application.UseCases
             var result = await SendGetAsync<List<NationalityReadDto>>("Customer/GetNationality");
             return result!;
         }
+
 
         public async Task<List<PlotDimensionReadDto>> GetPlotDimensionList()
         {
