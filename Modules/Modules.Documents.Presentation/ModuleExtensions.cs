@@ -30,6 +30,8 @@ namespace Modules.Documents.Presentation
             services.AddScoped<IFormTemplateService, FormTemplateService>();
             services.AddScoped<IFormSubmissionService, FormSubmissionService>();
             services.AddScoped<IFieldTypeService, FieldTypeService>();
+            services.AddHttpClient<IDocumentCommunicationServices, DocumentCommunicationServices>();
+
 
             return services;
         }

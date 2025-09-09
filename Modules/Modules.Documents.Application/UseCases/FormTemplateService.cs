@@ -28,10 +28,12 @@ namespace Modules.Documents.Application.UseCases
     public class FormTemplateService : IFormTemplateService
     {
         private readonly IUnitOfWork _unitofWork;
+        private readonly IDocumentCommunicationServices _moduleComms;
 
-        public FormTemplateService(IUnitOfWork unitofWork) 
+        public FormTemplateService(IUnitOfWork unitofWork, IDocumentCommunicationServices moduleComms) 
         {
             _unitofWork = unitofWork;
+            _moduleComms = moduleComms;
         }
 
 
@@ -91,6 +93,8 @@ namespace Modules.Documents.Application.UseCases
 
         public List<FormTemplateDto> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId)
         {
+            var result = _moduleComms.GetLocalityList();
+
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
 
