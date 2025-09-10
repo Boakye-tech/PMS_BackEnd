@@ -1075,6 +1075,7 @@ namespace Modules.Users.Application.UseCases.UserAccounts
                 );
             }
 
+
             return customer_UserList;
 
         }
@@ -1103,13 +1104,13 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             if (!string.IsNullOrWhiteSpace(searchParam))
             {
+                var term = searchParam.Trim();
                 partner_UserList = partner_UserList.Where(p =>
-                    p.PartnerName.Contains(searchParam) ||
-                    p.EmailAddress.Contains(searchParam) ||
-                    p.PhoneNumber.Contains(searchParam)
+                    p.PartnerName.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                    p.EmailAddress.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                    p.PhoneNumber.Contains(term, StringComparison.OrdinalIgnoreCase)
                 );
             }
-
 
             return partner_UserList;
         }
