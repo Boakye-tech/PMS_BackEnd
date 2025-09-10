@@ -93,7 +93,11 @@ namespace Modules.Documents.Application.UseCases
 
         public List<FormTemplateDto> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId)
         {
+
             //var result = await _moduleComms.GetLocalityList();
+
+            var result = _moduleComms.GetLocalityList();
+
 
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
