@@ -22,6 +22,7 @@
     <None Remove="Extensions\" />
     <None Remove="Dtos\FormSections\" />
     <None Remove="Enums\" />
+    <None Remove="Dtos\ModuleCommunication\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -34,5 +35,6 @@
     <Folder Include="Extensions\" />
     <Folder Include="Dtos\FormSections\" />
     <Folder Include="Enums\" />
+    <Folder Include="Dtos\ModuleCommunication\" />
   </ItemGroup>
 </Project>
