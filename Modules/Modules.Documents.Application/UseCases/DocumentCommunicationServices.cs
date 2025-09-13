@@ -41,7 +41,6 @@ namespace Modules.Documents.Application.UseCases
         {
             var result = await SendGetAsync<List<BlockNumberReadDto>>("Property/GetBlockNumber");
             return result!;
-
         }
 
         public async Task<List<LocalityReadDto>> GetLocalityList()
@@ -52,12 +51,9 @@ namespace Modules.Documents.Application.UseCases
 
         public async Task<List<NationalityReadDto>> GetNationalityList()
         {
-            //throw new NotImplementedException();
-
             var result = await SendGetAsync<List<NationalityReadDto>>("Customer/GetNationality");
             return result!;
         }
-
 
         public async Task<List<PlotDimensionReadDto>> GetPlotDimensionList()
         {
