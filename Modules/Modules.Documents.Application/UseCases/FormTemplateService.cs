@@ -128,7 +128,6 @@ namespace Modules.Documents.Application.UseCases
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId)
         {
-
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
 
