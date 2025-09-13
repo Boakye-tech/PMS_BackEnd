@@ -51,8 +51,6 @@ namespace Modules.Documents.Application.UseCases
 
         public async Task<List<NationalityReadDto>> GetNationalityList()
         {
-            //throw new NotImplementedException();
-
             var result = await SendGetAsync<List<NationalityReadDto>>("Customer/GetNationality");
             return result!;
         }

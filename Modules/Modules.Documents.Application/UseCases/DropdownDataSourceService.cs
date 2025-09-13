@@ -27,8 +27,8 @@ namespace Modules.Documents.Application.UseCases
         {
             return dataSource.ToLower() switch
             {
-                "nationality" => (await _docComms.GetNationalityList())
-                    ?.Select(n => new DropdownOptionDto(n.nationalityId, n.nationalities))
+                "blocknumber" => (await _docComms.GetBlockNumberList())
+                    ?.Select(bn => new DropdownOptionDto(bn.blockNumberId, bn.blockNumbers))
                     .ToList()
                     ?? new List<DropdownOptionDto>(),
 
@@ -36,6 +36,28 @@ namespace Modules.Documents.Application.UseCases
                     ?.Select(l => new DropdownOptionDto(l.LocalityId, l.LocalityName))
                     .ToList()
                     ?? new List<DropdownOptionDto>(),
+
+                "nationality" => (await _docComms.GetNationalityList())
+                    ?.Select(n => new DropdownOptionDto(n.nationalityId, n.nationalities))
+                    .ToList()
+                    ?? new List<DropdownOptionDto>(),
+
+                "plotdimensions" => (await _docComms.GetPlotDimensionList())
+                    ?.Select(pd => new DropdownOptionDto(pd.PlotDimensionId, pd.PlotDimensions))
+                    .ToList()
+                    ?? new List<DropdownOptionDto>(),
+
+                "propertyheight" => (await _docComms.GetPropertyHeightList())
+                    ?.Select(ph => new DropdownOptionDto(ph.propertyHeightId, ph.propertyHeights))
+                    .ToList()
+                    ?? new List<DropdownOptionDto>(),
+
+                "residenttypes" => (await _docComms.GetResidentTypeList())
+                    ?.Select(rt => new DropdownOptionDto(rt.residentTypeId, rt.residentTypes))
+                    .ToList()
+                    ?? new List<DropdownOptionDto>(),
+
+
 
                 _ => new List<DropdownOptionDto>()
             };

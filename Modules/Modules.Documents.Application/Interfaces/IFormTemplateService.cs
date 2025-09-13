@@ -17,13 +17,9 @@ namespace Modules.Documents.Application.Interfaces
 {
     public interface IFormTemplateService
     {
-        //Task<FormTemplateDto> GetFormTemplateByIdAsync(int id);
-        Task<List<FormTemplateDto>> GetAllFormTemplatesAsync();
-
         Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name);
         Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId);
 
-        //Task<FormTemplateDto> CreateFormTemplateAsync(CreateFormTemplateDto createDto);
         Task<ReturnResponsesDto> CreateFormTemplateAsync(CreateFormTemplateDto createDto);
         Task<ReturnResponsesDto> UpdateFormTemplateAsync(int id, UpdateFormTemplateDto updateDto);
         Task<ReturnResponsesDto> DeleteFormTemplateAsync(int id);
