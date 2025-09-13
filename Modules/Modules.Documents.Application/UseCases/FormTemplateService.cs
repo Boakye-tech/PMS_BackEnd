@@ -198,20 +198,12 @@ namespace Modules.Documents.Application.UseCases
 
                 //template. AddDomainEvent(new FormTemplateCreatedEvent(template));
 
-                //template.CreatedBy = createDto.CreatedBy;
-                //template.DateCreated = DateTime.UtcNow;
-
                 _unitofWork.FormTemplates.Update(template);
                 await _unitofWork.Complete();
 
 
                 // Remeber to publish domain events here
                 // await _domainEventService.PublishDomainEvents(template);
-
-
-                //get the saved template
-
-                var templates = await this.GetAllFormTemplatesAsync(templateId,0,0,null!);
 
 
                 return new ReturnResponsesDto

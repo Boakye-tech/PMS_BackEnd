@@ -61,7 +61,8 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng customer types
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        [Authorize(Policy = "Permission:Customers.READ")]
         [Route("GetCustomerTypes")]
         public async Task<ActionResult<IEnumerable<CustomerTypeReadDto>>> GetCustomerTypes([FromServices] ICustomerTypeService _customerTypeService)
         {
@@ -204,7 +205,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of existing genders
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetGenders")]
         public async Task<ActionResult<IEnumerable<GenderReadDto>>> GetGender([FromServices] IGenderService _genderService)
         {
@@ -311,7 +314,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng identification types
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetIdentificationTypes")]
         public async Task<ActionResult<IEnumerable<IdentificationTypeReadDto>>> GetIdentificationTypes([FromServices] IIdentificationTypeService _identificationTypeService)
         {
@@ -397,7 +402,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng nationalities
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetNationality")]
         public async Task<ActionResult<IEnumerable<NationalityReadDto>>> GetNationality([FromServices] INationalityService _nationalityService)
         {
@@ -481,7 +488,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng resident types
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetResidentTypes")]
         public async Task<ActionResult<IEnumerable<ResidentTypeReadDto>>> GetResidentTypes([FromServices] IResidentTypeService _residentTypeService)
         {
@@ -565,7 +574,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng social media platforms
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetSocialMedia")]
         public async Task<ActionResult<IEnumerable<SocialMediaReadDto>>> GetSocialMedia([FromServices] ISocialMediaService _socialMediaService)
         {
@@ -627,7 +638,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng titles
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetTitles")]
         public async Task<ActionResult<IEnumerable<TitleReadDto>>> GetTitles([FromServices] ITitleService _titleService)
         {
@@ -733,7 +746,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of exisitng ownership types
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetOwnershipTypes")]
         public async Task<ActionResult<IEnumerable<OwnershipTypeReadDto>>> GetOwnershipTypes([FromServices] IOwnershipTypeService _ownershipTypeService)
         {
@@ -838,7 +853,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of marital status
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("MaritalStatus")]
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public IActionResult MaritalStatus()
@@ -873,7 +890,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of options for prospective customer interest expressed
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetInterestExpressed")]
         public async Task<ActionResult<IEnumerable<InterestExpressedReadDto>>> GetInterestExpressed()
         {
@@ -960,7 +979,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns a list of complaint types
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetComplaintType")]
         public async Task<ActionResult<IEnumerable<ComplaintTypeReadDto>>> GetComplaintType()
         {
@@ -1055,7 +1076,9 @@ namespace Modules.Estates.Presentation.Controllers.v1
         /// <summary>
         /// Returns the nature of complaint list
         /// </summary>
-        [HttpGet][Authorize(Policy = "Permission:Customers.READ")]
+        [HttpGet]
+        //[Authorize(Policy = "Permission:Customers.READ")]
+        [AllowAnonymous]
         [Route("GetNatureOfComplaint")]
         public async Task<ActionResult<IEnumerable<NatureOfComplaintReadDto>>> GetNatureOfComplaint()
         {
