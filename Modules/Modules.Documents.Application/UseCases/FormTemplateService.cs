@@ -76,6 +76,10 @@ namespace Modules.Documents.Application.UseCases
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(string templateName)
         {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 23838dc7 (Fix: LegalSetups)
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
 
