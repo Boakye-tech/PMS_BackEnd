@@ -33,7 +33,6 @@ namespace Modules.Documents.Presentation
             services.AddHttpClient<IDocumentCommunicationServices, DocumentCommunicationServices>();
             services.AddScoped<IDropdownDataSourceService, DropdownDataSourceService>();
 
-
             return services;
         }
 	}

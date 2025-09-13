@@ -68,7 +68,6 @@ public class DocumentsController : ControllerBase
     {
         var templates = await _formTemplateService.GetAllFormTemplatesAsync(landUseId, landUseTypeId);
         return Ok(templates);
-
     }
 
 

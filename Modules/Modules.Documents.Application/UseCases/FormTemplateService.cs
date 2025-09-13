@@ -33,6 +33,17 @@ namespace Modules.Documents.Application.UseCases
         }
 
 
+        public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync()
+        {
+            var templates = await _unitofWork.FormTemplates.GetAll(includes: new List<string> { "Sections" });
+
+            var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
+
+            return dtoList.ToList();
+        }
+
+
+
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name)
         {
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
@@ -60,6 +71,34 @@ namespace Modules.Documents.Application.UseCases
 
             return dtoList.ToList();
         }
+
+
+
+        public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(string templateName)
+        {
+
+            var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
+
+
+            // Apply filters dynamically
+
+            //if (landUseId > 0)
+            //    query = query.Where(t => t.LandUseId == landUseId);
+
+            //if (landUseTypeId > 0)
+            //    query = query.Where(t => t.LandUseTypeId.Contains(landUseTypeId.ToString()));
+
+            var templates = query.ToList();
+
+            var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
+
+            //return templates
+            //    .Select(t => t.ToDtoAsync(_dataSources))
+            //    .ToList();
+
+            return dtoList.ToList();
+        }
+
 
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId)
@@ -204,6 +243,7 @@ namespace Modules.Documents.Application.UseCases
 
                 // Remeber to publish domain events here
                 // await _domainEventService.PublishDomainEvents(template);
+
 
                 //get the saved template
                 var templates = await this.GetAllFormTemplatesAsync(templateId, 0, 0, null!);
