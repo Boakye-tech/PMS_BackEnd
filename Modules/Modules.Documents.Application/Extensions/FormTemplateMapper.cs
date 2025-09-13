@@ -17,7 +17,7 @@ namespace Modules.Documents.Application.Extensions
 {
     public static class FormTemplateMapper
     {
-        public static FormTemplateDto ToDto(this FormTemplates entity)
+        public static async Task<FormTemplateDto> ToDtoAsync(this FormTemplates entity, IDropdownDataSourceService dataSourceService)
         {
             return new FormTemplateDto
             {
@@ -25,31 +25,49 @@ namespace Modules.Documents.Application.Extensions
                 Name = entity.Name,
                 Description = entity.Description,
                 CreatedBy = entity.CreatedBy,
-                DateCreated = DateTime.UtcNow,
-                Sections = entity.Sections.Select(f => f.ToDto()).ToList()
+                DateCreated = entity.DateCreated,
+                Sections = await Task.WhenAll(entity.Sections.OrderBy(f => f.Order).Select(f => f.ToDtoAsync(dataSourceService))).ContinueWith(t => t.Result.ToList())
             };
         }
 
-        public static FormSectionDto ToDto(this FormSections entity)
+        public static async Task<FormSectionDto> ToDtoAsync(this FormSections entity, IDropdownDataSourceService dataSourceService)
         {
             return new FormSectionDto
             {
                 FormSectionId = entity.FormSectionId,
                 Name = entity.Name!,
                 Order = entity.Order,
-                Fields = entity.Fields.Select(f => f.ToDto()).ToList()
+                Fields = await Task.WhenAll(entity.Fields.OrderBy(f => f.Order).Select(f => f.ToDtoAsync(dataSourceService))).ContinueWith(t => t.Result.ToList())
             };
         }
 
-        public static FormFieldDto ToDto(this FormFields entity)
+        public static async Task<FormFieldDto> ToDtoAsync(this FormFields entity, IDropdownDataSourceService dataSourceService)
         {
+            if (entity.FieldType.Equals("dropdown", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(entity.Options))
+            {
+                //var optionsList = string.IsNullOrWhiteSpace(entity.Options) ? new List<DropdownOptionDto>() : entity.Options.Split(',')
+                //    .Select((opt, index) => new DropdownOptionDto(optionsFieldId: index + 1, optionsFieldName: opt.Trim())).ToList();
+
+                var optionsList = await dataSourceService.GetOptionsAsync(entity.Options);
+
+                return new FormFieldDto
+                {
+                    FormFieldId = entity.FormFieldId,
+                    Label = entity.Label,
+                    FieldType = entity.FieldType,
+                    IsRequired = entity.IsRequired,
+                    Options = optionsList,
+                    Order = entity.Order
+                };
+            }
+
             return new FormFieldDto
             {
                 FormFieldId = entity.FormFieldId,
                 Label = entity.Label,
                 FieldType = entity.FieldType,
                 IsRequired = entity.IsRequired,
-                Options = entity.Options,
+                Options = null,// entity.Options,
                 Order = entity.Order
             };
         }

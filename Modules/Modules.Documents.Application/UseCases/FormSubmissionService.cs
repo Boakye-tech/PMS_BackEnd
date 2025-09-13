@@ -231,7 +231,7 @@ namespace Modules.Documents.Application.UseCases
                         Label = r.FormField.Label,
                         FieldType = r.FormField.FieldType,
                         IsRequired = r.FormField.IsRequired,
-                        Options = r.FormField.Options,
+                        Options = null, //r.FormField.Options,
                         Order = r.FormField.Order
                         //FormTemplateId = r.FormField.FormTemplateId
                     } : null
