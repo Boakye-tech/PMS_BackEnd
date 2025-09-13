@@ -115,7 +115,12 @@ namespace Modules.Documents.Infrastructure.Repositories
 
         public void UpdateRange(IEnumerable<TEntity> entities) => _dbContext.Set<TEntity>().UpdateRange(entities);
 
+        public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate) => await _dbContext.Set<TEntity>().AnyAsync(predicate);
 
+        public async Task DeleteWhereAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            await _dbContext.Set<TEntity>().Where(predicate).ExecuteDeleteAsync();
+        }
 
 
 
