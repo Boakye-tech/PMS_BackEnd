@@ -75,7 +75,7 @@ public class DocumentsController : ControllerBase
     [HttpPost]
     [Route("CreateFormTemplate")]
     //[Authorize(Policy = "Permission:PropertySetup.CREATE")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(FormsSuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]

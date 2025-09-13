@@ -30,5 +30,21 @@ namespace Modules.Documents.Application.Dtos
         public int Code { get; init; }
         public string? Message { get; init; }
     }
+
+
+    public record FormReturnResponsesDto
+    {
+        public bool IsSuccess { get; init; }
+        public FormsSuccessResponseDto? SuccessResponse { get; init; }
+        public ErrorResponseDto? ErrorResponse { get; init; }
+    }
+
+    public record FormsSuccessResponseDto
+    {
+        public int Code { get; init; }
+        public string? Message { get; init; }
+        public object? Data { get; init; }
+    }
+
 }
 
