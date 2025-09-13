@@ -28,12 +28,12 @@ namespace Modules.Documents.Application.UseCases
     public class FormTemplateService : IFormTemplateService
     {
         private readonly IUnitOfWork _unitofWork;
-        private readonly IDocumentCommunicationServices _moduleComms;
+        private readonly IDropdownDataSourceService _dataSources;
 
-        public FormTemplateService(IUnitOfWork unitofWork, IDocumentCommunicationServices moduleComms) 
+        public FormTemplateService(IUnitOfWork unitofWork, IDropdownDataSourceService dataSources) 
         {
             _unitofWork = unitofWork;
-            _moduleComms = moduleComms;
+            _dataSources = dataSources;
         }
 
 
@@ -55,13 +55,17 @@ namespace Modules.Documents.Application.UseCases
         {
             var templates = await _unitofWork.FormTemplates.GetAll(includes: new List<string> { "Sections" });
 
-            return templates
-                .Select(t => t.ToDto())
-                .ToList();
+            var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
+
+            return dtoList.ToList();
+
+            //return templates
+            //    .Select(t => t.ToDtoAsync(_dataSources))
+            //    .ToList();
         }
 
 
-        public List<FormTemplateDto> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name)
+        public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name)
         {
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
@@ -84,14 +88,45 @@ namespace Modules.Documents.Application.UseCases
 
             var templates = query.ToList();
 
-            return templates
-                .Select(t => t.ToDto())
-                .ToList();
+            var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
+
+
+            //return templates
+            //    .Select(t => t.ToDto())
+            //    .ToList();
+
+            return dtoList.ToList();
 
 
         }
 
-        public List<FormTemplateDto> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId)
+        public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(string templateName)
+        {
+            //var result = _moduleComms.GetLocalityList();
+
+            var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
+
+
+            // Apply filters dynamically
+
+            //if (landUseId > 0)
+            //    query = query.Where(t => t.LandUseId == landUseId);
+
+            //if (landUseTypeId > 0)
+            //    query = query.Where(t => t.LandUseTypeId.Contains(landUseTypeId.ToString()));
+
+            var templates = query.ToList();
+
+            var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
+
+            //return templates
+            //    .Select(t => t.ToDtoAsync(_dataSources))
+            //    .ToList();
+
+            return dtoList.ToList();
+        }
+
+        public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId)
         {
 
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
@@ -107,10 +142,9 @@ namespace Modules.Documents.Application.UseCases
 
             var templates = query.ToList();
 
-            return templates
-                .Select(t => t.ToDto())
-                .ToList();
+            var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
 
+            return dtoList.ToList();
 
         }
 
@@ -447,7 +481,7 @@ namespace Modules.Documents.Application.UseCases
                         Label = f.Label,
                         FieldType = f.FieldType,
                         IsRequired = f.IsRequired,
-                        Options = f.Options,
+                        Options = null,
                         Order = f.Order,
                         //FormSectionId = f.FormSectionId,
                         //FormTemplateId = f.FormTemplateId

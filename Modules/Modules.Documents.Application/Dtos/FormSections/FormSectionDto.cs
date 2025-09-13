@@ -17,7 +17,6 @@ namespace Modules.Documents.Application.Dtos.FormSections
         public int FormSectionId { get; init; }
         public required string Name { get; init; }
         public int Order { get; init; }
-        //public int FormTemplateId { get; init; }
         public List<FormFieldDto> Fields { get; init; } = new();
     }
 
