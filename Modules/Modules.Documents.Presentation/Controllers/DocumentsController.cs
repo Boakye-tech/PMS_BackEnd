@@ -66,6 +66,13 @@ public class DocumentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FormTemplateDto>))]
     public async Task<ActionResult> GetFormTemplates([FromQuery] int landUseId, [FromQuery] int landUseTypeId)
     {
+<<<<<<< HEAD
+=======
+        //if (id > 0)
+        //return Ok(_formTemplateService.GetAllFormTemplatesAsync(id,landUseId,landUseTypeId, name));
+
+        //return Ok(await _formTemplateService.GetAllFormTemplatesAsync());
+>>>>>>> ece889f6 (Fix:Populating DropDowns for Dynamic Forms)
         var templates = await _formTemplateService.GetAllFormTemplatesAsync(landUseId, landUseTypeId);
         return Ok(templates);
 

@@ -27,6 +27,7 @@ namespace Modules.Documents.Application.UseCases
         {
             return dataSource.ToLower() switch
             {
+<<<<<<< HEAD
 
                 "blocknumber" => (await _docComms.GetBlockNumberList())
                     ?.Select(bn => new DropdownOptionDto(bn.blockNumberId, bn.blockNumbers))
@@ -39,11 +40,14 @@ namespace Modules.Documents.Application.UseCases
                     ?? new List<DropdownOptionDto>(),
 
 
+=======
+>>>>>>> ece889f6 (Fix:Populating DropDowns for Dynamic Forms)
                 "nationality" => (await _docComms.GetNationalityList())
                     ?.Select(n => new DropdownOptionDto(n.nationalityId, n.nationalities))
                     .ToList()
                     ?? new List<DropdownOptionDto>(),
 
+<<<<<<< HEAD
                 "plotdimensions" => (await _docComms.GetPlotDimensionList())
                     ?.Select(pd => new DropdownOptionDto(pd.PlotDimensionId, pd.PlotDimensions))
                     .ToList()
@@ -56,6 +60,10 @@ namespace Modules.Documents.Application.UseCases
 
                 "residenttypes" => (await _docComms.GetResidentTypeList())
                     ?.Select(rt => new DropdownOptionDto(rt.residentTypeId, rt.residentTypes))
+=======
+                "locality" => (await _docComms.GetLocalityList())
+                    ?.Select(l => new DropdownOptionDto(l.LocalityId, l.LocalityName))
+>>>>>>> ece889f6 (Fix:Populating DropDowns for Dynamic Forms)
                     .ToList()
                     ?? new List<DropdownOptionDto>(),
 
