@@ -13,6 +13,7 @@ using System;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Modules.Common.Infrastructure.Authentication;
@@ -36,9 +37,11 @@ namespace Modules.Documents.Application.UseCases
             _userContextService = userContextService;
         }
 
-        public Task<List<BlockNumberReadDto>> GetBlockNumberList()
+        public async Task<List<BlockNumberReadDto>> GetBlockNumberList()
         {
-            throw new NotImplementedException();
+            var result = await SendGetAsync<List<BlockNumberReadDto>>("Property/GetBlockNumber");
+            return result!;
+
         }
 
         public async Task<List<LocalityReadDto>> GetLocalityList()
@@ -55,20 +58,25 @@ namespace Modules.Documents.Application.UseCases
             return result!;
         }
 
-        public Task<List<PlotDimensionReadDto>> GetPlotDimensionList()
+
+        public async Task<List<PlotDimensionReadDto>> GetPlotDimensionList()
         {
-            throw new NotImplementedException();
+            var result = await SendGetAsync<List<PlotDimensionReadDto>>("Property/GetPlotDimensions");
+            return result!;
         }
 
-        public Task<List<PropertyHeightReadDto>> GetPropertyHeightList()
+        public async Task<List<PropertyHeightReadDto>> GetPropertyHeightList()
         {
-            throw new NotImplementedException();
+            var result = await SendGetAsync<List<PropertyHeightReadDto>>("Property/GetPropertyHeight");
+            return result!;
         }
 
-        public Task<List<ResidentTypeReadDto>> GetResidentTypeList()
+        public async Task<List<ResidentTypeReadDto>> GetResidentTypeList()
         {
-            throw new NotImplementedException();
+            var result = await SendGetAsync<List<ResidentTypeReadDto>>("Customer/GetResidentTypes");
+            return result!;
         }
+
 
         public async Task<TResponse?> SendGetAsync<TResponse>(string endpoint)
         {

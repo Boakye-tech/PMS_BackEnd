@@ -31,7 +31,7 @@ namespace Modules.Documents.Presentation
             services.AddScoped<IFormSubmissionService, FormSubmissionService>();
             services.AddScoped<IFieldTypeService, FieldTypeService>();
             services.AddHttpClient<IDocumentCommunicationServices, DocumentCommunicationServices>();
-
+            services.AddScoped<IDropdownDataSourceService, DropdownDataSourceService>();
 
             return services;
         }
