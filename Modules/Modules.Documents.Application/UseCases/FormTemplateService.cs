@@ -13,14 +13,10 @@ using System;
 using Microsoft.AspNetCore.Http;
 using Modules.Documents.Application.Dtos;
 using Modules.Documents.Application.Dtos.FormTemplates;
-using Modules.Documents.Application.Interfaces;
 using Modules.Documents.Application.Extensions;
 using Modules.Documents.Domain.Entities;
-using Modules.Documents.Domain.Events;
 using Modules.Documents.Domain.Interfaces;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.EntityFrameworkCore;
-using static System.Collections.Specialized.BitVector32;
 using Microsoft.Data.SqlClient;
 
 namespace Modules.Documents.Application.UseCases
@@ -34,34 +30,6 @@ namespace Modules.Documents.Application.UseCases
         {
             _unitofWork = unitofWork;
             _dataSources = dataSources;
-        }
-
-
-        //public async Task<FormTemplateDto> GetFormTemplateByIdAsync(int id)
-        //{
-        //    var template = await _unitofWork.FormTemplates.Get(id);
-
-        //    if (template == null)
-        //    {
-        //        throw new KeyNotFoundException($"Form template with ID {id} not found.");
-        //    }
-
-
-        //    return MapToDto(template);
-        //}
-
-
-        public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync()
-        {
-            var templates = await _unitofWork.FormTemplates.GetAll(includes: new List<string> { "Sections" });
-
-            var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
-
-            return dtoList.ToList();
-
-            //return templates
-            //    .Select(t => t.ToDtoAsync(_dataSources))
-            //    .ToList();
         }
 
 
@@ -90,46 +58,13 @@ namespace Modules.Documents.Application.UseCases
 
             var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
 
-
-            //return templates
-            //    .Select(t => t.ToDto())
-            //    .ToList();
-
-            return dtoList.ToList();
-
-
-        }
-
-        public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(string templateName)
-        {
-            //var result = _moduleComms.GetLocalityList();
-
-            var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
-
-
-            // Apply filters dynamically
-
-            //if (landUseId > 0)
-            //    query = query.Where(t => t.LandUseId == landUseId);
-
-            //if (landUseTypeId > 0)
-            //    query = query.Where(t => t.LandUseTypeId.Contains(landUseTypeId.ToString()));
-
-            var templates = query.ToList();
-
-            var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
-
-            //return templates
-            //    .Select(t => t.ToDtoAsync(_dataSources))
-            //    .ToList();
-
             return dtoList.ToList();
         }
+
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId)
         {
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
-
 
             // Apply filters dynamically
 
@@ -173,6 +108,18 @@ namespace Modules.Documents.Application.UseCases
                         ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = $"A form template with name '{createDto.Name}' already exists." }
                     };
                 }
+
+                // Check if template already exists in preview mode
+                if (await _unitofWork.FormTemplates.ExistsAsync(ft => ft.FormTemplateId == createDto.FormTemplateId))
+                {
+                    // Delete template and all its related data
+                    await _unitofWork.FormTemplates.DeleteWhereAsync(ft => ft.FormTemplateId == createDto.FormTemplateId);
+                    await _unitofWork.FormSections.DeleteWhereAsync(fs => fs.FormTemplateId == createDto.FormTemplateId);
+                    await _unitofWork.FormFields.DeleteWhereAsync(ff => ff.FormTemplateId == createDto.FormTemplateId);
+
+                    await _unitofWork.Complete();
+                }
+
 
 
                 string landUseTypeId = string.Join(',', createDto.LandUseTypeId!);
@@ -260,6 +207,12 @@ namespace Modules.Documents.Application.UseCases
 
                 // Remeber to publish domain events here
                 // await _domainEventService.PublishDomainEvents(template);
+
+
+                //get the saved template
+
+                var templates = await this.GetAllFormTemplatesAsync(templateId,0,0,null!);
+
 
                 return new ReturnResponsesDto
                 {

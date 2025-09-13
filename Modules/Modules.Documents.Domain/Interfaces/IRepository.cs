@@ -17,6 +17,7 @@ namespace Modules.Documents.Domain.Interfaces
 {
 	public interface IRepository<TEntity> where TEntity : class
     {
+        Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<TEntity?> Get(int id);
 
@@ -35,6 +36,8 @@ namespace Modules.Documents.Domain.Interfaces
         void Delete(TEntity entity);
 
         void DeleteRange(IEnumerable<TEntity> entities);
+
+        Task DeleteWhereAsync(Expression<Func<TEntity, bool>> predicate);
 
         void Update(TEntity entity);
 
