@@ -10,18 +10,26 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.Text.Json.Serialization;
+
 namespace Modules.Documents.Application.Dtos.FormFields
 {
+    public record DropdownOptionDto(int id, string name);
+
     public record FormFieldDto
     {
         public int FormFieldId { get; init; }
+
         public required string Label { get; init; }
+
         public required string FieldType { get; init; }
+
         public bool IsRequired { get; init; }
-        public string? Options { get; init; }
+
+        [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public List<DropdownOptionDto>? Options { get; init; }
+
         public int Order { get; init; }
-        //public int FormSectionId { get; set; }
-        //public int FormTemplateId { get; init; }
     }
 }
 

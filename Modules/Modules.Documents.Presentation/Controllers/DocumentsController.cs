@@ -64,14 +64,14 @@ public class DocumentsController : ControllerBase
     [Route("GetFormTemplates")]
     //[Authorize(Policy = "Permission:PropertySetup.READ")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FormTemplateDto>))]
-    public ActionResult GetFormTemplates([FromQuery] int landUseId, [FromQuery] int landUseTypeId)
+    public async Task<ActionResult> GetFormTemplates([FromQuery] int landUseId, [FromQuery] int landUseTypeId)
     {
         //if (id > 0)
         //return Ok(_formTemplateService.GetAllFormTemplatesAsync(id,landUseId,landUseTypeId, name));
 
         //return Ok(await _formTemplateService.GetAllFormTemplatesAsync());
-
-        return Ok(_formTemplateService.GetAllFormTemplatesAsync(landUseId, landUseTypeId));
+        var templates = await _formTemplateService.GetAllFormTemplatesAsync(landUseId, landUseTypeId);
+        return Ok(templates);
 
     }
 
