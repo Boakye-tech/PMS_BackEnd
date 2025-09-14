@@ -243,6 +243,9 @@ namespace Modules.Documents.Application.UseCases
                 // await _domainEventService.PublishDomainEvents(template);
 
 
+                //get the saved template
+                var templates = await this.GetAllFormTemplatesAsync(templateId,0,0,null!);
+
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
