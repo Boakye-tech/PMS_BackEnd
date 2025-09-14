@@ -14,7 +14,6 @@ using System.Text.Json.Serialization;
 
 namespace Modules.Documents.Application.Dtos.FormFields
 {
-
     public record DropdownOptionDto(int value, string text);
 
     public record FormFieldDto

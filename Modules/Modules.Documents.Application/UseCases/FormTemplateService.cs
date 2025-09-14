@@ -43,8 +43,6 @@ namespace Modules.Documents.Application.UseCases
         }
 
 
-
-
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name)
         {
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
@@ -76,10 +74,8 @@ namespace Modules.Documents.Application.UseCases
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(string templateName)
         {
-<<<<<<< HEAD
-=======
+            //var result = _moduleComms.GetLocalityList();
 
->>>>>>> 23838dc7 (Fix: LegalSetups)
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
 

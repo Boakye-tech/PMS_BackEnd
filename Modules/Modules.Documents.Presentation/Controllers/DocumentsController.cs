@@ -66,7 +66,6 @@ public class DocumentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FormTemplateDto>))]
     public async Task<ActionResult> GetFormTemplates([FromQuery] int landUseId, [FromQuery] int landUseTypeId)
     {
-
         var templates = await _formTemplateService.GetAllFormTemplatesAsync(landUseId, landUseTypeId);
         return Ok(templates);
     }
