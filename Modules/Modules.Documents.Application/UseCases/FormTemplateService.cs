@@ -40,6 +40,7 @@ namespace Modules.Documents.Application.UseCases
             var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
 
             return dtoList.ToList();
+
         }
 
 
