@@ -27,10 +27,8 @@ namespace Modules.Documents.Application.UseCases
         {
             return dataSource.ToLower() switch
             {
-
                 "blocknumber" => (await _docComms.GetBlockNumberList())
                     ?.Select(bn => new DropdownOptionDto(bn.blockNumberId, bn.blockNumbers))
-
                     .ToList()
                     ?? new List<DropdownOptionDto>(),
 
@@ -38,7 +36,6 @@ namespace Modules.Documents.Application.UseCases
                     ?.Select(l => new DropdownOptionDto(l.LocalityId, l.LocalityName))
                     .ToList()
                     ?? new List<DropdownOptionDto>(),
-
 
                 "nationality" => (await _docComms.GetNationalityList())
                     ?.Select(n => new DropdownOptionDto(n.nationalityId, n.nationalities))
@@ -59,7 +56,6 @@ namespace Modules.Documents.Application.UseCases
                     ?.Select(rt => new DropdownOptionDto(rt.residentTypeId, rt.residentTypes))
                     .ToList()
                     ?? new List<DropdownOptionDto>(),
-
 
                 _ => new List<DropdownOptionDto>()
             };

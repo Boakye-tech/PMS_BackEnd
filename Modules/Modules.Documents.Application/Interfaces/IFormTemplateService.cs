@@ -20,7 +20,7 @@ namespace Modules.Documents.Application.Interfaces
         Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name);
         Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int landUseId, int landUseTypeId);
 
-        Task<ReturnResponsesDto> CreateFormTemplateAsync(CreateFormTemplateDto createDto);
+        Task<FormReturnResponsesDto> CreateFormTemplateAsync(CreateFormTemplateDto createDto);
         Task<ReturnResponsesDto> UpdateFormTemplateAsync(int id, UpdateFormTemplateDto updateDto);
         Task<ReturnResponsesDto> DeleteFormTemplateAsync(int id);
         Task<bool> IsFormTemplateNameUniqueAsync(string name, int? excludeId = null);

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using Asp.Versioning;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Documents.Application.Dtos;
@@ -66,7 +67,6 @@ public class DocumentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FormTemplateDto>))]
     public async Task<ActionResult> GetFormTemplates([FromQuery] int landUseId, [FromQuery] int landUseTypeId)
     {
-
         var templates = await _formTemplateService.GetAllFormTemplatesAsync(landUseId, landUseTypeId);
         return Ok(templates);
     }
@@ -75,7 +75,7 @@ public class DocumentsController : ControllerBase
     [HttpPost]
     [Route("CreateFormTemplate")]
     //[Authorize(Policy = "Permission:PropertySetup.CREATE")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SuccessResponseDto))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(FormsSuccessResponseDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]

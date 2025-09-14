@@ -40,9 +40,8 @@ namespace Modules.Documents.Application.UseCases
             var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
 
             return dtoList.ToList();
+
         }
-
-
 
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name)
@@ -74,10 +73,8 @@ namespace Modules.Documents.Application.UseCases
 
         }
 
-
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(string templateName)
         {
-
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
 
@@ -122,7 +119,7 @@ namespace Modules.Documents.Application.UseCases
         }
 
 
-        public async Task<ReturnResponsesDto> CreateFormTemplateAsync(CreateFormTemplateDto createDto)
+        public async Task<FormReturnResponsesDto> CreateFormTemplateAsync(CreateFormTemplateDto createDto)
         {
             int templateId = 0;
 
@@ -131,7 +128,7 @@ namespace Modules.Documents.Application.UseCases
                 // Validate business rules
                 if (createDto.LandUseTypeId!.Count == 0)
                 {
-                    return new ReturnResponsesDto
+                    return new FormReturnResponsesDto
                     {
                         IsSuccess = false,
                         ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "The land use type cannot be empty." }
@@ -141,7 +138,7 @@ namespace Modules.Documents.Application.UseCases
 
                 if (await IsFormTemplateNameUniqueAsync(createDto.Name))
                 {
-                    return new ReturnResponsesDto
+                    return new FormReturnResponsesDto
                     {
                         IsSuccess = false,
                         ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = $"A form template with name '{createDto.Name}' already exists." }
@@ -178,7 +175,7 @@ namespace Modules.Documents.Application.UseCases
                     {
                         _unitofWork.FormTemplates.Delete(template);
                         await _unitofWork.Complete();
-                        return new ReturnResponsesDto
+                        return new FormReturnResponsesDto
                         {
                             IsSuccess = false,
                             ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = $"A form template section with name '{section.Name}' already exists." }
@@ -209,7 +206,7 @@ namespace Modules.Documents.Application.UseCases
                             _unitofWork.FormTemplates.Delete(template);
                             _unitofWork.FormSections.Delete(_section);
                             await _unitofWork.Complete();
-                            return new ReturnResponsesDto
+                            return new FormReturnResponsesDto
                             {
                                 IsSuccess = false,
                                 ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = $"A form template section with label name '{_field.Label}' already exists." }
@@ -245,10 +242,13 @@ namespace Modules.Documents.Application.UseCases
                 // await _domainEventService.PublishDomainEvents(template);
 
 
-                return new ReturnResponsesDto
+                //get the saved template
+                var templates = await this.GetAllFormTemplatesAsync(templateId,0,0,null!);
+
+                return new FormReturnResponsesDto
                 {
                     IsSuccess = true,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Form template created successfully." }
+                    SuccessResponse = new FormsSuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Form template created successfully.", Data = templates }
                 };
             }
             catch (DbUpdateException ex)
@@ -272,7 +272,7 @@ namespace Modules.Documents.Application.UseCases
 
                     await _unitofWork.Complete();
 
-                    return new ReturnResponsesDto
+                    return new FormReturnResponsesDto
                     {
                         IsSuccess = false,
                         ErrorResponse = new ErrorResponseDto
@@ -284,7 +284,7 @@ namespace Modules.Documents.Application.UseCases
                 }
 
 
-                return new ReturnResponsesDto
+                return new FormReturnResponsesDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new ErrorResponseDto
@@ -297,7 +297,7 @@ namespace Modules.Documents.Application.UseCases
             }
             catch (Exception ex)
             {
-                return new ReturnResponsesDto
+                return new FormReturnResponsesDto
                 {
                     IsSuccess = false,
                     ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message }
