@@ -60,6 +60,9 @@
     <ProjectReference Include="..\Modules\Modules.Documents.Presentation\Modules.Documents.Presentation.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Modules\Modules.Legal.Presentation\Modules.Legal.Presentation.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Remove="appsettings.Development.json" />

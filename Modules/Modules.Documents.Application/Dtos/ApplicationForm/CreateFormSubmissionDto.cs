@@ -17,19 +17,27 @@ namespace Modules.Documents.Application.Dtos.ApplicationForm
         [Required(ErrorMessage = "Form template ID is required")]
         public int FormTemplateId { get; init; }
 
-        [Required(ErrorMessage = "Applicant name is required")]
-        [StringLength(200, ErrorMessage = "Applicant name cannot exceed 200 characters")]
-        public required string ApplicantName { get; init; }
+        //[Required(ErrorMessage = "Applicant name is required")]
+        //[StringLength(200, ErrorMessage = "Applicant name cannot exceed 200 characters")]
+        //public required string ApplicantName { get; init; }
 
-        [Required(ErrorMessage = "Applicant email is required")]
-        [EmailAddress(ErrorMessage = "Invalid email address format")]
-        public required string ApplicantEmail { get; init; }
+        //[Required(ErrorMessage = "Applicant email is required")]
+        //[EmailAddress(ErrorMessage = "Invalid email address format")]
+        //public required string ApplicantEmail { get; init; }
 
         [Required(ErrorMessage = "Property number is required")]
         [StringLength(50, ErrorMessage = "Property number cannot exceed 50 characters")]
         public required string PropertyNumber { get; init; }
 
-        public List<FormResponseItemDto> Responses { get; init; } = new();
+
+        [Required(ErrorMessage = "Responses are required")]
+        public Dictionary<int, object?> Responses { get; init; } = new();
+        //public List<FormResponseItemDto> Responses { get; init; } = new();
+
+
+        [Required(ErrorMessage = "Created by is required")]
+        [StringLength(36, ErrorMessage = "Applicant name cannot exceed 200 characters")]
+        public required string CreatedBy { get; init; }
     }
 }
 
