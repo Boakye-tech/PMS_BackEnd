@@ -41,7 +41,6 @@ namespace Modules.Documents.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ResponseValue")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -61,12 +60,7 @@ namespace Modules.Documents.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormSubmissionId"), 1000000L);
 
-                    b.Property<string>("ApplicantEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ApplicantName")
-                        .IsRequired()
+                    b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")

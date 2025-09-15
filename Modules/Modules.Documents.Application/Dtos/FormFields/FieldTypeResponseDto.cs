@@ -12,5 +12,5 @@
 using System;
 namespace Modules.Documents.Application.Dtos.FormFields;
 
-public sealed record FieldTypeResponse(string Value, string DisplayName);
+public sealed record FieldTypeResponse(string? Value, string? DisplayName);
 

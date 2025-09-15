@@ -20,8 +20,6 @@ namespace Modules.Documents.Application.Dtos.ApplicationForm
     {
         public int FormSubmissionId { get; init; }
         public int FormTemplateId { get; init; }
-        public required string ApplicantName { get; init; }
-        public required string ApplicantEmail { get; init; }
         public required string PropertyNumber { get; init; }
         public required string Status { get; init; }
         public required string WorkflowState { get; init; }

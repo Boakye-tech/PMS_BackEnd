@@ -4,6 +4,40 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ReleaseVersion>1.0.1</ReleaseVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Configurations\" />
+    <None Remove="Extensions\" />
+    <None Remove="Persistance\" />
+    <None Remove="Repositories\" />
+    <None Remove="UnitOfWork\" />
+    <None Remove="Repositories\Setups\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configurations\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Persistance\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="UnitOfWork\" />
+    <Folder Include="Repositories\Setups\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Common.Infrastructure\Modules.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules.Legal.Application\Modules.Legal.Application.csproj" />
+    <ProjectReference Include="..\Modules.Legal.Domain\Modules.Legal.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

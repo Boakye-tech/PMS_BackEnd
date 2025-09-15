@@ -21,7 +21,6 @@ namespace Modules.Documents.Application.Interfaces
         Task<SubmissionSummaryDto> GetSubmissionSummaryAsync();
         Task<FormSubmissionDto> GetSubmissionByIdAsync(int id);
         Task<List<FormSubmissionDto>> GetSubmissionsByTemplateAsync(int templateId);
-        Task<List<FormSubmissionDto>> GetSubmissionsByApplicantAsync(string email);
 
         Task<ReturnResponsesDto> CreateSubmissionAsync(CreateFormSubmissionDto createDto);
         Task<ReturnResponsesDto> UpdateSubmissionAsync(int id, UpdateFormSubmissionDto updateDto);

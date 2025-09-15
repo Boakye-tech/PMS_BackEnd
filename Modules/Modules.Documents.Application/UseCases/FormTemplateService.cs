@@ -139,15 +139,6 @@ namespace Modules.Documents.Application.UseCases
 
                 }
 
-                if (await IsFormTemplateNameUniqueAsync(createDto.Name))
-                {
-                    return new FormReturnResponsesDto
-                    {
-                        IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = $"A form template with name '{createDto.Name}' already exists." }
-                    };
-                }
-
                 // Check if template already exists in preview mode
                 if (await _unitofWork.FormTemplates.ExistsAsync(ft => ft.FormTemplateId == createDto.FormTemplateId))
                 {
@@ -159,6 +150,15 @@ namespace Modules.Documents.Application.UseCases
                     await _unitofWork.Complete();
                 }
 
+
+                if (await IsFormTemplateNameUniqueAsync(createDto.Name))
+                {
+                    return new FormReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = $"A form template with name '{createDto.Name}' already exists." }
+                    };
+                }
 
 
                 string landUseTypeId = string.Join(',', createDto.LandUseTypeId!);
