@@ -101,13 +101,27 @@ namespace Modules.Finance.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<BankReadDto>> AddBank([FromBody] BankCreateDto values, [FromServices] IBankService _bankService)
         {
+            //return Ok(await _bankService.CreateBankAsync(values));
+
             try
             {
-                return Ok(await _bankService.CreateBankAsync(values));
+                var response = await _bankService.CreateBankAsync(values);
+                if (response.IsSuccess)
+                {
+                    return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
+                }
+                var status = response.ErrorResponse!.Code;
+                return status switch
+                {
+                    204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+                    400 => BadRequest(response.ErrorResponse),
+                    404 => NotFound(response.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+                };
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -246,7 +260,30 @@ namespace Modules.Finance.Presentation.Controllers
         {
             try
             {
-                return Ok(await _bankBranchService.CreateBankBranchAsync(values));
+                //return Ok(await );
+
+                try
+                {
+                    var response = await _bankBranchService.CreateBankBranchAsync(values);
+                    if (response.IsSuccess)
+                    {
+                        return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
+                    }
+                    var status = response.ErrorResponse!.Code;
+                    return status switch
+                    {
+                        204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+                        400 => BadRequest(response.ErrorResponse),
+                        404 => NotFound(response.ErrorResponse),
+                        _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                }
+
+
             }
             catch (Exception ex)
             {

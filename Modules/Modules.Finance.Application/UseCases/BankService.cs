@@ -45,7 +45,18 @@ namespace Modules.Finance.Application.UseCases
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank Id already exists." },
+                        SuccessResponse = null
+                    };
+                }
+
+                existingBank = await _unitOfWork.Bank.Get(b => b.BankName == values.BankName);
+                if (existingBank != null)
+                {
+                    return new ReturnResponsesDto
+                    {
+                        IsSuccess = false,
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank Name already exists." },
                         SuccessResponse = null
                     };
                 }
@@ -65,7 +76,7 @@ namespace Modules.Finance.Application.UseCases
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank created successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank details created successfully." }
                 };
             }
             catch (Exception ex)
