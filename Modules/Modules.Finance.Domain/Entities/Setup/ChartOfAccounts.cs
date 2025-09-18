@@ -11,12 +11,14 @@
 //  **************************************************/
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Modules.Finance.Domain.Entities.Setup;
 
 public class ChartOfAccounts : AuditableEntity
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     [Required]
     public int AccountCode { get; private set; }
 
