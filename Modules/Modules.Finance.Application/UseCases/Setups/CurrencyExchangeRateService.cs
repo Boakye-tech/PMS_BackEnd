@@ -12,15 +12,15 @@
 
 using Microsoft.AspNetCore.Http;
 
-namespace Modules.Finance.Application.UseCases;
+namespace Modules.Finance.Application.UseCases.Setups;
 
 public class CurrencyExchangeRateService : ICurrencyExchangeRateService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private readonly IModuleCommunicationServices _moduleCommunication;
+    private readonly IFinanceModuleCommunicationServices _moduleCommunication;
 
-    public CurrencyExchangeRateService(IUnitOfWork unitOfWork, IMapper mapper, IModuleCommunicationServices moduleCommunication)
+    public CurrencyExchangeRateService(IUnitOfWork unitOfWork, IMapper mapper, IFinanceModuleCommunicationServices moduleCommunication)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;

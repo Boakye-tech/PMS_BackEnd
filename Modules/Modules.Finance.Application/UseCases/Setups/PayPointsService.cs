@@ -10,68 +10,68 @@
 
 using Microsoft.AspNetCore.Http;
 
-namespace Modules.Finance.Application.UseCases
+namespace Modules.Finance.Application.UseCases.Setups
 {
-    public class PaymentTypeService : IPaymentTypeService
+    public class PayPointsService : IPayPointsService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public PaymentTypeService(IUnitOfWork unitOfWork, IMapper mapper)
+        public PayPointsService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<PaymentTypeReadDto>> GetPaymentTypeAsync()
+        public async Task<IEnumerable<PaypointsReadDto>> GetPaypointsAsync()
         {
-            var types = await _unitOfWork.PaymentType.GetAll();
-            return _mapper.Map<IEnumerable<PaymentTypeReadDto>>(types);
+            var paypoints = await _unitOfWork.Paypoints.GetAll();
+            return _mapper.Map<IEnumerable<PaypointsReadDto>>(paypoints);
         }
 
-        public async Task<PaymentTypeReadDto> GetPaymentTypeAsync(int value)
+        public async Task<PaypointsReadDto> GetPaypointsAsync(int value)
         {
-            var type = await _unitOfWork.PaymentType.Get(value);
-            return _mapper.Map<PaymentTypeReadDto>(type);
+            var paypoint = await _unitOfWork.Paypoints.Get(value);
+            return _mapper.Map<PaypointsReadDto>(paypoint);
         }
 
-        public async Task<PaymentTypeReadDto> GetPaymentTypeAsync(string value)
+        public async Task<PaypointsReadDto> GetPaypointsAsync(string value)
         {
-            var type = await _unitOfWork.PaymentType.Get(p => p.PaymentTypes == value);
-            return _mapper.Map<PaymentTypeReadDto>(type);
+            var paypoint = await _unitOfWork.Paypoints.Get(p => p.Paypoint == value);
+            return _mapper.Map<PaypointsReadDto>(paypoint);
         }
 
-        public async Task<ReturnResponsesDto> CreatePaymentTypeAsync(PaymentTypeCreateDto values)
+        public async Task<ReturnResponsesDto> CreatePaypointsAsync(PaypointsCreateDto values)
         {
             try
             {
-                var existingType = await _unitOfWork.PaymentType.Get(p => p.PaymentTypes == values.PaymentTypes);
-                if (existingType != null)
+                var existingPaypoint = await _unitOfWork.Paypoints.Get(p => p.Paypoint == values.Paypoint);
+                if (existingPaypoint != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Payment type already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Paypoint already exists." },
                         SuccessResponse = null
                     };
                 }
 
-                var type = new PaymentType(values.PaymentTypeId, values.PaymentTypes!)
+                var paypoint = new Paypoints(values.Paypoint!)
                 {
                     CreatedBy = values.CreatedBy,
                     CreatedOn = DateTime.Now
                 };
 
-                _unitOfWork.PaymentType.Insert(type);
+                _unitOfWork.Paypoints.Insert(paypoint);
                 await _unitOfWork.Complete();
 
-                //var result = _mapper.Map<PaymentTypeReadDto>(type);
+                //var result = _mapper.Map<PaypointsReadDto>(paypoint);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Payment type created successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Paypoint created successfully." }
                 };
             }
             catch (Exception ex)
@@ -85,35 +85,35 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> UpdatePaymentTypeAsync(PaymentTypeUpdateDto values)
+        public async Task<ReturnResponsesDto> UpdatePaypointsAsync(PaypointsUpdateDto values)
         {
             try
             {
-                var type = await _unitOfWork.PaymentType.Get(values.PaymentTypeId);
-                if (type == null)
+                var paypoint = await _unitOfWork.Paypoints.Get(values.PaypointId);
+                if (paypoint == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Payment type with ID {values.PaymentTypeId} not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Paypoint with ID {values.PaypointId} not found." },
                         SuccessResponse = null
                     };
                 }
 
-                type.Update(values.PaymentTypeId, values.PaymentTypes!);
-                type.ModifiedBy = values.ModifiedBy;
-                type.ModifiedOn = DateTime.Now;
+                paypoint.Update(values.PaypointId, values.Paypoint!);
+                paypoint.ModifiedBy = values.ModifiedBy;
+                paypoint.ModifiedOn = DateTime.Now;
 
-                _unitOfWork.PaymentType.Update(type);
+                _unitOfWork.Paypoints.Update(paypoint);
                 await _unitOfWork.Complete();
 
-                //var result = _mapper.Map<PaymentTypeReadDto>(type);
+                //var result = _mapper.Map<PaypointsReadDto>(paypoint);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment type updated successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Paypoint updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -127,29 +127,29 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> DeletePaymentTypeAsync(int paymentTypeId)
+        public async Task<ReturnResponsesDto> DeletePaypointsAsync(int paypointId)
         {
             try
             {
-                var type = await _unitOfWork.PaymentType.Get(paymentTypeId);
-                if (type == null)
+                var paypoint = await _unitOfWork.Paypoints.Get(paypointId);
+                if (paypoint == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Payment type with ID {paymentTypeId} not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Paypoint with ID {paypointId} not found." },
                         SuccessResponse = null
                     };
                 }
 
-                _unitOfWork.PaymentType.Delete(type);
+                _unitOfWork.Paypoints.Delete(paypoint);
                 await _unitOfWork.Complete();
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Payment type with ID {paymentTypeId} deleted successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = $"Paypoint with ID {paypointId} deleted successfully." }
                 };
             }
             catch (Exception ex)

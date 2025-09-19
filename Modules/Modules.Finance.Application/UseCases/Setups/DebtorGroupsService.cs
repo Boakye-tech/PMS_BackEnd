@@ -1,77 +1,70 @@
-﻿// /**************************************************
+// /**************************************************
 // * Company: MindSprings Company Limited
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/03/2025 
+// * Create Date: 19/09/2025 4:45 PM
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
 
-namespace Modules.Finance.Application.UseCases
+
+namespace Modules.Finance.Application.UseCases.Setups
 {
-    public class PaymentModeService : IPaymentModeService
+    public class DebtorGroupsService : IDebtorGroupsService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public PaymentModeService(IUnitOfWork unitOfWork, IMapper mapper)
+        public DebtorGroupsService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<PaymentModeReadDto>> GetPaymentModeAsync()
+        public async Task<IEnumerable<DebtorGroupsReadDto>> GetDebtorGroupsAsync()
         {
-            var modes = await _unitOfWork.PaymentMode.GetAll();
-            return _mapper.Map<IEnumerable<PaymentModeReadDto>>(modes);
+            var debtorGroups = await _unitOfWork.DebtorGroups.GetAll();
+            return _mapper.Map<IEnumerable<DebtorGroupsReadDto>>(debtorGroups);
         }
 
-        public async Task<PaymentModeReadDto> GetPaymentModeAsync(int value)
+        public async Task<DebtorGroupsReadDto> GetDebtorGroupsAsync(int debtorGroupsId)
         {
-            var mode = await _unitOfWork.PaymentMode.Get(value);
-            return _mapper.Map<PaymentModeReadDto>(mode);
+            var debtorGroup = await _unitOfWork.DebtorGroups.Get(dg => dg.DebtorGroupsId == debtorGroupsId);
+            return _mapper.Map<DebtorGroupsReadDto>(debtorGroup);
         }
 
-        public async Task<PaymentModeReadDto> GetPaymentModeAsync(string value)
-        {
-            var mode = await _unitOfWork.PaymentMode.Get(p => p.PaymentModes == value);
-            return _mapper.Map<PaymentModeReadDto>(mode);
-        }
-
-        public async Task<ReturnResponsesDto> CreatePaymentModeAsync(PaymentModeCreateDto values)
+        public async Task<ReturnResponsesDto> CreateDebtorGroupsAsync(DebtorGroupsCreateDto values)
         {
             try
             {
-                var existingMode = await _unitOfWork.PaymentMode.Get(p => p.PaymentModes == values.PaymentModes);
-                if (existingMode != null)
+                var existingDebtorGroup = await _unitOfWork.DebtorGroups.Get(dg => dg.GroupName == values.GroupName && dg.DebtorTypesId == values.DebtorTypesId);
+                if (existingDebtorGroup != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Payment mode already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Debtor Group already exists for this Debtor Type." },
                         SuccessResponse = null
                     };
                 }
 
-                var mode = new PaymentMode(values.PaymentModeId, values.PaymentModes!)
+                var debtorGroup = new DebtorGroups(values.DebtorTypesId, 0, values.GroupName!, values.Description)
                 {
                     CreatedBy = values.CreatedBy,
                     CreatedOn = DateTime.Now
                 };
 
-                _unitOfWork.PaymentMode.Insert(mode);
+                _unitOfWork.DebtorGroups.Insert(debtorGroup);
                 await _unitOfWork.Complete();
-
-                //var result = _mapper.Map<PaymentModeReadDto>(mode);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Payment mode created successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Debtor Group created successfully." }
                 };
             }
             catch (Exception ex)
@@ -85,46 +78,44 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> UpdatePaymentModeAsync(PaymentModeUpdateDto values)
+        public async Task<ReturnResponsesDto> UpdateDebtorGroupsAsync(DebtorGroupsUpdateDto values)
         {
             try
             {
-                var mode = await _unitOfWork.PaymentMode.Get(values.PaymentModeId);
-                if (mode == null)
+                var debtorGroup = await _unitOfWork.DebtorGroups.Get(dg => dg.DebtorGroupsId == values.DebtorGroupsId);
+                if (debtorGroup == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Payment mode not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Debtor Group not found." },
                         SuccessResponse = null
                     };
                 }
 
-                var existingMode = await _unitOfWork.PaymentMode.Get(p => p.PaymentModes == values.PaymentModes && p.PaymentModeId != values.PaymentModeId);
-                if (existingMode != null)
+                var existingDebtorGroup = await _unitOfWork.DebtorGroups.Get(dg => dg.GroupName == values.GroupName && dg.DebtorTypesId == values.DebtorTypesId && dg.DebtorGroupsId != values.DebtorGroupsId);
+                if (existingDebtorGroup != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Payment mode already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Debtor Group already exists for this Debtor Type." },
                         SuccessResponse = null
                     };
                 }
 
-                mode.Update(values.PaymentModeId, values.PaymentModes!);
-                mode.ModifiedBy = values.Modified;
-                mode.ModifiedOn = DateTime.Now;
+                debtorGroup.Update(values.DebtorTypesId, values.DebtorGroupsId, values.GroupName!, values.Description);
+                debtorGroup.ModifiedBy = values.ModifiedBy;
+                debtorGroup.ModifiedOn = DateTime.Now;
 
-                _unitOfWork.PaymentMode.Update(mode);
+                _unitOfWork.DebtorGroups.Update(debtorGroup);
                 await _unitOfWork.Complete();
-
-                //var result = _mapper.Map<PaymentModeReadDto>(mode);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment mode updated successfully."}
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Debtor Group updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -138,29 +129,29 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> DeletePaymentModeAsync(int paymentModeId)
+        public async Task<ReturnResponsesDto> DeleteDebtorGroupsAsync(int debtorGroupsId)
         {
             try
             {
-                var mode = await _unitOfWork.PaymentMode.Get(paymentModeId);
-                if (mode == null)
+                var debtorGroup = await _unitOfWork.DebtorGroups.Get(dg => dg.DebtorGroupsId == debtorGroupsId);
+                if (debtorGroup == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Payment mode not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Debtor Group not found." },
                         SuccessResponse = null
                     };
                 }
 
-                _unitOfWork.PaymentMode.Delete(mode);
+                _unitOfWork.DebtorGroups.Delete(debtorGroup);
                 await _unitOfWork.Complete();
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment mode deleted successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Debtor Group deleted successfully." }
                 };
             }
             catch (Exception ex)
@@ -175,4 +166,3 @@ namespace Modules.Finance.Application.UseCases
         }
     }
 }
-

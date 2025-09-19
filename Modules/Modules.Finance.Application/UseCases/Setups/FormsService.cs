@@ -9,7 +9,7 @@
 //  **************************************************/
 
 
-namespace Modules.Finance.Application.UseCases
+namespace Modules.Finance.Application.UseCases.Setups
 {
 	public class FormsService : IFormsService
     {

@@ -20,6 +20,8 @@ namespace Modules.Finance.Application.Profiles.Setup
             CreateMap<PaymentTypeUpdateDto, BankBranch>();
             CreateMap<PaymentTypeDeleteDto, BankBranch>();
 
+            CreateMap<BankBranch, BranchReadDto>();
+
         }
     }
 }

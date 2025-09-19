@@ -10,68 +10,68 @@
 
 using Microsoft.AspNetCore.Http;
 
-namespace Modules.Finance.Application.UseCases
+namespace Modules.Finance.Application.UseCases.Setups
 {
-    public class InvoiceTypesService : IInvoiceTypesService
+    public class BankSortCodesService : IBankSortCodesService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public InvoiceTypesService(IUnitOfWork unitOfWork, IMapper mapper)
+        public BankSortCodesService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<InvoiceTypesReadDto>> GetInvoiceTypesAsync()
+        public async Task<IEnumerable<BankSortCodesReadDto>> GetBankSortCodesAsync()
         {
-            var types = await _unitOfWork.InvoiceTypes.GetAll();
-            return _mapper.Map<IEnumerable<InvoiceTypesReadDto>>(types);
+            var codes = await _unitOfWork.BankSortCodes.GetAll();
+            return _mapper.Map<IEnumerable<BankSortCodesReadDto>>(codes);
         }
 
-        public async Task<InvoiceTypesReadDto> GetInvoiceTypesAsync(int value)
+        public async Task<BankSortCodesReadDto> GetBankSortCodesAsync(int value)
         {
-            var type = await _unitOfWork.InvoiceTypes.Get(value);
-            return _mapper.Map<InvoiceTypesReadDto>(type);
+            var code = await _unitOfWork.BankSortCodes.Get(value);
+            return _mapper.Map<BankSortCodesReadDto>(code);
         }
 
-        public async Task<InvoiceTypesReadDto> GetInvoiceTypesAsync(string value)
+        public async Task<BankSortCodesReadDto> GetBankSortCodesAsync(string value)
         {
-            var type = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == value);
-            return _mapper.Map<InvoiceTypesReadDto>(type);
+            var code = await _unitOfWork.BankSortCodes.Get(p => p.SortCode == value);
+            return _mapper.Map<BankSortCodesReadDto>(code);
         }
 
-        public async Task<ReturnResponsesDto> CreateInvoiceTypesAsync(InvoiceTypesCreateDto values)
+        public async Task<ReturnResponsesDto> CreateBankSortCodesAsync(BankSortCodesCreateDto values)
         {
             try
             {
-                var existingType = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == values.InvoiceInitials);
-                if (existingType != null)
+                var existingCode = await _unitOfWork.BankSortCodes.Get(p => p.SortCode == values.SortCode);
+                if (existingCode != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Invoice type already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank sort code already exists." },
                         SuccessResponse = null
                     };
                 }
 
-                var type = new InvoiceTypes(values.InvoiceTypesId, values.InvoiceInitials!, values.InvoiceDescriptions!, values.InvoiceAmount)
+                var code = new BankSortCodes(values.SortCode!, values.BankName!, values.BranchName!)
                 {
                     CreatedBy = values.CreatedBy,
                     CreatedOn = DateTime.Now
                 };
 
-                _unitOfWork.InvoiceTypes.Insert(type);
+                _unitOfWork.BankSortCodes.Insert(code);
                 await _unitOfWork.Complete();
 
-                //var result = _mapper.Map<InvoiceTypesReadDto>(type);
+                //var result = _mapper.Map<BankSortCodesReadDto>(code);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Invoice type created successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank sort code created successfully." }
                 };
             }
             catch (Exception ex)
@@ -85,46 +85,46 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> UpdateInvoiceTypesAsync(InvoiceTypesUpdateDto values)
+        public async Task<ReturnResponsesDto> UpdateBankSortCodesAsync(BankSortCodesUpdateDto values)
         {
             try
             {
-                var type = await _unitOfWork.InvoiceTypes.Get(values.InvoiceTypesId);
-                if (type == null)
+                var code = await _unitOfWork.BankSortCodes.Get(values.Id);
+                if (code == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Invoice type not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Bank sort code not found." },
                         SuccessResponse = null
                     };
                 }
 
-                var existingType = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == values.InvoiceInitials && p.InvoiceTypesId != values.InvoiceTypesId);
-                if (existingType != null)
+                var existingCode = await _unitOfWork.BankSortCodes.Get(p => p.SortCode == values.SortCode && p.Id != values.Id);
+                if (existingCode != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Invoice type already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank sort code already exists." },
                         SuccessResponse = null
                     };
                 }
 
-                type.Update(values.InvoiceTypesId, values.InvoiceInitials!, values.InvoiceDescriptions!, values.InvoiceAmount);
-                type.ModifiedBy = values.ModifiedBy;
-                type.ModifiedOn = DateTime.Now;
+                code.Update(values.Id, values.SortCode!, values.BankName!, values.BranchName!);
+                code.ModifiedBy = values.ModifiedBy;
+                code.ModifiedOn = DateTime.Now;
 
-                _unitOfWork.InvoiceTypes.Update(type);
+                _unitOfWork.BankSortCodes.Update(code);
                 await _unitOfWork.Complete();
 
-                //var result = _mapper.Map<InvoiceTypesReadDto>(type);
+                //var result = _mapper.Map<BankSortCodesReadDto>(code);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Invoice type updated successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank sort code updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -138,29 +138,29 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> DeleteInvoiceTypesAsync(int invoiceTypesId)
+        public async Task<ReturnResponsesDto> DeleteBankSortCodesAsync(int id)
         {
             try
             {
-                var type = await _unitOfWork.InvoiceTypes.Get(invoiceTypesId);
-                if (type == null)
+                var code = await _unitOfWork.BankSortCodes.Get(id);
+                if (code == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Invoice type not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Bank sort code not found." },
                         SuccessResponse = null
                     };
                 }
 
-                _unitOfWork.InvoiceTypes.Delete(type);
+                _unitOfWork.BankSortCodes.Delete(code);
                 await _unitOfWork.Complete();
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Invoice type deleted successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank sort code deleted successfully." }
                 };
             }
             catch (Exception ex)

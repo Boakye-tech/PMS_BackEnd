@@ -20,6 +20,8 @@ namespace Modules.Finance.Application.Interfaces.Setup
         Task<ReturnResponsesDto> CreateBankAsync(BankCreateDto values);
         Task<ReturnResponsesDto> UpdateBankAsync(BankUpdateDto values);
         Task<ReturnResponsesDto> DeleteBankAsync(string bankId);
+
+        Task<List<BanksAndBranchesReadDto>> GetBanksAndBranchesAsync(string? searchTerm);
     }
 }
 

@@ -12,7 +12,7 @@
 
 using Microsoft.AspNetCore.Http;
 
-namespace Modules.Finance.Application.UseCases
+namespace Modules.Finance.Application.UseCases.Setups
 {
     public class DepartmentUnitService : IDepartmentUnitService
     {

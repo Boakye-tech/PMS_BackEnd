@@ -10,68 +10,68 @@
 
 using Microsoft.AspNetCore.Http;
 
-namespace Modules.Finance.Application.UseCases
+namespace Modules.Finance.Application.UseCases.Setups
 {
-    public class ChartOfAccountsService : IChartOfAccountsService
+    public class PaymentModeService : IPaymentModeService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ChartOfAccountsService(IUnitOfWork unitOfWork, IMapper mapper)
+        public PaymentModeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ChartOfAccountsReadDto>> GetChartOfAccountsAsync()
+        public async Task<IEnumerable<PaymentModeReadDto>> GetPaymentModeAsync()
         {
-            var accounts = await _unitOfWork.ChartOfAccounts.GetAll();
-            return _mapper.Map<IEnumerable<ChartOfAccountsReadDto>>(accounts);
+            var modes = await _unitOfWork.PaymentMode.GetAll();
+            return _mapper.Map<IEnumerable<PaymentModeReadDto>>(modes);
         }
 
-        public async Task<ChartOfAccountsReadDto> GetChartOfAccountsAsync(int value)
+        public async Task<PaymentModeReadDto> GetPaymentModeAsync(int value)
         {
-            var account = await _unitOfWork.ChartOfAccounts.Get(value);
-            return _mapper.Map<ChartOfAccountsReadDto>(account);
+            var mode = await _unitOfWork.PaymentMode.Get(value);
+            return _mapper.Map<PaymentModeReadDto>(mode);
         }
 
-        public async Task<ChartOfAccountsReadDto> GetChartOfAccountsAsync(string value)
+        public async Task<PaymentModeReadDto> GetPaymentModeAsync(string value)
         {
-            var account = await _unitOfWork.ChartOfAccounts.Get(p => p.AccountName == value);
-            return _mapper.Map<ChartOfAccountsReadDto>(account);
+            var mode = await _unitOfWork.PaymentMode.Get(p => p.PaymentModes == value);
+            return _mapper.Map<PaymentModeReadDto>(mode);
         }
 
-        public async Task<ReturnResponsesDto> CreateChartOfAccountsAsync(ChartOfAccountsCreateDto values)
+        public async Task<ReturnResponsesDto> CreatePaymentModeAsync(PaymentModeCreateDto values)
         {
             try
             {
-                var existingAccount = await _unitOfWork.ChartOfAccounts.Get(p => p.AccountName == values.AccountName);
-                if (existingAccount != null)
+                var existingMode = await _unitOfWork.PaymentMode.Get(p => p.PaymentModes == values.PaymentModes);
+                if (existingMode != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Chart of account already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Payment mode already exists." },
                         SuccessResponse = null
                     };
                 }
 
-                var account = new ChartOfAccounts(values.AccountCode, values.AccountName!)
+                var mode = new PaymentMode(values.PaymentModeId, values.PaymentModes!)
                 {
                     CreatedBy = values.CreatedBy,
                     CreatedOn = DateTime.Now
                 };
 
-                _unitOfWork.ChartOfAccounts.Insert(account);
+                _unitOfWork.PaymentMode.Insert(mode);
                 await _unitOfWork.Complete();
 
-                //var result = _mapper.Map<ChartOfAccountsReadDto>(account);
+                //var result = _mapper.Map<PaymentModeReadDto>(mode);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Chart of account created successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Payment mode created successfully." }
                 };
             }
             catch (Exception ex)
@@ -85,46 +85,46 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> UpdateChartOfAccountsAsync(ChartOfAccountsUpdateDto values)
+        public async Task<ReturnResponsesDto> UpdatePaymentModeAsync(PaymentModeUpdateDto values)
         {
             try
             {
-                var account = await _unitOfWork.ChartOfAccounts.Get(values.AccountCode);
-                if (account == null)
+                var mode = await _unitOfWork.PaymentMode.Get(values.PaymentModeId);
+                if (mode == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Chart of account not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Payment mode not found." },
                         SuccessResponse = null
                     };
                 }
 
-                var existingAccount = await _unitOfWork.ChartOfAccounts.Get(p => p.AccountName == values.AccountName && p.AccountCode != values.AccountCode);
-                if (existingAccount != null)
+                var existingMode = await _unitOfWork.PaymentMode.Get(p => p.PaymentModes == values.PaymentModes && p.PaymentModeId != values.PaymentModeId);
+                if (existingMode != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Chart of account already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Payment mode already exists." },
                         SuccessResponse = null
                     };
                 }
 
-                account.Update(values.AccountCode, values.AccountName!);
-                account.ModifiedBy = values.ModifiedBy;
-                account.ModifiedOn = DateTime.Now;
+                mode.Update(values.PaymentModeId, values.PaymentModes!);
+                mode.ModifiedBy = values.ModifiedBy;
+                mode.ModifiedOn = DateTime.Now;
 
-                _unitOfWork.ChartOfAccounts.Update(account);
+                _unitOfWork.PaymentMode.Update(mode);
                 await _unitOfWork.Complete();
 
-                //var result = _mapper.Map<ChartOfAccountsReadDto>(account);
+                //var result = _mapper.Map<PaymentModeReadDto>(mode);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Chart of account updated successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment mode updated successfully."}
                 };
             }
             catch (Exception ex)
@@ -138,29 +138,29 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> DeleteChartOfAccountsAsync(int accountCode)
+        public async Task<ReturnResponsesDto> DeletePaymentModeAsync(int paymentModeId)
         {
             try
             {
-                var account = await _unitOfWork.ChartOfAccounts.Get(accountCode);
-                if (account == null)
+                var mode = await _unitOfWork.PaymentMode.Get(paymentModeId);
+                if (mode == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Chart of account not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Payment mode not found." },
                         SuccessResponse = null
                     };
                 }
 
-                _unitOfWork.ChartOfAccounts.Delete(account);
+                _unitOfWork.PaymentMode.Delete(mode);
                 await _unitOfWork.Complete();
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Chart of account deleted successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Payment mode deleted successfully." }
                 };
             }
             catch (Exception ex)
