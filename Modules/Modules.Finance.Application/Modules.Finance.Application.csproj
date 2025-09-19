@@ -17,7 +17,6 @@
     <None Remove="Profiles\Setup\" />
     <None Remove="Validations\" />
     <None Remove="Validations\Setup\" />
-    <None Remove="UseCases\Setups\" />
     <None Remove="UseCases\ModuleServices\" />
     <None Remove="Interfaces\ModuleServices\" />
   </ItemGroup>
@@ -31,7 +30,6 @@
     <Folder Include="Profiles\Setup\" />
     <Folder Include="Validations\" />
     <Folder Include="Validations\Setup\" />
-    <Folder Include="UseCases\Setups\" />
     <Folder Include="UseCases\ModuleServices\" />
     <Folder Include="Interfaces\ModuleServices\" />
   </ItemGroup>

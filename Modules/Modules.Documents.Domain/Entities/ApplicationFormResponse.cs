@@ -19,7 +19,7 @@ namespace Modules.Documents.Domain.Entities
         public int FormSubmissionId { get; private set; }
         public int FormTemplateId { get; private set; }
         public int FormFieldId { get; private set; }
-        public string ResponseValue { get; private set; }
+        public string? ResponseValue { get; private set; }
         
         // Navigation properties
         public FormFields FormField { get; private set; } = null!;

@@ -41,12 +41,13 @@ namespace Modules.Users.Application.Interfaces.UserAccounts
 
         Task<ActivateUserAccountResponseDto> ActivateUserAccount(ActivateUserAccountDto accountActivation);
         Task<DeactivateUserAccountResponseDto> DeactivateUserAccount(DeactivateUserAccountDto accountDeactivation);
-
-
-        //Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff();
+        
         Task<IEnumerable<AdministrationStaffDto>> GetAdministrationStaff(string? searchParam, string? status);
-        //Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationCustomer();
+        Task<StaffRegistrationDetailsDto> GetStaffRegistrationDetails(string userId);
+
         Task<IEnumerable<AdministrationCustomerDto>> GetAdministrationCustomer(string? searchParam, string? status);
+        Task<CustomerRegistrationDetailsDto> GetCustomerRegistrationDetails(string userId);
+
         //Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners();
         Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners(string? searchParam, string? status);
 

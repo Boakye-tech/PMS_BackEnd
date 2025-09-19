@@ -9,6 +9,8 @@
 //  **************************************************/
 
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Modules.Users.Application.Dtos.Administration
 {
     public record AdministrationCustomerDto
@@ -25,5 +27,7 @@ namespace Modules.Users.Application.Dtos.Administration
         //string LastName,
         string Status 
     );
+
+   
 }
 

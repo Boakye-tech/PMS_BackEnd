@@ -28,6 +28,18 @@ namespace Modules.Finance.Presentation.Controllers
 
 
         //---------BANKS-----------
+
+        /// <summary>
+        /// Returns a list of all banks in the system
+        /// </summary>
+        [HttpGet]
+        [Route("GetBanksAndBranches")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<BanksAndBranchesReadDto>))]
+        public async Task<ActionResult<IEnumerable<BanksAndBranchesReadDto>>> GetBanksAndBranches([FromQuery] string? serachTerm, [FromServices] IBankService _bankService)
+        {
+            return Ok(await _bankService.GetBanksAndBranchesAsync(serachTerm));
+        }
+
         /// <summary>
         /// Returns a list of all banks in the system
         /// </summary>
@@ -39,27 +51,27 @@ namespace Modules.Finance.Presentation.Controllers
             return Ok(await _bankService.GetBankAsync());
         }
 
-        /// <summary>
-        /// Returns a bank record by its name
-        /// </summary>
-        [HttpGet]
-        [Route("GetBanks/{Banks}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BankReadDto))]
-        public async Task<ActionResult<BankReadDto>> GetBanks(string Banks, [FromServices] IBankService _bankService)
-        {
-            return Ok(await _bankService.GetBankAsync(Banks));
-        }
+        ///// <summary>
+        ///// Returns a bank record by its name
+        ///// </summary>
+        //[HttpGet]
+        //[Route("GetBanks/{Banks}")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BankReadDto))]
+        //public async Task<ActionResult<BankReadDto>> GetBanks(string Banks, [FromServices] IBankService _bankService)
+        //{
+        //    return Ok(await _bankService.GetBankAsync(Banks));
+        //}
 
-        /// <summary>
-        /// Returns a bank record by its ID
-        /// </summary>
-        [HttpGet]
-        [Route("GetBankById/{bankId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BankReadDto))]
-        public async Task<ActionResult<BankReadDto>> GetBanksById(string bankId, [FromServices] IBankService _bankService)
-        {
-            return Ok(await _bankService.GetBankAsync(bankId));
-        }
+        ///// <summary>
+        ///// Returns a bank record by its ID
+        ///// </summary>
+        //[HttpGet]
+        //[Route("GetBankById/{bankId}")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BankReadDto))]
+        //public async Task<ActionResult<BankReadDto>> GetBanksById(string bankId, [FromServices] IBankService _bankService)
+        //{
+        //    return Ok(await _bankService.GetBankAsync(bankId));
+        //}
 
         // POST: api/AddBank
         /// <summary>
@@ -101,13 +113,27 @@ namespace Modules.Finance.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
         public async Task<ActionResult<BankReadDto>> AddBank([FromBody] BankCreateDto values, [FromServices] IBankService _bankService)
         {
+            //return Ok(await _bankService.CreateBankAsync(values));
+
             try
             {
-                return Ok(await _bankService.CreateBankAsync(values));
+                var response = await _bankService.CreateBankAsync(values);
+                if (response.IsSuccess)
+                {
+                    return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
+                }
+                var status = response.ErrorResponse!.Code;
+                return status switch
+                {
+                    204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+                    400 => BadRequest(response.ErrorResponse),
+                    404 => NotFound(response.ErrorResponse),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+                };
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.InnerException!.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
@@ -195,7 +221,7 @@ namespace Modules.Finance.Presentation.Controllers
         /// Returns a list of all bank branches in the system
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetBankBranches")]
+        [Route("GetBankBranches")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<BankBranchReadDto>))]
         public async Task<ActionResult<IEnumerable<BankBranchReadDto>>> GetBankBranches([FromServices] IBankBranchService _bankBranchService)
         {
@@ -246,7 +272,30 @@ namespace Modules.Finance.Presentation.Controllers
         {
             try
             {
-                return Ok(await _bankBranchService.CreateBankBranchAsync(values));
+                //return Ok(await );
+
+                try
+                {
+                    var response = await _bankBranchService.CreateBankBranchAsync(values);
+                    if (response.IsSuccess)
+                    {
+                        return StatusCode(StatusCodes.Status201Created, response.SuccessResponse);
+                    }
+                    var status = response.ErrorResponse!.Code;
+                    return status switch
+                    {
+                        204 => StatusCode(StatusCodes.Status204NoContent, response.ErrorResponse),
+                        400 => BadRequest(response.ErrorResponse),
+                        404 => NotFound(response.ErrorResponse),
+                        _ => StatusCode(StatusCodes.Status500InternalServerError, response.ErrorResponse),
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -355,7 +404,7 @@ namespace Modules.Finance.Presentation.Controllers
         /// Returns a list of all bank sort codes in the system
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetBankSortCodes")]
+        [Route("GetBankSortCodes")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<BankSortCodesReadDto>))]
         public async Task<ActionResult<IEnumerable<BankSortCodesReadDto>>> GetBankSortCodes([FromServices] IBankSortCodesService _bankSortCodesService)
         {

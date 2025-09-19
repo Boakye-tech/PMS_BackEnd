@@ -17,7 +17,7 @@ namespace Modules.Finance.Domain.Entities.Setup;
 public class BankSortCodes : AuditableEntity
 {
     [Key]
-    public int BankSortCodesId { get; private set; }
+    public int Id { get; private set; }
 
     [Required]
     [StringLength(6)]
@@ -35,9 +35,8 @@ public class BankSortCodes : AuditableEntity
     {
     }
 
-    public BankSortCodes(int id, string sortCode, string bankName, string branchName)
+    public BankSortCodes(string sortCode, string bankName, string branchName)
     {
-        BankSortCodesId = id;
         SortCode = sortCode;
         BankName = bankName;
         BranchName = branchName;
@@ -46,7 +45,7 @@ public class BankSortCodes : AuditableEntity
     public static BankSortCodes Create(int id, string sortCode, string bankName, string branchName)
     {
         Validate(id, sortCode, bankName, branchName);
-        return new BankSortCodes(id, sortCode, bankName, branchName);
+        return new BankSortCodes(sortCode, bankName, branchName);
     }
 
     public void Update(int id, string sortCode, string bankName, string branchName)
@@ -59,7 +58,7 @@ public class BankSortCodes : AuditableEntity
 
     private static void Validate(int id, string sortCode, string bankName, string branchName)
     {
-        if (id <= 0)
+        if (id < 0)
             throw new ArgumentException("The bank sort code ID must be greater than zero.");
 
         if (string.IsNullOrWhiteSpace(sortCode) || sortCode.Length > 6)

@@ -31,6 +31,9 @@ public class UnitOfWork : IUnitOfWork
         InvoiceTypes = new InvoiceTypesRepository(dbContext);
         Department = new DepartmentRepository(dbContext);
         DepartmentUnit = new DepartmentUnitRepository(dbContext);
+        RentalTypes = new RentalTypesRepository(dbContext);
+        DebtorTypes = new DebtorTypesRepository(dbContext);
+        DebtorGroups = new DebtorGroupsRepository(dbContext);
     }
 
     public IBankRepository Bank { get; private set; }
@@ -56,6 +59,14 @@ public class UnitOfWork : IUnitOfWork
     public IDepartmentRepository Department { get; private set; }
 
     public IDepartmentUnitRepository DepartmentUnit { get; private set; }
+
+    public IRentalTypesRepository RentalTypes { get; private set; }
+
+    public IDebtorTypesRepository DebtorTypes { get; private set; }
+
+    public IDebtorGroupsRepository DebtorGroups { get; private set; }
+
+
 
     public Task<int> Complete()
     {

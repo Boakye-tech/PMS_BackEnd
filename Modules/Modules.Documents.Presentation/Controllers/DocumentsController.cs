@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Documents.Application.Dtos;
 using Modules.Documents.Application.Dtos.ApplicationForm;
@@ -13,7 +14,6 @@ namespace Modules.Documents.Presentation.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
-//[Route("[controller]")]
 [Produces("application/json")]
 
 public class DocumentsController : ControllerBase
@@ -239,16 +239,11 @@ public class DocumentsController : ControllerBase
     [Route("GetApplications")]
     //[Authorize(Policy = "Permission:PropertySetup.READ")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<FormSubmissionDto>))]
-    public async Task<ActionResult> GetApplications([FromQuery] int? applicationId = null,[FromQuery] string? emailAddress = null,[FromQuery] int? templateId = null)
+    public async Task<ActionResult> GetApplications([FromQuery] int? applicationId = null,[FromQuery] int? templateId = null)
     {
         if (applicationId.HasValue)
         {
             return Ok(await _formSubmissionService.GetSubmissionByIdAsync(applicationId.Value));
-        }
-
-        if (!string.IsNullOrWhiteSpace(emailAddress))
-        {
-            return Ok(await _formSubmissionService.GetSubmissionsByApplicantAsync(emailAddress));
         }
 
         if (templateId.HasValue)
@@ -356,4 +351,3 @@ public class DocumentsController : ControllerBase
 
 
 }
-

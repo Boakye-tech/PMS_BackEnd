@@ -29,11 +29,11 @@ public class Bank : AuditableEntity
     // Navigation property for BankBranch
     public virtual ICollection<BankBranch> BankBranch { get; private set; }
 
-
     public Bank(string bankId, string bankName)
     {
         BankId = bankId;
         BankName = bankName;
+        BankBranch = new List<BankBranch>();
     }
 
     public static Bank Create(string bankId, string bankName)

@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.Text.Json.Serialization;
+
 namespace Modules.Documents.Application.Dtos.FormFields
 {
     public record CreateFormFieldDto
@@ -18,6 +20,9 @@ namespace Modules.Documents.Application.Dtos.FormFields
         public required string FieldType { get; init; }
         public bool IsRequired { get; init; }
         public string? Options { get; init; }
+        //[property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        //public List<DropdownOptionDto>? Options { get; init; }
+
         public int Order { get; init; }
     }
 }

@@ -1205,18 +1205,6 @@ namespace Modules.Users.Presentation.Controllers.v1
         }
 
 
-
-        ///// <summary>
-        ///// Returns a list of system registered staff users
-        ///// </summary>
-        //[HttpGet]
-        //[Route("StaffAccounts")]
-        ////[Authorize(Roles = "MIS Officer, MISAdministrator")]
-        //public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> GetAdministrationStaff()
-        //{
-        //    return Ok(await _adminService.GetAdministrationStaff());
-        //}
-
         /// <summary>
         /// Returns a list of system registered staff users based on search parameters
         /// </summary>
@@ -1228,15 +1216,18 @@ namespace Modules.Users.Presentation.Controllers.v1
             return Ok(await _adminService.GetAdministrationStaff(searchParameter, status));
         }
 
-        ///// <summary>
-        ///// Returns a list of system registered customer users
-        ///// </summary>
-        //[HttpGet]
-        //[Route("CustomerAccounts")]
-        //public async Task<ActionResult<IEnumerable<AdministrationCustomerDto>>> GetAdministrationCustomers()
-        //{
-        //    return Ok(await _adminService.GetAdministrationCustomer());
-        //}
+        /// <summary>
+        /// Returns the registration details of a specific staff user account
+        /// </summary>
+        [HttpGet]
+        [Route("StaffRegistrationDetails")]
+        [Authorize(Policy = "Permission:Users.READ")]
+        public async Task<ActionResult<IEnumerable<AdministrationStaffDto>>> StaffRegistrationDetails(string userId)
+        {
+            return Ok(await _adminService.GetStaffRegistrationDetails(userId));
+        }
+
+
 
         /// <summary>
         /// Returns a list of system registered customer users based on search parameters
@@ -1248,6 +1239,19 @@ namespace Modules.Users.Presentation.Controllers.v1
         {
             return Ok(await _adminService.GetAdministrationCustomer(searchParameter, status));
         }
+
+
+        /// <summary>
+        /// Returns the registration details of a specific customer user account
+        /// </summary>
+        [HttpGet]
+        [Route("CustomerRegistrationDetails")]
+        [Authorize(Policy = "Permission:Users.READ")]
+        public async Task<ActionResult<CustomerRegistrationDetailsDto>> GetCustomerRegistrationDetails(string userId)
+        {
+            return Ok(await _adminService.GetCustomerRegistrationDetails(userId));
+        }
+
 
         ///// <summary>
         ///// Returns a list of system registered 3rd Party users (i.e. Parrtner Banks)

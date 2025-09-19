@@ -8,8 +8,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-
 namespace Modules.Finance.Presentation
 {
     public static class ModuleExtensions
@@ -34,9 +32,11 @@ namespace Modules.Finance.Presentation
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IDepartmentUnitService, DepartmentUnitService>();
 
-            services.AddScoped<IModuleCommunicationServices, ModuleCommunicationServices>();
+            services.AddScoped<IRentalTypesService, RentalTypesService>();
+            services.AddScoped<IDebtorTypesService, DebtorTypesService>();
+            services.AddScoped<IDebtorGroupsService, DebtorGroupsService>();
 
-            //services.AddHttpClient<IModuleCommunicationServices, ModuleCommunicationServices>();
+            services.AddHttpClient<IFinanceModuleCommunicationServices, FinanceModuleCommunicationServices>();
 
             //// Dependency Injection - Register AutoMapper 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

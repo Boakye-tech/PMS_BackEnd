@@ -21,6 +21,7 @@ namespace Modules.Finance.Application.Profiles.Setup
             CreateMap<BankUpdateDto, Bank>();
             CreateMap<BankDeleteDto, Bank>();
 
+            CreateMap<Bank, BanksReadDto>();
         }
     }
 }
