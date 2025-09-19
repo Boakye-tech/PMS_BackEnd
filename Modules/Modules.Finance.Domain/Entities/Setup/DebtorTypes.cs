@@ -10,12 +10,76 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.ComponentModel.DataAnnotations;
 namespace Modules.Finance.Domain.Entities.Setup
 {
-	public class DebtorTypes
+	public class DebtorTypes : AuditableEntity
 	{
-		public DebtorTypes()
+
+		[Required]
+        public int RentalTypesId { get;  private set; }
+
+        // Navigation property for RentalTypes
+        public virtual RentalTypes? RentalTypes { get; private set; }
+
+        [Key]
+		[Required]
+		public int DebtorTypesId { get; private set; }
+
+		[Required]
+		public int DebtorType { get; private set; }
+
+		[StringLength(100)]
+		public string Description { get; private set; }
+
+        // Navigation property for DebtorGroups
+        public virtual ICollection<DebtorGroups>? DebtorGroups { get; private set; }
+
+        private DebtorTypes()
 		{
+			Description = string.Empty;
+		}
+
+		public DebtorTypes(int rentalTypesId,int debtorTypesId, int debtorType, string description)
+		{
+			Validate(rentalTypesId,debtorTypesId, debtorType, description);
+
+            RentalTypesId = rentalTypesId;
+            DebtorTypesId = debtorTypesId;
+			DebtorType = debtorType;
+			Description = description ?? string.Empty;
+            DebtorGroups = new List<DebtorGroups>();
+        }
+
+		public static DebtorTypes Create(int rentalTypesId, int debtorTypesId, int debtorType, string description)
+		{
+			Validate(rentalTypesId, debtorTypesId, debtorType, description);
+			return new DebtorTypes(rentalTypesId, debtorTypesId, debtorType, description);
+		}
+
+		public void Update(int rentalTypesId, int debtorTypesId, int debtorType, string description)
+		{
+			Validate(rentalTypesId, debtorTypesId, debtorType, description);
+
+			RentalTypesId = rentalTypesId;
+			DebtorTypesId = debtorTypesId;
+			DebtorType = debtorType;
+			Description = description ?? string.Empty;
+		}
+
+		private static void Validate(int rentalTypesId, int debtorTypesId, int debtorType, string description)
+		{
+            if (rentalTypesId < 0)
+                throw new ArgumentException("Rental Type Id must be greater than or equal to zero.");
+
+            if (debtorTypesId < 0)
+				throw new ArgumentException("Debtor Type Id must be greater than or equal to zero.");
+
+			if (debtorType <= 0)
+				throw new ArgumentException("Debtor Type must be greater than zero.");
+
+			if (!string.IsNullOrEmpty(description) && description.Length > 100)
+				throw new ArgumentException("Description cannot exceed 100 characters.");
 		}
 	}
 }

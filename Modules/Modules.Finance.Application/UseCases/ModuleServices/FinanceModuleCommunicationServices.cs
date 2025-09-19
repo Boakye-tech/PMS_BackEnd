@@ -1,7 +1,7 @@
 ﻿// /**************************************************
 // * Company: MindSprings Company Limited
 // * Project Name: Modules.Finance.Application
-// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/ModuleServices/ModuleCommunicationServices.cs
+// * Full FileName: /Users/imac5k/Projects/PropertyManagementSolution/pms-api/Modules/Modules.Finance.Application/UseCases/ModuleServices/FinanceModuleCommunicationServices.cs
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
@@ -19,15 +19,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Modules.Finance.Application.UseCases.ModuleServices
 {
-	public class ModuleCommunicationServices : IModuleCommunicationServices
+	public class FinanceModuleCommunicationServices : IFinanceModuleCommunicationServices
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<ModuleCommunicationServices> _logger;
+        private readonly ILogger<FinanceModuleCommunicationServices> _logger;
         private readonly IConfiguration _config;
         private readonly IUserContextService _userContextService;
 
 
-        public ModuleCommunicationServices(HttpClient httpClient, ILogger<ModuleCommunicationServices> logger, IConfiguration config, IUserContextService userContextService)
+        public FinanceModuleCommunicationServices(HttpClient httpClient, ILogger<FinanceModuleCommunicationServices> logger, IConfiguration config, IUserContextService userContextService)
         {
             _httpClient = httpClient;
             _logger = logger;

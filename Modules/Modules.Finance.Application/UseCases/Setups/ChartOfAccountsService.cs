@@ -10,73 +10,68 @@
 
 using Microsoft.AspNetCore.Http;
 
-namespace Modules.Finance.Application.UseCases
+namespace Modules.Finance.Application.UseCases.Setups
 {
-    public class BankService : IBankService
+    public class ChartOfAccountsService : IChartOfAccountsService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public BankService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ChartOfAccountsService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<BankReadDto>> GetBankAsync()
+        public async Task<IEnumerable<ChartOfAccountsReadDto>> GetChartOfAccountsAsync()
         {
-            var banks = await _unitOfWork.Bank.GetAll();
-            return _mapper.Map<IEnumerable<BankReadDto>>(banks);
+            var accounts = await _unitOfWork.ChartOfAccounts.GetAll();
+            return _mapper.Map<IEnumerable<ChartOfAccountsReadDto>>(accounts);
         }
 
-        public async Task<BankReadDto> GetBankAsync(string value)
+        public async Task<ChartOfAccountsReadDto> GetChartOfAccountsAsync(int value)
         {
-            var bank = await _unitOfWork.Bank.Get(b => b.BankId == value);
-            return _mapper.Map<BankReadDto>(bank);
+            var account = await _unitOfWork.ChartOfAccounts.Get(value);
+            return _mapper.Map<ChartOfAccountsReadDto>(account);
         }
 
-        public async Task<ReturnResponsesDto> CreateBankAsync(BankCreateDto values)
+        public async Task<ChartOfAccountsReadDto> GetChartOfAccountsAsync(string value)
+        {
+            var account = await _unitOfWork.ChartOfAccounts.Get(p => p.AccountName == value);
+            return _mapper.Map<ChartOfAccountsReadDto>(account);
+        }
+
+        public async Task<ReturnResponsesDto> CreateChartOfAccountsAsync(ChartOfAccountsCreateDto values)
         {
             try
             {
-                var existingBank = await _unitOfWork.Bank.Get(b => b.BankId == values.BankId);
-                if (existingBank != null)
+                var existingAccount = await _unitOfWork.ChartOfAccounts.Get(p => p.AccountName == values.AccountName);
+                if (existingAccount != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank Id already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Chart of account already exists." },
                         SuccessResponse = null
                     };
                 }
 
-                existingBank = await _unitOfWork.Bank.Get(b => b.BankName == values.BankName);
-                if (existingBank != null)
-                {
-                    return new ReturnResponsesDto
-                    {
-                        IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank Name already exists." },
-                        SuccessResponse = null
-                    };
-                }
-
-                var bank = new Bank(values.BankId, values.BankName!)
+                var account = new ChartOfAccounts(values.AccountCode, values.AccountName!)
                 {
                     CreatedBy = values.CreatedBy,
                     CreatedOn = DateTime.Now
                 };
 
-                _unitOfWork.Bank.Insert(bank);
+                _unitOfWork.ChartOfAccounts.Insert(account);
                 await _unitOfWork.Complete();
 
-                //var result = _mapper.Map<BankReadDto>(bank);
+                //var result = _mapper.Map<ChartOfAccountsReadDto>(account);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank details created successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Chart of account created successfully." }
                 };
             }
             catch (Exception ex)
@@ -90,46 +85,46 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> UpdateBankAsync(BankUpdateDto values)
+        public async Task<ReturnResponsesDto> UpdateChartOfAccountsAsync(ChartOfAccountsUpdateDto values)
         {
             try
             {
-                var bank = await _unitOfWork.Bank.Get(b => b.BankId == values.BankId);
-                if (bank == null)
+                var account = await _unitOfWork.ChartOfAccounts.Get(values.AccountCode);
+                if (account == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Bank not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Chart of account not found." },
                         SuccessResponse = null
                     };
                 }
 
-                var existingBank = await _unitOfWork.Bank.Get(b => b.BankName == values.BankName && b.BankId != values.BankId);
-                if (existingBank != null)
+                var existingAccount = await _unitOfWork.ChartOfAccounts.Get(p => p.AccountName == values.AccountName && p.AccountCode != values.AccountCode);
+                if (existingAccount != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Chart of account already exists." },
                         SuccessResponse = null
                     };
                 }
 
-                bank.Update(values.BankId, values.BankName!);
-                bank.ModifiedBy = values.ModifiedBy;
-                bank.ModifiedOn = DateTime.Now;
+                account.Update(values.AccountCode, values.AccountName!);
+                account.ModifiedBy = values.ModifiedBy;
+                account.ModifiedOn = DateTime.Now;
 
-                _unitOfWork.Bank.Update(bank);
+                _unitOfWork.ChartOfAccounts.Update(account);
                 await _unitOfWork.Complete();
 
-                //var result = _mapper.Map<BankReadDto>(bank);
+                //var result = _mapper.Map<ChartOfAccountsReadDto>(account);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank updated successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Chart of account updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -143,29 +138,29 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> DeleteBankAsync(string bankId)
+        public async Task<ReturnResponsesDto> DeleteChartOfAccountsAsync(int accountCode)
         {
             try
             {
-                var bank = await _unitOfWork.Bank.Get(b => b.BankId == bankId);
-                if (bank == null)
+                var account = await _unitOfWork.ChartOfAccounts.Get(accountCode);
+                if (account == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Bank not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Chart of account not found." },
                         SuccessResponse = null
                     };
                 }
 
-                _unitOfWork.Bank.Delete(bank);
+                _unitOfWork.ChartOfAccounts.Delete(account);
                 await _unitOfWork.Complete();
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank deleted successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Chart of account deleted successfully." }
                 };
             }
             catch (Exception ex)
@@ -180,3 +175,4 @@ namespace Modules.Finance.Application.UseCases
         }
     }
 }
+

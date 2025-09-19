@@ -24,16 +24,15 @@ public class Paypoints : AuditableEntity
 	[StringLength(30)]
 	public string? Paypoint { get; private set; }
 
-	public Paypoints(int paypointId, string paypoint)
+	public Paypoints(string paypoint)
 	{
-		PaypointId = paypointId;
 		Paypoint = paypoint;
 	}
 
-	public static Paypoints Create(int paypointId, string paypoint)
+	public static Paypoints Create( string paypoint)
 	{
-		Validate(paypointId, paypoint);
-		return new Paypoints(paypointId, paypoint);
+		Validate(0,paypoint);
+		return new Paypoints(paypoint);
 	}
 
 	public void Update(int paypointId, string paypoint)

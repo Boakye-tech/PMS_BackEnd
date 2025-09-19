@@ -1,77 +1,69 @@
-﻿// /**************************************************
+// /**************************************************
 // * Company: MindSprings Company Limited
 // * Author: Boakye Ofori-Atta
 // * Email Address: boakye.ofori-atta@mindsprings-gh.com
 // * Copyright: © 2024 MindSprings Company Limited
-// * Create Date: 01/03/2025 
+// * Create Date: 19/09/2025 4:45 PM
 // * Version: 1.0.1
 // * Description: Property Management System
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
 
-namespace Modules.Finance.Application.UseCases
+namespace Modules.Finance.Application.UseCases.Setups
 {
-    public class BankSortCodesService : IBankSortCodesService
+    public class DebtorTypesService : IDebtorTypesService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public BankSortCodesService(IUnitOfWork unitOfWork, IMapper mapper)
+        public DebtorTypesService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<BankSortCodesReadDto>> GetBankSortCodesAsync()
+        public async Task<IEnumerable<DebtorTypesReadDto>> GetDebtorTypesAsync()
         {
-            var codes = await _unitOfWork.BankSortCodes.GetAll();
-            return _mapper.Map<IEnumerable<BankSortCodesReadDto>>(codes);
+            var debtorTypes = await _unitOfWork.DebtorTypes.GetAll();
+            return _mapper.Map<IEnumerable<DebtorTypesReadDto>>(debtorTypes);
         }
 
-        public async Task<BankSortCodesReadDto> GetBankSortCodesAsync(int value)
+        public async Task<DebtorTypesReadDto> GetDebtorTypesAsync(int debtorTypesId)
         {
-            var code = await _unitOfWork.BankSortCodes.Get(value);
-            return _mapper.Map<BankSortCodesReadDto>(code);
+            var debtorType = await _unitOfWork.DebtorTypes.Get(dt => dt.DebtorTypesId == debtorTypesId);
+            return _mapper.Map<DebtorTypesReadDto>(debtorType);
         }
 
-        public async Task<BankSortCodesReadDto> GetBankSortCodesAsync(string value)
-        {
-            var code = await _unitOfWork.BankSortCodes.Get(p => p.SortCode == value);
-            return _mapper.Map<BankSortCodesReadDto>(code);
-        }
-
-        public async Task<ReturnResponsesDto> CreateBankSortCodesAsync(BankSortCodesCreateDto values)
+        public async Task<ReturnResponsesDto> CreateDebtorTypesAsync(DebtorTypesCreateDto values)
         {
             try
             {
-                var existingCode = await _unitOfWork.BankSortCodes.Get(p => p.SortCode == values.SortCode);
-                if (existingCode != null)
+                var existingDebtorType = await _unitOfWork.DebtorTypes.Get(dt => dt.DebtorType == values.DebtorType && dt.RentalTypesId == values.RentalTypesId);
+                if (existingDebtorType != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank sort code already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Debtor Type already exists for this Rental Type." },
                         SuccessResponse = null
                     };
                 }
 
-                var code = new BankSortCodes(values.Id, values.SortCode!, values.BankName!, values.BranchName!)
+                var debtorType = new DebtorTypes(values.RentalTypesId, 0, values.DebtorType, values.Description ?? string.Empty)
                 {
                     CreatedBy = values.CreatedBy,
                     CreatedOn = DateTime.Now
                 };
 
-                _unitOfWork.BankSortCodes.Insert(code);
+                _unitOfWork.DebtorTypes.Insert(debtorType);
                 await _unitOfWork.Complete();
-
-                //var result = _mapper.Map<BankSortCodesReadDto>(code);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Bank sort code created successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Debtor Type created successfully." }
                 };
             }
             catch (Exception ex)
@@ -85,46 +77,44 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> UpdateBankSortCodesAsync(BankSortCodesUpdateDto values)
+        public async Task<ReturnResponsesDto> UpdateDebtorTypesAsync(DebtorTypesUpdateDto values)
         {
             try
             {
-                var code = await _unitOfWork.BankSortCodes.Get(values.Id);
-                if (code == null)
+                var debtorType = await _unitOfWork.DebtorTypes.Get(dt => dt.DebtorTypesId == values.DebtorTypesId);
+                if (debtorType == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Bank sort code not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Debtor Type not found." },
                         SuccessResponse = null
                     };
                 }
 
-                var existingCode = await _unitOfWork.BankSortCodes.Get(p => p.SortCode == values.SortCode && p.BankSortCodesId != values.Id);
-                if (existingCode != null)
+                var existingDebtorType = await _unitOfWork.DebtorTypes.Get(dt => dt.DebtorType == values.DebtorType && dt.RentalTypesId == values.RentalTypesId && dt.DebtorTypesId != values.DebtorTypesId);
+                if (existingDebtorType != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Bank sort code already exists." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Debtor Type already exists for this Rental Type." },
                         SuccessResponse = null
                     };
                 }
 
-                code.Update(values.Id, values.SortCode!, values.BankName!, values.BranchName!);
-                code.ModifiedBy = values.ModifiedBy;
-                code.ModifiedOn = DateTime.Now;
+                debtorType.Update(values.RentalTypesId, values.DebtorTypesId, values.DebtorType, values.Description ?? string.Empty);
+                debtorType.ModifiedBy = values.ModifiedBy;
+                debtorType.ModifiedOn = DateTime.Now;
 
-                _unitOfWork.BankSortCodes.Update(code);
+                _unitOfWork.DebtorTypes.Update(debtorType);
                 await _unitOfWork.Complete();
-
-                //var result = _mapper.Map<BankSortCodesReadDto>(code);
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank sort code updated successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Debtor Type updated successfully." }
                 };
             }
             catch (Exception ex)
@@ -138,29 +128,29 @@ namespace Modules.Finance.Application.UseCases
             }
         }
 
-        public async Task<ReturnResponsesDto> DeleteBankSortCodesAsync(int id)
+        public async Task<ReturnResponsesDto> DeleteDebtorTypesAsync(int debtorTypesId)
         {
             try
             {
-                var code = await _unitOfWork.BankSortCodes.Get(id);
-                if (code == null)
+                var debtorType = await _unitOfWork.DebtorTypes.Get(dt => dt.DebtorTypesId == debtorTypesId);
+                if (debtorType == null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Bank sort code not found." },
+                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = "Debtor Type not found." },
                         SuccessResponse = null
                     };
                 }
 
-                _unitOfWork.BankSortCodes.Delete(code);
+                _unitOfWork.DebtorTypes.Delete(debtorType);
                 await _unitOfWork.Complete();
 
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Bank sort code deleted successfully." }
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Debtor Type deleted successfully." }
                 };
             }
             catch (Exception ex)
@@ -175,4 +165,3 @@ namespace Modules.Finance.Application.UseCases
         }
     }
 }
-
