@@ -40,8 +40,8 @@ namespace Modules.Documents.Application.UseCases
             var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
 
             return dtoList.ToList();
-        }
 
+        }
 
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(int id, int landUseId, int landUseTypeId, string? name)
@@ -70,13 +70,12 @@ namespace Modules.Documents.Application.UseCases
             var dtoList = await Task.WhenAll(templates.Select(t => t.ToDtoAsync(_dataSources)));
 
             return dtoList.ToList();
-        }
 
+        }
 
 
         public async Task<List<FormTemplateDto>> GetAllFormTemplatesAsync(string templateName)
         {
-
             var query = _unitofWork.FormTemplates.GetQueryable(includes: new List<string> { "Sections", "Sections.Fields" });
 
 
@@ -247,6 +246,7 @@ namespace Modules.Documents.Application.UseCases
 
                 //get the saved template
                 var templates = await this.GetAllFormTemplatesAsync(templateId, 0, 0, null!);
+
 
                 return new FormReturnResponsesDto
                 {

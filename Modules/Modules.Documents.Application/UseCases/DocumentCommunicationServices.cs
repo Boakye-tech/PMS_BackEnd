@@ -11,7 +11,6 @@
 //  **************************************************/
 using System;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
@@ -72,6 +71,7 @@ namespace Modules.Documents.Application.UseCases
             var result = await SendGetAsync<List<ResidentTypeReadDto>>("Customer/GetResidentTypes");
             return result!;
         }
+
 
         public async Task<TResponse?> SendGetAsync<TResponse>(string endpoint)
         {

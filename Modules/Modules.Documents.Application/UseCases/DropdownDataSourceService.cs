@@ -27,8 +27,6 @@ namespace Modules.Documents.Application.UseCases
         {
             return dataSource.ToLower() switch
             {
-
-
                 "blocknumber" => (await _docComms.GetBlockNumberList())
                     ?.Select(bn => new DropdownOptionDto(bn.blockNumberId, bn.blockNumbers))
                     .ToList()
