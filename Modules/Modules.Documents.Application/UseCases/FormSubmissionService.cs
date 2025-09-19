@@ -47,12 +47,6 @@ namespace Modules.Documents.Application.UseCases
             return submissions.Select(MapToDto).ToList();
         }
 
-        public async Task<List<FormSubmissionDto>> GetSubmissionsByApplicantAsync(string email)
-        {
-            var submissions = await _unitofWork.ApplicationSubmissionForms.GetAll(s => s.ApplicantEmail == email);
-            return submissions.Select(MapToDto).ToList();
-        }
-
         public async Task<ReturnResponsesDto> CreateSubmissionAsync(CreateFormSubmissionDto createDto)
         {
             // Validate template exists
@@ -68,16 +62,16 @@ namespace Modules.Documents.Application.UseCases
 
             var submission = new ApplicationFormSubmission(
                 createDto.FormTemplateId,
-                createDto.ApplicantName,
-                createDto.ApplicantEmail,
-                createDto.PropertyNumber
+                createDto.PropertyNumber,
+                createDto.CreatedBy
             );
 
             // Add responses
             foreach (var responseDto in createDto.Responses)
             {
-                submission.AddResponse(responseDto.FormFieldId, responseDto.ResponseValue);
+                submission.AddResponse(responseDto.Key, responseDto.Value!.ToString() ?? string.Empty);
             }
+
 
             _unitofWork.ApplicationSubmissionForms.Insert(submission);
             await _unitofWork.Complete();
@@ -201,7 +195,6 @@ namespace Modules.Documents.Application.UseCases
             {
                 throw new KeyNotFoundException($"Form submission with ID {id} not found.");
             }
-            //return MapToDto(submission!);
 
             return submission;
         }
@@ -212,8 +205,6 @@ namespace Modules.Documents.Application.UseCases
             {
                 FormSubmissionId = submission.Id,
                 FormTemplateId = submission.FormTemplateId,
-                ApplicantName = submission.ApplicantName,
-                ApplicantEmail = submission.ApplicantEmail,
                 PropertyNumber = submission.PropertyNumber,
                 Status = submission.Status,
                 WorkflowState = submission.WorkflowState,
@@ -223,7 +214,7 @@ namespace Modules.Documents.Application.UseCases
                 {
                     FormResponseId = r.Id,
                     FormFieldId = r.FormFieldId,
-                    ResponseValue = r.ResponseValue,
+                    ResponseValue = r.ResponseValue!,
                     FormSubmissionId = r.FormSubmissionId,
                     Field = r.FormField != null ? new FormFieldDto
                     {
@@ -231,9 +222,8 @@ namespace Modules.Documents.Application.UseCases
                         Label = r.FormField.Label,
                         FieldType = r.FormField.FieldType,
                         IsRequired = r.FormField.IsRequired,
-                        Options = null, //r.FormField.Options,
+                        Options = null, 
                         Order = r.FormField.Order
-                        //FormTemplateId = r.FormField.FormTemplateId
                     } : null
                 }).ToList(),
                 Template = submission.FormTemplate != null ? new FormTemplateDto

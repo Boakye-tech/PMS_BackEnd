@@ -18,3 +18,7 @@ public record BankCreateDto(string BankId, string BankName, string CreatedBy);
 public record BankUpdateDto(string BankId, string BankName, string ModifiedBy);
 public record BankDeleteDto(string BankId);
 
+
+public record BanksReadDto(string BankId, string BankName, bool IsOpen);
+public record BranchReadDto(string BranchId, string BranchName);
+public record BanksAndBranchesReadDto(BanksReadDto Bank, List<BranchReadDto> Branches);

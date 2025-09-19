@@ -1079,7 +1079,46 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return customer_UserList;
 
         }
-        
+
+        public async Task<CustomerRegistrationDetailsDto> GetCustomerRegistrationDetails(string userId)
+        {
+            var users = await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Customer && u.Id == userId);
+            var channels = await _unitOfWork.Channels.GetAll();
+            var idTypesList = await _unitOfWork.IdentificationType.GetAll();
+
+            var customerRegistrationDetials = (from user in users
+                                               // LEFT JOIN with Channels
+                                               join channel in channels
+                                               on user.ChannelId equals channel.ChannelId into channelGroup
+                                               from channel in channelGroup.DefaultIfEmpty()
+                                               // LEFT JOIN with IdentificationTypes
+                                               join idTypes in idTypesList
+                                               on user.IdentificationTypeId equals idTypes.IdentificationTypeId into idTypeGroup
+                                               from idTypes in idTypeGroup.DefaultIfEmpty()
+
+                                               select new CustomerRegistrationDetailsDto
+                                                (
+                                                user.Id,
+                                                user.IdentificationNumber!,
+                                                $"{user.FirstName} {user.MiddleName} {user.LastName}",
+                                                user.Email!,
+                                                user.PhoneNumber!,
+                                                user.LastReceiptNumber,
+                                                user.LastReceiptImage,
+                                                idTypes?.IdentificationTypes,
+                                                user.IdentificationUniqueNumber,
+                                                user.IdentificationImage,
+                                                user.IdentificationImageOne,
+                                                user.SelfieImage,
+                                                user.PassportPicture,
+                                                user.RegistrationDate,
+                                                channel?.ChannelName!,
+                                                RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString()
+                                                )).FirstOrDefault();
+
+            return customerRegistrationDetials!;
+        }
+
         public async Task<IEnumerable<AdministrationPartnersDto>> GetAdministrationPartners(string? searchParam, string? status)
         {
             var partner_UserList = (from user in await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Partners)
@@ -1114,7 +1153,6 @@ namespace Modules.Users.Application.UseCases.UserAccounts
 
             return partner_UserList;
         }
-
 
         public async Task<IEnumerable<ComplaintAssigneeDto>> GetComplaintAssignee(int departmentId, int unitId)
         {
@@ -1259,8 +1297,51 @@ namespace Modules.Users.Application.UseCases.UserAccounts
             return staff_UserList;
         }
 
+        public async Task<StaffRegistrationDetailsDto> GetStaffRegistrationDetails(string userId)
+        {
+            // Fetch data first
+            var users = await _unitOfWork.Users.GetAll(u => u.UserType == (int)UserAccountType.Staff && u.Id == userId);
+            var departments = await _unitOfWork.Department.GetAll();
+            var units = await _unitOfWork.DepartmentUnit.GetAll();
+            var userRoles = await _unitOfWork.UsersRoles.GetAll();
+            var roles = await _unitOfWork.Roles.GetAll();
 
+            var staffDetails = (from user in users
+                                // LEFT JOIN with Department
+                                join department in departments
+                                on user.DepartmentId equals department.DepartmentId into deptGroup
+                                from department in deptGroup.DefaultIfEmpty()
+                                // LEFT JOIN with Unit
+                                join unit in units
+                                on user.UnitId equals unit.UnitId into unitGroup
+                                from unit in unitGroup.DefaultIfEmpty()
+                                // LEFT JOIN with UserRoles
+                                join usrole in userRoles
+                                on user.Id equals usrole.UserId into userRoleGroup
+                                from usrole in userRoleGroup.DefaultIfEmpty()
+                                // LEFT JOIN with Roles
+                                join role in roles
+                                on usrole.RoleId equals role.Id into roleGroup
+                                from role in roleGroup.DefaultIfEmpty()
 
+                                select new StaffRegistrationDetailsDto
+                                (
+                                    user.Id,
+                                    user.IdentificationNumber!,
+                                    $"{user.FirstName} {user.MiddleName} {user.LastName}",
+                                    department?.DepartmentName!,
+                                    unit?.UnitName,
+                                    user.Email!,
+                                    user.PhoneNumber!,
+                                    user.ProfilePicture,
+                                    role?.Name!,
+                                    user.Email!,
+                                    user.RegistrationDate,
+                                    RegistrationStatusEnumDescription.RegistrationStatusEnum(user.Status).ToString()
+                                )).FirstOrDefault();
+
+            return staffDetails!;
+        }
 
     }
 }

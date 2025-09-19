@@ -25,22 +25,23 @@ namespace Modules.Documents.Domain.Entities
         [Required]
         public int FormTemplateId { get; private set; }
 
-        [Required]
-        public string ApplicantName { get; private set; }
+        //[Required]
+        //public string ApplicantName { get; private set; }
 
-        [Required]
-        [EmailAddress]
-        public string ApplicantEmail { get; private set; }
+        //[Required]
+        //[EmailAddress]
+        //public string ApplicantEmail { get; private set; }
 
         [Required]
         public string PropertyNumber { get; private set; }
+
         public ApplicationStatus Status { get; private set; }
         public WorkflowState WorkflowState { get; private set; }
         public DateTime SubmittedDate { get; private set; }
         public DateTime CreatedDate { get; private set; }
         public DateTime LastStatusChangeDate { get; private set; }
         public string? StatusNotes { get; private set; }
-
+        public string? CreatedBy { get; private set; }
         // Navigation properties
         public FormTemplates FormTemplate { get; private set; } = null!;
 
@@ -53,18 +54,17 @@ namespace Modules.Documents.Domain.Entities
         // Private constructor for EF Core
         private ApplicationFormSubmission() { }
 
-        public ApplicationFormSubmission(int formTemplateId, string applicantName, string applicantEmail, string propertyNumber)
+        public ApplicationFormSubmission(int formTemplateId,  string propertyNumber, string createdBy)
         {
             //FormSubmissionId = formSubmissionId;
             FormTemplateId = formTemplateId;
-            ApplicantName = applicantName ?? throw new ArgumentNullException(nameof(applicantName));
-            ApplicantEmail = applicantEmail ?? throw new ArgumentNullException(nameof(applicantEmail));
             PropertyNumber = propertyNumber;
             Status = ApplicationStatus.Draft;
             WorkflowState = WorkflowState.ApplicationReceived;
             CreatedDate = DateTime.UtcNow;
             LastStatusChangeDate = DateTime.UtcNow;
-
+            CreatedBy = CreatedBy;
+            
             // Record initial status
             StatusHistory.Add(new StatusHistory(ApplicationStatus.Draft, WorkflowState.ApplicationReceived, "Submission created", Id));
         }

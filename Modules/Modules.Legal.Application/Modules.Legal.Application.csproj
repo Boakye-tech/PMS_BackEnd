@@ -4,6 +4,31 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ReleaseVersion>1.0.1</ReleaseVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Dtos\" />
+    <None Remove="Interfaces\" />
+    <None Remove="UseCases\" />
+    <None Remove="Validations\" />
+    <None Remove="Dtos\Setups\" />
+    <None Remove="Interfaces\Setups\" />
+    <None Remove="UseCases\Setups\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="UseCases\" />
+    <Folder Include="Validations\" />
+    <Folder Include="Dtos\Setups\" />
+    <Folder Include="Interfaces\Setups\" />
+    <Folder Include="UseCases\Setups\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules.Legal.Domain\Modules.Legal.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+  </ItemGroup>
 </Project>

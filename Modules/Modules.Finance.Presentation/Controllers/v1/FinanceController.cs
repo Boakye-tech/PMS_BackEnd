@@ -48,7 +48,7 @@ namespace Modules.Finance.Presentation.Controllers
         /// Returns a list of all chart of accounts in the system
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetChartOfAccounts")]
+        [Route("GetChartOfAccounts")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChartOfAccountsReadDto>))]
         public async Task<ActionResult<IEnumerable<ChartOfAccountsReadDto>>> GetChartOfAccounts()
         {
@@ -415,6 +415,7 @@ namespace Modules.Finance.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorResponseDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponseDto))]
+        [Obsolete]
         public async Task<ActionResult> UpdateCurrencyDetails([FromBody] CurrencyDetailsUpdateDto values)
         {
             var response = await _currencyAndExchangeRateService.UpdateCurrencyDetailsAsync(values);
@@ -644,7 +645,7 @@ namespace Modules.Finance.Presentation.Controllers
         /// Returns a list of all payment modes in the system
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetPaymentModes")]
+        [Route("GetPaymentModes")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PaymentModeReadDto>))]
         public async Task<ActionResult<IEnumerable<PaymentModeReadDto>>> GetPaymentModes()
         {
@@ -813,7 +814,7 @@ namespace Modules.Finance.Presentation.Controllers
         /// Returns a list of all payment types in the system
         /// </summary>
         [HttpGet]
-        [Route("Setup/GetPaymentTypes")]
+        [Route("GetPaymentTypes")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PaymentTypeReadDto>))]
         public async Task<ActionResult<IEnumerable<PaymentTypeReadDto>>> GetPaymentTypes()
         {

@@ -21,3 +21,5 @@ global using Modules.Finance.Infrastructure.Repositories;
 
 global using Modules.Finance.Application.Interfaces.ModuleServices;
 global using Modules.Finance.Application.UseCases.ModuleServices;
+
+global using Modules.Finance.Application.UseCases.Setups;

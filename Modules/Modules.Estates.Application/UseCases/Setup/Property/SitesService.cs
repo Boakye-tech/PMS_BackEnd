@@ -93,15 +93,15 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
 
         public async Task<IEnumerable<SitesReadDto>> GetSitesAsync()
         {
-            var localities = await _unitOfWork.Sites.GetAll();
-            return _mapper.Map<IEnumerable<SitesReadDto>>(localities);
+            var sites = await _unitOfWork.Sites.GetAll();
+            return _mapper.Map<IEnumerable<SitesReadDto>>(sites);
 
         }
 
         public async Task<IEnumerable<SitesReadDto>> GetSitesAsync(int localityId)
         {
-            var localities = await _unitOfWork.Sites.GetAll(s => s.LocalityId == localityId);
-            return _mapper.Map<IEnumerable<SitesReadDto>>(localities);
+            var sites = await _unitOfWork.Sites.GetAll(s => s.LocalityId == localityId);
+            return _mapper.Map<IEnumerable<SitesReadDto>>(sites);
 
         }
 
@@ -143,7 +143,7 @@ namespace Modules.Estates.Application.UseCases.Setup.Property
                 {
                     IsSuccess = true,
                     ErrorResponse = null,
-                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Locality modified successfully." },
+                    SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Site modified successfully." },
                 };
             }
             catch (Exception ex)

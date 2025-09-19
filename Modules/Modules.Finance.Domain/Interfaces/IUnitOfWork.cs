@@ -30,6 +30,11 @@ namespace Modules.Finance.Domain.Interfaces
         IDepartmentRepository Department { get; }
         IDepartmentUnitRepository DepartmentUnit { get; }
 
+        //19th September 2025
+        IRentalTypesRepository RentalTypes { get; }
+        IDebtorTypesRepository DebtorTypes { get; }
+        IDebtorGroupsRepository DebtorGroups { get; }
+
         Task<int> Complete();
     }
 }
