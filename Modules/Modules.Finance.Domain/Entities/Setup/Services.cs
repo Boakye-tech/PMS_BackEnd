@@ -9,6 +9,8 @@
 //  **************************************************/
 
 
+using Modules.Finance.Domain.ValueObject;
+
 namespace Modules.Finance.Domain.Entities.Setup
 {
     public class Services : AuditableEntity
@@ -18,18 +20,11 @@ namespace Modules.Finance.Domain.Entities.Setup
         public int ServicesId { get; private set; }
 
         [Required]
-        public int DepartmentId { get; private set; }
-
-
-        [Required]
-        public int RoomNumber { get; private set; }
-
-        [Required]
         [StringLength(50)]
         public string ServiceName { get; private set; }
 
         [StringLength(100)]
-        public string? Descrption { get; private set; }
+        public string? Description { get; private set; }
 
         public bool HasFee { get; private set; }
 
@@ -39,52 +34,45 @@ namespace Modules.Finance.Domain.Entities.Setup
         [Required]
         public int AccountCode { get; private set; }
 
+        public Money GetUnitPrice() => HasFee ? new Money(Amount) : Money.Zero;
+
+        public ICollection<InvoiceTypes> InvoiceTypes { get;  private set; } = new List<InvoiceTypes>();
+
         private Services()
         {
             ServiceName = string.Empty;
         }
 
-        public Services(int departmentId, int roomNumber, string serviceName, string? description, bool hasFee, double amount, int accountCode)
+        public Services(string serviceName, string? description, bool hasFee, double amount, int accountCode)
         {
-            Validate(departmentId, roomNumber, serviceName, amount, accountCode);
+            Validate(serviceName, amount, accountCode);
 
-            DepartmentId = departmentId;
-            RoomNumber = roomNumber;
             ServiceName = serviceName;
-            Descrption = description;
+            Description = description;
             HasFee = hasFee;
             Amount = amount;
             AccountCode = accountCode;
         }
 
-        public static Services Create(int departmentId, int roomNumber, string serviceName, string? description, bool hasFee, double amount, int accountCode)
+        public static Services Create(string serviceName, string? description, bool hasFee, double amount, int accountCode)
         {
-            Validate(departmentId, roomNumber, serviceName, amount, accountCode);
-            return new Services(departmentId, roomNumber, serviceName, description, hasFee, amount, accountCode);
+            Validate(serviceName, amount, accountCode);
+            return new Services(serviceName, description, hasFee, amount, accountCode);
         }
 
-        public void Update(int departmentId, int roomNumber, string serviceName, string? description, bool hasFee, double amount, int accountCode)
+        public void Update(string serviceName, string? description, bool hasFee, double amount, int accountCode)
         {
-            Validate(departmentId, roomNumber, serviceName, amount, accountCode);
+            Validate(serviceName, amount, accountCode);
 
-            DepartmentId = departmentId;
-            RoomNumber = roomNumber;
             ServiceName = serviceName;
-            Descrption = description;
+            Description = description;
             HasFee = hasFee;
             Amount = amount;
             AccountCode = accountCode;
         }
 
-        private static void Validate(int departmentId, int roomNumber, string serviceName, double amount, int accountCode)
+        private static void Validate(string serviceName, double amount, int accountCode)
         {
-
-
-            if (departmentId <= 0)
-                throw new ArgumentException("Department Id must be greater than zero.");
-
-            if (roomNumber <= 0)
-                throw new ArgumentException("Room Number must be greater than zero.");
 
             if (string.IsNullOrWhiteSpace(serviceName) || serviceName.Length > 50)
                 throw new ArgumentException("Service Name must not be empty or exceed 50 characters.");

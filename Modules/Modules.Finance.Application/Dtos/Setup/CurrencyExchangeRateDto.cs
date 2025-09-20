@@ -16,7 +16,7 @@ namespace Modules.Finance.Application.Dtos.Setup;
 public record CurrencyExchangeRateReadDto(int CurrencyId, string CurrencyInitial, string CurrencyName, decimal BuyingRate, decimal SellingRate, bool BaseCurrency, DateTime ApplicableDate);
 public record CurrencyExchangeRateCreateDto(int CurrencyId, string CurrencyInitial, string CurrencyName, decimal BuyingRate, decimal SellingRate, bool BaseCurrency, DateTime ApplicableDate, string CreatedBy);
 
-public record CurrencyDetailsUpdateDto(int CurrencyId, string CurrencyInitial, string CurrencyName, bool BaseCurrency, string ModifiedBy);
+//public record CurrencyDetailsUpdateDto(int CurrencyId, string CurrencyInitial, string CurrencyName, bool BaseCurrency, string ModifiedBy);
 public record CurrencyExchangeRateUpdateDto(int CurrencyId, string CurrencyInitial, string CurrencyName, decimal BuyingRate, decimal SellingRate, DateTime ApplicableDate, bool BaseCurrency, string ModifiedBy);
 
 public record CurrencyExchangeRateDeleteDto(int CurrencyId);

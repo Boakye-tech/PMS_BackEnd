@@ -26,7 +26,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentReadDto> AddDepartmentAsync(DepartmentCreateDto values)
         {
-            Department department = Department.Create(values.DepartmentId, values.DepartmentName!);
+            Department department = Department.Create(values.DepartmentId, values.DepartmentInitial, values.DepartmentName!);
 
             department.CreatedBy = values.CreatedBy;
             department.CreatedOn = DateTime.Now;
@@ -41,7 +41,7 @@ namespace Modules.Users.Application.UseCases
                 //_logger.LogWarning($"Failed to send department details to finance module {values.DepartmentName}", values.DepartmentName);
             }
 
-            return new DepartmentReadDto(department.DepartmentId, department.DepartmentName!);
+            return new DepartmentReadDto(department.DepartmentId, values.DepartmentInitial, department.DepartmentName!);
         }
 
         public async Task<GenericResponseDto> DeleteDepartment(int departmentId)
@@ -78,7 +78,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentReadDto> UpdateDepartmentAsync(DepartmentUpdateDto values)
         {
-            Department department = Department.Update(values.DepartmentId, values.DepartmentName!);
+            Department department = Department.Update(values.DepartmentId, values.DepartmentInitial, values.DepartmentName!);
             department.ModifiedBy = values.ModifiedBy;
             department.ModifiedOn = DateTime.UtcNow;
 
@@ -93,7 +93,7 @@ namespace Modules.Users.Application.UseCases
             }
 
 
-            return new DepartmentReadDto(department.DepartmentId, department.DepartmentName!);
+            return new DepartmentReadDto(department.DepartmentId, values.DepartmentInitial, department.DepartmentName!);
         }
     }
 }

@@ -33,8 +33,9 @@ namespace Modules.Users.UnitTest.InfrastructureLayer.Data
         {
             return new List<Department>
             {
-                new Department(1, "Finance"),
-                new Department(2, "Estates"),
+                new Department(1, "FIN", "Finance"),
+                new Department(2, "EST", "Estates"),
+                new Department(3, "LEG", "Legal")
             };
         }
 

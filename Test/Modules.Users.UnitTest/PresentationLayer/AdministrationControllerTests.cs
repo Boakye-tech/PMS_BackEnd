@@ -168,6 +168,7 @@ namespace Modules.Users.UnitTest.PresentationLayer
             var departmentDto = new DepartmentCreateDto
             (
                 1,
+                "TST",
                 "New Department",
                 "testUserId"
             );
@@ -176,7 +177,7 @@ namespace Modules.Users.UnitTest.PresentationLayer
                 .Returns("testUserId");
 
             _mockDepartmentService.Setup(x => x.AddDepartmentAsync(departmentDto))
-                .ReturnsAsync(new DepartmentReadDto(1, "New Department"));
+                .ReturnsAsync(new DepartmentReadDto(1, "TST", "New Department"));
 
             // Act
             var result = await _controller.CreateDepartment(departmentDto);
