@@ -28,8 +28,9 @@ namespace Modules.Users.Infrastructure.Configuration
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasData(
-                new Department(401,"Finance"),
-                new Department(402,"Estates")
+                new Department(401, "FIN", "FINANCE"),
+                new Department(402, "EST", "ESTATES"),
+                new Department(403, "LEG", "LEGAL")
                 );
         }
     }
@@ -44,14 +45,14 @@ namespace Modules.Users.Infrastructure.Configuration
 
             builder.HasData(
                 new DepartmentUnit(401,210,"M.I.S"),
-                new DepartmentUnit(401,211,"Revenue"),
-                new DepartmentUnit(401,212,"Cash&Bank"),
+                new DepartmentUnit(401,211,"REVENUE"),
+                new DepartmentUnit(401,212,"CASH&BANK"),
 
-                new DepartmentUnit(402,213,"Facilities"),
-                new DepartmentUnit(402,214, "Records"),
-                new DepartmentUnit(402,215, "Plots"),
-                new DepartmentUnit(402,216, "Houses"),
-                new DepartmentUnit(402,217, "Shops")
+                new DepartmentUnit(402,213,"FACILITIES"),
+                new DepartmentUnit(402,214, "RECORDS"),
+                new DepartmentUnit(402,215, "SEERVICED PLOTS"),
+                new DepartmentUnit(402,216, "HOUSES"),
+                new DepartmentUnit(402,217, "SHOPS")
 
                 );
         }

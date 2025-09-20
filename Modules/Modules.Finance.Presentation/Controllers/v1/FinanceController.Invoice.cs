@@ -28,8 +28,8 @@ namespace Modules.Finance.Presentation.Controllers
         /// </summary>
         [HttpGet]
         [Route("GetInvoiceTypes")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<InvoiceTypesReadDto>))]
-        public async Task<ActionResult<IEnumerable<InvoiceTypesReadDto>>> GetInvoiceTypes([FromServices] IInvoiceTypesService _invoiceTypesService)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<InvoiceTypesReadDto>))]
+        public async Task<ActionResult<List<InvoiceTypesReadDto>>> GetInvoiceTypes([FromServices] IInvoiceTypesService _invoiceTypesService)
         {
             return Ok(await _invoiceTypesService.GetInvoiceTypesAsync());
         }

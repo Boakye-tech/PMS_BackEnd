@@ -11,7 +11,15 @@
 //  **************************************************/
 
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Modules.Finance.Application.Dtos.Setup;
 
-public record ServicesDto();
+public record ServicesReadDto(int ServicesId, string ServiceName, string? Description, bool HasFee, double Amount, int AccountCode);
+public record ServicesCreateDto(string ServiceName, string? Description, bool HasFee, double Amount, int AccountCode, string CreatedBy);
+public record ServicesUpdateDto(int ServicesId, string ServiceName, string? Description, bool HasFee, double Amount, int AccountCode, string ModifiedBy);
+public record ServicesDeleteDto(int ServicesId);
 
+
+//public record ServiceDepartment(int DepartmentId, string DepartmentInitial, string DepartmentName, List<ServiceReadDto> Services);
+//public record ServiceReadDto(int RoomNumber, string ServiceName, string? Description, bool HasFee, double Amount, int AccountCode);

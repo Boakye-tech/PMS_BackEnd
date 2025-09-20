@@ -14,7 +14,6 @@ namespace Modules.Finance.Application.Interfaces.Setup
     {
         Task<IEnumerable<InvoiceTypesReadDto>> GetInvoiceTypesAsync();
         Task<InvoiceTypesReadDto> GetInvoiceTypesAsync(int value);
-        Task<InvoiceTypesReadDto> GetInvoiceTypesAsync(string value);
         Task<ReturnResponsesDto> CreateInvoiceTypesAsync(InvoiceTypesCreateDto values);
         Task<ReturnResponsesDto> UpdateInvoiceTypesAsync(InvoiceTypesUpdateDto values);
         Task<ReturnResponsesDto> DeleteInvoiceTypesAsync(int invoiceTypesId);

@@ -23,6 +23,21 @@ namespace Modules.Finance.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("InvoiceTypeServices", b =>
+                {
+                    b.Property<int>("InvoiceTypesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServicesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("InvoiceTypesId", "ServicesId");
+
+                    b.HasIndex("ServicesId");
+
+                    b.ToTable("InvoiceTypeServices", "fin");
+                });
+
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.Bank", b =>
                 {
                     b.Property<string>("BankId")
@@ -674,6 +689,11 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DepartmentInitial")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
                     b.Property<string>("DepartmentName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -791,18 +811,21 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("InvoiceAmount")
-                        .HasColumnType("float");
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentUnitId")
+                        .HasColumnType("int");
 
                     b.Property<string>("InvoiceDescriptions")
                         .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("InvoiceInitials")
+                    b.Property<string>("InvoiceName")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -810,7 +833,16 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PaymentTermsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomNumber")
+                        .HasColumnType("int");
+
                     b.HasKey("InvoiceTypesId");
+
+                    b.HasIndex("DepartmentId")
+                        .IsUnique();
 
                     b.ToTable("InvoiceTypes", "fin");
                 });
@@ -849,6 +881,40 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.HasKey("PaymentModeId");
 
                     b.ToTable("PaymentMode", "fin");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.PaymentTerms", b =>
+                {
+                    b.Property<int>("PaymentTermsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentTermsId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PaymentTerm")
+                        .HasColumnType("int");
+
+                    b.HasKey("PaymentTermsId");
+
+                    b.ToTable("PaymentTerms", "fin");
                 });
 
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.PaymentType", b =>
@@ -1014,10 +1080,7 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descrption")
+                    b.Property<string>("Description")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -1030,9 +1093,6 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -1041,6 +1101,21 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.HasKey("ServicesId");
 
                     b.ToTable("Services", "fin");
+                });
+
+            modelBuilder.Entity("InvoiceTypeServices", b =>
+                {
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.InvoiceTypes", null)
+                        .WithMany()
+                        .HasForeignKey("InvoiceTypesId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.Services", null)
+                        .WithMany()
+                        .HasForeignKey("ServicesId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.BankBranch", b =>
@@ -1081,7 +1156,18 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.HasOne("Modules.Finance.Domain.Entities.Setup.Department", "Department")
                         .WithMany("DepartmentUnits")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.InvoiceTypes", b =>
+                {
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.Department", "Department")
+                        .WithOne("InvoiceTypes")
+                        .HasForeignKey("Modules.Finance.Domain.Entities.Setup.InvoiceTypes", "DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -1100,6 +1186,9 @@ namespace Modules.Finance.Infrastructure.Migrations
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.Department", b =>
                 {
                     b.Navigation("DepartmentUnits");
+
+                    b.Navigation("InvoiceTypes")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.RentalTypes", b =>

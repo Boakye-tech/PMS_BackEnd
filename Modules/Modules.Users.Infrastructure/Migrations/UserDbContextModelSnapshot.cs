@@ -621,6 +621,11 @@ namespace Modules.Users.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DepartmentInitial")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
                     b.Property<string>("DepartmentName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -645,7 +650,8 @@ namespace Modules.Users.Infrastructure.Migrations
                             DepartmentId = 401,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DepartmentName = "Finance",
+                            DepartmentInitial = "FIN",
+                            DepartmentName = "FINANCE",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -653,7 +659,17 @@ namespace Modules.Users.Infrastructure.Migrations
                             DepartmentId = 402,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DepartmentName = "Estates",
+                            DepartmentInitial = "EST",
+                            DepartmentName = "ESTATES",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            DepartmentId = 403,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentInitial = "LEG",
+                            DepartmentName = "LEGAL",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -718,7 +734,7 @@ namespace Modules.Users.Infrastructure.Migrations
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 401,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UnitName = "Revenue"
+                            UnitName = "REVENUE"
                         },
                         new
                         {
@@ -727,7 +743,7 @@ namespace Modules.Users.Infrastructure.Migrations
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 401,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UnitName = "Cash&Bank"
+                            UnitName = "CASH&BANK"
                         },
                         new
                         {
@@ -736,7 +752,7 @@ namespace Modules.Users.Infrastructure.Migrations
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 402,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UnitName = "Facilities"
+                            UnitName = "FACILITIES"
                         },
                         new
                         {
@@ -745,7 +761,7 @@ namespace Modules.Users.Infrastructure.Migrations
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 402,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UnitName = "Records"
+                            UnitName = "RECORDS"
                         },
                         new
                         {
@@ -754,7 +770,7 @@ namespace Modules.Users.Infrastructure.Migrations
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 402,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UnitName = "Plots"
+                            UnitName = "SEERVICED PLOTS"
                         },
                         new
                         {
@@ -763,7 +779,7 @@ namespace Modules.Users.Infrastructure.Migrations
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 402,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UnitName = "Houses"
+                            UnitName = "HOUSES"
                         },
                         new
                         {
@@ -772,7 +788,7 @@ namespace Modules.Users.Infrastructure.Migrations
                             DeletedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 402,
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UnitName = "Shops"
+                            UnitName = "SHOPS"
                         });
                 });
 
