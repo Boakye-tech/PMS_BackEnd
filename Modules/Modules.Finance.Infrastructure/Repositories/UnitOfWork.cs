@@ -34,6 +34,8 @@ public class UnitOfWork : IUnitOfWork
         RentalTypes = new RentalTypesRepository(dbContext);
         DebtorTypes = new DebtorTypesRepository(dbContext);
         DebtorGroups = new DebtorGroupsRepository(dbContext);
+        Services = new ServicesRepository(dbContext);
+        PaymentTerms = new PaymentTermsRepository(dbContext);
     }
 
     public IBankRepository Bank { get; private set; }
@@ -66,7 +68,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IDebtorGroupsRepository DebtorGroups { get; private set; }
 
+    public IServicesRepository Services { get; private set; }
 
+    public IPaymentTermsRepository PaymentTerms { get; private set; }
 
     public Task<int> Complete()
     {

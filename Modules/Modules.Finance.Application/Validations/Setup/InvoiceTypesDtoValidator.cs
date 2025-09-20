@@ -17,10 +17,13 @@ namespace Modules.Finance.Application.Validations.Setup
     {
 		public InvoiceTypesDtoValidator()
 		{
-            RuleFor(x => x.InvoiceInitials).NotEmpty().Length(3, 5).WithMessage("The invoice initials must not be empty, null or less than three(3) characters or exceed five(5) characters");
-            RuleFor(x => x.InvoiceAmount).NotEmpty().GreaterThanOrEqualTo(0).WithMessage("The invoice amount must be greater than 0");
-            RuleFor(x => x.InvoiceDescriptions).NotEmpty().Length(3, 75).WithMessage("The invoice initials must not be empty, null or exceed seventy-five(75) characters");
+            RuleFor(x => x.InvoiceName).NotEmpty().Length(20, 100).WithMessage("The invoice name must not be empty, null or less than twenty(20) characters or exceed one hundred(100) characters");
+            //RuleFor(x => x.InvoiceDescriptions).NotEmpty().Length(3, 75).WithMessage("The invoice initials must not be empty, null or exceed seventy-five(75) characters");
 
+
+            RuleFor(x => x.DepartmentId).NotEmpty().GreaterThanOrEqualTo(0).WithMessage("The invoice department must be greater than 0");
+            RuleFor(x => x.RoomNumber).NotEmpty().GreaterThanOrEqualTo(0).WithMessage("The invoice room number must be greater than 0");
+            RuleFor(x => x.PaymentTermsId).NotEmpty().GreaterThanOrEqualTo(0).WithMessage("The invoice payment terms must be greater than 0");
         }
     }
 }

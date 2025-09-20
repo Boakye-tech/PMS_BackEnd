@@ -57,35 +57,12 @@ namespace Modules.Finance.Domain.Entities.Setup
 
         public static CurrencyExchangeRate Create(int currencyId, string currencyInitial, string currencyName, decimal buyingRate, decimal sellingRate, bool baseCurrency, DateTime applicableDate)
         {
-            Validate(currencyId, currencyInitial, currencyName, buyingRate, sellingRate, applicableDate);
+            Validate(currencyId, currencyInitial, currencyName, buyingRate, sellingRate);
 
             return new CurrencyExchangeRate(currencyId, currencyInitial, currencyName, buyingRate, sellingRate, baseCurrency, applicableDate);
         }
 
-        public void UpdateExchangeRate(int currencyId,decimal newBuyingRate, decimal newSellingRate, DateTime newApplicableDate)
-        {
-            if (currencyId <= 0)
-                throw new ArgumentException("The currency id must be greater than zero.");
-
-            if (newBuyingRate <= 0)
-                throw new ArgumentException("The buying rate must be greater than zero.");
-
-            if (newSellingRate <= 0)
-                throw new ArgumentException("The selling rate must be greater than zero.");
-
-            if (newApplicableDate.Date < ApplicableDate.Date)
-                throw new ArgumentException("New applicable date cannot be earlier than the current date.");
-
-            // Archive current rates before updating
-            // ArchiveCurrentRates();
-
-            // Update current rates
-            BuyingRate = newBuyingRate;
-            SellingRate = newSellingRate;
-            ApplicableDate = newApplicableDate;
-        }
-
-        public void UpdateCurrencyDetails(int currencyId,string currencyInitial, string currencyName, bool baseCurrency)
+        public void UpdateExchangeRate(int currencyId, string currencyInitial, string currencyName, decimal newBuyingRate, decimal newSellingRate, bool baseCurrency, DateTime newApplicableDate)
         {
             if (currencyId <= 0)
                 throw new ArgumentException("The currency id must be greater than zero.");
@@ -96,10 +73,29 @@ namespace Modules.Finance.Domain.Entities.Setup
             if (string.IsNullOrWhiteSpace(currencyName) || currencyName.Length > 20)
                 throw new ArgumentException("The currency name must not be null or exceed 20 characters.");
 
+
+            if (newBuyingRate <= 0)
+                throw new ArgumentException("The buying rate must be greater than zero.");
+
+            if (newSellingRate <= 0)
+                throw new ArgumentException("The selling rate must be greater than zero.");
+
+            //if (newApplicableDate.Date < ApplicableDate.Date)
+            //    throw new ArgumentException("New applicable date cannot be earlier than the current date.");
+
+            // Archive current rates before updating
+            // ArchiveCurrentRates();
+
+            // Update current rates
             CurrencyInitial = currencyInitial;
             CurrencyName = currencyName;
             BaseCurrency = baseCurrency;
+
+            BuyingRate = newBuyingRate;
+            SellingRate = newSellingRate;
+            ApplicableDate = newApplicableDate;
         }
+
 
         // private void ArchiveCurrentRates()
         // {
@@ -115,7 +111,7 @@ namespace Modules.Finance.Domain.Entities.Setup
         //     ExchangeRateHistory.Add(historicalRate);
         // }
 
-        private static void Validate(int currencyId, string currencyInitial, string currencyName,decimal buyingRate, decimal sellingRate, DateTime applicableDate)
+        private static void Validate(int currencyId, string currencyInitial, string currencyName,decimal buyingRate, decimal sellingRate)
         {
             if (currencyId < 0)
                 throw new ArgumentException("Currency ID must be greater than zero.");
@@ -132,8 +128,8 @@ namespace Modules.Finance.Domain.Entities.Setup
             if (sellingRate <= 0)
                 throw new ArgumentException("The selling rate must be greater than zero.");
 
-            if (applicableDate.Date < DateTime.Today)
-                throw new ArgumentException("Applicable date cannot be in the past.");
+            //if (applicableDate.Date < DateTime.Today)
+            //    throw new ArgumentException("Applicable date cannot be in the past.");
         }
     }
 

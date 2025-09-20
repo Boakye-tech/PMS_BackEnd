@@ -22,22 +22,27 @@ namespace Modules.Users.Domain.Entities
         public int DepartmentId { get; set; }
 
         [Required]
+        [StringLength(3)]
+        public string DepartmentInitial { get; set; }
+
+        [Required]
         [StringLength(50)]
         public string DepartmentName { get; set; }
 
         //Navigation property for DepartmentUnits
         public virtual ICollection<DepartmentUnit> DepartmentUnits { get; private set; }
 
-        public Department(int departmentId, string departmentName)
+        public Department(int departmentId, string departmentInitial, string departmentName)
         {
             DepartmentId = departmentId;
             DepartmentName = departmentName;
+            DepartmentInitial = departmentInitial;
             DepartmentUnits = new List<DepartmentUnit>();
         }
 
-        public static Department Create(int departmentId, string departmentName)
+        public static Department Create(int departmentId, string departmentInitial, string departmentName)
         {
-            if (string.IsNullOrWhiteSpace(departmentName) || departmentId != 0)
+            if (string.IsNullOrWhiteSpace(departmentName) || string.IsNullOrWhiteSpace(departmentInitial) || departmentId != 0)
             {
                 throw new ArgumentException("Invalid department data.");
             }
@@ -45,15 +50,18 @@ namespace Modules.Users.Domain.Entities
             if (departmentId != 0)
                 throw new ArgumentException("The department id must be equal to zero.");
 
+            if (string.IsNullOrWhiteSpace(departmentInitial) || departmentInitial.Length > 3)
+                throw new ArgumentException("The department initial must not be null or exceed 3 characters.");
+
             if (string.IsNullOrWhiteSpace(departmentName) || departmentName.Length > 50)
                 throw new ArgumentException("The department name must not be null or exceed 50 characters.");
 
-            return new Department(departmentId, departmentName);
+            return new Department(departmentId, departmentInitial, departmentName);
         }
 
-        public static Department Update(int departmentId, string departmentName)
+        public static Department Update(int departmentId, string departmentInitial, string departmentName)
         {
-            if (string.IsNullOrWhiteSpace(departmentName) || departmentId < 0)
+            if (string.IsNullOrWhiteSpace(departmentName) || string.IsNullOrWhiteSpace(departmentInitial) || departmentId < 0)
             {
                 throw new ArgumentException("Invalid department data.");
             }
@@ -61,10 +69,13 @@ namespace Modules.Users.Domain.Entities
             if (departmentId <= 0)
                 throw new ArgumentException("The department id must be greater than zero.");
 
+            if (string.IsNullOrWhiteSpace(departmentInitial) || departmentInitial.Length > 3)
+                throw new ArgumentException("The department initial must not be null or exceed 3 characters.");
+
             if (string.IsNullOrWhiteSpace(departmentName) || departmentName.Length > 50)
                 throw new ArgumentException("The department name must not be null or exceed 50 characters.");
 
-            return new Department(departmentId, departmentName);
+            return new Department(departmentId, departmentInitial, departmentName);
         }
 
 

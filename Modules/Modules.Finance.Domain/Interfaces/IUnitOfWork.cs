@@ -35,6 +35,9 @@ namespace Modules.Finance.Domain.Interfaces
         IDebtorTypesRepository DebtorTypes { get; }
         IDebtorGroupsRepository DebtorGroups { get; }
 
+        IServicesRepository Services { get; }
+        IPaymentTermsRepository PaymentTerms { get; }
+
         Task<int> Complete();
     }
 }

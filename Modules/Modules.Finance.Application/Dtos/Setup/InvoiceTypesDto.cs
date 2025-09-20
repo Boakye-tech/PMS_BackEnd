@@ -14,9 +14,10 @@
 namespace Modules.Finance.Application.Dtos.Setup
 {
 
-    public record InvoiceTypesReadDto(int InvoiceTypesId, string InvoiceInitials, string InvoiceDescriptions, double InvoiceAmount);
-    public record InvoiceTypesCreateDto(int InvoiceTypesId, string InvoiceInitials, string InvoiceDescriptions, double InvoiceAmount, string CreatedBy);
-    public record InvoiceTypesUpdateDto(int InvoiceTypesId, string InvoiceInitials, string InvoiceDescriptions, double InvoiceAmount, string ModifiedBy);
+    public record InvoiceTypesReadDto(int InvoiceTypesId, string InvoiceName, string InvoiceDescriptions, int DepartmentId, int DepartmentUnitId, int RoomNumber, int PaymentTermsId, List<ServicesReadDto> Services);
+    public record InvoiceTypesCreateDto(string InvoiceName, string InvoiceDescriptions, int DepartmentId, int DepartmentUnitId, int RoomNumber, int PaymentTermsId, List<int> ServicesId, string CreatedBy);
+    public record InvoiceTypesUpdateDto(int InvoiceTypesId, string InvoiceName, string InvoiceDescriptions, int DepartmentId, int DepartmentUnitId, int RoomNumber, int PaymentTermsId, List<int> ServicesId, string ModifiedBy);
     public record InvoiceTypesDeleteDto(int InvoiceTypesId);
+
 }
 

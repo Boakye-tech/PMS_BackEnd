@@ -9,6 +9,7 @@
 //  **************************************************/
 
 using Microsoft.AspNetCore.Http;
+using Modules.Finance.Domain.Entities.Setup;
 
 namespace Modules.Finance.Application.UseCases.Setups
 {
@@ -25,7 +26,7 @@ namespace Modules.Finance.Application.UseCases.Setups
 
         public async Task<IEnumerable<InvoiceTypesReadDto>> GetInvoiceTypesAsync()
         {
-            var types = await _unitOfWork.InvoiceTypes.GetAll();
+            var types = await _unitOfWork.InvoiceTypes.GetAll( includes: new List<string> { "Services"});
             return _mapper.Map<IEnumerable<InvoiceTypesReadDto>>(types);
         }
 
@@ -35,34 +36,41 @@ namespace Modules.Finance.Application.UseCases.Setups
             return _mapper.Map<InvoiceTypesReadDto>(type);
         }
 
-        public async Task<InvoiceTypesReadDto> GetInvoiceTypesAsync(string value)
-        {
-            var type = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == value);
-            return _mapper.Map<InvoiceTypesReadDto>(type);
-        }
+
 
         public async Task<ReturnResponsesDto> CreateInvoiceTypesAsync(InvoiceTypesCreateDto values)
         {
             try
             {
-                var existingType = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == values.InvoiceInitials);
+                var existingType = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceName == values.InvoiceName);
                 if (existingType != null)
                 {
                     return new ReturnResponsesDto
                     {
                         IsSuccess = false,
                         ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Invoice type already exists." },
-                        SuccessResponse = null
                     };
                 }
 
-                var type = new InvoiceTypes(values.InvoiceTypesId, values.InvoiceInitials!, values.InvoiceDescriptions!, values.InvoiceAmount)
+                var invoicetype = new InvoiceTypes(values.InvoiceName!, values.InvoiceDescriptions!, values.DepartmentId, values.DepartmentUnitId,values.RoomNumber, values.PaymentTermsId)
                 {
                     CreatedBy = values.CreatedBy,
                     CreatedOn = DateTime.Now
                 };
 
-                _unitOfWork.InvoiceTypes.Insert(type);
+                //load the services
+                invoicetype.Services.Clear();
+                var services = (await _unitOfWork.Services.GetAll()).Where(s => values.ServicesId.Contains(s.ServicesId)).ToList();
+
+                foreach (var service in services)
+                {
+                    if(!invoicetype.Services.Any(s => s.ServicesId == service.ServicesId))
+                    {
+                        invoicetype.Services.Add(service);
+                    }
+                }
+
+                _unitOfWork.InvoiceTypes.Insert(invoicetype);
                 await _unitOfWork.Complete();
 
                 //var result = _mapper.Map<InvoiceTypesReadDto>(type);
@@ -70,7 +78,6 @@ namespace Modules.Finance.Application.UseCases.Setups
                 return new ReturnResponsesDto
                 {
                     IsSuccess = true,
-                    ErrorResponse = null,
                     SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status201Created, Message = "Invoice type created successfully." }
                 };
             }
@@ -100,20 +107,32 @@ namespace Modules.Finance.Application.UseCases.Setups
                     };
                 }
 
-                var existingType = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceInitials == values.InvoiceInitials && p.InvoiceTypesId != values.InvoiceTypesId);
-                if (existingType != null)
-                {
-                    return new ReturnResponsesDto
-                    {
-                        IsSuccess = false,
-                        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Invoice type already exists." },
-                        SuccessResponse = null
-                    };
-                }
+                //var existingType = await _unitOfWork.InvoiceTypes.Get(p => p.InvoiceName == values.InvoiceName && p.InvoiceTypesId != values.InvoiceTypesId);
+                //if (existingType != null)
+                //{
+                //    return new ReturnResponsesDto
+                //    {
+                //        IsSuccess = false,
+                //        ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status400BadRequest, Message = "Invoice type already exists." },
+                //        SuccessResponse = null
+                //    };
+                //}
 
-                type.Update(values.InvoiceTypesId, values.InvoiceInitials!, values.InvoiceDescriptions!, values.InvoiceAmount);
+                type.Update(values.InvoiceTypesId, values.InvoiceName!, values.InvoiceDescriptions!, values.DepartmentId, values.DepartmentUnitId, values.RoomNumber, values.PaymentTermsId);
                 type.ModifiedBy = values.ModifiedBy;
                 type.ModifiedOn = DateTime.Now;
+
+                //load the services
+                type.Services.Clear();
+                var services = (await _unitOfWork.Services.GetAll()).Where(s => values.ServicesId.Contains(s.ServicesId)).ToList();
+
+                foreach (var service in services)
+                {
+                    if (!type.Services.Any(s => s.ServicesId == service.ServicesId))
+                    {
+                        type.Services.Add(service);
+                    }
+                }
 
                 _unitOfWork.InvoiceTypes.Update(type);
                 await _unitOfWork.Complete();
@@ -131,9 +150,7 @@ namespace Modules.Finance.Application.UseCases.Setups
             {
                 return new ReturnResponsesDto
                 {
-                    IsSuccess = false,
                     ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.Message },
-                    SuccessResponse = null
                 };
             }
         }
