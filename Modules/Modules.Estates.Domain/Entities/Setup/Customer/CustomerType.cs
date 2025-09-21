@@ -38,7 +38,7 @@ public class CustomerType : AuditableEntity
 
     public static CustomerType Update(int customerTypeId, string customerTypes)
     {
-        if (string.IsNullOrWhiteSpace(customerTypes) || customerTypeId < 0)
+        if (string.IsNullOrWhiteSpace(customerTypes) || customerTypeId <= 0)
         {
             throw new ArgumentException("Invalid Customer Type Data.");
         }

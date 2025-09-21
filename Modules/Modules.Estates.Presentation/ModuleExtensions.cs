@@ -94,9 +94,9 @@ public static class ModuleExtensions
         services.AddScoped<IPropertyTypeService, PropertyTypeService>();
         services.AddScoped<ILeaseService, LeaseService>();
 
-
         services.AddScoped<ICustomerServices, CustomerServices>();
         services.AddScoped<IPropertyServices, PropertyServices>();
+        services.AddScoped<IProductAwarenessSourcesService, ProductAwarenessSourcesService>();
 
         services.AddValidatorsFromAssemblyContaining<CustomerTypeDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<GenderDtoValidator>();
