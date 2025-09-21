@@ -18,3 +18,4 @@ public record PlotDimensionReadDto(int PlotDimensionId, string PlotDimensions);
 public record PropertyHeightReadDto(int propertyHeightId, string propertyHeights);
 public record BlockNumberReadDto(int blockNumberId, string blockNumbers);
 public record ResidentTypeReadDto(int residentTypeId, string residentTypes);
+public record ProductAwarenessSourcesReadDto(int productAwarenessSourcesId, string productAwarenessSource);
