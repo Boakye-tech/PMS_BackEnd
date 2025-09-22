@@ -38,6 +38,12 @@ namespace Modules.Finance.Domain.Interfaces
         IServicesRepository Services { get; }
         IPaymentTermsRepository PaymentTerms { get; }
 
+        //22nd September 2025
+        IBankAccountNumbersRepository BankAccountNumbers { get; }
+
+        IPenaltyTypeRepository PenaltyTypes { get; }
+        IPenaltyRuleRepository PenaltyRules { get; }
+
         Task<int> Complete();
     }
 }

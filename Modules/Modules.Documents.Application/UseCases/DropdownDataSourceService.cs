@@ -57,6 +57,11 @@ namespace Modules.Documents.Application.UseCases
                     .ToList()
                     ?? new List<DropdownOptionDto>(),
 
+                "productawarenesssources" => (await _docComms.GetProductAwarenessSourceList()) 
+                    ?.Select(p => new DropdownOptionDto(p.productAwarenessSourcesId, p.productAwarenessSource))
+                    .ToList()
+                    ?? new List<DropdownOptionDto>(),
+
 
                 _ => new List<DropdownOptionDto>()
             };

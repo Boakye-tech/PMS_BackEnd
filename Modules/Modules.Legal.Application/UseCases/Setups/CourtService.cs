@@ -126,26 +126,42 @@ namespace Modules.Legal.Application.UseCases.Setups
             }
             catch (Exception ex)
             {
-                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message }, SuccessResponse = null };
+                return new ReturnResponsesDto { IsSuccess = false, ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException!.Message ?? ex.Message } };
             }
         }
 
-        public async Task<IEnumerable<CourtRedDto>> GetCourtAsync()
+        public async Task<IEnumerable<CourtReadDto>> GetCourtAsync()
         {
             var entities = await _unitOfWork.Courts.GetAll();
-            return entities.Select(x => new CourtRedDto(x.CourtsId, x.CourtType)).ToList();
+            return entities.Select(x => new CourtReadDto(x.CourtsId, x.CourtType)).ToList();
         }
 
-        public async Task<IEnumerable<CourtRedDto>> GetCourtAsync(int courtId)
+        public async Task<IEnumerable<CourtReadDto>> GetCourtAsync(int courtId)
         {
             var entity = await _unitOfWork.Courts.Get(courtId);
             if (entity == null)
             {
-                return new List<CourtRedDto>();
+                return new List<CourtReadDto>();
             }
-            return new List<CourtRedDto> { new CourtRedDto(entity.CourtsId, entity.CourtType) };
+            return new List<CourtReadDto> { new CourtReadDto(entity.CourtsId, entity.CourtType) };
         }
 
+        public async Task<List<CourtAndDivisionsReadDto>> GetCourtsAndDivisons()
+        {
+            //throw new NotImplementedException();
+            var entities = await _unitOfWork.Courts.GetAll(includes: new List<string> { "CourtDivisions" });
+
+            var result = entities
+                .Select(court => new CourtAndDivisionsReadDto(
+                    new CourtReadDto(court.CourtsId, court.CourtType),
+                    court.CourtDivisions
+                        .Select(div => new DivisionsReadDto(div.CourtDivisionsId, div.CourtDivision))
+                        .ToList()
+                ))
+                .ToList();
+
+            return result;
+        }
     }
 }
 

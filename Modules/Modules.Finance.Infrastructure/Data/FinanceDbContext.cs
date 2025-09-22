@@ -48,6 +48,12 @@ public class FinanceDbContext : ModuleDbContext
     //20-09-2025
     public DbSet<PaymentTerms> PaymentTerms { get; set; }
 
+    //22-09-2025
+    public DbSet<BankAccountNumbers> BankAccountNumbers { get; set; }
+
+    public DbSet<PenaltyType> PenaltyTypes { get; set; }
+    public DbSet<PenaltyRule> PenaltyRules { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -90,6 +96,9 @@ public class FinanceDbContext : ModuleDbContext
         modelBuilder.Entity<CurrencyExchangeRateHistory>()
             .Property(c => c.SellingRate)
             .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<PenaltyType>().HasIndex(pt => pt.Name);
+
     }
 
 }

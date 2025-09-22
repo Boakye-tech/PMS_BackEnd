@@ -12,13 +12,13 @@
 
 namespace Modules.Estates.Infrastructure.UnitOfWork;
 
-public class UnitOfWork: IUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
     private bool disposedValue;
     private readonly ApplicationDbContext _dbContext;
 
     public UnitOfWork(ApplicationDbContext dbContext)
-	{
+    {
         _dbContext = dbContext;
 
         AllocationType = new AllocationTypeRepository(_dbContext);
@@ -34,6 +34,8 @@ public class UnitOfWork: IUnitOfWork
         PlotDimension = new PlotDimensionRepository(_dbContext);
 
         CustomerType = new CustomerTypeRepository(_dbContext);
+
+        ProductAwarenessSources = new ProductAwarenessSourcesRepository(_dbContext);
 
         Gender = new GenderRepository(_dbContext);
 
@@ -136,6 +138,9 @@ public class UnitOfWork: IUnitOfWork
     public IPlotDimensionRepository PlotDimension { get; private set; }
 
     public ICustomerTypeRepository CustomerType { get; private set; }
+
+    //September 21 '25  
+    public IProductAwarenessSourcesRepository ProductAwarenessSources { get; private set; }
 
     public IGenderRepository Gender { get; private set; }
 

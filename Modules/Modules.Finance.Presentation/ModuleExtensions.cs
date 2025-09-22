@@ -40,6 +40,8 @@ namespace Modules.Finance.Presentation
             services.AddScoped<IServicesService, ServicesService>();
             services.AddScoped<IPaymentTermsService, PaymentTermsService>();
 
+            services.AddScoped<IBankAccountNumbersService, BankAccountNumbersService>();
+
             services.AddHttpClient<IFinanceModuleCommunicationServices, FinanceModuleCommunicationServices>();
 
             //// Dependency Injection - Register AutoMapper 

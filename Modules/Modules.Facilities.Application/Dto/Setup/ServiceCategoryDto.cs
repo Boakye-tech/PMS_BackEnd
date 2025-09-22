@@ -13,11 +13,11 @@
 namespace Modules.Facilities.Application.Dto.Setup
 {
     public record ServiceCategoryReadDto(
-        int serviceCategoryId,
-        int categoryId,
-        string? categoryName,
-        int serviceId,
-        string? serviceName
+        int ServiceCategoryId,
+        int CategoryId,
+        string? Category,
+        int ServiceId,
+        string? Services
     );
 
     public record ServiceCategoryCreateDto(

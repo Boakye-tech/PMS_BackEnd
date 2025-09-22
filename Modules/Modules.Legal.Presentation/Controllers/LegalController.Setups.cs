@@ -281,12 +281,23 @@ public partial class LegalController : ControllerBase
     #region Court Endpoints
 
     /// <summary>
+    /// Returns a list of all courts and divisions
+    /// </summary>
+    [HttpGet]
+    [Route("GetCourtsAndDivisions")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourtAndDivisionsReadDto))]
+    public async Task<ActionResult<IEnumerable<CourtReadDto>>> GetCourtsAndDivisions([FromServices] ICourtService _courtService)
+    {
+        return Ok(await _courtService.GetCourtsAndDivisons());
+    }
+
+    /// <summary>
     /// Returns a list of all courts
     /// </summary>
     [HttpGet]
     [Route("Courts")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourtRedDto))]
-    public async Task<ActionResult<IEnumerable<CourtRedDto>>> GetCourts([FromServices] ICourtService _courtService)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourtReadDto))]
+    public async Task<ActionResult<IEnumerable<CourtReadDto>>> GetCourts([FromServices] ICourtService _courtService)
     {
         return Ok(await _courtService.GetCourtAsync());
     }
@@ -399,8 +410,8 @@ public partial class LegalController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("CourtDivisions")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourtDivisionRedDto))]
-    public async Task<ActionResult<IEnumerable<CourtDivisionRedDto>>> GetCourtDivisions([FromServices] ICourtDivisionService _courtDivisionService)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourtDivisionReadDto))]
+    public async Task<ActionResult<IEnumerable<CourtDivisionReadDto>>> GetCourtDivisions([FromServices] ICourtDivisionService _courtDivisionService)
     {
         return Ok(await _courtDivisionService.GetCourtDivisionAsync());
     }

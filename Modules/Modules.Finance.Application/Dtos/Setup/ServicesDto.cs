@@ -10,9 +10,6 @@
 // * Description: Property Management System
 //  **************************************************/
 
-
-using System.ComponentModel.DataAnnotations;
-
 namespace Modules.Finance.Application.Dtos.Setup;
 
 public record ServicesReadDto(int ServicesId, string ServiceName, string? Description, bool HasFee, double Amount, int AccountCode);
