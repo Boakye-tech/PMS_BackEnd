@@ -20,8 +20,8 @@ namespace Modules.Legal.Application.Interfaces.Setups
         Task<ReturnResponsesDto> CreateCourtDivisionAsync(CourtDivisionCreateDto values);
         Task<ReturnResponsesDto> UpdateCourtDivisionAsync(CourtDivisionUpdateDto values);
         Task<ReturnResponsesDto> DeleteCourtDivision(int courtDivisionId);
-        Task<IEnumerable<CourtDivisionRedDto>> GetCourtDivisionAsync();
-        Task<IEnumerable<CourtDivisionRedDto>> GetCourtDivisionAsync(int courtDivisionId);
+        Task<IEnumerable<CourtDivisionReadDto>> GetCourtDivisionAsync();
+        Task<IEnumerable<CourtDivisionReadDto>> GetCourtDivisionAsync(int courtDivisionId);
 
     }
 }

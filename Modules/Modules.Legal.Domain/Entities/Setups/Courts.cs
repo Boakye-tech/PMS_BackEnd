@@ -24,8 +24,11 @@ namespace Modules.Legal.Domain.Entities.Setups
 		[StringLength(50)]
 		public string CourtType { get; private set; }
 
-		// Private constructor for EF Core
-		private Courts()
+		// Navigation property for Court Divisions
+		public virtual ICollection<CourtDivisions> CourtDivisions { get; private set; } = new List<CourtDivisions>();
+
+        // Private constructor for EF Core
+        private Courts()
 		{
 			CourtType = string.Empty;
 		}
