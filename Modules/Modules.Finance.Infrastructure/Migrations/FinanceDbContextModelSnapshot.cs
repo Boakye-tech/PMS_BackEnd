@@ -72,6 +72,65 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.ToTable("Bank", "fin");
                 });
 
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.BankAccountNumbers", b =>
+                {
+                    b.Property<int>("BankAccountNumbersId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BankAccountNumbersId"));
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("BankId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("BranchId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BankAccountNumbersId");
+
+                    b.HasIndex("BankId");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("BankAccountNumbers", "fin");
+                });
+
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.BankBranch", b =>
                 {
                     b.Property<string>("BranchId")
@@ -85,8 +144,8 @@ namespace Modules.Finance.Infrastructure.Migrations
 
                     b.Property<string>("BranchName")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -989,6 +1048,108 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.ToTable("Paypoints", "fin");
                 });
 
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.PenaltyRule", b =>
+                {
+                    b.Property<int>("PenaltyRuleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PenaltyRuleId"));
+
+                    b.Property<int>("CalculationMethod")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("CapAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GracePeriodDays")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PenaltyTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("PenaltyRuleId");
+
+                    b.HasIndex("PenaltyTypeId");
+
+                    b.ToTable("PenaltyRules", "fin");
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.PenaltyType", b =>
+                {
+                    b.Property<int>("PenaltyTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PenaltyTypeId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PenaltyTypeId");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("PenaltyTypes", "fin");
+                });
+
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.RentalTypes", b =>
                 {
                     b.Property<int>("RentalTypesId")
@@ -1118,12 +1279,39 @@ namespace Modules.Finance.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.BankAccountNumbers", b =>
+                {
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.Bank", "Bank")
+                        .WithMany()
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.BankBranch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.CurrencyExchangeRate", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bank");
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Currency");
+                });
+
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.BankBranch", b =>
                 {
                     b.HasOne("Modules.Finance.Domain.Entities.Setup.Bank", "Bank")
                         .WithMany("BankBranch")
                         .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Bank");
@@ -1173,6 +1361,17 @@ namespace Modules.Finance.Infrastructure.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.PenaltyRule", b =>
+                {
+                    b.HasOne("Modules.Finance.Domain.Entities.Setup.PenaltyType", "PenaltyType")
+                        .WithMany("PenaltyRules")
+                        .HasForeignKey("PenaltyTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PenaltyType");
+                });
+
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.Bank", b =>
                 {
                     b.Navigation("BankBranch");
@@ -1189,6 +1388,11 @@ namespace Modules.Finance.Infrastructure.Migrations
 
                     b.Navigation("InvoiceTypes")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.PenaltyType", b =>
+                {
+                    b.Navigation("PenaltyRules");
                 });
 
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.RentalTypes", b =>

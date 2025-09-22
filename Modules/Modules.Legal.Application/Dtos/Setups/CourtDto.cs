@@ -12,10 +12,13 @@
 using System;
 namespace Modules.Legal.Application.Dtos.Setups
 {
-    public record CourtRedDto(int courtId, string courtType);
+    public record CourtReadDto(int courtId, string courtType);
     public record CourtCreateDto(string courtType, string createdBy);
     public record CourtUpdateDto(int courtId, string courtType, string modifiedBy);
     public record CourtDeleteDto(int courtId);
+
+    public record CourtAndDivisionsReadDto(CourtReadDto courts, List<DivisionsReadDto> courtDevisions);
+    public record DivisionsReadDto(int courtDivisionId, string courtDivision);
 
 }
 

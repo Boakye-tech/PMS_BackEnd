@@ -130,20 +130,20 @@ namespace Modules.Legal.Application.UseCases.Setups
             }
         }
 
-        public async Task<IEnumerable<CourtDivisionRedDto>> GetCourtDivisionAsync()
+        public async Task<IEnumerable<CourtDivisionReadDto>> GetCourtDivisionAsync()
         {
             var entities = await _unitOfWork.CourtDivisions.GetAll();
-            return entities.Select(x => new CourtDivisionRedDto(x.CourtDivisionsId, x.CourtDivision, x.CourtsId)).ToList();
+            return entities.Select(x => new CourtDivisionReadDto(x.CourtDivisionsId, x.CourtDivision, x.CourtsId)).ToList();
         }
 
-        public async Task<IEnumerable<CourtDivisionRedDto>> GetCourtDivisionAsync(int courtDivisionId)
+        public async Task<IEnumerable<CourtDivisionReadDto>> GetCourtDivisionAsync(int courtDivisionId)
         {
             var entity = await _unitOfWork.CourtDivisions.Get(courtDivisionId);
             if (entity == null)
             {
-                return new List<CourtDivisionRedDto>();
+                return new List<CourtDivisionReadDto>();
             }
-            return new List<CourtDivisionRedDto> { new CourtDivisionRedDto(entity.CourtDivisionsId, entity.CourtDivision, entity.CourtsId) };
+            return new List<CourtDivisionReadDto> { new CourtDivisionReadDto(entity.CourtDivisionsId, entity.CourtDivision, entity.CourtsId) };
         }
 
     }

@@ -52,7 +52,7 @@ namespace Modules.Finance.Domain.Entities.Management
         public int AccountCode { get; set; }
 
         [Required]
-        public required EntryTypeEnum EntryType { get; set; }
+        public required EntryType EntryType { get; set; }
 
         [Required]
         [StringLength(3)]
