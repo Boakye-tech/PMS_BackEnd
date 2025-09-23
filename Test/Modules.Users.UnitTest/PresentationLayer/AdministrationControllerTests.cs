@@ -166,12 +166,12 @@ namespace Modules.Users.UnitTest.PresentationLayer
         {
             // Arrange
             var departmentDto = new DepartmentCreateDto
-            (
-                1,
-                "TST",
-                "New Department",
-                "testUserId"
-            );
+            {
+                DepartmentId = 1,
+                DepartmentInitial = "TST",
+                DepartmentName = "New Department",
+                CreatedBy = "testUserId"
+            };
 
             _mockUserContextService.Setup(x => x.GetUserId())
                 .Returns("testUserId");

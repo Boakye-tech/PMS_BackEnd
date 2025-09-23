@@ -49,12 +49,12 @@ namespace Modules.Users.Application.Services
 
         public async Task<bool> SendModifiedDepartmentDetailsAsync(DepartmentUpdateDto payload)
         {
-            return await SendDataAsync("Finance/UpdateDepartment", payload, "POST");
+            return await SendDataAsync("Finance/UpdateDepartment", payload, "PUT");
         }
 
         public async Task<bool> SendModifiedDepartmentUnitDetailsAsync(DepartmentUnitUpdateDto payload)
         {
-            return await SendDataAsync("Finance/UpdateDepartmentUnit", payload, "POST");
+            return await SendDataAsync("Finance/UpdateDepartmentUnit", payload, "PUT");
         }
 
         public async Task<bool> SendTemporaryPasswordEmailNotification(ApplicationIdentityUser user, string temp_password)

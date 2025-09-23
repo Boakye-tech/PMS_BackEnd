@@ -43,12 +43,13 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
         {
             // Arrange
             var createDto = new DepartmentCreateDto
-            (
-                DepartmentId: 0,
-                DepartmentInitial: "TST",
-                DepartmentName: "Test Department",
-                CreatedBy: "system"
-            );
+            {
+                DepartmentId = 0,
+                DepartmentInitial = "TST",
+                DepartmentName = "Test Department",
+                CreatedBy = "system"
+            };
+            
 
             var mockDepartmentRepo = new Mock<IDepartmentRepository>();
             _mockUnitOfWork.Setup(u => u.Department).Returns(mockDepartmentRepo.Object);
@@ -218,12 +219,12 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
         {
             // Arrange
             var createDto = new DepartmentCreateDto
-            (
-                DepartmentId: 1,
-                DepartmentInitial:"TST",
-                DepartmentName: null!,
-                CreatedBy: "system"
-            );
+            {
+                DepartmentId = 1,
+                DepartmentInitial = "TST",
+                DepartmentName = null!,
+                CreatedBy = "system"
+            };
 
             var mockDepartmentRepo = new Mock<IDepartmentRepository>();
             _mockUnitOfWork.Setup(u => u.Department).Returns(mockDepartmentRepo.Object);

@@ -10,6 +10,7 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,6 +20,8 @@ namespace Modules.Finance.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Department> builder)
         {
+            builder.Property(d => d.DepartmentId).ValueGeneratedNever();
+
             // Configure the one-to-one relationship with invoice types
             builder.HasOne(s => s.InvoiceTypes)
                    .WithOne(d => d.Department)
