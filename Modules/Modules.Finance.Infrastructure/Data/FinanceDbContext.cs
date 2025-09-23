@@ -99,6 +99,8 @@ public class FinanceDbContext : ModuleDbContext
 
         modelBuilder.Entity<PenaltyType>().HasIndex(pt => pt.Name);
 
+        modelBuilder.Entity<DepartmentUnit>().Property(d => d.UnitId).ValueGeneratedNever();
+
     }
 
 }

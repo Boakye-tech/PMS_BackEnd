@@ -10,27 +10,30 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Modules.Finance.Domain.Entities.Setup
 {
     public class Department : AuditableEntity
     {
         [Key]
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int DepartmentId { get; private set; }
 
         [Required]
         [StringLength(3)]
-        public string DepartmentInitial { get; set; }
+        public string? DepartmentInitial { get; set; }
 
         [Required]
         [StringLength(50)]
         public string? DepartmentName { get; private set; }
 
         //Navigation property for DepartmentUnits
-        public virtual ICollection<DepartmentUnit> DepartmentUnits { get; private set; }
+        public virtual ICollection<DepartmentUnit>? DepartmentUnits { get; private set; }
 
         //Navigation property for InvoiceTypes
-        public virtual InvoiceTypes InvoiceTypes { get; private set; }
+        public virtual InvoiceTypes? InvoiceTypes { get; private set; }
 
         public Department(int departmentId, string departmentInitial, string? departmentName)
         {
@@ -58,13 +61,13 @@ namespace Modules.Finance.Domain.Entities.Setup
 
         private static void Validate(int departmentId,string departmentInitial, string departmentName)
         {
-            if (departmentId < 0 || string.IsNullOrWhiteSpace(departmentInitial) || string.IsNullOrWhiteSpace(departmentName))
+            if (departmentId <= 0 || string.IsNullOrWhiteSpace(departmentInitial) || string.IsNullOrWhiteSpace(departmentName))
             {
                 throw new ArgumentException("Department Data.");
             }
 
-            if (departmentId < 0)
-                throw new ArgumentException("Department Id must be greater than or equal to zero.");
+            if (departmentId <= 0)
+                throw new ArgumentException("Department Id must be greater than zero.");
 
             if (string.IsNullOrWhiteSpace(departmentInitial) || departmentInitial.Length > 3)
                 throw new ArgumentException("Department Initials cannot be empty or exceed 3 characters.");

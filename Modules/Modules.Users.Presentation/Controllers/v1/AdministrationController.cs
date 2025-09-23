@@ -985,13 +985,16 @@ namespace Modules.Users.Presentation.Controllers.v1
                     return Unauthorized();
                 }
 
-                var result = _departmentService.GetDepartmentAsync(values.DepartmentId);
-                if (result is null)
-                {
-                    return BadRequest();
-                }
+                //var result = _departmentService.GetDepartmentAsync(values.DepartmentId);
+                //if (result is null)
+                //{
+                //    return BadRequest();
+                //}
 
-                await _departmentService.UpdateDepartmentAsync(values);
+                var result = await _departmentService.UpdateDepartmentAsync(values);
+
+                if (result is null)
+                    return BadRequest();
 
                 return Ok(new { code = StatusCodes.Status200OK, message = "Department updated successfully." });
 

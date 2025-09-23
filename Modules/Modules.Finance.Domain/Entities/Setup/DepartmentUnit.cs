@@ -10,6 +10,8 @@
 // * Description: Property Management System
 //  **************************************************/
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Modules.Finance.Domain.Entities.Setup
 {
     public class DepartmentUnit : AuditableEntity
@@ -22,6 +24,7 @@ namespace Modules.Finance.Domain.Entities.Setup
 
         [Key]
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UnitId { get; private set; }
 
         [Required]
@@ -52,16 +55,16 @@ namespace Modules.Finance.Domain.Entities.Setup
 
         private static void Validate(int departmentId, int unitId, string unitName)
         {
-            if (departmentId < 0 || unitId < 0 || string.IsNullOrWhiteSpace(unitName))
+            if (departmentId <= 0 || unitId <= 0 || string.IsNullOrWhiteSpace(unitName))
             {
                 throw new ArgumentException("Department Unit Data.");
             }
 
-            if (departmentId < 0)
-                throw new ArgumentException("Department Id must be greater than or equal to zero.");
+            if (departmentId <= 0)
+                throw new ArgumentException("Department Id must be greater than zero.");
 
             if (unitId < 0)
-                throw new ArgumentException("Unit Id must be greater than or equal to zero.");
+                throw new ArgumentException("Unit Id must be greater than zero.");
 
             if (string.IsNullOrWhiteSpace(unitName) || unitName.Length > 30)
                 throw new ArgumentException("Unit Name cannot be empty or exceed 30 characters.");

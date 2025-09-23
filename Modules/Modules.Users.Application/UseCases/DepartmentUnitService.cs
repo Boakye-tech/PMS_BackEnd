@@ -37,6 +37,7 @@ namespace Modules.Users.Application.UseCases
             await _unitOfWork.Complete();
 
             //send to finance module
+            values.UnitId = departmentUnit.UnitId;
             var response = await _moduleCommunication.SendDepartmentUnitDetailsAsync(values);
             if (!response)
             {

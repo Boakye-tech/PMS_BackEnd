@@ -12,7 +12,16 @@
 namespace Modules.Users.Application.Dtos.Entities
 {
 	public record DepartmentUnitReadDto(int DepartmentId, int UnitId, string UnitName);
-    public record DepartmentUnitCreateDto(int DepartmentId, int UnitId, string UnitName, string CreatedBy);
+    //public record DepartmentUnitCreateDto(int DepartmentId, int UnitId, string UnitName, string CreatedBy);
+
+    public record DepartmentUnitCreateDto
+    {
+        public int DepartmentId { get; set; }
+        public int UnitId { get; set; }
+        public string? UnitName { get; set; }
+        public string? CreatedBy { get; set; }
+    }
+
     public record DepartmentUnitUpdateDto(int DepartmentId, int UnitId, string UnitName, string ModifiedBy);
     public record DepartmentUnitDeleteDto(int UnitId);
 

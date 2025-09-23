@@ -165,8 +165,9 @@ public class AccountController : ControllerBase
     /// <remarks>Returns the registration status and user id. The user and password used in a successful registration will be used to access generated a json web token and a refresh token that will be used to access the application</remarks>
     /// <response code="201">Returns the uniquely created user id for a newly registered application user</response>
     [HttpPost]
+    [AllowAnonymous]
     [Route("Register/Staff")]
-    [Authorize(Policy = "Permission:Users.CREATE")]
+    //[Authorize(Policy = "Permission:Users.CREATE")]
     [ProducesResponseType(201, Type = typeof(RegistrationSuccessResponse))]
     [ProducesResponseType(400, Type = typeof(RegistrationErrorResponse))]
     [ProducesResponseType(404, Type = typeof(RegistrationErrorResponse))]
