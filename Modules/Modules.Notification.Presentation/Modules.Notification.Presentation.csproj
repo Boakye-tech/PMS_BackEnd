@@ -44,12 +44,14 @@
     <None Remove="OpenAPI\" />
     <None Remove="Filters\" />
     <None Remove="bin\Debug\net8.0\bin\Debug\net8.0\bin\Debug\net8.0\bin\Debug\net8.0\Modules.Notification.Presentation.xml" />
+    <None Remove="Logs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\v1\" />
     <Folder Include="Controllers\v2\" />
     <Folder Include="OpenAPI\" />
     <Folder Include="Filters\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
 
 </Project>

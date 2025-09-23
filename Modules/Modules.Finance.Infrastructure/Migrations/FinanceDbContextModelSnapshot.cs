@@ -731,10 +731,7 @@ namespace Modules.Finance.Infrastructure.Migrations
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.Department", b =>
                 {
                     b.Property<int>("DepartmentId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -772,10 +769,7 @@ namespace Modules.Finance.Infrastructure.Migrations
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.DepartmentUnit", b =>
                 {
                     b.Property<int>("UnitId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UnitId"));
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -1386,8 +1380,7 @@ namespace Modules.Finance.Infrastructure.Migrations
                 {
                     b.Navigation("DepartmentUnits");
 
-                    b.Navigation("InvoiceTypes")
-                        .IsRequired();
+                    b.Navigation("InvoiceTypes");
                 });
 
             modelBuilder.Entity("Modules.Finance.Domain.Entities.Setup.PenaltyType", b =>

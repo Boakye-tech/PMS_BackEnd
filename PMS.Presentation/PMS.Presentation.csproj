@@ -29,11 +29,13 @@
     <None Remove="Extensions\" />
     <None Remove="Properties\PublishProfiles\" />
     <None Remove="OpenAPI\" />
+    <None Remove="Logs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="OpenAPI\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Modules\Modules.Estates.Presentation\Modules.Estates.Presentation.csproj">
