@@ -25,8 +25,7 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         public bool IsFirstTime { get; set; }
         public DateTime RegistrationDate { get; set; }
         public string? Status { get; set; }
-
-
+        public string? ProfilePicture { get; set; }
     };
 
     public record userRole(string role);
@@ -61,6 +60,7 @@ namespace Modules.Users.Application.Dtos.UserAccounts
             IdentificationImageOne = user.IdentificationImageOne;
             SelfieImage = user.SelfieImage;
             PassportPicture = user.PassportPicture;
+            ProfilePicture = user.ProfilePicture;
             Channel = channelName;
             UserType = userType;
             IsFirstTime = user.IsFirstTime;
@@ -78,7 +78,7 @@ namespace Modules.Users.Application.Dtos.UserAccounts
         public string? Department { get; set; }
         public int UnitId { get; set; }
         public string? Unit { get; set; }
-        public string? ProfilePicture { get; set; }
+        //public string? ProfilePicture { get; set; }
         public IList<string>? UsersRoles { get; set; }
         public PermissionsAccessModulesReadDto? AccessPermissions { get; set; }
 

@@ -8,6 +8,8 @@
 // * Description: Property Management System
 //  **************************************************/
 
+using Modules.Finance.Domain.Entities.Setup;
+
 namespace Modules.Finance.Presentation
 {
     public static class ModuleExtensions
@@ -35,6 +37,10 @@ namespace Modules.Finance.Presentation
             services.AddScoped<IRentalTypesService, RentalTypesService>();
             services.AddScoped<IDebtorTypesService, DebtorTypesService>();
             services.AddScoped<IDebtorGroupsService, DebtorGroupsService>();
+            services.AddScoped<IServicesService, ServicesService>();
+            services.AddScoped<IPaymentTermsService, PaymentTermsService>();
+
+            services.AddScoped<IBankAccountNumbersService, BankAccountNumbersService>();
 
             services.AddHttpClient<IFinanceModuleCommunicationServices, FinanceModuleCommunicationServices>();
 

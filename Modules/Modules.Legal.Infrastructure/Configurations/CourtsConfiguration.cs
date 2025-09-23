@@ -21,6 +21,12 @@ namespace Modules.Legal.Infrastructure.Configurations
         {
             builder.HasIndex(c => c.CourtType).IsUnique(true);
 
+            // Configure the one-to-many relationship with LandUseType
+            builder.HasMany(cd => cd.CourtDivisions)
+                   .WithOne(c => c.Court)
+                   .HasForeignKey(cd => cd.CourtsId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasData(
                 new Courts(1, "SUPREME COURT"),
                 new Courts(2, "COURT OF APPEAL"),

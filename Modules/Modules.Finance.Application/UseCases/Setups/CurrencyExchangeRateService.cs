@@ -131,8 +131,11 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
 
             currency.UpdateExchangeRate(
                 values.CurrencyId,
+                values.CurrencyInitial,
+                values.CurrencyName,
                 values.BuyingRate,
                 values.SellingRate,
+                values.BaseCurrency,
                 values.ApplicableDate
             );
 
@@ -171,53 +174,6 @@ public class CurrencyExchangeRateService : ICurrencyExchangeRateService
         }
     }
 
-    public async Task<ReturnResponsesDto> UpdateCurrencyDetailsAsync(CurrencyDetailsUpdateDto values)
-    {
-        try
-        {
-            var currency = await _unitOfWork.CurrencyExchangeRate.Get(values.CurrencyId);
-            if (currency == null)
-            {
-                return new ReturnResponsesDto
-                {
-                    IsSuccess = false,
-                    ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status404NotFound, Message = $"Currency with ID {values.CurrencyId} not found." },
-                    SuccessResponse = null
-                };
-            }
-
-            currency.UpdateCurrencyDetails(
-                values.CurrencyId,
-                values.CurrencyInitial!,
-                values.CurrencyName!,
-                values.BaseCurrency
-            );
-
-            currency.ModifiedBy = values.ModifiedBy;
-            currency.ModifiedOn = DateTime.Now;
-
-            _unitOfWork.CurrencyExchangeRate.Update(currency);
-            await _unitOfWork.Complete();
-
-            //var result = _mapper.Map<CurrencyExchangeRateReadDto>(currency);
-
-            return new ReturnResponsesDto
-            {
-                IsSuccess = true,
-                ErrorResponse = null,
-                SuccessResponse = new SuccessResponseDto { Code = StatusCodes.Status200OK, Message = "Currency details updated successfully." }
-            };
-        }
-        catch (Exception ex)
-        {
-            return new ReturnResponsesDto
-            {
-                IsSuccess = false,
-                ErrorResponse = new ErrorResponseDto { Code = StatusCodes.Status500InternalServerError, Message = ex.InnerException?.Message ?? ex.Message },
-                SuccessResponse = null
-            };
-        }
-    }
 
     public async Task<ReturnResponsesDto> DeleteCurrencyExchangeRateAsync(int currencyId)
     {

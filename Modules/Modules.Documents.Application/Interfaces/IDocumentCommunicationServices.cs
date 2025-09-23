@@ -22,6 +22,7 @@ namespace Modules.Documents.Application.Interfaces
         Task<List<PropertyHeightReadDto>> GetPropertyHeightList();
         Task<List<BlockNumberReadDto>> GetBlockNumberList();
         Task<List<ResidentTypeReadDto>> GetResidentTypeList();
+        Task<List<ProductAwarenessSourcesReadDto>> GetProductAwarenessSourceList();
     }
 }
 

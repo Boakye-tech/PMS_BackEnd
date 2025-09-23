@@ -17,6 +17,9 @@ public interface IUnitOfWork : IDisposable
 {
     //----customer
     ICustomerTypeRepository CustomerType { get; }
+
+    //21/09/2025
+    IProductAwarenessSourcesRepository ProductAwarenessSources { get; }
     IGenderRepository Gender { get; }
     IIdentificationTypeRepository IdentificationType { get; }
     INationalityRepository Nationality { get; }
@@ -74,9 +77,9 @@ public interface IUnitOfWork : IDisposable
     ICurrencyExchangeRateRepository CurrencyExchangeRate { get; }
 
     //23 May 2025
-    IRentalCategoryRepository RentalCategory  { get;  }
-    IRentalTypeRepository RentalType  { get;  }
-    IHouseTypesRepository HouseTypes { get;  }
+    IRentalCategoryRepository RentalCategory { get; }
+    IRentalTypeRepository RentalType { get; }
+    IHouseTypesRepository HouseTypes { get; }
 
     //June 4, 2025
     ISitesRepository Sites { get; }

@@ -14,14 +14,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Modules.Finance.Domain.Entities.Setup;
 
-public class BankBranch : AuditableEntity
+public sealed class BankBranch : AuditableEntity
 {
     [Required]
     [StringLength(10)]
     public string BankId { get; private set; }
 
     // Navigation property for Bank
-    public virtual Bank? Bank { get; private set; }
+    public Bank? Bank { get; private set; }
 
     [Key]
     [Required]

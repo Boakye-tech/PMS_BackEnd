@@ -11,6 +11,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Modules.Common.Infrastructure;
+using Modules.Finance.Domain.Entities.Setup;
 
 namespace Modules.Finance.Infrastructure.Data;
 
@@ -44,9 +45,41 @@ public class FinanceDbContext : ModuleDbContext
     public DbSet<DebtorTypes> DebtorTypes { get; set; }
     public DbSet<DebtorGroups> DebtorGroups { get; set; }
 
+    //20-09-2025
+    public DbSet<PaymentTerms> PaymentTerms { get; set; }
+
+    //22-09-2025
+    public DbSet<BankAccountNumbers> BankAccountNumbers { get; set; }
+
+    public DbSet<PenaltyType> PenaltyTypes { get; set; }
+    public DbSet<PenaltyRule> PenaltyRules { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<InvoiceTypes>().HasKey(e => e.InvoiceTypesId);
+        modelBuilder.Entity<Services>().HasKey(e => e.ServicesId);
+
+        modelBuilder.Entity<InvoiceTypes>()
+            .HasMany(i => i.Services)
+            .WithMany(s => s.InvoiceTypes)
+            .UsingEntity<Dictionary<string, object>>(
+                "InvoiceTypeServices", // join table name
+                j => j.HasOne<Services>()
+                      .WithMany()
+                      .HasForeignKey("ServicesId")
+                      .OnDelete(DeleteBehavior.Restrict),
+                j => j.HasOne<InvoiceTypes>()
+                      .WithMany()
+                      .HasForeignKey("InvoiceTypesId")
+                      .OnDelete(DeleteBehavior.Restrict),
+                j =>
+                {
+                    j.HasKey("InvoiceTypesId", "ServicesId"); // composite PK
+                    j.ToTable("InvoiceTypeServices","fin");
+                });
+
 
         modelBuilder.Entity<CurrencyExchangeRate>()
             .Property(c => c.BuyingRate)
@@ -63,6 +96,11 @@ public class FinanceDbContext : ModuleDbContext
         modelBuilder.Entity<CurrencyExchangeRateHistory>()
             .Property(c => c.SellingRate)
             .HasColumnType("decimal(18,4)");
+
+        modelBuilder.Entity<PenaltyType>().HasIndex(pt => pt.Name);
+
+        modelBuilder.Entity<DepartmentUnit>().Property(d => d.UnitId).ValueGeneratedNever();
+
     }
 
 }

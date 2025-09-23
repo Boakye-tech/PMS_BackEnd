@@ -15,7 +15,7 @@ using Modules.Finance.Domain.Entities.Management;
 
 namespace Modules.Finance.Domain.Entities.Setup;
 
-public class Bank : AuditableEntity
+public sealed class Bank : AuditableEntity
 {
     [Key]
     [Required]
@@ -27,7 +27,7 @@ public class Bank : AuditableEntity
     public string BankName { get; private set; }
 
     // Navigation property for BankBranch
-    public virtual ICollection<BankBranch> BankBranch { get; private set; }
+    public ICollection<BankBranch> BankBranch { get; private set; }
 
     public Bank(string bankId, string bankName)
     {

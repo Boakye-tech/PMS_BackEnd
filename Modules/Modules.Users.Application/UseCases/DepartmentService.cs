@@ -9,6 +9,8 @@
 //  **************************************************/
 
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Modules.Users.Application.UseCases
 {
 	public class DepartmentService : IDepartmentService
@@ -26,7 +28,7 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentReadDto> AddDepartmentAsync(DepartmentCreateDto values)
         {
-            Department department = Department.Create(values.DepartmentId, values.DepartmentName!);
+            Department department = Department.Create(values.DepartmentId, values.DepartmentInitial!, values.DepartmentName!);
 
             department.CreatedBy = values.CreatedBy;
             department.CreatedOn = DateTime.Now;
@@ -35,13 +37,14 @@ namespace Modules.Users.Application.UseCases
             await _unitOfWork.Complete();
 
             //send to finance module
+            values.DepartmentId = department.DepartmentId;
             var response = await _moduleCommunication.SendDepartmentDetailsAsync(values);
             if (!response)
             {
                 //_logger.LogWarning($"Failed to send department details to finance module {values.DepartmentName}", values.DepartmentName);
             }
 
-            return new DepartmentReadDto(department.DepartmentId, department.DepartmentName!);
+            return new DepartmentReadDto(department.DepartmentId, values.DepartmentInitial!, department.DepartmentName!);
         }
 
         public async Task<GenericResponseDto> DeleteDepartment(int departmentId)
@@ -78,7 +81,14 @@ namespace Modules.Users.Application.UseCases
 
         public async Task<DepartmentReadDto> UpdateDepartmentAsync(DepartmentUpdateDto values)
         {
-            Department department = Department.Update(values.DepartmentId, values.DepartmentName!);
+            var department = await _unitOfWork.Department.Get(values.DepartmentId);
+            if (department is null)
+                return null!;
+
+            Department response = Department.Update(values.DepartmentId, values.DepartmentInitial, values.DepartmentName!);
+
+            department.DepartmentInitial = response.DepartmentInitial;
+            department.DepartmentName = response.DepartmentName;
             department.ModifiedBy = values.ModifiedBy;
             department.ModifiedOn = DateTime.UtcNow;
 
@@ -86,14 +96,14 @@ namespace Modules.Users.Application.UseCases
             await _unitOfWork.Complete();
 
             //send to finance module
-            var response = await _moduleCommunication.SendModifiedDepartmentDetailsAsync(values);
-            if (!response)
+            var result = await _moduleCommunication.SendModifiedDepartmentDetailsAsync(values);
+            if (!result)
             {
                 //_logger.LogWarning($"Failed to send department details to finance module {values.DepartmentName}", values.DepartmentName);
             }
 
 
-            return new DepartmentReadDto(department.DepartmentId, department.DepartmentName!);
+            return new DepartmentReadDto(department.DepartmentId, values.DepartmentInitial, department.DepartmentName!);
         }
     }
 }

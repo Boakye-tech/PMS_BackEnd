@@ -43,11 +43,13 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
         {
             // Arrange
             var createDto = new DepartmentCreateDto
-            (
-                DepartmentId: 0,
-                DepartmentName: "Test Department",
-                CreatedBy: "system"
-            );
+            {
+                DepartmentId = 0,
+                DepartmentInitial = "TST",
+                DepartmentName = "Test Department",
+                CreatedBy = "system"
+            };
+            
 
             var mockDepartmentRepo = new Mock<IDepartmentRepository>();
             _mockUnitOfWork.Setup(u => u.Department).Returns(mockDepartmentRepo.Object);
@@ -70,7 +72,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
         {
             // Arrange
             var departmentId = 1;
-            var existingDepartment = new Department(1, "Test Department");
+            var existingDepartment = new Department(1, "TST", "Test Department");
 
             _mockUnitOfWork.Setup(u => u.Department.Get(departmentId))
                 .ReturnsAsync(existingDepartment);
@@ -111,14 +113,14 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
             // Arrange
             var departments = new List<Department>
             {
-                new Department(1, "Department 1"),
-                new Department(2, "Department 2")
+                new Department(1, "TST", "Department 1"),
+                new Department(2, "TSS", "Department 2")
             };
 
             var expectedDtos = new List<DepartmentReadDto>
             {
-                new DepartmentReadDto(1, "Department 1"),
-                new DepartmentReadDto(2, "Department 2")
+                new DepartmentReadDto(1,"TST", "Department 1"),
+                new DepartmentReadDto(2,"TSS", "Department 2")
             };
 
             _mockUnitOfWork.Setup(u => u.Department.GetAll())
@@ -144,8 +146,8 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
         {
             // Arrange
             var departmentId = 1;
-            var department = new Department(1, "Test Department");
-            var expectedDto = new DepartmentReadDto(1, "Test Department");
+            var department = new Department(1, "TST", "Test Department");
+            var expectedDto = new DepartmentReadDto(1, "TST", "Test Department");
 
             _mockUnitOfWork.Setup(u => u.Department.Get(departmentId))
                 .ReturnsAsync(department);
@@ -167,8 +169,8 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
         {
             // Arrange
             var departmentName = "Test Department";
-            var department = new Department(1, departmentName);
-            var expectedDto = new DepartmentReadDto(1, departmentName);
+            var department = new Department(1, "TST", departmentName);
+            var expectedDto = new DepartmentReadDto(1, "TST", departmentName);
 
             _mockUnitOfWork.Setup(u => u.Department.Get(It.IsAny<Expression<Func<Department, bool>>>(), null))
                 .ReturnsAsync(department);
@@ -191,6 +193,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
             var updateDto = new DepartmentUpdateDto
             (
                 DepartmentId: 1,
+                DepartmentInitial: "TST",
                 DepartmentName: "Updated Department",
                 ModifiedBy: "system"
             );
@@ -216,11 +219,12 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
         {
             // Arrange
             var createDto = new DepartmentCreateDto
-            (
-                DepartmentId: 1,
-                DepartmentName: null!,
-                CreatedBy: "system"
-            );
+            {
+                DepartmentId = 1,
+                DepartmentInitial = "TST",
+                DepartmentName = null!,
+                CreatedBy = "system"
+            };
 
             var mockDepartmentRepo = new Mock<IDepartmentRepository>();
             _mockUnitOfWork.Setup(u => u.Department).Returns(mockDepartmentRepo.Object);
@@ -237,6 +241,7 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
             var updateDto = new DepartmentUpdateDto
             (
                 DepartmentId: 1,
+                DepartmentInitial: "TST",
                 DepartmentName: null!,
                 ModifiedBy: "system"
             );

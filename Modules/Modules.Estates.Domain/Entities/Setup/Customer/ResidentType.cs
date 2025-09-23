@@ -38,7 +38,7 @@ public class ResidentType : AuditableEntity
 
     public static ResidentType Update(int residentTypeId, string residentTypes)
     {
-        if (string.IsNullOrWhiteSpace(residentTypes) || residentTypeId < 0)
+        if (string.IsNullOrWhiteSpace(residentTypes) || residentTypeId <= 0)
         {
             throw new ArgumentException("Invalid Resident Type Data.");
         }

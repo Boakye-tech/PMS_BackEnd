@@ -42,12 +42,12 @@ namespace Modules.Users.UnitTest.ApplicationLayer.UseCases.UserServices
         {
             // Arrange
             var createDto = new DepartmentUnitCreateDto
-            (
-                DepartmentId: 1,
-                UnitId: 0,
-                UnitName: "Test Unit",
-                CreatedBy: "system"
-            );
+            {
+                DepartmentId = 1,
+                UnitId = 0,
+                UnitName = "Test Unit",
+                CreatedBy = "system"
+            };
 
             var mockDepartmentUnitRepo = new Mock<IDepartmentUnitRepository>();
             _mockUnitOfWork.Setup(u => u.DepartmentUnit).Returns(mockDepartmentUnitRepo.Object);

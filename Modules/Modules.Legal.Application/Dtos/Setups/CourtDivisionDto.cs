@@ -12,7 +12,7 @@
 using System;
 namespace Modules.Legal.Application.Dtos.Setups
 {
-    public record CourtDivisionRedDto(int courtDivisionId, string courtDivision, int courtsId);
+    public record CourtDivisionReadDto(int courtDivisionId, string courtDivision, int courtsId);
     public record CourtDivisionCreateDto(string courtDivision, int courtsId, string createdBy);
     public record CourtDivisionUpdateDto(int courtDivisionId, string courtDivision, int courtsId, string modifiedBy);
     public record CourtDivisionDeleteDto(int courtDivisionId);

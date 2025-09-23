@@ -18,7 +18,7 @@ namespace Modules.Finance.Domain.Entities.Setup
 	public class TransactionTypes
 	{
         [Required]
-        public EntryTypeEnum EntryType { get; set; }
+        public EntryType EntryType { get; set; }
 
         [Key]
         [Required]

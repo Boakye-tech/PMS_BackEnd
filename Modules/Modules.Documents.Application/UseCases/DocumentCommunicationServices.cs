@@ -60,6 +60,12 @@ namespace Modules.Documents.Application.UseCases
             return result!;
         }
 
+        public async Task<List<ProductAwarenessSourcesReadDto>> GetProductAwarenessSourceList()
+        {
+            var result = await SendGetAsync<List<ProductAwarenessSourcesReadDto>>("Customer/GetProductAwarenessSources");
+            return result!;
+        }
+
         public async Task<List<PropertyHeightReadDto>> GetPropertyHeightList()
         {
             var result = await SendGetAsync<List<PropertyHeightReadDto>>("Property/GetPropertyHeight");

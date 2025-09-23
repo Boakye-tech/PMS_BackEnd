@@ -17,3 +17,7 @@ global using Modules.Finance.Domain.Interfaces;
 
 global using Modules.Common.Infrastructure.Authentication;
 global using Modules.Finance.Application.Interfaces.ModuleServices;
+
+global using Modules.Finance.Domain.Enums;
+
+global using Modules.Finance.Domain.Entities;

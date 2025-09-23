@@ -17,7 +17,7 @@ namespace Modules.Finance.Application.Interfaces.Setup
 	{
         Task<ReturnResponsesDto> CreateCurrencyExchangeRateAsync(CurrencyExchangeRateCreateDto values);
         Task<ReturnResponsesDto> UpdateCurrencyExchangeRateAsync(CurrencyExchangeRateUpdateDto values);
-        Task<ReturnResponsesDto> UpdateCurrencyDetailsAsync(CurrencyDetailsUpdateDto values);
+   
         Task<IEnumerable<CurrencyExchangeRateReadDto>> GetCurrencyExchangeRateAsync();
         Task<CurrencyExchangeRateReadDto> GetCurrencyExchangeRateAsync(int value);
         Task<CurrencyExchangeRateReadDto> GetCurrencyExchangeRateAsync(string value);
